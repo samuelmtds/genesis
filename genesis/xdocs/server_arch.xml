@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Arquitetura do Genesis-Server</title>
+    <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
+  </properties>
+  <body>
+    <section name="Conceitos Iniciais">
+	<p>
+	O Genesis é uma aplicação dos conceitos de Orientação por Aspectos. De fato, é uma implementação de um 
+	aspecto de comunicação entre cliente e servidor. Por isso recomendamos a leitura de alguns artigos 
+	relacionados com AOP para entender melhor os conceitos descritos a continuação.<br/>
+	Como ponto de partida pode servir a palestra <a href="http://aspectwerkz.codehaus.org/downloads/papers/AOP_com_AspectWerkz.pdf">AOP com AspectWerkz</a>, 
+        que mostra os principais conceitos de AOP. Outros links recomendados são:<br/>
+	</p>
+	<ul>
+		<li><a href="http://aspectwerkz.codehaus.org/downloads/papers/AOP_com_AspectWerkz.pdf">AOP com AspectWerkz (Pt)</a></li>
+		<li><a href="http://www.javaworld.com/javaworld/jw-01-2002/jw-0118-aspect.html">Tutorial de AOP no JavaWorld (En)</a></li>
+		<li><a href="http://docs.codehaus.org/display/AW/Hello+World">Hello World com AspectWerkz (En)</a></li>
+		<li><a href="http://docs.codehaus.org/display/AW/Tutorials">Tutoriais no site do AW</a></li>
+		<li><a href="http://docs.codehaus.org/display/AW/Home">AspectWerkz Home</a></li>
+	</ul>
+	<p>
+	Outro conceito usado é o "Command Pattern", referências ao mesmo podem ser achadas em:<br/>
+	<ul>
+		<li><a href="http://home.earthlink.net/~huston2/dp/command.html">Command</a></li>
+		<li><a href="http://www.dofactory.com/Patterns/PatternCommand.aspx">Data and Object Factory - Command Pattern</a></li>
+		<li><a href="http://www.tml.hut.fi/~pnr/Tik-76.278/gof/html/">Gang of Four Design Patterns</a></li>
+	</ul>
+	</p>
+    </section>
+    <section name="Command Pattern">
+	<p>
+	O Genesis-Server implementa o "Command Pattern" entre o cliente e o servidor de forma transparente utilizando AOP.<br/>
+	O "Command Pattern" representa uma forma de desacoplar o objeto que requisita 
+        uma operação daquele objeto que sabe como executar a mesma.
+	<br/>
+	O diagrama do command pattern e o seguinte : (fonte - <a href="http://www.tml.hut.fi/~pnr/Tik-76.278/gof/html/">Gang of Four Design Patterns</a>)
+	</p>
+	<p>
+ 	<img title="Command Pattern" src="command.jpg" alt="Command Pattern"></img>
+	</p>
+	<p>
+	Neste diagrama temos que:<br/>
+	<ul>
+		<li><b>Command:</b> Declara uma interface para executar uma operação.</li>
+		<li><b>Concrete Command:</b> Define um relacionamento entre o objeto Receiver e uma ação, 
+			implementa o método Execute chamando a operação no Receiver.</li>
+		<li><b>Receiver:</b> Sabe como implementar as operações associadas ao comando.</li>
+		<li><b>Client:</b> Cria um ConcreteCommand e define o seu Reciver</li>
+		<li><b>Invoker:</b> Solicita ao Command executar a operação</li>
+	</ul>
+	</p>
+	<p>
+	No Genesis, o objeto que requisita uma operação (<b>Client</b>) é representado pelo código do cliente e
+	a operação a ser efetuada (<b>Action()</b>) por um dos métodos da classe de negócios (<b>Receiver</b>).<br/>
+	O resto da infraestrutura é injetado no código via AOP.<br/> 
+	Na implementação inicial do Genesis, o ConcreteCommand é 
+	representado por um Stateless Session Bean (<b>CommandExecutorEJB</b>) que possui dois métodos (executeTransaction, executeQuery) que 
+	recebem como parâmetro a classe de negócios e o nome do método a ser chamado. Por reflexão, é feita a chamada 
+	do método, dentro do contexto de uma transaçao (executeTransaction) ou não (executeQuery).
+	</p>
+	<p>
+	O papel do Invoker é representado por código <b>injetado</b> no lado do cliente que faz o lookup do bean CommandExecutorEJB e 
+	a chamada ao metodo <b>execute</b> correspondente.<br/>
+	</p>
+	<p>
+	O seguinte diagrama de seqüência ajuda a entender melhor a arquitetura:
+	</p>
+	<p>
+ 	<img title="Sequencia Genesis Server" src="GenesisSeqDiag2.jpg" alt="Sequencia Genesis Server"></img>
+	</p>
+  </section>
+  <section name="Genesis para Arquitetos">
+	<p>
+	Para um usuário do Genesis, alguem que vai usar o framework para desenvolver aplicações, a visão geral 
+	dada no ponto anterior é suficiente. Nesta seção exploraremos mais a fundo os detalhes da arquitetura do Genesis Server.<br/>
+	Isto serve para que os arquitetos das aplicações que usam o Genesis possam ter elementos para escolher 
+	a combinação de soluções mais adequada ao problema específico e consigam configurar o extender o Genesis
+	para acomadar esta solução.<br/>
+
+	</p>
+    <subsection name="Organização dos Fontes do Genesis">
+	<p>
+	Os fontes do Génesis estão organizados em grupos, onde cada grupo constitui um subprojeto maven, a saber:<br/>
+	<ul>
+	<li><b>aspect: </b>Aqui temos os pacotes que definem os aspectos usados no Genesis e o código injetado</li>
+	<li><b>server:</b> Nele temos a implementação específica de um CommandExecutor como SSB 
+				e uma implementação para persistência usando Hibernate</li>
+	<li><b>shared:</b> Aqui temos a infraestrutura injetada via AOP, necessária para o lado cliente. 
+			   Os seguintes pacotes são definidos: command, exception,hibernate,paging, reflection, util</li>
+	<li><b>client: </b>Infraestrutura usada no Genesis Client, descrita em Arquitetura Genesis Client</li>
+	<li><b>tests: </b> Infraestrutura para testes unitários do Genesis Server e do Genesis Client</li>
+	</ul>
+	Porque não manter um único diretório de fontes? (<b>O Michael explica aqui</b>)<br/>
+	O resultado de executar o maven (<b>target?</b>) é guardado no diretório <b>dist</b> e consiste em:
+	<ul>
+	<li><b>aspect: </b></li>
+	<li><b>server: </b>genesis-server-0.2-dev.jar</li>
+	<li><b>shared: </b></li>
+	<li><b>client: </b></li>
+	<li><b>tests: </b></li>
+	</ul>
+	</p>
+    </subsection>
+    </section>
+    <section name="Grupo Aspect">
+	<p>
+	O grupo de fontes <b>aspect</b> define básicamente um pacote chamado: net.java.dev.genesis.aspect. 
+	Dentro dele temos classes que definem diversos aspectos: <br/>
+	<ul>
+	<li>Aspectos relacionados com a chamada de comandos (CommandInvocationAspect e derivados)</li>
+	<li>Aspectos relacionados com o controle da UI (TimeoutAspect, FormMetadataFactoryAspect e relacionados)</li>
+	<li>Aspectos específicos da solução de cliente Thinlet (WaitCursorAspect)</li>
+	</ul>
+	</p>
+    <subsection name="Grupo Aspect - Command Invocation">
+	<p>
+	Na seguinte figura temos a arquitetura dos aspectos de chamada de comandos<br/>
+	</p>
+	<p>
+ 	<img title="Estrutura dos Aspectos" src="genesis_aspect.jpg" alt="Estrutura dos Aspectos"></img>
+	</p>
+	<p>
+	A classe<b>CommandInvocationAspect</b> introduz a classe CommandResolverImpl que implementa as interfaces Command e CommandResolver.
+        Esta classe usa as interfaces Query e Transaction para verificar se o método da classe que está sofrendo a injeção de código cumpre
+        algum dos seguintes requisitos: <br/>
+	<ul>
+	<li>A classe do método implementa alguma das interfaces: <code><b>net.java.dev.genesis.command.Transaction ou net.java.dev.genesis.command.Query</b></code></li>
+	<li>O método contém pelo menos uma notação <code><b>Transactional ou Remotable</b></code></li>
+	</ul>
+	Derivadas de CommanInvocationAspect temos três classes, exemplos de implementações específicas:
+	<b>EJBCommandExecutionAspect, LocalCommandExecutionAspect e CriteriaCommandExecutionAspect.</b><br/>
+	O <b>EJBCommandExecutionAspect</b> implementa um aspecto de uma chamada a um SSB como CommandExecutor.<br/>
+	O <b>LocalCommandExecutionAspect</b>, se a classe do método injetado for um HibernateCommand, implementa uma chamada local,
+	criando uma sessão hibernate e chamando <code><b>session.beginTransaction() e 
+	transaction.commit() ou transaction.rollback()</b></code> antes e depois da execução do método.<br/>
+ 	Estes dois aspectos permitem que possamos mudar a implementação dos métodos de remota para local trocando 
+	apenas o arquivo xml de configuração dos aspectos no cliente.<br/><br/>
+	</p>
+    </subsection>
+    <subsection name="Grupo Aspect - Criteria">
+	<p>
+	O <b>CriteriaCommandExecutionAspect</b> (<b>Michael explica criteria</b>)
+	</p>
+    </subsection>
+    <subsection name="Grupo Aspect - Controle da UI">
+	<p>
+	Neste diagrama temos:<br/>
+	<ul>
+	<li><b>FormMetadataFactoryAspect: </b>Descrita no Genesis CLient, adiciona aspectos nas 
+		classes clientes que representam os dados dos campos da UI (classes Form) e que permitem
+		que implementar logica de controle da UI em forma declarativa</li>
+	<li><b>WaitCursorAspect: </b>Descrita no Genesis CLient, permite colocar uma ampulheta 
+				     toda vez que é executado um comando no servidor. Soluciona um problema específico do Thinlet.</li>
+	<li><b>TimeoutAspect: </b>Permite definir um Timeout para os comandos executados no servidor.</li>
+	<li><b>tests: </b></li>
+	<li><b>tests: </b></li>
+	</ul>	
+	</p>
+    </subsection>
+  </section>
+  <section name="Grupo Server">
+	<p>
+	</p>
+  </section>
+  <section name="Grupo Shared">
+	<p>
+	</p>
+  </section>
+  <section name="Grupo Client">
+	<p>
+	</p>
+  </section>
+ </body>
+</document> 

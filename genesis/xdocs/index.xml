@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Genesis Home</title>
+    <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
+  </properties>
+  <body>
+    <section name="Bem-vindo ao Genesis">
+    <p>
+    O <b>Genesis</b> é um framework open source que tem como objetivo atingir a <b>simplicidade, 
+    produtividade, testabilidade e escalabilidade</b> no desenvolvimento de aplicações corporativas.<br/>
+    Ele combina de forma única biblotecas públicas que se tornaram padrões de mercado como 
+    <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b> entre outras e reune toda a 
+    experiencia da <b>Summa</b> na construção de aplicações de missão crítica.<br/>
+    Foi desenvolvido e testado a partir dos requisitos de um usuário real, 
+    tendo por isso acumulado a experiencia obtida na execução do projeto, atendendo a solução hoje 
+    implantada no cliente mais de 1 milhão de transações por dia, o que comprova a escalabilidade da solução.
+    </p>
+    </section>
+    <section name="Genesis Server">
+    <p>
+	O coração do Genesis (<b>Genesis Server</b>) é a integracao entre cliente e servidor através do uso de AOP 
+        para implementar o padrão "Command" de forma transparente para o usuário, 
+        onde o executor dos comandos ("Command Executor") pode ser um Stateless Session Bean, ou qualquer 
+        outra coisa determinada pela configuração do Aspecto.
+    </p>
+    <p>
+	O Genesis promove o uso de classes Java puras para representar os métodos de negócio, sem 
+        dependências artificiais como a obrigação de extender alguma classe do framework ou ter que
+        implementar uma interface específica. Estas classes são compartilhadas entre o cliente e o servidor.
+    </p>
+    <p>
+    Um método de uma classe de negócio pode ser executado tanto no cliente como no servidor 
+    sendo que esta escolha é determinada por anotações no código da classe de negócio (ver <a href="">Arquitetura</a>).<br/>
+    Isto concretiza a noção da existencia de regras de negócio que devem ser praticadas no cliente 
+    e regras que executam mais eficientemente no servidor, mantendo ambas encapsuladas na mesma classe que 
+    agora passa a representar um conceito consistente.
+    <br/>
+        Isto é possível mediante o uso de <a href="">AOP</a>, o que permite manter as características de uma 
+    aplicação J2EE (suporte a transações, escalabilidade, etc) sem perder a simplicidade das classes Java puras.
+    Mais detalhes a respeito em <a href="">Arquitetura do Genesis Server</a>.
+    </p>
+    </section>
+    <section name="Genesis Client">
+	<p>
+	O <b>Genesis Client</b> é uma solução de produtividade baseada na bibloteca Thinlet, para o desenvolvimento de interfaces tipo formulário em
+        aplicações desktop. Ele complementa o <b>Genesis Server</b>, porêm sendo independentes um do outro.<br/>
+	A interface é representada em XML com ajuda de uma ferramenta gráfica e a bibloteca do Thinlet 
+        é complementada com uma série de métodos que permitem popular, ler e validar campos e tabelas 
+        da interface de forma direta. Extensões ao Thinlet permitem a definição em XML de comportamentos de uso 
+        frequente (p.ex: desabilitar um campo em função de outro).<br/>
+	</p>
+    </section>
+    <section name="Solução Genesis">
+	<p> 
+	O Genesis foi desenvolvido para ser extremamente flexível permitindo a escolha da melhor combinação de soluções
+	de configuração para o cliente (Swing, Struts,etc)  e para o servidor (EJBs, Spring, etc).<br/>
+	Uma combinação foi escolhida para a primeira versão do framework e atende os seguintes requisitos:<br/>
+	<ul>
+	<li>Aplicação de uso intensivo, interface rica e ágil: <b>Thinlet, Genesis Client</b></li>
+	<li>Fácil distribuição via Web: <b>WebStart</b></li>
+	<li>Suporte a transações: <b>JBoss, Genesis Server com EJBCommandExecutor</b></li>
+	<li>Velocidade de execução de queries e suporte a transações: <b>Hibernate</b></li>
+	</ul>
+	A figura a seguir mostra o layout da solução e a sua arquitetura:
+	</p>
+	<p>
+ 	<img title="Layout Solução Genesis" width="90%" height="90%" src="PlataformaGenesis1.gif" alt="Layout Solução Genesis"></img>
+	</p>
+	<p>
+	<b>Arquitetura da Solução Genesis:</b><br/>
+ 	<img title="Arquitetura Solução Genesis" width="90%" height="90%" src="PlataformaGenesis2.jpg" alt="Arquitetura Solução Genesis"></img>
+	</p>
+    </section>
+ </body>
+</document>
