@@ -96,7 +96,12 @@
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
-
+   
+   <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
+   <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
+   <taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask" classpathref="xdoclet.path" />
+   <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
+   
 	<target name="shared:compile">
 		<mkdir dir="${genesis.module.shared}/${build.dest}" />
 		<javac destdir="${genesis.module.shared}/${build.dest}"
@@ -109,24 +114,14 @@
 	</target>
 
 	<target name="shared:annotation">
-		<mkdir dir="${genesis.module.shared}/${genesis.annotation.dest}" />
-		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true" failonerror="true">
-			<arg value="-verbose" />
-			<arg value="-src" />
-			<arg value="${genesis.module.shared}/${src.dir}" />
-			<arg value="-classes" />
-			<arg value="${genesis.module.shared}/${build.dest}" />
-         <arg value="-dest" />
-         <arg value="${genesis.module.shared}/${genesis.annotation.dest}" />      
-			<arg value="-custom" />
-			<arg value="${genesis.module.aspect}/${src.dir}/annotation.properties" />
-			<classpath>
-				<path refid="aspectwerkz.path" />
-			</classpath>
-		</java>
+      <annotationc verbose="true"
+            srcdir="${genesis.module.shared}/${src.dir}"
+            destdir="${genesis.module.shared}/${genesis.annotation.dest}"
+            classpath="${genesis.module.shared}/${build.dest}"
+            properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.shared}/${build.dest}" />
-      </copy>    
+      </copy>
 	</target>
 
 	<target name="shared:jar">
@@ -141,9 +136,6 @@
 
 	<target name="server:ejbdoclet">
 		<mkdir dir="${genesis.module.server}/${build.src}" />
-		<taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask">
-			<classpath refid="xdoclet.path" />
-		</taskdef>
 		<ejbdoclet destdir="${genesis.module.server}/${build.src}">
 			<fileset dir="${genesis.module.server}/${src.dir}" includes="**/*EJB.java" />
 			<deploymentdescriptor destdir="${genesis.module.server}/${build.src}/META-INF"
@@ -240,19 +232,11 @@
 	</target>
 
 	<target name="aspect:annotation">
-		<mkdir dir="${genesis.module.aspect}/${genesis.annotation.dest}" />
-		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true" failonerror="true">
-			<arg value="-verbose" />
-			<arg value="-src" />
-			<arg value="${genesis.module.aspect}/${src.dir}" />
-			<arg value="-classes" />
-			<arg value="${genesis.module.aspect}/${build.dest}" />
-         <arg value="-dest" />
-         <arg value="${genesis.module.aspect}/${genesis.annotation.dest}" />
-         <classpath>
-				<path refid="aspectwerkz.path" />
-			</classpath>
-		</java>
+      <annotationc verbose="true"
+            srcdir="${genesis.module.aspect}/${src.dir}"
+            destdir="${genesis.module.aspect}/${genesis.annotation.dest}"
+            classpath="${genesis.module.aspect}/${build.dest}"
+            properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.aspect}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.aspect}/${build.dest}" />
       </copy>
@@ -294,9 +278,6 @@
 
 	<target name="test:hibernatedoclet">
 		<mkdir dir="${genesis.module.tests}/${build.src}" />
-		<taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask">
-			<classpath refid="xdoclet.path" />
-		</taskdef>
 		<hibernatedoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
 			<fileset dir="${genesis.module.tests}/${src.dir}">
 				<include name="**/*.java" />
@@ -325,10 +306,7 @@
 	</target>
 
    <target name="test:webdoclet">
-      <mkdir dir="${genesis.module.tests}/${build.src}" />  
-      <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask">
-         <classpath refid="xdoclet.path" />
-      </taskdef>
+      <mkdir dir="${genesis.module.tests}/${build.src}" />
       <webdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
          <fileset dir="${basedir}/${genesis.module.tests}/${src.dir}" includes="**/*.java" />
          <strutsvalidationxml xmlencoding="ISO-8859-1" />
@@ -336,32 +314,18 @@
    </target>  
 
 	<target name="test:annotation">
-		<mkdir dir="${genesis.module.tests}/${genesis.annotation.dest}" />
-		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true" failonerror="true">
-			<arg value="-verbose" />
-			<arg value="-src" />
-			<arg value="${genesis.module.tests}/${src.dir}" />
-			<arg value="-classes" />
-			<arg value="${genesis.module.tests}/${test.dest}" />
-         <arg value="-dest" />
-         <arg value="${genesis.module.tests}/${genesis.annotation.dest}" />
-			<arg value="-custom" />
-			<arg value="${genesis.module.aspect}/${src.dir}/annotation.properties" />
-			<classpath>
-				<path refid="aspectwerkz.path" />
-			</classpath>
-		</java>
+      <annotationc verbose="true"
+            srcdir="${genesis.module.tests}/${src.dir}"
+            destdir="${genesis.module.tests}/${genesis.annotation.dest}"
+            classpath="${genesis.module.tests}/${test.dest}"
+            properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.tests}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.tests}/${test.dest}" />
-      </copy>
+      </copy>  
 	</target>
 
 	<target name="test:weaving">
 		<mkdir dir="${genesis.module.tests}/${genesis.weaving.dest}" />
-		<path id="weaving.path">
-			<path refid="tests.dependency.classpath" />
-		</path>
-		<pathconvert pathsep="${path.separator}" property="normalized.path" refid="weaving.path" />
 		<unjar dest="${genesis.module.tests}/${genesis.weaving.dest}" overwrite="true">
 			<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 		</unjar>
@@ -371,18 +335,10 @@
 			<fileset dir="${genesis.module.shared}/${genesis.annotation.dest}" />
 			<fileset dir="${genesis.module.tests}/${genesis.annotation.dest}" />
 		</copy>
-		<java classname="org.codehaus.aspectwerkz.compiler.AspectWerkzC" fork="true" failonerror="true">
-			<arg value="-cp" />
-			<arg value="${normalized.path}" />
-			<arg value="-verbose" />
-			<arg value="-haltOnError" />
-			<arg value="${genesis.module.tests}/${genesis.weaving.dest}" />
-			<jvmarg value="-Daspectwerkz.definition.file=${genesis.module.tests}/${src.dir}/aspectwerkz.xml" />
-			<classpath>
-				<path refid="tests.dependency.classpath" />
-				<path refid="aspectwerkz.path" />
-			</classpath>
-		</java>
+      <awc verbose="true"
+            definition="${genesis.module.tests}/${src.dir}/aspectwerkz.xml"
+            classpathref="tests.dependency.classpath"
+            targetpath="${genesis.module.tests}/${genesis.weaving.dest}" />
 	</target>
 
 	<target name="test:resources">
@@ -482,142 +438,135 @@
    
    <!-- Call using maven or build site and jars before -->
    <target name="genesis:dist" description="Generate genesis distribution">
+      <echo>This target must be called using maven... or build site and jars before.
+(maven genesis:site) (ant/maven genesis:jar)
+      </echo>
       <mkdir dir="${build.dir}"/>
       <delete>
          <fileset dir="${build.dir}">
             <include name="*.zip"/>
             <include name="*.tar.gz"/>
-            <include name="*.MD5"/>
          </fileset>
       </delete>
       
+      <ant inheritall="false" antfile="../samples/useradmin/build.xml" target="useradmin:dist" />
+      
+      <!-- TODO: Bug !!!! commons logging exception -->
+      <!--ant inheritall="false" antfile="../samples/simplecalculator/build.xml" target="simplecalc:dist" /-->
+      
+      <patternset id="empty-project.pattern">
+         <include name="samples/empty-project/*" />
+         <include name="samples/empty-project/modules/**"/>
+         <include name="samples/empty-project/webstart/**"/>
+         <exclude name="samples/empty-project/.*" />
+         <exclude name="samples/empty-project/build.properties" />
+      </patternset>
+      
+      <patternset id="genesis.bin.pattern">
+         <include name="genesis/${genesis.dist.dir}/**" />
+         <include name="genesis/LICENSE.txt" />
+         <include name="genesis/lgpl.txt" />
+         <patternset refid="empty-project.pattern" />
+      </patternset>
+            
+      <patternset id="genesis.full-bin.pattern">
+         <patternset refid="genesis.bin.pattern" />
+         <include name="genesis/${genesis.lib.dir}/**" />
+      </patternset>
+      
+      <patternset id="genesis.full-bin-plus-docs.pattern">
+         <patternset refid="genesis.full-bin.pattern" />
+         <include name="samples/*/dist"/>
+         <exclude name="samples/empty-project/**"/>
+      </patternset>
+      
+      <patternset id="genesis.src.pattern">
+         <include name="genesis/*" />
+         <include name="genesis/${genesis.modules.dir}/**" />
+         <include name="genesis/${genesis.dist.dir}/**"/>
+         <include name="genesis/${genesis.xdoc.dir}/**" />
+         <exclude name="genesis/.*"/>
+         <exclude name="genesis/**/${build.dir}/**/*"/>
+         <exclude name="genesis/**/build.properties"/>
+         <exclude name="genesis/${genesis.lib.dir}/**"/>
+         <include name="samples/*/*"/>
+         <include name="samples/*/modules/**"/>
+         <include name="samples/*/webstart/**"/>
+         <exclude name="samples/*/.*"/>
+         <exclude name="samples/**/${build.dir}/**/*"/>
+         <exclude name="samples/**/build.properties"/>
+         <patternset refid="empty-project.pattern"/>
+      </patternset>
+      
+      <patternset id="genesis.src-plus-docs.pattern">
+         <patternset refid="genesis.src.pattern" />
+         <include name="samples/*/dist/**"/>
+         <include name="genesis/${genesis.lib.dir}/**" />
+      </patternset>
+      
       <!-- Genesis bin distribution -->
       <zip destfile="${build.dir}/genesis-bin-${genesis.version}.zip">
-         <zipfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="LICENSE.txt"/>
-            <include name="lgpl.txt"/>
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.bin.pattern" />
          </zipfileset>
       </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-bin-${genesis.version}.tar">
-         <tarfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="LICENSE.txt"/>
-            <include name="lgpl.txt"/>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-bin-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.bin.pattern" />
          </tarfileset>
       </tar>
-      <gzip zipfile="${build.dir}/genesis-bin-${genesis.version}.tar.gz" src="${build.dir}/genesis-bin-${genesis.version}.tar"/>
-      <delete file="${build.dir}/genesis-bin-${genesis.version}.tar" />
-      <checksum file="${build.dir}/genesis-bin-${genesis.version}.zip"/>
-      <checksum file="${build.dir}/genesis-bin-${genesis.version}.tar.gz"/>
-      
+
       <!-- Genesis full-bin distribution -->
       <zip destfile="${build.dir}/genesis-full-bin-${genesis.version}.zip">
-         <zipfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.lib.dir}/**"/>
-            <include name="LICENSE.txt"/>
-            <include name="lgpl.txt"/>
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.full-bin.pattern" />
          </zipfileset>
       </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-${genesis.version}.tar">
-         <tarfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.lib.dir}/**"/>
-            <include name="LICENSE.txt"/>
-            <include name="lgpl.txt"/>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.full-bin.pattern" />
          </tarfileset>
       </tar>
-      <gzip zipfile="${build.dir}/genesis-full-bin-${genesis.version}.tar.gz" src="${build.dir}/genesis-full-bin-${genesis.version}.tar"/>
-      <delete file="${build.dir}/genesis-full-bin-${genesis.version}.tar" />
-      <checksum file="${build.dir}/genesis-full-bin-${genesis.version}.zip"/>
-      <checksum file="${build.dir}/genesis-full-bin-${genesis.version}.tar.gz"/>
 
       <!-- Genesis full-bin-plus-docs distribution -->
       <zip destfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.zip">
-         <zipfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.lib.dir}/**"/>
-            <include name="LICENSE.txt"/>
-            <include name="lgpl.txt"/>
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.full-bin-plus-docs.pattern" />
          </zipfileset>
-         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
       </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar">
-         <tarfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.lib.dir}/**"/>
-            <include name="LICENSE.txt"/>
-            <include name="lgpl.txt"/>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.full-bin-plus-docs.pattern" />
          </tarfileset>
-         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
       </tar>
-      <gzip zipfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar.gz" src="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar"/>
-      <delete file="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar" />
-      <checksum file="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.zip"/>
-      <checksum file="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar.gz"/>
       
       <!-- Genesis src distribution -->
       <zip destfile="${build.dir}/genesis-src-${genesis.version}.zip">
-         <zipfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="*" />
-            <include name="${genesis.modules.dir}/**" />
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.xdoc.dir}/**" />
-            <exclude name=".*"/>
-            <exclude name="**/${build.dir}/**/*"/>
-            <exclude name="**/build.properties"/>
-            <exclude name="${genesis.lib.dir}/**"/>
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.src.pattern" />
          </zipfileset>
       </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-${genesis.version}.tar">
-         <tarfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="*" />
-            <include name="${genesis.modules.dir}/**" />
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.xdoc.dir}/**" />
-            <exclude name=".*"/>
-            <exclude name="**/${build.dir}/**/*"/>
-            <exclude name="**/build.properties"/>
-            <exclude name="${genesis.lib.dir}/**"/>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.src.pattern" />
          </tarfileset>
       </tar>
-      <gzip zipfile="${build.dir}/genesis-src-${genesis.version}.tar.gz" src="${build.dir}/genesis-src-${genesis.version}.tar"/>
-      <delete file="${build.dir}/genesis-src-${genesis.version}.tar" />
-      <checksum file="${build.dir}/genesis-src-${genesis.version}.zip"/>
-      <checksum file="${build.dir}/genesis-src-${genesis.version}.tar.gz"/>
 
       <!-- Genesis src-plus-docs distribution -->
       <zip destfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.zip">
-         <zipfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="*" />
-            <include name="${genesis.modules.dir}/**" />
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.xdoc.dir}/**" />
-            <exclude name=".*"/>
-            <exclude name="**/${build.dir}/**/*"/>
-            <exclude name="**/build.properties"/>
-            <exclude name="${genesis.lib.dir}/**"/>
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.src-plus-docs.pattern" />
          </zipfileset>
-         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
       </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar">
-         <tarfileset dir="." prefix="genesis-${genesis.version}">
-            <include name="*" />
-            <include name="${genesis.modules.dir}/**" />
-            <include name="${genesis.dist.dir}/**"/>
-            <include name="${genesis.xdoc.dir}/**" />
-            <exclude name=".*"/>
-            <exclude name="**/${build.dir}/**/*"/>
-            <exclude name="**/build.properties"/>
-            <exclude name="${genesis.lib.dir}/**"/>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.src-plus-docs.pattern" />
          </tarfileset>
-         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
       </tar>
-      <gzip zipfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar.gz" src="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar"/>
-      <delete file="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar" />
-      <checksum file="${build.dir}/genesis-src-plus-docs-${genesis.version}.zip"/>
-      <checksum file="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar.gz"/>
    </target>
 
 	<target name="genesis" description="Makes genesis jars" depends="genesis:jar" />

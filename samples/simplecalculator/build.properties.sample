@@ -3,9 +3,6 @@
 # The following property must be defined in build.properties with an appropriate
 # value for the local environment
 jboss.home=/opt/jboss-3.2.5
-genesisBasedApplication.name=simplecalc
-genesisBasedApplication.mainClass=net.java.dev.genesis.samples.simplecalc.SimpleCalc
-genesisBasedApplication.prettyName=Simple Calculator
 
 # These properties already have a default value defined in build.xml and only
 # need to be defined in build.properties if their values are different in your 

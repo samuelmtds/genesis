@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project basedir="." default="genesis.app:all" name="genesis based app">
+<project basedir="." default="simplecalc:all.with.webstart" name="genesis simplecalc sample">
    <property file="build.properties" />
 
    <property name="genesis.home" location="../../genesis" />
@@ -17,6 +17,7 @@
    <property name="module.client" location="./modules/client" />
    <property name="build.dir" value="target" />
    <property name="lib.dir" value="lib" />
+   <property name="dist.dir" value="dist" />
    <property name="build.dest" value="${build.dir}/classes" />
    <property name="build.src" value="${build.dir}/src" />
    <property name="annotation.dest" value="${build.dir}/annotation" />
@@ -29,6 +30,10 @@
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
    <property name="webstart.port" value="8080" />
+   
+   <property name="genesisBasedApplication.name" value="useradmin" />
+   <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
+   <property name="genesisBasedApplication.prettyName" value="User Admin" />
 
    <path id="j2ee.path">
       <fileset dir="${j2ee.dist}" includes="*.jar" />
@@ -60,9 +65,11 @@
       <fileset dir="${genesis.dist}"
                includes="genesis-shared-${genesis.version}.jar" />
       <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
-      <fileset dir="${commons.dist}" includes="commons-beanutils*.jar" />
-      <fileset dir="${commons.dist}" includes="commons-logging*.jar" />
-      <fileset dir="${commons.dist}" includes="reusable-components*.jar" />
+      <fileset dir="${commons.dist}">
+         <include name="commons-beanutils*.jar" />
+         <include name="commons-logging*.jar" />
+         <include name="reusable-components*.jar" />
+      </fileset>
    </path>
 
    <path id="client.dependency.classpath">
@@ -96,6 +103,11 @@
       <path refid="shared.dependency.classpath" />
       <path refid="aspectwerkz.path" />
    </path>
+   
+   <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
+   <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
+   <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
+   <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
 
    <target name="shared:clean">
       <delete dir="${module.shared}/${build.dir}" />
@@ -117,23 +129,11 @@
    </target>
 
    <target name="shared:annotation">
-      <mkdir dir="${module.shared}/${annotation.dest}" />
-      <java classname="org.codehaus.aspectwerkz.annotation.AnnotationC"
-            fork="true"
-            failonerror="true">
-         <arg value="-verbose" />
-         <arg value="-src" />
-         <arg value="${module.shared}/${src.dir}" />
-         <arg value="-classes" />
-         <arg value="${module.shared}/${build.dest}" />
-         <arg value="-dest" />
-         <arg value="${module.shared}/${annotation.dest}" />
-         <arg value="-custom" />
-         <arg value="${annotation.properties}" />
-         <classpath>
-            <path refid="aspectwerkz.path" />
-         </classpath>
-      </java>
+      <annotationc verbose="true"
+            srcdir="${module.shared}/${src.dir}"
+            destdir="${module.shared}/${annotation.dest}"
+            classpath="${module.shared}/${build.dest}"
+            properties="${annotation.properties}" />
       <copy todir="${module.shared}/${annotation.dest}" overwrite="false">
          <fileset dir="${module.shared}/${build.dest}" />
       </copy>
@@ -141,10 +141,6 @@
 
    <target name="shared:hibernatedoclet">
       <mkdir dir="${module.shared}/${build.src}" />
-      <taskdef name="hibernatedoclet"
-               classname="xdoclet.modules.hibernate.HibernateDocletTask">
-         <classpath refid="xdoclet.path" />
-      </taskdef>
       <hibernatedoclet destdir="${module.shared}/${build.src}" verbose="true">
          <fileset dir="${module.shared}/${src.dir}">
             <include name="**/*.java" />
@@ -195,48 +191,26 @@
    </target>
 
    <target name="client:annotation">
-      <mkdir dir="${module.client}/${annotation.dest}" />
-      <java classname="org.codehaus.aspectwerkz.annotation.AnnotationC"
-            fork="true"
-            failonerror="true">
-         <arg value="-verbose" />
-         <arg value="-src" />
-         <arg value="${module.client}/${src.dir}" />
-         <arg value="-classes" />
-         <arg value="${module.client}/${build.dest}" />
-         <arg value="-dest" />
-         <arg value="${module.client}/${annotation.dest}" />
-         <arg value="-custom" />
-         <arg value="${annotation.properties}" />
-         <classpath>
-            <path refid="aspectwerkz.path" />
-         </classpath>
-      </java>
+      <annotationc verbose="true"
+            srcdir="${module.client}/${src.dir}"
+            destdir="${module.client}/${annotation.dest}"
+            classpath="${module.client}/${build.dest}"
+            properties="${annotation.properties}" />
       <copy todir="${module.client}/${annotation.dest}" overwrite="false">
          <fileset dir="${module.client}/${build.dest}" />
       </copy>
    </target>
 
    <target name="client:validation">
-      <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask">
-         <classpath refid="xdoclet.path" />
-      </taskdef>
       <webdoclet destdir="${module.client}/${build.dest}" verbose="true">
          <fileset dir="${module.client}/${src.dir}" includes="**/*Form.java" />
          <strutsvalidationxml xmlencoding="ISO-8859-1" />
       </webdoclet>
    </target>
 
-   <target name="genesis.app:weaving">
+   <target name="simplecalc:weaving">
       <mkdir dir="${weaving.dest}" />
       <mkdir dir="${build.dir}/${lib.dir}" />
-      <path id="weaving.path">
-         <path refid="client.dependency.classpath" />
-         <path refid="shared.dependency.classpath" />
-      </path>
-      <pathconvert pathsep="${path.separator}"
-                   property="normalized.path"
-                   refid="weaving.path" />
       <copy todir="${weaving.dest}" overwrite="true">
          <fileset dir="${module.client}/${annotation.dest}" />
          <fileset dir="${module.shared}/${annotation.dest}" />
@@ -246,35 +220,28 @@
          <fileset dir="${genesis.dist}"
                   includes="genesis-shared-annotated-${genesis.version}.jar" />
       </copy>
-      <java classname="org.codehaus.aspectwerkz.compiler.AspectWerkzC"
-            fork="true"
-            failonerror="true">
-         <arg value="-cp" />
-         <arg value="${normalized.path}" />
-         <arg value="-verbose" />
-         <arg value="-haltOnError" />
-         <arg value="${weaving.dest}" />
-         <arg value="${build.dir}/${lib.dir}" />
-         <jvmarg value="-Daspectwerkz.transform.verbose=true" />
+      <awc verbose="true">
          <classpath>
-            <path refid="shared.dependency.classpath" />
+            <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
-            <path refid="aspectwerkz.path" />
+            <path refid="shared.dependency.classpath" />
             <path refid="j2ee.path" />
-            <fileset file="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
          </classpath>
-      </java>
+         <targetpath location="${weaving.dest}"/>
+         <targetpath location="${build.dir}/${lib.dir}"/>
+      </awc>
    </target>
 
-   <target name="genesis.app:clean" depends="shared:clean,client:clean">
+   <target name="simplecalc:clean" depends="shared:clean,client:clean">
       <delete dir="${build.dir}" />
+      <delete dir="${dist.dir}" />
    </target>
 
-   <target name="genesis.app:compile"
-           depends="genesis.app:clean,shared:compile,client:compile,genesis.app:weaving">
+   <target name="simplecalc:compile"
+           depends="simplecalc:clean,shared:compile,client:compile,simplecalc:weaving">
    </target>
 
-   <target name="genesis.app:jar">
+   <target name="simplecalc:jar">
       <mkdir dir="${build.dir}" />
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-weaved.jar">
          <fileset dir="${weaving.dest}" />
@@ -285,9 +252,9 @@
       </jar>
    </target>
    
-   <target name="genesis.app:sar">
-      <mkdir dir="${build.dir}/server"/>
-      <zip destfile="${build.dir}/server/${genesisBasedApplication.name}.sar">
+   <target name="simplecalc:sar">
+      <mkdir dir="${dist.dir}"/>
+      <zip destfile="${dist.dir}/${genesisBasedApplication.name}.sar">
          <fileset dir="${module.shared}/${build.src}">
             <include name="**/*.hbm.xml" />
          </fileset>
@@ -320,9 +287,9 @@
       </zip>
    </target>
 
-   <target name="genesis.app:war">
-      <mkdir dir="${build.dir}/server/${genesisBasedApplication.name}.war/application"/>
-      <copy todir="${build.dir}/server/${genesisBasedApplication.name}.war/application">
+   <target name="simplecalc:war">
+      <mkdir dir="${dist.dir}/${genesisBasedApplication.name}.war/application"/>
+      <copy todir="${dist.dir}/${genesisBasedApplication.name}.war/application">
          <fileset dir="${build.dir}">
             <include name="${genesisBasedApplication.name}-weaved.jar" />
          </fileset>
@@ -332,11 +299,11 @@
          </fileset>
          <fileset dir="${hibernate.dist}">
             <include name="commons-collection*.jar" />
-         	<include name="hibernate*.jar" />
+            <include name="hibernate*.jar" />
          </fileset>
          <fileset dir="${genesis.dist}">
             <include name="genesis-client-${genesis.version}.jar"/>
-         	<include name="genesis-aspect-annotated-${genesis.version}.jar" />
+            <include name="genesis-aspect-annotated-${genesis.version}.jar" />
          </fileset>
          <fileset dir="${commons.dist}" includes="">
             <include name="commons-beanutils*.jar"/>
@@ -348,22 +315,22 @@
             <include name="reusable-components*.jar"/>
          </fileset>
          <fileset dir="${genesis.home}/lib/aspectwerkz">
-         	<include name="aspectwerkz-1.0.RC3.jar" />
-         	<include name="aspectwerkz-core-1.0.RC3.jar" />
-         	<include name="dom4j*.jar" />
-         	<include name="jrexx-*.jar" />
-         	<include name="trove*.jar" />
+            <include name="aspectwerkz-1.0.jar" />
+            <include name="aspectwerkz-core-1.0.jar" />
+            <include name="dom4j*.jar" />
+            <include name="jrexx-*.jar" />
+            <include name="trove*.jar" />
          </fileset>
-      	 <fileset dir="${jboss.home}/client">
+          <fileset dir="${jboss.home}/client">
              <include name="jboss-client.jar" />
              <include name="jboss-common-client.jar" />
              <include name="jboss-j2ee.jar" />
              <include name="jboss-transaction-client.jar" />
              <include name="jbosssx-client.jar" />
              <include name="jnp-client.jar" />
-      	 </fileset>
+          </fileset>
       </copy>
-      <copy todir="${build.dir}/server/${genesisBasedApplication.name}.war">
+      <copy todir="${dist.dir}/${genesisBasedApplication.name}.war">
          <filterset>
             <filter token="jboss.provider.url" value="${jboss.provider.url}"/>
             <filter token="jboss.factory.initial" value="${jboss.factory.initial}" />
@@ -379,47 +346,49 @@
             <include name="**/*.html"/>
          </fileset>
       </copy>
-      <copy todir="${build.dir}/server/${genesisBasedApplication.name}.war">
+      <copy todir="${dist.dir}/${genesisBasedApplication.name}.war">
          <fileset dir="${webstart.dir}">
             <exclude name="**/*.jnlp"/>
-   	     </fileset>
+         </fileset>
       </copy>
       <signjar alias="genesis"
             keystore="${webstart.dir}/application/genesis.keystore"
             storepass="summa@brasil" keypass="g3n3sis">
-         <fileset dir="${build.dir}/server/${genesisBasedApplication.name}.war/application">
+         <fileset dir="${dist.dir}/${genesisBasedApplication.name}.war/application">
             <include name="*.jar"/>
          </fileset>
       </signjar>
    </target>   
    
-   <target name="genesis.app:deploy" depends="genesis.app:sar">
+   <target name="simplecalc:deploy" depends="simplecalc:sar">
       <copy todir="${jboss.app}/deploy">
          <fileset dir="${genesis.dist}">
             <include name="genesis-server-${genesis.version}.jar"/>
          </fileset>
-         <fileset dir="${build.dir}/server">
+         <fileset dir="${dist.dir}">
             <include name="${genesisBasedApplication.name}.sar"/>
          </fileset>
       </copy>
    </target>
-	
-	<target name="genesis.app:deploy.webstart" depends="genesis.app:war">
-	   <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
-	   <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
-		  <fileset dir="${build.dir}/server/${genesisBasedApplication.name}.war">
-		     <include name="**/*" />
-	      </fileset>
+   
+   <target name="simplecalc:deploy.webstart" depends="simplecalc:war">
+      <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
+      <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
+        <fileset dir="${dist.dir}/${genesisBasedApplication.name}.war">
+           <include name="**/*" />
+         </fileset>
        </copy>
-	</target>
+   </target>
+   
+   <target name="simplecalc:dist" depends="simplecalc:compile,simplecalc:jar,simplecalc:sar,simplecalc:war" />
 
-   <target name="genesis.app:all"
-           depends="genesis.app:compile,genesis.app:jar,genesis.app:deploy" />
-	
-   <target name="genesis.app:all.with.webstart"
-	       depends="genesis.app:all,genesis.app:deploy.webstart" />
+   <target name="simplecalc:all"
+           depends="simplecalc:compile,simplecalc:jar,simplecalc:deploy" />
+   
+   <target name="simplecalc:all.with.webstart"
+          depends="simplecalc:all,simplecalc:deploy.webstart" />
 
-   <target name="genesis.app:run">
+   <target name="simplecalc:run">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
@@ -437,7 +406,7 @@
       </java>
    </target>
 
-   <target name="genesis.app:run-with-debug">
+   <target name="simplecalc:run-with-debug">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
@@ -454,7 +423,7 @@
       </java>
    </target>
 
-   <target name="genesis.app:run-with-logging-on">
+   <target name="simplecalc:run-with-logging-on">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
