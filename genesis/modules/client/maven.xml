@@ -9,4 +9,9 @@
       <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="client:jar"/>
    </goal>
 
+   <postGoal name="test:compile">
+      <ant:copy todir="target/test-classes">
+         <fileset dir="test-src" includes="**/*.properties" />
+      </ant:copy>
+   </postGoal>
 </project>
