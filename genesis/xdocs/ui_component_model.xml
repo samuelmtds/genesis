@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Modelo de componentes de interface gráfica</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Modelo de componentes de interface gráfica">
+      <p><b>TODO: configurar todos os exemplos em um sample e atualizar
+      documento com instruções de execução.</b></p>
+      <p>O modelo de componentes de interface gráfica do genesis é bastante
+      expressivo embora simples e baseia-se em grande parte no uso de <b>
+      anotações</b>. Estas anotações não são ainda interpretadas como metadados
+      do Java 5.0, definidos pela JSR-175, mas são utilizados de maneira similar
+      a tags do XDoclet. Os exemplos abaixo tornarão o uso claro.</p>
+      <p>Os seguintes conceitos e/ou características são abordados abaixo:
+      <ul>
+        <li><a href="#Tipos de componentes de interface gráfica">Tipos de
+        componentes de interface gráfica</a></li>
+      </ul>
+      </p>
+    </section>
+    <section name="Tipos de componentes de interface gráfica">
+      <p>A fim de atingir as metas de simplicidade e testabilidade, dois tipos
+      de componente são combinados para formar a interface gráfica: uma
+      <b>View</b> e um <b>Form</b>. Uma view é uma classe que realiza as
+      operações específicas da API gráfica utilizada, enquanto o form é um
+      simples JavaBean que contém a lógica de interface, é desacoplado da API
+      gráfica e pode ser até mesmo reutilizado com outra API.</p>
+      <p>É importante salientar que o fato de o form estar desacoplado da API
+      gráfica e ser apenas um JavaBean têm diversas conseqüências úteis para o
+      desenvolvedor, como por exemplo:
+        <ul>
+          <li>Pode-se escrever testes unitários para a lógica de negócios.</li>
+          <li>O form pode estender qualquer classe e a herança pode ser
+          utilizada para compartilhar características comuns.</li>
+          <li>A separação de código motiva o desenvolvedor a programar de forma
+          mais clara e inteligível.</li>
+          <li>Será possível utilizar o mesmo form, sem modificações, numa
+          interface Swing, por exemplo, tão logo o genesis suporte essa API</li>
+        </ul>
+      </p>
+      <p>Essa arquitetura proposta, conforme mencionado no último item, permite
+      que o mesmo modelo de form possa ser utilizado em diversas views.
+      Atualmente o genesis suporta apenas Thinlet como modelo de implementação
+      de views, mas versões futuras proverão suporte a Swing e até mesmo Thinlet
+      em PDAs compatíveis com PersonalJava.</p>
+    </section>
+  </body>
+</document>
