@@ -18,7 +18,6 @@
  */
 package net.java.dev.genesis.ui.paging;
 
-import java.util.List;
 import net.java.dev.genesis.paging.Page;
 
 public abstract class BaseSearchForm {
