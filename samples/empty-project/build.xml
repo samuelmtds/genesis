@@ -9,7 +9,7 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="0.2-RC2" />
+      <property name="genesis.version" value="0.2" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
@@ -443,6 +443,7 @@
       </copy>
       <copy todir="${dist.dir}/${genesisBasedApplication.name}.war">
          <filterset>
+            <filter token="genesis.version" value="${genesis.version}"/>
             <filter token="jboss.provider.url" value="${jboss.provider.url}"/>
             <filter token="jboss.factory.initial" value="${jboss.factory.initial}" />
             <filter token="jboss.provider.port" value="${jboss.provider.port}"/>
