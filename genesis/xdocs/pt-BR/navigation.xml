@@ -56,6 +56,7 @@
         <!--item name="Arquitetura do binding"
               href="/pt-BR/binding_architecture.html" /-->
       </item>
+      <item name="FAQ" href="/pt-BR/faq.html" />
     </menu>
     <menu name="java.net" type="footer">
       <item name="genesis.dev.java.net" href="https://genesis.dev.java.net" />

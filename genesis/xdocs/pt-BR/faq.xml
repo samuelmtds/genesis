@@ -47,8 +47,6 @@
         <a href=
         "ui_additional_features.html#Trabalhando_com_pesquisas_dinâmicas">suporte
         a pesquisas dinâmicas</a>.</p>
-        <p>O suporte genérico a pesquisas dinâmicas deve ser adicionado ao
-        genesis na versão 0.3</p>
       </subsection>
       <subsection name="Quando o genesis irá suportar Swing?">
         <p>Em futuras versões do genesis, Swing será suportado. Não existe
@@ -67,7 +65,7 @@
       </subsection>
       <subsection name="Por que estou obtendo uma NullPointerException ao chamar
         getSession()?">
-        <p>Há várias situações em que ocorrem este problema. Basicamente
+        <p>Há várias situações em que ocorre este problema. Basicamente
         são elas:
         <ul>
           <li>A classe que depende da injeção da <code>Session</code> está no

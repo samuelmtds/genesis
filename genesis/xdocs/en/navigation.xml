@@ -51,6 +51,7 @@
             href="/en/advanced_introduction.html">
         <item name="genesis aspects" href="/en/aspects.html" />
       </item>
+      <item name="FAQ" href="/en/faq.html" />
     </menu>
     <menu name="java.net" type="footer">
       <item name="genesis.dev.java.net" href="https://genesis.dev.java.net" />
