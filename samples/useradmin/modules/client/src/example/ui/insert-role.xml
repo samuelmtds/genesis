@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE panel PUBLIC '-//Thinlets 1.0//EN' 'https://thinlet.dev.java.net/thinlet.dtd'>
+<panel gap="5" top="10" left="10" bottom="10" right="10" weightx="1" columns="1" halign="center" border="true">
+   <panel gap="5" columns="2" border="true" weightx="1" weighty="1" top="5" left="5" bottom="5" right="5">
+      <label text="i18n.Role.code" font="bold" mnemonic="0" for="code"/>
+      <textfield name="code" height="15" halign="left" valign="bottom" text="1234567890" columns="20"/>
+      <label text="i18n.Role.label" font="bold" mnemonic="0" for="label"/>
+      <textfield name="label" height="15" halign="left" valign="bottom" text="1234567890" columns="20"/>
+   </panel>
+   <panel gap="5" columns="2" halign="center">
+      <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="2" type="default"/>
+      <button name="save" text="i18n.button.save" font="bold" mnemonic="0" type="default"/>
+   </panel>
+</panel>

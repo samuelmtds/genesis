@@ -22,9 +22,12 @@
    <property name="annotation.dest" value="${build.dir}/annotation" />
    <property name="weaving.dest" value="${build.dir}/weaving" />
    <property name="src.dir" value="src" />
+   <property name="webstart.dir" location="webstart" />
 
-   <property name="jboss.app" value="${jboss.home}/server/useradmin" />
-   <property name="jboss.provider.url" value="localhost" />
+   <property name="jboss.app" location="${jboss.home}/server/useradmin" />
+   <property name="jboss.provider.url" value="jnp://localhost" />
+   <property name="webstart.server" value="localhost" />
+   <property name="webstart.port" value="8080" />
 
    <path id="j2ee.path">
       <fileset dir="${j2ee.dist}" includes="*.jar" />
@@ -37,7 +40,7 @@
 
    <path id="aspectwerkz.path">
       <fileset dir="${genesis.home}/lib/aspectwerkz">
-         <include name="aspectwerkz*.jar" />
+         <include name="aspectwerkz-*.jar" />
          <include name="ant*.jar" />
          <exclude name="asm*.jar" />
          <include name="concurrent*.jar" />
@@ -265,24 +268,18 @@
                   excludes="jboss-service.xml" />
       </jar>
    </target>
-
-   <target name="useradmin:deploy">
-      <mkdir dir="${jboss.app}/deploy/hibernate.sar" />
-      <mkdir dir="${jboss.app}/deploy/useradmin.jar" />
-      <copy todir="${jboss.app}/deploy/hibernate.sar">
+   
+   <target name="useradmin:sar">
+      <mkdir dir="${build.dir}/server"/>
+      <zip destfile="${build.dir}/server/useradmin.sar">
          <fileset dir="${module.shared}/${build.src}">
             <include name="**/*.hbm.xml" />
          </fileset>
          <fileset dir="${module.shared}/${build.dest}">
-            <include name="**/databeans/**/*.class" />
             <include name="hibernate.properties" />
          </fileset>
-      </copy>
-      <copy todir="${jboss.app}/deploy/hibernate.sar/META-INF">
-         <fileset dir="${module.shared}/${build.src}"
-                  includes="jboss-service.xml" />
-      </copy>
-      <copy todir="${jboss.app}/lib">
+         <zipfileset dir="${module.shared}/${build.src}"
+               includes="jboss-service.xml" prefix="META-INF" />
          <fileset dir="${hibernate.dist}">
             <include name="commons-logging*.jar" />
             <include name="log4j*.jar" />
@@ -301,19 +298,98 @@
          <fileset dir="${genesis.dist}">
             <include name="genesis-shared-${genesis.version}.jar" />
          </fileset>
-      </copy>
-      <copy todir="${jboss.app}/deploy/">
+         <fileset dir="${build.dir}">
+            <include name="useradmin-shared.jar" />
+         </fileset>
+      </zip>
+   </target>
+
+   <target name="useradmin:war">
+      <mkdir dir="${build.dir}/server/useradmin.war/application"/>
+      <copy todir="${build.dir}/server/useradmin.war/application">
+         <fileset dir="${build.dir}">
+            <include name="useradmin-weaved.jar" />
+         </fileset>
+         <fileset dir="${build.dir}/${lib.dir}">
+            <include name="genesis-shared-annotated-${genesis.version}.jar" />
+            <include name="thinlet*.jar" />
+         </fileset>
+         <fileset dir="${hibernate.dist}">
+            <include name="commons-collection*.jar" />
+         	<include name="hibernate*.jar" />
+         </fileset>
          <fileset dir="${genesis.dist}">
-            <include name="genesis-server-${genesis.version}.jar" />
+            <include name="genesis-client-${genesis.version}.jar"/>
+         	<include name="genesis-aspect-annotated-${genesis.version}.jar" />
+         </fileset>
+         <fileset dir="${commons.dist}" includes="">
+            <include name="commons-beanutils*.jar"/>
+            <include name="commons-jxpath*.jar"/>
+            <include name="commons-logging*.jar"/>
+            <include name="commons-validator*.jar"/>
+            <include name="reusable-components*.jar"/>
+         </fileset>
+         <fileset dir="${genesis.home}/lib/aspectwerkz">
+         	<include name="aspectwerkz-1.0.RC3.jar" />
+         	<include name="aspectwerkz-core-1.0.RC3.jar" />
+         	<include name="dom4j*.jar" />
+         	<include name="jrexx-*.jar" />
+         	<include name="trove*.jar" />
+         </fileset>
+      	 <fileset dir="${jboss.home}/client">
+      	    <include name="jbossall-client.jar" />
+      	 </fileset>
+      </copy>
+      <copy todir="${build.dir}/server/useradmin.war">
+         <filterset>
+            <filter token="jboss.provider.url" value="${jboss.provider.url}"/>
+            <filter token="jboss.provider.port" value="${jboss.provider.port}"/>
+            <filter token="webstart.server" value="${webstart.server}"/>
+            <filter token="webstart.port" value="${webstart.port}"/>
+         </filterset>
+         <fileset dir="${webstart.dir}">
+            <include name="**/*.jnlp"/>
          </fileset>
       </copy>
-      <unjar dest="${jboss.app}/deploy/useradmin.jar"
-             src="${build.dir}/useradmin-shared.jar">
-      </unjar>
+      <copy todir="${build.dir}/server/useradmin.war">
+         <fileset dir="${webstart.dir}">
+            <exclude name="**/*.jnlp"/>
+   	     </fileset>
+      </copy>
+      <signjar alias="genesis"
+            keystore="${webstart.dir}/application/genesis.keystore"
+            storepass="summa@brasil" keypass="g3n3sis">
+         <fileset dir="${build.dir}/server/useradmin.war/application">
+            <include name="*.jar"/>
+         </fileset>
+      </signjar>
+   </target>   
+   
+   <target name="useradmin:deploy" depends="useradmin:sar">
+      <copy todir="${jboss.app}/deploy">
+         <fileset dir="${genesis.dist}">
+            <include name="genesis-server-${genesis.version}.jar"/>
+         </fileset>
+         <fileset dir="${build.dir}/server">
+            <include name="useradmin.sar"/>
+         </fileset>
+      </copy>
    </target>
+	
+	<target name="useradmin:deploy.webstart" depends="useradmin:war">
+	   <mkdir dir="${jboss.app}/deploy/useradmin.war"/>
+	   <copy todir="${jboss.app}/deploy/useradmin.war">
+		  <fileset dir="${build.dir}/server/useradmin.war">
+		     <include name="**/*" />
+	      </fileset>
+       </copy>
+	</target>
 
    <target name="useradmin:all"
            depends="useradmin:compile,useradmin:jar,useradmin:deploy" />
+	
+   <target name="useradmin:all.with.webstart"
+	       depends="useradmin:compile,useradmin:jar,useradmin:deploy.webstart" />
 
    <target name="useradmin:run">
       <java classname="example.Sample" fork="true" failonerror="true">

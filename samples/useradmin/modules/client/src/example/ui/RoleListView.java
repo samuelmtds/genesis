@@ -21,10 +21,9 @@ package example.ui;
 import java.awt.Dimension;
 import java.awt.Frame;
 
-import example.databeans.Role;
-
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
+import example.databeans.Role;
 
 public class RoleListView extends BaseDialogThinlet {
    private final RoleListForm form;
@@ -32,6 +31,7 @@ public class RoleListView extends BaseDialogThinlet {
    public RoleListView(final Frame frame) throws Exception {
       super(frame);
       getDialog().setModal(true);
+      getDialog().setResizable(false);
       getDialog().setTitle("Role List");
       setAllI18n(true);
       setResourceBundle(UIUtils.getInstance().getBundle());
@@ -43,16 +43,40 @@ public class RoleListView extends BaseDialogThinlet {
       return new Dimension(400, 300);
    }
 
-   public void close() throws Exception {
-      getDialog().dispose();
-   }
-   
-   public void ok() throws Exception {
-      getDialog().dispose();
-   }
-   
-   public Role getRole(){
+   public Role getRole() {
       return form.getRole();
+   }
+
+   /**
+    * @PostAction cancel
+    */
+   public void cancel() throws Exception {
+      getDialog().dispose();
+   }
+
+   /**
+    * @PostAction select
+    */
+   public void select() throws Exception {
+      getDialog().dispose();
+   }
+
+   /**
+    * @PreAction create
+    */
+   public void create() throws Exception {
+      final InsertRoleView thinlet = new InsertRoleView(getFrame());
+      thinlet.display();
+      if (thinlet.hasChanged()) {
+         action("provideRoles");
+      }
+   }
+   
+   /**
+    * @PostAction remove
+    */
+   public void remove() throws Exception {
+      action("provideRoles");
    }
 
 }

@@ -24,6 +24,9 @@ import java.util.Date;
 
 /**
  * @hibernate.class
+ * 
+ * @hibernate.query name="User.findByRole"
+ * 					query="from User u where u.role.code = :roleCode"
  */
 public class User implements Serializable {
    private Long id;

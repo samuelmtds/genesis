@@ -3,7 +3,7 @@
 <panel weightx="1" columns="1" gap="5" top="5" left="5" bottom="5" right="5">
    <panel weightx="1" weighty="1" columns="1" gap="5" top="5" left="5" bottom="5" right="5">
       <panel weightx="1" weighty="1" scrollable="true">
-         <table name="roles" weightx="1" weighty="1" >
+         <table name="role" weightx="1" weighty="1" perform="action(select)">
             <header>
                <column name="code" text="i18n.Role.code" alignment="left" font="bold" width="100"/>
                <column name="label" text="i18n.Role.label" alignment="left" font="bold" width="200"/>
@@ -14,9 +14,11 @@
             </row>
          </table>
       </panel>
-      <panel halign="right" gap="5" columns="2">
-         <button name="ok" text="i18n.button.ok" font="bold" mnemonic="0" type="default" action="ok()"/>
-         <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="0" type="cancel" action="close()"/>
+      <panel halign="right" gap="5" columns="4">
+         <button name="create" text="i18n.button.add" font="bold" mnemonic="0" type="default" />
+         <button name="remove" text="i18n.button.remove" font="bold" mnemonic="0" type="default" />
+         <button name="select" text="i18n.button.ok" font="bold" mnemonic="0" type="default" />
+         <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="0" type="default" />
       </panel>
    </panel>
 </panel>

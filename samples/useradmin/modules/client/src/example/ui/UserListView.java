@@ -32,7 +32,7 @@ public class UserListView extends BaseThinlet {
 
    public UserListView() throws Exception {
       int width = 800;
-      int height = 600;
+      int height = 350;
       Frame f = new Frame();
       f.add(this);
       Insets is = f.getInsets();
@@ -56,17 +56,49 @@ public class UserListView extends BaseThinlet {
 
       bind(form = new UserListForm());
    }
+   
+   /**
+    * @PreAction create
+    */
+   public void create() throws Exception {
+      final InsertUpdateView view = new InsertUpdateView(getFrame());
+      view.display();
+      if (view.hasChanged()) {
+         action("search");
+      }
+   }
 
-   public void updateUser() throws Exception {
+   /**
+    * @PreAction update
+    */
+   public void update() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame(), form
             .getUser());
       view.display();
+      if (view.hasChanged()) {
+         action("search");
+      }
    }
    
-   public void addUser() throws Exception {
-      final InsertUpdateView view = new InsertUpdateView(getFrame());
-      view.display();
+   /**
+    * @PostAction remove
+    */
+   public void remove() throws Exception {
+      action("search");
    }
-
+   
+   /**
+    * @PostAction nextPage
+    */
+   public void nextPage() throws Exception {
+      action("search");
+   }
+   
+   /**
+    * @PostAction previousPage
+    */
+   public void previousPage() throws Exception {
+      action("search");
+   }
 }
 

@@ -10,6 +10,7 @@
 
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
+      <pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
          expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
@@ -21,6 +22,7 @@
       <!-- Genesis Aspects -->
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="ThinletMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="10000" />
       </aspect>

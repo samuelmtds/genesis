@@ -18,9 +18,8 @@
  */
 package example.business;
 
-import java.util.List;
-
 import net.java.dev.genesis.command.hibernate.AbstractHibernateCriteria;
+import net.java.dev.genesis.paging.Page;
 import net.sf.hibernate.expression.Expression;
 import net.sf.hibernate.expression.MatchMode;
 
@@ -40,7 +39,8 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    /**
     * @Criteria example.databeans.User
     */
-   public List getUsers() throws Exception {
-      return getCriteria().list();
+   public Page getUsers(final int pageNumber, final int resultsPerPage)
+         throws Exception {
+      return getPage(pageNumber, resultsPerPage);
    }
 }

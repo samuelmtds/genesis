@@ -16,50 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package example.databeans;
+package example.business;
 
 import java.io.Serializable;
 
-/**
- * @hibernate.class
- * 
- * @hibernate.query name="Role.findByCode"
- * 					query="from Role r where r.code = :code"
- */
-public class Role implements Serializable {
-   private String code;
-   private String label;
-   
-   public Role(){
-   }
-   
-   public Role(String code){
-      this.code = code;
-   }
-   
-   /**
-    * @hibernate.id generator-class="assigned"
-    */
-   public String getCode() {
-      return code;
-   }
+import example.databeans.Role;
+import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
 
-   public void setCode(String code) {
-      this.code = code;
-   }
-   
-   /**
-    * @hibernate.property
-    */
-   public String getLabel() {
-      return label;
-   }
+public class RoleCreateCommand extends AbstractHibernateCommand {
 
-   public void setLabel(String label) {
-      this.label = label;
-   }
-   
-   public String toString() {
-      return this.label;
+   /**
+    * @Transactional
+    */
+   public Serializable addRole(final Role role) throws Exception {
+      return getSession().save(role);
    }
 }

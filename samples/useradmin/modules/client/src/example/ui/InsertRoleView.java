@@ -16,50 +16,45 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package example.databeans;
+package example.ui;
 
-import java.io.Serializable;
+import java.awt.Frame;
 
-/**
- * @hibernate.class
- * 
- * @hibernate.query name="Role.findByCode"
- * 					query="from Role r where r.code = :code"
- */
-public class Role implements Serializable {
-   private String code;
-   private String label;
+import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
+
+public class InsertRoleView extends BaseDialogThinlet {
+   private final InsertRoleForm form;
+   private boolean hasChanged;
    
-   public Role(){
+   public InsertRoleView(final Frame frame) throws Exception {
+      super(frame);
+      getDialog().setModal(true);
+      getDialog().setResizable(false);
+      getDialog().setTitle("Insert Role");
+      setAllI18n(true);
+      setResourceBundle(UIUtils.getInstance().getBundle());
+      add(parse("insert-role.xml"));
+      bind(form = new InsertRoleForm());
    }
-   
-   public Role(String code){
-      this.code = code;
+
+   /**
+    * @PostAction cancel
+    */
+   public void cancel() {
+      getDialog().dispose();
    }
    
    /**
-    * @hibernate.id generator-class="assigned"
+    * @PostAction save
     */
-   public String getCode() {
-      return code;
-   }
-
-   public void setCode(String code) {
-      this.code = code;
+   public void save() {
+      getDialog().dispose();
+      this.hasChanged = true;
    }
    
-   /**
-    * @hibernate.property
-    */
-   public String getLabel() {
-      return label;
-   }
-
-   public void setLabel(String label) {
-      this.label = label;
-   }
-   
-   public String toString() {
-      return this.label;
+   public boolean hasChanged(){
+      return this.hasChanged;
    }
 }
+

@@ -20,6 +20,7 @@ package example.ui;
 
 import java.util.List;
 
+import example.business.RoleRemoveCommand;
 import example.business.RoleSearchCommand;
 import example.databeans.Role;
 
@@ -38,9 +39,37 @@ public class RoleListForm {
    }
 
    /**
-    * @DataProvider role
+    * @Action
+    * @DataProvider objectField=role
     */
    public List provideRoles() throws Exception {
       return new RoleSearchCommand().getRoles();
+   }
+
+   /**
+    * @Action
+    * @EnabledWhen g:isNotEmpty(role)
+    */
+   public void remove() throws Exception {
+      new RoleRemoveCommand().removeRole(role);
+   }
+
+   /**
+    * @Action
+    */
+   public void create() throws Exception {
+   }
+   
+   /**
+    * @Action
+    * @EnabledWhen g:isNotEmpty(role)
+    */
+   public void select() throws Exception {
+   }
+   
+   /**
+    * @Action
+    */
+   public void cancel() throws Exception {
    }
 }

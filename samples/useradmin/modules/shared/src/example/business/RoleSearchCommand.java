@@ -20,7 +20,10 @@ package example.business;
 
 import java.util.List;
 
+import example.databeans.Role;
+
 import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
+import net.sf.hibernate.Query;
 
 public class RoleSearchCommand extends AbstractHibernateCommand {
 
@@ -29,5 +32,14 @@ public class RoleSearchCommand extends AbstractHibernateCommand {
     */
    public List getRoles() throws Exception {
       return getSession().createQuery("from Role").list();
+   }
+   
+   /**
+    * @Remotable
+    */
+   public Role getRole(String roleCode) throws Exception {
+      final Query query = getSession().getNamedQuery("Role.findByCode");
+      query.setParameter("code", roleCode);
+      return (Role)query.uniqueResult();
    }
 }

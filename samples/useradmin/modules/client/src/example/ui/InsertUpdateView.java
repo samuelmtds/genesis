@@ -20,6 +20,8 @@ package example.ui;
 
 import java.awt.Frame;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
 import example.databeans.User;
 
 import net.java.dev.genesis.ui.UIUtils;
@@ -27,6 +29,7 @@ import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
 
 public class InsertUpdateView extends BaseDialogThinlet {
    private final InsertUpdateForm form;
+   private boolean hasChanged;
    
    public InsertUpdateView(final Frame frame) throws Exception {
       this(frame, (User) null);
@@ -35,23 +38,42 @@ public class InsertUpdateView extends BaseDialogThinlet {
    public InsertUpdateView(final Frame frame, final User user) throws Exception {
       super(frame);
       getDialog().setModal(true);
-      if (user == null) {
-         getDialog().setTitle("Insert User");
-      } else {
-         getDialog().setTitle("Update User");
-      }
+      getDialog().setResizable(false);
+      getDialog().setTitle(user == null ? "Insert User" : "Update User");
       setAllI18n(true);
       setResourceBundle(UIUtils.getInstance().getBundle());
       add(parse("insert-update.xml"));
-      bind(form = new InsertUpdateForm());
+      form = new InsertUpdateForm();
+      if (user != null) {
+         PropertyUtils.copyProperties(form, user);
+      }
+      bind(form);
    }
-
+   
+   public boolean hasChanged() {
+      return this.hasChanged;
+   }
+   
+   /**
+    * @PreAction chooseRole
+    */
    public void chooseRole() throws Exception {
       final RoleListView view = new RoleListView(getFrame());
       view.display();
       form.setRole(view.getRole());
    }
    
+   /**
+    * @PostAction save
+    */
+   public void save() {
+      getDialog().dispose();
+      this.hasChanged = true;
+   }
+   
+   /**
+    * @PostAction cancel
+    */
    public void cancel(){
       getDialog().dispose();
    }

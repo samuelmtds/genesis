@@ -16,30 +16,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package example.databeans;
+package example.ui;
 
-import java.io.Serializable;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import example.business.RoleCreateCommand;
+import example.databeans.Role;
 
 /**
- * @hibernate.class
- * 
- * @hibernate.query name="Role.findByCode"
- * 					query="from Role r where r.code = :code"
+ * @Form
  */
-public class Role implements Serializable {
+public class InsertRoleForm {
    private String code;
    private String label;
-   
-   public Role(){
-   }
-   
-   public Role(String code){
-      this.code = code;
-   }
-   
-   /**
-    * @hibernate.id generator-class="assigned"
-    */
+
    public String getCode() {
       return code;
    }
@@ -47,10 +37,7 @@ public class Role implements Serializable {
    public void setCode(String code) {
       this.code = code;
    }
-   
-   /**
-    * @hibernate.property
-    */
+
    public String getLabel() {
       return label;
    }
@@ -58,8 +45,21 @@ public class Role implements Serializable {
    public void setLabel(String label) {
       this.label = label;
    }
-   
-   public String toString() {
-      return this.label;
+
+   /**
+    * @Action
+    * @EnabledWhen g:isNotEmpty(code) and g:isNotEmpty(label)
+    */
+   public void save() throws Exception {
+      final Role role = new Role();
+      PropertyUtils.copyProperties(role, this);
+      new RoleCreateCommand().addRole(role);
    }
+   
+   /**
+    * @Action
+    */
+   public void cancel() throws Exception {
+   }
+
 }

@@ -25,6 +25,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 import net.java.dev.reusablecomponents.lang.Enum;
 
+import example.business.RoleSearchCommand;
 import example.business.UserCreateCommand;
 import example.business.UserUpdateCommand;
 import example.databeans.Country;
@@ -34,7 +35,7 @@ import example.databeans.User;
 
 /**
  * @Form
- * @Condition countryFilled=not(g:isEmpty(country))
+ * @Condition countryFilled=g:isNotEmpty(country)
  */
 public class InsertUpdateForm {
    private Long id;
@@ -44,6 +45,7 @@ public class InsertUpdateForm {
    private String email;
    private Date birthday;
    private String address;
+   
    private Role role;
    private Country country;
    private State state;
@@ -75,9 +77,21 @@ public class InsertUpdateForm {
    public Role getRole() {
       return role;
    }
-
+   
    public void setRole(Role role) {
       this.role = role;
+   }
+
+   public void setRoleCode(String roleCode) throws Exception {
+      setRole(new RoleSearchCommand().getRole(roleCode));
+   }
+
+   public String getRoleCode(){
+      return this.role == null ? null : role.getCode();
+   }
+
+   public String getRoleLabel(){
+      return role == null ? null : role.getLabel();
    }
 
    public Long getId() {
@@ -120,9 +134,6 @@ public class InsertUpdateForm {
       this.address = address;
    }
 
-   /**
-    * @VisibleWhen $countryFilled
-    */
    public State getState() {
       return state;
    }
@@ -148,6 +159,15 @@ public class InsertUpdateForm {
 
    /**
     * @Action
+    * @EnabledWhen g:isNotEmpty(name) and
+    * 					g:isNotEmpty(login) and
+    * 					g:isNotEmpty(password) and
+    * 					g:isNotEmpty(email) and
+    * 					g:isNotEmpty(birthday) and
+    * 					g:isNotEmpty(address) and
+    * 					g:isNotEmpty(role) and
+    * 					g:isNotEmpty(country) and
+    * 					g:isNotEmpty(state)
     */
    public void save() throws Exception {
       final User user = new User();
@@ -159,4 +179,15 @@ public class InsertUpdateForm {
       }
    }
 
+   /**
+    * @Action
+    */
+   public void cancel() throws Exception {
+   }
+   
+   /**
+    * @Action
+    */
+   public void chooseRole() throws Exception {
+   }
 }

@@ -4,20 +4,20 @@
    <panel gap="5" columns="2" border="true" weightx="1" weighty="1" top="5" left="5" bottom="5" right="5">
       <label text="i18n.User.name" font="bold" mnemonic="1" for="name"/>
       <textfield name="name" height="15" halign="left" valign="bottom" text="123456789012345678901234567890" columns="30"/>
-      <label text="i18n.User.role" font="bold" mnemonic="0" for="role"/>
+      <label text="i18n.User.role" font="bold" mnemonic="0" for="roleCode"/>
       <panel gap="5" columns="3">
-         <textfield name="role" height="15" halign="left" valign="bottom" text="123" columns="3"/>
-         <button text="..." i18n="false" action="chooseRole()"/>
-         <label text="1234567890" i18n="false"/>
+         <textfield name="roleCode" height="15" halign="left" valign="bottom" text="123456789012345" columns="7"/>
+         <button text="..." i18n="false" name="chooseRole" type="default"/>
+         <label name="roleLabel" text="123456789012345" i18n="false"/>
       </panel>
       <label text="i18n.User.login" font="bold" mnemonic="0" for="login"/>
-      <textfield name="login" height="15" halign="left" valign="bottom" text="1234567890" columns="10"/>
+      <textfield name="login" height="15" halign="left" valign="bottom" text="12345678901234567890" columns="15"/>
       <label text="i18n.User.password" font="bold" mnemonic="0" for="password"/>
-      <passwordfield name="password" height="15" halign="left" valign="bottom" text="1234567890" columns="10"/>
+      <passwordfield name="password" height="15" halign="left" valign="bottom" text="12345678901234567890" columns="15"/>
       <label text="i18n.User.email" font="bold" mnemonic="0" for="email"/>
-      <textfield name="email" height="15" halign="left" valign="bottom" text="123456789012345" columns="15"/>
+      <textfield name="email" height="15" halign="left" valign="bottom" text="123456789012345" columns="30"/>
       <label text="i18n.User.birthday" font="bold" mnemonic="0" for="birthday"/>
-      <textfield name="birthday" height="15" halign="left" valign="bottom" text="1234567890" columns="10"/>
+      <textfield name="birthday" height="15" halign="left" valign="bottom" text="1234567890" columns="15"/>
       <label text="i18n.User.address" font="bold" mnemonic="1" for="address"/>
       <textfield name="address" height="15" halign="left" valign="bottom" text="123456789012345678901234567890" columns="30"/>
       <label text="i18n.User.country" font="bold" mnemonic="0" for="country"/>
@@ -26,7 +26,7 @@
       <combobox name="state" property="key=name;value=name;blank=false" editable="false" />
    </panel>
    <panel gap="5" columns="2" halign="center">
-      <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="2" action="cancel()"/>
-      <button name="save" text="i18n.button.save" font="bold" mnemonic="0"/>
+      <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="2" type="default"/>
+      <button name="save" text="i18n.button.save" font="bold" mnemonic="0" type="default"/>
    </panel>
 </panel>
