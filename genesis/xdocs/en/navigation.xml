@@ -41,9 +41,16 @@
               href="/en/business_component_model.html" />
         <item name="Annotation quick reference guide"
               href="/en/quick_reference.html" />
+        <item name="Developing with genesis"
+              href="/en/empty_project.html" />
       </item>
       <item name="genesis aspects" href="/en/aspects.html" />
       <item name="Understanding genesis jars" href="/en/jars_explained.html" />
+      <item name="Samples" collapse="true"
+            href="/en/useradmin_sample.html">
+         <item name="UserAdmin"
+              href="/en/useradmin_sample.html" />
+      </item>
     </menu>
   </body>
 </project>

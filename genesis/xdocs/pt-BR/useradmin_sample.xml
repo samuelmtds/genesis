@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+   <properties>
+     <title>Aplicações exemplo - useradmin</title>
+     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+   </properties>
+   <body>
+      <section name="Instalação do exemplo useradmin">
+         <p>
+            A instalação do exemplo <code>useradmin</code> é relativamente simples. A distribuição do exemplo <code>useradmin</code>
+            se encontra nos pacotes de <a href="">distribuição completa do genesis</a><!-- TODO linkar --> ou na
+            <a href="">distribuição dos binários completos</a>. <!-- TODO linkar -->
+            A distribuição de todos exemplos do genesis já vem preparadas
+            para rodar em cima do servidor de aplicações <a href="http://www.jboss.org/">JBoss</a> que é um servidor
+            gratuito e open-source. Isso não significa que o genesis só rode nesse servidor, muito pelo contrário,
+            o genesis foi desenvolvido totalmente compatível com as especificações J2EE.
+         </p>
+         <p>
+            Existem 4 passos simples para fazer a instalação do exemplo useradmin.
+         </p>
+         <ul>
+            <li>Baixe e instale o servidor de aplicações <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
+               utilizar a última das versões 3.2.x do JBoss.</li>
+            <li>No diretório <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server</code>, faça uma cópia do diretório <code>default</code>
+               para um novo diretório chamado <code>useradmin</code>. Dessa forma, teremos um diretório localizado em 
+               <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/useradmin</code> que é uma cópia idêntica de <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code></li>
+            <li>Copie para o diretório <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/useradmin/deploy</code> todos arquivos e diretórios localizados em
+               <code>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/useradmin/dist</code> e o arquivo 
+               <code>&lt;DISTRIBUICAO_DO_GENESIS&gt;/genesis/dist/genesis-server-&lt;versao&gt;.jar</code></li>
+            <li>Inicie o servidor JBoss com a linha de comando <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c useradmin</code>.</li>
+         </ul>
+         <p>
+            Após ter instalado o exemplo, e iniciado o JBoss, podemos carregar o exemplo através do endereço
+            <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/</a>. Clicando no link presente
+            nessa página, através da tecnologia Java Web Start, a aplicação exemplo será baixada, instalada e executada
+            no computador do usuário.
+         </p>
+      </section>
+      <section name="Propósito do exemplo useradmin">
+         <p>
+            O exemplo useradmin tem como propósito mostrar ao usuário a maioria das
+            funcionalidades que o projeto genesis oferece.
+         </p>
+         <p>
+            O exemplo possui dois diretórios de código fonte: o diretório
+            <code>&lt;DISTRIBUIÇÃO_DO_GENESIS&gt;/samples/useradmin/modules/client/src</code>
+            e o diretório
+            <code>&lt;DISTRIBUIÇÃO_DO_GENESIS&gt;/samples/useradmin/modules/shared/src</code>
+            que correspondem respectivamente ao módulo cliente da aplicação e ao
+            módulo comum entre cliente e servidor.
+         </p>
+         <p>
+            No diretório de fontes do módulo cliente encontramos trios de arquivos fontes,
+            que correspondem ao formulário da tela (form), arquivo XML da tela
+            (XML do thinlet) e arquivo de visualização (view) da tela. Para exemplificar,
+            tomemos a tela inicial do exemplo:
+         </p>
+         <ul>
+            <li>
+               <b>user-list.xml</b>: arquivo XML de acordo com o padrão Thinlet que descreve
+               como os componentes gráficos estão dispostos na tela. Os nomes dos componentes
+               correspondem aos nomes de campos e métodos do formulário da tela (form).
+            </li>
+            <li>
+               <b>UserListForm.java</b>: classe Java que seus campos representam os dados
+               da tela e possui métodos que representam as ações da tela.
+            </li>
+            <li>
+               <b>UserListView.java</b>: classe Java responsável pela tela, onde é definido
+               o tamanho da tela, qual é o arquivo xml da tela, além de fazer o <code>binding</code>
+               de um form a tela, ou seja, indica qual form será utilizado para tratar os dados
+               e eventos dessa tela. Outros métodos auxiliares podem existir nessa classe, para
+               possibilitar que essa tela possa abrir outras telas ou programaticamente executar
+               ações dessa tela.
+            </li>
+         </ul>
+         <p>
+            No diretório de fontes do módulo shared encontramos os arquivos fontes
+            relativos a lógica de negócio (command) e os arquivos fontes relativos
+            a entidades mapeadas em tabelas no banco de dados (databeans). Um exemplo
+            de arquivo command é o arquivo <code>net.java.dev.genesis.samples.useradmin.business.UserCreateCommand</code>:
+         </p>
+         <source>
+public class UserCreateCommand extends AbstractHibernateCommand {
+   
+   /**
+    * @Transactional
+    */
+   public Serializable createUser(final User user) throws Exception {
+      return getSession().save(user);
+   }
+   
+   
+}
+         </source>
+         <p>
+            Veja como os commands podem ser bem simples e objetivos. Esse command
+            mostrado possui apenas um método transacional que dado um usuário salva
+            esse usuário no banco de dados. O commit e/ou rollback da transação é
+            tratada automaticamente pelo genesis.
+         </p>
+         <p>
+            Como exemplo de um databean temos o <code>net.java.dev.genesis.samples.useradmin.databeans.User</code>
+            que representa uma entidade Usuário que é mapeada para uma tabela utilizando tags do XDoclet:
+         </p>
+         <source>
+/**
+ * @hibernate.class
+ * 
+ * @hibernate.query name="User.findByRole"
+ * 					query="from User u where u.role.code = :roleCode"
+ */
+public class User implements Serializable {
+   private Long id;
+   private String name;
+   private String login;
+   private String password;
+   private String email;
+   private Date birthday;
+   private String address;
+   private Role role;
+   private Country country;
+   private State state;
+
+   /**
+    * @hibernate.property
+    */
+   public Date getBirthday() {
+      return birthday;
+   }
+
+   public void setBirthday(Date birthday) {
+      this.birthday = birthday;
+   }
+   
+   /**
+    * @hibernate.property type="net.java.dev.genesis.samples.useradmin.databeans.CountryType"
+    */
+   public Country getCountry() {
+      return country;
+   }
+
+   public void setCountry(Country country) {
+      this.country = country;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   /**
+    * @hibernate.many-to-one
+    */
+   public Role getRole() {
+      return role;
+   }
+
+   public void setRole(Role role) {
+      this.role = role;
+   }
+
+   /**
+    * @hibernate.id generator-class="increment"
+    */
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getLogin() {
+      return login;
+   }
+
+   public void setLogin(String login) {
+      this.login = login;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   /**
+    * @hibernate.property type="net.java.dev.genesis.samples.useradmin.databeans.StateType"
+    */
+   public State getState() {
+      return state;
+   }
+
+   public void setState(State state) {
+      this.state = state;
+   }
+}
+         </source>
+         <p>
+            O databean é um JavaBean com os getters e setters segundo a especificação
+            de JavaBeans da Sun. Ele não precisa implementar nenhuma interface e nem
+            extender nenhuma classe abstrata. Convém implementar <code>java.io.Serializable</code>
+            para utilizá-lo como parâmetro e/ou retorno de chamadas remotas.
+         </p>
+         <p>
+            Através desse exemplo, mostramos como um projeto é estruturado
+            e como usar as funcionalidades do genesis. É recomendado utilizar
+            o <a href="empty_project.html">projeto vazio</a> para iniciar
+            um projeto baseado no genesis e usar esse exemplo como uma referência.
+         </p>
+      </section>
+   </body>
+</document>
