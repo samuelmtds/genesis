@@ -13,6 +13,8 @@
       a tags do XDoclet. Os exemplos abaixo tornarão o uso claro.</p>
       <p>Os seguintes conceitos e/ou características são abordados abaixo:
       <ul>
+        <li><a href="#Configurando o genesis na inicialização">Configurando o
+        genesis na inicialização</a></li>
         <li><a href="#Tipos de componentes de interface gráfica">Tipos de
         componentes de interface gráfica</a></li>
         <li><a href="#Entendendo as views">Entendendo as views</a></li>
@@ -23,6 +25,58 @@
         no form e na view</a></li>
       </ul>
       </p>
+    </section>
+    <section name="Configurando o genesis na inicialização">
+      <p>Diversos componentes precisam ser inicializados e/ou configurados para
+      que o genesis funcione corretamente. Com intuito de facilitar esse
+      processo, o genesis provê a classe
+      <code>net.java.dev.genesis.helpers.StartupHelper</code>. Essa classe
+      encapsula os passos que teriam de ser realizados manualmente, mas que
+      tendem a ser bastante semelhantes para a maioria das aplicações.</p>
+      <p>Na maioria dos casos, basta adicionar a seguinte linha na inicialização
+      da sua aplicação (provavelmente o método <code>main(String[] args)</code>
+      de uma das classes):</p>
+<source>
+new StartupHelper().initialize();
+</source>
+      <p>É importante salientar que esta classe precisa ser executada antes do
+      uso de qualquer outra API do genesis pela sua aplicação em tempo de
+      execução. O processo de inicialização executado por essa instrução, por
+      padrão, consiste de:</p>
+      <ul>
+        <li>Configuração do commons-beanutils, de modo a ser coerente com a API
+        do genesis</li>
+        <li>Configuração do commons-jxpath, para uso de expressões condicionais
+        </li>
+        <li>Registro de conversores e formatadores de dados padrão, a fim de
+        fazer a integração entre os componentes Java e a API gráfica</li>
+        <li>Execução de uma simples classe de negócio vazia,
+        <code>net.java.dev.genesis.command.NoopCommand</code>, em uma thread,
+        apenas para inicializar os aspectos e conectar no servidor sem que o
+        usuário tenha de esperar por isso.</li>
+        <li>Carga das regras de validação em uma thread, de modo que estas já
+        estejam inicializadas quando forem necessárias.</li>
+      </ul>
+      <p>Todo os pontos do processo são configuráveis através de métodos
+      expostos em <code>StartupHelper</code>, de modo que a classe possa ser
+      usada em quase todos os cenários. Por exemplo, caso uma aplicação não
+      estiver usando comunicação com o servidor ou fizer isso logo na sua
+      inicialização, pode-se desligar a execução de <code>NoopCommand</code>
+      conforme mostrado abaixo:</p>
+<source>
+StartupHelper helper = new StartupHelper();
+helper.setRunNoopCommand(false);
+helper.initialize();
+</source>
+      <p><code>StartupHelper</code> registra um conversor e um formatador para
+      <code>java.util.Date</code> de acordo com um formato de datas e
+      <code>java.util.Locale</code> específicos. Por padrão, estes são a
+      constante <code>MM/dd/yyyy</code> e o <code>Locale</code> padrão da JVM,
+      mas existe uma outra versão do construtor que permite especificá-los
+      diretamente conforme mostrado abaixo:</p>
+<source>
+new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
+</source>
     </section>
     <section name="Tipos de componentes de interface gráfica">
       <p>A fim de atingir as metas de simplicidade e testabilidade, dois tipos
@@ -617,3 +671,9 @@ public class ExemploInvokeFormActionForm {
     </section>
   </body>
 </document>
+
+
+
+
+
+
