@@ -242,6 +242,12 @@ public class InsertUpdateForm {
             >
             <td>somente se <code>objectField</code> não for especificado</td>
           </tr>
+          <tr>
+            <td>callOnInit</td>
+            <td>valor booleano</td>
+            <td>Indica se o método será chamado ao se fazer o binding</td>
+            <td>Não, default: <code>true</code></td>
+          </tr>
         </table>
   <p>Exemplo de uso (InsertUpdateForm.java):</p>
   <source>

@@ -129,7 +129,7 @@ new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
           <li>Integrates validation and implements specific error handling for
           it.</li>
           <li>Implements form-to-view binding through methods
-          <code>bind(..)</code> and <code>invokeFormAction(..)</code>.</li>
+          <code>bind(..)</code>, <code>invokeFormAction(..)</code> etc.</li>
         </ul>
       </p>
       <p>When the model explained in this document is used, i.e., form binding,

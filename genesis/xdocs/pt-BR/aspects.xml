@@ -260,8 +260,8 @@ public interface CriteriaResolver {
       <code>timeout</code> segundos. Qualquer exceção que seria normalmente
       lançada pelo método interceptado é repassada para quem o chamou.</p>
       <p>O parâmetro <code>keepThreadInstance</code> define a reutilização
-      ou não da thread que faz o controle de tempo de execução 
-      de um método. Caso seja atribuído o valor <code>true</code> para 
+      ou não da thread que faz o controle de tempo de execução
+      de um método. Caso seja atribuído o valor <code>true</code> para
       esse parâmetro, o aspecto irá criar e manter uma única thread
       de modo que subsequentes execuções de métodos definidos
       pelo pointcut <code>timeout</code>
@@ -269,7 +269,7 @@ public interface CriteriaResolver {
       da aplicação final será maior.</p>
       <p>Porém, no caso da aplicação utilizar diversas threads,
       esse parâmetro irá permitir que diversas threads filhas
-      fiquem em memória ocupando recursos - assim, neste caso o ideal é que 
+      fiquem em memória ocupando recursos - assim, neste caso o ideal é que
       seja atribuído o valor <code>false</code> para este parâmetro.</p>
     </section>
     <section name="Trocando o cursor do mouse durante o tratamento de eventos">
@@ -399,8 +399,8 @@ public interface ThinletMetadataFactory {
           <tr>
             <td>keepThreadInstance</td>
             <td>boolean</td>
-            <td>Indica se a thread de controle de timeout deve ser 
-            mantida e reutilizada entre as execuções dos métodos 
+            <td>Indica se a thread de controle de timeout deve ser
+            mantida e reutilizada entre as execuções dos métodos
             interceptados</td>
             <td>Não</td>
             <td><code>false</code></td>
@@ -504,7 +504,7 @@ public interface ThinletMetadataFactory {
         </table>
       </subsection>
       <subsection name="Configuração exemplo de aop.xml">
-        <p>A configuração do exemplo useradmin é mostrada abaixo. Pode ser
+        <p>A configuração remota do exemplo useradmin é mostrada abaixo. Pode ser
         necessário ajustá-la de acordo com as necessidades do projeto, mas
         acreditamos que essa configuração será suficiente na maior parte dos
         casos.</p>
@@ -517,28 +517,23 @@ public interface ThinletMetadataFactory {
    <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
       <pointcut name="executeCommand"
-                expression="execution(@Remotable * ...*(..)) OR
-                execution(@Transactional * ...*(..))" />
+         expression="execution(@Remotable * ...*(..)) OR
+                     execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="thinletMetadataFactoryIntroduction"
-                expression=
-                "within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+                expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
       <pointcut name="criteriaResolverIntroduction"
-                expression=
-                "within(net.java.dev.genesis.command.hibernate.HibernateCriteria
-                +)" />
+                expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
                 expression="hasmethod(@Remotable * ...*(..)) OR
-                hasmethod(@Transactional * ...*(..))" />
+                            hasmethod(@Transactional * ...*(..))" />
       <pointcut name="timeout" expression="executeCommand" />
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution"
-                expression="execution(@Criteria *
-                net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))
-                " />
+                expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution"
                 expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
 

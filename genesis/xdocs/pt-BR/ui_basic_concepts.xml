@@ -132,7 +132,8 @@ new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
           <li>Integra a validação e implementa o tratamento específico de erros
           para ela.</li>
           <li>Implementa o binding (algo como junção) da view com o form através
-          dos métodos <code>bind(..)</code> e <code>invokeFormAction(..)</code>.
+          dos métodos <code>bind(..)</code>, <code>invokeFormAction(..)</code> e
+          outros.
           </li>
         </ul>
       </p>

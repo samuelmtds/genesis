@@ -10,14 +10,15 @@
       <p>A instalação do exemplo <code>useradmin</code> é relativamente simples.
       A distribuição do exemplo <code>useradmin</code> se encontra nos pacotes
       de distribuição completa e da distribuição binária do genesis que podem
-      ser encontrados <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&amp;expandFolder=2342&amp;folderID=1756">aqui</a>.
+      ser encontrados <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">aqui</a>.
       A distribuição de todos exemplos do genesis já vem preparadas para rodar
-      sobre o servidor de aplicações <a href="http://www.jboss.org/">JBoss</a>,
-      que é um servidor gratuito e open-source. Isso não significa que o genesis
-      só rode nesse servidor; o genesis foi desenvolvido totalmente compatível
+      como aplicação independente (modo standalone/local) ou sobre o servidor
+      de aplicações <a href="http://www.jboss.org/">JBoss</a>, que é um
+      servidor gratuito e open-source. Isso não significa que o genesis só
+      rode nesse servidor; o genesis foi desenvolvido totalmente compatível
       com as especificações J2EE.</p>
-      <p>Existem 4 passos simples para fazer a instalação do exemplo useradmin:
-      </p>
+      <p>Existem 4 passos simples para fazer a instalação do exemplo useradmin
+      no servidor de aplicações:</p>
       <ol>
         <li>Baixe e instale o servidor de aplicações <a href=
         "http://www.jboss.org/">JBoss</a>. Recomendamos utilizar a última das
@@ -28,14 +29,14 @@
         localizado em  <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/useradmin</code>
         que é uma cópia idêntica de
         <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code></li>
-        <li>Execute os scripts ant de deploy distribuídos juntamente com 
+        <li>Execute os scripts ant de deploy distribuídos juntamente com
         o exemplo <a href="#Execução do exemplo useradmin">
         (conforme instruções abaixo)</a>.</li>
         <li>Inicie o servidor JBoss <a href="#Execução do exemplo useradmin">
         (conforme instruções abaixo)</a>.</li>
       </ol>
       <p>Após a instalação do JBoss e execução dos scripts de deploy, pode-se
-      utilizar um link Java Web start ou os scripts de execução ant para rodar 
+      utilizar um link Java Web start ou os scripts de execução ant para rodar
       a aplicação exemplo <a href="#Execução do exemplo useradmin">
         (conforme instruções abaixo)</a>.</p>
     </section>
@@ -235,7 +236,7 @@ public class User implements Serializable {
       <code>java.io.Serializable</code> para utilizá-lo como parâmetro e/ou
       retorno de chamadas remotas.</p>
     </section>
-    <section name="Execução do exemplo useradmin">      
+    <section name="Execução do exemplo useradmin">
       <p>Para executar esse exemplo, foram disponibilizados scripts ant para
       realizar esta tarefa. Para utilizar esses scripts, siga os passos
       abaixo:</p>
@@ -251,12 +252,12 @@ public class User implements Serializable {
         do exemplo no JBoss. Esse processo será efetuado no diretório
         "useradmin" criado na etapa de instalação do JBoss anteriormente.</li>
         <li>Uma vez finalizado o processo de instalação, o JBoss poderá ser
-        iniciado através do comando: 
+        iniciado através do comando:
         <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c useradmin</code></li>
         <li>Após a completa inicialização do JBoss, o exemplo poderá ser
         executado através da URL <a href="http://localhost:8080/useradmin/">
         http://localhost:8080/useradmin/</a>. Através deste link, a aplicação
-        exemplo será baixada, instalada e executada no computador do 
+        exemplo será baixada, instalada e executada no computador do
         usuário, utilizando-se tecnologia Java Web start</li>
         <li>Outra opção de execução do exemplo é através de uma task do ant:
         <code>ant useradmin:run.remote</code> .Este comando irá iniciar
@@ -264,7 +265,7 @@ public class User implements Serializable {
         <li>Também é possível executar o exemplo apenas com chamadas locais,
         retirando-se a dependência do JBoss - para isso, basta utilizar
         o seguinte comando: <code>ant useradmin:run.local</code></li>
-      </ul>      
+      </ul>
       <p>Através desse exemplo, mostramos como um projeto é estruturado e como
       usar as funcionalidades do genesis. É recomendado utilizar o <a href=
       "empty_project.html">projeto vazio</a> para iniciar um projeto baseado no

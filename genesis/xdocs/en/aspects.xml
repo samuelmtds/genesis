@@ -257,14 +257,14 @@ public interface CriteriaResolver {
       intercepted method in a new thread and waits for its completion for
       <code>timeout</code> seconds. Any exception that could be normally thrown
       by the intercepted method is thrown back to the caller.</p>
-      <p>The <code>keepThreadInstance</code> parameter defines whether genesis 
+      <p>The <code>keepThreadInstance</code> parameter defines whether genesis
       should reuse the thread which controls the execution timeout of a method.
       In case this parameter is set to <code>true</code>, the aspect will create
-      and maintain a single thread and therefore all next intercepted methods 
+      and maintain a single thread and therefore all next intercepted methods
       executions will reuse the same thread. This way the application perfomance
       will be increased.</p>
       <p>However in case the application needs quite a few threads to run, this
-      parameter (if set to true) will keep a lot of children threads in memory 
+      parameter (if set to true) will keep a lot of children threads in memory
       that might consume system resources - this way, in this particular case,
       it is recommended setting this parameter to <code>false</code>.</p>
     </section>
@@ -499,7 +499,7 @@ public interface ThinletMetadataFactory {
         </table>
       </subsection>
       <subsection name="Sample aop.xml configuration">
-        <p>useradmin sample aop.xml configuration is shown below. It might be
+        <p>useradmin sample remote-aop.xml configuration is shown below. It might be
         necessary to adjust it as needed by a project, but we believe this
         configuration will be enough for most cases.</p>
 <source>
@@ -511,28 +511,23 @@ public interface ThinletMetadataFactory {
    <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
       <pointcut name="executeCommand"
-                expression="execution(@Remotable * ...*(..)) OR
-                execution(@Transactional * ...*(..))" />
+         expression="execution(@Remotable * ...*(..)) OR
+                     execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="thinletMetadataFactoryIntroduction"
-                expression=
-                "within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+                expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
       <pointcut name="criteriaResolverIntroduction"
-                expression=
-                "within(net.java.dev.genesis.command.hibernate.HibernateCriteria
-                +)" />
+                expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
                 expression="hasmethod(@Remotable * ...*(..)) OR
-                hasmethod(@Transactional * ...*(..))" />
+                            hasmethod(@Transactional * ...*(..))" />
       <pointcut name="timeout" expression="executeCommand" />
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution"
-                expression="execution(@Criteria *
-                net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))
-                " />
+                expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution"
                 expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
 
@@ -542,6 +537,7 @@ public interface ThinletMetadataFactory {
       <aspect class="ThinletMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
+         <param name="keepThreadInstance" value="true" />
       </aspect>
       <aspect class="EJBCommandExecutionAspect">
          <param name="jndiName" value="ejb/CommandExecutor"/>
@@ -556,6 +552,3 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
-
-
-

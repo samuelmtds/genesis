@@ -204,8 +204,7 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Declaring_conditions">More info...</a></p>
       </subsection>
       <subsection name="@DataProvider">
-      <p>
-  This annotation may be used in methods returning either a
+      <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array. Values returned by the method
       will be used to populate the combo or the table. <code>objectField</code>,
       if specified, should receive as a parameter the name of a property that
@@ -218,8 +217,7 @@ public class InsertUpdateForm {
       <code>Collection</code>. At least one of these two parameters must be
       informed.
       </p>
-      <p>
-  The widget <code>name</code> is equal to the value specified for <code>
+      <p>The widget <code>name</code> is equal to the value specified for <code>
       objectField</code> or <code>indexField</code>. When both are specified,
       <code>objectField</code> value must be equal to the widget
       <code>name</code>.
@@ -246,6 +244,13 @@ public class InsertUpdateForm {
             <code>Integer</code>, an array of one of these types or a
             <code>Collection</code></td>
             <td>just in case there is no <code>objectField</code> defined</td>
+          </tr>
+          <tr>
+            <td>callOnInit</td>
+            <td>boolean</td>
+            <td>Defines whether the annotated method will be invoked on
+            binding</td>
+            <td>No, default: <code>true</code></td>
           </tr>
         </table>
   <p>Example (InsertUpdateForm.java):</p>

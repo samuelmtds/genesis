@@ -10,13 +10,14 @@
       <p>Installing the  <code>useradmin</code> sample is a simple task.
       <code>useradmin</code> distribution can be found in the full distribution
       or the full binary distribution genesis packages that can be found
-      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&amp;expandFolder=2342&amp;folderID=1756">here</a>.
+      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">here</a>.
       Distributions for all samples
-      are already setup to be run with the <a href="http://www.jboss.org/">JBoss
-      </a> application server, an open-source free server. This does not mean
-      genesis only runs on this server; genesis was developed in a J2EE
-      compatible way.</p>
-      <p>There are 4 simple steps necessary to install the useradmin sample:</p>
+      are already setup to be run in standalone/local mode or with the <a
+      href="http://www.jboss.org/">JBoss</a> application server, an open-source
+      free server. This does not mean genesis only runs on this server; genesis
+      was developed in a J2EE compatible way.</p>
+      <p>There are 4 simple steps necessary to install the useradmin sample in
+      the application server:</p>
       <ol>
         <li>Download and install <a href=
         "http://www.jboss.org/">JBoss</a> application server. It is recommended
@@ -26,9 +27,9 @@
         there'll be a <code>&lt;JBOSS_DIR&gt;/server/useradmin</code> directory
         that will be identical to the
         <code>&lt;JBOSS_DIR&gt;/server/default</code> dir.</li>
-        <li>Run the ant scripts to deploy the example 
-        <a href="#Running the useradmin sample">(as instructed later in 
-        this document)</a>. These scripts are distributed together with 
+        <li>Run the ant scripts to deploy the example
+        <a href="#Running the useradmin sample">(as instructed later in
+        this document)</a>. These scripts are distributed together with
         genesis.</li>
         <li>Start the JBoss server <a href="#Running the useradmin sample">
         (as instructed later in this document)</a>.</li>
@@ -41,7 +42,7 @@
     <section name="useradmin sample's purpose">
       <p>useradmin sample's purpose is to demonstrate to users genesis major
       features and also shows the transparent remoting, cause just with the
-      same source code, it's possible to run the sample using either 
+      same source code, it's possible to run the sample using either
       remote calls or local calls.</p>
       <p>The sample has two source code dirs: the directory
       <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/client/src
@@ -233,18 +234,18 @@ public class User implements Serializable {
       <p>To run this sample, ant scripts have been provided in order to perfom
       this task. To use those scripts, execute the following steps:</p>
       <ul>
-        <li>Make a copy the <code>buid.properties.sample</code> file and 
+        <li>Make a copy the <code>buid.properties.sample</code> file and
         rename it to <code>build.properties</code></li>
         <li>Edit the new <code>build.properties</code> file in order to modify
         or comment the properties according to your execution environment.</li>
         <li>Within command line, run the ant script by just typing: <code>
         ant</code> (the default ant task <code>useradmin:all.with.webstart
-        </code> will be executed). This command will initiate the compiling 
-        and deploying process which will install this sample application inside 
-        "useradmin" directory create by the JBoss instalation process 
+        </code> will be executed). This command will initiate the compiling
+        and deploying process which will install this sample application inside
+        "useradmin" directory create by the JBoss instalation process
         ealier.</li>
         <li>Once the instalation process has finished, JBoss server can be
-        started by the following command:         
+        started by the following command:
         <code>&lt;JBOSS_DIRECTORY&gt;/bin/run -c useradmin</code></li>
         <li>After JBoss has started, this sample can be executed by accessing
         <a href="http://localhost:8080/useradmin/">
@@ -255,11 +256,11 @@ public class User implements Serializable {
         the following command: <code>ant useradmin:run.remote</code>. This
         command will run the useradmin sample with remote calls to the JBoss
         server</li>
-        <li>It's also possible to execute this sample with local calls 
+        <li>It's also possible to execute this sample with local calls
         configuration only - i.e. the sample will not use the JBoss server in
         anyway. In order to perfom this, use the following command:
         <code>ant useradmin:run.local</code></li>
-      </ul>      
+      </ul>
       <p>This sample goal is to demonstrate how a project might be structured
       and how to use genesis features. It's recommended to start new genesis-
       based projects by using the <a href="empty_project.html">empty project</a>
