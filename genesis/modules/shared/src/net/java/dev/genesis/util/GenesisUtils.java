@@ -44,8 +44,8 @@ public final class GenesisUtils {
          final StringTokenizer equalSeparator = new StringTokenizer(
                spaceSeparator.nextToken(), "=");
          if (equalSeparator.countTokens() == 2) {
-            attributesMap.put(equalSeparator.nextToken(), equalSeparator
-                  .nextToken());
+            attributesMap.put(equalSeparator.nextToken().trim(), equalSeparator
+                  .nextToken().trim());
          }
       }
       return attributesMap;
