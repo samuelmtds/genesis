@@ -139,16 +139,9 @@ xdoclet.dist=c:/projects/xdoclet-1.2/lib
         system. In practice, it's not necessary to change this file, unless you
         need/want to tune some aspects' parameters or add brand new aspects to
         the application.</li>
-        <li><b>net/java/dev/genesis/emptyproject/ui/UIUtils.java</b>: This file
-        shows how the application should be started, configuring a few
-        formatters and converter. As an example, it shows how to configure these
-        for <code>java.util.Date</code> instances. Remember that if your
-        application uses custom formatters and/or converters, you have to
-        initialize them before doing anything else. Use <code>UIUtils</code> as
-        an example. </li>
         <li><b>net/java/dev/genesis/emptyproject/MyGenesisApp.java</b>: A file
-        that does nothing besides initializing the previously mentioned
-        <code>UIUtils</code>. This is your project's main file and you should
+        that does nothing besides using <code>StartupHelper</code> for initialization.
+        This is your project's main file and you should
         implement your project by initially adding code to it. As mentioned
         before, you can define which main class to use by just changing
         <code>build.properties</code>. Therefore, you can delete this file if
@@ -164,13 +157,6 @@ xdoclet.dist=c:/projects/xdoclet-1.2/lib
     <section name="Compiling and installing your application">
       <p>The project can be compiled and installed on JBoss using <a href=
       "http://ant.apache.org/">Ant</a>.</p>
-      <p>It is necessary to create a new dir on JBoss. To do that, copy
-      <code>&lt;JBOSS_DIR&gt;/server/default</code> to a new directory whose
-      name is defined by the value for <code>genesisBasedApplication.name</code>
-      in your <code>build.properties</code>. This way, we have a directory
-      located at <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/&lt;
-      genesisBasedApplication.name&gt;</code> that is an identical copy of
-      <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code>.</p>
       <p>To compile and install your application we have the following basic Ant
       targets:</p>
       <ul>

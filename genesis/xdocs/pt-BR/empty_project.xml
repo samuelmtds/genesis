@@ -150,17 +150,9 @@ xdoclet.dist=c:/projetos/xdoclet-1.2/lib
         são aplicados ao sistema. Na prática, não é necessário alterar tal
         arquivo, a não ser para fazer pequenos ajustes em alguns parâmetros dos
         aspectos ou adicionar novos aspectos a aplicação.</li>
-        <li><b>net/java/dev/genesis/emptyproject/ui/UIUtils.java</b>: Esse
-        arquivo mostra um exemplo de como deve ser inicializado a aplicação,
-        configurando alguns formatadores e conversores de dados. No exemplo, é
-        mostrado como configurá-los para dados do tipo
-        <code>java.util.Date</code>. Lembre-se, se sua aplicação utiliza
-        formatadores e conversores não definidos por padrão pelo genesis, você
-        deve inicializá-los antes de qualquer outra coisa. Utilize o
-        <code>UIUtils</code> como exemplo. </li>
         <li><b>net/java/dev/genesis/emptyproject/MyGenesisApp.java</b>: Arquivo
-        que não faz nada, além de inicializar o <code>UIUtils</code> citado
-        anteriormente. Esse é o arquivo principal do projeto e você deve
+        que não faz nada, além de utilizar o <code>StartupHelper</code> para
+        inicialização. Esse é o arquivo principal do projeto e você deve
         implementar seu projeto adicionando seu código nele. Como citado
         anteriormente, você pode alterar qual a classe principal da sua
         aplicação apenas alterando o <code>build.properties</code>. Logo, você
@@ -177,14 +169,6 @@ xdoclet.dist=c:/projetos/xdoclet-1.2/lib
     <section name="Compilando e instalando sua aplicação">
       <p>O projeto pode ser compilado e instalado no JBoss utilizando a
       ferramenta <a href="http://ant.apache.org/">Ant</a>.</p>
-      <p>É necessário criar um novo diretório no JBoss. Para isso faça uma cópia
-      de <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code> para um novo
-      diretório com o nome que foi definido pela chave
-      <code>genesisBasedApplication.name</code> em seu arquivo
-      <code>build.properties</code>. Dessa forma, teremos um diretório
-      localizado em <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/&lt;
-      genesisBasedApplication.name&gt;</code> que é uma cópia idêntica de
-      <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code>.</p>
       <p>Para compilar e instalar a sua aplicação temos as seguintes tarefas
       básicas do Ant:</p>
       <ul>
