@@ -515,7 +515,29 @@ public class DefaultFormController implements FormController {
                .getKey(), (List)entry.getValue());
       }
 
-      //TODO: reset actual values in form
+      final Map currentValues = PropertyUtils.describe(form);
+
+      for (final Iterator i = currentValues.entrySet().iterator(); 
+            i.hasNext();) {
+         Map.Entry entry = (Map.Entry)i.next();
+         FieldMetadata fieldMeta = formMetadata.getFieldMetadata(entry.getKey()
+               .toString());
+
+         if (fieldMeta == null || fieldMeta.getEqualityComparator().equals(
+               entry.getValue(), state.getValuesMap().get(entry.getKey()))) {
+            i.remove();
+
+            continue;
+         }
+
+         currentValues.put(entry.getKey(), state.getValuesMap().get(
+               entry.getKey()));
+      }
+
+      PropertyUtils.copyProperties(form, currentValues);
+      state.getChangedMap().clear();
+      state.getChangedMap().putAll(currentValues);
+
       fireValuesChanged(state.getValuesMap());
    }
 
