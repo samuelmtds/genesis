@@ -141,7 +141,7 @@ try {
         <code>TransactionalInjector</code> pode ser configurada com o parâmetro
         do aspecto de nome <code>transactionalInjector</code>. O objeto de
         contexto passado para o método <code>init(Object)</code> da
-        implementação será a instância de <code>CrossCuttingInfo</code>
+        implementação será a instância de <code>AspectContext</code>
         recebida.</p>
         <p>A classe <code>HibernateTransactionalInjector</code>, que, assim como
         o aspecto, está definida em <code>net.java.dev.genesis.aspect</code> é
@@ -352,7 +352,7 @@ public interface FormControllerFactory {
       <subsection name="Parâmetros">
         <table>
           <tr>
-            <th>Aspecto</th>
+            <th>Aspecto / Mixin</th>
             <th>Nome</th>
             <th>Tipo</th>
             <th>Descrição</th>
@@ -360,22 +360,22 @@ public interface FormControllerFactory {
             <th>Valor padrão</th>
           </tr>
           <tr>
-            <td>CommandInvocationAspect</td>
+            <td>CommandInvocationAspect$CommandResolverImpl</td>
             <td>useFastMode</td>
             <td>boolean</td>
             <td>Define se o processo que determina se um método é remoto ou não
             será realmente executado ou se todo método interceptado será
             considerado no mínimo remoto</td>
-            <td><b>Sim</b></td>
+            <td>Não</td>
             <td><code>true</code></td>
           </tr>
           <tr>
             <td>CriteriaCommandExecutionAspect</td>
-            <td>useOriginalMethod</td>
+            <td>preventStackOverflow</td>
             <td>boolean</td>
-            <td>Define como o nome do método que deve ser executado será obtido
-            da instância de <code>MethodJoinPoint</code>. Deve ser
-            <code>true</code> para os modos de execução locais</td>
+            <td>Faz checagens para garantir que o aspecto não seja chamado
+            recursivamente. Deve ser <code>true</code> para os modos de
+            execução locais</td>
             <td>Não</td>
             <td><code>false</code></td>
           </tr>
@@ -395,6 +395,23 @@ public interface FormControllerFactory {
             <code>java.rmi.NoSuchObjectException</code> ocorrer</td>
             <td>Não</td>
             <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td rowspan="2">FormMetadataFactoryAspect$AspectFormMetadataFactory</td>
+            <td>scriptFactory</td>
+            <td>Nome qualificado completo/apelido de classe</td>
+            <td>Nome de uma classe que implemente
+            <code>net.java.dev.genesis.script.ScriptFactory</code></td>
+            <td>Não</td>
+            <td><code>jxpath</code></td>
+          </tr>
+          <tr>
+            <td>scriptFactoryProperties</td>
+            <td>String no formato chave1=valor1[,chave2=valor2,...,chaveN=valorN]</td>
+            <td>Propriedades a serem passadas para a instância de
+            <code>net.java.dev.genesis.script.ScriptFactory</code></td>
+            <td>Não</td>
+            <td>Não possui</td>
           </tr>
           <tr>
             <td>LocalCommandExecutionAspect</td>
@@ -440,7 +457,7 @@ public interface FormControllerFactory {
         caso o aspecto que os define for utilizado.</p>
         <table>
           <tr>
-            <th>Aspecto</th>
+            <th>Aspecto/Mixin</th>
             <th>Nome</th>
             <th>Tipo</th>
             <th>Descrição</th>
@@ -548,14 +565,13 @@ public interface FormControllerFactory {
 <source>
 <![CDATA[
 <!DOCTYPE aspectwerkz PUBLIC
-      "-//AspectWerkz//DTD 1.0//EN"
-      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
+      "-//AspectWerkz//DTD 2.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_2_0.dtd">
 <aspectwerkz>
    <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
       <pointcut name="executeCommand"
-         expression="execution(@Remotable * ...*(..)) OR
-                     execution(@Transactional * ...*(..))" />
+         expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
       <!-- genesis pointcuts -->
@@ -573,14 +589,15 @@ public interface FormControllerFactory {
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution"
          expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
-      <pointcut name="waitCursorExecution"
-         expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
+      <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
 
       <!-- genesis aspects -->
-      <aspect class="CommandInvocationAspect" />
-      <aspect class="FormMetadataFactoryAspect" />
-      <aspect class="FormControllerFactoryAspect" />
-      <aspect class="ViewMetadataFactoryAspect" />
+      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
+      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
+      <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
+      <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
+      <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
+
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />
