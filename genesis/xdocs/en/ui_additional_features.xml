@@ -610,7 +610,7 @@ public class DataProviderFormExample {
    /**
     * @DataProvider objectField=state
     */
-   public Collection populateStates() {
+   public List populateStates() {
       // returns a Collection containing State instances
    }
 
@@ -671,7 +671,7 @@ public class DataProviderFormExample {
    /**
     * @DataProvider objectField=state callOnInit=false
     */
-   public Collection populateStates() {
+   public List populateStates() {
       // returns a Collection containing State instances
    }
 

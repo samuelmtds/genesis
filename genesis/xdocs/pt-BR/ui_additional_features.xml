@@ -391,8 +391,8 @@ public String getAtributo() {
       padrão registrado, <code>StringEmptyResolver</code>, e que esta
       implementação já expõe um atributo que permite configurar se os espaços
       serão removidos ou não, não é necessário especificar o nome da classe que
-      implementa a interface e sim apenas definir a propriedade <code>trim</code
-      > como <code>false</code>. Se não fosse possível configurar a instância
+      implementa a interface e sim apenas definir a propriedade <code>trim</code>
+      como <code>false</code>. Se não fosse possível configurar a instância
       padrão, uma outra implementação poderia ser usada da seguinte forma:</p>
 <source>
 /**
@@ -407,13 +407,12 @@ public String getAtributo() {
         <p>Conforme já mencionado, é muito comum determinar condições baseadas
         no fato de um campo estar vazio ou não. O genesis expõe funções JXPath
         auxiliares que podem ser usadas nas condições com o intuito de facilitar
-        esta tarefa: <code>g:isEmpty(any)</code> e <code>g:isNotEmpty(any)</code
-        >.</p>
+        esta tarefa: <code>g:isEmpty(any)</code> e <code>g:isNotEmpty(any)</code>.</p>
         <p>Quando o valor passado para elas é uma propriedade do form, o
         <code>EmptyResolver</code> configurado para ela - determinado pelo
         processo acima descrito - é utilizado para determinar o retorno da
-        função. Caso seja uma variável ou mesmo uma constante, obtém-se de <code
-        >EmptyResolverRegistry</code> a implementação padrão de
+        função. Caso seja uma variável ou mesmo uma constante, obtém-se de
+        <code>EmptyResolverRegistry</code> a implementação padrão de
         <code>EmptyResolver</code> para o tipo da expressão e esta é usada.
         Pode-se utilizar estas funções como mostrado abaixo:</p>
 <source>
@@ -468,12 +467,10 @@ public void setAtributoDependente(String atributoDependente) {
         delas for zero.</li>
         <li><code>StringEqualityComparator</code> considera <code>String</code>s
         nulas ou de tamanho zero após removidos os espaços como iguais. Também
-        são consideradas iguais se <code>s1.trim().equals(s2.trim())</code>.</li
-        >
+        são consideradas iguais se <code>s1.trim().equals(s2.trim())</code>.</li>
         <li>Os casos restantes são tratados por
         <code>DefaultEqualityComparator</code> que determina como iguais duas
-        instâncias nulas ou utiliza o retorno de <code>o1.equals(o2)</code>.</li
-        >
+        instâncias nulas ou utiliza o retorno de <code>o1.equals(o2)</code>.</li>
       </ul>
       <subsection name="Verificando mudanças de valores em campos e fazendo
           comparações em expressões condicionais">
@@ -624,7 +621,7 @@ public class ExemploDataProviderForm {
    /**
     * @DataProvider objectField=estado
     */
-   public Collection populaEstados() {
+   public List populaEstados() {
       // retorna uma Collection contendo instâncias de Estado
    }
 
@@ -686,7 +683,7 @@ public class ExemploDataProviderForm {
    /**
     * @DataProvider objectField=estado callOnInit=false
     */
-   public Collection populaEstados() {
+   public List populaEstados() {
       // retorna uma Collection contendo instâncias de Estado
    }
 
