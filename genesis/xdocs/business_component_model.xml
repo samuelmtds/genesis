@@ -266,8 +266,8 @@ public class ExemploIntegracaoHibernate extends AbstractHibernateCommand {
     <section name="Paginação">
       <p>O suporte à paginação está implementado no pacote <code>
       net.java.dev.genesis.paging</code>. As duas classes principais são <code>
-      Page</code>, que representa uma página de resultados e <code>Pager</code>
-      é responsável por gerar as páginas.</p>
+      Page</code>, que representa uma página de resultados e <code>Pager</code>,
+      que é responsável por gerar as páginas.</p>
       <p>As seguintes propriedades estão expostas em <code>Page</code> através
       de getters e setters:
       <ul>
@@ -314,6 +314,13 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
    }
 }
 </source>
+        <p>Para se obter as instâncias de <code>ClasseMapeada</code> de dentro
+        da página retornada, basta apenas chamar <code>getResults()</code> no
+        objeto <code>Page</code> retornado. Essa <code>List</code> - <code>
+        getResults()</code> retorna uma <code>List</code>, conforme explicado
+        nas propriedades de <code>Page</code>, logo acima - sempre conterá
+        elementos do mesmo tipo que estariam presentes numa chamada a <code>
+        query.list()</code> ou <code> criteria.list()</code>.</p>
       </subsection>
     </section>
     <section name="Pesquisas dinâmicas com Criteria">
@@ -352,4 +359,8 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
     </section>
   </body>
 </document>
+
+
+
+
 
