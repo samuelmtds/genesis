@@ -18,10 +18,8 @@
  */
 package net.java.dev.genesis.aspect;
 
+import java.awt.Component;
 import java.awt.Cursor;
-
-import net.java.dev.genesis.ui.thinlet.BaseThinlet;
-
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
 /**
@@ -33,16 +31,16 @@ public class WaitCursorAspect {
     * @Around waitCursorExecution
     */
    public Object waitCursorExecution(final JoinPoint jp) throws Throwable {
-      final BaseThinlet o = (BaseThinlet) jp.getTarget();
-      final Cursor oldCursor = o.getCursor();
+      final Component c = (Component) jp.getTarget();
+      final Cursor oldCursor = c.getCursor();
 
       Object ret = null;
 
       try {
-         o.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+         c.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
          ret = jp.proceed();
       } finally {
-         o.setCursor(oldCursor);
+         c.setCursor(oldCursor);
       }
 
       return ret;
