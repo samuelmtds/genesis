@@ -782,24 +782,23 @@ public class ExemploDataProviderForm {
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
       <code>@VisibleWhen</code> também será possível.</p>
-      <subsection name="Invocando os métodos de DataProvider de dentro de um 
+      <subsection name="Invocando os métodos de @DataProvider de dentro de um 
       Form">
-        <p>Para que os dados retornados de um <code>DataProvider</code> possam
+        <p>Para que os dados retornados de um <code>@DataProvider</code> possam
         ser populados no <code>Form</code>, o genesis necessita ter ciência
         da execução do mesmo. Isso ocorre com a execução de 
-        <code>invokeFormAction(..)</code> como visto 
+        <code>invokeFormAction(...)</code> como visto 
         <a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
-        aqui</a>, através da utilização de <code>invokeFormAction(...)</code>.
-        </p>
-        <p>Uma segunda opção para realizar este objetivo do próprio 
+        aqui</a>.</p>
+        <p>Uma segunda opção para realizar este objetivo a partir do
         <code>form</code> (sem a utilização da <code>view</code>) é através 
         da utilização das classes <code>ActionInvoker</code> e 
         <code>BaseForm</code>.</p>
         <p>A classe <code>ActionInvoker</code> possui dois métodos estáticos:
         <ul>
-          <li><code>invoke(Form, nome de ação)</code>: que executa uma
+          <li><code>invoke(form, nomeDeAcao)</code>: que executa uma
           ação do <code>form</code> passado como parâmetro.</li>
-          <li><code>refresh(Form)</code>: que faz a atualização de informações
+          <li><code>refresh(form)</code>: que faz a atualização de informações
           do <code>form</code> passado como parâmetro.</li>
         </ul>
         </p>
@@ -807,7 +806,7 @@ public class ExemploDataProviderForm {
         dos <code>forms</code> e dessa forma, tem-se acesso a dois métodos
         similares:
         <ul>
-          <li><code>invoke(nome de ação)</code>: que executa uma
+          <li><code>invoke(nomeDeAcao)</code>: que executa uma
           ação da própria instância de <code>form</code>.</li>
           <li><code>refresh()</code>: que faz a atualização de informações
           da própria instância de <code>form</code>.</li>

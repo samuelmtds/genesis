@@ -766,9 +766,9 @@ public class DataProviderFormExample {
       these methods if they need to be triggered by a button (such as Search,
       for example) and, when that is true, using <code>@EnabledWhen</code> and
       <code>@VisibleWhen</code> is also allowed.</p>
-      <subsection name="Invoking DataProvider methods within a Fom">
+      <subsection name="Invoking @DataProvider methods within a Fom">
         <p>In order to have a form re-populated with the data returned by
-        a <code>DataProvider</code> annotated method, genesis must know it has
+        a <code>@DataProvider</code> annotated method, genesis must know it has
         been executed. This will happen whenever 
         <code>invokeFormAction(...)</code> is called from a view as seen 
         <a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">
@@ -779,16 +779,16 @@ public class DataProviderFormExample {
         </p>
         <p>The <code>ActionInvoker</code> class has two static methods:
         <ul>
-          <li><code>invoke(Form, action name)</code>: which executes an action
+          <li><code>invoke(form, actionName)</code>: which executes an action
           from the given parameter <code>form</code>.</li>
-          <li><code>refresh(Form)</code>: which updates the given
+          <li><code>refresh(form)</code>: which updates the given
           <code>Form</code> data.</li>
         </ul>
         </p>
         <p>The <code>BaseForm</code> class might be use as a parent class of the
         <code>forms</code> and by doing this, we'll have two similiar methods:
         <ul>
-          <li><code>invoke(action name)</code>: which executes an action located
+          <li><code>invoke(actionName)</code>: which executes an action located
           at the current <code>form</code> instance.</li>
           <li><code>refresh()</code>: which updates the current 
           <code>form</code> instance.</li>
