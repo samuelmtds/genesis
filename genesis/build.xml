@@ -9,6 +9,7 @@
 	<property name="build.dir" value="${genesis.build.dir}" />
 	<property name="build.dest" value="${build.dir}/classes" />
 	<property name="src.dir" value="src" />
+   <property name="test.src.dir" value="test-src" />
 	<property name="build.src" value="${build.dir}/src" />
    <property name="build.docs" value="${build.dir}/docs" />
 	<property name="test.dest" value="${build.dir}/test-classes" />
@@ -40,10 +41,6 @@
 		<fileset dir="${genesis.commons.dist}" includes="*.jar" />
 	</path>
 
-   <path id="script.path">
-      <fileset dir="${genesis.script.dist}" includes="*.jar" />
-   </path>
-
 	<path id="hibernate.path">
 		<fileset dir="${genesis.hibernate.dist}" includes="*.jar" />
 	</path>
@@ -63,17 +60,22 @@
 	</path>
 
 	<path id="client.dependency.classpath">
-      <path location="${genesis.module.shared}/${build.dest}" />
-      <path refid="script.path" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
-      <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+		<path location="${genesis.module.shared}/${build.dest}" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
+		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
 
-	<path id="aspect.dependency.classpath">
+   <path id="client.tests.dependency.classpath">
+      <path refid="client.dependency.classpath" />
+      <fileset dir="${genesis.aspectwerkz.dist}" includes="junit-*.jar" />
+      <path location="${genesis.module.client}/${build.dest}" />
+   </path>
+
+   <path id="aspect.dependency.classpath">
 		<path location="${genesis.module.shared}/${build.dest}" />
 		<path location="${genesis.module.client}/${build.dest}" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
@@ -89,7 +91,6 @@
 	<path id="tests.dependency.classpath">
 		<path location="${genesis.module.shared}/${genesis.annotation.dest}" />
 		<path location="${genesis.module.client}/${build.dest}" />
-      <path refid="script.path" />  
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="junit*.jar" />
 		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
@@ -278,7 +279,7 @@
       </copy>    
 	</target>
 
-	<target name="test:compile" depends="test:hibernatedoclet,test:webdoclet">
+	<target name="test:compile" depends="test:client.compile,test:hibernatedoclet,test:webdoclet">
 		<mkdir dir="${genesis.module.tests}/${test.dest}" />
 		<javac destdir="${genesis.module.tests}/${test.dest}"
 		       debug="true"
@@ -369,6 +370,16 @@
 		</copy>
 	</target>
 
+   <target name="test:client.compile">
+      <mkdir dir="${genesis.module.client}/${test.dest}" />  
+      <javac destdir="${genesis.module.client}/${test.dest}"
+             debug="true"
+             source="1.4"
+             classpathref="client.tests.dependency.classpath">
+         <src path="${genesis.module.client}/${test.src.dir}" />
+      </javac>
+   </target>  
+
    <target name="test:create.jboss.app.dir" unless="app.dir.exists">
       <mkdir dir="${genesis.jboss.app}" />
       <copy todir="${genesis.jboss.app}">
@@ -435,14 +446,18 @@
 				<pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
 				<pathelement path="${genesis.jdbc.driver}" />
 				<path location="${genesis.module.tests}/${genesis.weaving.dest}" />
+            <path location="${genesis.module.client}/${test.dest}" />
 			</classpath>
 			<batchtest todir="${genesis.module.tests}/${test.reportsDirectory}">
-				<fileset dir="${genesis.module.tests}/${src.dir}">
-					<include name="**/*Test.java" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
+            <fileset dir="${genesis.module.client}/${test.src.dir}">
+               <include name="**/*Test.java" />
+            </fileset>
+            <fileset dir="${genesis.module.tests}/${src.dir}">
+               <include name="**/*Test.java" />
+            </fileset>
+         </batchtest>
+      </junit>
+   </target>
 
 	<target name="test:test-with-html-reports" depends="test:test">
 		<junitreport todir="${genesis.module.tests}/${test.reportsDirectory}">

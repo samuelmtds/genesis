@@ -31,15 +31,16 @@ import java.util.Map;
 import java.util.Set;
 
 import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
-import net.java.dev.genesis.script.ScriptContext;
-import net.java.dev.genesis.script.ScriptFactory;
-import net.java.dev.genesis.script.jxpath.JXPathScriptFactory;
+import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.controller.FormStateImpl;
+import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.jxpath.ClassFunctions;
+import org.apache.commons.jxpath.JXPathContext;
 
 public class ExtensionJXPathFunctionsTest extends TestCase {
 
@@ -50,18 +51,19 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
    private final FormState state = new FormStateImpl();
    private final Map changedMap = state.getChangedMap();
-   private final ScriptFactory scriptFactory = new JXPathScriptFactory();
 
-   private ScriptContext getContext(final Object root) throws Exception {
-      ScriptContext ctx = scriptFactory.newScript().newContext(root);
-      ctx.declare(FormController.CURRENT_STATE_KEY,
+   private JXPathContext getContext(final Object root) throws Exception {
+      final FormMetadata formMetadata = getFormMetadata(root);
+      final JXPathContext ctx = JXPathContext.newContext(root);
+      ctx.getVariables().declareVariable(FormController.CURRENT_STATE_KEY,
             state);
-      ctx.declare(
-            FormController.FORM_METADATA_KEY, getFormMetadata(root));
+      ctx.getVariables().declareVariable(
+            FormController.FORM_METADATA_KEY, formMetadata);
+      ctx.setFunctions(new ClassFunctions(ExtensionFunctions.class, "g"));
       return ctx;
    }
 
-   private void primitiveFieldsEmptyTest(final ScriptContext ctx) {
+   private void primitiveFieldsEmptyTest(final JXPathContext ctx) {
       emptyTester(ctx, "fieldBoolean", false);
       emptyTester(ctx, "fieldByte", false);
       emptyTester(ctx, "fieldChar", false);
@@ -72,7 +74,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       emptyTester(ctx, "fieldShort", false);
    }
 
-   private void objectFieldsEmptyTest(final ScriptContext ctx,
+   private void objectFieldsEmptyTest(final JXPathContext ctx,
          final boolean isEmpty) {
       emptyTester(ctx, "fieldBooleanWrapper", isEmpty);
       emptyTester(ctx, "fieldByteWrapper", isEmpty);
@@ -95,7 +97,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       arraysAndCollectionsEmptyTest(ctx, isEmpty);
    }
 
-   private void arraysAndCollectionsEmptyTest(final ScriptContext ctx,
+   private void arraysAndCollectionsEmptyTest(final JXPathContext ctx,
          final boolean isEmpty) {
       emptyTester(ctx, "fieldBooleanArray", isEmpty);
       emptyTester(ctx, "fieldBooleanWrapperArray", isEmpty);
@@ -120,10 +122,10 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       emptyTester(ctx, "fieldMap", isEmpty);
    }
 
-   private void emptyTester(final ScriptContext ctx, final String fieldName,
+   private void emptyTester(final JXPathContext ctx, final String fieldName,
          final boolean isEmpty) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:isEmpty(" + fieldName + ")"));
+      final boolean result = Boolean.TRUE.equals(JXPathContext.compile(
+            "g:isEmpty(" + fieldName + ")").getValue(ctx));
 
       assertTrue("The field '" + fieldName
             + (isEmpty ? "' is not empty" : "is empty"), isEmpty ? result
@@ -134,10 +136,10 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       changedMap.putAll(PropertyUtils.describe(new TestForm()));
    }
 
-   private void changeTester(final ScriptContext ctx, final String fieldName,
+   private void changeTester(final JXPathContext ctx, final String fieldName,
          final boolean changed) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:hasChanged(" + fieldName + ")"));
+      final boolean result = Boolean.TRUE.equals(JXPathContext.compile(
+            "g:hasChanged(" + fieldName + ")").getValue(ctx));
 
       assertTrue("The field '" + fieldName
             + (changed ? "' has not changed" : "changed"), changed ? result
@@ -163,20 +165,21 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       return properties;
    }
 
-   private void equalsTester(final ScriptContext ctx, final String fieldName,
+   private void equalsTester(final JXPathContext ctx, final String fieldName,
          final boolean isEqual) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:equals(" + fieldName + ", " + fieldName + "Clone)"));
+      final boolean result = Boolean.TRUE.equals(JXPathContext.compile(
+            "g:equals(" + fieldName + ", " + fieldName + "Clone)")
+            .getValue(ctx));
 
       assertTrue("The field '" + fieldName
             + (isEqual ? "' is not equal to " : "is equal to ") + fieldName
             + "Clone", isEqual ? result : !result);
    }
 
-   private void equalsTester(final ScriptContext ctx, final String fieldName,
+   private void equalsTester(final JXPathContext ctx, final String fieldName,
          final String value, final boolean isEqual) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:equals(" + fieldName + ", " + value + ")"));
+      final boolean result = Boolean.TRUE.equals(JXPathContext.compile(
+            "g:equals(" + fieldName + ", " + value + ")").getValue(ctx));
 
       assertTrue("The field '" + fieldName
             + (isEqual ? "' is not equal to " : "is equal to ") + value,
@@ -185,7 +188,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
    public void testIsEmptyFunction() throws Exception {
       final TestForm form = new TestForm();
-      final ScriptContext ctx = getContext(form);
+      final JXPathContext ctx = getContext(form);
 
       // Primitives cannot be empty
       primitiveFieldsEmptyTest(ctx);
@@ -214,7 +217,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       changedMap.clear();
 
       final TestForm form = new TestForm();
-      final ScriptContext ctx = getContext(form);
+      final JXPathContext ctx = getContext(form);
 
       final Set keySet = PropertyUtils.describe(form).keySet();
 
@@ -238,7 +241,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
    public void testIsEqualFunction() throws Exception {
       final TestForm form = new TestForm();
-      final ScriptContext ctx = getContext(form);
+      final JXPathContext ctx = getContext(form);
 
       final Map properties = cloneProperties(form);
       properties.remove("class");

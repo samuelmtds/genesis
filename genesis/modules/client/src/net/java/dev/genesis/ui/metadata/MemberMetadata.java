@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,25 +18,37 @@
  */
 package net.java.dev.genesis.ui.metadata;
 
-import net.java.dev.genesis.script.ScriptExpression;
+import org.apache.commons.jxpath.CompiledExpression;
 
 public abstract class MemberMetadata {
-   private ScriptExpression enabledCondition;
-   private ScriptExpression visibleCondition;
+   private CompiledExpression enabledCondition;
+   private CompiledExpression visibleCondition;
 
-   public ScriptExpression getEnabledCondition() {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public CompiledExpression getEnabledCondition() {
       return enabledCondition;
    }
 
-   public void setEnabledCondition(ScriptExpression enabledCondition) {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public void setEnabledCondition(CompiledExpression enabledCondition) {
       this.enabledCondition = enabledCondition;
    }
 
-   public ScriptExpression getVisibleCondition() {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public CompiledExpression getVisibleCondition() {
       return visibleCondition;
    }
 
-   public void setVisibleCondition(ScriptExpression visibleCondition) {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public void setVisibleCondition(CompiledExpression visibleCondition) {
       this.visibleCondition = visibleCondition;
    }
 
