@@ -19,10 +19,8 @@
 package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.InvocationTargetException;
-import java.rmi.RemoteException;
 
 import javax.naming.InitialContext;
-import javax.rmi.PortableRemoteObject;
 
 import net.java.dev.genesis.ejb.CommandExecutorLocal;
 import net.java.dev.genesis.ejb.CommandExecutorLocalHome;
