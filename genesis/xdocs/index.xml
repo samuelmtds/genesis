@@ -2,19 +2,58 @@
 <document>
   <properties>
     <title>Genesis Home</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
     <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
   </properties>
   <body>
-    <section name="Bem-vindo ao Genesis">
+    <section name="Bem-vindo ao genesis">
     <p>
-    O <b>Genesis</b> é um framework open source que tem como objetivo atingir a <b>simplicidade, 
-    produtividade, testabilidade e escalabilidade</b> no desenvolvimento de aplicações corporativas.<br/>
-    Ele combina de forma única biblotecas públicas que se tornaram padrões de mercado como 
-    <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b> entre outras e reune toda a 
-    experiencia da <b>Summa</b> na construção de aplicações de missão crítica.<br/>
-    Foi desenvolvido e testado a partir dos requisitos de um usuário real, 
-    tendo por isso acumulado a experiencia obtida na execução do projeto, atendendo a solução hoje 
-    implantada no cliente mais de 1 milhão de transações por dia, o que comprova a escalabilidade da solução.
+    O <b>genesis</b> é um framework open source que tem como objetivo atingir a 
+    <b>simplicidade, produtividade, testabilidade e escalabilidade</b> no 
+    desenvolvimento de aplicações corporativas.<br/>
+    Ele combina de forma única biblotecas públicas que se tornaram padrões de 
+    mercado como <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b> entre 
+    outras e reúne toda a experiência da <b>Summa</b> na construção de 
+    aplicações de missão crítica.<br/>
+    Foi desenvolvido e testado a partir dos requisitos de usuários reais, 
+    sendo resultado da experiência obtida na execução de projetos. Uma das 
+    soluções hoje implantadas em um cliente lida com mais de 1 milhão de 
+    transações por dia, o que comprova a escalabilidade da solução.
+    </p>
+    </section>
+    <section name="Principais características">
+    <p>
+    Entre as principais características do genesis pode-se citar:
+    <ul>
+       <li><b>Simplicidade:</b> não existem requirementos complexos da parte do 
+       framework: seus componentes não precisam estender classes, não é 
+       necessário expor uma interface, configurar dezenas de linhas de xml por 
+       componente e nem mesmo obter uma instância deles usando uma factory ou 
+       interface.</li>
+       <li><b>Produtividade:</b> seu código basicamente se resume a lógica de 
+       negócios e o framework é de fácil assimilação, o que torna 
+       desenvolvedores que saibam apenas Java básico extremamente produtivos em
+       pouquíssimo tempo.</li>
+       <li><b>Testabilidade:</b> o framework foi concebido de modo que testes
+       unitários possam ser escritos até mesmo para seus componentes de 
+       interface gráfica.</li>
+       <li><b>Escalabilidade:</b> sua arquitetura stateless (sem estado) e sem
+       contenção possibilita o desenvolvimento de soluções escaláveis sem grande
+       esforço por parte do programador.</li>
+       <li><b>Remotabilidade/transacionalidade transparente:</b> através do uso 
+       de AOP, uma chamada a um método pode ser facilmente configurada para
+       execução remota e/ou transacional sem alteração no código cliente.</li>
+       <li><b>Suporte ao desenvolvimento de UI:</b> o uso do genesis-client
+       torna o desenvolvimento de UIs extremamente simples, permitindo que a 
+       partir de pouquíssimas configurações e meros JavaBeans possa-se controlar
+       todo o fluxo da UI e características comuns como visibilidade, travamento
+       de campos, limpeza em cascata, chamada de métodos em determinadas 
+       condições, população de componentes como combos e tabelas de forma 
+       automática e controlada pelo framework.</li>
+       <li><b>Integração com Hibernate:</b> a integração com o Hibernate permite
+       que se construa de forma extremamente fácil buscas paginadas, pesquisas
+       dinâmicas e etc.</li>
+    </ul>
     </p>
     </section>
     <section name="Genesis Server">
