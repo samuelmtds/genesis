@@ -102,8 +102,11 @@ public class ThinletBinder {
 
    protected void updateAndSave(Collection dataProviders, boolean displayAll) 
          throws Exception {
+      final Map changedMap = controller.getChangedMap();
+      
       invokeCallWhenActions();
       populateDataProviders(controller.getFormMetadata(), dataProviders);
+      controller.update();
       updateEnabledState();
       updateVisibleState();
 
@@ -114,7 +117,8 @@ public class ThinletBinder {
          toDisplay = PropertyUtils.describe(form);
          toDisplay.keySet().retainAll(boundFieldNames);
       } else {
-         toDisplay = controller.getChangedMap();
+         changedMap.putAll(controller.getChangedMap());
+         toDisplay = changedMap;
       }
 
       if (log.isDebugEnabled()) {
@@ -335,7 +339,7 @@ public class ThinletBinder {
       final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvidedListByFieldName
             .get(name);
 
-      dataMeta.populateObjectField(form, list, selected);
+      dataMeta.populateSelectedFields(form, list, selected);
       controller.update();
       updateAndSave(controller.getDataProviderActions(), false);
    }
@@ -381,6 +385,7 @@ public class ThinletBinder {
       }
 
       final Object ret = dataProviderMetadata.invoke(form);
+      dataProviderMetadata.resetSelectedFields(form);
       final List items = (dataProviderMetadata.getObjectField().isArray()) ? Arrays
             .asList((Object[]) ret)
             : (List) ret;

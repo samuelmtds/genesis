@@ -49,17 +49,44 @@ public class DataProviderMetadata extends MethodMetadata {
    public void setIndexField(FieldEntry indexField) {
       this.indexField = indexField;
    }
-   
+
    public boolean isProvider(){
       return getObjectField() != null || getIndexField() != null;
    }
    
-   public void populateObjectField(final Object target, final List objectList, final int[] selectedIndeces) throws Exception {
-      final List selectedObjects = new ArrayList();
+   public void resetSelectedFields(final Object target) throws Exception {
+      if (objectField != null) {
+         PropertyUtils.setProperty(target, objectField.getFieldName(), null);
+      }
+      if (indexField != null) {
+         PropertyUtils.setProperty(target, indexField.getFieldName(), null);
+      }
+   }
+
+   public void populateSelectedFields(final Object target, final List objectList, final int[] selectedIndeces) throws Exception {
+      if (objectField != null) {
+         populateObjectField(target, objectList, selectedIndeces);
+      }
+      if (indexField != null) {
+         populateIndexField(target, selectedIndeces);
+      }
+   }
+
+   private void populateObjectField(final Object target, final List objectList, final int[] selectedIndeces) throws Exception {
+      final List selectedObjects = new ArrayList(selectedIndeces.length);
       for (int i = 0; i < selectedIndeces.length; i++) {
          selectedObjects.add(objectList.get(selectedIndeces[i]));
       }
       setProperty(target, objectField, selectedObjects);
+   }
+
+   private void populateIndexField(final Object target, final int[] selectedIndeces) throws Exception {
+      final List list = new ArrayList(selectedIndeces.length);
+      // Wraps the int array
+      for (int i = 0; i < selectedIndeces.length; i++) {
+         list.add(new Integer(selectedIndeces[i]));
+      }
+      setProperty(target, objectField, list);
    }
 
    private void setProperty(final Object target, final FieldEntry field, final List values) throws Exception {
