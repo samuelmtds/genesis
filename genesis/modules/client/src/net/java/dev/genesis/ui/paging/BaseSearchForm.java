@@ -19,8 +19,9 @@
 package net.java.dev.genesis.ui.paging;
 
 import net.java.dev.genesis.paging.Page;
+import net.java.dev.genesis.ui.BaseForm;
 
-public abstract class BaseSearchForm {
+public abstract class BaseSearchForm extends BaseForm {
    private int pageNumber;
    private boolean lastPage = true;
    private boolean runSearch;

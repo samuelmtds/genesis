@@ -11,9 +11,11 @@
          expression="oldExecuteCommand OR execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
       <pointcut name="localExecution" expression="execution(* net.java.dev.genesis.tests....LocalCommandExecutionTest$*.*(..))
       		OR execution(* net.java.dev.genesis.tests....LocalHibernateTransactionInjetorTest$*.*(..))" />
+      <pointcut name="form" expression="within(@Form ..)" />
 
       <!-- Genesis pointcuts -->
-      <pointcut name="formMetadataFactoryIntroduction" expression="within(@Form ..)" />
+      <pointcut name="formMetadataFactoryIntroduction" expression="form" />
+      <pointcut name="formControllerFactoryIntroduction" expression="form" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
          expression="within(net.java.dev.genesis.command.Command+)
@@ -27,6 +29,7 @@
       <!-- Genesis Aspects -->
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="FormControllerFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="2500" />
          <param name="keepThreadInstance" value="true" />
