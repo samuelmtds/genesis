@@ -136,6 +136,7 @@ public class ThinletBinder {
    }
 
    public void refresh() throws Exception {
+      controller.update();
       updateAndSave(controller.getDataProviderActions(), false, false);
    }
 
