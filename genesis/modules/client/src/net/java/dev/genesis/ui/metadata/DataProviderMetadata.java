@@ -29,6 +29,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 public class DataProviderMetadata extends MethodMetadata {
    private FieldEntry objectField;
    private FieldEntry indexField;
+   private boolean callOnInit;
 
    public DataProviderMetadata(final Method method) {
       super(method);
@@ -48,6 +49,14 @@ public class DataProviderMetadata extends MethodMetadata {
 
    public void setIndexField(FieldEntry indexField) {
       this.indexField = indexField;
+   }
+
+   public boolean isCallOnInit() {
+      return callOnInit;
+   }
+
+   public void setCallOnInit(boolean callOnInit) {
+      this.callOnInit = callOnInit;
    }
 
    public boolean isProvider(){

@@ -100,15 +100,16 @@ public class ThinletBinder {
       bindActionMetadatas(formMetadata);
       bindDataProviders(dataProviders);
 
-      updateAndSave(dataProviders, true);
+      updateAndSave(dataProviders, true, true);
    }
 
-   protected void updateAndSave(Collection dataProviders, boolean displayAll) 
-         throws Exception {
+   protected void updateAndSave(Collection dataProviders, boolean displayAll, 
+         boolean firstCall) throws Exception {
       final Map changedMap = controller.getChangedMap();
       
       invokeCallWhenActions();
-      populateDataProviders(controller.getFormMetadata(), dataProviders);
+      populateDataProviders(controller.getFormMetadata(), dataProviders, 
+            firstCall);
       controller.update();
       updateEnabledState();
       updateVisibleState();
@@ -132,7 +133,7 @@ public class ThinletBinder {
    }
 
    public void refresh() throws Exception {
-      updateAndSave(controller.getDataProviderActions(), false);
+      updateAndSave(controller.getDataProviderActions(), false, false);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
@@ -251,10 +252,10 @@ public class ThinletBinder {
       controller.populate(properties);
 
       try {
-         updateAndSave(controller.getDataProviderActions(), false);
+         updateAndSave(controller.getDataProviderActions(), false, false);
       } catch (Exception e) {
          controller.reset();
-         updateAndSave(controller.getDataProviderActions(), false);
+         updateAndSave(controller.getDataProviderActions(), false, false);
          throw e;
       }
    }
@@ -310,15 +311,16 @@ public class ThinletBinder {
          }
       }
       
-      invokeDataProviderMethod(actionMetadata, true);
+      invokeDataProviderMethod(actionMetadata, true, false);
       controller.update();
-      updateAndSave(controller.getDataProviderActions(), false);
+      updateAndSave(controller.getDataProviderActions(), false, false);
    }
 
    protected void bindDataProviders(final Collection dataProviders) {
       for (final Iterator i = dataProviders.iterator(); i.hasNext();) {
          final DataProviderMetadata dataProviderMetadata = 
                (DataProviderMetadata)i.next();
+
          if (!dataProviderMetadata.isProvider()) {
             continue;
          }
@@ -365,23 +367,24 @@ public class ThinletBinder {
 
       dataMeta.populateSelectedFields(form, list, selected);
       controller.update();
-      updateAndSave(controller.getDataProviderActions(), false);
+      updateAndSave(controller.getDataProviderActions(), false, false);
    }
 
    protected void populateDataProviders(final FormMetadata formMetadata, 
-         final Collection dataProviders) throws Exception {
+         final Collection dataProviders, final boolean firstCall) 
+         throws Exception {
       for (final Iterator i = dataProviders.iterator(); 
             i.hasNext(); ) {
          final DataProviderMetadata dataProviderMetadata = 
                (DataProviderMetadata)i.next();
-         
-         invokeDataProviderMethod(dataProviderMetadata, false);
+
+         invokeDataProviderMethod(dataProviderMetadata, false, firstCall);
       }
    }
    
    protected void invokeDataProviderMethod(
-         final DataProviderMetadata dataProviderMetadata, boolean invokeActions) throws Exception {
-      
+         final DataProviderMetadata dataProviderMetadata, boolean invokeActions,
+         boolean firstCall) throws Exception {
       if (!dataProviderMetadata.isProvider()) {
          if (invokeActions) {
             final String actionName = dataProviderMetadata.getName();
@@ -408,10 +411,16 @@ public class ThinletBinder {
                + dataProviderMetadata.getMethodEntry().getMethodName());
       }
 
-      final Object ret = dataProviderMetadata.invoke(form);
-      final List items = (dataProviderMetadata.getObjectField().isArray()) ? Arrays
-            .asList((Object[]) ret)
-            : (List) ret;
+      List items;
+
+      if (firstCall && !dataProviderMetadata.isCallOnInit()) {
+         items = new ArrayList();
+      } else {
+         final Object ret = dataProviderMetadata.invoke(form);
+         items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
+                 (List) ret;
+      }
+
       dataProvided.put(name, items);
       final String className = Thinlet.getClass(component);
 
@@ -460,7 +469,7 @@ public class ThinletBinder {
                   " automatically");
          }
          
-         invokeDataProviderMethod(actionMetadata, true);
+         invokeDataProviderMethod(actionMetadata, true, false);
       }
    }
 

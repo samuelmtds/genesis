@@ -238,6 +238,8 @@ public class FormMetadataFactoryAspect {
                      .get("objectField");
                final String indexFieldName = (String)attributesMap
                      .get("indexField");
+               final String callOnInit = (String)attributesMap
+                     .get("callOnInit");
 
                final DataProviderMetadata dataProviderMetadata = 
                      ((DataProviderMetadata) methodMetadata);
@@ -247,6 +249,8 @@ public class FormMetadataFactoryAspect {
                         "indexField must be specified for @DataProvider in " +
                         methodMetadata.getMethodEntry().getMethodName());
                }
+
+               dataProviderMetadata.setCallOnInit(!"false".equals(callOnInit));
 
                PropertyDescriptor[] descriptors = PropertyUtils
                      .getPropertyDescriptors(formMetadata.getFormClass());
