@@ -23,9 +23,8 @@ import java.util.Map;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.ui.thinlet.ThinletBinder;
-
-import org.apache.commons.jxpath.JXPathContext;
 
 public class DefaultFormControllerTest extends GenesisTestCase {
    private DefaultFormController controller;
@@ -39,6 +38,7 @@ public class DefaultFormControllerTest extends GenesisTestCase {
       controller = new DefaultFormController();
       form = new MockForm();
       controller.setForm(form);
+      controller.setFormMetadata(form.getFormMetadata());
    }
 
    public void testSetup() throws Throwable {
@@ -49,6 +49,7 @@ public class DefaultFormControllerTest extends GenesisTestCase {
          }
       };
       controller.setForm(form);
+      controller.setFormMetadata(form.getFormMetadata());
       controller.setup();
 
       // Assert controller is setup
@@ -56,16 +57,16 @@ public class DefaultFormControllerTest extends GenesisTestCase {
       // Assert controller was evaluated
       assertEquals(Boolean.TRUE, map.get("evaluate(firstCall)"));
       // Assert Script context was created
-      assertNotNull("Script context is null", controller.getContext());
+      assertNotNull("Script context is null", controller.getScriptContext());
       // Assert FormState was created
       assertNotNull("No FormState", controller.getFormState());
       // Assert VariablesMap and Form's Context are the same object
-      assertSame(controller.getVariablesMap(), form.getContext());
+      assertSame(controller.getScriptContext().getContextMap(), form.getContext());
       // Assert FormState is declared on script context
-      assertSame(controller.getFormState(), controller.getVariablesMap().get(
+      assertSame(controller.getFormState(), controller.getScriptContext().getContextMap().get(
             FormController.CURRENT_STATE_KEY));
       // Assert FormMetadata is declared on script context
-      assertSame(controller.getFormMetadata(), controller.getVariablesMap().get(
+      assertSame(controller.getFormMetadata(), controller.getScriptContext().getContextMap().get(
             FormController.FORM_METADATA_KEY));
 
       Exception ex = null;
@@ -80,17 +81,11 @@ public class DefaultFormControllerTest extends GenesisTestCase {
       assertTrue(ex instanceof IllegalStateException);
    }
 
-   public void testCreateJXPathContext() {
-      JXPathContext ctx = controller.createJXPathContext();
+   public void testCreateScriptContext() {
+      ScriptContext ctx = controller.createScriptContext();
 
       // Assert script context was created
       assertNotNull(ctx);
-      // Assert functions
-      assertNotNull(ctx.getFunctions());
-      // Assert variables
-      assertNotNull(ctx.getVariables());
-      // Assert context bean and form are the same object
-      assertSame(form, ctx.getContextBean());
    }
 
    public void testFormControllerListeners() {
