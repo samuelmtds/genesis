@@ -21,8 +21,6 @@ package net.java.dev.genesis.samples.useradmin.ui;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 import net.java.dev.genesis.samples.useradmin.business.RoleSearchCommand;
 import net.java.dev.genesis.samples.useradmin.business.UserCreateCommand;
 import net.java.dev.genesis.samples.useradmin.business.UserUpdateCommand;
@@ -30,8 +28,10 @@ import net.java.dev.genesis.samples.useradmin.databeans.Country;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.java.dev.genesis.samples.useradmin.databeans.State;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
+import net.java.dev.genesis.ui.UIException;
 import net.java.dev.reusablecomponents.lang.Enum;
 
+import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * @Form
@@ -237,7 +237,14 @@ public class InsertUpdateForm {
     * @CallWhen $findRoleCondition
     */
    public void findRole() throws Exception {
-      setRole(new RoleSearchCommand().getRole(roleCode));
+      final Role role = new RoleSearchCommand().getRole(roleCode);
+
+      if (role == null) {
+         throw new UIException("Role not found", "No role with code " + 
+               roleCode + " could be found.");
+      }
+
+      setRole(role);
    }
    
    /**

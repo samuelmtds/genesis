@@ -235,7 +235,14 @@ public class ThinletBinder {
       properties.put(name, value);
 
       controller.populate(properties);
-      updateAndSave(controller.getDataProviderActions(), false);
+
+      try {
+         updateAndSave(controller.getDataProviderActions(), false);
+      } catch (Exception e) {
+         controller.reset();
+         updateAndSave(controller.getDataProviderActions(), false);
+         throw e;
+      }
    }
 
    protected void bindActionMetadatas(final FormMetadata formMetadata) {

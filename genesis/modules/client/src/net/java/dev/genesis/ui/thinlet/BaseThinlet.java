@@ -31,6 +31,7 @@ import java.util.Map;
 
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.Form;
+import net.java.dev.genesis.ui.UIException;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
@@ -676,9 +677,10 @@ public abstract class BaseThinlet extends Thinlet {
       } else if (throwable instanceof ValidationException) {
          showValidationErrors((ValidationException)throwable);
          return;
+      } else if (throwable instanceof UIException) {
+         handleUIException((UIException)throwable);
+         return;
       }
-
-      boolean unknown = true;
 
       try {
          if (handleCustomException(throwable)) {
@@ -691,11 +693,25 @@ public abstract class BaseThinlet extends Thinlet {
       handleUnknownException(throwable);
    }
 
+   protected void handleUIException(UIException uiException) {
+      try {
+         MessageDialog.show(this, uiException.getTitle(), 
+               uiException.getDescription());
+      } catch (Throwable t) {
+         LogFactory.getLog(getClass()).error("Unknown exception", t);
+      }
+   }
+
    protected void handleUnknownException(Throwable t) {
       handleException("Unexpected error occurred", t);
    }
 
    protected boolean handleCustomException(Throwable t) throws Exception {
+      if (t.getCause() != null) {
+         handleException(t.getCause());
+         return true;
+      }
+
       return false;
    }
 
