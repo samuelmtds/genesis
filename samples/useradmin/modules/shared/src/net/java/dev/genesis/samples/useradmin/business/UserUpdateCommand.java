@@ -22,13 +22,10 @@ import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 
 public class UserUpdateCommand extends AbstractHibernateCommand {
-   
    /**
     * @Transactional
     */
    public void updateUser(final User user) throws Exception {
       getSession().update(user);
    }
-   
-   
 }

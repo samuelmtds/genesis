@@ -21,9 +21,7 @@ package net.java.dev.genesis.samples.useradmin.databeans;
 import net.java.dev.genesis.hibernate.EnumType;
 
 public class CountryType extends EnumType {
-
    public Class returnedClass() {
       return Country.class;
    }
-
 }

@@ -24,7 +24,6 @@ import net.java.dev.genesis.samples.useradmin.business.RoleRemoveCommand;
 import net.java.dev.genesis.samples.useradmin.business.RoleSearchCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 
-
 /**
  * @Form
  */

@@ -18,27 +18,25 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui;
 
-import java.io.Serializable;
 import java.util.List;
+import net.java.dev.genesis.command.hibernate.HibernateCriteria;
 
-import net.java.dev.genesis.helpers.CriteriaPropertyHelper;
 import net.java.dev.genesis.paging.Page;
 import net.java.dev.genesis.samples.useradmin.business.UserRemoveCommand;
 import net.java.dev.genesis.samples.useradmin.business.UserSearchCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
+import net.java.dev.genesis.ui.paging.BaseCriteriaSearchForm;
 
 /**
  * @Form
  */
-public class UserListForm implements Serializable {
-   private Page page;
-   private int pageNumber;
-
+public class UserListForm extends BaseCriteriaSearchForm {
    private String name;
    private String login;
    private String email;
 
    private List users;
+   private final UserSearchCommand command = new UserSearchCommand();
 
    public String getEmail() {
       return email;
@@ -64,14 +62,6 @@ public class UserListForm implements Serializable {
       this.name = name;
    }
 
-   public boolean isLastPage() {
-      return page == null || page.isLast();
-   }
-
-   public int getPageNumber() {
-      return pageNumber;
-   }
-
    /**
     * @Condition usersSelected=g:isNotEmpty(users)
     */
@@ -79,24 +69,31 @@ public class UserListForm implements Serializable {
       return users;
    }
 
-   public User getUser() {
-      return users == null || users.isEmpty() ? null : (User)users.get(0);
-   }
-
    public void setUsers(List users) {
       this.users = users;
    }
 
+   public User getUser() {
+      return users == null || users.isEmpty() ? null : (User)users.get(0);
+   }
+
+   protected HibernateCriteria getHibernateCriteria() {
+      return command;
+   }
+   
+   protected Page performSearch(int pageNumber) throws Exception {
+      return command.getUsers(pageNumber);
+   }
+
    /**
     * @Action
-    * @DataProvider objectField=users
+    * @CallWhen runSearch
+    * @DataProvider objectField=users callOnInit=false
     */
-   public List search() throws Exception {
-      final UserSearchCommand command = new UserSearchCommand();
-      CriteriaPropertyHelper.fillCriteria(command, this);
-      page = command.getUsers(getPageNumber());
-      pageNumber = page.getPageNumber();
-      return page.getResults();
+   public List doSearch() throws Exception {
+      search();
+
+      return getPage().getResults();
    }
 
    /**
@@ -122,20 +119,13 @@ public class UserListForm implements Serializable {
       setEmail(null);
       setLogin(null);
    }
-
-   /**
-    * @Action
-    * @VisibleWhen pageNumber > 0
-    */
-   public void previousPage() {
-      pageNumber--;
+   
+   public void setRunSearch(boolean runSearch) {
+      super.setRunSearch(runSearch);
    }
    
-   /**
-    * @Action
-    * @VisibleWhen lastPage=false()
-    */
-   public void nextPage() {
-      pageNumber++;
+   public void setResetSearch(boolean resetSearch) {
+      super.setResetSearch(resetSearch);
    }
+   
 }

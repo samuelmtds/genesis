@@ -23,7 +23,6 @@ import net.java.dev.genesis.samples.useradmin.databeans.Role;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-
 /**
  * @Form
  * @struts.form

@@ -36,9 +36,11 @@ public class InsertUpdateView extends BaseDialogView {
       super(frame, user == null ? "InsertView.title" : "UpdateView.title",
             "insert-update.xml", false, true);
       form = new InsertUpdateForm();
+
       if (user != null) {
          PropertyUtils.copyProperties(form, user);
       }
+
       bind(form);
    }
 
@@ -47,13 +49,12 @@ public class InsertUpdateView extends BaseDialogView {
       return hasChanged;
    }
 
-   /**
-    * @BeforeAction
-    */
    public void chooseRole() throws Exception {
       final RoleListView view = new RoleListView(getFrame());
-      if(view.showView()) {
+
+      if (view.showView()) {
          form.setRole(view.getRole());
+         refreshView();
       }
    }
 

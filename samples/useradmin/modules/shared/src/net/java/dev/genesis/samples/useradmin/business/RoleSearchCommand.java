@@ -20,26 +20,25 @@ package net.java.dev.genesis.samples.useradmin.business;
 
 import java.util.List;
 
-
 import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.sf.hibernate.Query;
 
 public class RoleSearchCommand extends AbstractHibernateCommand {
-
    /**
     * @Remotable
     */
    public List getRoles() throws Exception {
       return getSession().createQuery("from Role").list();
    }
-   
+
    /**
     * @Remotable
     */
    public Role getRole(String roleCode) throws Exception {
       final Query query = getSession().getNamedQuery("Role.findByCode");
       query.setParameter("code", roleCode.toLowerCase());
+
       return (Role)query.uniqueResult();
    }
 }

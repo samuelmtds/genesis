@@ -44,6 +44,4 @@ public class InsertRoleView extends BaseDialogView {
       getDialog().dispose();
       hasChanged = true;
    }
-
 }
-

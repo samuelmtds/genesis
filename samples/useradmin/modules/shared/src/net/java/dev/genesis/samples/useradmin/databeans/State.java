@@ -24,9 +24,9 @@ import java.util.Collection;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 public class State extends Enum {
-   public static final State BRASILIA = new State("Brasília");
+   public static final State BRASILIA = new State("Brasilia");
    public static final State RIO_DE_JANEIRO = new State("Rio de Janeiro");
-   public static final State SAO_PAULO = new State("São Paulo");
+   public static final State SAO_PAULO = new State("Sao Paulo");
 
    public static final State ALASKA = new State("Alaska");
    public static final State FLORIDA = new State("Florida");

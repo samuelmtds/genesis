@@ -31,8 +31,8 @@ public class UserListView extends BaseView {
       final InsertUpdateView view = new InsertUpdateView(getFrame());
 
       if (view.showView()) {
-         invokeFormAction("reset");
-         invokeFormAction("search");
+         runSearch();
+         refreshView();
       }
    }
 
@@ -42,9 +42,9 @@ public class UserListView extends BaseView {
    public void update() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame(), form
             .getUser());
+
       if (view.showView()) {
-         invokeFormAction("reset");
-         invokeFormAction("search");
+         runSearch();
       }
    }
    
@@ -52,22 +52,12 @@ public class UserListView extends BaseView {
     * @AfterAction
     */
    public void remove() throws Exception {
-      invokeFormAction("reset");
-      invokeFormAction("search");
+      runSearch();
    }
-   
-   /**
-    * @AfterAction
-    */
-   public void nextPage() throws Exception {
-      invokeFormAction("search");
-   }
-   
-   /**
-    * @AfterAction
-    */
-   public void previousPage() throws Exception {
-      invokeFormAction("search");
+
+   private void runSearch() {
+      form.reset();
+      form.setResetSearch(true);
+      form.setRunSearch(true);
    }
 }
-

@@ -28,7 +28,6 @@ import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 
 public abstract class BaseView extends BaseThinlet {
-
    public BaseView(String title, String xmlFile, int width, int height,
          boolean resizable) throws Exception {
       Frame f = new Frame();

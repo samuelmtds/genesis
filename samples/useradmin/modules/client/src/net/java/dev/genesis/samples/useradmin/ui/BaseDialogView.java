@@ -24,7 +24,6 @@ import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
 
 public abstract class BaseDialogView extends BaseDialogThinlet {
-
    public BaseDialogView(Frame frame, String title, String xmlFile, boolean resizable,
          boolean modal) throws Exception {
       super(frame);

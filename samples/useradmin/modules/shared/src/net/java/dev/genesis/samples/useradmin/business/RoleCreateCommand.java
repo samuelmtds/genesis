@@ -24,7 +24,6 @@ import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 
 public class RoleCreateCommand extends AbstractHibernateCommand {
-
    /**
     * @Transactional
     */

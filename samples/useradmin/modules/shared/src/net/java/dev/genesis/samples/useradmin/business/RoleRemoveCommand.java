@@ -23,17 +23,18 @@ import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.sf.hibernate.Query;
 
 public class RoleRemoveCommand extends AbstractHibernateCommand {
-
    /**
     * @Transactional
     */
    public boolean removeRole(final Role role) throws Exception {
       final Query query = getSession().getNamedQuery("User.findByRole");
       query.setParameter("roleCode", role.getCode());
-      if(query.list().isEmpty()){
+
+      if (query.list().isEmpty()) {
          getSession().delete(role);
          return true;
       }
+
       return false;
    }
 }

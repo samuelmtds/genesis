@@ -24,13 +24,10 @@ import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 
 public class UserCreateCommand extends AbstractHibernateCommand {
-   
    /**
     * @Transactional
     */
    public Serializable createUser(final User user) throws Exception {
       return getSession().save(user);
    }
-   
-   
 }

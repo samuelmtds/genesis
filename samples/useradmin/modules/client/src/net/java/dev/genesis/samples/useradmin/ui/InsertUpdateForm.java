@@ -225,6 +225,7 @@ public class InsertUpdateForm {
    public void save() throws Exception {
       final User user = new User();
       PropertyUtils.copyProperties(user, this);
+
       if (getId() == null) {
          new UserCreateCommand().createUser(user);
       } else {
@@ -245,11 +246,5 @@ public class InsertUpdateForm {
       }
 
       setRole(role);
-   }
-   
-   /**
-    * @Action
-    */
-   public void chooseRole() {
    }
 }

@@ -24,7 +24,6 @@ import java.util.Iterator;
 import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
 
 public class UserRemoveCommand extends AbstractHibernateCommand {
-
    /**
     * @Transactional
     */
