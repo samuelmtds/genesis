@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.command.hibernate;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -50,7 +51,11 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
       final HibernateCriteria hibCriteria = (HibernateCriteria) realCommand;
       hibCriteria.setCriteria(getSession().createCriteria(persisterClass));
       PropertyUtils.copyProperties(hibCriteria, propertiesMap);
-      return ReflectionInvoker.getInstance().invoke(realCommand, methodName,
-            classNames, args);
+      try {
+         return ReflectionInvoker.getInstance().invoke(realCommand, methodName,
+               classNames, args);
+      } catch (InvocationTargetException ite) {
+         throw ite.getTargetException();
+      }
    }
 }
