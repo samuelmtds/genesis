@@ -53,12 +53,15 @@ public class ThinletMetadata {
          ClassNotFoundException, InvocationTargetException {
 
       final String methodName = (String)preActions.get(actionName);
+
       if (methodName == null) {
          return true;
       }
+
       final Object result = ReflectionInvoker.getInstance().invoke(target,
             methodName);
-      return Boolean.TRUE.equals(result);
+
+      return !Boolean.FALSE.equals(result);
    }
 
    public void invokePosAction(final Object target, final String actionName)
@@ -66,9 +69,11 @@ public class ThinletMetadata {
          ClassNotFoundException, InvocationTargetException {
 
       final String methodName = (String)posActions.get(actionName);
+
       if (methodName == null) {
          return;
       }
+
       ReflectionInvoker.getInstance().invoke(target, methodName);
    }
 }
