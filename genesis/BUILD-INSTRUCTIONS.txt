@@ -29,7 +29,8 @@ To run genesis, go to <JBOSS_HOME>/bin and type
 
    run -c genesis
 
-To run the unit tests with ant, you need to copy junit.jar to ANT_HOME/lib
+To run the unit tests with ant, you need to copy junit.jar to ANT_HOME/lib.
+To run them with maven, put junit.jar in MAVEN_HOME/lib/endorsed.
 
 The genesis main tasks are:
 
