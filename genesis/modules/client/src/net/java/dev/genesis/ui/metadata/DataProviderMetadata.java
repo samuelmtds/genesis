@@ -26,9 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.java.dev.genesis.reflection.FieldEntry;
+import net.java.dev.genesis.script.ScriptExpression;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.jxpath.CompiledExpression;
 
 public class DataProviderMetadata {
    private static final List EMPTY_LIST = new ArrayList(0);
@@ -39,7 +39,7 @@ public class DataProviderMetadata {
    private FieldEntry objectField;
    private FieldEntry indexField;
    private boolean callOnInit;
-   private CompiledExpression clearOnCondition;
+   private ScriptExpression clearOnCondition;
 
    protected DataProviderMetadata(Method method) {
       this.name = method.getName();
@@ -89,11 +89,11 @@ public class DataProviderMetadata {
       this.callOnInit = callOnInit;
    }
 
-   public CompiledExpression getClearOnCondition() {
+   public ScriptExpression getClearOnCondition() {
       return clearOnCondition;
    }
 
-   public void setClearOnCondition(CompiledExpression clearOnCondition) {
+   public void setClearOnCondition(ScriptExpression clearOnCondition) {
       this.clearOnCondition = clearOnCondition;
    }
 

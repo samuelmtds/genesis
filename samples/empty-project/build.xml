@@ -9,11 +9,12 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="0.2" />
+      <property name="genesis.version" value="0.3-EA1-dev" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
       <property name="commons.dist" location="${genesis.home}/lib/commons" />
+      <property name="script.dist" location="${genesis.home}/lib/script" />      
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
       <property name="annotation.properties" location="${genesis.dist}/annotation.properties" />
@@ -184,6 +185,9 @@
             <include name="jboss-transaction-client.jar" />
             <include name="jbosssx-client.jar" />
             <include name="jnp-client.jar" />
+         </fileset>
+         <fileset dir="${script.dist}">
+            <include name="*.jar" />
          </fileset>
       </path>
 

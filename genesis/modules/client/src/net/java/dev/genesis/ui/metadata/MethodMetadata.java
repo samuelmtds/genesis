@@ -23,8 +23,7 @@ import java.lang.reflect.Method;
 
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
-
-import org.apache.commons.jxpath.CompiledExpression;
+import net.java.dev.genesis.script.ScriptExpression;
 
 public final class MethodMetadata {
    private final static Object[] emptyObjectArray = new Object[0];
@@ -33,7 +32,7 @@ public final class MethodMetadata {
    private final MethodEntry methodEntry;
    private final ActionMetadata actionMetadata;
    private final DataProviderMetadata dataProviderMetadata;
-   private CompiledExpression callCondition;
+   private ScriptExpression callCondition;
 
    public MethodMetadata(Method method, boolean isAction, boolean isProvider) {
       this.methodEntry = new MethodEntry(method);
@@ -49,11 +48,11 @@ public final class MethodMetadata {
       return methodEntry;
    }
 
-   public CompiledExpression getCallCondition() {
+   public ScriptExpression getCallCondition() {
       return callCondition;
    }
 
-   public void setCallCondition(CompiledExpression callWhen) {
+   public void setCallCondition(ScriptExpression callWhen) {
       this.callCondition = callWhen;
    }
 

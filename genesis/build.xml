@@ -40,6 +40,10 @@
 		<fileset dir="${genesis.commons.dist}" includes="*.jar" />
 	</path>
 
+   <path id="script.path">
+      <fileset dir="${genesis.script.dist}" includes="*.jar" />
+   </path>
+
 	<path id="hibernate.path">
 		<fileset dir="${genesis.hibernate.dist}" includes="*.jar" />
 	</path>
@@ -59,13 +63,14 @@
 	</path>
 
 	<path id="client.dependency.classpath">
-		<path location="${genesis.module.shared}/${build.dest}" />
-		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
-		<fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
-		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
-		<fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
-		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
-		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+      <path location="${genesis.module.shared}/${build.dest}" />
+      <path refid="script.path" />
+      <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
+      <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
+      <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
+      <fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
+      <fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
+      <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
 
 	<path id="aspect.dependency.classpath">
@@ -84,6 +89,7 @@
 	<path id="tests.dependency.classpath">
 		<path location="${genesis.module.shared}/${genesis.annotation.dest}" />
 		<path location="${genesis.module.client}/${build.dest}" />
+      <path refid="script.path" />  
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="junit*.jar" />
 		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.java.dev.genesis.reflection.MethodEntry;
-
-import org.apache.commons.jxpath.CompiledExpression;
+import net.java.dev.genesis.script.Script;
+import net.java.dev.genesis.script.ScriptExpression;
 
 public class FormMetadata {
    private final Class formClass;
+   private final Script script;
 
    private final Map namedConditions;
    private final Map fieldMetadatas;
@@ -37,8 +38,9 @@ public class FormMetadata {
    private Map dataProviderMetadatas;
    private Map dataProviderIndexes;
 
-   public FormMetadata(final Class formClass) {
+   public FormMetadata(final Class formClass, final Script script) {
       this.formClass = formClass;
+      this.script = script;
       this.namedConditions = new HashMap();
       this.fieldMetadatas = new HashMap();
       this.methodMetadatas = new HashMap();
@@ -46,6 +48,10 @@ public class FormMetadata {
 
    public Class getFormClass() {
       return formClass;
+   }
+
+   public Script getScript() {
+      return script;
    }
 
    public Map getFieldMetadatas() {
@@ -113,8 +119,8 @@ public class FormMetadata {
       }
    }
 
-   public CompiledExpression getNamedCondition(final String namedConditionName) {
-      return (CompiledExpression) namedConditions.get(namedConditionName);
+   public ScriptExpression getNamedCondition(final String namedConditionName) {
+      return (ScriptExpression) namedConditions.get(namedConditionName);
    }
 
    public FieldMetadata getFieldMetadata(final String fieldName) {
@@ -133,7 +139,7 @@ public class FormMetadata {
       return (DataProviderMetadata) dataProviderIndexes.get(fieldName);
    }
 
-   public void addNamedCondition(final String key, final CompiledExpression value) {
+   public void addNamedCondition(final String key, final ScriptExpression value) {
       namedConditions.put(key, value);
    }
 

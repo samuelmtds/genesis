@@ -26,9 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.java.dev.genesis.commons.jxpath.VariablesImpl;
-import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -40,11 +40,6 @@ import net.java.dev.genesis.util.GenesisUtils;
 import org.apache.commons.beanutils.Converter;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.jxpath.ClassFunctions;
-import org.apache.commons.jxpath.CompiledExpression;
-import org.apache.commons.jxpath.Functions;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.Variables;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,7 +51,7 @@ public class DefaultFormController implements FormController {
 
    private Object form;
    private FormMetadata formMetadata;
-   private JXPathContext ctx;
+   private ScriptContext ctx;
 
    private FormState currentState;
    private FormState previousState;
@@ -79,26 +74,7 @@ public class DefaultFormController implements FormController {
       return formMetadata;
    }
 
-   protected JXPathContext createJXPathContext() {
-      final JXPathContext ctx = JXPathContext.newContext(form);
-      ctx.setFunctions(getFunctions());
-      ctx.setVariables(getVariables());
-      return ctx;
-   }
-
-   protected Functions getFunctions() {
-      return new ClassFunctions(ExtensionFunctions.class, "g");
-   }
-
-   protected Variables getVariables() {
-      return new VariablesImpl();
-   }
-
-   protected Map getVariablesMap() {
-      return ((VariablesImpl) ctx.getVariables()).getVariablesMap();
-   }
-
-   protected final JXPathContext getContext() {
+   protected final ScriptContext getScriptContext() {
       return ctx;
    }
 
@@ -117,21 +93,25 @@ public class DefaultFormController implements FormController {
 
       setup = true;
 
-      ctx = createJXPathContext();
-      ctx.getVariables().declareVariable(FORM_METADATA_KEY, formMetadata);
+      ctx = createScriptContext();
+      ctx.declare(FORM_METADATA_KEY, formMetadata);
 
       currentState = createFormState();
-      ctx.getVariables().declareVariable(CURRENT_STATE_KEY, currentState);
+      ctx.declare(CURRENT_STATE_KEY, currentState);
 
       if (PropertyUtils.isWriteable(form, "context")
             && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(form,
                   "context"))) {
-         PropertyUtils.setProperty(form, "context", getVariablesMap());
+         PropertyUtils.setProperty(form, "context", ctx.getContextMap());
       }
 
       evaluate(true);
    }
    
+   protected ScriptContext createScriptContext() {
+      return getFormMetadata().getScript().newContext(form);
+   }
+
    public boolean isSetup() {
       return setup;
    }
@@ -158,7 +138,10 @@ public class DefaultFormController implements FormController {
 
    protected void populate(Map properties, boolean stringMap, Map converters) 
          throws Exception {
-      if (previousState == null) {
+
+      final boolean createPreviousState = previousState == null;
+
+      if (createPreviousState) {
          previousState = createFormState(currentState);
       }
 
@@ -185,7 +168,9 @@ public class DefaultFormController implements FormController {
 
          throw e;
       } finally {
-         previousState = null;
+         if (createPreviousState) {
+            previousState = null;
+         }
       }
    }
 
@@ -371,12 +356,12 @@ public class DefaultFormController implements FormController {
             .iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
 
-         ctx.getVariables().declareVariable(entry.getKey().toString(),
-               isSatisfied((CompiledExpression) entry.getValue()));
+         ctx.declare(entry.getKey().toString(),
+               isSatisfied((ScriptExpression)entry.getValue()));
 
          if (log.isDebugEnabled()) {
             log.debug("Named Condition '" + entry.getKey() + "' evaluated as '"
-                  + ctx.getVariables().getVariable(entry.getKey().toString())
+                  + ctx.lookup(entry.getKey().toString())
                   + "'");
          }
       }
@@ -590,12 +575,12 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected boolean isConditionSatisfied(CompiledExpression compiledEx) {
-      return Boolean.TRUE.equals(compiledEx.getValue(ctx));
+   protected boolean isConditionSatisfied(ScriptExpression expr) {
+      return Boolean.TRUE.equals(expr.eval(ctx));
    }
 
-   protected Boolean isSatisfied(CompiledExpression compiledEx) {
-      return Boolean.valueOf(isConditionSatisfied(compiledEx));
+   protected Boolean isSatisfied(ScriptExpression expr) {
+      return Boolean.valueOf(isConditionSatisfied(expr));
    }
 
    public void reset(FormState state) throws Exception {
@@ -604,7 +589,7 @@ public class DefaultFormController implements FormController {
       }
 
       currentState = state = createFormState(state);
-      ctx.getVariables().declareVariable(CURRENT_STATE_KEY, currentState);
+      ctx.declare(CURRENT_STATE_KEY, currentState);
 
       fireEnabledConditionChanged(state.getEnabledMap());
       fireVisibleConditionChanged(state.getVisibleMap());
@@ -708,9 +693,10 @@ public class DefaultFormController implements FormController {
          invokeAction(metadata, firstCall, conditionally);
       } catch (Exception e) {
          reset(previousState);
-         previousState = null;
 
          throw e;
+      } finally {
+         previousState = null;
       }
    }
 
@@ -727,9 +713,10 @@ public class DefaultFormController implements FormController {
          update();
       } catch (Exception e) {
          reset(previousState);
-         previousState = null;
 
          throw e;
+      } finally {
+         previousState = null;
       }
    }
 

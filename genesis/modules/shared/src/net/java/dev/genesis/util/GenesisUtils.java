@@ -38,13 +38,17 @@ public final class GenesisUtils {
     * @return
     */
    public static Map getAttributesMap(final String attributesLine) {
-      final StringTokenizer spaceSeparator = new StringTokenizer(attributesLine);
+      return getAttributesMap(attributesLine, " \t\n\r\f", "=");
+   }
+   
+   public static Map getAttributesMap(final String attributesLine, String pairsDelim, String keyValueDelim) {
+      final StringTokenizer pairsTok = new StringTokenizer(attributesLine, pairsDelim);
       final Map attributesMap = new HashMap();
-      while (spaceSeparator.hasMoreTokens()) {
-         final StringTokenizer equalSeparator = new StringTokenizer(
-               spaceSeparator.nextToken(), "=");
-         if (equalSeparator.countTokens() == 2) {
-            attributesMap.put(equalSeparator.nextToken().trim(), equalSeparator
+      while (pairsTok.hasMoreTokens()) {
+         final StringTokenizer keyValueTok = new StringTokenizer(
+               pairsTok.nextToken(), keyValueDelim);
+         if (keyValueTok.countTokens() == 2) {
+            attributesMap.put(keyValueTok.nextToken().trim(), keyValueTok
                   .nextToken().trim());
          }
       }

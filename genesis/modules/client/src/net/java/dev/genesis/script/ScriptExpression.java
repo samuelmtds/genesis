@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,29 +16,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.metadata;
+package net.java.dev.genesis.script;
 
-import net.java.dev.genesis.script.ScriptExpression;
-
-public abstract class MemberMetadata {
-   private ScriptExpression enabledCondition;
-   private ScriptExpression visibleCondition;
-
-   public ScriptExpression getEnabledCondition() {
-      return enabledCondition;
+public abstract class ScriptExpression {
+   private String expr;
+   
+   public ScriptExpression(String expr) {
+      this.expr = expr;
    }
 
-   public void setEnabledCondition(ScriptExpression enabledCondition) {
-      this.enabledCondition = enabledCondition;
+   public Object eval(ScriptContext ctx) {
+      ScriptUtils.enter(ctx);
+      try {
+         return ctx.eval(this);
+      } finally {
+         ScriptUtils.exit();
+      }
+   }
+   
+   public String getExpressionString() {
+      return expr;
    }
 
-   public ScriptExpression getVisibleCondition() {
-      return visibleCondition;
+   public String toString() {
+      return getExpressionString();
    }
-
-   public void setVisibleCondition(ScriptExpression visibleCondition) {
-      this.visibleCondition = visibleCondition;
-   }
-
-   public abstract String getName();
 }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,11 +27,13 @@ import java.util.Map;
 
 import net.java.dev.genesis.command.NoopCommand;
 import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
+import net.java.dev.genesis.script.bsf.javascript.BSFJavaScriptEngine;
 import net.java.dev.genesis.text.FormatAdapter;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.ValidationUtils;
 
+import org.apache.bsf.BSFManager;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
@@ -104,10 +106,20 @@ public class StartupHelper {
       this.jxpathContextFactoryClassName = jxpathContextFactoryClassName;
    }
 
+   public void registerBSFScriptLanguage(String language, String engineClassName) {
+      BSFManager.registerScriptingEngine(language, engineClassName, null);
+   }
+
    protected void registerJXPathContextFactory() {
       log.info("Registering JXPathContextFactory class name");
       System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
             jxpathContextFactoryClassName);
+   }
+
+   protected void registerBSFScriptLanguages() {
+      log.info("Registering ScriptLanguages");
+      registerBSFScriptLanguage("javascript", BSFJavaScriptEngine.class.getName());
+      registerBSFScriptLanguage("beanshell", "bsh.util.BeanShellBSFEngine");
    }
 
    public Converter addConverter(Class clazz, Converter converter) {
@@ -220,6 +232,7 @@ public class StartupHelper {
 
    public void initialize() {
       registerBeanUtilsBean();
+      registerBSFScriptLanguages();
       registerJXPathContextFactory();
       registerConverters();
       registerFormatters();

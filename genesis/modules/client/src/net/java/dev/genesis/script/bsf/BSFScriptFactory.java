@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,29 +16,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.metadata;
+package net.java.dev.genesis.script.bsf;
 
-import net.java.dev.genesis.script.ScriptExpression;
+import net.java.dev.genesis.script.Script;
+import net.java.dev.genesis.script.ScriptFactory;
 
-public abstract class MemberMetadata {
-   private ScriptExpression enabledCondition;
-   private ScriptExpression visibleCondition;
+public class BSFScriptFactory implements ScriptFactory {
+   private String lang;
 
-   public ScriptExpression getEnabledCondition() {
-      return enabledCondition;
+   public BSFScriptFactory() {
    }
 
-   public void setEnabledCondition(ScriptExpression enabledCondition) {
-      this.enabledCondition = enabledCondition;
+   public BSFScriptFactory(String lang) {
+      this.lang = lang;
    }
 
-   public ScriptExpression getVisibleCondition() {
-      return visibleCondition;
+   public Script newScript() {
+      return new BSFScript(lang);
    }
 
-   public void setVisibleCondition(ScriptExpression visibleCondition) {
-      this.visibleCondition = visibleCondition;
+   public void setLang(String lang) {
+      this.lang = lang;
    }
-
-   public abstract String getName();
 }
