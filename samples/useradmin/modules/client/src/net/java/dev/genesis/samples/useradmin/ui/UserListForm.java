@@ -98,7 +98,7 @@ public class UserListForm extends BaseCriteriaSearchForm {
 
    /**
     * @Action
-    * @EnabledWhen $usersSelected
+    * @EnabledWhen count(users) = 1
     */
    public void update() throws Exception {
    }
