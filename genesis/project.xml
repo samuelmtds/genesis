@@ -14,7 +14,9 @@
    <description>SOL Genesis</description>
    <shortDescription>And during the seventh day, they reinvented client-server 
       applications...</shortDescription>
-   <siteAddress>https://genesis.dev.java.net/</siteAddress>
+   <url>https://genesis.dev.java.net/</url>
+   <issueTrackingUrl>https://genesis.dev.java.net/servlets/ProjectIssues/</issueTrackingUrl>
+   <siteAddress>https://genesis.dev.java.net/nonav/</siteAddress>
    <repository>
       <connection>
          scm:cvs:pserver:${maven.guest.username}@cvs.dev.java.net:/cvs:genesis</connection>
@@ -22,6 +24,18 @@
          scm:cvs:pserver:${maven.username}@cvs.dev.java.net:/cvs:genesis</developerConnection>
       <url>https://genesis.dev.java.net/source/browse/genesis/genesis/</url>
    </repository>
+   <versions>
+      <version>
+         <id>0.2-beta1</id>
+         <name>0.2-beta1</name>
+         <tag>GENESIS_0_2_BETA_1</tag>
+      </version>
+      <version>
+         <id>0.1</id>
+         <name>0.1</name>
+         <tag>GENESIS_0_1</tag>
+      </version>
+   </versions>
    <mailingLists>
       <mailingList>
          <name>Announcements</name> 
