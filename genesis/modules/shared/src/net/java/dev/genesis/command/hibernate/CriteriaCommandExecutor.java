@@ -34,14 +34,14 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
    private final String[] classNames;
    private final Object[] args;
    private final String persisterClassName;
-   private final String orderBy;
-   private final boolean isAsc;
+   private final String[] orderBy;
+   private final boolean[] isAsc;
 
    private Map propertiesMap;
 
    public CriteriaCommandExecutor(Object realCommand, String methodName,
          String[] classNames, Object[] args, String persisterClassName,
-         String orderBy, boolean isAsc,
+         String[] orderBy, boolean[] isAsc,
          Map propertiesMap) {
       this.realCommand = realCommand;
       this.methodName = methodName;
@@ -63,11 +63,14 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
          final Criteria crit = getSession().createCriteria(
                ClassesCache.getClass(persisterClassName));
          
-         if (orderBy != null && orderBy.trim().length() != 0) {
-            crit.addOrder(isAsc ? Order.asc(orderBy) : Order.desc(orderBy));
+         hibCriteria.setCriteria(crit);
+         
+         if (orderBy != null) {
+            for (int i = 0; i < orderBy.length; i++) {
+               crit.addOrder(isAsc[i] ? Order.asc(orderBy[i]) : Order.desc(orderBy[i]));
+            }
          }
          
-         hibCriteria.setCriteria(crit);
       } else {
          hibCriteria.setCriteria(null);
       }

@@ -75,29 +75,43 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
 
    public static class CriteriaAnnotationParser {
       private String persisterClassName;
-      private String orderBy;
-      private boolean isAsc;
+      private String[] orderBy;
+      private boolean[] isAsc;
 
       public CriteriaAnnotationParser(String annotation) {
-         String[] values = annotation.trim().split("\\s*(\\s+|(order-by=))");
+         String[] values = annotation.trim().split("(order-by\\s*=)");
          
          if (values.length > 0) {
-            persisterClassName = values[0];
-            
+            persisterClassName = values[0].trim();
+
             if (values.length > 1) {
-               orderBy = values[1];
-               
-               if (values.length > 2) {
-                  if (values[2].equalsIgnoreCase("asc")) {
-                     isAsc = true;
-                  } else if (values[2].equalsIgnoreCase("desc")){
-                     isAsc = false;
-                  } else {
-                     throw new IllegalArgumentException("Malformed Criteria" +
-                     		"annotation: order-by clause must be 'asc' or 'desc'");
+               values = values[1].trim().split("(\\s*,\\s*)");
+               orderBy = new String[values.length];
+               isAsc = new boolean[values.length];
+
+               for (int i = 0; i < values.length; i++) {
+                  String[] props = values[i].split("\\s+");
+
+                  if (props.length == 0 || props.length > 2) {
+                     throw new IllegalArgumentException(
+                           "Malformed Criteria annotation");
                   }
-               } else {
-                  isAsc = true;
+                  orderBy[i] = props[0];
+
+                  if (props.length < 2) {
+                     isAsc[i] = true;
+                     continue;
+                  }
+
+                  if (props[1].equalsIgnoreCase("asc")) {
+                     isAsc[i] = true;
+                  } else if (props[1].equalsIgnoreCase("desc")) {
+                     isAsc[i] = false;
+                  } else {
+                     throw new IllegalArgumentException(
+                           "Malformed Criteria"
+                                 + "annotation: order-by clause must be 'asc' or 'desc'");
+                  }
                }
             }
          }
@@ -107,11 +121,11 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          return persisterClassName;
       }
 
-      public boolean isAsc() {
+      public boolean[] isAsc() {
          return isAsc;
       }
 
-      public String getOrderBy() {
+      public String[] getOrderBy() {
          return orderBy;
       }
    }
@@ -129,5 +143,5 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       public void setPropertiesMap(Map propertiesMap) {
          this.propertiesMap = propertiesMap;
       }
-   }
+   }   
 }
