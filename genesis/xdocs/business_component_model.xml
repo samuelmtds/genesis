@@ -146,6 +146,14 @@ valor: 2</source>
         <p>enquanto no console remoto é:</p>
         <source>
 valor em remoto(): 2</source>
+        <p>Ao se executar a linha 23, a variável <code>valor</code> é modificada 
+        localmente e seu conteúdo tanto dentro do método <code>local()</code> 
+        como o impresso na linha 24 são os mesmos. Porém, ao se executar a linha
+        25 a instância <code>lvr</code> é transferida para o servidor e o método 
+        <code>remoto()</code> é executado nela, alterando a cópia remota de 
+        <code>valor</code> de 1 para 2, conforme exibido no console remoto, 
+        mantendo, no entanto, sua cópia local intacta como notamos na linha 26
+        (console local).</p>
         <p>De modo que valores locais são transferidos para o servidor, mas não
         ao contrário. O mesmo se aplica a objetos passados como parâmetros. Se
         quiser obter a cópia modificada do servidor retorne diretamente a partir
