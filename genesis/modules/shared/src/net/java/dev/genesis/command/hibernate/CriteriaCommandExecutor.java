@@ -21,8 +21,8 @@ package net.java.dev.genesis.command.hibernate;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
+import net.sf.hibernate.Session;
 import org.apache.commons.beanutils.PropertyUtils;
-
 
 public class CriteriaCommandExecutor extends AbstractHibernateCommand {
    private Object realCommand;
@@ -56,6 +56,14 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
                classNames, args);
       } catch (InvocationTargetException ite) {
          throw ite.getTargetException();
+      }
+   }
+
+   public void setSession(Session session) {
+      super.setSession(session);
+
+      if (realCommand instanceof HibernateCommand) {
+         ((HibernateCommand)realCommand).setSession(session);
       }
    }
 }
