@@ -610,13 +610,18 @@ public class FormMetadataFactoryAspect {
          }
       }
 
-      // Work around for bug in JDK 1.4.2
+      // Work around for a bug in JDK 1.4.2
       private Method getReadMethod(Class clazz, PropertyDescriptor pd) {
          Method method = pd.getReadMethod();
 
+         if (clazz.equals(method.getDeclaringClass())) {
+            return method;
+         }
+
          try {
-            return (clazz.equals(method.getDeclaringClass())) ? method :
-               clazz.getMethod(method.getName(), method.getParameterTypes());
+            method = clazz.getMethod(method.getName(), 
+                  method.getParameterTypes());
+            return (method == null) ? pd.getReadMethod() : method;
          } catch (NoSuchMethodException nsme) {
             return method;
          }
