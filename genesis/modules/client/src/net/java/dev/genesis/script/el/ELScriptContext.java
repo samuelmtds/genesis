@@ -44,7 +44,7 @@ public class ELScriptContext implements ScriptContext, VariableResolver,
       this.evaluator = evaluator;
       variables.put("form", root);
       registerFunctions("", Functions.class);
-      registerFunctions("genesis", ScriptFunctionsAdapter.class);
+      registerFunctions("genesis", getFunctions());
    }
 
    public void registerFunctions(String prefix, Object obj) {
@@ -92,13 +92,25 @@ public class ELScriptContext implements ScriptContext, VariableResolver,
    public Object eval(ScriptExpression expr) {
       try {
          return evaluator.evaluate(expr.getExpressionString(), Object.class,
-               this, this);
+               getVariableResolver(), getFunctionMapper());
       } catch (ELException e) {
          throw new RuntimeException(e);
       }
    }
 
    public Object eval(String expr) {
-      return eval(new ELExpression(expr, evaluator));
+      return new ELExpression(expr, evaluator).eval(this);
+   }
+
+   protected VariableResolver getVariableResolver() {
+      return this;
+   }
+
+   protected FunctionMapper getFunctionMapper() {
+      return this;
+   }
+
+   protected Class getFunctions() {
+      return ScriptFunctionsAdapter.class;
    }
 }

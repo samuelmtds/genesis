@@ -36,14 +36,14 @@ public class BSFScriptContext implements ScriptContext {
 
    protected BSFScriptContext(String lang, Object root) {
       this.lang = lang;
-      manager.setObjectRegistry(new BSFObjectRegistry());
+      manager.setObjectRegistry(getObjectRegistry());
       try {
          manager.declareBean("form", root, null);
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
 
-      registerFunctions("genesis", new ScriptFunctionsAdapter());
+      registerFunctions("genesis", getFunctions());
    }
 
    public void registerFunctions(String prefix, Object functions) {
@@ -100,7 +100,15 @@ public class BSFScriptContext implements ScriptContext {
    }
 
    public Object eval(String expr) {
-      return eval(new BSFExpression(expr));
+      return new BSFExpression(expr).eval(this);
+   }
+
+   protected ObjectRegistry getObjectRegistry() {
+      return new BSFObjectRegistry();
+   }
+
+   protected Object getFunctions() {
+      return new ScriptFunctionsAdapter();
    }
 
    public class BSFObjectRegistry extends ObjectRegistry {

@@ -23,15 +23,13 @@ import javax.servlet.jsp.el.ExpressionEvaluator;
 
 import net.java.dev.genesis.script.ScriptExpression;
 
-import org.apache.commons.el.ExpressionEvaluatorImpl;
-
 public class ELExpression extends ScriptExpression {
    public ELExpression(String expr, ExpressionEvaluator evaluator) {
       super(expr.startsWith("${") ? expr : "${" + expr + "}");
      
       try {
          // Compile and cache the expression
-         ((ExpressionEvaluatorImpl)evaluator).parseExpressionString(getExpressionString());
+         evaluator.parseExpression(getExpressionString(), Object.class, null);
       } catch (ELException e) {
          throw new RuntimeException(e);
       }

@@ -38,7 +38,7 @@ public class JXPathScriptContext implements ScriptContext {
       ctx.setFunctions(functionLib);
       ctx.setVariables(getVariables());
 
-      registerFunctions("g", JXPathFunctionsAdapter.class);
+      registerFunctions("g", getFunctions());
    }
 
    public void registerFunctions(String prefix, Object functions) {
@@ -74,10 +74,14 @@ public class JXPathScriptContext implements ScriptContext {
    }
 
    public Object eval(String expr) {
-      return eval(new JXPathExpression(expr));
+      return new JXPathExpression(expr).eval(this);
    }
 
    protected Variables getVariables() {
       return new VariablesImpl();
+   }
+
+   protected Class getFunctions() {
+      return JXPathFunctionsAdapter.class;
    }
 }

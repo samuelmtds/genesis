@@ -18,10 +18,18 @@
  */
 package net.java.dev.genesis.script.bsf;
 
+import org.apache.bsf.BSFManager;
+
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptFactory;
+import net.java.dev.genesis.script.bsf.javascript.BSFJavaScriptEngine;
 
 public class BSFScriptFactory implements ScriptFactory {
+   static {
+      BSFManager.registerScriptingEngine("javascript", BSFJavaScriptEngine.class.getName(), null);
+      BSFManager.registerScriptingEngine("beanshell", "bsh.util.BeanShellBSFEngine", null);
+   }
+
    private String lang;
 
    public BSFScriptFactory() {
