@@ -18,9 +18,6 @@
                      page="<XDtMethod:methodTagValue tagName="struts:validator" paramName="page"/>"
                    </XDtMethod:ifHasMethodTag>
                      depends="<XDtValidator:validatorList/>">
-                <XDtValidator:ifNoArg0>
-                  <arg position="0" key="<XDtClass:classTagValue tagName="struts:form" paramName="name"/>.<XDtValidator:fieldName/>"/>
-                </XDtValidator:ifNoArg0>
                 <XDtValidator:forAllFieldArgs>
                   <arg position="<XDtValidator:argIndex/>"
                     <XDtValidator:ifArgIsForType>
