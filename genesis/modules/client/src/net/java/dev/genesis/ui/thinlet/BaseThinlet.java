@@ -611,13 +611,17 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
+   protected ThinletBinder getBinder(Object widget, Object form){
+      binder = new ThinletBinder(this, widget, form);
+      return binder;
+   }
+
    protected void bind(Object form) throws Exception {
       bind(getDesktop(), form);
    }
 
    protected void bind(Object widget, Object form) throws Exception {
-      binder = new ThinletBinder(this, widget, form);
-      binder.bind();
+      getBinder(widget, form).bind();
    }
    
    public void action(String actionName) throws Exception {
