@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jnlp codebase="http://@webstart.server@:@webstart.port@/useradmin/application">
+<jnlp codebase="http://@webstart.server@:@webstart.port@/@webstart.context@/application">
 
 	<information>
-		<title>User Admin</title>
+		<title>@pretty.name@</title>
 		<vendor>Summa Technologies do Brasil Ltda.</vendor>
-		<description>Genesis Sample</description>
-		<description kind="tooltip">User Admin</description>
-		<homepage href="http://@webstart.server@:@webstart.port@/useradmin"/>
+		<description>Genesis @pretty.name@ Sample</description>
+		<description kind="tooltip">@pretty.name@</description>
+		<homepage href="http://@webstart.server@:@webstart.port@/@webstart.context@"/>
 		<icon href="icon.gif"/>
 	</information>
 
@@ -17,7 +17,7 @@
 	<resources>
 		<j2se version="1.4+" initial-heap-size="32m" />
 
-		<jar href="useradmin-weaved.jar" download="eager" main="true"/>
+		<jar href="@webstart.context@-weaved.jar" download="eager" main="true"/>
 		<jar href="genesis-aspect-annotated-0.2-dev.jar" download="eager" />
 		<jar href="genesis-client-0.2-dev.jar" download="eager" />
 		<jar href="genesis-shared-annotated-0.2-dev.jar" download="eager"/>
@@ -46,9 +46,7 @@
 		<property name="java.naming.provider.url" value="@jboss.provider.url@"/>
 		<property name="java.naming.factory.initial" 
 			value="@jboss.factory.initial@"/>
-		<property name="java.naming.factory.url.pkgs" 
-			value="org.jboss.naming:org.jnp.interfaces"/>
 
 	</resources>
-	<application-desc main-class="net.java.dev.genesis.samples.useradmin.Sample" />
+	<application-desc main-class="@app.main@" />
 </jnlp>

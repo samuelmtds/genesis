@@ -21,7 +21,7 @@ package net.java.dev.genesis.samples.useradmin;
 import net.java.dev.genesis.samples.useradmin.ui.UIUtils;
 import net.java.dev.genesis.samples.useradmin.ui.UserListView;
 
-public class Sample {
+public class UserAdmin {
    public static void main(String[] args) throws Exception {
       UIUtils.getInstance().initialize();
       new UserListView().display();

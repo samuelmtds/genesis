@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project basedir="." default="useradmin:all" name="genesis useradmin sample">
+<project basedir="." default="genesis.app:all" name="genesis based app">
    <property file="build.properties" />
 
    <property name="genesis.home" location="../../genesis" />
@@ -24,7 +24,7 @@
    <property name="src.dir" value="src" />
    <property name="webstart.dir" location="webstart" />
 
-   <property name="jboss.app" location="${jboss.home}/server/useradmin" />
+   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.name}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
@@ -84,7 +84,7 @@
    </path>
 
    <path id="run.classpath">
-      <fileset dir="${build.dir}" includes="useradmin-weaved.jar" />
+      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-weaved.jar" />
       <fileset dir="${build.dir}/${lib.dir}" includes="*.jar" />
       <fileset dir="${hibernate.dist}" includes="commons-collection*.jar" />
       <fileset dir="${genesis.dist}"
@@ -159,9 +159,9 @@
                        transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
                        transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
                        userTransactionName="UserTransaction"
-                       useouterjoin="false"
                        showSql="true"
-                       depends="jboss.jca:service=LocalTxCM,name=DefaultDS" />
+                       depends="jboss.jca:service=LocalTxCM,name=DefaultDS"
+                       version="2.1.6" />
          <hibernatecfg dialect="net.sf.hibernate.dialect.HSQLDialect"
                        userName="sa"
                        password=""
@@ -227,7 +227,7 @@
       </webdoclet>
    </target>
 
-   <target name="useradmin:weaving">
+   <target name="genesis.app:weaving">
       <mkdir dir="${weaving.dest}" />
       <mkdir dir="${build.dir}/${lib.dir}" />
       <path id="weaving.path">
@@ -266,28 +266,28 @@
       </java>
    </target>
 
-   <target name="useradmin:clean" depends="shared:clean,client:clean">
+   <target name="genesis.app:clean" depends="shared:clean,client:clean">
       <delete dir="${build.dir}" />
    </target>
 
-   <target name="useradmin:compile"
-           depends="useradmin:clean,shared:compile,client:compile,useradmin:weaving">
+   <target name="genesis.app:compile"
+           depends="genesis.app:clean,shared:compile,client:compile,genesis.app:weaving">
    </target>
 
-   <target name="useradmin:jar">
+   <target name="genesis.app:jar">
       <mkdir dir="${build.dir}" />
-      <jar destfile="${build.dir}/useradmin-weaved.jar">
+      <jar destfile="${build.dir}/${genesisBasedApplication.name}-weaved.jar">
          <fileset dir="${weaving.dest}" />
       </jar>
-      <jar destfile="${build.dir}/useradmin-shared.jar">
+      <jar destfile="${build.dir}/${genesisBasedApplication.name}-shared.jar">
          <fileset dir="${module.shared}/${build.dest}"
                   excludes="jboss-service.xml" />
       </jar>
    </target>
    
-   <target name="useradmin:sar">
+   <target name="genesis.app:sar">
       <mkdir dir="${build.dir}/server"/>
-      <zip destfile="${build.dir}/server/useradmin.sar">
+      <zip destfile="${build.dir}/server/${genesisBasedApplication.name}.sar">
          <fileset dir="${module.shared}/${build.src}">
             <include name="**/*.hbm.xml" />
          </fileset>
@@ -315,16 +315,16 @@
             <include name="genesis-shared-${genesis.version}.jar" />
          </fileset>
          <fileset dir="${build.dir}">
-            <include name="useradmin-shared.jar" />
+            <include name="${genesisBasedApplication.name}-shared.jar" />
          </fileset>
       </zip>
    </target>
 
-   <target name="useradmin:war">
-      <mkdir dir="${build.dir}/server/useradmin.war/application"/>
-      <copy todir="${build.dir}/server/useradmin.war/application">
+   <target name="genesis.app:war">
+      <mkdir dir="${build.dir}/server/${genesisBasedApplication.name}.war/application"/>
+      <copy todir="${build.dir}/server/${genesisBasedApplication.name}.war/application">
          <fileset dir="${build.dir}">
-            <include name="useradmin-weaved.jar" />
+            <include name="${genesisBasedApplication.name}-weaved.jar" />
          </fileset>
          <fileset dir="${build.dir}/${lib.dir}">
             <include name="genesis-shared-annotated-${genesis.version}.jar" />
@@ -363,19 +363,23 @@
              <include name="jnp-client.jar" />
       	 </fileset>
       </copy>
-      <copy todir="${build.dir}/server/useradmin.war">
+      <copy todir="${build.dir}/server/${genesisBasedApplication.name}.war">
          <filterset>
             <filter token="jboss.provider.url" value="${jboss.provider.url}"/>
             <filter token="jboss.factory.initial" value="${jboss.factory.initial}" />
             <filter token="jboss.provider.port" value="${jboss.provider.port}"/>
             <filter token="webstart.server" value="${webstart.server}"/>
             <filter token="webstart.port" value="${webstart.port}"/>
+            <filter token="webstart.context" value="${genesisBasedApplication.name}"/>
+            <filter token="app.main" value="${genesisBasedApplication.mainClass}"/>
+            <filter token="pretty.name" value="${genesisBasedApplication.prettyName}"/>
          </filterset>
          <fileset dir="${webstart.dir}">
             <include name="**/*.jnlp"/>
+            <include name="**/*.html"/>
          </fileset>
       </copy>
-      <copy todir="${build.dir}/server/useradmin.war">
+      <copy todir="${build.dir}/server/${genesisBasedApplication.name}.war">
          <fileset dir="${webstart.dir}">
             <exclude name="**/*.jnlp"/>
    	     </fileset>
@@ -383,46 +387,44 @@
       <signjar alias="genesis"
             keystore="${webstart.dir}/application/genesis.keystore"
             storepass="summa@brasil" keypass="g3n3sis">
-         <fileset dir="${build.dir}/server/useradmin.war/application">
+         <fileset dir="${build.dir}/server/${genesisBasedApplication.name}.war/application">
             <include name="*.jar"/>
          </fileset>
       </signjar>
    </target>   
    
-   <target name="useradmin:deploy" depends="useradmin:sar">
+   <target name="genesis.app:deploy" depends="genesis.app:sar">
       <copy todir="${jboss.app}/deploy">
          <fileset dir="${genesis.dist}">
             <include name="genesis-server-${genesis.version}.jar"/>
          </fileset>
          <fileset dir="${build.dir}/server">
-            <include name="useradmin.sar"/>
+            <include name="${genesisBasedApplication.name}.sar"/>
          </fileset>
       </copy>
    </target>
 	
-	<target name="useradmin:deploy.webstart" depends="useradmin:war">
-	   <mkdir dir="${jboss.app}/deploy/useradmin.war"/>
-	   <copy todir="${jboss.app}/deploy/useradmin.war">
-		  <fileset dir="${build.dir}/server/useradmin.war">
+	<target name="genesis.app:deploy.webstart" depends="genesis.app:war">
+	   <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
+	   <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
+		  <fileset dir="${build.dir}/server/${genesisBasedApplication.name}.war">
 		     <include name="**/*" />
 	      </fileset>
        </copy>
 	</target>
 
-   <target name="useradmin:all"
-           depends="useradmin:compile,useradmin:jar,useradmin:deploy" />
+   <target name="genesis.app:all"
+           depends="genesis.app:compile,genesis.app:jar,genesis.app:deploy" />
 	
-   <target name="useradmin:all.with.webstart"
-	       depends="useradmin:all,useradmin:deploy.webstart" />
+   <target name="genesis.app:all.with.webstart"
+	       depends="genesis.app:all,genesis.app:deploy.webstart" />
 
-   <target name="useradmin:run">
-      <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
+   <target name="genesis.app:run">
+      <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
-         <sysproperty key="aspectwerkz.transform.verbose"
-                      value="true" />
          <classpath>
             <path refid="run.classpath" />
             <pathelement path="${jboss.home}/client/jboss-client.jar" />
@@ -435,8 +437,8 @@
       </java>
    </target>
 
-   <target name="useradmin:run-with-debug">
-      <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
+   <target name="genesis.app:run-with-debug">
+      <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
@@ -452,8 +454,8 @@
       </java>
    </target>
 
-   <target name="useradmin:run-with-logging-on">
-      <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
+   <target name="genesis.app:run-with-logging-on">
+      <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
@@ -468,4 +470,5 @@
          </classpath>
       </java>
    </target>
+
 </project>
