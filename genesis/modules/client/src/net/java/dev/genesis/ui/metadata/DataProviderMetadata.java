@@ -19,8 +19,12 @@
 package net.java.dev.genesis.ui.metadata;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.java.dev.genesis.reflection.FieldEntry;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 public class DataProviderMetadata extends MethodMetadata {
    private FieldEntry objectField;
@@ -48,5 +52,25 @@ public class DataProviderMetadata extends MethodMetadata {
    
    public boolean isProvider(){
       return getObjectField() != null || getIndexField() != null;
+   }
+   
+   public void populateObjectField(final Object target, final List objectList, final int[] selectedIndeces) throws Exception {
+      final List selectedObjects = new ArrayList();
+      for (int i = 0; i < selectedIndeces.length; i++) {
+         selectedObjects.add(objectList.get(selectedIndeces[i]));
+      }
+      setProperty(target, objectField, selectedObjects);
+   }
+
+   private void setProperty(final Object target, final FieldEntry field, final List values) throws Exception {
+      if (field.isMultiple()) {
+         if(field.isCollection()){
+            PropertyUtils.setProperty(target, field.getFieldName(), values.isEmpty() ? null : values);
+         } else {
+            PropertyUtils.setProperty(target, field.getFieldName(), values.isEmpty() ? null : values.toArray());
+         }
+      } else {
+         PropertyUtils.setProperty(target, field.getFieldName(), values.isEmpty() ? null : values.get(0));
+      }
    }
 }

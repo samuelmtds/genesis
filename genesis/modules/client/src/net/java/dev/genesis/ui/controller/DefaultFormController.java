@@ -53,7 +53,7 @@ public class DefaultFormController implements FormController {
          .getLog(DefaultFormController.class);
    private static final String[] ignoredProperties = new String[] { "form",
          "formMetadata", "functions", "variables", "variablesMap", "context",
-         "enabledWhen", "calActions", "dataProviderActions", "changedMap" };
+         "enabledWhen", "callActions", "dataProviderActions", "changedMap" };
 
    static {
       System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,

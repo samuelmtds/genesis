@@ -16,28 +16,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.command.hibernate;
+package net.java.dev.genesis.ui.thinlet.metadata;
 
-import net.java.dev.genesis.paging.Page;
-import net.java.dev.genesis.paging.PagingException;
-import net.java.dev.genesis.paging.hibernate.CriteriaPager;
-import net.sf.hibernate.Criteria;
-
-public class AbstractHibernateCriteria extends AbstractHibernateCommand
-      implements HibernateCriteria {
-
-   private Criteria criteria;
-
-   public void setCriteria(final Criteria criteria) {
-      this.criteria = criteria;
-   }
-
-   public Criteria getCriteria() {
-      return criteria;
-   }
-   
-   protected Page getPage(final int pageNumber, final int resultsPerPage)
-         throws PagingException {
-      return new CriteriaPager(criteria).getPage(pageNumber, resultsPerPage);
-   }
+public interface ThinletMetadataFactory {
+   public ThinletMetadata getThinletMetadata(Class formClass);
 }

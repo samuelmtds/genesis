@@ -56,6 +56,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String END = "end";
    public static final String GROUP = "group";
    public static final String HEADER = "header";
+   public static final String LABEL = "label";
    public static final String LIST = "list";
    public static final String MNEMONIC = "mnemonic";
    public static final String NAME = "name";
@@ -77,6 +78,8 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String TOOLTIP = "tooltip";
    public static final String VALUE = "value";
    public static final String VISIBLE = "visible";
+   
+   private ThinletBinder binder;
 
    protected static final String MESSAGE = "message";
 
@@ -393,7 +396,7 @@ public abstract class BaseThinlet extends Thinlet {
             setValue(component, getPropertyValue(properties, propertyName, false));
          } else if (type.equals(PANEL)) {
             displayBean(properties.get(propertyName), component);
-         } else {
+         } else if (!type.equals(TABLE)){
             setText(component, getPropertyValue(properties, propertyName, false));
          }
       }
@@ -613,7 +616,18 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void bind(Object widget, Object form) throws Exception {
-      new ThinletBinder(this, widget, form).bind();
+      binder = new ThinletBinder(this, widget, form);
+      binder.bind();
+   }
+   
+   public void action(String actionName) throws Exception {
+      binder.invokeAction(actionName);
+   }
+   
+   public void action(Object component) throws Exception {
+      if (isEnabled(component) && isVisible(component)) {
+         action(getName(component));
+      }
    }
 
    protected int[] getSelectedIndices(String name){

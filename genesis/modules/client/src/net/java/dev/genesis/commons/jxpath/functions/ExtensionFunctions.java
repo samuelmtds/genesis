@@ -87,6 +87,11 @@ public class ExtensionFunctions {
       return result;
    }
 
+   public static boolean hasNotChanged(final ExpressionContext context,
+         final GenesisNodeSet nodeSet) {
+      return !hasChanged(context, nodeSet);
+   }
+
    public static boolean isEmpty(final ExpressionContext ctx, final Object obj)
          throws Exception {
 
@@ -103,6 +108,11 @@ public class ExtensionFunctions {
 
       return formMeta.getFieldMetadata(getSimplePropertyName(nodeSet))
             .getEmptyResolver().isEmpty(getValue(ctx, propertyName));
+   }
+
+   public static boolean isNotEmpty(final ExpressionContext ctx, final Object obj)
+   		throws Exception {
+      return !isEmpty(ctx, obj);
    }
 
    public static boolean equals(final ExpressionContext ctx, final Object arg1,
@@ -146,6 +156,11 @@ public class ExtensionFunctions {
       }
       return false;
 
+   }
+   
+   public static boolean notEquals(final ExpressionContext ctx, final Object arg1,
+         final Object arg2) throws Exception {
+      return !equals(ctx, arg1, arg2);
    }
 
 }

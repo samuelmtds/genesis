@@ -75,6 +75,10 @@ public class FormMetadata {
       return (ActionMetadata) actionMetadatas.get(new MethodEntry(method));
    }
    
+   public ActionMetadata getActionMetadata(final String methodName) {
+      return (ActionMetadata) actionMetadatas.get(new MethodEntry(methodName, new String[0]));
+   }
+   
    public DataProviderMetadata getDataProviderMetadata(final Method method) {
       return (DataProviderMetadata) dataProviderMetadatas.get(new MethodEntry(method));
    }
@@ -118,6 +122,12 @@ public class FormMetadata {
       }
       
       for (Iterator iter = actionMetadatas.values().iterator(); iter.hasNext();) {
+         buffer.append("\t");
+         buffer.append(iter.next());
+         buffer.append("\n");
+      }
+      
+      for (Iterator iter = dataProviderMetadatas.values().iterator(); iter.hasNext();) {
          buffer.append("\t");
          buffer.append(iter.next());
          buffer.append("\n");

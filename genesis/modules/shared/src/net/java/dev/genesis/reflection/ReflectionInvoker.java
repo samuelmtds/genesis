@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class ReflectionInvoker {
+   private final static Object[] emptyObjectArray = new Object[0];
+   private final static String[] emptyStringArray = new String[0];
+   
    private static final ReflectionInvoker instance = new ReflectionInvoker();
    private Map reflectionCache = null;
 
@@ -40,6 +43,12 @@ public final class ReflectionInvoker {
          throws ClassNotFoundException, IllegalAccessException,
          NoSuchMethodException, InvocationTargetException {
       return getMethod(obj, methodName, classNames).invoke(obj, args);
+   }
+
+   public Object invoke(final Object obj, final String methodName)
+         throws ClassNotFoundException, IllegalAccessException,
+         NoSuchMethodException, InvocationTargetException {
+      return invoke(obj, methodName, emptyStringArray, emptyObjectArray);
    }
 
    public Method getMethod(final Object obj, final String methodName,
