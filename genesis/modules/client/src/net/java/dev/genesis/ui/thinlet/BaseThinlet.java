@@ -666,7 +666,7 @@ public abstract class BaseThinlet extends Thinlet {
        return indexes;
    }
 
-   private void handleException(String message, Throwable throwable) {
+   protected void handleException(String message, Throwable throwable) {
       try {
          ErrorReporterDialog.show(this, getErrorMessage(), message, throwable);
       } catch (ScreenNotFoundException scnfe) {
