@@ -19,12 +19,13 @@
 package net.java.dev.genesis.ui.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
+import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
@@ -34,7 +35,9 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.Functions;
@@ -43,13 +46,24 @@ import org.apache.commons.jxpath.Variables;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 public class DefaultFormController implements FormController {
+   public static final String FORM_METADATA_KEY = "genesis:formMetadata";
+   public static final String CHANGED_MAP_KEY = "genesis:changedMap";
+   public static final String LAST_MAP_KEY = "genesis:last";
+   public static final String LAST_SAVED_MAP_KEY = "genesis:lastSaved";
+
    private static final Log log = LogFactory
          .getLog(DefaultFormController.class);
-   private static final String[] ignoredProperties = new String[] {"form", 
+   private static final String[] ignoredProperties = new String[] { "form",
          "formMetadata", "functions", "variables", "variablesMap", "context",
-         "enabledWhen", "calActions", "dataProviderActions", "changedMap"};
+         "enabledWhen", "calActions", "dataProviderActions", "changedMap" };
+
+   static {
+      System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
+            JXPathContextFactory.class.getName());
+      BeanUtilsBean.setInstance(new BeanUtilsBean(new ConverterRegistry(),
+            new PropertyUtilsBean()));
+   }
 
    private Object form;
    private FormMetadata formMetadata;
@@ -103,8 +117,8 @@ public class DefaultFormController implements FormController {
 
    public void setup() throws Exception {
       ctx = createJXPathContext();
-      ctx.getVariables().declareVariable("genesis:formMetadata", formMetadata);
-      ctx.getVariables().declareVariable("genesis:changedMap", changedMap);
+      ctx.getVariables().declareVariable(FORM_METADATA_KEY, formMetadata);
+      ctx.getVariables().declareVariable(CHANGED_MAP_KEY, changedMap);
       if (PropertyUtils.isWriteable(form, "context")
             && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(form,
                   "context"))) {
@@ -117,8 +131,8 @@ public class DefaultFormController implements FormController {
       lastSaved.clear();
       lastSaved.putAll(last);
 
-      ctx.getVariables().declareVariable("genesis:last", last);
-      ctx.getVariables().declareVariable("genesis:lastSaved", lastSaved);
+      ctx.getVariables().declareVariable(LAST_MAP_KEY, last);
+      ctx.getVariables().declareVariable(LAST_SAVED_MAP_KEY, lastSaved);
    }
 
    public void populate(Map properties) throws Exception {
@@ -136,15 +150,16 @@ public class DefaultFormController implements FormController {
       PropertyUtils.copyProperties(form, changedMap);
       evaluate(true);
    }
-   
-   private void updateChangedMap(Map newData, boolean stringMap, boolean logMessages) {
+
+   private void updateChangedMap(Map newData, boolean stringMap,
+         boolean logMessages) {
       Object value;
       FieldMetadata fieldMeta;
       Map.Entry entry;
 
       changedMap.clear();
       changedMap.putAll(GenesisUtils.normalizeMap(newData));
-      
+
       if (log.isDebugEnabled()) {
          log.debug("changedMap started as: " + changedMap);
       }
@@ -157,8 +172,9 @@ public class DefaultFormController implements FormController {
             i.remove();
 
             if (log.isDebugEnabled()) {
-               log.debug(entry.getKey() + " removed from changedMap for being a " +
-                     " displayOnly field");
+               log.debug(entry.getKey()
+                     + " removed from changedMap for being a "
+                     + " displayOnly field");
             }
 
             continue;
@@ -172,9 +188,9 @@ public class DefaultFormController implements FormController {
             i.remove();
 
             if (log.isDebugEnabled()) {
-               log.debug(entry.getKey() + " removed from changedMap for being " +
-                     " equal to previousValue; is " + entry.getValue() + "; was:" +
-                     last.get(entry.getKey()));
+               log.debug(entry.getKey() + " removed from changedMap for being "
+                     + " equal to previousValue; is " + entry.getValue()
+                     + "; was:" + last.get(entry.getKey()));
             }
 
             continue;
@@ -298,9 +314,9 @@ public class DefaultFormController implements FormController {
                .getEnabledCondition()));
 
          if (log.isDebugEnabled()) {
-            log.debug("EnabledWhen Condition for member '" + 
-                  memberMetadata.getName() + "' evaluated as '" + 
-                  enabledMap.get(memberMetadata.getName()) + "'");
+            log.debug("EnabledWhen Condition for member '"
+                  + memberMetadata.getName() + "' evaluated as '"
+                  + enabledMap.get(memberMetadata.getName()) + "'");
          }
       }
    }
@@ -324,9 +340,9 @@ public class DefaultFormController implements FormController {
                .getVisibleCondition()));
 
          if (log.isDebugEnabled()) {
-            log.debug("VisibleWhen Condition for member '" + 
-                  memberMetadata.getName() + "' evaluated as '" + 
-                  visibleMap.get(memberMetadata.getName()) + "'");
+            log.debug("VisibleWhen Condition for member '"
+                  + memberMetadata.getName() + "' evaluated as '"
+                  + visibleMap.get(memberMetadata.getName()) + "'");
          }
       }
    }
@@ -338,14 +354,14 @@ public class DefaultFormController implements FormController {
       for (final Iterator i = formMetadata.getActionMetadatas().entrySet()
             .iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
-         actionMetadata = (ActionMetadata)entry.getValue();
+         actionMetadata = (ActionMetadata) entry.getValue();
 
          if (actionMetadata.getCallCondition() == null) {
             continue;
          }
 
-         final boolean satisfied = isSatisfied(actionMetadata
-               .getCallCondition()).booleanValue();
+         final boolean satisfied = isSatisfied(
+               actionMetadata.getCallCondition()).booleanValue();
 
          if (satisfied) {
             callActions.add(actionMetadata);
@@ -357,13 +373,13 @@ public class DefaultFormController implements FormController {
          }
       }
    }
-   
+
    protected void evaluateDataProviderTriggers() {
       Map.Entry entry;
       DataProviderMetadata dataProviderMetadata;
 
-      for (final Iterator i = formMetadata.getDataProviderMetadatas().entrySet()
-            .iterator(); i.hasNext();) {
+      for (final Iterator i = formMetadata.getDataProviderMetadatas()
+            .entrySet().iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
          dataProviderMetadata = (DataProviderMetadata) entry.getValue();
 
@@ -371,16 +387,16 @@ public class DefaultFormController implements FormController {
             continue;
          }
 
-         final boolean satisfied = isSatisfied(dataProviderMetadata
-               .getCallCondition()).booleanValue();
+         final boolean satisfied = isSatisfied(
+               dataProviderMetadata.getCallCondition()).booleanValue();
 
          if (satisfied) {
             dataProviderActions.add(dataProviderMetadata);
          }
 
          if (log.isDebugEnabled()) {
-            log.debug("CallWhen Condition for method '" + entry.getKey() +
-                  "' evaluated as '" + satisfied + "'");
+            log.debug("CallWhen Condition for method '" + entry.getKey()
+                  + "' evaluated as '" + satisfied + "'");
          }
       }
    }
@@ -396,16 +412,16 @@ public class DefaultFormController implements FormController {
    public Map getEnabledMap() {
       return new HashMap(enabledMap);
    }
-   
+
    public Map getVisibleMap() {
       return new HashMap(visibleMap);
    }
-   
-   public Collection getCallActions(){
+
+   public Collection getCallActions() {
       return new ArrayList(callActions);
    }
-   
-   public Collection getDataProviderActions(){
+
+   public Collection getDataProviderActions() {
       return new ArrayList(dataProviderActions);
    }
 

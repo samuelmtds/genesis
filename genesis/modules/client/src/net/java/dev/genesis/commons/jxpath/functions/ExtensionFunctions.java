@@ -18,163 +18,134 @@
  */
 package net.java.dev.genesis.commons.jxpath.functions;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
+import net.java.dev.genesis.commons.jxpath.GenesisNodeSet;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
+import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.NodeSet;
-import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 
 public class ExtensionFunctions {
    private static Log log = LogFactory.getLog(ExtensionFunctions.class);
 
-   private static Pointer getArg(final NodeSet set) {
-      for (Iterator iter = set.getPointers().iterator(); iter.hasNext();) {
-         return (Pointer) iter.next();
-      }
-      throw new JXPathException("Incorrect number of arguments");
+   private static Object getValue(final ExpressionContext ctx,
+         final String propertyName) throws Exception {
+
+      return PropertyUtils.getProperty(ctx.getJXPathContext().getContextBean(),
+            propertyName);
    }
 
-   private static String getFieldName(final Pointer pointer) {
-      final StringTokenizer tokenizer = new StringTokenizer(pointer.toString(),
-            "/");
-      final StringBuffer buffer = new StringBuffer();
-      if (tokenizer.hasMoreTokens()) {
-         buffer.append(tokenizer.nextToken());
-      }
-      while (tokenizer.hasMoreTokens()) {
-         buffer.append(".");
-         buffer.append(tokenizer.nextToken());
-      }
-      return buffer.toString();
+   private static Object getValue(final ExpressionContext ctx, final Object obj)
+         throws Exception {
+      return obj instanceof GenesisNodeSet ? getValue(ctx,
+            getSimplePropertyName((GenesisNodeSet) obj)) : obj;
    }
-   
+
+   private static String getSimplePropertyName(final GenesisNodeSet nodeSet) {
+      final String path = nodeSet.getPath();
+      int index;
+
+      return (index = path.indexOf('/')) > 0 ? path.substring(0, index) : path;
+   }
+
+   private static EqualityComparator getEqualityComparator(
+         final ExpressionContext ctx, final Object obj) {
+
+      if (obj instanceof GenesisNodeSet) {
+         final FormMetadata meta = (FormMetadata) ctx.getJXPathContext()
+               .getVariables().getVariable(
+                     DefaultFormController.FORM_METADATA_KEY);
+         return meta.getFieldMetadata(
+               getSimplePropertyName((GenesisNodeSet) obj))
+               .getEqualityComparator();
+      }
+
+      return EqualityComparatorRegistry.getInstance()
+            .getDefaultEqualityComparatorFor(obj.getClass());
+   }
+
    public static boolean hasChanged(final ExpressionContext context,
-         final Object obj) {
-      final NodeSet nodeSet = (NodeSet) obj;
-      final Map changedMap = (Map) context.getJXPathContext()
-            .getVariables().getVariable("genesis:changedMap");
-      final Pointer pointer = getArg(nodeSet);
-      return changedMap.containsKey(getFieldName(pointer));
+         final GenesisNodeSet nodeSet) {
+
+      final Map changedMap = (Map) context.getJXPathContext().getVariables()
+            .getVariable(DefaultFormController.CHANGED_MAP_KEY);
+      final String propertyName = getSimplePropertyName(nodeSet);
+      final boolean result = changedMap.containsKey(propertyName);
+
+      if (log.isDebugEnabled()) {
+         log.debug("Property '" + propertyName
+               + (result ? "' changed" : "' didn´t change"));
+      }
+
+      return result;
    }
 
-   public static boolean isEmpty(final ExpressionContext context,
-         final Object obj) {
-      if (!(obj instanceof NodeSet)) {
+   public static boolean isEmpty(final ExpressionContext ctx, final Object obj)
+         throws Exception {
+
+      if (!(obj instanceof GenesisNodeSet)) {
          return EmptyResolverRegistry.getInstance().getDefaultEmptyResolverFor(
                obj.getClass()).isEmpty(obj);
       }
-      final NodeSet nodeSet = (NodeSet) obj;
-      final FormMetadata formMeta = (FormMetadata) context.getJXPathContext()
-            .getVariables().getVariable("genesis:formMetadata");
-      final Pointer pointer = getArg(nodeSet);
 
-      return formMeta.getFieldMetadata(getFieldName(pointer))
-            .getEmptyResolver().isEmpty(pointer.getValue());
+      final GenesisNodeSet nodeSet = (GenesisNodeSet) obj;
+      final FormMetadata formMeta = (FormMetadata) ctx.getJXPathContext()
+            .getVariables()
+            .getVariable(DefaultFormController.FORM_METADATA_KEY);
+      final String propertyName = getSimplePropertyName(nodeSet);
+
+      return formMeta.getFieldMetadata(getSimplePropertyName(nodeSet))
+            .getEmptyResolver().isEmpty(getValue(ctx, propertyName));
    }
 
-   public static boolean equals(final ExpressionContext context,
-         final Object arg1, final Object arg2) {
-      final Pointer pointer1 = arg1 instanceof NodeSet
-            ? getArg((NodeSet) arg1)
-            : null;
-      final Pointer pointer2 = arg2 instanceof NodeSet
-            ? getArg((NodeSet) arg2)
-            : null;
-      EqualityComparator comp1 = pointer1 == null
-            ? EqualityComparatorRegistry.getInstance()
-                  .getDefaultEqualityComparatorFor(arg1.getClass())
-            : null;
-      EqualityComparator comp2 = pointer2 == null
-            ? EqualityComparatorRegistry.getInstance()
-                  .getDefaultEqualityComparatorFor(arg2.getClass())
-            : null;
+   public static boolean equals(final ExpressionContext ctx, final Object arg1,
+         final Object arg2) throws Exception {
 
-      final FormMetadata formMeta = (FormMetadata) context.getJXPathContext()
-            .getVariables().getVariable("genesis:formMetadata");
+      final EqualityComparator comp1 = getEqualityComparator(ctx, arg1);
+      final EqualityComparator comp2 = getEqualityComparator(ctx, arg2);
+
+      final Object value1 = getValue(ctx, arg1);
+      final Object value2 = getValue(ctx, arg2);
 
       if (comp1 == comp2) {
-         if (comp1 == null) {
-            // Both Pointers
-            comp1 = formMeta.getFieldMetadata(getFieldName(pointer1))
-                  .getEqualityComparator();
-            comp2 = formMeta.getFieldMetadata(getFieldName(pointer2))
-                  .getEqualityComparator();
-            // Different equality comparators
-            if (comp1 != comp2) {
-               throw new JXPathException(
-                     "Arguments have different Equality Comparators.");
-            }
-            if (log.isDebugEnabled()) {
-               log.debug("Evaluation equals for Pointer '"
-                     + pointer1.getValue() + "' and Pointer '"
-                     + pointer2.getValue() + "'");
-            }
-            return comp1.equals(pointer1.getValue(), pointer2.getValue());
-         } else {
-            // arg1 is simple object, arg2 is simple object
-            if (log.isDebugEnabled()) {
-               log.debug("Evaluation equals for object '" + arg1
-                     + "' and object '" + arg2 + "'");
-            }
-            return comp1.equals(arg1, arg2);
+         if (log.isDebugEnabled()) {
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
+                  + "' with same comparator " + comp1);
          }
-      } else {
-         if (comp1 == null) {
-            // arg1 is Pointer, arg2 is simple object
-            if (pointer1.getValue() == null || !pointer1.getValue().getClass().isAssignableFrom(
-                  arg2.getClass())) {
-               if (log.isDebugEnabled()) {
-                  log.debug("Different classes for '" + pointer1.getValue()
-                        + "' and '" + arg2 + "'");
-               }
-               return false;
-            }
-            comp1 = formMeta.getFieldMetadata(getFieldName(pointer1))
-                  .getEqualityComparator();
-            if (log.isDebugEnabled()) {
-               log.debug("Evaluation equals for Pointer '"
-                     + pointer1.getValue() + "' and object '" + arg2 + "'");
-            }
-            return comp1.equals(pointer1.getValue(), arg2);
-         } else if (comp2 == null) {
-            //arg1 is simple object, arg2 is Pointer;
-            if (pointer2.getValue() == null
-                  || !pointer2.getValue().getClass().isAssignableFrom(
-                        arg1.getClass())) {
-               if (log.isDebugEnabled()) {
-                  log.debug("Different classes for '" + arg1 + "' and '"
-                        + pointer2.getValue() + "'");
-               }
-               return false;
-            }
-            comp2 = formMeta.getFieldMetadata(getFieldName(pointer2))
-                  .getEqualityComparator();
-            if (log.isDebugEnabled()) {
-               log.debug("Evaluation equals for object '" + arg1
-                     + "' and Pointer '" + pointer2.getValue() + "'");
-            }
-            return comp2.equals(pointer2.getValue(), arg1);
-         } else {
-            if (log.isDebugEnabled()) {
-               log.debug("Different classes for '" + arg1 + "' and '" + arg2
-                     + "'");
-            }
-            // arg1 is simple object, arg2 is simple object
-            // but arg1 and arg2 have different class
-            return false;
+         return comp1.equals(value1, value2);
+      } else if (value1 == null) {
+         if (log.isDebugEnabled()) {
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
+                  + "'");
          }
+         return value2 == null;
+      } else if (value1.getClass().equals(value2.getClass())
+            || value1.getClass().isAssignableFrom(value2.getClass())) {
+         if (log.isDebugEnabled()) {
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
+                  + "' with first comparator " + comp1);
+         }
+         return comp1.equals(value1, value2);
+      } else if (value2.getClass().isAssignableFrom(value1.getClass())) {
+         if (log.isDebugEnabled()) {
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
+                  + "' with second comparator " + comp2);
+         }
+         return comp2.equals(value2, value1);
       }
+      if (log.isDebugEnabled()) {
+         log.debug("'" + value1 + "' and '" + value2
+               + "' have different classes");
+      }
+      return false;
+
    }
 
 }
