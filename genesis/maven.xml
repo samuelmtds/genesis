@@ -62,5 +62,12 @@
    <goal name="genesis:jar">
       <ant:ant dir="${basedir}" antfile="build.xml" target="genesis:jar"/>
    </goal>
-      
+
+   <!-- ====================== -->
+   <!-- Makes the distribution -->
+   <!-- ====================== -->
+   <goal name="genesis:dist" prereqs="genesis:site">
+      <ant:ant dir="${basedir}" antfile="build.xml" target="genesis:dist"/>
+   </goal>
+
 </project>

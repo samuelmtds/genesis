@@ -7,11 +7,11 @@
 
 	<property name="genesis.version" value="0.2-dev" />
 	<property name="xdoclet.validatexml" value="false" />
-	<property name="modules.dir" value="modules" />
-	<property name="build.dir" value="target" />
+	<property name="build.dir" value="${genesis.build.dir}" />
 	<property name="build.dest" value="${build.dir}/classes" />
 	<property name="src.dir" value="src" />
 	<property name="build.src" value="${build.dir}/src" />
+   <property name="build.docs" value="${build.dir}/docs" />
 	<property name="test.dest" value="${build.dir}/test-classes" />
 	<property name="test.reportsDirectory" value="${build.dir}/test-reports" />
 
@@ -311,9 +311,9 @@
 			              transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
 			              transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
 			              userTransactionName="UserTransaction"
-			              useouterjoin="false"
 			              showSql="true"
-                          depends="jboss.jca:service=LocalTxCM,name=DefaultDS"/>
+                       depends="jboss.jca:service=LocalTxCM,name=DefaultDS"
+                       version="2.1.6" />
 			<hibernatecfg dialect="${genesis.unit.test.hibernate.dialect}"
 			              userName="${genesis.unit.test.jdbc.connection.username}"
 			              password="${genesis.unit.test.jdbc.connection.password}"
@@ -399,21 +399,12 @@
 	</target>
 
 	<target name="test:deploy">
-		<mkdir dir="${genesis.jboss.app}/deploy/hibernate.sar" />
-		<mkdir dir="${genesis.jboss.app}/deploy/genesis.jar" />
-		<copy todir="${genesis.jboss.app}/deploy/hibernate.sar">
-			<fileset dir="${genesis.module.tests}/${build.src}">
-				<include name="**/*.hbm.xml" />
-			</fileset>
-			<fileset dir="${genesis.module.tests}/${test.dest}">
-				<include name="**/*Bean.class" />
-				<include name="hibernate.properties" />
-			</fileset>
-		</copy>
-		<copy todir="${genesis.jboss.app}/deploy/hibernate.sar/META-INF">
+		<mkdir dir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF" />
+		<mkdir dir="${genesis.jboss.app}/deploy/genesis-server.jar" />
+		<copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF">
 			<fileset dir="${genesis.module.tests}/${build.src}" includes="jboss-service.xml" />
 		</copy>
-		<copy todir="${genesis.jboss.app}/lib">
+		<copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar">
 			<fileset dir="${genesis.hibernate.dist}">
 				<include name="commons-logging*.jar" />
 				<include name="log4j*.jar" />
@@ -428,11 +419,15 @@
 			<fileset dir="${genesis.commons.dist}">
 				<include name="commons-beanutils*.jar" />
 			</fileset>
+         <fileset dir="${genesis.module.shared}/${build.dest}" />
+         <fileset dir="${genesis.module.tests}/${test.dest}">
+            <include name="**/*.class" />
+            <include name="**/*.hbm.xml" />
+            <include name="hibernate.properties" />
+         </fileset>
 		</copy>
-		<copy todir="${genesis.jboss.app}/deploy/genesis.jar">
+		<copy todir="${genesis.jboss.app}/deploy/genesis-server.jar">
 			<fileset dir="${genesis.module.server}/${build.dest}" />
-			<fileset dir="${genesis.module.shared}/${build.dest}" />
-			<fileset dir="${genesis.module.tests}/${test.dest}" includes="**/*.class" />
 		</copy>
 	</target>
 
@@ -472,14 +467,11 @@
 	</target>
 
 	<target name="genesis:clean" description="Clean generated files">
-		<delete dir="${build.dir}" />
-		<delete dir="${genesis.dist.dir}" />
 		<delete dir="${genesis.module.aspect}/${build.dir}" />
 		<delete dir="${genesis.module.client}/${build.dir}" />
 		<delete dir="${genesis.module.server}/${build.dir}" />
 		<delete dir="${genesis.module.shared}/${build.dir}" />
 		<delete dir="${genesis.module.tests}/${build.dir}" />
-		<delete dir="${genesis.module.tests}/_dump" />
 		<delete>
 			<fileset dir=".">
 				<include name="*.log" />
@@ -487,6 +479,146 @@
 			</fileset>
 		</delete>
 	</target>
+   
+   <!-- Call using maven or build site and jars before -->
+   <target name="genesis:dist" description="Generate genesis distribution">
+      <mkdir dir="${build.dir}"/>
+      <delete>
+         <fileset dir="${build.dir}">
+            <include name="*.zip"/>
+            <include name="*.tar.gz"/>
+            <include name="*.MD5"/>
+         </fileset>
+      </delete>
+      
+      <!-- Genesis bin distribution -->
+      <zip destfile="${build.dir}/genesis-bin-${genesis.version}.zip">
+         <zipfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="LICENSE.txt"/>
+            <include name="lgpl.txt"/>
+         </zipfileset>
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-bin-${genesis.version}.tar">
+         <tarfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="LICENSE.txt"/>
+            <include name="lgpl.txt"/>
+         </tarfileset>
+      </tar>
+      <gzip zipfile="${build.dir}/genesis-bin-${genesis.version}.tar.gz" src="${build.dir}/genesis-bin-${genesis.version}.tar"/>
+      <delete file="${build.dir}/genesis-bin-${genesis.version}.tar" />
+      <checksum file="${build.dir}/genesis-bin-${genesis.version}.zip"/>
+      <checksum file="${build.dir}/genesis-bin-${genesis.version}.tar.gz"/>
+      
+      <!-- Genesis full-bin distribution -->
+      <zip destfile="${build.dir}/genesis-full-bin-${genesis.version}.zip">
+         <zipfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.lib.dir}/**"/>
+            <include name="LICENSE.txt"/>
+            <include name="lgpl.txt"/>
+         </zipfileset>
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-${genesis.version}.tar">
+         <tarfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.lib.dir}/**"/>
+            <include name="LICENSE.txt"/>
+            <include name="lgpl.txt"/>
+         </tarfileset>
+      </tar>
+      <gzip zipfile="${build.dir}/genesis-full-bin-${genesis.version}.tar.gz" src="${build.dir}/genesis-full-bin-${genesis.version}.tar"/>
+      <delete file="${build.dir}/genesis-full-bin-${genesis.version}.tar" />
+      <checksum file="${build.dir}/genesis-full-bin-${genesis.version}.zip"/>
+      <checksum file="${build.dir}/genesis-full-bin-${genesis.version}.tar.gz"/>
+
+      <!-- Genesis full-bin-plus-docs distribution -->
+      <zip destfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.zip">
+         <zipfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.lib.dir}/**"/>
+            <include name="LICENSE.txt"/>
+            <include name="lgpl.txt"/>
+         </zipfileset>
+         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar">
+         <tarfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.lib.dir}/**"/>
+            <include name="LICENSE.txt"/>
+            <include name="lgpl.txt"/>
+         </tarfileset>
+         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+      </tar>
+      <gzip zipfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar.gz" src="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar"/>
+      <delete file="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar" />
+      <checksum file="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.zip"/>
+      <checksum file="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar.gz"/>
+      
+      <!-- Genesis src distribution -->
+      <zip destfile="${build.dir}/genesis-src-${genesis.version}.zip">
+         <zipfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="*" />
+            <include name="${genesis.modules.dir}/**" />
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.xdoc.dir}/**" />
+            <exclude name=".*"/>
+            <exclude name="**/${build.dir}/**/*"/>
+            <exclude name="**/build.properties"/>
+            <exclude name="${genesis.lib.dir}/**"/>
+         </zipfileset>
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-${genesis.version}.tar">
+         <tarfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="*" />
+            <include name="${genesis.modules.dir}/**" />
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.xdoc.dir}/**" />
+            <exclude name=".*"/>
+            <exclude name="**/${build.dir}/**/*"/>
+            <exclude name="**/build.properties"/>
+            <exclude name="${genesis.lib.dir}/**"/>
+         </tarfileset>
+      </tar>
+      <gzip zipfile="${build.dir}/genesis-src-${genesis.version}.tar.gz" src="${build.dir}/genesis-src-${genesis.version}.tar"/>
+      <delete file="${build.dir}/genesis-src-${genesis.version}.tar" />
+      <checksum file="${build.dir}/genesis-src-${genesis.version}.zip"/>
+      <checksum file="${build.dir}/genesis-src-${genesis.version}.tar.gz"/>
+
+      <!-- Genesis src-plus-docs distribution -->
+      <zip destfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.zip">
+         <zipfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="*" />
+            <include name="${genesis.modules.dir}/**" />
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.xdoc.dir}/**" />
+            <exclude name=".*"/>
+            <exclude name="**/${build.dir}/**/*"/>
+            <exclude name="**/build.properties"/>
+            <exclude name="${genesis.lib.dir}/**"/>
+         </zipfileset>
+         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar">
+         <tarfileset dir="." prefix="genesis-${genesis.version}">
+            <include name="*" />
+            <include name="${genesis.modules.dir}/**" />
+            <include name="${genesis.dist.dir}/**"/>
+            <include name="${genesis.xdoc.dir}/**" />
+            <exclude name=".*"/>
+            <exclude name="**/${build.dir}/**/*"/>
+            <exclude name="**/build.properties"/>
+            <exclude name="${genesis.lib.dir}/**"/>
+         </tarfileset>
+         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/site" />
+      </tar>
+      <gzip zipfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar.gz" src="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar"/>
+      <delete file="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar" />
+      <checksum file="${build.dir}/genesis-src-plus-docs-${genesis.version}.zip"/>
+      <checksum file="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar.gz"/>
+   </target>
 
 	<target name="genesis" description="Makes genesis jars" depends="genesis:jar" />
 
