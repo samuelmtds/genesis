@@ -201,7 +201,7 @@ try {
       abaixo transcrita:</p>
 <source>
 public interface CriteriaResolver {
-   public Map getPropertiesMap() throws Throwable;
+   public Map getPropertiesMap();
    public void setPropertiesMap(final Map propertiesMap);
 }
 </source>
@@ -235,7 +235,7 @@ public interface CriteriaResolver {
       para execução de um método; caso este seja ultrapassado, uma
       <code>net.java.dev.genesis.exception.TimeoutException</code> será lançada.
       </p>
-      <p>O tempo limite é configurado através pelo parâmetro do aspecto de nome
+      <p>O tempo limite é configurado pelo parâmetro do aspecto de nome
       <code>timeout</code>. O pointcut de nome <code>timeout</code> seleciona os
       métodos cuja execução será interceptada pelo advice
       <code>timeoutAdvice(JoinPoint)</code>. O advice executa o método
@@ -311,6 +311,16 @@ public interface ThinletMetadataFactory {
             <td><code>true</code></td>
           </tr>
           <tr>
+            <td>CriteriaCommandExecutionAspect</td>
+            <td>useOriginalMethod</td>
+            <td>boolean</td>
+            <td>Define como o nome do método que deve ser executado será obtido
+            da instância de <code>MethodJoinPoint</code>. Deve ser
+            <code>true</code> para os modos de execução locais</td>
+            <td>Não</td>
+            <td><code>false</code></td>
+          </tr>
+          <tr>
             <td rowspan="2">EJBCommandExecutionAspect</td>
             <td>jndiName</td>
             <td>String</td>
@@ -323,7 +333,7 @@ public interface ThinletMetadataFactory {
             <td>retryOnNoSuchObject</td>
             <td>boolean</td>
             <td>Indica se o método deve ser executado novamente se uma
-            <code>java.rmi.NoSuchObjectException</code> occorer</td>
+            <code>java.rmi.NoSuchObjectException</code> ocorrer</td>
             <td>Não</td>
             <td><code>true</code></td>
           </tr>
@@ -494,4 +504,6 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
+
+
 

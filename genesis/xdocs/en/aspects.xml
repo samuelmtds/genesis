@@ -198,7 +198,7 @@ try {
       shown below:</p>
 <source>
 public interface CriteriaResolver {
-   public Map getPropertiesMap() throws Throwable;
+   public Map getPropertiesMap();
    public void setPropertiesMap(final Map propertiesMap);
 }
 </source>
@@ -304,6 +304,16 @@ public interface ThinletMetadataFactory {
             method will be considered as being at least remotable</td>
             <td><b>Yes</b></td>
             <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>CriteriaCommandExecutionAspect</td>
+            <td>useOriginalMethod</td>
+            <td>boolean</td>
+            <td>Configures how the name for the method to be executed will be
+            obtained from the <code>MethodJoinPoint</code> instance. It should
+            be <code>true</code> for local execution modes.</td>
+            <td>No</td>
+            <td><code>false</code></td>
           </tr>
           <tr>
             <td rowspan="2">EJBCommandExecutionAspect</td>
@@ -489,4 +499,5 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
+
 
