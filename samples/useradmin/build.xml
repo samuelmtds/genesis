@@ -363,6 +363,7 @@
             <attribute name="Class-Path" value="${local.classpath}"/>
          </manifest>
          <fileset dir="${weaving.local.dest}" />
+         <fileset dir="${module.shared}/${build.src}" includes="**/*.xml" />
       </jar>
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-shared.jar">
          <fileset dir="${module.shared}/${build.dest}"
