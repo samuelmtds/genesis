@@ -74,47 +74,47 @@ public class BasicValidator {
    public static boolean validateShort(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isShort(value);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isShort(
+            value);
    }
    
    public static boolean validateInt(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isInt(value);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isInt(
+            value);
    }
    
    public static boolean validateLong(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isLong(value);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isLong(
+            value);
    }
    
    public static boolean validateFloat(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isFloat(value);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isFloat(
+            value);
    }
    
    public static boolean validateDouble(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isDouble(value);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isDouble(
+            value);
    }
    
    public static boolean validateEmail(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isEmail(value);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isEmail(
+            value);
    }
    
    public static boolean validateRequiredIf(Object bean, Field field,
-   Validator validator) {
+         Validator validator) {
       final Object form = validator.getParameterValue(Validator.BEAN_PARAM);
       String value = null;
       boolean required = false;
@@ -136,7 +136,7 @@ public class BasicValidator {
       }
       
       for (int i = 0 ; !GenericValidator.isBlankOrNull(field.getVarValue(
-      "field[" + i + "]")); i++) {
+            "field[" + i + "]")); i++) {
          String dependProp = field.getVarValue("field[" + i + "]");
          String dependTest = field.getVarValue("fieldTest[" + i + "]");
          String dependTestValue = field.getVarValue("fieldValue[" + i + "]");
@@ -161,7 +161,7 @@ public class BasicValidator {
          dependVal = ValidatorUtils.getValueAsString(form, dependProp);
          
          if (dependTest.equals(FIELD_TEST_NULL) ||
-         dependTest.equals(FIELD_TEST_NOTNULL)) {
+               dependTest.equals(FIELD_TEST_NOTNULL)) {
             thisRequired = GenericValidator.isBlankOrNull(dependVal);
             
             if (dependTest.equals(FIELD_TEST_NOTNULL)) {
@@ -194,51 +194,47 @@ public class BasicValidator {
    public static boolean validateMask(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.matchRegexp(value, field.getVarValue("mask"));
+      return GenericValidator.isBlankOrNull(value) || GenericValidator
+            .matchRegexp(value, field.getVarValue("mask"));
    }
    
    public static boolean validateDate(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isDate(value, field.getVarValue("pattern"), false);
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isDate(
+            value, field.getVarValue("pattern"), false);
    }
    
    public static boolean validateMaxLength(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.maxLength(value, Integer.parseInt(
-      field.getVarValue("maxlength")));
+      return GenericValidator.isBlankOrNull(value) || GenericValidator
+            .maxLength(value, Integer.parseInt(field.getVarValue("maxlength")));
    }
    
    public static boolean validateMinLength(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.minLength(value, Integer.parseInt(
-      field.getVarValue("minlength")));
+      return GenericValidator.isBlankOrNull(value) || GenericValidator
+            .minLength(value, Integer.parseInt(field.getVarValue("minlength")));
    }
    
    public static boolean validateLongRange(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value)
-      || (GenericValidator.isLong(value) && GenericValidator.isInRange(
-      Long.parseLong(value), Long.parseLong(field
-      .getVarValue("min")), Long.parseLong(field
-      .getVarValue("max"))));
+      return GenericValidator.isBlankOrNull(value) || 
+            (GenericValidator.isLong(value) && GenericValidator.isInRange(
+            Long.parseLong(value), Long.parseLong(field.getVarValue("min")), 
+            Long.parseLong(field.getVarValue("max"))));
    }
    
    public static boolean validateDoubleRange(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
-      return GenericValidator.isBlankOrNull(value)
-      || (GenericValidator.isDouble(value) && GenericValidator.isInRange(
-      Double.parseDouble(value), Double.parseDouble(field
-      .getVarValue("min")), Double.parseDouble(field
-      .getVarValue("max"))));
+      return GenericValidator.isBlankOrNull(value) || 
+            (GenericValidator.isDouble(value) && GenericValidator.isInRange(
+            Double.parseDouble(value), Double.parseDouble(field.getVarValue(
+            "min")), Double.parseDouble(field.getVarValue("max"))));
    }
    
    public static boolean validateJXPath(Object bean, Field field) {
