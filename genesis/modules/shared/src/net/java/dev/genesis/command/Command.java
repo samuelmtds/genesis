@@ -20,5 +20,8 @@ package net.java.dev.genesis.command;
 
 import java.io.Serializable;
 
+/**
+ * @deprecated
+ */
 public interface Command extends Serializable { 
 }

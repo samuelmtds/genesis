@@ -18,6 +18,9 @@
  */
 package net.java.dev.genesis.command.hibernate;
 
+/**
+ * @deprecated
+ */
 public abstract class AbstractHibernateTransaction extends AbstractHibernateCommand 
                                                    implements HibernateTransaction {
 }

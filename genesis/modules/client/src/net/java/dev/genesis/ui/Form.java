@@ -24,6 +24,9 @@ import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorException;
 import org.apache.commons.validator.ValidatorResults;
 
+/**
+ * @deprecated
+ */
 public class Form implements Serializable {
    public ValidatorResults validate(Map m) throws ValidatorException {
       final Validator validator = new Validator(ValidationUtils.getInstance()

@@ -20,5 +20,8 @@ package net.java.dev.genesis.command.hibernate;
 
 import net.java.dev.genesis.command.Transaction;
 
+/**
+ * @deprecated
+ */
 public interface HibernateTransaction extends HibernateCommand, Transaction {
 }

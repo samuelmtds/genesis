@@ -18,6 +18,9 @@
  */
 package net.java.dev.genesis.command;
 
+/**
+ * @deprecated
+ */
 public class NoopQuery implements Query {
    public void invoke() {
    }

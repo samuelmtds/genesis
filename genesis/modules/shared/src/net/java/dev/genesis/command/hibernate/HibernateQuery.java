@@ -20,5 +20,8 @@ package net.java.dev.genesis.command.hibernate;
 
 import net.java.dev.genesis.command.Query;
 
+/**
+ * @deprecated
+ */
 public interface HibernateQuery extends HibernateCommand, Query {
 }

@@ -18,5 +18,8 @@
  */
 package net.java.dev.genesis.command;
 
+/**
+ * @deprecated
+ */
 public interface Query extends Command {
 }
