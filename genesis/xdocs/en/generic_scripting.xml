@@ -31,17 +31,17 @@
         expressions. That file must have a line similar to the following:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" />
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory"/>
 ]]>
 </source>
         <p>The line above allow the definition of two parameters like
         the following example:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="javascript" />
    <param name="scriptFactoryProperties" value="lang=xyz,time=hh24miss" />
-</aspect>
+</mixin>
 ]]>
 </source>
         <p>The <code>scriptFactory</code> parameter defines the script
@@ -65,17 +65,17 @@
         same:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="beanshell" />
    <param name="scriptFactoryProperties" value="lang=javascript" />
-</aspect>
+</mixin>
 ]]>
 </source>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="javascript" />
-</aspect>
+</mixin>
 ]]>
 </source>
       </subsection>
@@ -99,15 +99,15 @@ public class MyScriptFactory implements ScriptFactory {
 </source>
         <p>In this case, the <code>aop.xml</code> file must be changed so that
         the value of the <code>scriptFactory</code> parameter for the
-        <code>FormControllerFactoryAspect</code> aspect is the full
-        qualified class name of the implementation, like the following
-        example:</p>
+        <code>FormMetadataFactoryAspect$AspectFormMetadataFactory</code> mixin
+        is the full qualified class name of the implementation, like the
+        following example:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="com.company.genesis.script.MyScriptFactory" />
    ...
-</aspect>
+</mixin>
 ]]>
 </source>
         <p>Back to <code>MyScriptFactory</code> code, we note that it defines

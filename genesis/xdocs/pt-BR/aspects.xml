@@ -52,7 +52,7 @@ public interface CommandResolver {
       <code>Transaction</code>, interfaces legadas do genesis 0.1 que não devem
       ser mais utilizadas - para determinar se um método é remoto ou
       transacional.</p>
-      <p>Caso o parâmetro do aspecto de nome <code>useFastMode</code> for
+      <p>Caso o parâmetro de nome <code>useFastMode</code> do mixin for
       definido como <code>true</code> - esse é o valor padrão deste parâmetro -,
       qualquer método será considerado no mínimo remoto, visto que na
       configuração padrão do arquivo aop.xml somente métodos remotos e

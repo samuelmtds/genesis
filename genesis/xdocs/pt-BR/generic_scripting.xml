@@ -33,17 +33,17 @@
         semelhante à seguir:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" />
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
 ]]>
 </source>
-        <p>Este aspecto permite a definição de dois parâmetros conforme
+        <p>Este mixin permite a definição de dois parâmetros conforme
         o exemplo abaixo:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="beanshell" />
    <param name="scriptFactoryProperties" value="lang=beanshell" />
-</aspect>
+</mixin>
 ]]>
 </source>
         <p>O parâmetro <code>scriptFactory</code> define a linguagem
@@ -69,17 +69,17 @@
         equivalentes:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="beanshell" />
    <param name="scriptFactoryProperties" value="lang=javascript" />
-</aspect>
+</mixin>
 ]]>
 </source>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="javascript" />
-</aspect>
+</mixin>
 ]]>
 </source>
       </subsection>
@@ -102,15 +102,15 @@ public class MinhaFabricaScript implements ScriptFactory {
 }
 </source>
         <p>Neste caso, o arquivo <code>aop.xml</code> deve ser modificado de
-        modo que o parâmetro <code>scriptFactory</code> do aspecto
-        <code>FormMetadataFactoryAspect</code> contenha o nome qualificado
-        completo da classe. Veja abaixo:</p>
+        modo que o parâmetro <code>scriptFactory</code> do mixin
+        <code>FormMetadataFactoryAspect$AspectFormMetadataFactory</code>
+        contenha o nome qualificado completo da classe. Veja abaixo:</p>
 <source>
 <![CDATA[
-<aspect class="FormMetadataFactoryAspect" >
+<mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="com.empresa.genesis.script.MinhaFabricaScript" />
    ...
-</aspect>
+</mixin>
 ]]>
 </source>
         <p>Voltando ao código de <code>MinhaFabricaScript</code> vemos que esta
