@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>FAQ</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="FAQ">
+      <p>Perguntas frequentes:
+      <ul>
+        <li><a href="#Posso utilizar o genesis para criar uma aplicaçao Web?">
+        Posso utilizar o genesis para criar uma aplicaçao Web?</a></li>
+        <li><a href="#Como o genesis é em relação ao Spring?">
+        Como o genesis é em relação ao Spring?</a></li>
+        <li><a href="#Quando o genesis irá suportar Swing?">
+        Quando o genesis irá suportar Swing?</a></li>
+        <li><a href="#Como posso usar genesis com aplicações J2ME?">
+        Como posso usar genesis com aplicações J2ME?</a></li>
+        <li><a href="Por que estou obtendo um NullPointerException numa linha 
+        cujo código possui um getSession()?">Por que estou obtendo um 
+        NullPointerException numa linha cujo código possui um 
+        getSession()?</a></li>
+        <li><a href="#Como obtenho suporte técnico?">
+        Como obtenho suporte técnico?</a></li>
+      </ul>
+      </p>
+      <subsection name="Posso utilizar o genesis para criar uma aplicaçao Web?">
+        <p>A atual versão do genesis já pode ser utilizada com qualquer 
+        framework Web, tais como: Struts ou WebWork.</p>
+        <p>Para criar uma aplicação Web basta construir um projeto que 
+        utilize os componentes de negócio do genesis.</p>
+      </subsection>
+      <subsection name="Como o genesis é em relação ao Spring?">
+      </subsection>
+      <subsection name="Quando o genesis irá suportar Swing?">
+        <p>Em futuras versões do genesis, Swing será suportado.
+        A release prevista para este suporte é a partir da versão 0.3</p>
+      </subsection>
+      <subsection name="Como posso usar genesis com aplicações J2ME?">
+      </subsection>
+      <subsection name="Por que estou obtendo um NullPointerException numa 
+      linha cujo código possui um getSession()?">
+        <p>Há várias situações em que ocorrem este problema. Basicamente 
+        são elas:
+        <ul>
+          <li>Houve um encadeamento de chamadas entre os objetos de
+          negócio. Neste caso, a <code>session</code> do Hibernate não
+          foi injetada nas chamadas subsequentes. Para resolver isso, basta
+          utilizar o método <code>setSession()</code> do objeto de negócio
+          encadeado passando como parâmetroa própria <code>session</code> do 
+          objeto chamador.</li>
+          <li>Um objeto de negócio não se encontra na árvore de compilação
+          client. Deste modo, o weaving não é realizado e a sessão do 
+          Hibernate não é injetada no objeto de negócio.</li>
+        </ul>
+        </p>
+      </subsection>
+      <subsection name="Como obtenho suporte técnico?">
+       <p>A Summa Technologies pode ser contactada para prover suporte técnico 
+       ao genesis. Os contatos são:
+       <ul>
+         <li>Summa Technologies do Brasil:
+         <ul>
+           <li>Endereço: Rua Funchal, 411 - 11o. andar, CJ. 112 - São Paulo - 
+           04551-060</li>
+           <li>Telefone: +55.11.3846.1622</li>
+           <li>Fax: +55.11.3845.3514</li>
+           <li>email: brazil@summa-tech.com</li>
+         </ul>
+         </li>
+         <li>Summa Technologies:
+         <ul>
+           <li>Endereço: US Steel Tower, 53rd Floor - 600 Grant Street - 
+           Pittsburgh, PA 15219</li>
+           <li>Telefone: +01.412.258.3300</li>
+           <li>Fax: +01.412.258.3299</li>
+           <li>email: info@summa-tech.com</li>
+         </ul>
+         </li>
+       </ul>
+       </p>
+      </subsection>
+    </section>
+  </body>
+</document>
