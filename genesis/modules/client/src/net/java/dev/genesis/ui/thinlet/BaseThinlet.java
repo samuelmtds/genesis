@@ -673,6 +673,10 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
+   public void refreshView() throws Exception {
+      binder.refresh();
+   }
+
    protected int[] getSelectedIndexes(String name){
        return getSelectedIndexes(find(name));
    }

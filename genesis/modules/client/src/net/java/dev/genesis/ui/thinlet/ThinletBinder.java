@@ -131,6 +131,10 @@ public class ThinletBinder {
       thinlet.displayBean(toDisplay, root);
    }
 
+   public void refresh() throws Exception {
+      updateAndSave(controller.getDataProviderActions(), false);
+   }
+
    protected FormMetadata getFormMetadata(final Object form) {
       if (!(form instanceof FormMetadataFactory)) {
          throw new IllegalArgumentException(form + " should implement " + 
