@@ -74,7 +74,7 @@ public class ExtensionFunctions {
    public static boolean hasChanged(final ExpressionContext context,
          final GenesisNodeSet nodeSet) {
 
-      final Map changedMap = (Map) ((FormState)context.getJXPathContext()
+      final Map changedMap = ((FormState)context.getJXPathContext()
             .getVariables().getVariable(FormController.CURRENT_STATE_KEY))
             .getChangedMap();
       final String propertyName = getSimplePropertyName(nodeSet);
