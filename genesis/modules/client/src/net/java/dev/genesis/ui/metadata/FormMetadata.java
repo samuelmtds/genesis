@@ -46,11 +46,15 @@ public class FormMetadata {
    }
 
    public Map getFieldMetadatas() {
-      return fieldMetadatas;
+      return new HashMap(fieldMetadatas);
    }
 
    public Map getNamedConditions() {
-      return namedConditions;
+      return new HashMap(namedConditions);
+   }
+
+   public Map getActionMetadatas(){
+      return new HashMap(actionMetadatas);
    }
 
    public CompiledExpression getNamedCondition(final String namedConditionName) {

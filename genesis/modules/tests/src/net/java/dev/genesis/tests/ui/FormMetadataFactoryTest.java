@@ -42,6 +42,7 @@ public class FormMetadataFactoryTest extends TestCase {
    ActionMetadata saveMethod;
    ActionMetadata resetMethod;
    ActionMetadata cancelMethod;
+   ActionMetadata calculateMethod;
 
    static {
       ConvertUtils.register(ConvertUtils.lookup(String.class), Object.class);
@@ -63,6 +64,8 @@ public class FormMetadataFactoryTest extends TestCase {
             .getDeclaredMethod("reset", new Class[] {}));
       cancelMethod = formMetadata.getActionMetadata(FooForm.class
             .getDeclaredMethod("cancel", new Class[] {}));
+      calculateMethod = formMetadata.getActionMetadata(FooForm.class
+            .getDeclaredMethod("calculate", new Class[] {}));
    }
 
    public void testParseFormMetadata() {
@@ -133,6 +136,11 @@ public class FormMetadataFactoryTest extends TestCase {
       assertTrue(saveMethod.isValidateBefore());
       assertFalse(resetMethod.isValidateBefore());
       assertFalse(cancelMethod.isValidateBefore());
+   }
+   
+   public void testCallWhen(){
+      assertEquals("string-length(normalize-space(description)) != 3",
+            calculateMethod.getCallCondition().toString());
    }
 
    public void testDisplayOn() {
@@ -349,6 +357,14 @@ public class FormMetadataFactoryTest extends TestCase {
        */
       public void cancel() {
 
+      }
+      
+      /**
+       * @Action
+       * @CallWhen
+       * 		string-length(normalize-space(description)) != 3
+       */
+      public void calculate() {
       }
 
    }

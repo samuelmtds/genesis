@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
+import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
@@ -63,7 +64,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       return formController;
    }
 
-   public void testEvaluateClearOnEnabledWhenConditions() throws Exception {
+   public void testConditions() throws Exception {
       final FooForm form = new FooForm();
       final FormController controller = getController(form);
 
@@ -82,15 +83,18 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       someValues.put("field4", "notEmpty");
       controller.populate(someValues);
 
+      final MethodEntry calculateEntry = new MethodEntry("calculate", new String[]{});
       assertEquals(form.getField3(), "abcd");
       assertEquals(controller.getEnabledMap().get("field2"), Boolean.FALSE);
       assertEquals(controller.getVisibleMap().get("field4"), Boolean.TRUE);
+      assertEquals(controller.getCallMap().get(calculateEntry), Boolean.TRUE);
 
       controller.reset();
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
       assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
       assertEquals(controller.getVisibleMap().get("field4"), Boolean.FALSE);
+      assertEquals(controller.getCallMap().get(calculateEntry), Boolean.FALSE);
    }
 
    /**
@@ -149,6 +153,13 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       public void setField4(String field4) {
          this.field4 = field4;
+      }
+
+      /**
+       * @Action 
+       * @CallWhen g:isEqual(field3,'abcd')
+       */
+      public void calculate(){
       }
    }
 

@@ -180,6 +180,31 @@ public class FormMetadataFactoryAspect {
             }
          }
 
+         public static class CallWhenAnnotationHandler implements
+               AnnotationHandler {
+            public void processFormAnnotation(final FormMetadata formMetadata,
+                  final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "CallWhen cannot be a form annotation");
+            }
+
+            public void processFieldAnnotation(final FormMetadata formMetadata,
+                  final FieldMetadata fieldMetadata, final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "CallWhen cannot be a field annotation");
+            }
+
+            public void processActionAnnotation(
+                  final FormMetadata formMetadata,
+                  final ActionMetadata actionMetadata,
+                  final Annotation annotation) {
+               actionMetadata
+                     .setCallCondition(JXPathContext
+                           .compile(((UntypedAnnotationProxy) annotation)
+                                 .getValue()));
+            }
+         }
+
          public static class ClearOnAnnotationHandler implements
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
@@ -340,6 +365,8 @@ public class FormMetadataFactoryAspect {
                "VisibleWhen", new VisibleWhenAnnotationHandler());
          public static final MetadataAttribute VALIDATE_BEFORE = new MetadataAttribute(
                "ValidateBefore", new ValidateBeforeAnnotationHandler());
+         public static final MetadataAttribute CALL_WHEN = new MetadataAttribute(
+               "CallWhen", new CallWhenAnnotationHandler());
          public static final MetadataAttribute CLEAR_ON = new MetadataAttribute(
                "ClearOn", new ClearOnAnnotationHandler());
          public static final MetadataAttribute DISPLAY_ONLY = new MetadataAttribute(

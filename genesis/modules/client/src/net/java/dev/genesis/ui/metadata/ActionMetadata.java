@@ -20,12 +20,15 @@ package net.java.dev.genesis.ui.metadata;
 
 import java.lang.reflect.Method;
 
+import org.apache.commons.jxpath.CompiledExpression;
+
 import net.java.dev.genesis.reflection.MethodEntry;
 
 public class ActionMetadata extends MemberMetadata {
 
    private final MethodEntry methodEntry;
    private boolean validateBefore;
+   private CompiledExpression callCondition;
 
    public ActionMetadata(Method method) {
       this.methodEntry = new MethodEntry(method);
@@ -41,6 +44,14 @@ public class ActionMetadata extends MemberMetadata {
 
    public void setValidateBefore(boolean validateBefore) {
       this.validateBefore = validateBefore;
+   }
+
+   public CompiledExpression getCallCondition() {
+      return callCondition;
+   }
+
+   public void setCallCondition(CompiledExpression callWhen) {
+      this.callCondition = callWhen;
    }
 
    public String toString() {

@@ -24,6 +24,7 @@ import java.util.Map;
 
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
@@ -49,6 +50,7 @@ public class DefaultFormController implements FormController {
    private final Map lastSaved = new HashMap();
    private final Map enabledMap = new HashMap();
    private final Map visibleMap = new HashMap();
+   private final Map callMap = new HashMap();
 
    public void setForm(Object form) {
       this.form = form;
@@ -157,6 +159,7 @@ public class DefaultFormController implements FormController {
       evaluateNamedConditions();
       evaluateEnabledWhenConditions();
       evaluateVisibleWhenConditions();
+      evaluateCallWhenConditions();
    }
 
    protected void evaluateClearOnConditions() throws Exception {
@@ -271,6 +274,29 @@ public class DefaultFormController implements FormController {
       }
    }
 
+   protected void evaluateCallWhenConditions() {
+      Map.Entry entry;
+      ActionMetadata actionMetadata;
+
+      for (final Iterator i = formMetadata.getActionMetadatas().entrySet()
+            .iterator(); i.hasNext();) {
+         entry = (Map.Entry) i.next();
+         actionMetadata = (ActionMetadata) entry.getValue();
+
+         if (actionMetadata.getCallCondition() == null) {
+            continue;
+         }
+
+         callMap.put(entry.getKey(), isSatisfied(actionMetadata
+               .getCallCondition()));
+
+         if (log.isDebugEnabled()) {
+            log.debug("CallWhen Condition for method '" + entry.getKey()
+                  + "' evaluated as '" + callMap.get(entry.getKey()) + "'");
+         }
+      }
+   }
+
    protected boolean isConditionSatisfied(CompiledExpression compiledEx) {
       return Boolean.TRUE.equals(compiledEx.getValue(ctx));
    }
@@ -285,6 +311,10 @@ public class DefaultFormController implements FormController {
    
    public Map getVisibleMap() {
       return new HashMap(visibleMap);
+   }
+   
+   public Map getCallMap(){
+      return new HashMap(callMap);
    }
 
    public void reset() throws Exception {

@@ -54,8 +54,6 @@ public class MethodEntry {
    
    public String toString() {
       StringBuffer buffer = new StringBuffer();
-      buffer.append(getClass().getName());
-      buffer.append(".");
       buffer.append(methodName);
       buffer.append("(");
       for (int i = 0; i < argsClassesNames.length; i++) {
@@ -65,7 +63,6 @@ public class MethodEntry {
          buffer.append(argsClassesNames[i]);
       }
       buffer.append(")");
-      buffer.append("\n\t}");
       return buffer.toString();
    }
 }
