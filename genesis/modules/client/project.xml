@@ -98,7 +98,7 @@
     	</resources>
     </build>
     <reports>
-        <report>maven-pmd-plugin</report>
+        <!--report>maven-pmd-plugin</report-->
         <report>maven-simian-plugin</report>
         <!--report>maven-checkstyle-plugin</report>
         <report>maven-jdepend-plugin</report-->
