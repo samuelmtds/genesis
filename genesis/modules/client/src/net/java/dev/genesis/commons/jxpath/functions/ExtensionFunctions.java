@@ -73,7 +73,7 @@ public class ExtensionFunctions {
             .getEmptyResolver().isEmpty(pointer.getValue());
    }
 
-   public static boolean isEqual(final ExpressionContext context,
+   public static boolean equals(final ExpressionContext context,
          final Object arg1, final Object arg2) {
       final Pointer pointer1 = arg1 instanceof NodeSet
             ? getArg((NodeSet) arg1)
@@ -106,7 +106,7 @@ public class ExtensionFunctions {
                      "Arguments have different Equality Comparators.");
             }
             if (log.isDebugEnabled()) {
-               log.debug("Evaluation isEqual for Pointer '"
+               log.debug("Evaluation equals for Pointer '"
                      + pointer1.getValue() + "' and Pointer '"
                      + pointer2.getValue() + "'");
             }
@@ -114,7 +114,7 @@ public class ExtensionFunctions {
          } else {
             // arg1 is simple object, arg2 is simple object
             if (log.isDebugEnabled()) {
-               log.debug("Evaluation isEqual for object '" + arg1
+               log.debug("Evaluation equals for object '" + arg1
                      + "' and object '" + arg2 + "'");
             }
             return comp1.equals(arg1, arg2);
@@ -133,7 +133,7 @@ public class ExtensionFunctions {
             comp1 = formMeta.getFieldMetadata(getFieldName(pointer1))
                   .getEqualityComparator();
             if (log.isDebugEnabled()) {
-               log.debug("Evaluation isEqual for Pointer '"
+               log.debug("Evaluation equals for Pointer '"
                      + pointer1.getValue() + "' and object '" + arg2 + "'");
             }
             return comp1.equals(pointer1.getValue(), arg2);
@@ -151,7 +151,7 @@ public class ExtensionFunctions {
             comp2 = formMeta.getFieldMetadata(getFieldName(pointer2))
                   .getEqualityComparator();
             if (log.isDebugEnabled()) {
-               log.debug("Evaluation isEqual for object '" + arg1
+               log.debug("Evaluation equals for object '" + arg1
                      + "' and Pointer '" + pointer2.getValue() + "'");
             }
             return comp2.equals(pointer2.getValue(), arg1);

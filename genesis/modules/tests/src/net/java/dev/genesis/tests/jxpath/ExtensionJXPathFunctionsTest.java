@@ -202,8 +202,8 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
        * @Condition
        * 		testString1Empty=g:isEmpty(string1)
        * @Condition
-       * 		testString1EqualsString2=g:isEqual(string1,string2)
-       * @EnabledWhen g:isEqual(12,12) and g:isEqual(' abc ','   abc')
+       * 		testString1EqualsString2=g:equals(string1,string2)
+       * @EnabledWhen g:equals(12,12) and g:equals(' abc ','   abc')
        */
       public String getString1() {
          return string1;
@@ -214,7 +214,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       }
 
       /**
-       * @EnabledWhen g:isEqual(string1,'a b cc') or g:isEqual(string1,2)
+       * @EnabledWhen g:equals(string1,'a b cc') or g:equals(string1,2)
        */
       public String getString2() {
          return string2;

@@ -109,7 +109,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       /**
        * @Condition
-       * 		Field3EqualsField4=g:isEqual(field3,field4)
+       * 		Field3EqualsField4=g:equals(field3,field4)
        * @Condition
        * 		Field4Empty=g:isEmpty(field4)
        */
@@ -134,7 +134,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       }
 
       /**
-       * @ClearOn g:isEqual(field3,'abc')
+       * @ClearOn g:equals(field3,'abc')
        */
       public String getField3() {
          return field3;
@@ -145,7 +145,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       }
       
       /**
-       * @VisibleWhen g:isEqual(field3,'abcd')
+       * @VisibleWhen g:equals(field3,'abcd')
        */
       public String getField4() {
          return field4;
@@ -157,7 +157,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       /**
        * @Action 
-       * @CallWhen g:isEqual(field3,'abcd')
+       * @CallWhen g:equals(field3,'abcd')
        */
       public void calculate(){
       }
