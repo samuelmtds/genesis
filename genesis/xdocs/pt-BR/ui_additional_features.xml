@@ -15,7 +15,8 @@
         <li><a href="#Determinando se o campo está vazio">Determinando se o
         campo está vazio</a></li>
         <li><a href="#Comparando valores">Comparando valores</a></li>
-        <li><a href="#Populando combos e tabelas">Populando combos e tabelas</a>
+        <li><a href="#Populando combos, listas e tabelas">Populando combos, 
+        listas e tabelas</a>
         </li>
         <li><a href="#Formatação">Formatação</a></li>
         <li><a href="#Validando os dados">Validando os dados</a></li>
@@ -574,7 +575,7 @@ public void calculaMontanteCorrigido() {
 </source>
       </subsection>
     </section>
-    <section name="Populando combos e tabelas">
+    <section name="Populando combos, listas e tabelas">
       <p>As opções disponíveis em um combo box podem variar de acordo com os
       dados preenchidos pelo usuário ou outras regras de negócio. O conteúdo de
       uma tabela pode precisar ser preenchido dinamicamente em resposta a um
@@ -666,6 +667,16 @@ public class ExemploDataProviderForm {
       <p>Conforme indicado pelo valor do atributo <code>objectField</code>, a
       propriedade <code>estado</code> conterá a instância de <code>Estado</code>
       correspondente à opção da combo escolhida pelo usuário.</p>
+      <p>No caso de uma <code>list</code>, os requirimentos são similares.
+      Veja o exemplo abaixo:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <label text="Estado:" />
+   <list name="estado" property="key=sigla;value=descricao" />
+</panel>
+]]>
+</source>
       <p>Os requerimentos para popular uma table são um pouco diferentes. Para
       exibir numa tabela os estados do exemplo anterior, o xml da interface
       poderia ser assim:</p>
@@ -704,11 +715,12 @@ public class ExemploDataProviderForm {
    // ...
 </source>
       <p>Desta forma, na inicialização da janela, os widgets
-      <code>combobox</code> ou <code>table</code> estarão vazios.
-      O preenchimento dos mesmos poderá ser acionado mediante a anotação
+      <code>combobox</code> ou <code>list</code> ou <code>table</code> 
+      estarão vazios. O preenchimento dos mesmos poderá ser acionado mediante 
+      a anotação
       <code>@CallWhen</code>. Isto é, a anotação <code>@CallWhen</code> pode ser
       usada em conjunto com <code>@DataProvider</code> para
-      indicar sob que condição a tabela/combo
+      indicar sob que condição a tabela/lista/combo
       será repopulada. <code>@Action</code> pode ser usado no mesmo método caso
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e

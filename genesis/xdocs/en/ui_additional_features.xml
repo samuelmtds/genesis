@@ -14,8 +14,8 @@
         <li><a href="#Determining if a field is empty">Determining if a field is
         empty</a></li>
         <li><a href="#Comparing values">Comparing values</a></li>
-        <li><a href="#Populating comboboxes and tables">Populating comboboxes
-        and tables</a>
+        <li><a href="#Populating comboboxes, lists and tables">Populating 
+        comboboxes, lists and tables</a>
         </li>
         <li><a href="#Formatting">Formatting</a></li>
         <li><a href="#Validating data">Validating data</a></li>
@@ -562,7 +562,7 @@ public void calculateRemainingAmount() {
 </source>
       </subsection>
     </section>
-    <section name="Populating comboboxes and tables">
+    <section name="Populating comboboxes, lists and tables">
       <p>Options available in a combobox may vary depending on data inputted by
       the user or other business rules. A table's content may need to be
       dynamically filled in response to a user-specified filter criteria, for
@@ -654,6 +654,16 @@ public class DataProviderFormExample {
       <p>As indicated by <code>objectField</code> value, property
       <code>state</code> will contain the selected <code>State</code> instance
       that corresponds to the combox option choosen by the user.</p>
+      <p>Working with <code>lists</code> is quite similar to 
+      <code>comboboxes</code>, as shown in the below example:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <label text="State:" />
+   <list name="state" property="key=acronym;value=description" />
+</panel>
+]]>
+</source>
       <p>Requirements for populating a table are slightly different. To display
       the states of the previous example in a table, the interface xml could be
       like:</p>
@@ -691,11 +701,12 @@ public class DataProviderFormExample {
 
    // ...
 </source>
-      <p>This way, at dialog startup, the <code>combobox</code> or
+      <p>This way, at dialog startup, the <code>combobox</code> 
+      or <code>list</code> or
       <code>table</code> widgets will be empty. In order to populate them
       a <code>@CallWhen</code> annotation can be added and used together.
       That is, <code>@CallWhen</code> annotation may be used together with
-      <code>@DataProvider</code> to indicate when a table/combo will be
+      <code>@DataProvider</code> to indicate when a table/list/combo will be
       automatically populate again. <code>@Action</code> may also be used in
       these methods if they need to be triggered by a button (such as Search,
       for example) and, when that is true, using <code>@EnabledWhen</code> and

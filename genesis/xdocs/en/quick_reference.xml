@@ -207,8 +207,9 @@ public class InsertUpdateForm {
       <subsection name="@DataProvider">
       <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array. Values returned by the method
-      will be used to populate the combo or the table. <code>objectField</code>,
-      if specified, should receive as a parameter the name of a property that
+      will be used to populate a combo or a list or a table widget. 
+      <code>objectField</code>, if specified, should receive as a parameter 
+      the name of a property that
       will hold the instance selected on the widget. This property should be of
       the same type or a superclass of the type returned by the annotated
       method, an array of this type or a <code>Collection</code>.
@@ -262,7 +263,8 @@ public class InsertUpdateForm {
    public Collection provideCountries() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Populating_comboboxes_and_tables">More info...</a></p>
+    <p><a href="ui_additional_features.html#Populating_comboboxes__lists_and_tables">
+    More info...</a></p>
       </subsection>
       <subsection name="@EnabledWhen">
         <p>Enables a widget upon a certain condition (JXPath expression or <a

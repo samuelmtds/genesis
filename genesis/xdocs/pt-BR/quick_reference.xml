@@ -205,8 +205,8 @@ public class InsertUpdateForm {
       <subsection name="@DataProvider">
         <p>Usado antes de um método que retorna um array ou uma
         <code>java.util.List</code>. O retorno será utilizado para popular um
-        componente da interface gráfica, um widget (combo, table, etc) que deve
-        possuir o nome indicado por objectField ou indexField. O
+        componente da interface gráfica, um widget (combo, lista, table, etc) 
+        que deve possuir o nome indicado por objectField ou indexField. O
         <code>objectField</code> guarda e recebe uma coleção/instância de
         objetos. <code>O indexField</code> guarda e recebe uma coleção de
         índices/um índice da a coleção de objetos.</p>
@@ -258,8 +258,8 @@ public class InsertUpdateForm {
    public Collection provideCountries() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Populando_combos_e_tabelas">Mais
-    informações...</a></p>
+    <p><a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">
+    Mais informações...</a></p>
       </subsection>
       <subsection name="@EnabledWhen">
         <p>Habilita ou desabilita um widget em função do resultado de uma
