@@ -894,7 +894,17 @@ public class InvokeFormActionFormExample extends BaseForm {
         <code>registerFormatter(String,Formatter)</code> method specified by
         <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code>. The
         <code>String</code> argument value should be the name of the property
-        whose formatter will be overridden.</li>
+        whose formatter will be overridden. The property name should be:
+          <ul>
+            <li>If it is a simple property, returned by a getter method, it is
+            a simple property name.</li>
+            <li>If the formatter instance should be used for combobox or list
+            items or for a column in a table, the property name should be
+            composed as
+            <code>widgetName.nameOfThePropertyOfTheObjectBeingDisplayed</code>.
+            </li>
+          </ul>
+        </li>
         <li>Optionally, if the property whose formatter has been overridden
         needs to be converted by genesis to its original type and the custom
         generated format is not supported by the default converter, the

@@ -915,7 +915,18 @@ public class ExemploInvokeFormActionForm extends BaseForm {
         <code>registerFormatter(String,Formatter)</code> em
         <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code>. O valor da
         <code>String</code> deverá ser o nome da propriedade cujo formatador
-        será sobrescrito.</li>
+        será sobrescrito. Este nome de propriedade é determinado da seguinte
+        forma:
+          <ul>
+            <li>Caso a propriedade seja uma propriedade simples, retornada
+            através de um método getter, deve ser usado apenas o nome simples
+            dessa propriedade.</li>
+            <li>Caso queira se mudar o formatador dos ítens de uma combobox ou
+            lista ou de uma das colunas de uma tabela, o nome da propriedade
+            deverá ser composto por
+            <code>nomeDoWidget.nomePropriedadeObjetoExibido</code>.</li>
+          </ul>
+        </li>
         <li>Opcionalmente, caso a propriedade cujo formatador foi alterado
         precise ser convertida pelo genesis para seu tipo original e o formato
         gerado não for suportado pelo conversor, deve-se sobrescrever o
