@@ -44,8 +44,7 @@ public class CommandInvocationAspect {
       }
 
       public boolean isRemotable(Method m) {
-         return (useFastMode) ? true : 
-               Annotations.getAnnotation("Remotable", m) != null
+         return useFastMode || Annotations.getAnnotation("Remotable", m) != null
                || Query.class.isAssignableFrom(m.getDeclaringClass())
                || isTransactional(m);
       }
