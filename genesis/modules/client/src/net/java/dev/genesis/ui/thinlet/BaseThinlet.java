@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.text.FormatterRegistry;
@@ -42,6 +43,8 @@ import org.apache.commons.validator.ValidatorException;
 import thinlet.Thinlet;
 
 public abstract class BaseThinlet extends Thinlet {
+   public static final String ACTION = "action";
+   public static final String BUTTON = "button";
    public static final String CHECKBOX = "checkbox";
    public static final String CELL = "cell";
    public static final String CHOICE = "choice";
@@ -56,14 +59,17 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String MNEMONIC = "mnemonic";
    public static final String NAME = "name";
    public static final String PANEL = "panel";
+   public static final String PASSWORD_FIELD = "passwordfield";
    public static final String PROGRESS_BAR = "progressbar";
    public static final String RIGHT = "right";
    public static final String ROW = "row";
    public static final String ROWS = "rows";
    public static final String SELECTED = "selected";
    public static final String SLIDER = "slider";
+   public static final String SPINBOX = "spinbox";
    public static final String START = "start";
    public static final String TEXT = "text";
+   public static final String TEXTAREA = "textarea";
    public static final String TEXTFIELD = "textfield";
    public static final String TOGGLE_BUTTON = "togglebutton";
    public static final String TOOLTIP = "tooltip";
@@ -158,12 +164,12 @@ public abstract class BaseThinlet extends Thinlet {
       return cell;
    }
 
-   protected Collection getAllOfClass(Object component, String className) {
+   protected List getAllOfClass(Object component, String className) {
       return getAllOfClass(component, new String[] {className});
    }
 
-   protected Collection getAllOfClass(Object component, String[] classNames) {
-      Collection all = new ArrayList();
+   protected List getAllOfClass(Object component, String[] classNames) {
+      List all = new ArrayList();
       Object[] components = getItems(component);
 
       for (int i = 0; i < components.length; i++) {
@@ -334,8 +340,7 @@ public abstract class BaseThinlet extends Thinlet {
 
          if (component == null) {
             if (groupComponents == null) {
-               groupComponents = getAllOfClass(root, new String[] 
-                                                      {CHECKBOX, TOGGLE_BUTTON});
+               groupComponents = getAllOfClass(root, CHECKBOX);
             }
 
             for (final Iterator  i = groupComponents.iterator(); i.hasNext(); ) {
@@ -428,8 +433,7 @@ public abstract class BaseThinlet extends Thinlet {
 
          if (component == null) {
             if (groupComponents == null) {
-               groupComponents = getAllOfClass(root, new String[] 
-                                                      {CHECKBOX, TOGGLE_BUTTON});
+               groupComponents = getAllOfClass(root, CHECKBOX);
             }
 
             for (final Iterator  i = groupComponents.iterator(); i.hasNext(); ) {
@@ -602,19 +606,7 @@ public abstract class BaseThinlet extends Thinlet {
    }
    
    protected void bind(Object widget, Object form) throws Exception {
-      bind(getDesktop(), widget, form);
-   }
-
-   protected void bind(Object root, Object widget, Object form) throws Exception {
-      final FormMetadata formMetadata = getFormMetadata(form);
-
-      for (final Iterator i = formMetadata.getFieldMetadatas().entrySet().iterator();
-            i.hasNext(); ) {
-      }
-   }
-
-   protected FormMetadata getFormMetadata(Object form) {
-      return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+      new ThinletBinder(this, widget, form).bind();
    }
 
    protected int[] getSelectedIndices(String name){
