@@ -22,7 +22,6 @@ import java.util.Map;
 
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
-import net.java.dev.genesis.reflection.ClassesCache;
 
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
