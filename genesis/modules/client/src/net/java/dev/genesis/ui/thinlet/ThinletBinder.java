@@ -52,11 +52,13 @@ public class ThinletBinder {
    /* these are not alphabetically ordered by accident or mere readability;
      it's needed so that binary searching works with them */
    private static final String[] supportedFieldWidgets = new String[] {
-         BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LABEL, BaseThinlet.LIST,
-         BaseThinlet.PASSWORD_FIELD, BaseThinlet.SLIDER, BaseThinlet.SPINBOX, 
-         BaseThinlet.TEXTAREA, BaseThinlet.TEXTFIELD, BaseThinlet.TOGGLE_BUTTON};
+         BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LABEL, 
+         BaseThinlet.LIST, BaseThinlet.PASSWORD_FIELD, BaseThinlet.SLIDER, 
+         BaseThinlet.SPINBOX, BaseThinlet.TEXTAREA, BaseThinlet.TEXTFIELD, 
+         BaseThinlet.TOGGLE_BUTTON};
    private static final String[] fieldsChangedByAction = new String[] {
-         BaseThinlet.COMBOBOX, BaseThinlet.LIST, BaseThinlet.TOGGLE_BUTTON};
+         BaseThinlet.COMBOBOX, BaseThinlet.LIST, BaseThinlet.SPINBOX, 
+         BaseThinlet.TOGGLE_BUTTON};
 
    private final BaseThinlet thinlet;
    private final Object root;
