@@ -479,7 +479,9 @@ public class DefaultFormController implements FormController {
                  (List)ret;
             currentState.getDataProvidedMap().put(dataProviderMeta, items);
             fireDataProvidedListMetadataChanged(dataProviderMeta, items);
-         } else {
+         } 
+
+         if (methodMetadata.getActionMetadata() != null) {
             afterInvokingMethod(methodMetadata);
          }
       }
