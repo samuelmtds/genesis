@@ -158,7 +158,10 @@ public class DefaultFormController implements FormController {
 
    protected void populate(Map properties, boolean stringMap, Map converters) 
          throws Exception {
-      if (previousState == null) {
+
+      final boolean createPreviousState = previousState == null;
+
+      if (createPreviousState) {
          previousState = createFormState(currentState);
       }
 
@@ -185,7 +188,9 @@ public class DefaultFormController implements FormController {
 
          throw e;
       } finally {
-         previousState = null;
+         if (createPreviousState) {
+            previousState = null;
+         }
       }
    }
 
@@ -708,9 +713,10 @@ public class DefaultFormController implements FormController {
          invokeAction(metadata, firstCall, conditionally);
       } catch (Exception e) {
          reset(previousState);
-         previousState = null;
 
          throw e;
+      } finally {
+         previousState = null;
       }
    }
 
@@ -727,9 +733,10 @@ public class DefaultFormController implements FormController {
          update();
       } catch (Exception e) {
          reset(previousState);
-         previousState = null;
 
          throw e;
+      } finally {
+         previousState = null;
       }
    }
 
