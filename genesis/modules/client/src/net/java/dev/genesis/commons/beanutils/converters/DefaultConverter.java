@@ -37,7 +37,7 @@ public class DefaultConverter implements Converter {
       this(returnDefaultValue, null);
    }
 
-   public DefaultConverter(final boolean returnDefaultValue,
+   protected DefaultConverter(final boolean returnDefaultValue,
          final Object defaultValue) {
       this.returnDefaultValue = returnDefaultValue;
       this.defaultValue = defaultValue;
