@@ -18,22 +18,8 @@
  */
 package net.java.dev.genesis;
 
-import junit.framework.TestCase;
-import net.java.dev.genesis.ui.UIUtils;
+import java.util.Map;
 
-public abstract class GenesisTestCase extends TestCase {
-   public static final Class[] EMPTY_CLASS_ARRAY = new Class[0];
-   public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-
-   public GenesisTestCase() {
-   }
-
-   public GenesisTestCase(String name) {
-      super(name);
-   }
-
-   public void putInResourceBundle(String key, Object value) {
-      ((PropertiesProvider)UIUtils.getInstance().getBundle()).getProperties()
-            .put(key, value);
-   }
+public interface PropertiesProvider {
+   public Map getProperties();
 }

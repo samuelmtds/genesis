@@ -374,9 +374,16 @@
       <mkdir dir="${genesis.module.client}/${test.dest}" />  
       <javac destdir="${genesis.module.client}/${test.dest}"
              debug="true"
-             source="1.4"
+             source="1.4" 
              classpathref="client.tests.dependency.classpath">
-         <src path="${genesis.module.client}/${test.src.dir}" />
+         <src location="${genesis.module.client}/${test.src.dir}" />
+      </javac>
+      <javac destdir="${genesis.module.client}/${test.dest}"
+             debug="true"
+             source="1.4"
+             classpathref="client.tests.dependency.classpath" 
+             srcdir="${genesis.module.client}/${test.src.dir}">
+         <filename name="messages.java" />
       </javac>
    </target>  
 

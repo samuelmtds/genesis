@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,24 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis;
+package net.java.dev.genesis.text;
 
-import junit.framework.TestCase;
-import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.GenesisTestCase;
 
-public abstract class GenesisTestCase extends TestCase {
-   public static final Class[] EMPTY_CLASS_ARRAY = new Class[0];
-   public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+public class DefaultFormatterTest extends GenesisTestCase {
+   public void testFormat() {
+      DefaultFormatter formatter = new DefaultFormatter();
 
-   public GenesisTestCase() {
-   }
+      // Test for null
+      assertEquals(formatter.format(null), "");
 
-   public GenesisTestCase(String name) {
-      super(name);
-   }
-
-   public void putInResourceBundle(String key, Object value) {
-      ((PropertiesProvider)UIUtils.getInstance().getBundle()).getProperties()
-            .put(key, value);
+      // Test for an object
+      String text = "text";
+      assertEquals(formatter.format(text), text);
    }
 }

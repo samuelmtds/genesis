@@ -16,24 +16,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis;
+package net.java.dev.genesis.ui.thinlet.metadata;
 
-import junit.framework.TestCase;
-import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.GenesisTestCase;
 
-public abstract class GenesisTestCase extends TestCase {
-   public static final Class[] EMPTY_CLASS_ARRAY = new Class[0];
-   public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-
-   public GenesisTestCase() {
-   }
-
-   public GenesisTestCase(String name) {
-      super(name);
-   }
-
-   public void putInResourceBundle(String key, Object value) {
-      ((PropertiesProvider)UIUtils.getInstance().getBundle()).getProperties()
-            .put(key, value);
+public class ThinletMetadataTest extends GenesisTestCase {
+   public void test() {
+      assertEquals(ThinletMetadataTest.class, new ThinletMetadata(getClass())
+            .getThinletClass());
    }
 }
