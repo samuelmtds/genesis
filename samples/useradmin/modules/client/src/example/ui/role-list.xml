@@ -3,7 +3,7 @@
 <panel weightx="1" columns="1" gap="5" top="5" left="5" bottom="5" right="5">
    <panel weightx="1" weighty="1" columns="1" gap="5" top="5" left="5" bottom="5" right="5">
       <panel weightx="1" weighty="1" scrollable="true">
-         <table name="role" weightx="1" weighty="1" perform="action(select)">
+         <table name="role" weightx="1" weighty="1" perform="invokeFormAction(select)">
             <header>
                <column name="code" text="i18n.Role.code" alignment="left" font="bold" width="100"/>
                <column name="label" text="i18n.Role.label" alignment="left" font="bold" width="200"/>
