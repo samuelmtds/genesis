@@ -40,12 +40,12 @@ public class HibernateCriteriaTest extends TestCase {
       dbActions.insert(3);
       CriteriaTester tester = new CriteriaTester();
       HibernateBeanForm form = new HibernateBeanForm();
-      form.setCodigo("");
+      form.setCode("");
       CriteriaPropertyHelper.fillCriteria(tester, form);
       List results = tester.find();
       assertEquals(results.size(), 3);
 
-      form.setCodigo("2");
+      form.setCode("2");
       CriteriaPropertyHelper.fillCriteria(tester, form);
       results = tester.find();
       for (Iterator iter = results.iterator(); iter.hasNext();) {
@@ -54,7 +54,7 @@ public class HibernateCriteriaTest extends TestCase {
       }
       assertEquals(results.size(), 1);
 
-      form.setCodigo("abc");
+      form.setCode("abc");
       CriteriaPropertyHelper.fillCriteria(tester, form);
       results = tester.find();
       assertTrue(results.isEmpty());
@@ -62,9 +62,8 @@ public class HibernateCriteriaTest extends TestCase {
 
    public static class CriteriaTester extends AbstractHibernateCriteria {
 
-      public void setCodigo(String codigo) {
-         System.out.println("Setting codigo ......... " + codigo);
-         getCriteria().add(Expression.eq("codigo", codigo));
+      public void setCode(String code) {
+         getCriteria().add(Expression.eq("code", code));
       }
 
       /**
@@ -83,14 +82,14 @@ public class HibernateCriteriaTest extends TestCase {
 
       private Long pk;
 
-      private String codigo;
+      private String code;
 
-      public String getCodigo() {
-         return codigo;
+      public String getCode() {
+         return code;
       }
 
-      public void setCodigo(String codigo) {
-         this.codigo = codigo;
+      public void setCode(String code) {
+         this.code = code;
       }
 
       public Long getPk() {

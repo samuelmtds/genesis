@@ -26,7 +26,7 @@ import java.io.Serializable;
 public class HibernateBean implements Serializable {
 
    private Long pk;
-   private String codigo;
+   private String code;
 
    /**
     * @hibernate.id generator-class="increment"
@@ -42,15 +42,15 @@ public class HibernateBean implements Serializable {
    /**
     * @hibernate.property
     */
-   public String getCodigo() {
-      return codigo;
+   public String getCode() {
+      return code;
    }
 
-   public void setCodigo(String codigo) {
-      this.codigo = codigo;
+   public void setCode(String codigo) {
+      this.code = codigo;
    }
    
    public String toString(){
-      return getClass().getName() + " - pk: " + getPk() + ", codigo: " + getCodigo();
+      return getClass().getName() + " - pk: " + getPk() + ", code: " + getCode();
    }
 }
