@@ -75,6 +75,14 @@ helper.initialize();
 <source>
 new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
 </source>
+      <p>By default, <code>StartupHelper</code> loads all validation rules
+      If validation is not being used by the application, this pre-loading
+      process should be turned off as showed below:</p>
+<source>
+StartupHelper helper = new StartupHelper();
+helper.setLoadValidatorRules(false);
+helper.initialize();
+</source>
     </section>
     <section name="UI component types">
       <p>In order to make client code simple and testable, two types of

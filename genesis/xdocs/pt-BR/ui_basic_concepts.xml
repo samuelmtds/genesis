@@ -77,6 +77,14 @@ helper.initialize();
 <source>
 new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
 </source>
+      <p>Por padrão, <code>StartupHelper</code> carrega as regras de validação.
+      Caso a validação não esteja sendo utilizada, é necessário desligar este
+      pré-carregamento conforme mostrado abaixo:</p>
+<source>
+StartupHelper helper = new StartupHelper();
+helper.setLoadValidatorRules(false);
+helper.initialize();
+</source>
     </section>
     <section name="Tipos de componentes de interface gráfica">
       <p>A fim de atingir as metas de simplicidade e testabilidade, dois tipos
