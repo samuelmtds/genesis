@@ -25,13 +25,13 @@
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.long"/>
         <validator name="float" 
-                classname="net.java.dev.genesis.BasicValidator" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateFloat" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.float"/>
         <validator name="double" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
-                method="validateLong" 
+                method="validateDouble" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.double"/>
         <validator name="required" 
@@ -42,7 +42,7 @@
         <validator name="requiredif" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateRequiredIf" 
-                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field,org.apache.commons.validator.Validator" 
                 msg="errors.requiredif"/>
         <validator name="mask" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 

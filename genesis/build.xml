@@ -18,7 +18,7 @@
 
 	<path id="xdoclet.path">
 		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
-		<fileset dir="${genesis.j2ee.dist}" includes="j2ee.jar" />
+		<fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
 	</path>
 
 	<path id="aspectwerkz.path">
@@ -100,9 +100,6 @@
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
-
-
-
 
 	<target name="shared:compile">
 		<mkdir dir="${genesis.module.shared}/${build.dest}" />
@@ -275,7 +272,7 @@
 		</jar>
 	</target>
 
-	<target name="test:compile" depends="test:hibernatedoclet">
+	<target name="test:compile" depends="test:hibernatedoclet,test:webdoclet">
 		<mkdir dir="${genesis.module.tests}/${test.dest}" />
 		<javac destdir="${genesis.module.tests}/${test.dest}"
 		       debug="true"
@@ -308,7 +305,8 @@
 			              transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
 			              userTransactionName="UserTransaction"
 			              useouterjoin="false"
-			              showSql="true" />
+			              showSql="true"
+                          depends="jboss.jca:service=LocalTxCM,name=DefaultDS"/>
 			<hibernatecfg dialect="${genesis.unit.test.hibernate.dialect}"
 			              userName="${genesis.unit.test.jdbc.connection.username}"
 			              password="${genesis.unit.test.jdbc.connection.password}"
@@ -318,6 +316,17 @@
 			              showSql="true" />
 		</hibernatedoclet>
 	</target>
+
+   <target name="test:webdoclet">
+      <mkdir dir="${genesis.module.tests}/${build.src}" />  
+      <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask">
+         <classpath refid="xdoclet.path" />
+      </taskdef>
+      <webdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
+         <fileset dir="${basedir}/${genesis.module.tests}/${src.dir}" includes="**/*.java" />
+         <strutsvalidationxml xmlencoding="ISO-8859-1" />
+      </webdoclet>
+   </target>  
 
 	<target name="test:annotation">
 		<mkdir dir="${genesis.module.tests}/${genesis.annotation.dest}" />

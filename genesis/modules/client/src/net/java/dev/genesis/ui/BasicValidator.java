@@ -132,7 +132,7 @@ public class BasicValidator {
 
          if (dependTest.equals(FIELD_TEST_NULL) || 
              dependTest.equals(FIELD_TEST_NOTNULL)) {
-            thisRequired = ((dependVal == null ) || (dependVal.length() == 0));
+            thisRequired = GenericValidator.isBlankOrNull(dependVal);
 
             if (dependTest.equals(FIELD_TEST_NOTNULL)) {
                thisRequired = !thisRequired;
