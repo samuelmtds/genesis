@@ -43,8 +43,4 @@ public class StringEqualityComparator extends DefaultEqualityComparator {
 
         return trim ? s.trim() : s;
     }
-
-   /* public String toString() {
-        return "[" + getClass().getName() + ": trim=" + trim + "]";
-    }*/
 }
