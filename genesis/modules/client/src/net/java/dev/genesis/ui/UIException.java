@@ -23,6 +23,7 @@ public class UIException extends Exception {
    private final String description;
 
    public UIException(final String title, final String description) {
+      super(description);
       this.title = title;
       this.description = description;
    }
