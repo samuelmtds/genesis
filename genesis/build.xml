@@ -5,7 +5,7 @@
 	<property file="build.properties" />
 	<property file="project.properties" />
 
-	<property name="genesis.version" value="0.2-beta1" />
+	<property name="genesis.version" value="0.2-beta2-dev" />
 	<property name="xdoclet.validatexml" value="false" />
 	<property name="build.dir" value="${genesis.build.dir}" />
 	<property name="build.dest" value="${build.dir}/classes" />

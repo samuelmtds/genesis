@@ -4,7 +4,7 @@
 
    <property name="genesis.home" location="../../genesis" />
    <property name="genesis.dist" location="${genesis.home}/dist" />
-   <property name="genesis.version" value="0.2-beta1" />
+   <property name="genesis.version" value="0.2-beta2-dev" />
    <property name="xdoclet.dist" location="../../xdoclet/dist" />
    <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
    <property name="commons.dist" location="${genesis.home}/lib/commons" />
