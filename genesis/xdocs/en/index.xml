@@ -12,22 +12,23 @@
       application development.</p>
       <p>It combines several public libraries that have been largely adopted by
       industry  in an unique way, such as <b>Hibernate, AspectWerkz, Thinlet,
-      Jakarta-Commons</b> and others, and puts together all the experience
+      Jakarta-Commons</b> and others, and puts together all of the experience
       <b>Summa</b> has acquired over the years in building mission-critical
       applications.</p>
       <p>It has been developed and tested based on real user requirements and is
       the result of experience gained during project execution. One of the
-      solutions running today on a customer is able to handle with over 1
+      customer solutions build using genesis is currently processing over 1
       million transactions per day, a fact that proves framework scalability.</p
       >
     </section>
     <section name="Main features">
-      <p>Among genesis' main features, the following ones are noticeable:</p>
+      <p>Among genesis' main features, the following ones are noteworthy:</p>
         <ul>
           <li><b>Simplicity:</b> there are no complex requirements to use the
-          framework: your componentes don't need to extend classes, it's not
-          necessary to expose them through an interface, to configure loads of
-          xml per component nor even to get an instance using a factory or an
+          framework: your components don't need to extend classes, it's not
+          necessary to expose them through an interface, it's not necessary to
+          configure loads of xml per component nor even to get an instance using
+          a factory or an
           interface.</li>
           <li><b>Productivity:</b> your code basically is about business logic
           and the framework is easy to understand, what makes it possible for
@@ -38,18 +39,18 @@
           <li><b>Scalability:</b> its stateless and contention-less architecture
           makes it possible for a programmer to effortlessly develop scalable
           solutions.</li>
-          <li><b>Transparent remotability:</b> by using AOP, a method call can
-          be easily configured to be executed remotely or in a transactional
+          <li><b>Transparent remoting:</b> by using AOP, a method call can
+          easily be configured to execute remotely or in a transactional
           context with no changes to client code.</li>
           <li><b>UI development support:</b> genesis-client makes UI
           development extremely simple. By putting together a couple of ordinary
           JavaBeans and a few lines of configuration, it's possible to control
           all UI flow and common characteristics, such as visibility, enabling /
-          disabiling fields, cascade clearing fields, calling methods under some
-          circumnstances and automatically populating components such as
+          disabling fields, cascade clearing fields, calling methods under some
+          circumstances and automatically populating components such as
           comboboxes and tables.</li>
           <li><b>Hibernate integration:</b> Hibernate integration allows easy
-          assembling of paged searches, dynamic queries etc.</li>
+          assembling of paged searches, dynamic queries, etc.</li>
         </ul>
     </section>
   </body>

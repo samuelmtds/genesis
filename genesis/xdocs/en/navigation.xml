@@ -26,7 +26,7 @@
       <item name="Screenshots" href="/en/screenshots.html" />
       <item name="Release notes" href="/en/release_notes.html" />
     </menu>
-    <menu name="Documentação">
+    <menu name="Documentation">
       <item name="User manual" collapse="true"
             href="/en/documentation_intro.html">
         <item name="Introduction"
