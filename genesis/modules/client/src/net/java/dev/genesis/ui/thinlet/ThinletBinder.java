@@ -393,10 +393,13 @@ public class ThinletBinder implements FormControllerListener {
                   + "must be configured for the widget named " + name);
          }
 
-         final String value = (String) thinlet.getProperty(component, "value");
+         final String value = (String)thinlet.getProperty(component, "value");
          final boolean blank = isBlank(component, name);
+         final String blankLabel = (String)thinlet.getProperty(component, 
+               "blankLabel");
 
-         thinlet.populateFromCollection(component, items, key, value, blank);
+         thinlet.populateFromCollection(component, items, key, value, blank, 
+               blankLabel);
       } else {
          // TODO: only table and combobox are implemented
          throw new UnsupportedOperationException(className + " is not "

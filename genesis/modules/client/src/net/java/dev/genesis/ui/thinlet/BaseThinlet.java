@@ -569,9 +569,18 @@ public abstract class BaseThinlet extends Thinlet {
                 NoSuchMethodException {
       populateFromCollection(find(nome), c, keyProperty, valueProperty, blank);
    }
-   
+
    protected void populateFromCollection(Object component, Collection c, 
                         String keyProperty, String valueProperty, boolean blank) 
+         throws IllegalAccessException, InvocationTargetException, 
+                NoSuchMethodException {
+      populateFromCollection(component, c, keyProperty, valueProperty, blank, 
+            null);
+   }
+
+   protected void populateFromCollection(Object component, Collection c, 
+                        String keyProperty, String valueProperty, boolean blank,
+                        String blankLabel) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
       if (!getClass(component).equals(COMBOBOX)) {
@@ -585,7 +594,7 @@ public abstract class BaseThinlet extends Thinlet {
       removeAll(component);
 
       if (blank) {
-         add(component, createChoice("", ""));
+         add(component, createChoice("", blankLabel == null ? "" : blankLabel));
       }
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
