@@ -63,28 +63,28 @@ public class DataProviderMetadata extends MethodMetadata {
       }
    }
 
-   public void populateSelectedFields(final Object target, final List objectList, final int[] selectedIndeces) throws Exception {
+   public void populateSelectedFields(final Object target, final List objectList, final int[] selectedIndexes) throws Exception {
       if (objectField != null) {
-         populateObjectField(target, objectList, selectedIndeces);
+         populateObjectField(target, objectList, selectedIndexes);
       }
       if (indexField != null) {
-         populateIndexField(target, selectedIndeces);
+         populateIndexField(target, selectedIndexes);
       }
    }
 
-   private void populateObjectField(final Object target, final List objectList, final int[] selectedIndeces) throws Exception {
-      final List selectedObjects = new ArrayList(selectedIndeces.length);
-      for (int i = 0; i < selectedIndeces.length; i++) {
-         selectedObjects.add(objectList.get(selectedIndeces[i]));
+   private void populateObjectField(final Object target, final List objectList, final int[] selectedIndexes) throws Exception {
+      final List selectedObjects = new ArrayList(selectedIndexes.length);
+      for (int i = 0; i < selectedIndexes.length; i++) {
+         selectedObjects.add(objectList.get(selectedIndexes[i]));
       }
       setProperty(target, objectField, selectedObjects);
    }
 
-   private void populateIndexField(final Object target, final int[] selectedIndeces) throws Exception {
-      final List list = new ArrayList(selectedIndeces.length);
+   private void populateIndexField(final Object target, final int[] selectedIndexes) throws Exception {
+      final List list = new ArrayList(selectedIndexes.length);
       // Wraps the int array
-      for (int i = 0; i < selectedIndeces.length; i++) {
-         list.add(new Integer(selectedIndeces[i]));
+      for (int i = 0; i < selectedIndexes.length; i++) {
+         list.add(new Integer(selectedIndexes[i]));
       }
       setProperty(target, objectField, list);
    }
