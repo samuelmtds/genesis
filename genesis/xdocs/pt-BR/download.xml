@@ -11,10 +11,10 @@
       elas:</p>
       <ul>
         <li><b>genesis-dist-{versão}.tar.gz</b> e
-        <b>genesis-dist-{versão}.zip</b>: apenas os jars de distribuição e o 
+        <b>genesis-dist-{versão}.zip</b>: apenas os jars de distribuição e o
         arquivo annotation.properties.</li>
         <li><b>genesis-dependencies-{versão}.tar.gz</b> e
-        <b>genesis-dependencies-{versão}.zip</b>: as bibliotecas 
+        <b>genesis-dependencies-{versão}.zip</b>: as bibliotecas
         referentes às dependências do genesis, como AspectWerkz, Hibernate,
         Jakarta Commons e Thinlet.</li>
         <li><b>genesis-empty-project-{versão}.tar.gz</b> e
@@ -37,7 +37,7 @@
         exemplos, código e documentação mencionados acima.</li>
       </ul>
       <p>Os arquivos de download acima podem ser encontrados
-      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2913&amp;expandFolder=2913&amp;folderID=2913">aqui</a>.</p>
+      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2932&amp;expandFolder=2932&amp;folderID=2932">aqui</a>.</p>
     </section>
   </body>
 </document>

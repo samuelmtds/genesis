@@ -7,10 +7,56 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#3.0-EA1">3.0-EA1</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-EA1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2932&amp;expandFolder=2932&amp;folderID=0">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li><a href="generic_scripting.html">Support for generic script
+          languages</a>: expanding its original JXPath support, the framework now
+          provides built-in support for BeanShell, JavaScript and EL, and still
+          has a mechanism that allow other languages to be supported</li>
+          <li>Upgraded to AspectWerkz 2.0. genesis <a
+          href="aspects.html">aspects</a> have been modified in a minor way
+          from users' point of view and the <code>aop.xml</code> file needs to
+          be updated</li>
+        </ul>
+        <p>The full change log between 2.1 and 3.0-EA1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=3.0-EA1">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+        <p>Special thanks to Alexandre Vasseur, Alexandru Popescu and
+        Jonas Boner for their support and all changes made to <a
+        href="http://aspectwerkz.codehaus.org">AspectWerkz</a> 2 so genesis
+        could work with it.</p>
+      </subsection>
     </section>
     <section name="2.1">
       <subsection name="Downloads">
