@@ -171,8 +171,8 @@ public class DataProviderMetadata {
 
          value = objectField.isArray() ? (Object)values : Arrays.asList(values);
       } else {
-         value = selectedIndexes.length == 0 ? null : objectList
-               .get(selectedIndexes[0]);      
+         value = selectedIndexes.length == 0 || selectedIndexes[0] == -1 ? 
+               null : objectList.get(selectedIndexes[0]);      
       }
 
       PropertyUtils.setProperty(target, objectField.getFieldName(), value);
