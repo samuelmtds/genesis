@@ -237,7 +237,7 @@ public void exibeErro(Throwable t) {
       <p>O uso direto de <code>ErrorReporterDialog</code> diretamente no código
       das views provavelmente será desnecessário, visto que o tratamento de
       erros padrão implementado em <code>BaseThinlet</code> já utiliza esta
-      classe, conforme explicado abaixo.</p>
+      classe, conforme explicado posteriormente.</p>
     </section>
     <section name="Entendendo os forms">
       <p>Os forms contém a lógica da interface gráfica e são desacoplados da API
