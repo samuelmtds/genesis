@@ -100,43 +100,116 @@
         </table>
       </p>
     </section>
-    <section name="genesis JXPath auxiliary functions">
+    <section name="genesis scripting auxiliary functions">
       <p>genesis add these functions as extensions to JXPath:</p>
       <ul>
-        <li>g:isEmpty(any), g:isNotEmpty(any)</li>
-        <li>g:equals(any,any), g:notEquals(any,any)</li>
-        <li>g:hasChanged(any), g:hasNotChanged(any)
+        <li>isEmpty(any), isNotEmpty(any)</li>
+        <li>equals(any,any), notEquals(any,any)</li>
+        <li>hasChanged(field), hasNotChanged(field)
         </li>
       </ul>
       <p>These functions may be applied to all annotations that accept boolean
-      JXPath expressions as parameters. The <b>g:</b> prefix defines the genesis
+      scripting expressions as parameters. 
+      With <a href="generic_scripting.html">JXPath</a>
+      the <b>g:</b> prefix defines the genesis
       namespace. Core JXPath functions don't use any prefix.</p>
-      <subsection name="g:isEmpty(any), g:isNotEmpty(any)">
-        <p>
-  Checks whether a field is empty or not.When the argument is a form property,
-  the <code>EmptyResolver</code> instance configured for it is used to
+      <subsection name="isEmpty(any), isNotEmpty(any)">
+        <p>Checks whether a field is empty or not. When the argument is a form property,
+        the <code>EmptyResolver</code> instance configured for it is used to
         determine the return value. If the argument is a variable or a constant,
         a default <code>EmptyResolver</code> instance for the expression type is
         obtained from <code>EmptyResolverRegistry</code> and used for
         evaluation.
-  </p>
-    <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
+        </p>
+        <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
+        <p>Specific syntax for default supported script languages are shown 
+        bellow:</p>
+        <table>
+          <tr>
+            <th>Script</th>
+            <th>isEmpty</th>
+            <th>isNotEmpty</th>
+          </tr>
+          <tr>
+            <th>JXPath</th>
+            <td>g:isEmpty(formField)</td>
+            <td>g:isNotEmpty(formField)</td>
+          </tr>
+          <tr>
+            <th>javascript or Beanshell</th>
+            <td>genesis.isEmpty("form:formField")</td>
+            <td>genesis.isNotEmpty("form:formField")</td>
+          </tr>
+          <tr>
+            <th>EL</th>
+            <td>genesis:isEmpty("form:formField")</td>
+            <td>genesis:isNotEmpty("form:formField")</td>
+          </tr>
+        </table>
       </subsection>
-      <subsection name="g:equals(any,any), g:notEquals(any,any)">
+      <subsection name="equals(any,any), notEquals(any,any)">
         <p>Checks if a field value is equal to some constant or another field
         value. Uses any <code>@EqualityComparator</code> defined class available
         or a default implementation to make this decision. Accepts numbers,
-        strings, fields or JXPath functions as arguments.</p>
+        strings, fields or script functions as arguments.</p>
+        <p>Specific syntax for default supported script languages are shown 
+        bellow:</p>
+        <table>
+          <tr>
+            <th>Linguagem</th>
+            <th>equals</th>
+            <th>notEquals</th>
+          </tr>
+          <tr>
+            <th>JXPath</th>
+            <td>g:equals(formField, otherField)</td>
+            <td>g:notEquals(formField, otherField)</td>
+          </tr>
+          <tr>
+            <th>javascript ou Beanshell</th>
+            <td>genesis.equals("form:formField", "form:otherField")</td>
+            <td>genesis.notEquals("form:formField", "form:otherField")</td>
+          </tr>
+          <tr>
+            <th>EL</th>
+            <td>genesis:equals("form:formField", "form:otherField")</td>
+            <td>genesis:notEquals("form:formField", "form:otherField")</td>
+          </tr>
+        </table>
       </subsection>
-      <subsection name="g:hasChanged(property),
-                        g:hasNotChanged(property)">
+      <subsection name="hasChanged(property),
+                        hasNotChanged(property)">
         <p>Checks whether a field value has been changed or not. genesis
         internally keeps control of fields that have their value changed in the
         current iteraction using the <code>EqualityComparator</code> instance
         configured for the property.
-  </p>
+        </p>
+        <p>Specific syntax for default supported script languages are shown 
+        bellow:</p>
+        <table>
+          <tr>
+            <th>Linguagem</th>
+            <th>hasChanged</th>
+            <th>hasNotChanged</th>
+          </tr>
+          <tr>
+            <th>JXPath</th>
+            <td>g:hasChanged(campoDoForm)</td>
+            <td>g:hasNotChanged(campoDoForm)</td>
+          </tr>
+          <tr>
+            <th>javascript ou Beanshell</th>
+            <td>genesis.hasChanged("form:campoDoForm")</td>
+            <td>genesis.hasNotChanged("form:campoDoForm")</td>
+          </tr>
+          <tr>
+            <th>EL</th>
+            <td>genesis:hasChanged("form:campoDoForm")</td>
+            <td>genesis:hasNotChanged("form:campoDoForm")</td>
+          </tr>
+        </table>
       </subsection>
-    <p><a href="ui_additional_features.html#Verifying_field_value_changes_and_doing_comparisson_in___________conditional_expressions">More info...</a></p>
+        <p><a href="ui_additional_features.html#Verifying_field_value_changes_and_doing_comparisson_in___________conditional_expressions">More info...</a></p>
     </section>
     <section name="Tag Reference">
       <subsection name="@Form">

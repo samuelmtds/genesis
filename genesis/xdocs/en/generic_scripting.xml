@@ -80,8 +80,10 @@
       </subsection>
       <subsection name="Defining and using a new scripting language">
         <p>genesis framework allows the developer to extend its scripting
-        support. To do this, all that is needed is to create a new class that
-        implements <code>net.java.dev.genesis.script.ScriptFactory</code>
+        support - in this case, developers could make genesis support a 
+        new scripting language. To do this, all that is needed is to create
+         a new class that implements 
+         <code>net.java.dev.genesis.script.ScriptFactory</code>
         interface. For instance:</p>
 <source>
 package com.java.dev.app.myScript;
@@ -137,9 +139,9 @@ public class MyScript implements Script {
           context of a <code>Form</code> - it will have access to variables
           (named conditions), the form itself, pre-built genesis functions
           (such as isEmpty, hasChanged, equals, etc) and pre-built functions
-          specific to each kind of script.</li>
+          specific to each scripting language.</li>
           <li><code>ScriptExpression</code> represents an abstraction of
-          an expression in the given kind of script.</li>
+          an expression in the given scripting language.</li>
         </ul>
         <p>So, should the developer provide those classes the 
         <code>genesis</code> framework will support a new scripting languange.

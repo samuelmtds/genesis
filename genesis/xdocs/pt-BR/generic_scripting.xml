@@ -85,8 +85,9 @@
       </subsection>
       <subsection name="Definindo uma nova linguagem de script">
         <p>O genesis permite que o desenvolvedor extenda o suporte a linguagens
-        de script. Para isso, basta criar uma classe e fazer com que essa
-        classe implemente a interface 
+        de script - ou seja, permite que o desenvolvedor inclua suporte a outras
+        linguagens de script. Para isso, basta criar uma classe e fazer com 
+        que essa classe implemente a interface 
         <code>net.java.dev.genesis.script.ScriptFactory</code>. Exemplo:</p>
 <source>
 package com.java.dev.app.meuScript;
@@ -140,10 +141,10 @@ public class MeuScript implements Script {
         <ul>
           <li><code>ScriptContext</code> é um contexto que contém as variáveis
           ("named conditions"), o form e as funções pré-contruídas do genesis
-          (tais como isEmpty, hasChanged, equals, etc) e as funções pré-
-          construídas específicas de cada tipo de script.</li>
+          (tais como isEmpty, hasChanged, equals, etc) e as funções 
+          pré-construídas específicas de cada linguagem de script.</li>
           <li><code>ScriptExpression</code> é a abstração de uma expressão
-          qualquer de cada tipo de script.</li>
+          qualquer de cada linguagem de script.</li>
         </ul>
         <p>Portanto, basta o desenvolvedor prover essas classes e o genesis 
         poderá suportar uma nova linguagem de script.</p>
