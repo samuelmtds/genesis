@@ -184,7 +184,9 @@ public class DefaultFormController implements FormController {
 
          evaluate(false);
       } catch (Exception e) {
-         reset(previousState);
+         if (createPreviousState) {
+            reset(previousState);
+         }
 
          throw e;
       } finally {
@@ -707,22 +709,36 @@ public class DefaultFormController implements FormController {
 
    protected void invokeActionWithReset(MethodMetadata metadata, 
          boolean firstCall, boolean conditionally) throws Exception {
-      previousState = createFormState(currentState);
+
+      final boolean createPreviousState = previousState == null;
+
+      if (createPreviousState) {
+         previousState = createFormState(currentState);
+      }
 
       try {
          invokeAction(metadata, firstCall, conditionally);
       } catch (Exception e) {
-         reset(previousState);
+         if (createPreviousState) {
+            reset(previousState);
+         }
 
          throw e;
       } finally {
-         previousState = null;
+         if (createPreviousState) {
+            previousState = null;
+         }
       }
    }
 
    public void updateSelection(DataProviderMetadata dataProviderMetadata, 
          int[] selected) throws Exception {
-      previousState = createFormState(currentState);
+
+      final boolean createPreviousState = previousState == null;
+
+      if (createPreviousState) {
+         previousState = createFormState(currentState);
+      }
 
       try {
          final List list = (List)currentState.getDataProvidedMap().get(
@@ -732,11 +748,15 @@ public class DefaultFormController implements FormController {
 
          update();
       } catch (Exception e) {
-         reset(previousState);
+         if (createPreviousState) {
+            reset(previousState);
+         }
 
          throw e;
       } finally {
-         previousState = null;
+         if (createPreviousState) {
+            previousState = null;
+         }
       }
    }
 
