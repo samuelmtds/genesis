@@ -43,6 +43,11 @@
       </XDtClass:ifHasClassTag>
     >
     
+    <XDtClass:forAllClassTags tagName="hibernate.meta" superclasses="false">
+      <meta
+        attribute="<XDtClass:classTagValue tagName="hibernate.meta" paramName="attribute" />"><XDtClass:classTagValue tagName="hibernate.meta" paramName="value" /></meta>
+    </XDtClass:forAllClassTags>
+    
     <XDtClass:ifHasClassTag tagName="hibernate.cache" superclasses="false">
         <cache usage="<XDtClass:classTagValue tagName="hibernate.cache" paramName="usage" values="read-write,nonstrict-read-write,read-only,transactional" />" />
     </XDtClass:ifHasClassTag>
