@@ -8,7 +8,7 @@
       <textfield name="label" height="15" halign="left" valign="bottom" text="1234567890" columns="20"/>
    </panel>
    <panel gap="5" columns="2" halign="center">
-      <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="2" type="default"/>
+      <button text="i18n.button.cancel" font="bold" mnemonic="2" type="cancel" action="cancel()"/>
       <button name="save" text="i18n.button.save" font="bold" mnemonic="0" type="default"/>
    </panel>
 </panel>

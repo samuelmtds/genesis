@@ -15,10 +15,10 @@
          </table>
       </panel>
       <panel halign="right" gap="5" columns="4">
-         <button name="create" text="i18n.button.add" font="bold" mnemonic="0" type="default" />
+         <button text="i18n.button.add" font="bold" mnemonic="0" type="default" action="create()" />
          <button name="remove" text="i18n.button.remove" font="bold" mnemonic="0" type="default" />
          <button name="select" text="i18n.button.ok" font="bold" mnemonic="0" type="default" />
-         <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="0" type="default" />
+         <button text="i18n.button.cancel" font="bold" mnemonic="0" type="cancel" action="cancel()" />
       </panel>
    </panel>
 </panel>

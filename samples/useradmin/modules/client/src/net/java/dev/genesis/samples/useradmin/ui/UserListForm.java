@@ -31,7 +31,6 @@ import net.java.dev.genesis.samples.useradmin.databeans.User;
  * @Form
  */
 public class UserListForm implements Serializable {
-   private static final int RESULTS_PER_PAGE = 10;
    private Page page;
    private int pageNumber = 1;
 
@@ -95,15 +94,9 @@ public class UserListForm implements Serializable {
    public List search() throws Exception {
       final UserSearchCommand command = new UserSearchCommand();
       CriteriaPropertyHelper.fillCriteria(command, this);
-      page = command.getUsers(getPageNumber(), RESULTS_PER_PAGE);
+      page = command.getUsers(getPageNumber());
       pageNumber = page.getPageNumber();
       return page.getResults();
-   }
-
-   /**
-    * @Action
-    */
-   public void create() throws Exception {
    }
 
    /**
@@ -148,5 +141,4 @@ public class UserListForm implements Serializable {
    public void nextPage() {
       pageNumber++;
    }
-
 }

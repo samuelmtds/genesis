@@ -71,13 +71,8 @@ public class InsertUpdateView extends BaseDialogThinlet {
       getDialog().dispose();
       this.hasChanged = true;
    }
-   
-   /**
-    * @PosAction
-    */
+
    public void cancel(){
       getDialog().dispose();
    }
-
 }
-

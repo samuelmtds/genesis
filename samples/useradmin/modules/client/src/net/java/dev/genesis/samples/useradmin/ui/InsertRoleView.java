@@ -43,9 +43,6 @@ public class InsertRoleView extends BaseDialogThinlet {
       return hasChanged;
    }
 
-   /**
-    * @PosAction
-    */
    public void cancel() {
       getDialog().dispose();
    }

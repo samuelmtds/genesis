@@ -47,9 +47,6 @@ public class RoleListView extends BaseDialogThinlet {
       return form.getRole();
    }
 
-   /**
-    * @PosAction
-    */
    public void cancel() throws Exception {
       getDialog().dispose();
    }
@@ -61,9 +58,6 @@ public class RoleListView extends BaseDialogThinlet {
       getDialog().dispose();
    }
 
-   /**
-    * @PreAction
-    */
    public void create() throws Exception {
       final InsertRoleView thinlet = new InsertRoleView(getFrame());
       if (thinlet.showView()) {

@@ -39,8 +39,8 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    /**
     * @Criteria net.java.dev.genesis.samples.useradmin.databeans.User
     */
-   public Page getUsers(final int pageNumber, final int resultsPerPage)
+   public Page getUsers(final int pageNumber)
          throws Exception {
-      return getPage(pageNumber, resultsPerPage);
+      return getPage(pageNumber);
    }
 }

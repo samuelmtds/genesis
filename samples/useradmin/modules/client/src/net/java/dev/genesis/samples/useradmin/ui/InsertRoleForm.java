@@ -56,11 +56,4 @@ public class InsertRoleForm {
       PropertyUtils.copyProperties(role, this);
       new RoleCreateCommand().addRole(role);
    }
-   
-   /**
-    * @Action
-    */
-   public void cancel() throws Exception {
-   }
-
 }

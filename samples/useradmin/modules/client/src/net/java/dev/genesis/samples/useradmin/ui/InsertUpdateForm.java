@@ -189,12 +189,6 @@ public class InsertUpdateForm {
 
    /**
     * @Action
-    */
-   public void cancel() throws Exception {
-   }
-
-   /**
-    * @Action
     * @CallWhen $findRoleCondition
     */
    public void findRole() throws Exception {

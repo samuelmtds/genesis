@@ -41,7 +41,7 @@
          </panel>
       </panel>
       <panel halign="right" columns="5">
-         <button name="create" text="i18n.button.newUser" font="bold" mnemonic="0" type="default"/>
+         <button text="i18n.button.newUser" font="bold" mnemonic="0" type="default" action="create()"/>
          <panel width="10" height="1"/>
          <button name="update" text="i18n.button.updateUser" font="bold" mnemonic="0" type="default"/>
          <panel width="10" height="1"/>

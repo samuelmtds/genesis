@@ -57,12 +57,11 @@ public class UserListView extends BaseThinlet {
       bind(form = new UserListForm());
    }
    
-   /**
-    * @PreAction
-    */
    public void create() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame());
+
       if (view.showView()) {
+         invokeFormAction("reset");
          invokeFormAction("search");
       }
    }
@@ -74,6 +73,7 @@ public class UserListView extends BaseThinlet {
       final InsertUpdateView view = new InsertUpdateView(getFrame(), form
             .getUser());
       if (view.showView()) {
+         invokeFormAction("reset");
          invokeFormAction("search");
       }
    }
@@ -82,6 +82,7 @@ public class UserListView extends BaseThinlet {
     * @PosAction
     */
    public void remove() throws Exception {
+      invokeFormAction("reset");
       invokeFormAction("search");
    }
    

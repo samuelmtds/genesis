@@ -7,7 +7,7 @@
       <label text="i18n.User.role" font="bold" mnemonic="0" for="roleCode"/>
       <panel gap="5" columns="3">
          <textfield name="roleCode" height="15" halign="left" valign="bottom" text="123456789012345" columns="7"/>
-         <button text="..." i18n="false" name="chooseRole" type="default"/>
+         <button name="chooseRole" text="..." i18n="false" type="default"/>
          <label name="roleLabel" text="123456789012345" i18n="false"/>
       </panel>
       <label text="i18n.User.login" font="bold" mnemonic="0" for="login"/>
@@ -26,7 +26,7 @@
       <combobox name="state" property="key=name;value=name;blank=false" editable="false" />
    </panel>
    <panel gap="5" columns="2" halign="center">
-      <button name="cancel" text="i18n.button.cancel" font="bold" mnemonic="2" type="default"/>
+      <button text="i18n.button.cancel" font="bold" mnemonic="2" type="cancel" action="cancel()"/>
       <button name="save" text="i18n.button.save" font="bold" mnemonic="0" type="default"/>
    </panel>
 </panel>

@@ -54,23 +54,11 @@ public class RoleListForm {
    public void remove() throws Exception {
       new RoleRemoveCommand().removeRole(role);
    }
-
-   /**
-    * @Action
-    */
-   public void create() throws Exception {
-   }
    
    /**
     * @Action
     * @EnabledWhen g:isNotEmpty(role)
     */
    public void select() throws Exception {
-   }
-   
-   /**
-    * @Action
-    */
-   public void cancel() throws Exception {
    }
 }
