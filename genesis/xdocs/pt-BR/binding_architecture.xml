@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Arquitetura de binding</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Arquitetura de binding">
+      <p align="justify">Esta seção descreve como a arquitetura de binding, uma
+      das partes mais inovadoras e interessantes do genesis, funciona
+      internamente. Os detalhes explicados aqui podem ser usados para se
+      escrever testes unitários dos forms, obter notificação de eventos ou para
+      customizar a forma com que certo componente é ligado a view.</p>
+      <p align="justify">Conforme salientado na <a
+      href="advanced_introduction.html">introdução do guia avançado</a>, toda a
+      API e semântica aqui documentados podem ser alterados de forma
+      incompatível em futuras versões do genesis e é aconselhável notificar os
+      desenvolvedores caso algum recurso seja usado.</p>
+    </section>
+    <section name="Principais elementos do binding">
+      <p>Classes em quatro pacotes do genesis estão envolvidas no processo de
+      binding. Os pacotes são:</p>
+      <ul>
+        <li><b><code>net.java.dev.genesis.ui.metadata</code></b>: contém um
+        modelo que representa os metadados do form do genesis</li>
+        <li><b><code>net.java.dev.genesis.ui.controller</code></b>: contém as
+        interfaces responsáveis pelo controle e notificação de mudanças do
+        estado do form</li>
+        <li><b><code>net.java.dev.genesis.ui.thinlet.metadata</code></b>:
+        contém um modelo que representa os metadados da view em
+        <code>Thinlet</code></li>
+        <li><b><code>net.java.dev.genesis.ui.thinlet</code></b>: contém as
+        classes responsáveis pelo binding <code>Thinlet</code></li>
+      </ul>
+      <p>Cada um dos pacotes acima será detalhado nas seções subseqüentes.</p>
+    </section>
+    <section name="Modelo de metadados do form">
+      <p>Conforme explicado na documentação dos aspectos, todo o modelo de
+      metadados de um form é  construído através de uma instância de
+      <code>net.java.dev.genesis.ui.metadata.FormMetadataFactory</code>, cuja
+      interface é:</p>
+<source>
+public interface FormMetadataFactory {
+    public FormMetadata getFormMetadata(Class formClass);
+}
+</source>
+      <p>Para mais detalhes de como utilizar uma implementação customizada desta
+      interface, basta consultar a subseção da <a
+      href="aspects.html#Instanciando_os_metadados">documentação dos
+      aspectos</a> do genesis que a descreve.</p>
+      <p><code>net.java.dev.genesis.ui.metadata.FormMetadata</code> é o ponto
+      inicial da árvore de metadados, contendo:</p>
+      <ul>
+        <li>a classe que representa (obtida através de
+        <code>getFormClass()</code> e definida através do construtor
+        <code>FormMetadata(Class)</code>)</li>
+        <li>condições JXPath nomeadas (obtidas através de
+        <code>getNamedConditions()</code> e
+        <code>getNamedCondition(String conditionName)</code> e adicionadas
+        através do método <code>addNamedCondition(String key,
+        org.apache.commons.jxpath.CompiledExpression value)</code>)</li>
+        <li>metadados das propriedades (obtidos através de
+        <code>getFieldMetadatas()</code> e
+        <code>getFieldMetadata(String fieldName)</code> e adicionadas
+        através do método <code>addFieldMetadata(String fieldName,
+        net.java.dev.genesis.ui.metadata.FieldMetadata fieldMetadata)</code>)
+        </li>
+        <li>metadados dos métodos (obtidos através de
+        <code>getMethodMetadatas()</code>,
+        <code>getMethodMetadata(String methodName)</code> e
+        <code>getMethodMetadata(net.java.dev.genesis.reflection.MethodEntry
+        methodEntry)</code>
+        e adicionados através do método <code>addMethodMetadata(String
+        methodName,
+        net.java.dev.genesis.ui.metadata.MethodMetadata methodMetadata)</code>)
+        </li>
+        <li>métodos utilitários para obter metadados das ações e provedores de
+        dados (<code>getActionMetadatas()</code> e
+        <code>getMethodMetadatas()</code>), que utilizam informações contidas
+        nos metadados dos métodos para gerar os valores de retorno</li>
+      </ul>
+    </section>
+  </body>
+</document>
