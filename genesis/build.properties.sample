@@ -1,0 +1,10 @@
+#
+# The thinlet.jar used
+# Override only if necessary
+#
+#thinlet.jar=../thinlet/dist/thinlet.jar
+
+#
+# The xdoclet libs
+# Override only if necessary
+#xdoclet.lib=../xdoclet/dist

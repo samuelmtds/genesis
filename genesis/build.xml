@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project basedir="." default="init" name="genesis">
+
+	<target name="init">
+		<property file="build.properties" />
+
+		<property name="dist" location="dist" />
+
+		<property name="xdoclet.validatexml" value="true" />
+
+		<property name="shared.dir" location="modules/shared/src" />
+		<property name="client.dir" location="modules/client/src" />
+		<property name="server.dir" location="modules/server/src" />
+		<property name="server.generated.dir" location="generated/ejb" />
+		<property name="aspect.dir" location="modules/aspect/src" />
+
+		<property name="shared.classes.dir" location="classes/shared" />
+		<property name="client.classes.dir" location="classes/client" />
+		<property name="server.classes.dir" location="classes/server" />
+		<property name="aspect.classes.dir" location="classes/aspect" />
+
+		<property name="shared.jar" location="${dist}/genesis-shared.jar" />
+		<property name="client.jar" location="${dist}/genesis-client.jar" />
+		<property name="server.jar" location="${dist}/genesis-server.jar" />
+		<property name="aspect.jar" location="${dist}/genesis-aspect.jar" />
+		<property name="j2ee.jar" location="lib/j2ee/j2ee.jar" />
+
+		<property name="thinlet.jar" location="../thinlet/dist/thinlet.jar" />
+		<property name="thinlet.classes.dir" location="classes/thinlet" />
+
+		<property name="xdoclet.lib" value="../xdoclet/dist" />
+		<property name="aspectwerkz.lib" value="lib/aspectwerkz" />
+		<property name="hibernate.lib" value="lib/hibernate" />
+		<property name="commons.lib" value="lib/commons" />
+
+		<path id="xdoclet.path">
+			<fileset dir="${xdoclet.lib}" includes="*.jar" />
+		</path>
+
+		<path id="hibernate.compile.path">
+			<fileset dir="${hibernate.lib}">
+				<include name="hibernate2.jar" />
+			</fileset>
+		</path>
+
+		<path id="commons.path">
+			<fileset dir="${commons.lib}">
+				<include name="commons-beanutils.jar" />
+				<include name="commons-jxpath-1.1.jar" />
+				<include name="commons-logging.jar" />
+				<include name="commons-validator.jar" />
+				<include name="reusable-components-20040406.jar" />
+			</fileset>
+		</path>
+
+		<path id="aspectwerkz.path">
+			<fileset dir="${aspectwerkz.lib}" includes="*.jar" />
+		</path>
+
+                <path id="j2ee.path">
+			<path location="${j2ee.jar}" />
+		</path>
+
+		<path id="thinlet.path">
+			<path location="${thinlet.classes.dir}" />
+		</path>
+
+		<path id="shared.path">
+			<path location="${shared.classes.dir}" />
+		</path>
+
+		<path id="server.path">
+			<path location="${server.classes.dir}" />
+		</path>
+
+		<path id="client.path">
+			<path location="${client.classes.dir}" />
+		</path>
+
+	</target>
+
+
+	<target name="clean">
+		<delete dir="generated" />
+		<delete dir="classes" />
+		<delete dir="dist" />
+	</target>
+
+
+	<target name="generate.ejb" depends="init">
+
+		<mkdir dir="${server.generated.dir}" />
+
+		<taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask">
+			<classpath refid="xdoclet.path" />
+			<classpath refid="j2ee.path" />
+		</taskdef>
+
+		<ejbdoclet destdir="${server.generated.dir}">
+			<fileset dir="${server.dir}" includes="**/*EJB.java" />
+			<deploymentdescriptor destdir="${server.generated.dir}/META-INF"
+			                      validatexml="${xdoclet.validatexml}"
+			                      xmlencoding="ISO-8859-1" />
+			<homeinterface />
+			<localhomeinterface />
+			<remoteinterface />
+			<localinterface />
+		</ejbdoclet>
+	</target>
+
+
+	<target name="compile" depends="generate.ejb">
+
+		<mkdir dir="${shared.classes.dir}" />
+		<mkdir dir="${client.classes.dir}" />
+		<mkdir dir="${server.classes.dir}" />
+		<mkdir dir="${aspect.classes.dir}" />
+
+		<unjar src="${thinlet.jar}"
+		       dest="${thinlet.classes.dir}"
+		       overwrite="true" />
+
+		<javac srcdir="${shared.dir}"
+		       destdir="${shared.classes.dir}"
+		       debug="true"
+		       source="1.4">
+			<classpath refid="hibernate.compile.path" />
+			<classpath refid="commons.path" />
+		</javac>
+
+		<javac srcdir="${server.dir}"
+		       destdir="${server.classes.dir}"
+		       debug="true"
+		       source="1.4">
+			<classpath refid="j2ee.path" />
+			<classpath refid="shared.path" />
+			<classpath refid="hibernate.compile.path" />
+		</javac>
+		<javac srcdir="${server.generated.dir}"
+		       destdir="${server.classes.dir}"
+		       debug="true"
+		       source="1.4">
+			<classpath refid="j2ee.path" />
+			<classpath refid="shared.path" />
+		</javac>
+
+		<javac srcdir="${client.dir}"
+		       destdir="${client.classes.dir}"
+		       debug="true"
+		       source="1.4">
+			<classpath refid="commons.path" />
+			<classpath refid="thinlet.path" />
+		</javac>
+
+		<javac srcdir="${aspect.dir}"
+		       destdir="${aspect.classes.dir}"
+		       debug="true"
+		       source="1.4">
+			<classpath refid="shared.path" />
+			<classpath refid="server.path" />
+			<classpath refid="commons.path" />
+			<classpath refid="client.path" />
+			<classpath refid="j2ee.path" />
+			<classpath refid="thinlet.path" />
+			<classpath refid="aspectwerkz.path" />
+		</javac>
+
+	</target>
+
+
+	<target name="build.jars" depends="compile">
+
+		<mkdir dir="${dist}" />
+
+		<jar destfile="${shared.jar}">
+			<fileset dir="${shared.classes.dir}" />
+		</jar>
+
+		<jar destfile="${server.jar}">
+			<fileset dir="${server.classes.dir}" />
+			<fileset dir="${server.generated.dir}" includes="**/*.xml"/>
+		</jar>
+
+		<jar destfile="${client.jar}">
+			<fileset dir="${client.classes.dir}" />
+		</jar>
+
+		<jar destfile="${aspect.jar}">
+			<fileset dir="${aspect.classes.dir}" />
+		</jar>
+
+	</target>
+
+</project>
