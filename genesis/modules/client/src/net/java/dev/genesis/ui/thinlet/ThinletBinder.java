@@ -19,13 +19,14 @@
 package net.java.dev.genesis.ui.thinlet;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.reflection.ReflectionInvoker;
 import net.java.dev.genesis.ui.controller.FormController;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
@@ -62,6 +63,10 @@ public class ThinletBinder {
 
       bindFieldMetadatas(formMetadata);
       bindActionMetadatas(formMetadata);
+      populateDataProviders(formMetadata);
+      
+      //TODO: invoke call when methods
+      //TODO: invoke lifecycle methods in formMetadata
    }
 
    private void bindFieldMetadatas(final FormMetadata formMetadata) {
@@ -166,8 +171,6 @@ public class ThinletBinder {
             continue;
          }
 
-         final ActionMetadata actionMetadata = (ActionMetadata)entry.getValue();
-
          if (log.isTraceEnabled()) {
             log.trace("Binding action " + name + " in " + form.getClass().getName());
          }
@@ -179,5 +182,29 @@ public class ThinletBinder {
 
    public void invokeAction(String name) {
       //TODO: implement this
+   }
+
+   private void populateDataProviders(FormMetadata formMetadata) throws Exception {
+      for (final Iterator i = formMetadata.getDataProviderMetadatas().entrySet()
+            .iterator(); i.hasNext(); ) {
+         final Map.Entry entry = (Map.Entry)i.next();
+         final String name = entry.getKey().toString();
+         final Object component = thinlet.find(root, name);
+
+         if (component == null) {
+            log.warn(name + " could not be found while populating using " + 
+                  form.getClass());
+            continue;
+         }
+
+         final MethodEntry methodEntry = ((DataProviderMetadata)
+               entry.getValue()).getMethodEntry();
+         //TODO: finish this method
+
+/*
+         ReflectionInvoker.getInstance().invoke(form, methodEntry.getMethodName(), 
+               methodEntry.getArgsClassesNames(), new Object[0]);
+ */
+      }
    }
 }
