@@ -486,7 +486,16 @@ public class ThinletBinder {
                      entry.getValue());
             }
 
-            thinlet.setEnabled(thinlet.find(root, entry.getKey().toString()), 
+            final Object widget = thinlet.find(root, entry.getKey().toString());
+
+            if (widget == null) {
+               log.warn(entry.getKey() + " enabled state should be changed, " +
+                     "but could not be found in the view component for " + 
+                     form.getClass());
+               continue;
+            }
+
+            thinlet.setEnabled(widget, 
                   ((Boolean)entry.getValue()).booleanValue());
          }
       }
@@ -508,7 +517,16 @@ public class ThinletBinder {
                      entry.getValue());
             }
 
-            thinlet.setVisible(thinlet.find(root, entry.getKey().toString()), 
+            final Object widget = thinlet.find(root, entry.getKey().toString());
+
+            if (widget == null) {
+               log.warn(entry.getKey() + " visible state should be changed, " +
+                     "but could not be found in the view component for " + 
+                     form.getClass());
+               continue;
+            }
+
+            thinlet.setVisible(widget, 
                   ((Boolean)entry.getValue()).booleanValue());
          }
       }
