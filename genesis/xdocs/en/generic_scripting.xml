@@ -39,7 +39,7 @@
 <source>
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
-   <param name="scriptFactory" value="javascript" />
+   <param name="scriptFactory" value="net.java.dev.genesis.script.bsf.BSFScriptFactory" />
    <param name="scriptFactoryProperties" value="lang=xyz,time=hh24miss" />
 </mixin>
 ]]>
@@ -59,14 +59,14 @@
         properties that the <code>ScriptFactory</code> class may use. The value
         of this parameter is in the <code>propertyName=propertyValue</code>
         form and in cases where more than one property is required, tuples
-        should be separated by a comma. For instance, if using
-        "beanshell", the <code>BSFScriptFactory</code> class accepts a property
+        should be separated by a comma. For instance, the <code>BSFScriptFactory</code> class
+        accepts a property
         called "lang". This property will make the following configuration the
         same:</p>
 <source>
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
-   <param name="scriptFactory" value="beanshell" />
+   <param name="scriptFactory" value="net.java.dev.genesis.script.bsf.BSFScriptFactory" />
    <param name="scriptFactoryProperties" value="lang=javascript" />
 </mixin>
 ]]>

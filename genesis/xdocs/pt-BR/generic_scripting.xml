@@ -41,7 +41,7 @@
 <source>
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
-   <param name="scriptFactory" value="beanshell" />
+   <param name="scriptFactory" value="net.java.dev.genesis.script.bsf.BSFScriptFactory" />
    <param name="scriptFactoryProperties" value="lang=beanshell" />
 </mixin>
 ]]>
@@ -63,14 +63,13 @@
         necessita. O valor desse paramêtro toma o formato
         <code>nomeDaPropriedade=valorDaPropriedade</code> e em casos onde há
         mais de uma propriedade, estas tuplas devem ser separadas pelo
-        caractere "," (vírgula). No caso de
-        "beanshell", a classe <code>BSFScriptFactory</code> aceita uma
+        caractere "," (vírgula). A classe <code>BSFScriptFactory</code> aceita uma
         propriedade denominada "lang", o que torna as duas definições abaixo
         equivalentes:</p>
 <source>
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
-   <param name="scriptFactory" value="beanshell" />
+   <param name="scriptFactory" value="net.java.dev.genesis.script.bsf.BSFScriptFactory" />
    <param name="scriptFactoryProperties" value="lang=javascript" />
 </mixin>
 ]]>
