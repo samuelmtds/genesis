@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - Guia de referência rápida de anotações</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta><meta name="author" content="Pablo Jorge Madril"></meta><meta name="email" content="pmadril@uol.com.br"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 13 March 2005
+                  | Doc for 3.0-EA1</div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/screenshots.html">Screenshots</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="collapsed"><a href="../pt-BR/ui_basic_concepts.html">Modelo de componentes de interface gráfica</a></li><li class="none"><a href="../pt-BR/business_component_model.html">Modelo de componentes de negócio</a></li><li class="none"><strong><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></strong></li></ul></li><li class="none"><a href="../pt-BR/jars_explained.html">Entendendo os jars do genesis</a></li><li class="none"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="collapsed"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Guia_de_referência_rápida_de_anotações"></a><h2>Guia de referência rápida de anotações</h2><p>Boa parte do uso das funcionalidades do genesis exige apenas a inclusão
+      de tags específicas (chamadas anotações) no código. Este guia rápido
+      explica as anotações e contém exemplos de uso extraidos dos arquivos
+      da aplicação exemplo <a href="useradmin_sample.html">useradmin</a>.</p></div><div class="section"><a name="Anotações_do_genesis"></a><h2>Anotações do genesis</h2><p>As anotações estão classificadas pela posição (escopo) onde podem ser
+      colocadas:</p><ul>
+        <li><b>Classe</b>: antes da definição da classe</li>
+        <li><b>Atributo</b>: antes de um getter de atributo</li>
+        <li><b>Método</b>: antes da definição de um método</li>
+      </ul><p>Algumas anotações são válidas em mais de um escopo.</p><p>
+        <table class="bodyTable"><tr class="b"><th>Elemento do genesis</th><th>Escopo</th><th>Tag</th></tr><tr class="a"><td rowspan="3">Forms</td><td>Classe</td><td>
+              <ul>
+                <li><a href="#@Condition">@Condition</a></li>
+                <li><a href="#@Form">@Form</a></li>
+              </ul>
+            </td></tr><tr class="b"><td>Atributo</td><td>
+              <ul>
+                <li><a href="#@ClearOn">@ClearOn</a></li>
+                <li><a href="#@Condition">@Condition</a></li>
+                <li><a href="#@EmptyResolver">@EmptyResolver</a></li>
+                <li><a href="#@EmptyValue">@EmptyValue</a></li>
+                <li><a href="#@EnabledWhen">@EnabledWhen</a></li>
+                <li><a href="#@EqualityComparator">@EqualityComparator</a></li>
+                <li><a href="#@NotBound">@NotBound</a></li>
+                <li><a href="#@VisibleWhen">@VisibleWhen</a></li>
+              </ul>
+            </td></tr><tr class="a"><td>Método</td><td>
+              <ul>
+                <li><a href="#@Action">@Action</a></li>
+                <li><a href="#@CallWhen">@CallWhen</a></li>
+                <li><a href="#@ClearOn">@ClearOn</a></li>
+                <li><a href="#@Condition">@Condition</a></li>
+                <li><a href="#@DataProvider">@DataProvider</a></li>
+                <li><a href="#@EnabledWhen">@EnabledWhen</a></li>
+                <li><a href="#@ValidateBefore">@ValidateBefore</a></li>
+                <li><a href="#@VisibleWhen">@VisibleWhen</a></li>
+              </ul>
+            </td></tr><tr class="b"><td>View</td><td>Método</td><td>
+              <ul>
+                <li><a href="#@BeforeAction">@BeforeAction</a></li>
+                <li><a href="#@AfterAction">@AfterAction</a></li>
+              </ul>
+            </td></tr><tr class="a"><td>POJO</td><td>Classe</td><td>
+              <ul>
+                <li><a href="#@ViewHandler">@ViewHandler</a></li>
+              </ul>
+            </td></tr><tr class="b"><td>Command</td><td>Método</td><td>
+              <ul>
+                <li><a href="#@Criteria">@Criteria</a></li>
+                <li><a href="#@Remotable">@Remotable</a></li>
+                <li><a href="#@Transactional">@Transactional</a></li>
+              </ul>
+            </td></tr></table>
+      </p></div><div class="section"><a name="Funções_script_do_genesis"></a><h2>Funções script do genesis</h2><p>Além das anotações, foram implementadas as seguintes funções de
+      extensão às linguagens de script:</p><ul>
+        <li>isEmpty(any), isNotEmpty(any)</li>
+        <li>equals(any,any), notEquals(any,any)</li>
+        <li>hasChanged(campo), hasNotChanged(campo)
+        </li>
+      </ul><p>Podem ser usadas pelas anotações que aceitam expressões condicionais
+      de script. No caso de JXPath, o <b>g:</b> indica o namespace do genesis.
+      As funções core do JXPath não utilizam namespace.</p><div class="subsection"><a name="isEmpty_any___isNotEmpty_any_"></a><h3>isEmpty(any), isNotEmpty(any)</h3><p>Verifica se um dado está vazio. Usa o <a href="#@EmptyResolver">
+        @EmptyResolver</a> quando disponível. Recebe como argumento um número,
+        uma String, uma varíavel ou função pré-definida da linguagem de script,
+        ou o nome de um campo do <code>Form</code>.</p><p>A sintaxe específica para cada linguagem de script segue a tabela
+        abaixo:</p><table class="bodyTable"><tr class="a"><th>Linguagem</th><th>isEmpty</th><th>isNotEmpty</th></tr><tr class="b"><th>JXPath</th><td>g:isEmpty(campoDoForm)</td><td>g:isNotEmpty(campoDoForm)</td></tr><tr class="a"><th>JavaScript/Beanshell</th><td>genesis.isEmpty("form:campoDoForm")</td><td>genesis.isNotEmpty("form:campoDoForm")</td></tr><tr class="b"><th>EL</th><td>g:isEmpty("form:campoDoForm")</td><td>g:isNotEmpty("form:campoDoForm")</td></tr></table></div><div class="subsection"><a name="equals_any_any___notEquals_any_any_"></a><h3>equals(any,any), notEquals(any,any)</h3><p>Verifica se dois objetos são iguais. Usa os <a href="#@EqualityComparator">@EqualityComparator</a>s, caso existam, para
+        efetuar a comparação. Recebe como argumentos números, Strings, variáveis
+        ou funções pré-definidas da linguagem de script, ou nomes de
+        campos do <code>Form</code>.</p><p>A sintaxe específica para cada linguagem de script segue a tabela
+        abaixo:</p><table class="bodyTable"><tr class="a"><th>Linguagem</th><th>equals</th><th>notEquals</th></tr><tr class="b"><th>JXPath</th><td>g:equals(campoDoForm, outroCampo)</td><td>g:notEquals(campoDoForm, outroCampo)</td></tr><tr class="a"><th>JavaScript/Beanshell</th><td>genesis.equals("form:campoDoForm", "form:outroCampo")</td><td>genesis.notEquals("form:campoDoForm", "form:outroCampo")</td></tr><tr class="b"><th>EL</th><td>g:equals("form:campoDoForm", "form:outroCampo")</td><td>g:notEquals("form:campoDoForm", "form:outroCampo")</td></tr></table></div><div class="subsection"><a name="hasChanged_campo___________________________hasNotChanged_campo_"></a><h3>hasChanged(campo),                         hasNotChanged(campo)</h3><p>Verifica se um campo do form foi alterado ou não. O parâmetro tem que
+        ser um campo do form.</p><p>A sintaxe específica para cada linguagem de script segue a tabela
+        abaixo:</p><table class="bodyTable"><tr class="a"><th>Linguagem</th><th>hasChanged</th><th>hasNotChanged</th></tr><tr class="b"><th>JXPath</th><td>g:hasChanged(campoDoForm)</td><td>g:hasNotChanged(campoDoForm)</td></tr><tr class="a"><th>JavaScript/Beanshell</th><td>genesis.hasChanged("form:campoDoForm")</td><td>genesis.hasNotChanged("form:campoDoForm")</td></tr><tr class="b"><th>EL</th><td>g:hasChanged("form:campoDoForm")</td><td>g:hasNotChanged("form:campoDoForm")</td></tr></table></div><p><a href="ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">Mais informações...
+    </a></p></div><div class="section"><a name="Referência"></a><h2>Referência</h2><div class="subsection"><a name="@Form"></a><h3>@Form</h3><p>Indica que a classe é um form e suporta as outras anotações de
+        interface gráfica definidas no genesis (@Action,@EnabledWhen, etc). A
+        implementação default do genesis utiliza essa anotação para gerar a
+        meta-informação do form.</p><table class="bodyTable"><tr class="a"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="b"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+/**
+ * <b>@Form</b>
+ * @Condition findRoleCondition=g:isNotEmpty(roleCode) and
+ g:hasChanged(roleCode)
+ *
+ * @struts.form
+ */
+public class InsertUpdateForm {
+<b>...</b>
+  </pre></div>
+  <p><a href="ui_basic_concepts.html#Entendendo_os_forms">Mais informações...
+    </a></p></div><div class="subsection"><a name="@Condition"></a><h3>@Condition</h3><p>Declara uma variavel de condição que pode ser usada em qualquer
+        lugar. Essa condição possui um nome e a expressão JXPath condicional que
+        representa. A variavel é acessada depois em outras anotações como
+        <code>$nomeDaVariavel</code>. Pode estar no escopo da classe (junto com
+        as anotações de <code>@Form</code>)</p><table class="bodyTable"><tr class="a"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="b"><td>nomeDaVariavel</td><td>texto de uma expressão JXPath condicional válida</td><td>Ver <a href="#Funções_JXPath_do_genesis">funções JXPath do
+            genesis</a></td><td><b>Sim</b></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+/**
+ * @Form
+ * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and
+ g:hasChanged(roleCode)</b>
+ *
+ * @struts.form
+ */
+public class InsertUpdateForm {
+<b>...</b>
+   /**
+    * @Action
+    * @CallWhen <b>$findRoleCondition</b>
+    */
+   public void findRole() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Declarando_condições">Mais
+    informações...</a></p></div><div class="subsection"><a name="@DataProvider"></a><h3>@DataProvider</h3><p>Usado antes de um método que retorna um array ou uma
+        <code>java.util.List</code>. O retorno será utilizado para popular um
+        componente da interface gráfica, um widget (combo, lista, table, etc)
+        que deve possuir o nome indicado por widgetName, objectField ou
+        indexField. O <code>objectField</code> guarda e recebe uma coleção ou
+        instância do(s) objeto(s) selecionado(s). <code>O indexField</code>
+        guarda e recebe uma coleção de índices ou um índice do(s) objeto(s)
+        selecionado(s).</p><p>Tanto <code>objectField</code> quanto <code>indexField</code> são
+        também atributos do form, se especificados. Enquanto
+        <code>objectField</code> deve ser uma <code>java.util.List</code>
+        ou do tipo do objeto retornado - <code>Usuario</code>, por exemplo - o
+        <code>indexField</code> deve ser uma <code>java.util.List</code>
+        de <code>Integer</code> ou um array de int/<code>Integer</code>.</p><table class="bodyTable"><tr class="a"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="b"><td>objectField</td><td>nomeDoAtributoDoForm (que também é o nomeDoWidget, caso
+            <code>widgetName</code> não seja especificado)</td><td>Nome do widget (caso widgetName não seja especificado)
+            que será atualizado com o resultado retornado pelo método e também
+            nome do campo do form que mantém o conteúdo selecionados na
+            interface gráfica.</td><td>somente se <code>indexField</code> ou <code>widgetName</code>
+            não forem especificados</td></tr><tr class="a"><td>indexField</td><td>nomeDoAtributoDoForm (se <code>objectField</code> ou
+            <code>widgetName</code> não forem especificados,
+            também nomeDoWidget)</td><td>Nome do atributo do form, do tipo <code>List</code> de
+            <code>Integer</code> ou array de int/<code>Integer</code> que mantém
+            o conteúdo dos índices dos dados selecionados no widget. Se
+            <code>objectField</code> não for especificado, também é o nome do
+            widget que será atualizado com o resultado retornado pelo
+            método</td><td>somente se <code>objectField</code> ou <code>widgetName</code>
+            não forem especificados</td></tr><tr class="b"><td>widgetName</td><td>nome do widget propriamente dito</td><td>Nome do widget que será atualizado com o resultado
+            retornado pelo método</td><td>somente se <code>objectField</code> ou <code>indexField</code>
+            não forem especificados</td></tr><tr class="a"><td>callOnInit</td><td>valor booleano</td><td>Indica se o método será chamado ao se fazer o binding</td><td>Não, default: <code>true</code></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+   /**
+    * <b>@DataProvider objectField=country</b>
+    */
+   public Collection provideCountries() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">
+    Mais informações...</a></p></div><div class="subsection"><a name="@NotBound"></a><h3>@NotBound</h3><p>Determina que certa propriedade não deve ser modificada nem sequer
+        exibida pelo genesis. Pode ser usada em getters de propriedades.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso:</p>
+    <div class="source"><pre>
+/**
+ * @Form
+ */
+public class ExemploForm {
+<b>...</b>
+   /**
+    * <b>@NotBound</b>
+    */
+   public String getPropriedade() {
+   <b>...</b>
+  </pre></div>
+  </div><div class="subsection"><a name="@EnabledWhen"></a><h3>@EnabledWhen</h3><p>Habilita ou desabilita um widget em função do resultado de uma
+        expressão JXPath condicional. Pode ser utilizado em atributos do form,
+        quando utilizado nos getters, bem como para ações (métodos). Pode usar
+        variáveis de <a href="#@Condition">@Condition</a> definidas.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>expressão JXPath condicional</td><td>condição para habilitar o widget</td><td><b>Sim</b></td></tr></table><p>Exemplo de uso (UsersListForm.java):</p>
+    <div class="source"><pre>
+   /**
+    * @Action
+    * <b>@EnabledWhen $usersSelected</b>
+    */
+   public void remove() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Habilitando_e_desabilitando_componentes">Mais
+    informações...</a></p></div><div class="subsection"><a name="@VisibleWhen"></a><h3>@VisibleWhen</h3><p>Apresenta ou não um widget em função do resultado da avaliação de uma
+        expressão JXPath condicional. Pode ser utilizado em atributos do form,
+        quando utilizado nos getters, bem como para ações (métodos). Pode usar
+        variáveis de <a href="#@Condition">@Condition</a> definidas.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>expressão JXPath condicional</td><td>condição para tornar o widget visível</td><td><b>Sim</b></td></tr></table><p>Exemplo de uso (UsersListForm.java):</p>
+    <div class="source"><pre>
+   /**
+    * @Action
+    * <b>@VisibleWhen pageNumber &gt; 0</b>
+    */
+   public void previousPage() {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Controlando_a_visibilidade">Mais
+    informações...</a></p></div><div class="subsection"><a name="@CallWhen"></a><h3>@CallWhen</h3><p>Chama o método indicado quando a condição JXPath é satisfeita. Só
+        pode ser aplicado a métodos do form, i.e., métodos anotados com
+        <a href="#@Action">@Action</a>.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Uso</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>expressão JXPath condicional</td><td>@CallWhen g:equals(field3,'abcd') </td><td>condição para chamar o método</td><td><b>Sim</b></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+   /**
+    * @DataProvider objectField=state
+    * <b>@CallWhen g:hasChanged(country)</b>
+    */
+   public Collection provideState() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Invocando_métodos_automaticamente">
+    Mais informações...</a></p></div><div class="subsection"><a name="@ClearOn"></a><h3>@ClearOn</h3><p>Limpa o conteúdo do atributo indicado ou do componente populado pelo
+        DataProvider quando a condição JXPath é
+        satisfeita. Só pode ser aplicado a atributos do form e em <code>DataProvider</code>s.</p><p>No caso de campos, o valor usado para limpar o campo é definido através da anotação
+        <a href="#@EmptyValue">@EmptyValue</a>.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>expressão JXPath condicional</td><td>condição para limpar o conteúdo</td><td><b>Sim</b></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * <b>@ClearOn g:isEmpty(roleCode)</b>
+    */
+   public Role getRole() {
+      return role;
+   }
+
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais
+    informações...</a></p></div><div class="subsection"><a name="@ValidateBefore"></a><h3>@ValidateBefore</h3><p>
+        O suporte de validações do genesis é implementado através de integração
+        com o <a href="http://jakarta.apache.org/commons/validator/" class="externalLink" title="External Link">Commons
+        Validator</a>.</p><p>Força a execução da validação antes de ser executado o método
+        definido como<a href="#@Action">@Action</a>. Só pode ser usado nestes
+        métodos.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * @Action
+    * <b>@ValidateBefore</b>
+    */
+   public void save() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_additional_features.html#Validando_os_dados">Mais
+    informações...</a></p></div><div class="subsection"><a name="@EqualityComparator"></a><h3>@EqualityComparator</h3><p>Anotação colocada antes de getter de atributos do form. Identifica a
+        classe que sabe comparar elementos do tipo do atributo. Tem como
+        parâmetro principal o nome qualificado completo da classe
+        (pacote.Classe) que implementa a interface
+        <code>net.java.dev.genesis.equality.EqualityComparator</code>. Tal
+        classe é usada internamente pelas funções <code>g:equals(any,any)</code>
+        e <code>g:notEquals(any,any)</code>.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Uso</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>Nome qualificado completo de classe</td><td>@EqualityComparator pacote.MeuEqualityComparator</td><td>Nome classe que implementa a interface
+            <code>EqualityComparator</code>.</td><td><b>Sim, a menos que existam propriedades</b></td></tr><tr class="b"><td>nomeDePropriedade</td><td>Nome de uma propriedade da classe especificada</td><td>@EqualityComparator pacote.MeuEqualityComparator
+                                    nullsComoZero=true</td><td>Nome de um atributo da classe que implementa a interface
+            <code>EqualityComparator</code>. Podem haver vários desses
+            parâmetros.</td><td><b>Não</b></td></tr></table><p><a href="ui_additional_features.html#Comparando_valores">Mais
+    informações...</a></p></div><div class="subsection"><a name="@EmptyResolver"></a><h3>@EmptyResolver</h3><p>Anotação colocada antes de getter de atributos do form. Identifica a
+        classe que sabe comparar elementos do tipo do atributo. Tem como
+        parâmetro principal o nome qualificado completo da classe
+        (pacote.Classe) que implementa a interface
+        <code>net.java.dev.genesis.resolvers.EmptyResolver</code>. Tal classe é
+        usada internamente pelas funções <code>g:isEmpty(any)</code> e
+        <code>g:isNotEmpty(any)</code>.</p><table class="bodyTable"><tr class="a"><th>Parâmetros</th><th>Tipo</th><th>Uso</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="b"><td>anônimo</td><td>Nome qualificado completo de classe</td><td>@EmptyResolver pacote.MeuEmptyResolver</td><td>Nome classe que implementa a interface
+            <code>EmptyResolver</code>.</td><td><b>Sim, a menos que existam propriedades</b></td></tr><tr class="a"><td>nomeDePropriedade</td><td>Nome de uma propriedade da classe especificada</td><td>@EmptyResolver pacote.MeuEmptyResolver
+                               zerosComoVazios=true</td><td>Nome de um atributo da classe que implementa a interface
+            <code>EmptyResolver</code>. Podem haver vários desses
+            parâmetros.</td><td><b>Não</b></td></tr></table><p><a href="ui_additional_features.html#Determinando_se_o_campo_está_vazio">
+    Mais informações...</a></p></div><div class="subsection"><a name="@EmptyValue"></a><h3>@EmptyValue</h3><p>Especifica o valor vazio de um campo. Utilizado em conjunto com <a href="#@ClearOn">@ClearOn</a>.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Uso</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>valor literal</td><td>@EmptyValue -1</td><td>O valor do campo quando vazio</td><td><b>Sim</b></td></tr></table><p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais
+    informações...</a></p></div><div class="subsection"><a name="@Action"></a><h3>@Action</h3><p>Define um método como alvo de binding com a interface gráfica. A ação
+        pode representar um botão e/ou simplesmente um método que é chamado
+        quando uma condição é satisfeita. O nome do widget tem que ser igual ao
+        nome do método no form para que ocorra uma ligação dinâmica entre eles.
+        </p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso (InsertUpdateForm.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * <b>@Action</b>
+    * @ValidateBefore
+    */
+   public void save() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p>define o método <b>save</b> como alvo do acionamento de um botão
+        com nome "save" na interface gráfica.</p><p><a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
+    Mais informações...</a></p></div><div class="subsection"><a name="@BeforeAction"></a><h3>@BeforeAction</h3><p>Aplica-se a métodos de uma view. As views são classes que estendem
+        uma das classes de interface gráfica suportadas. Atualmente, uma view é
+        uma classe que herda da classe BaseThinlet (ou BaseDialogThinlet). A
+        anotação @BeforeAction se aplica ao método da view que deve ser
+        executado <b>antes</b> da execução da @Action. O método deve possuir o
+        mesmo nome da @Action ou indicá-lo como parâmetro anônimo.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Uso</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>String</td><td>@BeforeAction atualizar</td><td>Nome do método do form para o qual o método anotado deve ser
+            executado antes</td><td>Somente quando o nome do método da view não coincidir com o
+            método do form</td></tr></table><p>Exemplo de uso (InsertUpdateView.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * <b>@BeforeAction</b>
+    */
+   public void chooseRole() throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_basic_concepts.html#Usando_@BeforeAction">Mais informações...
+    </a></p></div><div class="subsection"><a name="@AfterAction"></a><h3>@AfterAction</h3><p>Aplica-se a métodos de uma view. As views são classes que estendem
+        uma das classes de interface gráfica suportadas. Atualmente, uma view é
+        uma classe que herda da classe BaseThinlet (ou BaseDialogThinlet). A
+        anotação @AfterAction se aplica ao método da view que deve ser
+        executado logo <b>após</b> a execução da @Action. O método deve possuir
+        o mesmo nome da @Action ou indicá-lo como parâmetro anônimo.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Uso</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>String</td><td>@AfterAction atualizar</td><td>Nome do método do form para o qual o método anotado deve ser
+            executado depois</td><td>Somente quando o nome do método da view não coincidir com o
+            método do form</td></tr></table><p>Exemplo de uso (InsertUpdateView.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * @AfterAction
+    */
+   public void save() {
+   <b>...</b>
+  </pre></div>
+  <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...
+    </a></p></div><div class="subsection"><a name="@ViewHandler"></a><h3>@ViewHandler</h3><p>Utilizado em POJOs (simples objetos Java) que contém metodos
+        anotados com <a href="#@BeforeAction"><code>@BeforeAction</code></a>
+        e/ou <a href="#@AfterAction"><code>@AfterAction</code></a>.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso</p>
+    <div class="source"><pre>
+/**
+ * <b>@ViewHandler</b>
+ */
+public class ExemploViewHandler {
+   /**
+    * @BeforeAction
+    */
+   public boolean excluir() {
+      <b>...</b>
+   }
+<b>...</b>
+}
+  </pre></div>
+  <p><a href="ui_additional_features.html#Utilizando_POJOs_para_tratar_eventos">Mais
+    informações...</a></p></div><div class="subsection"><a name="@Remotable"></a><h3>@Remotable</h3><p>Utilizado para anotar métodos de classes de negócio. Os métodos
+        anotados com @Remotable são interceptados através de um aspecto que
+        transfere a instância em que o método foi invocado para o servidor,
+        executando-o ali e transferindo o resultado de volta para o cliente.
+        Essa característica é chamada de <b>remotabilidade transparente</b>.</p><p>Apenas métodos concretos, não-estáticos, não-nativos e públicos podem
+        receber esta anotação.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso (RoleSearchCommand.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * <b>@Remotable</b>
+    */
+   public List getRoles() throws Exception {
+      return getSession().createQuery("from Role").list();
+   }
+   <b>...</b>
+  </pre></div>
+  <p><a href="business_component_model.html#Remotabilidade_transparente">Mais
+    informações...</a></p></div><div class="subsection"><a name="@Transactional"></a><h3>@Transactional</h3><p>Utilizado para anotar métodos de classes de negócio. Os métodos
+        anotados com @Transactional são interceptados através de um aspecto
+        que transfere a instância em que o método foi invocado para o servidor,
+        executando-o ali e transferindo o resultado de volta para o cliente.
+        A execução é efetuada dentro do contexto de uma transação JTA, com
+        rollback automático caso seja lançada alguma exceção. Todo método
+        anotado como @Transactional se comporta também como <a href="#@Remotable">@Remotable</a>.</p><p>Apenas métodos concretos, não-estáticos, não-nativos e públicos podem
+        receber esta anotação.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>Não utiliza</td><td></td><td></td><td></td></tr></table><p>Exemplo de uso (RoleRemoveCommand.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+   /**
+    * <b>@Transactional</b>
+    */
+   public boolean removeRole(final Role role) throws Exception {
+   <b>...</b>
+  </pre></div>
+  <p><a href="business_component_model.html#Suporte_a_transações">Mais
+    informações...</a></p></div><div class="subsection"><a name="@Criteria"></a><h3>@Criteria</h3><p>Utilizado em métodos que fazem pesquisa dinâmicas e que, geralmente,
+        precisam de uma instância de <code>Criteria</code> para sua execução.
+        Essa anotação implica que o método também é <a href="#@Remotable">
+        @Remotable</a>, mantendo assim a remotabilidade transparente. Apenas
+        métodos concretos, não-estáticos, não-nativos e públicos podem receber
+        esta anotação.</p><table class="bodyTable"><tr class="b"><th>Parâmetros</th><th>Tipo</th><th>Descrição</th><th>Obrigatório</th></tr><tr class="a"><td>anônimo</td><td>Nome qualificado completo de classe</td><td>Nome da classe mapeada no Hibernate para a qual se deseja criar
+            o Criteria</td><td>Obrigatório apenas se possuir propriedades de ordenação</td></tr><tr class="b"><td>propriedades de ordenação</td><td>Nome das propriedades a serem usadas numa ordenação separadas
+            por vírgula</td><td>@Criteria meupacote.MinhaClasse order-by=propriedade1,
+            propriedade2 DESC, propriedade3 ASC</td><td>Não</td></tr></table><p>Exemplo de uso (UserSearchCommand.java):</p>
+    <div class="source"><pre>
+   <b>...</b>
+public class UserSearchCommand extends AbstractHibernateCriteria {
+   <b>...</b>
+   /**
+    * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User
+    *                 order-by=name</b>
+    */
+   public Page getUsers(final int pageNumber)
+   <b>...</b>
+</pre></div>
+  <p><a href="business_component_model.html#Pesquisas_dinâmicas_com_Criteria">
+    Mais informações...</a></p></div></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
