@@ -26,15 +26,19 @@ import net.java.dev.genesis.reflection.ReflectionInvoker;
 
 import org.apache.commons.jxpath.CompiledExpression;
 
-public abstract class MethodMetadata extends MemberMetadata {
+public final class MethodMetadata {
    private final static Object[] emptyObjectArray = new Object[0];
    private final static String[] emptyStringArray = new String[0];
 
    private final MethodEntry methodEntry;
+   private final ActionMetadata actionMetadata;
+   private final DataProviderMetadata dataProviderMetadata;
    private CompiledExpression callCondition;
 
-   public MethodMetadata(Method method) {
+   public MethodMetadata(Method method, boolean isAction, boolean isProvider) {
       this.methodEntry = new MethodEntry(method);
+      this.actionMetadata = isAction ? new ActionMetadata(getName()) : null;
+      this.dataProviderMetadata = isProvider ? new DataProviderMetadata(method) : null;
    }
 
    public String getName() {
@@ -51,6 +55,14 @@ public abstract class MethodMetadata extends MemberMetadata {
 
    public void setCallCondition(CompiledExpression callWhen) {
       this.callCondition = callWhen;
+   }
+
+   public ActionMetadata getActionMetadata() {
+      return actionMetadata;
+   }
+
+   public DataProviderMetadata getDataProviderMetadata() {
+      return dataProviderMetadata;
    }
 
    public Object invoke(final Object target) throws NoSuchMethodException,

@@ -18,13 +18,12 @@
  */
 package net.java.dev.genesis.ui.metadata;
 
-import java.lang.reflect.Method;
-
-public class ActionMetadata extends DataProviderMetadata {
+public class ActionMetadata extends MemberMetadata {
+   private final String name;   
    private boolean validateBefore;
 
-   public ActionMetadata(Method method) {
-      super(method);
+   protected ActionMetadata(String name) {
+      this.name = name;
    }
 
    public boolean isValidateBefore() {
@@ -33,5 +32,9 @@ public class ActionMetadata extends DataProviderMetadata {
 
    public void setValidateBefore(boolean validateBefore) {
       this.validateBefore = validateBefore;
+   }
+   
+   public String getName() {
+      return name;
    }
 }

@@ -31,11 +31,11 @@ import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -252,10 +252,13 @@ public class DefaultFormController implements FormController {
 
    protected boolean evaluateClearOnConditions() throws Exception {
       final Map fieldMetadatas = formMetadata.getFieldMetadatas();
+      final Map dataProviderMetadatas = formMetadata.getDataProviderMetadatas();
       final Map toCopy = new HashMap();
 
       boolean changed;
       FieldMetadata fieldMetadata;
+      DataProviderMetadata dataProviderMeta;
+      List items;
       Map.Entry entry;
       final Map properties = PropertyUtils.describe(form);
 
@@ -283,6 +286,28 @@ public class DefaultFormController implements FormController {
                }
                changed = true;
                toCopy.put(entry.getKey(), fieldMetadata.getEmptyValue());
+               i.remove();
+            }
+         }
+         
+         for (Iterator i = dataProviderMetadatas.entrySet().iterator(); i.hasNext();) {
+            entry = (Map.Entry) i.next();
+            dataProviderMeta = (DataProviderMetadata) entry.getValue();
+            
+            if (dataProviderMeta.getClearOnCondition() == null) {
+               i.remove();
+               continue;
+            }
+
+            if (isConditionSatisfied(dataProviderMeta.getClearOnCondition())) {
+               if (log.isDebugEnabled()) {
+                  log.debug("ClearOn Condition for data provider '" + entry.getKey()
+                        + "' satisfied. Clearing data provider list.");
+               }
+               
+               changed = true;
+               currentState.getDataProvidedMap().put(dataProviderMeta, items = new ArrayList());
+               fireDataProvidedListMetadataChanged(dataProviderMeta, items);
                i.remove();
             }
          }
@@ -409,34 +434,30 @@ public class DefaultFormController implements FormController {
    protected boolean evaluateCallWhenConditions(boolean firstCall) throws Exception {
       boolean changed = false;
 
-      for (final Iterator i = formMetadata.getActionMetadatas().values()
+      for (final Iterator i = formMetadata.getMethodMetadatas().values()
             .iterator(); i.hasNext(); ) {
-         changed |= invokeAction((DataProviderMetadata)i.next(), firstCall, true);
-      }
-
-      for (final Iterator i = formMetadata.getDataProviderMetadatas().values()
-            .iterator(); i.hasNext();) {
-         changed |= invokeAction((DataProviderMetadata)i.next(), firstCall, true);
+         changed |= invokeAction((MethodMetadata)i.next(), firstCall, true);
       }
 
       return changed;
    }
 
-   protected boolean invokeAction(DataProviderMetadata dataProviderMetadata, 
+   protected boolean invokeAction(MethodMetadata methodMetadata, 
          boolean firstCall, boolean conditionally) throws Exception {
-      final boolean provider = dataProviderMetadata.isProvider();
       List items = null;
+      DataProviderMetadata dataProviderMeta = methodMetadata
+            .getDataProviderMetadata();
 
-      if ((dataProviderMetadata.getCallCondition() == null || firstCall) 
+      if ((methodMetadata.getCallCondition() == null || firstCall) 
             && conditionally) {
-         if (!provider || (conditionally && !firstCall)) {
+         if (dataProviderMeta == null || (conditionally && !firstCall)) {
             return false;
          }
 
-         if (!dataProviderMetadata.isCallOnInit()) {
-            currentState.getDataProvidedMap().put(dataProviderMetadata, 
+         if (!dataProviderMeta.isCallOnInit()) {
+            currentState.getDataProvidedMap().put(dataProviderMeta, 
                   items = new ArrayList());
-            fireDataProvidedListMetadataChanged(dataProviderMetadata, items);
+            fireDataProvidedListMetadataChanged(dataProviderMeta, items);
 
             return true;
          }
@@ -444,35 +465,35 @@ public class DefaultFormController implements FormController {
       }
 
       final boolean satisfied = !conditionally || isConditionSatisfied(
-            dataProviderMetadata.getCallCondition());
+            methodMetadata.getCallCondition());
 
       if (satisfied) {
-         if (!provider && !beforeInvokingMethod(dataProviderMetadata)) {
+         if (dataProviderMeta == null && !beforeInvokingMethod(methodMetadata)) {
             return false;
          }
 
-         final Object ret = dataProviderMetadata.invoke(form);
+         final Object ret = methodMetadata.invoke(form);
 
-         if (provider) {
+         if (dataProviderMeta != null) {
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
                  (List)ret;
-            currentState.getDataProvidedMap().put(dataProviderMetadata, items);
-            fireDataProvidedListMetadataChanged(dataProviderMetadata, items);
+            currentState.getDataProvidedMap().put(dataProviderMeta, items);
+            fireDataProvidedListMetadataChanged(dataProviderMeta, items);
          } else {
-            afterInvokingMethod(dataProviderMetadata);
+            afterInvokingMethod(methodMetadata);
          }
       }
 
       if (log.isDebugEnabled()) {
          log.debug("CallWhen Condition for method '" + 
-               dataProviderMetadata.getName() + "' evaluated as '" + 
+               methodMetadata.getName() + "' evaluated as '" + 
                satisfied + "'");
       }
 
       return satisfied;
    }
 
-   protected boolean beforeInvokingMethod(DataProviderMetadata metadata) 
+   protected boolean beforeInvokingMethod(MethodMetadata metadata) 
          throws Exception {
       for (final Iterator i = listeners.iterator(); i.hasNext(); ) {
          if (!((FormControllerListener)i.next()).beforeInvokingMethod(metadata)) {
@@ -483,7 +504,7 @@ public class DefaultFormController implements FormController {
       return true;
    }
 
-   protected void afterInvokingMethod(DataProviderMetadata metadata) 
+   protected void afterInvokingMethod(MethodMetadata metadata) 
          throws Exception {
       for (final Iterator i = listeners.iterator(); i.hasNext(); ) {
          ((FormControllerListener)i.next()).afterInvokingMethod(metadata);
@@ -564,44 +585,34 @@ public class DefaultFormController implements FormController {
       }
 
       final MethodEntry entry = new MethodEntry(name, new String[0]);
-      final ActionMetadata actionMetadata = ((ActionMetadata)getFormMetadata()
-			.getActionMetadatas().get(entry));
+      final MethodMetadata methodMetadata = getFormMetadata()
+            .getMethodMetadata(entry);
 
-      if (actionMetadata != null) {
-         if (actionMetadata.isValidateBefore()) {
-            final String formName = form.getClass().getName();
-
-            final Map validationErrors = ValidationUtils.getInstance()
-                  .getMessages(ValidationUtils.getInstance().validate(form, 
-                  formName), formName);
-
-            if (!validationErrors.isEmpty()) {
-               throw new ValidationException(validationErrors);
-            }
-         }
-
-         invokeActionWithReset(actionMetadata, false, false);
-      } else {
-         if (log.isDebugEnabled()) {
-            log.debug("Action " + name + " not found, looking for DataProvider");
-         }
-
-         final DataProviderMetadata dataProviderMetadata = 
-            ((DataProviderMetadata)getFormMetadata().getDataProviderMetadatas()
-            .get(entry));
-
-         if (dataProviderMetadata == null) {
-            throw new IllegalArgumentException("Couldn't find action named " + 
-                  name);
-         }
-
-         invokeActionWithReset(dataProviderMetadata, false, false);
+      if (methodMetadata == null) {
+         throw new IllegalArgumentException("Couldn't find action named " + 
+               name);
       }
+
+      if (methodMetadata.getActionMetadata() != null && methodMetadata.getActionMetadata().isValidateBefore()) {
+
+         final String formName = form.getClass().getName();
+
+         final Map validationErrors = ValidationUtils.getInstance()
+               .getMessages(ValidationUtils.getInstance().validate(form, 
+               formName), formName);
+
+         if (!validationErrors.isEmpty()) {
+            throw new ValidationException(validationErrors);
+         }
+
+      } 
+
+      invokeActionWithReset(methodMetadata, false, false);
 
       update();
    }
 
-   protected void invokeActionWithReset(DataProviderMetadata metadata, 
+   protected void invokeActionWithReset(MethodMetadata metadata, 
          boolean firstCall, boolean conditionally) throws Exception {
       previousState = createFormState(currentState);
 

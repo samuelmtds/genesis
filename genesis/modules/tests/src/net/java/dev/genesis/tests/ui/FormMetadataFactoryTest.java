@@ -34,6 +34,7 @@ import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 
 public class FormMetadataFactoryTest extends TestCase {
 
@@ -46,8 +47,8 @@ public class FormMetadataFactoryTest extends TestCase {
    private ActionMetadata saveMethod;
    private ActionMetadata resetMethod;
    private ActionMetadata cancelMethod;
-   private ActionMetadata calculateMethod;
-   private DataProviderMetadata provideSomeListMethod;
+   private MethodMetadata calculateMethod;
+   private MethodMetadata provideSomeListMethod;
    private DataProviderMetadata provideAnotherListMethod;
    private DataProviderMetadata provideCodesListMethod;
 
@@ -61,20 +62,13 @@ public class FormMetadataFactoryTest extends TestCase {
       numberField = formMetadata.getFieldMetadata("number");
       fieldField = formMetadata.getFieldMetadata("field");
       descriptionField = formMetadata.getFieldMetadata("description");
-      saveMethod = formMetadata.getActionMetadata(FooForm.class
-            .getDeclaredMethod("save", new Class[] {}));
-      resetMethod = formMetadata.getActionMetadata(FooForm.class
-            .getDeclaredMethod("reset", new Class[] {}));
-      cancelMethod = formMetadata.getActionMetadata(FooForm.class
-            .getDeclaredMethod("cancel", new Class[] {}));
-      calculateMethod = formMetadata.getActionMetadata(FooForm.class
-            .getDeclaredMethod("calculate", new Class[] {}));
-      provideSomeListMethod = formMetadata.getDataProviderMetadata(FooForm.class
-            .getDeclaredMethod("provideSomeList", new Class[] {}));
-      provideAnotherListMethod = formMetadata.getDataProviderMetadata(FooForm.class
-            .getDeclaredMethod("provideAnotherList", new Class[] {}));
-      provideCodesListMethod = formMetadata.getDataProviderMetadata(FooForm.class
-            .getDeclaredMethod("provideCodesList", new Class[] {}));
+      saveMethod = formMetadata.getMethodMetadata("save").getActionMetadata();
+      resetMethod = formMetadata.getMethodMetadata("reset").getActionMetadata();
+      cancelMethod = formMetadata.getMethodMetadata("cancel").getActionMetadata();
+      calculateMethod = formMetadata.getMethodMetadata("calculate");
+      provideSomeListMethod = formMetadata.getMethodMetadata("provideSomeList");
+      provideAnotherListMethod = formMetadata.getMethodMetadata("provideAnotherList").getDataProviderMetadata();
+      provideCodesListMethod = formMetadata.getMethodMetadata("provideCodesList").getDataProviderMetadata();
    }
 
    public void testParseFormMetadata() {
@@ -155,7 +149,7 @@ public class FormMetadataFactoryTest extends TestCase {
    }
    
    public void testDataProvider(){
-      FieldEntry objectField = provideSomeListMethod.getObjectField();
+      FieldEntry objectField = provideSomeListMethod.getDataProviderMetadata().getObjectField();
       assertEquals("name", objectField.getFieldName());
       assertEquals(String.class.getName(), objectField.getFieldTypeName());
       assertFalse(objectField.isArray());

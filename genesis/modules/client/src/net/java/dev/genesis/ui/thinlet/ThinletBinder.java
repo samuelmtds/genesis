@@ -92,7 +92,6 @@ public class ThinletBinder implements FormControllerListener {
 
       final Collection dataProviders = new ArrayList(formMetadata
             .getDataProviderMetadatas().values());
-      dataProviders.addAll(formMetadata.getActionMetadatas().values());
 
       bindFieldMetadatas(formMetadata);
       bindActionMetadatas(formMetadata);
@@ -277,10 +276,6 @@ public class ThinletBinder implements FormControllerListener {
          final DataProviderMetadata dataProviderMetadata = 
                (DataProviderMetadata)i.next();
 
-         if (!dataProviderMetadata.isProvider()) {
-            continue;
-         }
-         
          final String name = getFieldName(dataProviderMetadata);
          final Object component = thinlet.find(root, name);
 
@@ -392,14 +387,12 @@ public class ThinletBinder implements FormControllerListener {
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Populating " + name + " with " + metadata.getMethodEntry()
-               .getMethodName());
+         log.debug("Populating " + name + " with " + metadata.getName());
       }
 
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
-         metadata.resetSelectedFields(form);
          thinlet.populateFromCollection(component, items);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
@@ -422,6 +415,8 @@ public class ThinletBinder implements FormControllerListener {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
       }
+
+      metadata.resetSelectedFields(form);
    }
 
    private boolean isBlank(Object component, String name) {

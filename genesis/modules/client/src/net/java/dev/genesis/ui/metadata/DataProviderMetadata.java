@@ -25,14 +25,25 @@ import java.util.List;
 import net.java.dev.genesis.reflection.FieldEntry;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.jxpath.CompiledExpression;
 
-public class DataProviderMetadata extends MethodMetadata {
+public class DataProviderMetadata {
+   private final String name;
    private FieldEntry objectField;
    private FieldEntry indexField;
    private boolean callOnInit;
+   private CompiledExpression clearOnCondition;
 
-   public DataProviderMetadata(final Method method) {
-      super(method);
+   protected DataProviderMetadata(Method method) {
+      this.name = method.getName();
+      if (!method.getReturnType().isArray() || !List.class.isAssignableFrom(method.getReturnType())) {
+         throw new IllegalArgumentException("Method '" + name
+               + "' is a DataProvider and does not return an array or java.util.List");
+      }
+   }
+
+   public String getName() {
+      return this.name;
    }
 
    public FieldEntry getObjectField() {
@@ -59,10 +70,14 @@ public class DataProviderMetadata extends MethodMetadata {
       this.callOnInit = callOnInit;
    }
 
-   public boolean isProvider(){
-      return getObjectField() != null || getIndexField() != null;
+   public CompiledExpression getClearOnCondition() {
+      return clearOnCondition;
    }
-   
+
+   public void setClearOnCondition(CompiledExpression clearOnCondition) {
+      this.clearOnCondition = clearOnCondition;
+   }
+
    public void resetSelectedFields(final Object target) throws Exception {
       if (objectField != null) {
          PropertyUtils.setProperty(target, objectField.getFieldName(), null);

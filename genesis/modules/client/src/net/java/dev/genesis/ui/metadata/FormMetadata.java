@@ -32,15 +32,15 @@ public class FormMetadata {
 
    private final Map namedConditions;
    private final Map fieldMetadatas;
-   private final Map actionMetadatas;
-   private final Map dataProviderMetadatas;
+   private final Map methodMetadatas;
+   private Map actionMetadatas;
+   private Map dataProviderMetadatas;
 
    public FormMetadata(final Class formClass) {
       this.formClass = formClass;
       this.namedConditions = new HashMap();
       this.fieldMetadatas = new HashMap();
-      this.actionMetadatas = new HashMap();
-      this.dataProviderMetadatas = new HashMap();
+      this.methodMetadatas = new HashMap();
    }
 
    public Class getFormClass() {
@@ -55,11 +55,35 @@ public class FormMetadata {
       return new HashMap(namedConditions);
    }
 
-   public Map getActionMetadatas(){
+   public Map getMethodMetadatas(){
+      return new HashMap(methodMetadatas);
+   }
+
+   public Map getActionMetadatas() {
+      if (actionMetadatas == null) {
+         actionMetadatas = new HashMap();
+         for (Iterator iter = methodMetadatas.values().iterator(); iter.hasNext();) {
+            MethodMetadata methodMeta = (MethodMetadata) iter.next();
+            if (methodMeta.getActionMetadata() == null) {
+               continue;
+            }
+            actionMetadatas.put(methodMeta.getMethodEntry(), methodMeta.getActionMetadata());
+         }
+      }
       return new HashMap(actionMetadatas);
    }
-   
-   public Map getDataProviderMetadatas(){
+
+   public Map getDataProviderMetadatas() {
+      if (dataProviderMetadatas == null) {
+         dataProviderMetadatas = new HashMap();
+         for (Iterator iter = methodMetadatas.values().iterator(); iter.hasNext();) {
+            MethodMetadata methodMeta = (MethodMetadata) iter.next();
+            if (methodMeta.getDataProviderMetadata() == null) {
+               continue;
+            }
+            dataProviderMetadatas.put(methodMeta.getMethodEntry(), methodMeta.getDataProviderMetadata());
+         }
+      }
       return new HashMap(dataProviderMetadatas);
    }
 
@@ -71,16 +95,12 @@ public class FormMetadata {
       return (FieldMetadata) fieldMetadatas.get(fieldName);
    }
    
-   public ActionMetadata getActionMetadata(final Method method) {
-      return (ActionMetadata) actionMetadatas.get(new MethodEntry(method));
+   public MethodMetadata getMethodMetadata(final MethodEntry methodEntry) {
+      return (MethodMetadata) methodMetadatas.get(methodEntry);
    }
    
-   public ActionMetadata getActionMetadata(final String methodName) {
-      return (ActionMetadata) actionMetadatas.get(new MethodEntry(methodName, new String[0]));
-   }
-   
-   public DataProviderMetadata getDataProviderMetadata(final Method method) {
-      return (DataProviderMetadata) dataProviderMetadatas.get(new MethodEntry(method));
+   public MethodMetadata getMethodMetadata(final String methodName) {
+      return (MethodMetadata) methodMetadatas.get(new MethodEntry(methodName, new String[0]));
    }
 
    public void addNamedCondition(final String key, final CompiledExpression value) {
@@ -92,12 +112,8 @@ public class FormMetadata {
       fieldMetadatas.put(fieldName, fieldMetadata);
    }
    
-   public void addActionMetadata(final Method method, final ActionMetadata actionMetadata) {
-      actionMetadatas.put(new MethodEntry(method), actionMetadata);
-   }
-   
-   public void addDataProviderMetadata(final Method method, final DataProviderMetadata dataProviderMetadata) {
-      dataProviderMetadatas.put(new MethodEntry(method), dataProviderMetadata);
+   public void addMethodMetadata(final Method method, final MethodMetadata methodMetadata) {
+      methodMetadatas.put(new MethodEntry(method), methodMetadata);
    }
 
    public String toString() {
@@ -121,13 +137,7 @@ public class FormMetadata {
          buffer.append("\n");
       }
       
-      for (Iterator iter = actionMetadatas.values().iterator(); iter.hasNext();) {
-         buffer.append("\t");
-         buffer.append(iter.next());
-         buffer.append("\n");
-      }
-      
-      for (Iterator iter = dataProviderMetadatas.values().iterator(); iter.hasNext();) {
+      for (Iterator iter = methodMetadatas.values().iterator(); iter.hasNext();) {
          buffer.append("\t");
          buffer.append(iter.next());
          buffer.append("\n");
