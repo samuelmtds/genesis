@@ -1,0 +1,51 @@
+<project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" 
+   xmlns:ant="jelly:ant" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
+   
+   <maven:makeAbsolutePath
+         var="absolute.aspectwerkz.dist"
+         basedir="${genesis.basedir}"
+         path="${genesis.aspectwerkz.dist}" />
+   <maven:makeAbsolutePath
+         var="absolute.module.aspect"
+         basedir="${genesis.basedir}"
+         path="${genesis.module.aspect}" />
+   <maven:makeRelativePath
+         var="relative.src.dir"
+         basedir="${basedir}"
+         path="${maven.src.dir}" />
+         
+   <path id="aspectwerkz.path">
+		<fileset dir="${absolute.aspectwerkz.dist}" includes="*.jar" />
+	</path>
+   
+   <postGoal name="java:compile">
+      <attainGoal name="genesis:annotation" />
+   </postGoal>
+   
+   <goal name="genesis:annotation">
+      <ant:mkdir dir="${genesis.annotation.dest}"/>
+      <java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" 
+         fork="true">
+         <arg value="-verbose" />
+         <arg value="-src" />
+         <arg value="${maven.src.dir}" />
+         <arg value="-classes" />
+         <arg value="${maven.build.dest}" />
+         <arg value="-dest" />
+         <arg value="${genesis.annotation.dest}" />
+         <arg value="-custom" />
+         <arg value="${absolute.module.aspect}/${relative.src.dir}/annotation.properties" />
+         <classpath>
+            <path refid="aspectwerkz.path" />
+         </classpath>
+      </java>
+   </goal>
+   
+   <postGoal name="jar:jar">
+      <ant:jar 
+         jarfile="${maven.build.dir}/${pom.artifactId}-annotation-${pom.currentVersion}.jar" 
+         basedir="${genesis.annotation.dest}" index="${maven.jar.index}" 
+         compress="${maven.jar.compress}" excludes="${maven.jar.excludes}"/>
+   </postGoal>
+   
+</project>

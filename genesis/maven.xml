@@ -1,0 +1,76 @@
+<project default="genesis" xmlns:m="maven" xmlns:jxr="jxr" 
+   xmlns:ant="jelly:ant" xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
+   
+   <maven:makeRelativePath
+         var="relative.build.dir"
+         basedir="${basedir}"
+         path="${maven.build.dir}" />
+   
+  <!-- ============================= -->
+   <!-- Default goal is genesis:dist -->
+   <!-- ============================ -->
+   <goal name="genesis" prereqs="genesis:dist"/>
+   
+   <!-- ============================== -->
+   <!-- Cleans all generated resources -->
+   <!-- ============================== -->
+   <goal name="genesis:clean">
+      <delete dir="${maven.build.dir}" />
+      <delete dir="${genesis.dist.dir}" />
+      <delete dir="${genesis.module.aspect}/${relative.build.dir}" />
+      <delete dir="${genesis.module.client}/${relative.build.dir}" />
+      <delete dir="${genesis.module.server}/${relative.build.dir}" />
+      <delete dir="${genesis.module.shared}/${relative.build.dir}" />
+      <delete dir="${genesis.module.tests}/${relative.build.dir}" />
+      <delete dir="${genesis.module.tests}/_dump" />
+      <delete file="*.log" />
+   </goal>
+   
+   <!-- ====================== -->
+   <!-- Makes the Genesis Site -->
+   <!-- ====================== -->
+   <goal name="genesis:site" prereqs="genesis:clean">
+      <attainGoal name="multiproject:site"/>
+   </goal>
+   
+   <!-- =================== -->
+   <!-- Compile all modules -->
+   <!-- =================== -->
+   <goal name="genesis:compile" prereqs="genesis:clean">
+      <j:set var="goal" value="java:compile,java:jar-resources" />
+      <attainGoal name="multiproject:goal"/>
+   </goal>
+   
+   <!-- ====================== -->
+   <!-- Compile all unit tests -->
+   <!-- ====================== -->
+   <goal name="genesis:test:compile" prereqs="genesis:clean">
+      <j:set var="goal" value="test:compile,test:test-resources" />
+      <attainGoal name="multiproject:goal"/>
+   </goal>
+      
+   <!-- ================== -->
+   <!-- Run the unit tests -->
+   <!-- ================== -->
+   <goal name="genesis:test:test">
+      <j:set var="goal" value="test:test" />
+      <attainGoal name="multiproject:goal"/>
+   </goal>
+      
+   <!-- =========================== -->
+   <!-- Makes the distribution jars -->
+   <!-- =========================== -->
+   <goal name="genesis:dist" prereqs="genesis:compile">
+      <j:set var="goal" value="jar:jar" />
+      <attainGoal name="multiproject:goal"/>
+      <mkdir dir="${genesis.dist.dir}"/>
+      <copy todir="${genesis.dist.dir}" overwrite="true">
+         <mapper type="flatten"/>
+         <fileset dir="${basedir}">
+            <include name="modules/*/${relative.build.dir}/*.jar" />
+            <exclude name="${genesis.module.tests}/**" />
+         </fileset>
+      </copy>
+   </goal>
+      
+</project>

@@ -18,8 +18,10 @@
  */
 package net.java.dev.genesis.ui.thinlet;
 
-import net.java.dev.genesis.ui.UIUtils;
 import java.awt.Frame;
+
+import net.java.dev.genesis.ui.UIUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

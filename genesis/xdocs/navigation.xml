@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+/*
+ * #foreach ($reactorProject in $multiprojects)
+      <item name="$reactorProject.name" href="/${aggregateDir}${reactorProject.artifactId}/index.html"/>
+   #end
+ */
+ -->
+<project name="Genesis">
+  <title>The Genesis Project</title>
+  <body>
+    <links>
+      <item name="The Genesis Project" href="/index.html"/>
+      <item name="Genesis Server" href="/multiproject/genesis-server/index.html"/>
+      <item name="Genesis Client" href="/multiproject/genesis-client/index.html"/>
+      <item name="Genesis Shared" href="/multiproject/genesis-shared/index.html"/>
+      <item name="Genesis Aspect" href="/multiproject/genesis-aspect/index.html"/>
+    </links>
+    <menu name="Projects">
+      <item name="The Genesis Project" href="/index.html" />
+    </menu>
+  </body>
+</project>

@@ -18,16 +18,14 @@
  */
 package net.java.dev.genesis.hibernate.ejb;
 
-import net.java.dev.genesis.command.Command;
-import net.java.dev.genesis.command.Query;
-import net.java.dev.genesis.command.Transaction;
-import net.java.dev.genesis.ejb.CommandExecutorEJB;
-import net.java.dev.genesis.command.hibernate.HibernateCommand;
 import java.lang.reflect.InvocationTargetException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import net.java.dev.genesis.command.hibernate.HibernateCommand;
+import net.java.dev.genesis.ejb.CommandExecutorEJB;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
@@ -45,83 +43,99 @@ import net.sf.hibernate.SessionFactory;
  *                value="jboss:/hibernate/SessionFactory"
  */
 public class HibernateCommandExecutorEJB extends CommandExecutorEJB {
-   private SessionFactory sessionFactory;
-   private Session session;
 
-   /**
-    * @ejb.interface-method
-    * @ejb.transaction type="Required"
-    */
-   public Object execute(Transaction t, String methodName, String[] classNames, 
-                         Object[] args) 
-         throws ClassNotFoundException, IllegalAccessException, 
-                NoSuchMethodException, InvocationTargetException {
-      try {
-         setSession(t);
+    private SessionFactory sessionFactory;
+    private Session session;
 
-         final Object ret = super.execute(t, methodName, classNames, args);
-         session.flush();
+    /**
+     * @ejb.interface-method
+     * @ejb.transaction type="Required"
+     */
+    public Object executeTransaction(Object o, String methodName,
+            String[] classNames, Object[] args) throws ClassNotFoundException,
+            IllegalAccessException, NoSuchMethodException,
+            InvocationTargetException {
+        try {
+            setSession(o);
 
-         return ret;
-      } catch (HibernateException he) {
-         ctx.setRollbackOnly();
-         throw new InvocationTargetException(he);
-      } finally {
-         closeSession();
-      }
-   }
+            final Object ret = super.executeTransaction(o, methodName,
+                    classNames, args);
+            flushSession();
 
-   /**
-    * @ejb.interface-method
-    * @ejb.transaction type="Supports"
-    */
-   public Object execute(Query q, String methodName, String[] classNames, 
-                         Object[] args) 
-         throws ClassNotFoundException, IllegalAccessException, 
-                NoSuchMethodException, InvocationTargetException {
-      try {
-         setSession(q);
+            return ret;
+        }
+        catch (HibernateException he) {
+            ctx.setRollbackOnly();
+            throw new InvocationTargetException(he);
+        }
+        finally {
+            closeSession();
+        }
+    }
 
-         return super.execute(q, methodName, classNames, args);
-      } catch (HibernateException he) {
-         ctx.setRollbackOnly();
-         throw new InvocationTargetException(he);
-      } finally {
-         closeSession();
-      }
-   }
+    /**
+     * @ejb.interface-method
+     * @ejb.transaction type="Supports"
+     */
+    public Object executeQuery(Object o, String methodName,
+            String[] classNames, Object[] args) throws ClassNotFoundException,
+            IllegalAccessException, NoSuchMethodException,
+            InvocationTargetException {
+        try {
+            setSession(o);
 
-   public void setSessionContext(SessionContext sessionContext) {
-      super.setSessionContext(sessionContext);
+            return super.executeQuery(o, methodName, classNames, args);
+        }
+        catch (HibernateException he) {
+            ctx.setRollbackOnly();
+            throw new InvocationTargetException(he);
+        }
+        finally {
+            closeSession();
+        }
+    }
 
-      try {
-         InitialContext ctx = new InitialContext();
-         
-         sessionFactory = (SessionFactory)ctx.lookup(
-               (String)ctx.lookup("java:comp/env/HibernateFactoryAddress"));
-      } catch (NamingException ne) {
-         throw new EJBException(ne);
-      }
-   }
+    public void setSessionContext(SessionContext sessionContext) {
+        super.setSessionContext(sessionContext);
 
-   private void setSession(Command command) throws HibernateException {
-      if (command instanceof HibernateCommand) {
-         session = sessionFactory.openSession();
-         ((HibernateCommand)command).setSession(session);
-      }
-   }
+        try {
+            InitialContext ctx = new InitialContext();
 
-   private void closeSession() throws InvocationTargetException {
-      if (session == null) {
-         return;
-      }
+            sessionFactory = (SessionFactory) ctx.lookup((String) ctx
+                    .lookup("java:comp/env/HibernateFactoryAddress"));
+        }
+        catch (NamingException ne) {
+            throw new EJBException(ne);
+        }
+    }
 
-      try {
-         session.close();
-      } catch (HibernateException he) {
-         throw new InvocationTargetException(he);
-      } finally {
-         session = null;
-      }
-   }
+    private void setSession(Object o) throws HibernateException {
+        if (o instanceof HibernateCommand) {
+            session = sessionFactory.openSession();
+            ((HibernateCommand) o).setSession(session);
+        }
+    }
+
+    private void flushSession() throws HibernateException {
+        if (session == null) {
+            return;
+        }
+        session.flush();
+    }
+
+    private void closeSession() throws InvocationTargetException {
+        if (session == null) {
+            return;
+        }
+
+        try {
+            session.close();
+        }
+        catch (HibernateException he) {
+            throw new InvocationTargetException(he);
+        }
+        finally {
+            session = null;
+        }
+    }
 }

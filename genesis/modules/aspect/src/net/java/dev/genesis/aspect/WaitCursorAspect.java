@@ -20,25 +20,24 @@ package net.java.dev.genesis.aspect;
 
 import java.awt.Cursor;
 
-import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
-import org.codehaus.aspectwerkz.xmldef.advice.AroundAdvice;
-
 import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 
-public class WaitCursorAdvice extends AroundAdvice {
+import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
-    public Object execute(final JoinPoint jp) throws Throwable {
-        final BaseThinlet o = (BaseThinlet) jp.getTargetInstance();
-        final Cursor oldCursor = o.getCursor();
-        Object ret = null;
+public class WaitCursorAspect {
+   public Object waitCursorExecution(final JoinPoint jp) throws Throwable {
+      final BaseThinlet o = (BaseThinlet) jp.getTargetInstance();
+      final Cursor oldCursor = o.getCursor();
 
-        try {
-            o.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-             ret = jp.proceed();
-        } finally {
-            o.setCursor(oldCursor);
-        }
+      Object ret = null;
 
-        return ret;
-    }
+      try {
+         o.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+         ret = jp.proceed();
+      } finally {
+         o.setCursor(oldCursor);
+      }
+
+      return ret;
+   }
 }

@@ -1,0 +1,36 @@
+<project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" 
+   xmlns:ant="jelly:ant" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
+   
+   <maven:makeAbsolutePath
+         var="absolute.module.shared"
+         basedir="${genesis.basedir}"
+         path="${genesis.module.shared}" />
+   <maven:makeRelativePath
+         var="relative.build.dest"
+         basedir="${basedir}"
+         path="${maven.build.dest}" />
+   <maven:makeRelativePath
+         var="relative.annotation.dest"
+         basedir="${basedir}"
+         path="${genesis.annotation.dest}" />
+         
+    <preGoal name="java:compile">
+	    <attainGoal name="xdoclet:ejbdoclet"/>
+    </preGoal>
+    
+    <postGoal name="java:compile">
+	    <copy todir="${absolute.module.shared}/${relative.build.dest}" overwrite="true">
+			<fileset dir="${maven.build.dest}">
+				<include name="**/CommandExecutor.class" />
+				<include name="**/CommandExecutorHome.class" />
+			</fileset>
+		</copy>
+      <copy todir="${absolute.module.shared}/${relative.annotation.dest}" overwrite="true">
+         <fileset dir="${maven.build.dest}">
+            <include name="**/CommandExecutor.class" />
+            <include name="**/CommandExecutorHome.class" />
+         </fileset>
+      </copy>
+    </postGoal>
+    
+</project>

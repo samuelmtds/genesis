@@ -19,4 +19,10 @@
 package net.java.dev.genesis.exception;
 
 public class TimeoutException extends Exception {
+
+    public TimeoutException() {}
+
+    public TimeoutException(String message) {
+        super(message);
+    }
 }

@@ -18,8 +18,9 @@
  */
 package net.java.dev.genesis.text;
 
-import net.java.dev.genesis.ui.UIUtils;
 import java.util.MissingResourceException;
+
+import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.commons.logging.LogFactory;
 

@@ -18,10 +18,6 @@
  */
 package net.java.dev.genesis.ui.thinlet;
 
-import net.java.dev.genesis.text.FormatterRegistry;
-import net.java.dev.genesis.ui.Form;
-import net.java.dev.genesis.ui.ValidationException;
-import net.java.dev.genesis.ui.ValidationUtils;
 import java.awt.Frame;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,9 +27,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import net.java.dev.genesis.text.FormatterRegistry;
+import net.java.dev.genesis.ui.Form;
+import net.java.dev.genesis.ui.ValidationException;
+import net.java.dev.genesis.ui.ValidationUtils;
+import net.java.dev.genesis.ui.metadata.FormMetadata;
+import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.ValidatorException;
 import thinlet.Thinlet;
 
@@ -51,6 +55,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String LIST = "list";
    public static final String MNEMONIC = "mnemonic";
    public static final String NAME = "name";
+   public static final String PANEL = "panel";
    public static final String PROGRESS_BAR = "progressbar";
    public static final String RIGHT = "right";
    public static final String ROW = "row";
@@ -378,6 +383,8 @@ public abstract class BaseThinlet extends Thinlet {
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
             setValue(component, getPropertyValue(properties, propertyName, false));
+         } else if (type.equals(PANEL)) {
+            displayBean(properties.get(propertyName), component);
          } else {
             setText(component, getPropertyValue(properties, propertyName, false));
          }
@@ -387,7 +394,7 @@ public abstract class BaseThinlet extends Thinlet {
    protected String getPropertyValue(Map properties, String propertyName,
             boolean enumKey) {
         Object o = properties.get(propertyName);
-        return (o instanceof Enum && enumKey) ? o.toString()
+        return (enumKey && o instanceof Enum) ? o.toString()
                 : FormatterRegistry.getInstance().format(o);
     }
 
@@ -593,42 +600,60 @@ public abstract class BaseThinlet extends Thinlet {
          add(component, row);
       }
    }
+   
+   protected void bind(Object widget, Object form) throws Exception {
+      bind(getDesktop(), widget, form);
+   }
 
-   protected int[] getSelectedIndexes(String name){
-       return getSelectedIndexes(find(name));
+   protected void bind(Object root, Object widget, Object form) throws Exception {
+      final FormMetadata formMetadata = getFormMetadata(form);
+
+      for (final Iterator i = formMetadata.getFieldMetadatas().entrySet().iterator();
+            i.hasNext(); ) {
+      }
+   }
+
+   protected FormMetadata getFormMetadata(Object form) {
+      return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+   }
+
+   protected int[] getSelectedIndices(String name){
+       return getSelectedIndices(find(name));
    }
    
-   protected int[] getSelectedIndexes(Object component){
+   protected int[] getSelectedIndices(Object component){
        final int selectedCount = getSelectedItems(component).length;
 
        final Object[] items = getItems(component);
-       final int[] indexes = new int[selectedCount];
+       final int[] indices = new int[selectedCount];
 
        int j = 0;
 
        for (int i = 0; i < items.length; i++) {
            if (isSelected(items[i])) {
-               indexes[j] = i;
+               indices[j] = i;
                j++;
            }
        }
 
-       return indexes;
+       return indices;
    }
 
    private void handleException(String message, Throwable throwable) {
       try {
          ErrorReporterDialog.show(this, getErrorMessage(), message, throwable);
       } catch (ScreenNotFoundException scnfe) {
+         System.out.println("The error screen file could not be found");
          scnfe.printStackTrace();
-         throwable.printStackTrace();
       }
+      
+      LogFactory.getLog(getClass()).error(message, throwable);
    }
 
    public void handleException(Throwable throwable) {
       if (throwable instanceof ScreenNotFoundException) {
-         handleException("A file needed to display a screen could not be found",
-               throwable);
+         handleException("Um arquivo necessário para exibição de uma tela " + 
+                        "não pôde ser encontrado", throwable);
 
          return;
       } else if (throwable instanceof ValidationException) {
@@ -636,7 +661,25 @@ public abstract class BaseThinlet extends Thinlet {
          return;
       }
 
-      handleException("An unexpected error happened", throwable);
+      boolean unknown = true;
+
+      try {
+         if (handleCustomException(throwable)) {
+            return;
+         }
+      } catch (Throwable t) {
+         LogFactory.getLog(getClass()).error("Unknown exception", t);
+      }
+
+      handleUnknownException(throwable);
+   }
+
+   protected void handleUnknownException(Throwable t) {
+      handleException("Ocorreu um erro inesperado", t);
+   }
+
+   protected boolean handleCustomException(Throwable t) throws Exception {
+      return false;
    }
 
    protected void showValidationErrors(final ValidationException ve) {

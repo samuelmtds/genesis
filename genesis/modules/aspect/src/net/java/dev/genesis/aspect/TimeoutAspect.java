@@ -18,57 +18,47 @@
  */
 package net.java.dev.genesis.aspect;
 
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
-import org.codehaus.aspectwerkz.xmldef.advice.AroundAdvice;
-
 import net.java.dev.genesis.exception.TimeoutException;
 
-/**
- * AroundAdvice for timeout, just in cases where
- * queries or transactions takes too long. If a timeout
- * occurs, we kill the thread and throw a TimeoutException
- * 
- */
-public class TimeoutAdvice extends AroundAdvice {
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
-    private long timeout = -1;
+
+public class TimeoutAspect {
+    private final long timeout;
+    
     private Throwable t;
     private Object ret;
-    
-    private long getTimeout(){
-        if(timeout < 0) {
-            timeout = Long.parseLong(getParameter("timeout"));
-        }
-        return timeout;
-    }
 
-    public Object execute(final JoinPoint jp) throws Throwable {
+    public TimeoutAspect(final CrossCuttingInfo ccInfo) {
+        this.timeout = Long.parseLong(ccInfo.getParameter("timeout"));
+    }
+    
+    public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
         t = null;
         ret = null;
 
         final Thread thread = new Thread() {
-
             public void run() {
                 try {
-                    ret = jp.proceedInNewThread();
-                }
-                catch (final Throwable th) {
+                    ret = jp.proceed();
+                } catch (final Throwable th) {
                     t = th;
                 }
             }
         };
         thread.start();
-        thread.join(getTimeout());
+        thread.join(timeout);
 
         if (thread.isAlive()) {
             try {
                 thread.interrupt();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LogFactory.getLog(getClass()).error(e);
             }
-            throw new TimeoutException();
+
+            throw new TimeoutException("Execution took more than " + timeout + " ms");
         }
 
         if (t != null) {
@@ -76,5 +66,4 @@ public class TimeoutAdvice extends AroundAdvice {
         }
         return ret;
     }
-
 }

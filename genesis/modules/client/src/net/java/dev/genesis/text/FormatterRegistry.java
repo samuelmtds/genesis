@@ -18,52 +18,36 @@
  */
 package net.java.dev.genesis.text;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import net.java.dev.genesis.registry.Registry;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 public final class FormatterRegistry {
-   private static final FormatterRegistry instance = new FormatterRegistry();
-   private final Map registry = new HashMap();
+	private static final FormatterRegistry instance = new FormatterRegistry();
+	private Registry registry = new Registry();
 
-   private FormatterRegistry() {
-      register(Object.class, new DefaultFormatter());
-      register(Enum.class, new EnumFormatter());
-   }
+	private FormatterRegistry() {
+		registry.register(Object.class, new DefaultFormatter());
+		registry.register(Enum.class, new EnumFormatter());
+	}
 
-   public static FormatterRegistry getInstance() {
-      return instance;
-   }
+	public static FormatterRegistry getInstance() {
+		return instance;
+	}
 
-   public Formatter register(Class clazz, Formatter f) {
-      return (Formatter)registry.put(clazz, f);
-   }
+	public Formatter get(Class clazz) {
+		return (Formatter) registry.get(clazz);
+	}
 
-   public Formatter get(Class clazz) {
-      return (Formatter)registry.get(clazz);
-   }
+	public Formatter get(Class clazz, boolean superClass) {
+		return (Formatter) registry.get(clazz, superClass);
+	}
 
-   public Formatter get(Class clazz, boolean superClass) {
-      if (!superClass) {
-         return get(clazz);
-      }
+	public Formatter get(Object o) {
+		return (Formatter) registry.get(o);
+	}
 
-      Formatter formatter;
-
-      while ((formatter = get(clazz)) == null) {
-         clazz = clazz.getSuperclass();
-      }
-
-      return formatter;
-   }
-
-   public Formatter get(Object o) {
-      final Class clazz = o == null ? Object.class : o.getClass();
-
-      return get(clazz, true);
-   }
-
-   public String format(Object o) {
-      return get(o).format(o);
-   }
+	public String format(Object o) {
+		return get(o).format(o);
+	}
 }

@@ -20,17 +20,26 @@ package net.java.dev.genesis.command.hibernate;
 
 import java.util.Iterator;
 import java.util.Map;
+
+
+import net.java.dev.genesis.hibernate.type.HibernateTypeValue;
+import net.java.dev.genesis.paging.Page;
+import net.java.dev.genesis.paging.PagingException;
+import net.java.dev.genesis.paging.hibernate.CriteriaPager;
+import net.java.dev.genesis.paging.hibernate.QueryPager;
+import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
 
 public abstract class AbstractHibernateCommand implements HibernateCommand {
+
    private Session session;
 
    public void setSession(Session session) {
       this.session = session;
    }
-   
+
    protected Session getSession() {
       return session;
    }
@@ -43,45 +52,61 @@ public abstract class AbstractHibernateCommand implements HibernateCommand {
       where.append(condition);
    }
 
-   protected Query generateQuery(String select, Map tables, String where, 
-         String orderBy, Map parameters) throws HibernateException {
+   protected Query generateQuery(String select, Map tables, String where,
+         String orderBy, Map parameters, int maxResults)
+         throws HibernateException {
+
       StringBuffer hql = new StringBuffer(select);
 
       hql.append(" from ");
 
       Map.Entry e;
 
-      for (Iterator i = tables.entrySet().iterator(); i.hasNext(); ) {
-         e = (Map.Entry)i.next();
+      for (Iterator i = tables.entrySet().iterator(); i.hasNext();) {
+         e = (Map.Entry) i.next();
          hql.append(e.getValue()).append(' ').append(e.getKey()).append(',');
       }
 
       hql.setLength(hql.length() - 1);
       hql.append(" where ").append(where);
-      
+
       if (orderBy != null && orderBy.trim().length() > 0) {
          hql.append(" order by ").append(orderBy);
       }
 
       Query q = getSession().createQuery(hql.toString());
 
-      for (Iterator i = parameters.entrySet().iterator(); i.hasNext(); ) {
-         e = (Map.Entry)i.next();
+      for (Iterator i = parameters.entrySet().iterator(); i.hasNext();) {
+         e = (Map.Entry) i.next();
+         if (e.getValue() instanceof HibernateTypeValue) {
+            final HibernateTypeValue htv = (HibernateTypeValue) e.getValue();
+            q.setParameter(e.getKey().toString(), htv.getValue(), htv
+                        .getType());
+         }
          q.setParameter(e.getKey().toString(), e.getValue());
       }
-
-      return q;
-   }
-   
-   protected Query generateQuery(String select, Map tables, String where, 
-         String orderBy, Map parameters, int maxResults) throws HibernateException {
-      Query q = generateQuery(select, tables, where, orderBy, parameters);
 
       if (maxResults > 0) {
          q.setMaxResults(maxResults);
       }
 
       return q;
+   }
+
+   protected Query generateQuery(String select, Map tables, String where,
+         String orderBy, Map parameters) throws HibernateException {
+
+      return generateQuery(select, tables, where, orderBy, parameters, 0);
+   }
+
+   protected Page getPage(final Criteria crit, final int pageNumber,
+         final int resultsPerPage) throws PagingException {
+      return new CriteriaPager(crit).getPage(pageNumber, resultsPerPage);
+   }
+
+   protected Page getPage(final Query query, final int pageNumber,
+         final int resultsPerPage) throws PagingException {
+      return new QueryPager(query).getPage(pageNumber, resultsPerPage);
    }
 
 }

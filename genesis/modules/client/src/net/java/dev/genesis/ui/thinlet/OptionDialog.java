@@ -56,6 +56,12 @@ public class OptionDialog extends MessageDialog {
       public Option getSelected() {
          return selected;
       }
+
+      public void setCancel(boolean cancel) {
+         setVisible(find(getScreen(), "cancel"), cancel);
+
+         selected = (cancel) ? Option.CANCEL : Option.NO;
+      }
    }
 
    public OptionDialog(BaseThinlet thinlet) throws ScreenNotFoundException {
@@ -85,6 +91,16 @@ public class OptionDialog extends MessageDialog {
    public static Option display(Frame frame, String title, String message) 
                                                 throws ScreenNotFoundException {
       OptionDialog dialog = new OptionDialog(frame);
+      dialog.show(title, message);
+
+      return dialog.getSelected();
+   }
+
+
+   public static Option displayYesNo(BaseThinlet thinlet, String title, String message) 
+                                                throws ScreenNotFoundException {
+      OptionDialog dialog = new OptionDialog(thinlet);
+      ((OptionDialogScreenHandler)dialog.getScreenHandler()).setCancel(false);
       dialog.show(title, message);
 
       return dialog.getSelected();

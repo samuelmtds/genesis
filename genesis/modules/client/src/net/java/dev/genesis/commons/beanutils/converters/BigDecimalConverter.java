@@ -30,6 +30,10 @@ public class BigDecimalConverter implements Converter {
       if (obj == null || !(obj instanceof String)) {
          return converter.convert(clazz, obj);
       }
+      
+      if(obj instanceof BigDecimal){
+         return obj;
+      }
 
       final String s = obj.toString();
 
@@ -49,6 +53,10 @@ public class BigDecimalConverter implements Converter {
          ret.setCharAt(i,  '.');
       }
 
-      return new BigDecimal(ret.toString().trim());
+      try {
+         return new BigDecimal(ret.toString().trim());
+      } catch (NumberFormatException nfe) {
+         return null;
+      }
    }   
 }

@@ -18,11 +18,12 @@
  */
 package net.java.dev.genesis.ejb;
 
-import net.java.dev.genesis.command.Query;
-import net.java.dev.genesis.command.Transaction;
 import java.lang.reflect.InvocationTargetException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+
+import net.java.dev.genesis.reflection.ReflectionInvoker;
+
 
 /**
  * @ejb.bean name="ejb/CommandExecutor" type="Stateless" view-type="both"
@@ -33,63 +34,73 @@ import javax.ejb.SessionContext;
  *           local-class="net.java.dev.genesis.ejb.CommandExecutorLocal"
  */
 public class CommandExecutorEJB implements SessionBean {
-   protected SessionContext ctx;
 
-   public void ejbActivate() {}
-   public void ejbPassivate() {}
-   public void ejbCreate() {}
-   public void ejbRemove() {}
+    protected SessionContext ctx;
 
-   public void setSessionContext(SessionContext sessionContext) {
-      this.ctx = sessionContext;
-   }
+    public void ejbActivate() {}
 
-   /**
-    * @ejb.interface-method
-    * @ejb.transaction type="Required"
-    */
-   public Object execute(Transaction t, String methodName, String[] classNames, 
-                         Object[] args) 
-         throws ClassNotFoundException, IllegalAccessException, 
-                NoSuchMethodException, InvocationTargetException {
-      Exception e = null;
+    public void ejbPassivate() {}
 
-      try {
-         return execute((Object)t, methodName, classNames, args);
-      } catch (ClassNotFoundException ex) {
-         e = ex;
-         throw ex;
-      } catch (IllegalAccessException ex) {
-         e = ex;
-         throw ex;
-      } catch (NoSuchMethodException ex) {
-         e = ex;
-         throw ex;
-      } catch (InvocationTargetException ex) {
-         e = ex;
-         throw ex;
-      } finally {
-         if (e != null) {
-            ctx.setRollbackOnly();
-         }
-      }
-   }
+    public void ejbCreate() {}
 
-   /**
-    * @ejb.interface-method
-    * @ejb.transaction type="Supports"
-    */
-   public Object execute(Query q, String methodName, String[] classNames, 
-                         Object[] args) 
-         throws ClassNotFoundException, IllegalAccessException, 
-                NoSuchMethodException, InvocationTargetException {
-      return execute((Object)q, methodName, classNames, args);
-   }
+    public void ejbRemove() {}
 
-   private Object execute(Object o, String methodName, String[] classNames, 
-                          Object[] args)
-         throws ClassNotFoundException, IllegalAccessException, 
-                NoSuchMethodException, InvocationTargetException {
-      return ReflectionInvoker.getInstance().invoke(o, methodName, classNames, args);
-   }
+    public void setSessionContext(SessionContext sessionContext) {
+        this.ctx = sessionContext;
+    }
+
+    /**
+     * @ejb.interface-method
+     * @ejb.transaction type="Required"
+     */
+    public Object executeTransaction(Object o, String methodName,
+            String[] classNames, Object[] args) throws ClassNotFoundException,
+            IllegalAccessException, NoSuchMethodException,
+            InvocationTargetException {
+        Exception e = null;
+
+        try {
+            return execute(o, methodName, classNames, args);
+        }
+        catch (ClassNotFoundException ex) {
+            e = ex;
+            throw ex;
+        }
+        catch (IllegalAccessException ex) {
+            e = ex;
+            throw ex;
+        }
+        catch (NoSuchMethodException ex) {
+            e = ex;
+            throw ex;
+        }
+        catch (InvocationTargetException ex) {
+            e = ex;
+            throw ex;
+        }
+        finally {
+            if (e != null) {
+                ctx.setRollbackOnly();
+            }
+        }
+    }
+
+    /**
+     * @ejb.interface-method
+     * @ejb.transaction type="Supports"
+     */
+    public Object executeQuery(Object o, String methodName,
+            String[] classNames, Object[] args) throws ClassNotFoundException,
+            IllegalAccessException, NoSuchMethodException,
+            InvocationTargetException {
+        return execute(o, methodName, classNames, args);
+    }
+
+    private Object execute(Object o, String methodName, String[] classNames,
+            Object[] args) throws ClassNotFoundException,
+            IllegalAccessException, NoSuchMethodException,
+            InvocationTargetException {
+        return ReflectionInvoker.getInstance().invoke(o, methodName,
+                classNames, args);
+    }
 }
