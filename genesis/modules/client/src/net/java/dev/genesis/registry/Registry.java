@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,23 +32,53 @@ public class Registry {
       return registry.get(clazz);
    }
 
-   //TODO: fully support interface hierarchies
-   public Object get(Class clazz, boolean superClass) {
+   protected Object searchHierarchy(Class clazz) {
+      if (clazz == null) {
+         return null;
+      }
+
+      Object o = null;
+
+      if ((o = get(clazz)) != null) {
+         return o;
+      }
+
+      final Class[] interfaces = clazz.getInterfaces();
+
+      for (int i = 0; i < interfaces.length; i++) {
+         if ((o = searchHierarchy(interfaces[i])) != null) {
+            return o;
+         }
+      }
+
+      return clazz.isInterface() ? null : 
+            searchHierarchy(clazz.getSuperclass());
+   }
+
+   public Object get(final Class clazz, boolean superClass) {
       if (!superClass) {
          return get(clazz);
       }
 
       Object o = null;
+      Class currentClass = clazz;
 
-      while ((o = get(clazz)) == null && !Object.class.equals(clazz)) {
-         clazz = clazz.getSuperclass();
+      while ((o = get(currentClass)) == null && !Object.class.equals(
+            currentClass)) {
+         currentClass = currentClass.getSuperclass();
 
-         if (clazz == null) {
-            clazz = Object.class;
+         if (currentClass == null) {
+            currentClass = Object.class;
          }
       }
 
-      return o;
+      if (!Object.class.equals(currentClass)) {
+         return o;
+      }
+
+      final Object hierarchyObject = searchHierarchy(clazz);
+
+      return hierarchyObject == null ? o : hierarchyObject;
    }
 
    public Object get(Object o) {
