@@ -42,6 +42,15 @@
             <role>Developer</role>
          </roles>
       </developer>
+      <developer>
+         <name>Pablo Jorge Madril</name>
+         <id>pmadril</id>
+         <email>pmadril@summa-tech.com</email>
+         <organization>Summa Technologies do Brasil Ltda.</organization>
+         <roles>
+            <role>Documentation</role>
+         </roles>
+      </developer>
    </developers>
    <licenses>
       <license>
