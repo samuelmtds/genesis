@@ -24,7 +24,7 @@
    <property name="src.dir" value="src" />
    <property name="webstart.dir" location="webstart" />
 
-   <property name="jboss.app" location="${jboss.home}/server/simplecalc" />
+   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.name}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
@@ -159,9 +159,9 @@
                        transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
                        transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
                        userTransactionName="UserTransaction"
-                       useouterjoin="false"
                        showSql="true"
-                       depends="jboss.jca:service=LocalTxCM,name=DefaultDS" />
+                       depends="jboss.jca:service=LocalTxCM,name=DefaultDS"
+                       version="2.1.6" />
          <hibernatecfg dialect="net.sf.hibernate.dialect.HSQLDialect"
                        userName="sa"
                        password=""
@@ -370,9 +370,9 @@
             <filter token="jboss.provider.port" value="${jboss.provider.port}"/>
             <filter token="webstart.server" value="${webstart.server}"/>
             <filter token="webstart.port" value="${webstart.port}"/>
-	    <filter token="webstart.context" value="${genesisBasedApplication.name}"/>
-	    <filter token="app.main" value="${genesisBasedApplication.mainClass}"/>
-	    <filter token="pretty.name" value="${genesisBasedApplication.prettyName}"/>
+            <filter token="webstart.context" value="${genesisBasedApplication.name}"/>
+            <filter token="app.main" value="${genesisBasedApplication.mainClass}"/>
+            <filter token="pretty.name" value="${genesisBasedApplication.prettyName}"/>
          </filterset>
          <fileset dir="${webstart.dir}">
             <include name="**/*.jnlp"/>
@@ -425,8 +425,6 @@
                       value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
-         <sysproperty key="aspectwerkz.transform.verbose"
-                      value="true" />
          <classpath>
             <path refid="run.classpath" />
             <pathelement path="${jboss.home}/client/jboss-client.jar" />
@@ -472,4 +470,5 @@
          </classpath>
       </java>
    </target>
+
 </project>

@@ -18,14 +18,14 @@
  */
 package net.java.dev.genesis.samples.simplecalc.business;
 
-import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
+import java.io.Serializable;
 
-public class CalculateCommand extends AbstractHibernateCommand {
+public class CalculateCommand implements Serializable {
 
    /**
     * @Remotable
     */
-   public int add(int firstOperand, int secondOperand) throws Exception {
+   public int add(int firstOperand, int secondOperand) {
       return firstOperand + secondOperand;
    }
 }
