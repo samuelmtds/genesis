@@ -35,7 +35,6 @@ import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
  * @Aspect perJVM
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
-
    private static final String CRITERIA_ATTRIBUTE = "Criteria";
 
    public CriteriaCommandExecutionAspect(CrossCuttingInfo ccInfo) {
@@ -48,20 +47,24 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    public Object commandExecution(JoinPoint jp) throws Throwable {
       final CriteriaResolver obj = (CriteriaResolver)jp.getTarget();
       final MethodRtti rtti = (MethodRtti) jp.getRtti();
-      UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
-            .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
-      final Class persisterClass = ClassesCache.getClass(annon.getValue());
       final Class[] classes = rtti.getParameterTypes();
       final String[] classNames = new String[classes.length];
 
       for (int i = 0; i < classes.length; i++) {
          classNames[i] = classes[i].getName();
       }
+
       final String methodName = ((MethodRttiImpl) rtti).getMethodTuple()
             .getWrapperMethod().getName();
       final Object[] parameterValues = rtti.getParameterValues();
+
+      final UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
+            .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
+      final String persisterClassName = annon.getValue();
+
       return new CriteriaCommandExecutor(obj, methodName, classNames,
-            parameterValues, persisterClass, obj.getPropertiesMap()).execute();
+            parameterValues, persisterClassName, obj.getPropertiesMap())
+            .execute();
    }
    
    /**

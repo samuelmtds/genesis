@@ -20,6 +20,7 @@ package net.java.dev.genesis.command.hibernate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
 import net.sf.hibernate.Session;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -29,18 +30,18 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
    private String methodName;
    private String[] classNames;
    private Object[] args;
+   private String persisterClassName;
 
-   private Class persisterClass;
    private Map propertiesMap;
 
    public CriteriaCommandExecutor(Object realCommand, String methodName,
-         String[] classNames, Object[] args, Class persisterClass,
+         String[] classNames, Object[] args, String persisterClassName,
          Map propertiesMap) {
       this.realCommand = realCommand;
       this.methodName = methodName;
       this.classNames = classNames;
       this.args = args;
-      this.persisterClass = persisterClass;
+      this.persisterClassName = persisterClassName;
       this.propertiesMap = propertiesMap;
    }
 
@@ -49,8 +50,14 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
     */
    public Object execute() throws Throwable {
       final HibernateCriteria hibCriteria = (HibernateCriteria) realCommand;
-      hibCriteria.setCriteria(getSession().createCriteria(persisterClass));
+
+      if (persisterClassName != null && persisterClassName.trim().length() != 0) {
+         hibCriteria.setCriteria(getSession().createCriteria(
+               ClassesCache.getClass(persisterClassName)));
+      }
+
       PropertyUtils.copyProperties(hibCriteria, propertiesMap);
+
       try {
          return ReflectionInvoker.getInstance().invoke(realCommand, methodName,
                classNames, args);
