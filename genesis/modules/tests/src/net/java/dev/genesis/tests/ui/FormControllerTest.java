@@ -24,6 +24,8 @@ import java.util.Map;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormState;
+import net.java.dev.genesis.ui.controller.FormStateImpl;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -109,8 +111,9 @@ public class FormControllerTest extends TestCase {
       final FormController controller = getController(someForm);
       final Map describedMap = PropertyUtils.describe(someForm);
       final Map someValues = getSomeValues();
+      final FormState state = new FormStateImpl(controller.getFormState());
       controller.populate(someValues);
-      controller.reset();
+      controller.reset(state);
       assertDescribedMapEquals(describedMap, PropertyUtils.describe(someForm));
    }
 

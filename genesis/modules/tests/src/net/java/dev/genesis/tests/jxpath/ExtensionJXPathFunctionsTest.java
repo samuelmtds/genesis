@@ -33,7 +33,9 @@ import java.util.Set;
 import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
 import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.tests.TestCase;
-import net.java.dev.genesis.ui.controller.DefaultFormController;
+import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormState;
+import net.java.dev.genesis.ui.controller.FormStateImpl;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -47,15 +49,16 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
             JXPathContextFactory.class.getName());
    }
 
-   private final Map changedMap = new HashMap();
+   private final FormState state = new FormStateImpl();
+   private final Map changedMap = state.getChangedMap();
 
    private JXPathContext getContext(final Object root) throws Exception {
       final FormMetadata formMetadata = getFormMetadata(root);
       final JXPathContext ctx = JXPathContext.newContext(root);
-      ctx.getVariables().declareVariable(DefaultFormController.CHANGED_MAP_KEY,
-            changedMap);
+      ctx.getVariables().declareVariable(FormController.CURRENT_STATE_KEY,
+            state);
       ctx.getVariables().declareVariable(
-            DefaultFormController.FORM_METADATA_KEY, formMetadata);
+            FormController.FORM_METADATA_KEY, formMetadata);
       ctx.setFunctions(new ClassFunctions(ExtensionFunctions.class, "g"));
       return ctx;
    }

@@ -78,7 +78,7 @@ public class FormMetadataFactoryTest extends TestCase {
    }
 
    public void testParseFormMetadata() {
-      final FormMetadata formMetadata = getFormMetadata(new FooForm());
+      getFormMetadata(new FooForm());
    }
 
    public void testConditions() {

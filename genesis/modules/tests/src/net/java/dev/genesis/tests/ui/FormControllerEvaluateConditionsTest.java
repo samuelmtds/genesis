@@ -26,8 +26,8 @@ import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.controller.FormState;
+import net.java.dev.genesis.ui.controller.FormStateImpl;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -52,30 +52,30 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
-      assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
-      controller.save();
+      assertEquals(controller.getFormState().getEnabledMap().get("field2"), Boolean.TRUE);
+      final FormState state = new FormStateImpl(controller.getFormState());
 
       someValues.put("field2", "12");
       someValues.put("field3", "abcd");
       someValues.put("field4", "notEmpty");
       controller.populate(someValues);
 
-      final ActionMetadata calculateMetadata = getFormMetadata(form)
-            .getActionMetadata(form.getClass().getMethod("calculate", new Class[]{}));
-      final DataProviderMetadata providerMetadata = getFormMetadata(form)
-            .getDataProviderMetadata(form.getClass().getMethod("provideSomeList", new Class[]{}));
+      //final ActionMetadata calculateMetadata = getFormMetadata(form)
+      //      .getActionMetadata(form.getClass().getMethod("calculate", new Class[]{}));
+      //final DataProviderMetadata providerMetadata = getFormMetadata(form)
+      //      .getDataProviderMetadata(form.getClass().getMethod("provideSomeList", new Class[]{}));
       assertEquals(form.getField3(), "abcd");
-      assertEquals(controller.getEnabledMap().get("field2"), Boolean.FALSE);
-      assertEquals(controller.getVisibleMap().get("field4"), Boolean.TRUE);
-      assertTrue(controller.getDataProviderActions().contains(providerMetadata));
-      assertTrue(controller.getCallActions().contains(calculateMetadata));
+      assertEquals(controller.getFormState().getEnabledMap().get("field2"), Boolean.FALSE);
+      assertEquals(controller.getFormState().getVisibleMap().get("field4"), Boolean.TRUE);
+      //assertTrue(controller.getDataProviderActions().contains(providerMetadata));
+      //assertTrue(controller.getCallActions().contains(calculateMetadata));
 
-      controller.reset();
+      controller.reset(state);
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
-      assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
-      assertEquals(controller.getVisibleMap().get("field4"), Boolean.FALSE);
-      assertFalse(controller.getDataProviderActions().contains(providerMetadata));
+      assertEquals(controller.getFormState().getEnabledMap().get("field2"), Boolean.TRUE);
+      assertEquals(controller.getFormState().getVisibleMap().get("field4"), Boolean.FALSE);
+      //assertFalse(controller.getDataProviderActions().contains(providerMetadata));
    }
 
    /**

@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.jxpath.JXPathContextFactory;
 
 import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
@@ -34,6 +35,8 @@ public class TestCase extends junit.framework.TestCase {
    static {
       BeanUtilsBean.setInstance(new BeanUtilsBean(new ConverterRegistry(),
             new PropertyUtilsBean()));
+      System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
+            "net.java.dev.genesis.commons.jxpath.JXPathContextFactory");
    }
 
 	protected FormMetadata getFormMetadata(final Object form) {
