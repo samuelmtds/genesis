@@ -427,6 +427,16 @@
 		</junit>
 	</target>
 
+	<target name="test:test-with-html-reports" depends="test:test">
+		<junitreport todir="${genesis.module.tests}/${test.reportsDirectory}">
+			<fileset dir="${genesis.module.tests}/${test.reportsDirectory}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${genesis.module.tests}/${test.reportsDirectory}" />
+		</junitreport>
+        <echo>JUnit hmtl reports is located at ${genesis.module.tests}/${test.reportsDirectory}</echo>
+	</target>
+
 	<target name="genesis:clean" description="Clean generated files">
 		<delete dir="${build.dir}" />
 		<delete dir="${genesis.dist.dir}" />
@@ -465,5 +475,9 @@
 	<target name="genesis:test:test"
 	        description="Run all unit tests"
 	        depends="genesis:test:deploy,test:test" />
+   
+   <target name="genesis:test:test-with-html-reports"
+              description="Run all unit tests and build html reports"
+              depends="genesis:test:deploy,test:test-with-html-reports" />  
 
 </project>

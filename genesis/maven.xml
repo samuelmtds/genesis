@@ -1,9 +1,9 @@
 <project default="genesis" xmlns:m="maven" xmlns:jxr="jxr" 
    xmlns:ant="jelly:ant" xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
    
-  <!-- ============================= -->
-   <!-- Default goal is genesis:dist -->
-   <!-- ============================ -->
+   <!-- =========================== -->
+   <!-- Default goal is genesis:jar -->
+   <!-- =========================== -->
    <goal name="genesis" prereqs="genesis:jar"/>
    
    <!-- ============================== -->
@@ -48,7 +48,14 @@
    <goal name="genesis:test:test">
       <ant:ant dir="${basedir}" antfile="build.xml" target="genesis:test:test"/>
    </goal>
-      
+
+   <!-- ========================================= -->
+   <!-- Run the unit tests and build html reports -->
+   <!-- ========================================= -->
+   <goal name="genesis:test:test-with-html-reports">
+      <ant:ant dir="${basedir}" antfile="build.xml" target="genesis:test:test-with-html-reports"/>
+   </goal>
+
    <!-- =========================== -->
    <!-- Makes the distribution jars -->
    <!-- =========================== -->

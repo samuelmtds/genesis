@@ -29,8 +29,11 @@ To run genesis, go to <JBOSS_HOME>/bin and type
 
    run -c genesis
 
-To run the unit tests with ant, you need to copy junit.jar to ANT_HOME/lib.
+To run the unit tests with ant, you need to copy junit-3.8.1.jar to ANT_HOME/lib.
 To run them with maven, put junit-3.8.1.jar in MAVEN_HOME/lib/endorsed.
+
+The task 'genesis:test:test-with-html-reports' needs xalan.jar in ANT_HOME/lib (if you´re using versions prior to Ant 1.6.2)
+or in MAVEN_HOME/lib/endorsed (if you´re using Maven). You can download xalan at http://www.apache.org/dist/xml/xalan-j/
 
 The genesis main tasks are:
 
@@ -39,6 +42,7 @@ The genesis main tasks are:
    genesis:test:compile
    genesis:test:deploy
    genesis:test:test
+   genesis:test:test-with-html-reports (Xalan is needed)
    genesis:site  (Only in maven. The generated site will be in genesis/genesis/target/docs )
    genesis:jar	(build genesis jar files)
    genesis  (runs the default goal: genesis:jar)
