@@ -32,10 +32,17 @@ public class UIUtils {
    public static UIUtils getInstance() {
       return instance;
    }
+   
+   /**
+    * @deprecated
+    */
    public String asIdentifier(final String className) {
       return className.replace('.', '_');
    }
-   
+
+   /**
+    * @deprecated
+    */
    public String asClassName(final String identifier) {
       return identifier.replace('_', '.');
    }
