@@ -20,11 +20,10 @@ package net.java.dev.genesis.samples.simplecalc.ui;
 
 
 public class CalculatorView extends BaseView {
-   private final CalculatorForm form;
 
    public CalculatorView() throws Exception {
       super("CalculatorView.title", "calculator.xml", 280, 110, false);
-      bind(form = new CalculatorForm());
+      bind(new CalculatorForm());
    }
 }
 

@@ -21,12 +21,11 @@ package net.java.dev.genesis.samples.useradmin.ui;
 import java.awt.Frame;
 
 public class InsertRoleView extends BaseDialogView {
-   private final InsertRoleForm form;
    private boolean hasChanged;
    
    public InsertRoleView(final Frame frame) throws Exception {
       super(frame, "InsertRoleView.title", "insert-role.xml", false, true);
-      bind(form = new InsertRoleForm());
+      bind(new InsertRoleForm());
    }
    
    public boolean showView() throws Exception {

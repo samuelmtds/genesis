@@ -42,8 +42,7 @@ public class LocalHibernateTransactionInjetorTest extends TestCase {
    public void testUnsuccessfullyQuery() throws Exception {
       Exception ex = null;
       try {
-         final HibernateBean bean = new HibernateCommand()
-               .getNonExistentBean(HibernateBean.class);
+         new HibernateCommand().getNonExistentBean(HibernateBean.class);
       } catch (Exception e) {
          ex = e;
       }
