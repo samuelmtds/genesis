@@ -10,45 +10,31 @@
       <p>Para fazer o download do genesis, há várias opções disponíveis. São
       elas:</p>
       <ul>
-        <li><b>genesis-docs-{versão}.tar.gz</b> e
-        <b>genesis-docs-{versão}.zip</b>: contém apenas a documentação
-        do genesis.</li>
-        <li><b>genesis-bin-{versão}.tar.gz</b> e
-        <b>genesis-bin-{versão}.zip</b>: contém a distribuição binária
-        do genesis. Este empacotamento contém os seguintes grupos de arquivos:
-        os jars do genesis propriamente ditos e um projeto vazio para iniciar o
-        desenvolvimento de uma aplicação com o genesis. Ou seja, este
-        empacotamento não possui nenhum arquivo jar de dependência a frameworks
-        externos, tais como Hibernate.</li>
-        <li><b>genesis-full-bin-{versão}.tar.gz</b> e
-        <b>genesis-full-bin-{versão}.zip</b>: contém a distribuição
-        binária completa do genesis. Este empacotamento contém os seguintes
-        grupos de arquivos: todos os arquivos do
-        <code>genesis-bin</code>, incluindo o projeto vazio, e as
-        bibliotecas referentes às dependências do genesis, como AspectWerkz,
-        Hibernate, Jakarta Commons e Thinlet.</li>
-        <li><b>genesis-full-bin-plus-docs-{versão}.tar.gz</b> e
-        <b>genesis-full-bin-plus-docs-{versão}.zip</b>: contém a
-        distribuição binária completa do genesis juntamente com a
-        documentação. Em termos de pacotes, são fornecidos os seguintes
-        grupos de arquivos: todos os jars do <code>genesis-full-bin</code>, o
-        projeto vazio para iniciar o desenvolvimento de uma aplicação com o
-        genesis, o conteúdo de <code>genesis-docs</code> e um aplicativo de
-        exemplo do genesis, uma administração de usuários (UserAdmin)</li>
+        <li><b>genesis-dist-{versão}.tar.gz</b> e
+        <b>genesis-dist-{versão}.zip</b>: apenas os binários jars e o arquivo
+        annotation.properties.</li>
+        <li><b>genesis-dependencies-{versão}.tar.gz</b> e
+        <b>genesis-dependencies-{versão}.zip</b>: apenas as bibliotecas 
+        referentes às dependências do genesis, como AspectWerkz, Hibernate,
+        Jakarta Commons e Thinlet.</li>
+        <li><b>genesis-empty-project-{versão}.tar.gz</b> e
+        <b>genesis-empty-project-{versão}.zip</b>: contém a estrutura de
+        um projeto para ínicio de desenvolvimento.</li>
         <li><b>genesis-useradmin-sample-{versão}.tar.gz</b> e
-        <b>genesis-useradmin-sample-{versão}.zip</b>: contém tanto o código
-        fonte como os binários de distribuição do exemplo UserAdmin.</li>
-        <li><b>genesis-src-only-{versão}.tar.gz</b> e
-        <b>genesis-src-only-{versão}.zip</b>: contém somente o código fonte do
-        genesis, sem nenhum jar adicional.</li>
+        <b>genesis-useradmin-sample-{versão}.zip</b>: contém o exemplo
+        <code>useradmin</code> de utilização do genesis.</li>
         <li><b>genesis-src-{versão}.tar.gz</b> e
-        <b>genesis-src-{versão}.zip</b>: contém o mesmo que
-        <code>genesis-src-only</code> e <code>genesis-full-bin</code>.</li>
-        <li><b>genesis-src-plus-docs-{versão}.tar.gz</b> e
-        <b>genesis-src-plus-docs-{versão}.zip</b>: contém o mesmo que
-        <code>genesis-src</code> e a documentação.</li>
-        <li><b>modified-xdoclet-1.2.zip</b>: contém o
-        framework xdoclet modificado para executar tarefas adicionais.</li>
+        <b>genesis-src-{versão}.zip</b>: contém somente o código fonte do
+        genesis, sem nenhum jar adicional.</li>
+        <li><b>genesis-docs-{versão}.tar.gz</b> e
+        <b>genesis-docs-{versão}.zip</b>: apenas a documentação
+        do genesis.</li>
+        <li><b>genesis-xdoclet-extensions.tar.gz</b> e
+        <b>genesis-xdoclet-extensions.zip</b>: apenas o framework xdoclet
+        modificado para executar tarefas adicionais.</li>
+        <li><b>genesis-all-{versão}.tar.gz</b> e
+        <b>genesis-all-{versão}.zip</b>: contém todos os arquivos binários,
+        exemplos, código e documentação mencionados acima.</li>
       </ul>
       <p>Os arquivos de download acima podem ser encontrados
       <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0">aqui</a>.</p>
