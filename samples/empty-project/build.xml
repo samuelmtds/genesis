@@ -9,7 +9,7 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="2.1" />
+      <property name="genesis.version" value="2.2-dev" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
@@ -169,7 +169,7 @@
             <include name="commons-collections-*.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
-            <include name="commons-beanutils-*.jar" />            
+            <include name="commons-beanutils-*.jar" />
             <include name="commons-digester-*.jar" />
             <include name="commons-jxpath-*.jar" />
             <include name="commons-logging-*.jar" />
@@ -255,7 +255,7 @@
                        driver="your_database_driver_class_name"
                        jdbcUrl="_a_jdbc_connection_url"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
-                       showSql="${hibernate.show.sql}" 
+                       showSql="${hibernate.show.sql}"
         /-->
       </hibernatedoclet>
       <copy todir="${module.shared}/${build.dest}">
@@ -414,7 +414,7 @@
             ...
             <include name="bar.jar" />
          </fileset>
-         
+
          DON'T FORGET TO ADD THEM IN webstart/application/webstart.jnlp FILE
          -->
          <fileset dir="${build.dir}">

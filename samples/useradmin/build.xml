@@ -9,7 +9,7 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="2.1" />
+      <property name="genesis.version" value="2.2-dev" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
@@ -134,7 +134,7 @@
             <include name="commons-collections-*.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
-            <include name="commons-beanutils-*.jar" />            
+            <include name="commons-beanutils-*.jar" />
             <include name="commons-digester-*.jar" />
             <include name="commons-jxpath-*.jar" />
             <include name="commons-logging-*.jar" />
