@@ -20,13 +20,13 @@ package net.java.dev.genesis.helpers;
 
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
-import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
+import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
 public class TypeChecker {
-   public static void checkThinletMetadataFactory(final Object view) {
-      if (!(view instanceof ThinletMetadataFactory)) {
+   public static void checkViewMetadataFactory(final Object view) {
+      if (!(view instanceof ViewMetadataFactory)) {
          throw new IllegalArgumentException(view + " should implement " +
-               "ThinletMetadataFactory; probably your aop.xml/weaving process " +
+               "ViewMetadataFactory; probably your aop.xml/weaving process " +
                "is not properly configured.");
       }
    }

@@ -40,8 +40,8 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
-import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
-import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
+import net.java.dev.genesis.ui.metadata.ViewMetadata;
+import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 import org.apache.commons.beanutils.Converter;
 
 import org.apache.commons.logging.Log;
@@ -65,6 +65,7 @@ public class ThinletBinder implements FormControllerListener {
    private final BaseThinlet thinlet;
    private final Object root;
    private final Object form;
+   private final Object handler;
    private final FormController controller;
 
    private List groupComponents;
@@ -78,17 +79,24 @@ public class ThinletBinder implements FormControllerListener {
    private final Map formatters = new HashMap();
    private final Map converters = new HashMap();
 
-   public ThinletBinder(final BaseThinlet thinlet, final Object root, final Object form) {
+   public ThinletBinder(final BaseThinlet thinlet, final Object root, 
+         final Object form) {
+      this(thinlet, root, form, thinlet);
+   }
+
+   public ThinletBinder(final BaseThinlet thinlet, final Object root, 
+         final Object form, final Object handler) {
       this.thinlet = thinlet;
       this.root = root;
       this.form = form;
+      this.handler = handler;
       this.controller = getFormController(form);
    }
    
-   protected final ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
-      TypeChecker.checkThinletMetadataFactory(thinlet);
+   protected final ViewMetadata getViewMetadata(final Object handler) {
+      TypeChecker.checkViewMetadataFactory(handler);
 
-      return ((ThinletMetadataFactory)thinlet).getThinletMetadata(thinlet.getClass());
+      return ((ViewMetadataFactory)handler).getViewMetadata(handler.getClass());
    }
 
    protected FormController getFormController(final Object form) {
@@ -427,13 +435,13 @@ public class ThinletBinder implements FormControllerListener {
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
          throws Exception {
-      return getThinletMetadata(thinlet).invokeBeforeAction(thinlet, 
+      return getViewMetadata(handler).invokeBeforeAction(handler, 
             methodMetadata.getName());
    }
 
    public void afterInvokingMethod(MethodMetadata methodMetadata) 
          throws Exception {
-      getThinletMetadata(thinlet).invokeAfterAction(thinlet, 
+      getViewMetadata(handler).invokeAfterAction(handler, 
             methodMetadata.getName());
    }
    

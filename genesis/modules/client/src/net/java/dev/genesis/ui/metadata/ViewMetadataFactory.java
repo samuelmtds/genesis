@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,20 +16,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.thinlet.metadata;
+package net.java.dev.genesis.ui.metadata;
 
-import net.java.dev.genesis.ui.metadata.ViewMetadata;
-
-/**
- * @deprecated Use net.java.dev.genesis.ui.metadata.ViewMetadata instead. This
- *             class will be removed in the next major genesis release.
- */
-public class ThinletMetadata extends ViewMetadata {
-   public ThinletMetadata(final Class thinletClass) {
-      super(thinletClass);
-   }
-
-   public Class getThinletClass() {
-      return getViewClass();
-   }
+public interface ViewMetadataFactory {
+   public ViewMetadata getViewMetadata(Class viewClass);
 }

@@ -23,63 +23,31 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
-import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
 
 import org.codehaus.aspectwerkz.annotation.Annotations;
 import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
+/**
+ * @deprecated Use net.java.dev.genesis.aspect.ViewMetadataFactoryAspect instead. 
+ *             This class will be removed in the next major genesis release.
+ */
 public class ThinletMetadataFactoryAspect {
    /**
+    * @deprecated Use net.java.dev.genesis.aspect.ViewMetadataFactoryAspect$AspectViewMetadataFactory 
+    *             instead. This class will be removed in the next major genesis 
+    *             release.
     * @Introduce thinletMetadataFactoryIntroduction deploymentModel=perJVM
     */
-   public static class AspectThinletMetadataFactory implements
-         ThinletMetadataFactory {
-      private final Map cache = new HashMap();
-
+   public static class AspectThinletMetadataFactory extends
+         ViewMetadataFactoryAspect.AspectViewMetadataFactory {
       public ThinletMetadata getThinletMetadata(final Class thinletClass) {
-         ThinletMetadata thinletMetadata = (ThinletMetadata)cache
-               .get(thinletClass);
-         if (thinletMetadata == null) {
-            thinletMetadata = new ThinletMetadata(thinletClass);
-            processAnnotations(thinletMetadata);
-            cache.put(thinletClass, thinletMetadata);
-         }
-         return thinletMetadata;
+         return (ThinletMetadata)getViewMetadata(thinletClass);
       }
 
-      private void processAnnotations(final ThinletMetadata thinletMetadata) {
-         processMethodsAnnotations(thinletMetadata);
-      }
-
-      private void processMethodsAnnotations(
-            final ThinletMetadata thinletMetadata) {
-         final Method[] methods = thinletMetadata.getThinletClass().getMethods();
-         UntypedAnnotationProxy annon;
-
-         for (int i = 0; i < methods.length; i++) {
-            for (final Iterator it = Annotations.getAnnotations(
-                  "BeforeAction", methods[i]).iterator(); it.hasNext(); ) {
-               annon = (UntypedAnnotationProxy)it.next();
-
-               final String actionName = annon.getValue();
-               final String methodName = methods[i].getName();
-               thinletMetadata.addBeforeAction(
-                     actionName.trim().length() == 0 ? methodName : actionName,
-                     methodName);
-            }
-
-            for (final Iterator it = Annotations.getAnnotations(
-                  "AfterAction", methods[i]).iterator(); it.hasNext(); ) {
-               annon = (UntypedAnnotationProxy)it.next();
-
-               final String actionName = annon.getValue();
-               final String methodName = methods[i].getName();
-               thinletMetadata.addAfterAction(
-                     actionName.trim().length() == 0 ? methodName : actionName,
-                     methodName);
-            }
-         }
-      }
+      protected ViewMetadata createViewMetadata(Class viewClass) {
+         return new ThinletMetadata(viewClass);
+      }      
    }
 }

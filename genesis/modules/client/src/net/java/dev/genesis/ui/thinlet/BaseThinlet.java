@@ -796,19 +796,29 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void bind(Object form) throws Exception {
-      bind(getDesktop(), form);
+      bind(getDesktop(), form, this);
    }
 
    protected void bind(Object widget, Object form) throws Exception {
-      prepareBinder(widget, form).bind();
+      bind(widget, form, this);
+   }
+
+   protected void bind(Object widget, Object form, Object handler) 
+         throws Exception {
+      prepareBinder(widget, form, handler).bind();
    }
 
    protected ThinletBinder prepareBinder(Object form) throws Exception {
-      return prepareBinder(getDesktop(), form);
+      return prepareBinder(getDesktop(), form, this);
    }
 
    protected ThinletBinder prepareBinder(Object widget, Object form) 
          throws Exception {
+      return prepareBinder(widget, form, this);
+   }
+
+   protected ThinletBinder prepareBinder(Object widget, Object form, 
+         Object handler) throws Exception {
       Map formPerClass = (Map)formPerClassPerComponent.get(widget);
 
       if (formPerClass == null) {
@@ -824,14 +834,15 @@ public abstract class BaseThinlet extends Thinlet {
 
       formPerClass.put(form.getClass(), form);
 
-      final ThinletBinder binder = createBinder(widget, form);
+      final ThinletBinder binder = createBinder(widget, form, handler);
       binderPerForm.put(form, binder);
 
       return binder;
    }
 
-   protected ThinletBinder createBinder(Object widget, Object form){
-      return new ThinletBinder(this, widget, form);
+   protected ThinletBinder createBinder(Object widget, Object form, 
+         Object handler) {
+      return new ThinletBinder(this, widget, form, handler);
    }
 
    public void invokeFormAction(Object component) throws Exception {
