@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
 import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
@@ -35,9 +34,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.Functions;
@@ -61,8 +58,6 @@ public class DefaultFormController implements FormController {
    static {
       System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
             JXPathContextFactory.class.getName());
-      BeanUtilsBean.setInstance(new BeanUtilsBean(new ConverterRegistry(),
-            new PropertyUtilsBean()));
    }
 
    private Object form;
