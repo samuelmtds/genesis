@@ -9,7 +9,8 @@
             AND (execution(* net.java.dev.genesis.command.Query+.*(..)) OR execution(* net.java.dev.genesis.command.Transaction+.*(..)))" />
       <pointcut name="executeCommand"
          expression="oldExecuteCommand OR execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
-      <pointcut name="localExecution" expression="execution(* net.java.dev.genesis.tests....LocalCommandExecutionTest$*.*(..))" />
+      <pointcut name="localExecution" expression="execution(* net.java.dev.genesis.tests....LocalCommandExecutionTest$*.*(..))
+      		OR execution(* net.java.dev.genesis.tests....LocalHibernateTransactionInjetorTest$*.*(..))" />
 
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="within(@Form ..)" />
