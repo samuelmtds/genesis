@@ -93,7 +93,7 @@ public interface TransactionalInjector {
         método transcorre normalmente, i.e., sem que seja lançada uma exceção. É
         o momento em que a transação deve ser comitada.</li>
         <li>Chama-se <code>onException(Exception)</code> caso seja lançada uma
-        exceção em <code>beforeInvocaction(Object,boolean)</code> ou durante a
+        exceção em <code>beforeInvocation(Object,boolean)</code> ou durante a
         execução do método remoto/transacional. É o momento para fazer rollback
         da transação.</li>
         <li>O método <code>onFinally()</code> sempre é chamado e deve liberar
@@ -248,7 +248,7 @@ public interface CriteriaResolver {
       salva o cursor atual, troca-o para o cursor de espera e restaura o cursor
       original quando o tratamento de eventos termina.</p>
     </section>
-    <section name="Instanciando os metadados do form">
+    <section name="Instanciando os metadados">
       <p>Todo o binding de uma form com a view baseia-se em metadados das duas
       partes. Este modelo de metadados encontra-se no pacote
       <code>net.java.dev.genesis.ui.metadata</code> para o form e no pacote
