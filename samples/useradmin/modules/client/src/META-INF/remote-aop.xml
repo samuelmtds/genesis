@@ -2,7 +2,7 @@
       "-//AspectWerkz//DTD 1.0//EN"
       "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
 <aspectwerkz>
-   <system id="genesisapp" base-package="net.java.dev.genesis.aspect">
+   <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
       <pointcut name="executeCommand"
          expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
@@ -16,7 +16,6 @@
          expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
       <pointcut name="timeout" expression="executeCommand" />
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
-      <!-- pointcut name="localCommandExecution" expression="executeCommand" / -->
       <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
@@ -24,14 +23,10 @@
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="ThinletMetadataFactoryAspect" />
-      <aspect class="TimeoutAspect" deployment-model="perThread">
+      <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />
       </aspect>
-      <!-- aspect class="LocalCommandExecutionAspect" >
-      	<param name="transactionalInjector" 
-             value="net.java.dev.genesis.aspect.HibernateTransactionalInjector"/>
-      </aspect -->
       <aspect class="EJBCommandExecutionAspect">
          <param name="jndiName" value="ejb/CommandExecutor"/>
       </aspect>

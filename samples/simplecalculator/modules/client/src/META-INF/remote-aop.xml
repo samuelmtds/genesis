@@ -23,7 +23,7 @@
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="ThinletMetadataFactoryAspect" />
-      <aspect class="TimeoutAspect" deployment-model="perThread">
+      <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />
       </aspect>

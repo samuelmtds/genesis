@@ -21,7 +21,8 @@
    <property name="build.dest" value="${build.dir}/classes" />
    <property name="build.src" value="${build.dir}/src" />
    <property name="annotation.dest" value="${build.dir}/annotation" />
-   <property name="weaving.dest" value="${build.dir}/weaving" />
+   <property name="weaving.remote.dest" value="${build.dir}/remote-weaving" />
+   <property name="weaving.local.dest" value="${build.dir}/local-weaving" />
    <property name="src.dir" value="src" />
    <property name="webstart.dir" location="webstart" />
 
@@ -34,7 +35,7 @@
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
    <property name="webstart.port" value="8080" />
-   
+   <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
 
    <path id="j2ee.path">
       <fileset dir="${j2ee.dist}" includes="*.jar" />
@@ -92,8 +93,6 @@
    </path>
 
    <path id="run.classpath">
-      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-weaved.jar" />
-      <fileset dir="${build.dir}/${lib.dir}" includes="*.jar" />
       <fileset dir="${hibernate.dist}" includes="commons-collection*.jar" />
       <fileset dir="${genesis.dist}"
                includes="genesis-aspect-annotated-${genesis.version}.jar" />
@@ -104,7 +103,22 @@
       <path refid="shared.dependency.classpath" />
       <path refid="aspectwerkz.path" />
    </path>
-   
+
+   <path id="run.remote.classpath">
+      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-remote-weaved.jar" />
+      <path refid="run.classpath" />
+   </path>
+
+   <path id="run.local.classpath">
+      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-local-weaved.jar" />
+      <pathelement path="${jdbc.driver}" />
+      <fileset dir="${hibernate.dist}">
+         <include name="cglib-full-*.jar"/>
+         <include name="ehcache-*.jar"/>
+      </fileset>
+      <path refid="run.classpath" />
+   </path>
+
    <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
    <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
    <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
@@ -163,7 +177,7 @@
                        userName="sa"
                        password=""
                        driver="org.hsqldb.jdbcDriver"
-                       jdbcUrl="jdbc:hsqldb:."
+                       jdbcUrl="jdbc:hsqldb:genesis/useradmin"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
                        showSql="true" />
       </hibernatedoclet>
@@ -210,17 +224,32 @@
    </target>
 
    <target name="useradmin:weaving">
-      <mkdir dir="${weaving.dest}" />
-      <mkdir dir="${build.dir}/${lib.dir}" />
-      <copy todir="${weaving.dest}" overwrite="true">
-         <fileset dir="${module.client}/${annotation.dest}" />
+      <mkdir dir="${weaving.remote.dest}" />
+      <mkdir dir="${weaving.local.dest}" />
+      <copy todir="${weaving.remote.dest}" overwrite="true">
+         <fileset dir="${module.client}/${annotation.dest}"
+            excludes="META-INF/local-aop.xml"/>
          <fileset dir="${module.shared}/${annotation.dest}" />
       </copy>
-      <copy todir="${build.dir}/${lib.dir}" overwrite="true">
+      <copy todir="${weaving.local.dest}" overwrite="true">
+         <fileset dir="${module.client}/${annotation.dest}" 
+            excludes="META-INF/remote-aop.xml" />
+         <fileset dir="${module.shared}/${annotation.dest}" />
+      </copy>
+      <move file="${weaving.remote.dest}/META-INF/remote-aop.xml"
+         tofile="${weaving.remote.dest}/META-INF/aop.xml" />
+      <move file="${weaving.local.dest}/META-INF/local-aop.xml"
+         tofile="${weaving.local.dest}/META-INF/aop.xml" />
+      <unjar dest="${weaving.remote.dest}" overwrite="true">
          <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
          <fileset dir="${genesis.dist}"
                   includes="genesis-shared-annotated-${genesis.version}.jar" />
-      </copy>
+      </unjar>
+      <unjar dest="${weaving.local.dest}" overwrite="true">
+         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+         <fileset dir="${genesis.dist}"
+                  includes="genesis-shared-annotated-${genesis.version}.jar" />
+      </unjar>
       <awc verbose="true">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
@@ -228,8 +257,16 @@
             <path refid="shared.dependency.classpath" />
             <path refid="j2ee.path" />
          </classpath>
-         <targetpath location="${weaving.dest}"/>
-         <targetpath location="${build.dir}/${lib.dir}"/>
+         <targetpath location="${weaving.remote.dest}"/>
+      </awc>
+      <awc verbose="true">
+         <classpath>
+            <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
+            <path refid="client.dependency.classpath" />
+            <path refid="shared.dependency.classpath" />
+            <path refid="j2ee.path" />
+         </classpath>
+         <targetpath location="${weaving.local.dest}"/>
       </awc>
    </target>
 
@@ -244,9 +281,12 @@
 
    <target name="useradmin:jar">
       <mkdir dir="${build.dir}" />
-      <jar destfile="${build.dir}/${genesisBasedApplication.name}-weaved.jar">
-         <fileset dir="${weaving.dest}" />
+      <jar destfile="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar">
+         <fileset dir="${weaving.remote.dest}" />
       </jar>
+   	<jar destfile="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar">
+         <fileset dir="${weaving.local.dest}" />
+      </jar>  
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-shared.jar">
          <fileset dir="${module.shared}/${build.dest}"
                   excludes="jboss-service.xml" />
@@ -292,15 +332,14 @@
       <mkdir dir="${dist.dir}/${genesisBasedApplication.name}.war/application"/>
       <copy todir="${dist.dir}/${genesisBasedApplication.name}.war/application">
          <fileset dir="${build.dir}">
-            <include name="${genesisBasedApplication.name}-weaved.jar" />
-         </fileset>
-         <fileset dir="${build.dir}/${lib.dir}">
-            <include name="genesis-shared-annotated-${genesis.version}.jar" />
-            <include name="thinlet*.jar" />
+            <include name="${genesisBasedApplication.name}-*-weaved.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}">
+            <include name="cglib-full*.jar" />
             <include name="commons-collection*.jar" />
-            <include name="hibernate*.jar" />
+            <include name="ehcache*.jar" />
+         	<include name="hibernate*.jar" />
+            <include name="jta.jar" />
          </fileset>
          <fileset dir="${genesis.dist}">
             <include name="genesis-client-${genesis.version}.jar"/>
@@ -316,20 +355,22 @@
             <include name="reusable-components*.jar"/>
          </fileset>
          <fileset dir="${genesis.home}/lib/aspectwerkz">
-            <include name="aspectwerkz-1.0.jar" />
-            <include name="aspectwerkz-core-1.0.jar" />
+            <include name="aspectwerkz-*.jar" />
             <include name="dom4j*.jar" />
             <include name="jrexx-*.jar" />
             <include name="trove*.jar" />
          </fileset>
-          <fileset dir="${jboss.home}/client">
-             <include name="jboss-client.jar" />
-             <include name="jboss-common-client.jar" />
-             <include name="jboss-j2ee.jar" />
-             <include name="jboss-transaction-client.jar" />
-             <include name="jbosssx-client.jar" />
-             <include name="jnp-client.jar" />
-          </fileset>
+         <fileset dir="${jboss.app}/lib">
+            <include name="hsqldb.jar" />
+         </fileset>
+         <fileset dir="${jboss.home}/client">
+            <include name="jboss-client.jar" />
+            <include name="jboss-common-client.jar" />
+            <include name="jboss-j2ee.jar" />
+            <include name="jboss-transaction-client.jar" />
+            <include name="jbosssx-client.jar" />
+            <include name="jnp-client.jar" />
+         </fileset>
       </copy>
       <copy todir="${dist.dir}/${genesisBasedApplication.name}.war">
          <filterset>
@@ -406,14 +447,14 @@
    <target name="useradmin:all.with.webstart"
           depends="useradmin:all,useradmin:deploy.webstart" />
 
-   <target name="useradmin:run">
+   <target name="useradmin:run.remote">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
          <classpath>
-            <path refid="run.classpath" />
+            <path refid="run.remote.classpath" />
             <pathelement path="${jboss.home}/client/jboss-client.jar" />
             <pathelement path="${jboss.home}/client/jboss-common-client.jar" />
             <pathelement path="${jboss.home}/client/jboss-j2ee.jar" />
@@ -424,36 +465,10 @@
       </java>
    </target>
 
-   <target name="useradmin:run-with-debug">
+   <target name="useradmin:run.local">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
-         <sysproperty key="java.naming.factory.initial"
-                      value="${jboss.factory.initial}" />
-         <sysproperty key="java.naming.provider.url"
-                      value="${jboss.provider.url}" />
-         <sysproperty key="aspectwerkz.transform.verbose"
-                      value="true" />
-         <jvmarg value="-Xdebug"/>
-         <jvmarg value="-Xrunjdwp:transport=dt_socket,address=10000,server=y,suspend=n"/>
          <classpath>
-            <path refid="run.classpath" />
-            <pathelement path="${jboss.home}/client/jbossall-client.jar" />
-         </classpath>
-      </java>
-   </target>
-
-   <target name="useradmin:run-with-logging-on">
-      <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
-         <sysproperty key="java.naming.factory.initial"
-                      value="${jboss.factory.initial}" />
-         <sysproperty key="java.naming.provider.url"
-                      value="${jboss.provider.url}" />
-         <sysproperty key="aspectwerkz.transform.verbose"
-                      value="true" />
-         <sysproperty key="java.util.logging.config.file"
-                      value="${module.client}/conf/logging.properties" />
-         <classpath>
-            <path refid="run.classpath" />
-            <pathelement path="${jboss.home}/client/jbossall-client.jar" />
+            <path refid="run.local.classpath" />
          </classpath>
       </java>
    </target>
