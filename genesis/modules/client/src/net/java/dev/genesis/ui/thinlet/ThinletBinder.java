@@ -80,6 +80,7 @@ public class ThinletBinder {
    }
 
    protected FormController getController(final Object form) {
+      //TODO: use introduction as well
       return new DefaultFormController();
    }
 
@@ -129,6 +130,13 @@ public class ThinletBinder {
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
+      if (!(form instanceof FormMetadataFactory)) {
+         throw new IllegalArgumentException(form + " should implement " + 
+               "FormMetadataFactory; probably it should have been annotated " +
+               "with @Form or your aop.xml/weaving process should be " +
+               "properly configured.");
+      }
+
       return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
    }
 
