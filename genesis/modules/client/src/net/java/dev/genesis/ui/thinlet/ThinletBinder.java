@@ -393,6 +393,7 @@ public class ThinletBinder implements FormControllerListener {
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
+         metadata.resetSelectedFields(form);
          thinlet.populateFromCollection(component, items);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
@@ -415,8 +416,6 @@ public class ThinletBinder implements FormControllerListener {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
       }
-
-      metadata.resetSelectedFields(form);
    }
 
    private boolean isBlank(Object component, String name) {

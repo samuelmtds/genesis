@@ -1,17 +1,17 @@
 /*
  * The Genesis Project
  * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -114,7 +114,7 @@ public class FormMetadataFactoryTest extends TestCase {
       assertNull(fieldField.getEnabledCondition());
 
       assertNull(descriptionField.getEnabledCondition());
-      
+
       assertNull(saveMethod.getEnabledCondition());
       assertNull(resetMethod.getEnabledCondition());
       assertEquals("string-length(normalize-space(description)) != 2", cancelMethod
@@ -134,20 +134,20 @@ public class FormMetadataFactoryTest extends TestCase {
       assertNull(cancelMethod.getVisibleCondition());
       assertNull(descriptionField.getVisibleCondition());
    }
-   
+
    public void testValidateBefore() {
       assertTrue(saveMethod.isValidateBefore());
       assertFalse(resetMethod.isValidateBefore());
       assertFalse(cancelMethod.isValidateBefore());
    }
-   
+
    public void testCallWhen(){
       assertEquals("string-length(normalize-space(description)) != 3",
             calculateMethod.getCallCondition().toString());
       assertEquals("string-length(normalize-space(description)) != 4",
             provideSomeListMethod.getCallCondition().toString());
    }
-   
+
    public void testDataProvider(){
       FieldEntry objectField = provideSomeListMethod.getDataProviderMetadata().getObjectField();
       assertEquals("name", objectField.getFieldName());
@@ -272,13 +272,12 @@ public class FormMetadataFactoryTest extends TestCase {
        * @Condition
        * 		codeCondition=string-length(normalize-space(code)) != 1
        * @ClearOn
-       * 		string-length(normalize-space(code)) != 1 
+       * 		string-length(normalize-space(code)) != 1
        * @EnabledWhen
        * 		string-length(normalize-space(code)) != 0
        * @EqualityComparator
        * 		trim=true
        * @EmptyResolver
-       * @DisplayOnly
        */
       public String getCode() {
          return code;
@@ -378,7 +377,7 @@ public class FormMetadataFactoryTest extends TestCase {
       public void cancel() {
 
       }
-      
+
       /**
        * @Action
        * @CallWhen
@@ -386,7 +385,7 @@ public class FormMetadataFactoryTest extends TestCase {
        */
       public void calculate() {
       }
-      
+
       /**
        * @DataProvider objectField=name
        * @CallWhen
@@ -395,14 +394,14 @@ public class FormMetadataFactoryTest extends TestCase {
       public List provideSomeList() {
          return new ArrayList();
       }
-      
+
       /**
        * @DataProvider objectField=ids
        */
       public List provideAnotherList() {
          return new ArrayList();
       }
-      
+
       /**
        * @DataProvider objectField=codes
        */
