@@ -22,30 +22,28 @@ import java.util.Map;
 
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
-import org.codehaus.aspectwerkz.MethodTuple;
+
+import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
+import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
-import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
 /**
- * @Aspect perJVM
+ * @Aspect("perJVM")
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    private static final String CRITERIA_ATTRIBUTE = "Criteria";
    
    private boolean useOriginalMethod;
 
-   public CriteriaCommandExecutionAspect(CrossCuttingInfo ccInfo) {
-      super(ccInfo);
-      
-      useOriginalMethod = "true".equals(ccInfo.getParameter("useOriginalMethod"));
+   public CriteriaCommandExecutionAspect(final AspectContext ctx) {
+      super(ctx);
+      useOriginalMethod = "true".equals(ctx.getParameter("useOriginalMethod"));
    }
 
    /**
-    * @Around criteriaCommandExecution
+    * @Around("criteriaCommandExecution")
     */
    public Object commandExecution(JoinPoint jp) throws Throwable {
       final CriteriaResolver obj = (CriteriaResolver)jp.getTarget();
@@ -57,15 +55,13 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          classNames[i] = classes[i].getName();
       }
 
-      final MethodTuple methodTuple = ((MethodRttiImpl) rtti).getMethodTuple();
-      final String methodName = useOriginalMethod ? methodTuple
-            .getOriginalMethod().getName() : methodTuple.getWrapperMethod()
-            .getName();
+      final String methodName = useOriginalMethod ? rtti.getName() : 
+            rtti.getMethod().getName();
       final Object[] parameterValues = rtti.getParameterValues();
 
-      final UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
+      final UntypedAnnotation annon = (UntypedAnnotation)Annotations
             .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
-      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.getValue());
+      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.value().toString());
       
       return new CriteriaCommandExecutor(obj, methodName, classNames,
             parameterValues, parser.getPersisterClassName(), parser
@@ -131,7 +127,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    /**
-    * @Introduce criteriaResolverIntroduction deployment-model=perInstance
+    * @Mixin(pointcut="criteriaResolverIntroduction", isTransient=false, deploymentModel="perInstance")
     */
    public static class CriteriaResolverImpl implements CriteriaResolver {
       private Map propertiesMap;

@@ -20,27 +20,28 @@ package net.java.dev.genesis.aspect;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+
 import net.java.dev.genesis.command.Query;
 import net.java.dev.genesis.command.Transaction;
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
+
+import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.annotation.Annotations;
 
 public class CommandInvocationAspect {
-   protected final CrossCuttingInfo ccInfo;
-
-   public CommandInvocationAspect(final CrossCuttingInfo ccInfo) {
-      this.ccInfo = ccInfo;
+   protected final AspectContext ctx;
+   
+   public CommandInvocationAspect(AspectContext ctx) {
+      this.ctx = ctx;
    }
-
+   
    /**
-    * @Introduce commandResolverIntroduction deployment-model=perJVM
+    * @Mixin(pointcut="commandResolverIntroduction", isTransient=true, deploymentModel="perJVM")
     */
    public static class CommandResolverImpl implements CommandResolver, Serializable {
       private final boolean useFastMode;
 
-      public CommandResolverImpl(CrossCuttingInfo ccInfo) {
-         useFastMode = (ccInfo.isPrototype()) ? true :
-               !"false".equals(ccInfo.getParameter("useFastMode"));
+      public CommandResolverImpl() {
+         useFastMode = !"false".equals(ParameterizedMixinFactory.getParameter(this, "useFastMode"));
       }
 
       public boolean isRemotable(Method m) {

@@ -27,7 +27,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 
 public class FormControllerFactoryAspect {
    /**
-    * @Introduce formControllerFactoryIntroduction deploymentModel=perInstance
+    * @Mixin(pointcut="formControllerFactoryIntroduction", isTransient=true, deploymentModel="perInstance")
     */
    public static class AspectFormControllerFactory implements FormControllerFactory {
       private FormController controller;

@@ -24,18 +24,18 @@ import java.rmi.RemoteException;
 
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
+
 import net.java.dev.genesis.ejb.CommandExecutor;
 import net.java.dev.genesis.ejb.CommandExecutorHome;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
-import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
 /**
- * @Aspect perJVM
+ * @Aspect("perJVM")
  */
 public class EJBCommandExecutionAspect extends CommandInvocationAspect {
    private static Log log = LogFactory.getLog(EJBCommandExecutionAspect.class);
@@ -44,11 +44,10 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
    private CommandExecutor session;
    private boolean retryOnNoSuchObject;
 
-   public EJBCommandExecutionAspect(CrossCuttingInfo ccInfo) {
-      super(ccInfo);
-
-      if (!ccInfo.isPrototype()) {
-         retryOnNoSuchObject = !"false".equals(ccInfo
+   public EJBCommandExecutionAspect(final AspectContext ctx) {
+      super(ctx);
+      if (!ctx.isPrototype()) {
+         retryOnNoSuchObject = !"false".equals(ctx
                .getParameter("retryOnNoSuchObject"));
       }
    }
@@ -56,7 +55,7 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
    private CommandExecutorHome getHome() throws Exception {
       if (home == null) {
          home = (CommandExecutorHome)PortableRemoteObject.narrow(
-               new InitialContext().lookup(ccInfo.getParameter("jndiName")),
+               new InitialContext().lookup(ctx.getParameter("jndiName")),
                CommandExecutorHome.class);
       }
 
@@ -85,15 +84,14 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
     * @return the resulting object
     * @throws Throwable
     * 
-    * @Around ejbCommandExecution
+    * @Around("ejbCommandExecution")
     */
    public Object commandExecution(final JoinPoint jp) throws Throwable {
       final MethodRtti rtti = (MethodRtti)jp.getRtti();
       final CommandResolver obj = (CommandResolver)jp.getTarget();
       final Class[] classes = rtti.getParameterTypes();
       final String[] classNames = new String[classes.length];
-      final String methodName = ((MethodRttiImpl)rtti).getMethodTuple()
-            .getWrapperMethod().getName();
+      final String methodName = rtti.getName();
       final Object[] parameterValues = rtti.getParameterValues();
 
       for (int i = 0; i < classes.length; i++) {

@@ -74,22 +74,22 @@
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
             <include name="ant*.jar" />
-            <exclude name="asm*.jar" />
-            <include name="concurrent*.jar" />
+            <!--exclude name="asm*.jar" />
+            <include name="concurrent*.jar" /-->
             <include name="dom4j*.jar" />
-            <include name="javassist*.jar" />
+            <!--include name="javassist*.jar" />
             <include name="jrexx*.jar" />
             <include name="junit*.jar" />
-            <include name="managementapi*.jar" />
+            <include name="managementapi*.jar" /-->
             <include name="piccolo*.jar" />
             <include name="qdox*.jar" />
-            <include name="trove*.jar" />
+            <!--include name="trove*.jar" /-->
          </fileset>
       </path>
 
       <path id="shared.dependency.classpath">
          <fileset dir="${genesis.dist}"
-                  includes="genesis-shared-${genesis.version}.jar" />
+                  includes="genesis-shared-annotated-${genesis.version}.jar" />
          <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
@@ -99,9 +99,9 @@
       </path>
 
       <path id="client.dependency.classpath">
-         <path location="${module.shared}/${build.dest}" />
+         <path location="${module.shared}/${annotation.dest}" />
          <fileset dir="${genesis.dist}">
-            <include name="genesis-shared-${genesis.version}.jar" />
+            <include name="genesis-shared-annotated-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
          </fileset>
          <fileset dir="${commons.dist}">

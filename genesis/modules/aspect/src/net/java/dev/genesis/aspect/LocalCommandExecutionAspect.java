@@ -20,30 +20,30 @@ package net.java.dev.genesis.aspect;
 
 import net.java.dev.genesis.command.TransactionalInjector;
 
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
 
 /**
- * @Aspect perThread
+ * @Aspect("perThread")
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
    private final TransactionalInjector injector;
 
-   public LocalCommandExecutionAspect(final CrossCuttingInfo ccInfo) 
+   public LocalCommandExecutionAspect(final AspectContext ctx) 
                                                             throws Exception {
-      super(ccInfo);
+      super(ctx);
 
-      injector = (ccInfo.isPrototype()) ? null : (TransactionalInjector)
-            Class.forName(ccInfo.getParameter("transactionalInjector"), true, 
+      injector = (ctx.isPrototype()) ? null : (TransactionalInjector)
+            Class.forName(ctx.getParameter("transactionalInjector"), true, 
             Thread.currentThread().getContextClassLoader()).newInstance();
-      if (!ccInfo.isPrototype()) {
-         injector.init(ccInfo);
+      if (!ctx.isPrototype()) {
+         injector.init(ctx);
       }
    }
     
    /**
-    * @Around localCommandExecution
+    * @Around("localCommandExecution")
     */
    public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
       final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();

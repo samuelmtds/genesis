@@ -25,13 +25,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFactory;
@@ -50,15 +50,14 @@ import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.annotation.Annotation;
 import org.codehaus.aspectwerkz.annotation.AnnotationInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
+import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
 
 public class FormMetadataFactoryAspect {
    /**
-    * @Introduce formMetadataFactoryIntroduction deploymentModel=perJVM
+    * @Mixin(pointcut="formMetadataFactoryIntroduction", isTransient=true, deploymentModel="perJVM")
     */
    public static class AspectFormMetadataFactory implements FormMetadataFactory {
       private final Map FACTORIES = new HashMap();
@@ -72,9 +71,9 @@ public class FormMetadataFactoryAspect {
       private ScriptFactory scriptFactory;
       private Script script;
       
-      public AspectFormMetadataFactory(CrossCuttingInfo ccInfo) throws Exception {
-         String factoryName = ccInfo.getParameter("scriptFactory");
-         String scriptFactoryProps = ccInfo.getParameter("scriptFactoryProps");
+      public AspectFormMetadataFactory() throws Exception {
+         String factoryName = ParameterizedMixinFactory.getParameter(this, "scriptFactory");
+         String scriptFactoryProps = ParameterizedMixinFactory.getParameter(this, "scriptFactoryProps");
 
          if (factoryName == null) {
             factoryName = "jxpath";
@@ -117,8 +116,8 @@ public class FormMetadataFactoryAspect {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
 
-               final String value = ((UntypedAnnotationProxy) annotation)
-                     .getValue();
+               final String value = ((UntypedAnnotation) annotation)
+                     .value().toString();
                final int equalIndex = value.indexOf('=');
                if (equalIndex > 0) {
                   formMetadata.addNamedCondition(value.substring(0, equalIndex)
@@ -278,7 +277,7 @@ public class FormMetadataFactoryAspect {
                   final Annotation annotation) {
 
                final Map attributesMap = GenesisUtils.getAttributesMap(
-                     ((UntypedAnnotationProxy) annotation).getValue());
+                     ((UntypedAnnotation) annotation).value().toString());
                final String widgetName = (String)attributesMap
                      .get("widgetName");
                final String objectFieldName = (String)attributesMap
@@ -409,8 +408,8 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEqualityComparator(getEqualityComparator(
-                     fieldMetadata, ((UntypedAnnotationProxy) annotation)
-                           .getValue()));
+                     fieldMetadata, ((UntypedAnnotation) annotation)
+                           .value().toString()));
             }
 
             public void processMethodAnnotation(
@@ -448,7 +447,7 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEmptyResolver(getEmptyResolver(fieldMetadata,
-                     ((UntypedAnnotationProxy) annotation).getValue()));
+                     ((UntypedAnnotation) annotation).value().toString()));
             }
 
             public void processMethodAnnotation(
@@ -489,8 +488,8 @@ public class FormMetadataFactoryAspect {
                      .getFieldClass());
                fieldMetadata.setConverter(converter);
                fieldMetadata.setEmptyValue(converter.convert(fieldMetadata
-                     .getFieldClass(), ((UntypedAnnotationProxy) annotation)
-                     .getValue()));
+                     .getFieldClass(), ((UntypedAnnotation) annotation)
+                     .value().toString()));
             }
 
             public void processMethodAnnotation(
@@ -540,7 +539,7 @@ public class FormMetadataFactoryAspect {
          }
 
          private static ScriptExpression compile(Script script, Annotation annon) {
-            return compile(script, ((UntypedAnnotationProxy)annon).getValue());
+            return compile(script, ((UntypedAnnotation)annon).value().toString());
          }
          
          private static ScriptExpression compile(Script script, String value) {

@@ -19,14 +19,14 @@
 package net.java.dev.genesis.aspect;
 
 import net.java.dev.genesis.exception.TimeoutException;
-import org.apache.commons.logging.Log;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
 /**
- * @Aspect perThread
+ * @Aspect("perThread")
  */
 public class TimeoutAspect {
    private static final Log log = LogFactory.getLog(TimeoutAspect.class);
@@ -127,14 +127,14 @@ public class TimeoutAspect {
    private final boolean keepThreadInstance;
    private WorkerThread thread;
    
-   public TimeoutAspect(final CrossCuttingInfo ccInfo) {
-      this.timeout = Long.parseLong(ccInfo.getParameter("timeout"));
+   public TimeoutAspect(final AspectContext ctx) {
+      this.timeout = Long.parseLong(ctx.getParameter("timeout"));
       this.keepThreadInstance = "true".equals(
-            ccInfo.getParameter("keepThreadInstance"));
+            ctx.getParameter("keepThreadInstance"));
    }
    
    /**
-    * @Around timeout
+    * @Around("timeout")
     */
    public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
       if (thread == null) {

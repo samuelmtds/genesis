@@ -18,16 +18,8 @@
  */
 package net.java.dev.genesis.aspect;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
-
-import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 /**
  * @deprecated Use net.java.dev.genesis.aspect.ViewMetadataFactoryAspect instead. 
@@ -38,7 +30,7 @@ public class ThinletMetadataFactoryAspect {
     * @deprecated Use net.java.dev.genesis.aspect.ViewMetadataFactoryAspect$AspectViewMetadataFactory 
     *             instead. This class will be removed in the next major genesis 
     *             release.
-    * @Introduce thinletMetadataFactoryIntroduction deploymentModel=perJVM
+    * @Mixin(pointcut="thinletMetadataFactoryIntroduction", isTransient=true, deploymentModel="perJVM")
     */
    public static class AspectThinletMetadataFactory extends
          ViewMetadataFactoryAspect.AspectViewMetadataFactory {
