@@ -27,9 +27,9 @@
          </p>
          <ul>
             <li><a href="#Genesis Server">Genesis Server</a></li>
-            <li><a href="#Genesis Server">Genesis Client</a></li>
-            <li><a href="#Genesis Server">Genesis Shared</a></li>
-            <li><a href="#Genesis Server">Genesis Aspect</a></li>
+            <li><a href="#Genesis Client">Genesis Client</a></li>
+            <li><a href="#Genesis Shared">Genesis Shared</a></li>
+            <li><a href="#Genesis Aspect">Genesis Aspect</a></li>
          </ul>
       </section>
       <section name="Genesis Server">
