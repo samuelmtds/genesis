@@ -44,7 +44,7 @@ public class ELScriptContext implements ScriptContext, VariableResolver,
       this.evaluator = evaluator;
       variables.put("form", root);
       registerFunctions("", Functions.class);
-      registerFunctions("genesis", getFunctions());
+      registerFunctions("g", getFunctions());
    }
 
    public void registerFunctions(String prefix, Object obj) {

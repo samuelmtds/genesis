@@ -142,8 +142,8 @@
           </tr>
           <tr>
             <th>EL</th>
-            <td>genesis:isEmpty("form:formField")</td>
-            <td>genesis:isNotEmpty("form:formField")</td>
+            <td>g:isEmpty("form:formField")</td>
+            <td>g:isNotEmpty("form:formField")</td>
           </tr>
         </table>
       </subsection>
@@ -172,8 +172,8 @@
           </tr>
           <tr>
             <th>EL</th>
-            <td>genesis:equals("form:formField", "form:otherField")</td>
-            <td>genesis:notEquals("form:formField", "form:otherField")</td>
+            <td>g:equals("form:formField", "form:otherField")</td>
+            <td>g:notEquals("form:formField", "form:otherField")</td>
           </tr>
         </table>
       </subsection>
@@ -204,8 +204,8 @@
           </tr>
           <tr>
             <th>EL</th>
-            <td>genesis:hasChanged("form:campoDoForm")</td>
-            <td>genesis:hasNotChanged("form:campoDoForm")</td>
+            <td>g:hasChanged("form:campoDoForm")</td>
+            <td>g:hasNotChanged("form:campoDoForm")</td>
           </tr>
         </table>
       </subsection>
