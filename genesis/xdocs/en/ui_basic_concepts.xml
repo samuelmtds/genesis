@@ -354,7 +354,7 @@ public class LoginView extends BaseDialogThinlet {
       should be implemented on the form class using <code>@Action</code>. If the
       response to a certain event is simply to display a new window, dialog or
       some API-specific task, it should be implemented on the view and triggered
-      by an <code>action="metodo()"</code> construction. However, there are
+      by an <code>action="method()"</code> construction. However, there are
       occasions that are not so simple and when it's necessary to manipulate
       both the form and the view. These cases are considered below.</p>
       <subsection name="Using @BeforeAction">
