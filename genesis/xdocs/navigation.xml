@@ -23,6 +23,7 @@
     </links>
     <menu name="genesis">
       <item name="Visão geral" href="/index.html" />
+      <item name="Screenshots" href="/screenshots.html" />
     </menu>
     <menu name="Documentação">
       <item name="Manual do usuário" collapse="true"
