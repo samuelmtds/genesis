@@ -648,6 +648,9 @@ public class ExemploDataProviderForm {
         <li><b>blank</b>: inclui uma linha em branco como primeira opção da
         combobox. Não é requerida e tem como valor padrão <code>false</code>.
         </li>
+        <li><b>blankLabel</b>: define o texto a ser exibido na linha em branco.
+        Não é requerida, tem como valor padrão uma <code>String</code> vazia e
+        só é usada quando <code>blank=true</code>.</li>
       </ul>
       <p>Conforme indicado pelo valor do atributo <code>objectField</code>, a
       propriedade <code>estado</code> conterá a instância de <code>Estado</code>

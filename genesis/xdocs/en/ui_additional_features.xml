@@ -632,6 +632,10 @@ public class DataProviderFormExample {
         <code>net.java.dev.reusablecomponents.lang.Enum</code>.</li>
         <li><b>blank</b>: includes a blank line as the first combobox option.
         It's not required and its default value is <code>false</code>.</li>
+        <li><b>blankLabel</b>: defines the text to be displayed for the blank
+        line. It's not required, its default value is an empty
+        <code>String</code> and it's only meaningful when
+        <code>blank=true</code>.</li>
       </ul>
       <p>As indicated by <code>objectField</code> value, property
       <code>state</code> will contain the selected <code>State</code> instance
