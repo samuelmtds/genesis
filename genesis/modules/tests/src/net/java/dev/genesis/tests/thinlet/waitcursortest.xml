@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE panel PUBLIC '-//Thinlets 1.0//EN' 'https://thinlet.dev.java.net/thinlet.dtd'>
-<panel gap="20" top="10" left="10" bottom="10" right="10" weightx="1" 
-	columns="1" halign="center" >
-	<button name="test" text="Click here to proceed with the test" action="someAction()" weightx="0" 
-		font="bold" type="default" halign="center" valign="center" />
-</panel>
