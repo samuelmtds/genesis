@@ -50,7 +50,7 @@ import thinlet.Thinlet;
 public class ThinletBinder {
    private static final Log log = LogFactory.getLog(ThinletBinder.class);
    /* these are not alphabetically ordered by accident or mere readability;
-     it's needed so that binary searching works with me */
+     it's needed so that binary searching works with them */
    private static final String[] supportedFieldWidgets = new String[] {
          BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LABEL, BaseThinlet.LIST,
          BaseThinlet.PASSWORD_FIELD, BaseThinlet.SLIDER, BaseThinlet.SPINBOX, 
