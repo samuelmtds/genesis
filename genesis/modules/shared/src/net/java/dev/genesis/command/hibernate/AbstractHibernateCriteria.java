@@ -25,17 +25,37 @@ import net.sf.hibernate.Criteria;
 
 public class AbstractHibernateCriteria extends AbstractHibernateCommand
       implements HibernateCriteria {
-
    private Criteria criteria;
+   private int resultsPerPage;
+
+   public AbstractHibernateCriteria() {
+      this(10);
+   }
+
+   public AbstractHibernateCriteria(final int resultsPerPage) {
+      this.resultsPerPage = resultsPerPage;
+   }
 
    public void setCriteria(final Criteria criteria) {
       this.criteria = criteria;
    }
 
-   public Criteria getCriteria() {
+   protected Criteria getCriteria() {
       return criteria;
    }
-   
+
+   protected int getResultsPerPage() {
+      return resultsPerPage;
+   }
+
+   protected void setResultsPerPage(int resultsPerPage) {
+      this.resultsPerPage = resultsPerPage;
+   }
+
+   protected Page getPage(final int pageNumber) throws PagingException {
+      return getPage(pageNumber, resultsPerPage);
+   }
+
    protected Page getPage(final int pageNumber, final int resultsPerPage)
          throws PagingException {
       return new CriteriaPager(criteria).getPage(pageNumber, resultsPerPage);
