@@ -21,6 +21,9 @@ package net.java.dev.genesis.tests.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.converters.IntegerConverter;
+import org.apache.commons.beanutils.converters.StringConverter;
+
 import net.java.dev.genesis.equality.DefaultEqualityComparator;
 import net.java.dev.genesis.equality.StringEqualityComparator;
 import net.java.dev.genesis.resolvers.DefaultEmptyResolver;
@@ -31,29 +34,21 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.IntegerConverter;
-import org.apache.commons.beanutils.converters.StringConverter;
-
 public class FormMetadataFactoryTest extends TestCase {
 
-   FieldMetadata codeField;
-   FieldMetadata nameField;
-   FieldMetadata objField;
-   FieldMetadata numberField;
-   FieldMetadata fieldField;
-   FieldMetadata descriptionField;
-   ActionMetadata saveMethod;
-   ActionMetadata resetMethod;
-   ActionMetadata cancelMethod;
-   ActionMetadata calculateMethod;
-   DataProviderMetadata provideSomeListMethod;
-   DataProviderMetadata provideAnotherListMethod;
-   DataProviderMetadata provideCodesListMethod;
-
-   static {
-      ConvertUtils.register(ConvertUtils.lookup(String.class), Object.class);
-   }
+   private FieldMetadata codeField;
+   private FieldMetadata nameField;
+   private FieldMetadata objField;
+   private FieldMetadata numberField;
+   private FieldMetadata fieldField;
+   private FieldMetadata descriptionField;
+   private ActionMetadata saveMethod;
+   private ActionMetadata resetMethod;
+   private ActionMetadata cancelMethod;
+   private ActionMetadata calculateMethod;
+   private DataProviderMetadata provideSomeListMethod;
+   private DataProviderMetadata provideAnotherListMethod;
+   private DataProviderMetadata provideCodesListMethod;
 
    public void setUp() throws Exception {
       super.setUp();

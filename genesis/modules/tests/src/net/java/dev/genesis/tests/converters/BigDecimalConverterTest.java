@@ -20,21 +20,17 @@ package net.java.dev.genesis.tests.converters;
 
 import java.math.BigDecimal;
 
-import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
 import net.java.dev.genesis.tests.TestCase;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 
-
-
 public class BigDecimalConverterTest extends TestCase {
 
    public void testBigDecimalConverter() {
-      ConvertUtils.register(new BigDecimalConverter(), BigDecimal.class);
       BigDecimal bigDecimal = new BigDecimal("5.2");
 
-      final Converter converter = ConvertUtils.lookup(bigDecimal.getClass());
+      final Converter converter = ConvertUtils.lookup(BigDecimal.class);
 
       assertTrue(new BigDecimal("0.0").compareTo((BigDecimal) converter
             .convert(BigDecimal.class, "0,0")) == 0);

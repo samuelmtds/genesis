@@ -20,6 +20,10 @@ package net.java.dev.genesis.tests;
 
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.PropertyUtilsBean;
+
+import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.util.GenesisUtils;
@@ -27,11 +31,10 @@ import net.java.dev.genesis.util.GenesisUtils;
 
 public class TestCase extends junit.framework.TestCase {
 
-	public void setUp() throws Exception {
-	}
-
-	public void tearDown() throws Exception {
-	}
+   static {
+      BeanUtilsBean.setInstance(new BeanUtilsBean(new ConverterRegistry(),
+            new PropertyUtilsBean()));
+   }
 
 	protected FormMetadata getFormMetadata(final Object form) {
 		return ((FormMetadataFactory) form).getFormMetadata(form.getClass());

@@ -29,8 +29,7 @@ public class Registry {
    }
 
    public Object get(Class clazz) {
-      return clazz.isPrimitive() ? registry.get(Object.class) : registry
-            .get(clazz);
+      return registry.get(clazz);
    }
 
    public Object get(Class clazz, boolean superClass) {

@@ -48,6 +48,10 @@ public class RegistryFactory extends Registry {
       }
    }
 
+   public Object get(Class clazz) {
+      return clazz.isPrimitive() ? super.get(Object.class) : super.get(clazz);
+   }
+
    public Object getNewInstance(final String className, final Map attributesMap) {
       try {
          final Object instance = ClassesCache.getClass(className).newInstance();
