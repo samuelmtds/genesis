@@ -22,115 +22,73 @@
 	 
 	Alguns tags são válidos em mais de um escopo.
 	</p>
-
-<table>
-	<tr>
+	<p>
+	<table>
+		<tr>
 			<th>Elemento do genesis</th>
-			<th>Forms</th>
-			<th>Views</th>
-			<th>Commands</th>
-	</tr>
-	<tr>
-		<td>
-		<table>
-			<tr>
-				<th>
-					Escopo
-				</th>
-							
-			</tr>
-			<tr>
-				<td></td>			
-			</tr>
-		</table>			
-		</td>		
-		<td>
-		<table>
-			<tr>
-				<th>Classe</th>
-				<th>Atributo</th>
-				<th>Método</th>
-				
-			</tr>
-			<tr>
-				<td>
-					<ul>
-						<li><a href="#@Form">@Form</a></li>
-						<li><a href="#@Condition">@Condition</a></li>
-					</ul>
-				</td>
-				<td>
-					<ul>
-						<li><a href="#@Condition">@Condition</a></li>
-						<li><a href="#@EnabledWhen">@EnabledWhen</a></li>
-						<li><a href="#@VisibleWhen">@VisibleWhen</a></li>
-						<li><a href="#@EqualityComparator">@EqualityComparator</a></li>
-						<li><a href="@EmptyResolver">@EmptyResolver</a></li>
-					</ul>
-				</td>
-				<td>
-					<ul>
-						<li><a href="@Action">@Action</a></li>
-						<li><a href="@DataProvider">@DataProvider</a></li>
-					</ul>
-				</td>
-			</tr>
-		</table>			
-		</td>		
-		<td>
-		<table>
-			<tr>
-				<th>Classe</th>
-				<th>Atributo</th>
-				<th>Método</th>
-			</tr>
-			<tr>
-				<td>
-				</td>
+			<th>Escopo</th>
+			<th>Tag</th>
+		</tr>
+		<tr>
+			<td>Forms</td>
+			<td>Classe</td>
+			<td>
+				<ul>
+					<li><a href="#@Form">@Form</a></li>
+					<li><a href="#@Condition">@Condition</a></li>
+				</ul>
+			</td>
 			
-				<td>
-				</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Atributo</td>
+			<td>
+				<ul>
+					<li><a href="#@Condition">@Condition</a></li>
+					<li><a href="#@EnabledWhen">@EnabledWhen</a></li>
+					<li><a href="#@VisibleWhen">@VisibleWhen</a></li>
+					<li><a href="#@EqualityComparator">@EqualityComparator</a></li>
+					<li><a href="#@EmptyResolver">@EmptyResolver</a></li>
+				</ul>
+			</td>
 			
-				<td>
-					<ul>
-						<li><a href="@PreAction">@PreAction</a></li>
-						<li><a href="@PosAction">@PosAction</a></li>
-					</ul>
-				</td>
-			</tr>
-		</table>			
-		</td>		
-		<td>
-		<table>
-			<tr>
-				<th>Classe</th>
-				<th>Atributo</th>
-				<th>Método</th>
-			</tr>
-			<tr>
-				<td>
-					<ul>
-						<li><a href="@Criteria">@Criteria</a></li>
-					</ul>
-				</td>
-			
-				<td>
-				</td>
-			
-				<td>
-					<ul>
-						<li><a href="@Remotable">@Remotable</a></li>
-						<li><a href="@Transactional">@Transactional</a></li>
-					</ul>
-				</td>
-				
-			</tr>
-		</table>			
-		</td>		
-	</tr>
-</table>
-
-	<subsection name="Funções JXPath do genesis">
+		</tr>
+		<tr>
+			<td></td>
+			<td>Método</td>
+			<td>
+				<ul>
+					<li><a href="#@Action">@Action</a></li>
+					<li><a href="#@DataProvider">@DataProvider</a></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>View</td>
+			<td>Método</td>
+			<td>
+				<ul>
+					<li><a href="#@PreAction">@PreAction</a></li>
+					<li><a href="#@PosAction">@PosAction</a></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Command</td>
+			<td>Método</td>
+			<td>
+				<ul>
+					<li><a href="#@Remotable">@Remotable</a></li>
+					<li><a href="#@Transactional">@Transactional</a></li>
+					<li><a href="#@Criteria">@Criteria</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+	</p>
+</section>
+<section name="Funções JXPath do genesis">
 	<p>
 		Além dos tags, foram implementadas funções de extensão ao JXPath:
 		<ul>
@@ -143,11 +101,10 @@
 		Podem ser usadas pelas anotações que precisam de expressões JXPath booleanas.
 		O <b>g:</b> indica o namespace do genesis. As funções core do JXPath não tem namespace.
 	</p>
-	</subsection>
 	
 	<subsection name="g:isEmpty(any), g:isNotEmpty(any)">
 	<p>
-		Verifica se um objeto esta vazio. Usa o <a href="EmptyResolver">EmptyResolver</a> quando disponível.
+		Verifica se um objeto esta vazio. Usa o <a href="#@EmptyResolver">@EmptyResolver</a> quando disponível.
 		Recebe como argumento um numero, uma string, uma função do JXPath
 		que retorna um objeto qualquer, ou o nome de um campo no form.
 	</p>
@@ -155,7 +112,7 @@
 	
 	<subsection name="g:equals(any,any), g:notEquals(any,any)">
 	<p>
-		Verifica se dois objetos são iguais. Usa os <a href="@EqualityComparator">@EqualityComparator</a>'s caso existam, 
+		Verifica se dois objetos são iguais. Usa os <a href="#@EqualityComparator">@EqualityComparator</a>'s caso existam, 
 		para efetuar a comparação.
 		Recebe como argumentos numeros, strings, funções do JXPath
 		que retornam um objeto qualqer, ou nomes de campos no form.
@@ -167,7 +124,8 @@
 	 Verifica se um campo do form foi alterado ou não. O parâmetro tem que ser o nome de um campo do form.
 	</p>	
 	</subsection>
-	
+</section>
+<section name="Referência">
 <subsection name="@Form">
 	<p>
 		Indica que a classe é um Form e suporta os annotation definidos no genesis (@Action,etc).
@@ -195,7 +153,7 @@
 <subsection name="@Condition">
 	<p>
 		Declara uma variavel de condição que pode ser usada em qualquer lugar.Essa condição tem um nome e 
-		uma expressão JXPath booleana. A variavel e acessada depois em outras annota?ões como $nomeDaVariavel. 
+		uma expressão JXPath booleana. A variavel e acessada depois em outras annotações como $nomeDaVariavel. 
 		Pode estar no escopo da classe (junto com as anotações de @Form)
 	</p>
 	<table>
@@ -238,7 +196,7 @@
 		</tr>	
 		<tr>
 			<td>objectField = </td>
-			<td>texto do nomeDoWidgetEnomeDoAtributoDoForm</td>
+			<td>texto do nomeDoWidget (que também é o nomeDoAtributoDoForm)</td>
 			<td>@DataProvider objectField=users indexField=usersId</td>
 			<td>Nome do widget da GUI que sera atualizado com o resultado retornado pelo metodo. 
 			Nome do campo do form que mantem o conteúdo dos registros selecionados na GUI.</td>
@@ -246,7 +204,7 @@
 		</tr>	
 		<tr>
 			<td>indexField = </td>
-			<td>nomeDoWidgetEnomeDoAtributoDoForm</td>
+			<td>nomeDoWidget (que também é o nomeDoAtributoDoForm)</td>
 			<td>@DataProvider objectField=users indexField=usersId</td>
 			<td>Nome do widget da GUI que sera atualizado com o resultado retornado 
 			pelo metodo sendo esta interpretada como uma coleção de índices. 
@@ -259,9 +217,11 @@
 
 	<subsection name="@EnabledWhen">
 	<p>
-		Mantem uma expressão JXPath booleana. Pode ser usado para atributos do form, anontando nos gets. 
+		Habilita ou deshabilita um widget em função do resultado de uma expressão JXPath booleana. 
+		Pode ser usado para atributos do form, anontando nos gets. 
 		Pode ser usado para actions (metodos). Pode usar variaveis de <a href="@Condition">@Condition</a> definidos 
 		ateriormente.
+		Para acessar atributos do form, é só colocar o nome do atributo sem o $.
 		Por exemplo, se o action for representado por um widget de botao, ele vai habilitar ou deshabilitar o botão.
 	</p>
 	<table>
@@ -274,17 +234,22 @@
 		</tr>	
 		<tr>
 			<td>variável ou expressão JXPath booleana</td>
+			<td>texto</td>
+			<td>@EnabledWhen $usersSelected</td>
 			<td>texto de uma expressão JXPath booleana válida</td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><b>Sim</b></td>
 		</tr>	
 	</table>
 </subsection>
 
 <subsection name="@VisibleWhen">
 	<p>
-		bla,bla
+		Apresenta ou esconde um widget em função do resultado de uma expressão JXPath booleana. 
+		Pode ser usado para atributos do form, anontando nos gets. 
+		Pode ser usado para actions (metodos). Pode usar variaveis de <a href="@Condition">@Condition</a> definidos 
+		ateriormente.
+		Para acessar atributos do form, é só colocar o nome do atributo sem o $.
+		Por exemplo, se o action for representado por um widget de botao, ele vai apresentar ou esconder o botão.
 	</p>
 	<table>
 		<tr>
@@ -295,18 +260,22 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>variável ou expressão JXPath booleana</td>
+			<td>texto</td>
+			<td>@VisibleWhen pageNumber > 0</td>
+			<td>texto de uma expressão JXPath booleana válida</td>
+			<td><b>Sim</b></td>
 		</tr>	
 	</table>
 </subsection>
 
 <subsection name="@EqualityComparator">
 	<p>
-		bla,bla
+	Anotação colocada antes de atributos do form (antes dos métodos get).
+	Identifica a classe que sabe comparar elmentos do tipo do atributo. 
+	Tem como parâmetro o nome java completo (fully qualified name) da classe que implementa 
+	a interface net.java.dev.genesis.equality.EqualityComparator.
+	É usado pela função g:equals() e g:notEquals(). Pode ter mais parâmetros dependendo da função de comparação.
 	</p>
 	<table>
 		<tr>
@@ -317,18 +286,22 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>class=</td>
+			<td>Fully qualified class name</td>
+			<td>TODO: Falta exemplo</td>
+			<td>Nome java completo da classe que implementa a interface EqualityComparator.</td>
+			<td><b>sim</b></td>
 		</tr>	
 	</table>
 </subsection>
 
 <subsection name="@EmptyResolver">
 	<p>
-		bla,bla
+	Anotação colocada antes de atributos do form (antes dos métodos get).
+	Identifica a classe que sabe comparar elmentos do tipo do atributo. 
+	Tem como parâmetro o nome java completo (fully qualified name) da classe que implementa 
+	a interface net.java.dev.genesis.equality.EqualityComparator.
+	É usado pela função g:isEmpty() e g:isNotEmpty(). Pode ter mais parâmetros dependendo da função de comparação.
 	</p>
 	<table>
 		<tr>
@@ -339,18 +312,36 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>class=</td>
+			<td>Fully qualified class name</td>
+			<td>TODO: Falta exemplo</td>
+			<td>Nome java completo da classe que implementa a interface EqualityComparator.</td>
+			<td><b>sim</b></td>
 		</tr>	
 	</table>
 </subsection>
 
 <subsection name="@Action">
 	<p>
-		bla,bla
+	Define um método como alvo de uma interação de um widget da GUI. 
+	A ação pode ser um widget (ex: botão) e/ou algo que é disparado quando alguma condição e satisfeita.
+	O nome do widget tem que ser o mesmo que o nome do método no form.
+	Por exemplo:
+	</p>
+	<source>
+	<![CDATA[   
+	/**
+	* @Action
+	* @EnabledWhen $usersSelected
+	*/
+	public void update() throws Exception {
+	}
+	]]>
+	</source>
+	<p>
+	define o método <b>update</b> como alvo do acionamento de um widget com nome "update" na GUI.
+	Se usamos Thinlet como GUI, e em outro widget colocamos por exemplo: <b><i>perform="action(update)"</i></b>
+	faremos o equivalente a pressionar o botão "update".
 	</p>
 	<table>
 		<tr>
@@ -361,7 +352,7 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
+			<td>Não utiliza</td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -372,7 +363,11 @@
 
 <subsection name="@PreAction">
 	<p>
-		bla,bla
+	Se aplica a métodos de um elemento View. Os elementos View são classes que extendem alguma 
+	das GUIs disponíveis. Atualmente, uma view é uma classe que herda da classe genesis BaseThinlet (ou BaseDialogThinlet)
+	A anotação @PreAction se aplica ao método da view que quero que seja executado <b>antes</b> de acontecer o @Action.
+	O método deve possuir o mesmo nome da @Action.
+	@PreAction e @PosAction são exclusivos. Para um determinado @Action, só é possivel definir um @PreAction ou um @PosAction. 
 	</p>
 	<table>
 		<tr>
@@ -383,7 +378,7 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
+			<td>Não utiliza</td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -394,29 +389,11 @@
 
 <subsection name="@PosAction">
 	<p>
-		bla,bla
-	</p>
-	<table>
-		<tr>
-			<th>Parâmetros</th>
-			<th>Tipo</th>
-			<th>Uso</th>
-			<th>Descrição</th>
-			<th>Obrigatório</th>
-		</tr>	
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>	
-	</table>
-</subsection>
-
-<subsection name="@Criteria">
-	<p>
-		bla,bla
+	Se aplica a métodos de um elemento View. Os elementos View são classes que extendem alguma 
+	das GUIs disponíveis. Atualmente, uma view é uma classe que herda da classe genesis BaseThinlet (ou BaseDialogThinlet)
+	A anotação @PreAction se aplica ao método da view que quero que seja executado <b>depois</b> de acontecer o @Action.
+	O método deve possuir o mesmo nome da @Action.
+	@PreAction e @PosAction são exclusivos. Para um determinado @Action, só é possivel definir um @PreAction ou um @PosAction. 
 	</p>
 	<table>
 		<tr>
@@ -438,7 +415,22 @@
 
 <subsection name="@Remotable">
 	<p>
-		bla,bla
+	Utilizado para anotar métodos de classes de negócio (Command).
+	Os métodos anotados com @Remotable são interceptados através de um aspecto (genesis-aspect) 
+	que transfere a instância em que o método foi invocado para o servidor, executando-o ali 
+	e transferindo o resultado de volta para o cliente. 
+	Essa característica é chamada de <b>remotabilidade transparente</b>.
+	</p>
+	<p><b>Limitações:</b></p>
+	<p>
+	Existem algumas restrições básicas para que um método possa ser remoto no genesis:
+	<ul>
+	<li>Não pode ser abstrato</li>
+	<li>Não pode ser estático nem manipular membros estáticos</li>
+	<li>Não pode ser nativo</li>
+	<li>Deve ser public e estar em uma classe public</li>
+	</ul>
+	Mais detalhes em <a href="business_component_model.html">modelo de negócios do genesis</a>
 	</p>
 	<table>
 		<tr>
@@ -449,7 +441,7 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
+			<td>Não utiliza</td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -460,7 +452,23 @@
 
 <subsection name="@Transactional">
 	<p>
-		bla,bla
+	Utilizado para anotar métodos de classes de negócio (Command).
+	Os métodos anotados com @Transactional são interceptados através de um aspecto (genesis-aspect) 
+	que transfere a instância em que o método foi invocado para o servidor, executando-o ali 
+	e transferindo o resultado de volta para o cliente. 
+	A execução é efetuada <b>dentro do contexto de uma transação JTA</b>.
+	Todo método anotado como @Transactional é também @Remotable
+	</p>
+	<p><b>Limitações:</b></p>
+	<p>
+	Existem algumas restrições básicas para que um método possa ser remoto no genesis:
+	<ul>
+	<li>Não pode ser abstrato</li>
+	<li>Não pode ser estático nem manipular membros estáticos</li>
+	<li>Não pode ser nativo</li>
+	<li>Deve ser public e estar em uma classe public</li>
+	</ul>
+	Mais detalhes em <a href="business_component_model.html">modelo de negócios do genesis</a>
 	</p>
 	<table>
 		<tr>
@@ -476,6 +484,36 @@
 			<td></td>
 			<td></td>
 			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@Criteria">
+	<p>
+	Hibernate é o mecanismo básico de persistencia no genesis. Embora o Hibernate possua suporte 
+	a pesquisas dinâmicas, isto é, com cláusulas "montadas" ou definidas em tempo de execução 
+	através da interface Criteria, o uso prático desse suporte básico leva a código bastante 
+	repetitivo e difícil de manter. 
+	O genesis possui suporte a pesquisas dinâmicas num nível de abstração mais alto, o que 
+	facilita a implementação delas.
+	O método de negócio que precisa da instância de Criteria  para sua execução recebe a anotação 
+	@Criteria NomeDaClasseMapeadaNoHibernate. 
+	Essa anotação implica que o método também é @Remotable, mantendo assim a remotabilidade transparente.	
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td>NomeDaClasseMapeadaNoHibernate</td>
+			<td>Nome java completo do databean</td>
+			<td>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User</td>
+			<td></td>
+			<td><b>sim</b></td>
 		</tr>	
 	</table>
 </subsection>

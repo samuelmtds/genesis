@@ -30,7 +30,7 @@
         <item name="Arquitetura do Genesis - Server" href="/server_arch.html" />
         <!--item name="Arquitetura do Genesis - Client" href="/client_arch.html" /-->
       </item>
-      <!-- item name="Quick Guide" href="/quickguide.html" /-->
+      <item name="Referência Rápida" href="/quick_reference.html" />
       <!--item name="Guia de Instalação Detalhado" href="/server_installguide.html" /-->
       <!--item name="Tutorial Detalhado" href="/tutorial.html" /-->
       <!--item name="Guia de Referência" href="/referenceguide.html" /-->
