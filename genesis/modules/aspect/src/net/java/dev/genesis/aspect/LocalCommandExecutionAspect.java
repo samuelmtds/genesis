@@ -25,7 +25,7 @@ import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
 
 /**
- * @Aspect perJVM
+ * @Aspect perThread
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
    private final TransactionalInjector injector;
