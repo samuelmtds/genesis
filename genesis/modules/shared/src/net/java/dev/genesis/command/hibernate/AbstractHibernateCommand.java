@@ -78,12 +78,14 @@ public abstract class AbstractHibernateCommand implements HibernateCommand {
 
       for (Iterator i = parameters.entrySet().iterator(); i.hasNext();) {
          e = (Map.Entry) i.next();
+
          if (e.getValue() instanceof HibernateTypeValue) {
             final HibernateTypeValue htv = (HibernateTypeValue) e.getValue();
             q.setParameter(e.getKey().toString(), htv.getValue(), htv
                         .getType());
+         } else {
+            q.setParameter(e.getKey().toString(), e.getValue());
          }
-         q.setParameter(e.getKey().toString(), e.getValue());
       }
 
       if (maxResults > 0) {
