@@ -35,7 +35,7 @@ import example.databeans.User;
 
 /**
  * @Form
- * @Condition countryFilled=g:isNotEmpty(country)
+ * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
  */
 public class InsertUpdateForm {
    private Long id;
@@ -45,6 +45,7 @@ public class InsertUpdateForm {
    private String email;
    private Date birthday;
    private String address;
+   private String roleCode;
    
    private Role role;
    private Country country;
@@ -74,22 +75,29 @@ public class InsertUpdateForm {
       this.email = email;
    }
 
+   /**
+    * @ClearOn g:isEmpty(roleCode)
+    */
    public Role getRole() {
       return role;
    }
-   
+
    public void setRole(Role role) {
       this.role = role;
-   }
-
-   public void setRoleCode(String roleCode) throws Exception {
-      setRole(new RoleSearchCommand().getRole(roleCode));
+      setRoleCode(role == null ? null : role.getCode());
    }
 
    public String getRoleCode(){
-      return this.role == null ? null : role.getCode();
+      return this.roleCode;
    }
 
+   public void setRoleCode(String roleCode) {
+      this.roleCode = roleCode;
+   }
+
+   /**
+    * @ClearOn g:isEmpty(roleCode)
+    */
    public String getRoleLabel(){
       return role == null ? null : role.getLabel();
    }
@@ -184,7 +192,15 @@ public class InsertUpdateForm {
     */
    public void cancel() throws Exception {
    }
-   
+
+   /**
+    * @Action
+    * @CallWhen $findRoleCondition
+    */
+   public void findRole() throws Exception {
+      setRole(new RoleSearchCommand().getRole(roleCode));
+   }
+
    /**
     * @Action
     */

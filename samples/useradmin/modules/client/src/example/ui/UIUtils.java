@@ -57,13 +57,13 @@ public class UIUtils {
       Locale ptBR = new Locale("pt", "BR");
 
       Converter dateConverter = new DateLocaleConverter(null, ptBR,
-            "dd/MM/yyyy");
+            "MM/dd/yyyy");
       ConvertUtils.register(dateConverter, Date.class);
    }
 
    private void setupFormatters() {
       FormatterRegistry.getInstance().register(Date.class,
-            new FormatAdapter(new SimpleDateFormat("dd/MM/yyyy"), true));
+            new FormatAdapter(new SimpleDateFormat("MM/dd/yyyy"), true));
    }
 
 }

@@ -48,32 +48,31 @@ public class RoleListView extends BaseDialogThinlet {
    }
 
    /**
-    * @PostAction cancel
+    * @PosAction
     */
    public void cancel() throws Exception {
       getDialog().dispose();
    }
 
    /**
-    * @PostAction select
+    * @PosAction
     */
    public void select() throws Exception {
       getDialog().dispose();
    }
 
    /**
-    * @PreAction create
+    * @PreAction
     */
    public void create() throws Exception {
       final InsertRoleView thinlet = new InsertRoleView(getFrame());
-      thinlet.display();
-      if (thinlet.hasChanged()) {
+      if (thinlet.showView()) {
          action("provideRoles");
       }
    }
    
    /**
-    * @PostAction remove
+    * @PosAction
     */
    public void remove() throws Exception {
       action("provideRoles");

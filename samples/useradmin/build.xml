@@ -406,6 +406,23 @@
       </java>
    </target>
 
+   <target name="useradmin:run-with-debug">
+      <java classname="example.Sample" fork="true" failonerror="true">
+         <sysproperty key="java.naming.factory.initial"
+                      value="org.jnp.interfaces.NamingContextFactory" />
+         <sysproperty key="java.naming.provider.url"
+                      value="${jboss.provider.url}" />
+         <sysproperty key="aspectwerkz.transform.verbose"
+                      value="true" />
+         <jvmarg value="-Xdebug"/>
+         <jvmarg value="-Xrunjdwp:transport=dt_socket,address=10000,server=y,suspend=n"/>
+         <classpath>
+            <path refid="run.classpath" />
+            <pathelement path="${jboss.home}/client/jbossall-client.jar" />
+         </classpath>
+      </java>
+   </target>
+
    <target name="useradmin:run-with-logging-on">
       <java classname="example.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"

@@ -20,12 +20,12 @@ package example.ui;
 
 import java.awt.Frame;
 
+import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
+
 import org.apache.commons.beanutils.PropertyUtils;
 
 import example.databeans.User;
-
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
 
 public class InsertUpdateView extends BaseDialogThinlet {
    private final InsertUpdateForm form;
@@ -50,12 +50,13 @@ public class InsertUpdateView extends BaseDialogThinlet {
       bind(form);
    }
    
-   public boolean hasChanged() {
-      return this.hasChanged;
+   public boolean showView() throws Exception {
+      display();
+      return hasChanged;
    }
    
    /**
-    * @PreAction chooseRole
+    * @PreAction
     */
    public void chooseRole() throws Exception {
       final RoleListView view = new RoleListView(getFrame());
@@ -64,7 +65,7 @@ public class InsertUpdateView extends BaseDialogThinlet {
    }
    
    /**
-    * @PostAction save
+    * @PosAction
     */
    public void save() {
       getDialog().dispose();
@@ -72,7 +73,7 @@ public class InsertUpdateView extends BaseDialogThinlet {
    }
    
    /**
-    * @PostAction cancel
+    * @PosAction
     */
    public void cancel(){
       getDialog().dispose();

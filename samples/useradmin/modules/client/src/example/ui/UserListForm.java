@@ -32,8 +32,8 @@ import example.databeans.User;
  */
 public class UserListForm implements Serializable {
    private static final int RESULTS_PER_PAGE = 10;
+   private Page page;
    private int pageNumber = 1;
-   private boolean lastPage = true;
 
    private String name;
    private String login;
@@ -66,19 +66,11 @@ public class UserListForm implements Serializable {
    }
 
    public boolean isLastPage() {
-      return lastPage;
-   }
-
-   public void setLastPage(boolean lastPage) {
-      this.lastPage = lastPage;
+      return page == null || page.isLast();
    }
 
    public int getPageNumber() {
       return pageNumber;
-   }
-
-   public void setPageNumber(int pageNumber) {
-      this.pageNumber = pageNumber;
    }
 
    /**
@@ -103,9 +95,8 @@ public class UserListForm implements Serializable {
    public List search() throws Exception {
       final UserSearchCommand command = new UserSearchCommand();
       CriteriaPropertyHelper.fillCriteria(command, this);
-      Page page = command.getUsers(pageNumber, RESULTS_PER_PAGE);
-      setLastPage(page.isLast());
-      setPageNumber(page.getPageNumber());
+      page = command.getUsers(getPageNumber(), RESULTS_PER_PAGE);
+      pageNumber = page.getPageNumber();
       return page.getResults();
    }
 
@@ -132,7 +123,7 @@ public class UserListForm implements Serializable {
 
    /**
     * @Action
-    * @VisibleWhen g:isNotEmpty(email)
+    * @EnabledWhen g:isNotEmpty(email)
     * 					or g:isNotEmpty(login)
     * 					or g:isNotEmpty(name)
     */

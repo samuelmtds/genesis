@@ -37,24 +37,26 @@ public class InsertRoleView extends BaseDialogThinlet {
       add(parse("insert-role.xml"));
       bind(form = new InsertRoleForm());
    }
+   
+   public boolean showView() throws Exception {
+      display();
+      return hasChanged;
+   }
 
    /**
-    * @PostAction cancel
+    * @PosAction
     */
    public void cancel() {
       getDialog().dispose();
    }
    
    /**
-    * @PostAction save
+    * @PosAction
     */
    public void save() {
       getDialog().dispose();
-      this.hasChanged = true;
+      hasChanged = true;
    }
-   
-   public boolean hasChanged(){
-      return this.hasChanged;
-   }
+
 }
 

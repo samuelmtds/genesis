@@ -58,44 +58,42 @@ public class UserListView extends BaseThinlet {
    }
    
    /**
-    * @PreAction create
+    * @PreAction
     */
    public void create() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame());
-      view.display();
-      if (view.hasChanged()) {
+      if (view.showView()) {
          action("search");
       }
    }
 
    /**
-    * @PreAction update
+    * @PreAction
     */
    public void update() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame(), form
             .getUser());
-      view.display();
-      if (view.hasChanged()) {
+      if (view.showView()) {
          action("search");
       }
    }
    
    /**
-    * @PostAction remove
+    * @PosAction
     */
    public void remove() throws Exception {
       action("search");
    }
    
    /**
-    * @PostAction nextPage
+    * @PosAction
     */
    public void nextPage() throws Exception {
       action("search");
    }
    
    /**
-    * @PostAction previousPage
+    * @PosAction
     */
    public void previousPage() throws Exception {
       action("search");
