@@ -22,7 +22,23 @@
 	</path>
 
 	<path id="aspectwerkz.path">
-		<fileset dir="${genesis.aspectwerkz.dist}" includes="*.jar" />
+      <fileset dir="${genesis.aspectwerkz.dist}">
+         <!-- AspectWerkz jars must be before ASM jars in classpath -->
+         <include name="aspectwerkz*.jar"/>
+      </fileset>
+		<fileset dir="${genesis.aspectwerkz.dist}">
+         <include name="ant*.jar"/>
+         <include name="asm*.jar"/>
+         <include name="concurrent*.jar"/>
+         <include name="dom4j*.jar"/>
+         <include name="javassist*.jar"/>
+         <include name="jrexx*.jar"/>
+         <include name="junit*.jar"/>
+         <include name="managementapi*.jar"/>
+         <include name="piccolo*.jar"/>
+         <include name="qdox*.jar"/>
+         <include name="trove*.jar"/>
+      </fileset>
 	</path>
 
 	<path id="commons.path">

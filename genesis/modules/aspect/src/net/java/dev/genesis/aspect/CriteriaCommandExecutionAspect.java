@@ -46,7 +46,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
     * @Around criteriaCommandExecution
     */
    public Object commandExecution(JoinPoint jp) throws Throwable {
-      final CriteriaResolver obj = (CriteriaResolver)jp.getTargetInstance();
+      final CriteriaResolver obj = (CriteriaResolver)jp.getTarget();
       final MethodRtti rtti = (MethodRtti) jp.getRtti();
       UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
             .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());

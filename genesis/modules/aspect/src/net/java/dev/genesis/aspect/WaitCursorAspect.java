@@ -33,7 +33,7 @@ public class WaitCursorAspect {
     * @Around waitCursorExecution
     */
    public Object waitCursorExecution(final JoinPoint jp) throws Throwable {
-      final BaseThinlet o = (BaseThinlet) jp.getTargetInstance();
+      final BaseThinlet o = (BaseThinlet) jp.getTarget();
       final Cursor oldCursor = o.getCursor();
 
       Object ret = null;

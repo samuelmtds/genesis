@@ -14,7 +14,9 @@
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="within(@Form ..)" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
-      <pointcut name="commandResolverIntroduction" expression="within(net.java.dev.genesis.command.Command+) OR within(net.java.dev.genesis.tests....*$*Command)" />
+      <pointcut name="commandResolverIntroduction"
+         expression="within(net.java.dev.genesis.command.Command+)
+            OR hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
       <pointcut name="timeout" expression="execution(* net.java.dev.genesis.tests....TimeoutTest$*.*(..))" />
       <pointcut name="ejbCommandExecution" expression="executeCommand AND NOT localExecution" />
       <pointcut name="localCommandExecution" expression="executeCommand AND localExecution" />

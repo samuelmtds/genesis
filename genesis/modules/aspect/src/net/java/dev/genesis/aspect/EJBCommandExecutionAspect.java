@@ -60,7 +60,7 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
     public Object commandExecution(final JoinPoint jp) throws Throwable {
         
         final MethodRtti rtti = (MethodRtti)jp.getRtti();
-        final CommandResolver obj = (CommandResolver)jp.getTargetInstance();
+        final CommandResolver obj = (CommandResolver)jp.getTarget();
         try {
             final Class[] classes = rtti.getParameterTypes();
             final String[] classNames = new String[classes.length];

@@ -45,7 +45,7 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
     public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
         
         final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        final CommandResolver obj = (CommandResolver)joinPoint.getTargetInstance();
+        final CommandResolver obj = (CommandResolver)joinPoint.getTarget();
         if(!(obj instanceof HibernateCommand)){
             return joinPoint.proceed();
         }
