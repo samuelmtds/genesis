@@ -18,8 +18,24 @@
  */
 package net.java.dev.genesis.resolvers;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Map;
+
 public class DefaultEmptyResolver implements EmptyResolver {
    public boolean isEmpty(Object o) {
-      return o == null;
+      if(o == null){
+         return true;
+      }
+      if(o.getClass().isArray()){
+         return Array.getLength(o) == 0;
+      }
+      if(o instanceof Collection){
+         return ((Collection)o).isEmpty();
+      }
+      if(o instanceof Map){
+         return ((Map)o).isEmpty();
+      }
+      return false;
    }
 }
