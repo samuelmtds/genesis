@@ -276,7 +276,11 @@ public class ThinletBinder {
          }
       }
       
-      invokeDataProviderMethod(actionMetadata);
+      if (actionMetadata.isProvider()) {
+         invokeDataProviderMethod(actionMetadata);
+      } else {
+         actionMetadata.invoke(form);
+      }
       controller.update();
       updateAndSave(controller.getDataProviderActions(), false);
    }
@@ -402,7 +406,11 @@ public class ThinletBinder {
          }
          
          // TODO: validate before ?
-         invokeDataProviderMethod(actionMetadata);
+         if (actionMetadata.isProvider()) {
+            invokeDataProviderMethod(actionMetadata);
+         } else {
+            actionMetadata.invoke(form);
+         }
       }
    }
 
