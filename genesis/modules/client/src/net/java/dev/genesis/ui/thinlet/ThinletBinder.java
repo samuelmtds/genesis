@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerListener;
@@ -378,8 +379,13 @@ public class ThinletBinder implements FormControllerListener {
       controller.update();
    }
 
+   //TODO: consider optimizing this by only loading stringProperties when the
+   //action requires validation; this may require duplicating some logic in
+   //DefaultFormController (checking for null name, non-valid action etc.)
    public void invokeAction(String name) throws Exception {
-      controller.invokeAction(name);
+      Map stringProperties = ValidationUtils.getInstance().getPropertiesMap(form);
+      thinlet.populate(null, root, stringProperties, false);
+      controller.invokeAction(name, stringProperties);
    }
 
    public void refresh() throws Exception {

@@ -465,7 +465,15 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected void populate(Form bean, Object root, final Map properties) 
          throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-      properties.putAll(BeanUtils.describe(bean));
+      populate(bean, root, properties, true);
+   }
+
+   protected void populate(Object bean, Object root, final Map properties, 
+         final boolean changeBean) throws IllegalAccessException, 
+         InvocationTargetException, NoSuchMethodException {
+      if (changeBean) {
+         properties.putAll(BeanUtils.describe(bean));
+      }
 
       if (root instanceof Thinlet) {
          root = ((Thinlet)root).getDesktop();
@@ -511,13 +519,20 @@ public abstract class BaseThinlet extends Thinlet {
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
             properties.put(propertyName, getValue(component));
+         } else if (type.equals(TABLE)) {
+            // skip it intentionally
          } else {
             properties.put(propertyName, getText(component));
          }
       }
 
-      BeanUtils.populate(bean, properties);
-      bean.afterPopulate();
+      if (changeBean) {
+         BeanUtils.populate(bean, properties);
+
+         if (bean instanceof Form) {
+            ((Form)bean).afterPopulate();
+         }
+      }
    }
 
    protected void populateAndValidate(Form bean) throws IllegalAccessException, 

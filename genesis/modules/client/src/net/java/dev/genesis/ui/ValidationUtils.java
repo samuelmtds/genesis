@@ -185,7 +185,7 @@ public final class ValidationUtils {
       return validator.validate();
    }
 
-   private Map getPropertiesMap(Object form) throws Exception {
+   public Map getPropertiesMap(Object form) throws Exception {
       if (form instanceof Map) {
          return (Map)form;
       }

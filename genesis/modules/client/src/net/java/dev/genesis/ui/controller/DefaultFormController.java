@@ -388,6 +388,7 @@ public class DefaultFormController implements FormController {
       }
    }
 
+   //TODO: merge this logic with evaluateEnabledWhenConditions()
    protected void evaluateVisibleWhenConditions() {
       Map.Entry entry;
       MemberMetadata memberMetadata;
@@ -577,7 +578,7 @@ public class DefaultFormController implements FormController {
       return currentState;
    }
 
-   public void invokeAction(String name) throws Exception {
+   public void invokeAction(String name, Map stringProperties) throws Exception {
       if (name == null) {
          throw new IllegalArgumentException("Cannot invoke null action");
       }
@@ -595,18 +596,18 @@ public class DefaultFormController implements FormController {
                name);
       }
 
-      if (methodMetadata.getActionMetadata() != null && methodMetadata.getActionMetadata().isValidateBefore()) {
-
+      if (methodMetadata.getActionMetadata() != null && methodMetadata
+            .getActionMetadata().isValidateBefore()) {
          final String formName = form.getClass().getName();
 
          final Map validationErrors = ValidationUtils.getInstance()
-               .getMessages(ValidationUtils.getInstance().validate(form, 
-               formName), formName);
+               .getMessages(ValidationUtils.getInstance().validate(
+               stringProperties == null || stringProperties.isEmpty() ?
+               form : stringProperties, formName), formName);
 
          if (!validationErrors.isEmpty()) {
             throw new ValidationException(validationErrors);
          }
-
       } 
 
       invokeActionWithReset(methodMetadata, false, false);
