@@ -24,6 +24,8 @@
         <li><a href="#Entendendo os forms">Entendendo os forms</a></li>
         <li><a href="#Implementando ações no form e na view">Implementando ações
         no form e na view</a></li>
+        <li><a href="#Controlando a interface gráfica e o form condicionalmente"
+        >Controlando a interface gráfica e o form condicionalmente</a></li>
       </ul>
       </p>
     </section>
@@ -600,5 +602,209 @@ public class ExemploInvokeFormActionForm {
 </source>
       </subsection>
     </section>
+    <section name="Controlando a interface gráfica e o form condicionalmente">
+      <p>Um conceito poderoso no genesis é o suporte a condições. Esse suporte
+      permite implementar uma variedade de características, como controle de
+      habilitação/desabilitação de widgets, visibilidade, limpeza automática de
+      campos e chamadas automáticas a métodos. Tudo isso é feito de maneira
+      declarativa no form, sem necessidade de lidar com a API gráfica utilizada
+      para as views.</p>
+      <p>As expressões condicionais são interpretadas com <a href=
+      "http://jakarta.apache.org/commons/jxpath">JXPath</a>. Espera-se expandir
+      o suporte para linguagens de script em geral na versão 0.3. Por ora, as
+      sub-seções abaixo explicam como utilizar essas expressões e tirar proveito
+      das funcionalidades do genesis relacionadas com elas.</p>
+      <subsection name="Declarando condições">
+        <p>Embora todas as anotações que recebem condições JXPath possam receber
+        expressões de qualquer tipo, certas condições podem ser utilizadas
+        repetidas vezes no código ou como parte de outra expressão. Assim, o
+        genesis possibilita a declaração dessas condições e sua exportação como
+        variáveis que podem ser referenciadas em outros pontos do código. Para
+        declarar uma condição utiliza-se a anotação <code>@Condition</code>, que
+        possui a seguinte sintaxe:</p>
+<source>
+@Condition nomeCondicao=expressaoJXPath
+</source>
+        <p>A variável <code>nomeCondicao</code> é exportada de modo a
+        representar a expressão <code>expressaoJXPath</code> em outros pontos do
+        código. Esta anotação pode ser usada tanto na classe, no getter de um
+        atributo ou em um método anotado com <code>@Action</code>. Seu escopo
+        sempre será o de classe, não importando onde ela seja declarada.
+        Obviamente, esta anotação é útil somente quando usada em conjunto com
+        outra anotação condicional, como as mencionadas abaixo.</p>
+      </subsection>
+      <subsection name="Habilitando e desabilitando componentes">
+        <p>É muito comum no desenvolvimento de interfaces gráficas a situação em
+        que determinado campo ou botão só pode estar habilitado quando uma
+        determinada condição é verdade. A fim de simplificar estes casos, o
+        genesis possui uma anotação chamada <code>@EnabledWhen</code>. Esta
+        anotação pode ser utilizada tantos com atributos como com ações. Um
+        exemplo prático do uso encontra-se abaixo:</p>
+<source>
+/**
+ * @Form
+ */
+public class ExemploEnabledWhenForm {
+   private boolean casado;
+   private String nomeConjuge;
+
+   public boolean isCasado() {
+      return casado;
+   }
+
+   public void setCasado(boolean casado) {
+      this.casado = casado;
+   }
+
+   /**
+    * @EnabledWhen casado=true()
+    */
+   public String getNomeConjuge() {
+      return nomeConjuge;
+   }
+
+   public void setNomeConjuge(String nomeConjuge) {
+      this.nomeConjuge = nomeConjuge;
+   }
+}
+</source>
+        <p>No caso acima, somente quando o widget que representa a propriedade
+        <code>casado</code> estiver indicando o valor <code>true</code> para ela
+        é que será possível entrar com o nome do cônjuge, i.e., esposo/esposa da
+        pessoa.</p>
+      </subsection>
+      <subsection name="Controlando a visibilidade">
+        <p>É possível ocultar componentes ou mostrá-los condicionalmente
+        utilizando a anotação <code>@VisibleWhen</code>. Sua sintaxe é
+        semelhante a da anotação <code>@EnabledWhen</code> e também pode ser
+        utilizada tanto para atributos como para ações. Um exemplo de uso com
+        ação encontra-se abaixo:</p>
+<source>
+/**
+ * @Form
+ */
+public class ExemploVisibleWhenForm {
+   private int numeroDependentes;
+
+   public int getNumeroDependentes() {
+      return numeroDependentes;
+   }
+
+   public void setNumeroDependentes(int numeroDependentes) {
+      this.numeroDependentes = numeroDependentes;
+   }
+
+   /**
+    * @Action
+    * @VisibleWhen numeroDependentes > 0
+    */
+   public void calculaTaxasAdicionais() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+        <p>O botão que representa <code>calculaTaxasAdicionais()</code> só
+        estará visível quando o valor da propriedade
+        <code>numeroDependentes</code> for maior que zero.</p>
+      </subsection>
+      <subsection name="Limpando o conteúdo dos campos">
+        <p>Sob diversas condições é necessário limpar o conteúdo de certos
+        campos. O genesis pode fazer isso automaticamente pelo programador
+        através do uso da anotação <code>@ClearOn</code>. Embora sua sintaxe
+        seja semelhante a de <code>@EnabledWhen</code> e
+        <code>@VisibleWhen</code>, esta anotação somente pode ser usada para
+        atributos e não para ações (já que elas não possuem conteúdo). Pode-se
+        modificar um dos exemplos anteriores para torná-lo mais correto:</p>
+<source>
+/**
+ * @Form
+ */
+public class ExemploClearOnForm {
+   private boolean casado;
+   private String nomeConjuge;
+
+   public boolean isCasado() {
+      return casado;
+   }
+
+   public void setCasado(boolean casado) {
+      this.casado = casado;
+   }
+
+   /**
+    * @EnabledWhen casado=true()
+    * @ClearOn casado=false()
+    */
+   public String getNomeConjuge() {
+      return nomeConjuge;
+   }
+
+   public void setNomeConjuge(String nomeConjuge) {
+      this.nomeConjuge = nomeConjuge;
+   }
+}
+</source>
+        <p>Quando a propriedade <code>casado</code> tiver o valor
+        <code>false</code> o atributo <code>nomeConjuge</code> terá o seu valor
+        resetado para <code>null</code> automaticamente.</p>
+        <p>O valor para o qual o campo é resetado é definido através da anotação
+        <code>@EmptyValue</code>. Esta anotação deve estar sobre o atributo para
+        o qual especifica o valor vazio. Sua sintaxe é:</p>
+<source>
+@EmptyValue valorComoString
+</source>
+        <p>Caso <code>@EmptyValue</code> não esteja especificado, um valor
+        padrão é utilizado - <code>false</code> para campos booleanos, zero para
+        numéricos e <code>null</code> para os demais.</p>
+      </subsection>
+      <subsection name="Invocando métodos automaticamente">
+        <p>Alguns métodos precisam ser chamados toda vez que certas condições
+        ocorrerem. Ao invés de forçar o programador a fazer isso manualmente - o
+        que pode levar a código "spaghetti" -, o genesis possui a anotação
+        <code>@CallWhen</code>. Com sintaxe similar à das anotações anteriores,
+        esta anotação pode somente ser usada em ações e não em atributos.</p>
+        <p>Pode-se modificar um dos exemplos anteriores para ilustrar o uso
+        prático desta anotação:</p>
+<source>
+/**
+ * @Form
+ */
+public class ExemploCallWhenForm {
+   private int numeroDependentes;
+
+   public int getNumeroDependentes() {
+      return numeroDependentes;
+   }
+
+   public void setNumeroDependentes(int numeroDependentes) {
+      this.numeroDependentes = numeroDependentes;
+   }
+
+   /**
+    * @Action
+    * @CallWhen numeroDependentes > 0
+    */
+   public void calculaTaxasAdicionais() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+        <p>Diferentemente do exemplo original para <code>@VisibleWhen</code>, o
+        método <code>calculaTaxasAdicionais()</code> será invocado
+        automaticamente pelo genesis toda vez que a propriedade
+        <code>numeroDependentes</code> for maior que zero.</p>
+      </subsection>
+    </section>
+<!--
+EqualityComparator=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
+EmptyResolver=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
+DataProvider=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
+DisplayOnly=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
+ValidateBefore=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
+-->
   </body>
 </document>
