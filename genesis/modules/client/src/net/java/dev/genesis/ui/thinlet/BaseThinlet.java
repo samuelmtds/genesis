@@ -482,16 +482,25 @@ public abstract class BaseThinlet extends Thinlet {
            formatter.format(value);
    }
 
+   /**
+    * @deprecated Use populate(Object, Object, Map, boolean) instead
+    */
    protected void populate(Form bean) throws IllegalAccessException, 
                               InvocationTargetException, NoSuchMethodException {
       populate(bean, this);
    }
 
+   /**
+    * @deprecated Use populate(Object, Object, Map, boolean) instead
+    */
    protected void populate(Form bean, Object root) throws IllegalAccessException,
                               InvocationTargetException, NoSuchMethodException {
       populate(bean, root, new HashMap());
    }
 
+   /**
+    * @deprecated Use populate(Object, Object, Map, boolean) instead
+    */
    protected void populate(Form bean, Object root, final Map properties) 
          throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
       populate(bean, root, properties, true);
@@ -564,12 +573,18 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
+   /**
+    * @deprecated
+    */
    protected void populateAndValidate(Form bean) throws IllegalAccessException, 
          InvocationTargetException, NoSuchMethodException, ValidationException,
          ValidatorException {
       populateAndValidate(bean, this);
    }
 
+   /**
+    * @deprecated
+    */
    protected void populateAndValidate(Form bean, Object root) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException, ValidationException, ValidatorException {
