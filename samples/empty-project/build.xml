@@ -294,7 +294,7 @@
    </target>
 
    <!-- If you want to turn off the validation generation task,
-      set the 'generate.validation' property to false -->
+      set the 'generate.client.validation' property to false -->
    <target name="client:validation" if="generate.validation" depends="init">
       <webdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
          <fileset dir="${module.client}/${src.dir}" includes="**/*.java" />
