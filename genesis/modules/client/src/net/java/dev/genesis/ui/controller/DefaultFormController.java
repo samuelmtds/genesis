@@ -197,7 +197,9 @@ public class DefaultFormController implements FormController {
                fieldMeta.getFieldClass(), entry.getValue()) : entry.getValue();
 
          if (previousState != null && fieldMeta.getEqualityComparator().equals(
-               value, previousState.getValuesMap().get(entry.getKey()))) {
+               value, previousState.getValuesMap().get(entry.getKey()))
+               && fieldMeta.getEqualityComparator().equals(value,
+                     currentState.getValuesMap().get(entry.getKey()))) {
             i.remove();
 
             if (log.isDebugEnabled()) {
@@ -437,9 +439,8 @@ public class DefaultFormController implements FormController {
             fireDataProvidedListMetadataChanged(dataProviderMetadata, items);
 
             return true;
-         } else {
-            conditionally = false;
          }
+         conditionally = false;
       }
 
       final boolean satisfied = !conditionally || isConditionSatisfied(
