@@ -392,7 +392,17 @@ public abstract class BaseThinlet extends Thinlet {
                setText(component, "");
             }
 
-            propertyValue = getPropertyValue(properties, propertyName, true);
+            String valuePropertyName = (String)getProperty(component, "value");
+
+            if (valuePropertyName != null) {
+               Object o = properties.get(propertyName);
+               propertyValue = FormatterRegistry.getInstance().format(
+                     o == null ? null : PropertyUtils.getProperty(
+                     properties.get(propertyName), valuePropertyName));
+            } else {
+               propertyValue = getPropertyValue(properties, propertyName, true);
+            }
+
             selectedComponent = find(component, propertyValue);
 
             if (selectedComponent != null) {
@@ -681,22 +691,26 @@ public abstract class BaseThinlet extends Thinlet {
        return getSelectedIndexes(find(name));
    }
    
-   protected int[] getSelectedIndexes(Object component){
-       final int selectedCount = getSelectedItems(component).length;
+   protected int[] getSelectedIndexes(Object component) {
+      if (COMBOBOX.equals(getClass(component))) {
+         return new int[] {getSelected(component)};
+      }
 
-       final Object[] items = getItems(component);
-       final int[] indexes = new int[selectedCount];
+      final int selectedCount = getSelectedItems(component).length;
 
-       int j = 0;
+      final Object[] items = getItems(component);
+      final int[] indexes = new int[selectedCount];
 
-       for (int i = 0; i < items.length; i++) {
-           if (isSelected(items[i])) {
-               indexes[j] = i;
-               j++;
-           }
-       }
+      int j = 0;
 
-       return indexes;
+      for (int i = 0; i < items.length; i++) {
+         if (isSelected(items[i])) {
+            indexes[j] = i;
+            j++;
+         }
+      }
+
+      return indexes;
    }
 
    protected void handleException(String message, Throwable throwable) {

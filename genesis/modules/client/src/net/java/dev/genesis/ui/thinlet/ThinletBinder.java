@@ -334,7 +334,10 @@ public class ThinletBinder {
 
          final String className = Thinlet.getClass(component);
 
-         if (!className.equals(BaseThinlet.TABLE)) {
+         if (!(className.equals(BaseThinlet.TABLE) || 
+               className.equals(BaseThinlet.COMBOBOX))) {
+            log.warn(className + " is not a supported widget for binding a " +
+                  "data provider");
             continue;
          }
 
@@ -354,8 +357,8 @@ public class ThinletBinder {
             dataProviderMetadata.getIndexField().getFieldName();
    }
 
-   public void updateSelection(String name, Object table) throws Exception {
-      final int[] selected = thinlet.getSelectedIndexes(table);
+   public void updateSelection(String name, Object widget) throws Exception {
+      final int[] selected = thinlet.getSelectedIndexes(widget);
       final List list = (List)dataProvided.get(name);
       final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvidedListByFieldName
             .get(name);
