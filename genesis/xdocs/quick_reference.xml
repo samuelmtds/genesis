@@ -9,8 +9,7 @@
     <section name="Guia de referência rápida de anotações">
       <p>Boa parte do uso das funcionalidades do genesis exige apenas a inclusão
       de tags espcíficas (chamadas anotações) no código. Este guia rápido
-      orienta o uso dos tags, enquanto os links remetem para explicações
-      detalhadas e exemplos de uso.</p>
+      explica as anotações e contém exemplos de uso.</p>
     </section>
     <section name="Anotações do genesis">
       <p>As anotações estão classificadas pela posição (escopo) onde podem ser

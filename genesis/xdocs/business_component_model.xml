@@ -6,8 +6,6 @@
   </properties>
   <body>
     <section name="Modelo de componentes de negócio">
-      <p><b>TODO: configurar todos os exemplos em um sample e atualizar
-      documento com instruções de execução.</b></p>
       <p>O modelo de componentes de negócio do genesis é bastante simples de ser
       compreendido. Os seguintes conceitos e/ou características são
       abordados abaixo:
@@ -371,11 +369,12 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       remotabilidade transparente. Antes de invocar este método e depois de ter
       invocado <code>setCriteria(Criteria)</code>, os setters das propriedades
       "preenchidas" do objeto de negócio que tenham sido copiadas no cliente
-      (ver documentação do modelo de componentes para interface gráfica <b>TODO:
-      linkar assim que existir</b>) serão automaticamente chamados pelo
-      framework de modo que a recém-injetada instância de <code>Criteria</code>
-      possa ser configurada apropriadamente. Finalmente o método de negócios
-      será invocado e seu retorno repassado ao código cliente.</p>
+      (ver documentação do <a href="ui_component_model.html">modelo de
+      componentes para interface gráfica</a>) serão automaticamente chamados
+      pelo framework de modo que a recém-injetada instância de
+      <code>Criteria</code> possa ser configurada apropriadamente. Finalmente o
+      método de negócios será invocado e seu retorno repassado ao código
+      cliente.</p>
       <p>Para entender melhor esse conceito, o exemplo abaixo pode ser de ajuda.
       Supondo-se que existe uma classe <code>Pessoa</code> mapeada via
       Hibernate, que, entre outros atributos, possua <code>nome</code> e <code>
@@ -401,8 +400,9 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
 }
 </source>
       <p>Uma vez tendo copiado as propriedades do formulário para o objeto de
-      negócios (conforme explicado na documentação do modelo cliente <b>TODO:
-      linkar assim que existir</b>), a seguinte seqüência de eventos ocorre
+      negócios (conforme explicado na documentação do <a href=
+      "ui_component_model.html">modelo cliente</a>), a seguinte seqüência de
+      eventos ocorre
       quando o método <code>getPessoas(int)</code> é invocado:
       <ul>
         <li>A instância é transferida pelo servidor através da remotabilidade
@@ -429,5 +429,3 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
     </section>
   </body>
 </document>
-
-
