@@ -6,39 +6,41 @@
   </properties>
   <body>
     <section name="genesis' Downloads">
-      <p>There are several distribution files available for downloading. 
+      <p>There are several distribution bundles available for downloading.
       They are:</p>
       <ul>
-        <li><b>genesis-docs-{version}.tar.gz</b> e
+        <li><b>genesis-docs-{version}.tar.gz</b> and
         <b>genesis-docs-{version}.zip</b>: genesis documentation.</li>
-        <li><b>genesis-bin-{version}.tar.gz</b> e
-        <b>genesis-bin-{version}.zip</b>: genesis binary distribution. 
-        This archive has the following files: 
-        genesis jars only and an empty project which can be used to start a new
-        genesis application. This archive does not contain any dependent jar
-        file from outside frameworks such as Hibernate.</li>
-        <li><b>genesis-full-bin-{version}.tar.gz</b> e
-        <b>genesis-full-bin-{version}.zip</b>: genesis full binary distribution. 
-        This archive contains the following files: all files as the archive
-        above together with the necessary jar files from Hibernate, Apache
-        Commons and Thinlet frameworks. An empty project is also provided
-        within this archive.</li>
-        <li><b>genesis-full-bin-plus-docs-{version}.tar.gz</b> e
+        <li><b>genesis-bin-{version}.tar.gz</b> and
+        <b>genesis-bin-{version}.zip</b>: genesis binary distribution.
+        This archive contains genesis jars and an empty project which can be
+        used to start a new genesis application. This archive does not contain
+        any jars genesis depends on, such as Hibernate.</li>
+        <li><b>genesis-full-bin-{version}.tar.gz</b> and
+        <b>genesis-full-bin-{version}.zip</b>: genesis full binary distribution.
+        This archive contains the following files: all files contained in
+        <code>genesis-bin</code>, including the empty project, and all the
+        necessary jar files for genesis dependencies, such as AspectWerkz,
+        Hibernate, Jakarta Commons and Thinlet.</li>
+        <li><b>genesis-full-bin-plus-docs-{version}.tar.gz</b> and
         <b>genesis-full-bin-plus-docs-{version}.zip</b>: genesis full binary
-        distribution and documentation. This archive contais all jars as the
-        above archive together with complete genesis documentation. Besides
-        an empty project for starting a new genesis application some simple
-        examples are also provided: a simple calculator (SimpleCalculator)
+        distribution and documentation. This archive contais all jars contained
+        in <code>genesis-full-bin</code>, the empty project structure and
+        complete genesis documentation, as well as some additional genesis
+        samples, such as a simple calculator (SimpleCalculator)
         and a user administration application (Useradmin).</li>
-        <li><b>genesis-src-{version}.tar.gz</b> e
+        <li><b>genesis-useradmin-sample-{version}.tar.gz</b> and
+        <b>genesis-useradmin-sample-{version}.zip</b>: contain both source code
+        as well as binary files for the UserAdmin sample.</li>
+        <li><b>genesis-src-{version}.tar.gz</b> and
         <b>genesis-src-{version}.zip</b>: genesis source code.</li>
         <li><b>genesis-src-plus-docs-{version}.tar.gz</b> e
         <b>genesis-src-plus-docs-{version}.zip</b>: genesis source
         code and genesis complete documentation.</li>
         <li><b>modified-xdoclet-1.2.zip</b>: modified xdoclet 1.2 distribution
-        files for adicional tasks.</li>
+        files with additional tasks.</li>
       </ul>
-      <p>All distribution files for this release can be found 
+      <p>All distribution files for this release can be found
       <a href="">here</a>.</p>
     </section>
   </body>
