@@ -26,6 +26,11 @@
    </repository>
    <versions>
       <version>
+         <id>0.2</id>
+         <name>0.2</name>
+         <tag>GENESIS_0_2</tag>
+      </version>
+      <version>
          <id>0.2-RC2</id>
          <name>0.2-RC2</name>
          <tag>GENESIS_0_2_RC_2</tag>
