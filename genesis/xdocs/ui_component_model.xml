@@ -17,6 +17,7 @@
       <ul>
         <li><a href="#Tipos de componentes de interface gráfica">Tipos de
         componentes de interface gráfica</a></li>
+        <li><a href="#Entendendo as views">Entendendo as views</a></li>
       </ul>
       </p>
     </section>
@@ -45,6 +46,42 @@
       Atualmente o genesis suporta apenas Thinlet como modelo de implementação
       de views, mas versões futuras proverão suporte a Swing e até mesmo Thinlet
       em PDAs compatíveis com PersonalJava.</p>
+    </section>
+    <section name="Entendendo as views">
+      <p>As views são fortemente acopladas com a API gráfica utilizada. O
+      suporte a Thinlet hoje é implementado no genesis basicamente por duas
+      classes em <code>net.java.dev.genesis.ui.thinlet</code>: <code>BaseThinlet
+      </code> e sua subclasse <code>BaseDialogThinlet</code>.</p>
+      <p><code>BaseThinlet</code> estende <code>Thinlet</code> das seguintes
+      formas:
+        <ul>
+          <li>Expõe constantes para os nomes dos widgets (componentes gráficos)
+          do Thinlet que são utilizados por toda API do Thinlet e também
+          internamente</li>
+          <li>Provê diversos métodos
+          <code>set&lt;Propriedade&gt;(Object,&lt;tipo&gt;)</code> e
+          <code>&lt;tipo&gt; get&lt;Propriedade&gt;(Object)</code> para que as
+          propriedades dos widgets possam ser manipuladas de modo fortemente
+          tipado.</li>
+          <li>Implementa alguns métodos <code>create&lt;Widget&gt;(..)</code>
+          que facilitam a geração dinâmica de componentes gráficos.</li>
+          <li>Possui métodos para exibir um bean na tela (<code>displayBean(..)
+          </code> e <code>populateFrom..(..)</code>) bem como para capturar os
+          valores exibidos em um bean (<code>populate(Object)</code>).</li>
+          <li>Possibilita o tratamento de erros através de <code>
+          handleException(Throwable)</code> e métodos especializados como <code>
+          handleUIException(UIException), handleCustomException(Throwable),
+          </code> e <code>handleUnknownException(Throwable)</code>.</li>
+          <li>Integra a validação e implementa o tratamento específico de erros
+          para ela.</li>
+          <li>Implementa o binding (algo como junção) da view com o form através
+          dos métodos <code>bind(..)</code> e <code>invokeFormAction(..)</code>.
+          </li>
+        </ul>
+      </p>
+      <p>Quando o modelo explicado neste documento é utilizado, i.e., o binding
+      de view e form, somente as três últimas características são de interesse
+      pelo código cliente. Por isso, somente estas serão explicadas abaixo.</p>
     </section>
   </body>
 </document>
