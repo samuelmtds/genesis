@@ -18,6 +18,9 @@
  */
 package net.java.dev.genesis.helpers;
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -29,9 +32,11 @@ import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.util.GenesisUtils;
 
 import org.apache.commons.beanutils.PropertyUtils;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class CriteriaPropertyHelper {
+   private static final Log log = LogFactory.getLog(CriteriaPropertyHelper.class);
 
    public static void fillCriteria(HibernateCriteria hibCriteria, Object form)
          throws Exception {
@@ -40,17 +45,33 @@ public class CriteriaPropertyHelper {
       final FormMetadata formMeta = ((FormMetadataFactory)form).getFormMetadata(form.getClass());
       final Map propertiesMap = PropertyUtils.describe(form);
       GenesisUtils.normalizeMap(propertiesMap);
+
+      final PropertyDescriptor[] descriptors = PropertyUtils
+            .getPropertyDescriptors(hibCriteria);
+      final Collection criteriaPropertyNames = new ArrayList(descriptors.length);
+
+      for (int i = 0; i < descriptors.length; i++) {
+         criteriaPropertyNames.add(descriptors[i].getName());
+      }
+
       FieldMetadata fieldMeta;
       Map.Entry entry;
+
       for (Iterator iter = propertiesMap.entrySet().iterator(); iter.hasNext();) {
          entry = (Map.Entry) iter.next();
          fieldMeta = formMeta.getFieldMetadata(entry.getKey().toString());
-         if (fieldMeta.getEmptyResolver().isEmpty(entry.getValue())) {
+
+         if (!criteriaPropertyNames.contains(entry.getKey()) || 
+               fieldMeta.getEmptyResolver().isEmpty(entry.getValue())) {
             iter.remove();
             continue;
          }
       }
+
+      if (log.isDebugEnabled()) {
+         log.debug("Storing properties " + propertiesMap + " for later execution");
+      }
+
       critResolver.setPropertiesMap(propertiesMap);
    }
-
 }
