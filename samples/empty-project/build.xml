@@ -133,6 +133,8 @@
             <include name="reusable-components*.jar" />
          </fileset>
          <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+         <!-- You can comment this if you are not using Hibernate -->
+         <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
       </path>
 
       <!-- run.classpath: All jars needed to run your desktop application -->
@@ -246,6 +248,15 @@
                        showSql="${hibernate.show.sql}"
                        depends="jboss.jca:service=LocalTxCM,name=${jboss.ds.name}"
                        version="${hibernate.version}" />
+        <!-- Uncomment the following section if you are going to run in local mode
+        <hibernatecfg dialect="${hibernate.dialect}"
+                       userName="a_valid_user_name"
+                       password="password_for_user"
+                       driver="your_database_driver_class_name"
+                       jdbcUrl="_a_jdbc_connection_url"
+                       transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
+                       showSql="${hibernate.show.sql}" 
+        /-->
       </hibernatedoclet>
       <copy todir="${module.shared}/${build.dest}">
          <fileset dir="${module.shared}/${build.src}" />
@@ -283,7 +294,7 @@
    </target>
 
    <!-- If you want to turn off the validation generation task,
-      set the 'generate.client.validation' property to false -->
+      set the 'generate.validation' property to false -->
    <target name="client:validation" if="generate.validation" depends="init">
       <webdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
          <fileset dir="${module.client}/${src.dir}" includes="**/*.java" />
