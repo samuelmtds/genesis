@@ -24,7 +24,7 @@
     <menu name="genesis">
       <item name="Visão geral" href="/pt-BR/index.html" />
       <item name="Screenshots" href="/pt-BR/screenshots.html" />
-      <item name="Notas da versão" href="/pt-BR/release_notes.html" />
+      <item name="Downloads e notas de versão" href="/pt-BR/release_notes.html" />
     </menu>
     <menu name="Documentação">
       <item name="Manual do usuário" collapse="true"

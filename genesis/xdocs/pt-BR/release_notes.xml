@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Notas de versão e downloads</title>
+    <title>Downloads e notas de versão</title>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-    <section name="Notas de versão">
+    <section name="Downloads e notas de versão">
       <ul>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
     </section>
     <section name="0.2-beta1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&amp;expandFolder=2342&amp;folderID=1756">aqui</a>.</p>
+      </subsection>
       <subsection name="Funcionalidades e mudanças">
         <p>Diversas mudanças e funcionalidades novas fazem parte desta versão,
         entre outras podendo-se destacar:</p>
@@ -63,6 +67,10 @@
       </subsection>
     </section>
     <section name="0.1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2301&amp;expandFolder=2301&amp;folderID=2342">aqui</a>.</p>
+      </subsection>
       <subsection name="Funcionalidades e mudanças">
         <p>Versão inicial do genesis, não-documentada.</p>
       </subsection>
