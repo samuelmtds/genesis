@@ -485,6 +485,7 @@
 		<delete dir="${genesis.module.tests}/${build.dir}" />
 		<delete>
 			<fileset dir=".">
+				<include name="**/jcoverage.ser" />
 				<include name="*.log" />
 				<include name="junit*.properties" />
 			</fileset>
