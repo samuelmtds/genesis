@@ -28,26 +28,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
-import net.java.dev.genesis.ui.ValidationException;
-import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import thinlet.Thinlet;
 
-//TODO: call reset() in appropriate points
-public class ThinletBinder {
+public class ThinletBinder implements FormControllerListener {
    private static final Log log = LogFactory.getLog(ThinletBinder.class);
    /* these are not alphabetically ordered by accident or mere readability;
      it's needed so that binary searching works with them */
@@ -66,13 +63,9 @@ public class ThinletBinder {
    private final FormController controller;
 
    private final Collection boundFieldNames = new HashSet();
+   private final Map dataProvided = new HashMap();
 
    private final Map widgetGroupMap = new HashMap();
-   private final Map visibleStateMap = new HashMap();
-   private final Map enabledStateMap = new HashMap();
-
-   private final Map dataProvidedListByFieldName = new HashMap();
-   private final Map dataProvided = new HashMap();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, 
             final Object form) {
@@ -87,7 +80,7 @@ public class ThinletBinder {
    }
 
    protected FormController getController(final Object form) {
-      //TODO: use introduction as well
+      //TODO: use introduction as well; there must be a single controller per form instance
       return new DefaultFormController();
    }
 
@@ -95,51 +88,17 @@ public class ThinletBinder {
       final FormMetadata formMetadata = getFormMetadata(form);
       controller.setForm(form);
       controller.setFormMetadata(formMetadata);
-      controller.setup();
+      controller.addFormControllerListener(this);
 
-      final Collection dataProviders = new ArrayList(formMetadata.getDataProviderMetadatas().values());
-      // Some actions could be data providers
+      final Collection dataProviders = new ArrayList(formMetadata
+            .getDataProviderMetadatas().values());
       dataProviders.addAll(formMetadata.getActionMetadatas().values());
-      
+
       bindFieldMetadatas(formMetadata);
       bindActionMetadatas(formMetadata);
       bindDataProviders(dataProviders);
 
-      updateAndSave(dataProviders, true, true);
-   }
-
-   protected void updateAndSave(Collection dataProviders, boolean displayAll, 
-         boolean firstCall) throws Exception {
-      final Map changedMap = controller.getChangedMap();
-      
-      invokeCallWhenActions();
-      populateDataProviders(controller.getFormMetadata(), dataProviders, 
-            firstCall);
-      controller.update();
-      updateEnabledState();
-      updateVisibleState();
-
-      controller.save();
-
-      Map toDisplay = null;
-      if (displayAll) {
-         toDisplay = PropertyUtils.describe(form);
-         toDisplay.keySet().retainAll(boundFieldNames);
-      } else {
-         changedMap.putAll(controller.getChangedMap());
-         toDisplay = changedMap;
-      }
-
-      if (log.isDebugEnabled()) {
-         log.debug("Displaying: " + toDisplay);
-      }
-
-      thinlet.displayBean(toDisplay, root);
-   }
-
-   public void refresh() throws Exception {
-      controller.update();
-      updateAndSave(controller.getDataProviderActions(), false, false);
+      controller.setup();
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
@@ -213,6 +172,7 @@ public class ThinletBinder {
       }
    }
 
+   // TODO: consider caching components
    private List findComponents(final String name) {
       final Object widget = thinlet.find(root, name);
 
@@ -278,14 +238,6 @@ public class ThinletBinder {
       properties.put(name, value);
 
       controller.populate(properties);
-
-      try {
-         updateAndSave(controller.getDataProviderActions(), false, false);
-      } catch (Exception e) {
-         controller.reset();
-         updateAndSave(controller.getDataProviderActions(), false, false);
-         throw e;
-      }
    }
 
    protected void bindActionMetadatas(final FormMetadata formMetadata) {
@@ -318,55 +270,6 @@ public class ThinletBinder {
          thinlet.setMethod(component, "action", "invokeAction(" + 
                name + ".name)", root, this);
       }
-   }
-
-   public void invokeAction(String name) throws Exception {
-      if (name == null) {
-         throw new IllegalArgumentException("Cannot invoke null action");
-      }
-
-      if (log.isDebugEnabled()) {
-         log.debug("Invoking action: " + name);
-      }
-
-      final MethodEntry entry = new MethodEntry(name, new String[0]);
-
-      final ActionMetadata actionMetadata = ((ActionMetadata)controller
-            .getFormMetadata().getActionMetadatas().get(entry));
-
-      if (actionMetadata != null) {
-         if (actionMetadata.isValidateBefore()) {
-            final String formName = form.getClass().getName();
-
-            final Map validationErrors = ValidationUtils.getInstance().getMessages(
-                     ValidationUtils.getInstance().validate(form, formName), 
-                     formName);
-
-            if (!validationErrors.isEmpty()) {
-               throw new ValidationException(validationErrors);
-            }
-         }
-
-         invokeDataProviderMethod(actionMetadata, true, false);
-      } else {
-         if (log.isDebugEnabled()) {
-            log.debug("Action " + name + " not found, looking for DataProvider");
-         }
-
-         final DataProviderMetadata dataProviderMetadata = 
-            ((DataProviderMetadata)controller.getFormMetadata()
-            .getDataProviderMetadatas().get(entry));
-
-         if (dataProviderMetadata == null) {
-            throw new IllegalArgumentException("Couldn't find action named " + 
-                  name);
-         }
-
-         invokeDataProviderMethod(dataProviderMetadata, false, false);
-      }
-
-      controller.update();
-      updateAndSave(controller.getDataProviderActions(), false, false);
    }
 
    protected void bindDataProviders(final Collection dataProviders) {
@@ -404,7 +307,7 @@ public class ThinletBinder {
 
          thinlet.setMethod(component, "action", "updateSelection(" + name
                + ".name," + name + ")", root, this);
-         dataProvidedListByFieldName.put(name, dataProviderMetadata);
+         dataProvided.put(name, dataProviderMetadata);
       }
    }
 
@@ -414,45 +317,45 @@ public class ThinletBinder {
             dataProviderMetadata.getIndexField().getFieldName();
    }
 
+   //TODO: move more of this logic to controller
    public void updateSelection(String name, Object widget) throws Exception {
       final int[] selected = thinlet.getSelectedIndexes(widget);
-      final List list = (List)dataProvided.get(name);
-      final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvidedListByFieldName
+      final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvided
             .get(name);
+      final List list = (List)controller.getFormState().getDataProvidedMap()
+            .get(dataMeta);
 
       dataMeta.populateSelectedFields(form, list, selected);
       controller.update();
-      updateAndSave(controller.getDataProviderActions(), false, false);
    }
 
-   protected void populateDataProviders(final FormMetadata formMetadata, 
-         final Collection dataProviders, final boolean firstCall) 
-         throws Exception {
-      for (final Iterator i = dataProviders.iterator(); 
-            i.hasNext(); ) {
-         final DataProviderMetadata dataProviderMetadata = 
-               (DataProviderMetadata)i.next();
+   public void invokeAction(String name) throws Exception {
+      controller.invokeAction(name);
+   }
 
-         invokeDataProviderMethod(dataProviderMetadata, false, firstCall);
-      }
+   public void refresh() throws Exception {
+      controller.update();
    }
    
-   protected void invokeDataProviderMethod(
-         final DataProviderMetadata dataProviderMetadata, boolean invokeActions,
-         boolean firstCall) throws Exception {
-      if (!dataProviderMetadata.isProvider()) {
-         if (invokeActions) {
-            final String actionName = dataProviderMetadata.getName();
-            final ThinletMetadata thinletMeta = getThinletMetadata(thinlet);
-            if(thinletMeta.invokePreAction(thinlet, actionName)){
-               dataProviderMetadata.invoke(form);
-               thinletMeta.invokePosAction(thinlet, actionName);
-            }
-         }
-         return;
-      }
+   public void valuesChanged(Map updatedValues) throws Exception {
+      thinlet.displayBean(updatedValues, root);
+   }
 
-      final String name = getFieldName(dataProviderMetadata);
+   public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
+         throws Exception {
+      return getThinletMetadata(thinlet).invokeBeforeAction(thinlet, 
+            methodMetadata.getName());
+   }
+
+   public void afterInvokingMethod(MethodMetadata methodMetadata) 
+         throws Exception {
+      getThinletMetadata(thinlet).invokeAfterAction(thinlet, 
+            methodMetadata.getName());
+   }
+   
+   public void dataProvidedListChanged(DataProviderMetadata metadata, List items)
+         throws Exception {
+      final String name = getFieldName(metadata);
       final Object component = thinlet.find(root, name);
 
       if (component == null) {
@@ -462,27 +365,17 @@ public class ThinletBinder {
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Populating " + name + " with "
-               + dataProviderMetadata.getMethodEntry().getMethodName());
+         log.debug("Populating " + name + " with " + metadata.getMethodEntry()
+               .getMethodName());
       }
 
-      List items;
-
-      if (firstCall && !dataProviderMetadata.isCallOnInit()) {
-         items = new ArrayList();
-      } else {
-         final Object ret = dataProviderMetadata.invoke(form);
-         items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
-                 (List) ret;
-      }
-
-      dataProvided.put(name, items);
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
-         dataProviderMetadata.resetSelectedFields(form);
+         metadata.resetSelectedFields(form);
          thinlet.populateFromCollection(component, items);
       } else if (className.equals(BaseThinlet.COMBOBOX)) {
+         //TODO: This parsing shouldn't occur every time
          final String key = (String) thinlet.getProperty(component, "key");
 
          if (key == null) {
@@ -513,31 +406,11 @@ public class ThinletBinder {
                + "supported for data providing");
       }
    }
-
-   protected void invokeCallWhenActions() throws Exception {
-      for (final Iterator i = controller.getCallActions().iterator(); 
-            i.hasNext(); ) {
-         final ActionMetadata actionMetadata = (ActionMetadata)i.next();
-         
-         if (log.isDebugEnabled()) {
-            log.debug("Calling " + actionMetadata.getMethodEntry().getMethodName() +
-                  " automatically");
-         }
-         
-         invokeDataProviderMethod(actionMetadata, true, false);
-      }
-   }
-
-   protected void updateEnabledState() {
-      final Collection enabledStateEntries = enabledStateMap.entrySet();
-
-      for (final Iterator i = controller.getEnabledMap().entrySet().iterator();
+   
+   public void enabledConditionsChanged(Map updatedEnabledConditions) {
+      for (final Iterator i = updatedEnabledConditions.entrySet().iterator(); 
             i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
-
-         if (enabledStateEntries.contains(entry)) {
-            continue;
-         }
 
          final Collection widgetGroup = (Collection)widgetGroupMap.get(
                entry.getKey().toString());
@@ -564,25 +437,17 @@ public class ThinletBinder {
                continue;
             }
 
-            thinlet.setEnabled(widget, 
-                  ((Boolean)entry.getValue()).booleanValue());
+            thinlet.setEnabled(widget, ((Boolean)entry.getValue())
+                  .booleanValue());
          }
       }
-
-      enabledStateMap.clear();
-      enabledStateMap.putAll(controller.getEnabledMap());
    }
 
-   protected void updateVisibleState() {
-      final Collection visibleStateEntries = visibleStateMap.entrySet();
-
-      for (final Iterator i = controller.getVisibleMap().entrySet().iterator();
+   // TODO: merge logic with enabledConditionsChanged
+   public void visibleConditionsChanged(Map updatedVisibleConditions) {
+      for (final Iterator i = updatedVisibleConditions.entrySet().iterator();
             i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
-
-         if (visibleStateEntries.contains(entry)) {
-             continue;
-         }
 
          final Collection widgetGroup = (Collection)widgetGroupMap.get(
                entry.getKey().toString());
@@ -609,12 +474,9 @@ public class ThinletBinder {
                continue;
             }
 
-            thinlet.setVisible(widget, 
-                  ((Boolean)entry.getValue()).booleanValue());
+            thinlet.setVisible(widget, ((Boolean)entry.getValue())
+                  .booleanValue());
          }
       }
-
-      visibleStateMap.clear();
-      visibleStateMap.putAll(controller.getVisibleMap());
    }
 }

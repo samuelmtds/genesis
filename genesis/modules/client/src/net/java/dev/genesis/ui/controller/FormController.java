@@ -24,18 +24,23 @@ import java.util.Map;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 public interface FormController {
+   public static final String FORM_METADATA_KEY = "genesis:formMetadata";
+   public static final String CURRENT_STATE_KEY = "genesis:currentState";
+
    public void setForm(Object form);
    public void setFormMetadata(FormMetadata form);
    public Object getForm();
    public FormMetadata getFormMetadata();
+
+   public void addFormControllerListener(FormControllerListener listener);
+   public boolean removeFormControllerListener(FormControllerListener listener);
+   public Collection getFormControllerListeners();
+
    public void setup() throws Exception;
+
    public void populate(Map properties) throws Exception;
-   public Map getEnabledMap();
-   public Map getVisibleMap();
-   public Map getChangedMap();
-   public Collection getCallActions();
-   public Collection getDataProviderActions();
-   public void reset() throws Exception;
-   public void save() throws Exception;
+   public void invokeAction(String actionName) throws Exception;
    public void update() throws Exception;
+   public FormState getFormState() throws Exception;
+   public void reset(FormState state) throws Exception;
 }

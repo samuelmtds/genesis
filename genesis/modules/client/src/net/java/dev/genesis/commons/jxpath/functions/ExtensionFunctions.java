@@ -24,7 +24,8 @@ import net.java.dev.genesis.commons.jxpath.GenesisNodeSet;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-import net.java.dev.genesis.ui.controller.DefaultFormController;
+import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -60,8 +61,7 @@ public class ExtensionFunctions {
 
       if (obj instanceof GenesisNodeSet) {
          final FormMetadata meta = (FormMetadata) ctx.getJXPathContext()
-               .getVariables().getVariable(
-                     DefaultFormController.FORM_METADATA_KEY);
+               .getVariables().getVariable(FormController.FORM_METADATA_KEY);
          return meta.getFieldMetadata(
                getSimplePropertyName((GenesisNodeSet) obj))
                .getEqualityComparator();
@@ -74,8 +74,9 @@ public class ExtensionFunctions {
    public static boolean hasChanged(final ExpressionContext context,
          final GenesisNodeSet nodeSet) {
 
-      final Map changedMap = (Map) context.getJXPathContext().getVariables()
-            .getVariable(DefaultFormController.CHANGED_MAP_KEY);
+      final Map changedMap = (Map) ((FormState)context.getJXPathContext()
+            .getVariables().getVariable(FormController.CURRENT_STATE_KEY))
+            .getChangedMap();
       final String propertyName = getSimplePropertyName(nodeSet);
       final boolean result = changedMap.containsKey(propertyName);
 
@@ -102,8 +103,7 @@ public class ExtensionFunctions {
 
       final GenesisNodeSet nodeSet = (GenesisNodeSet) obj;
       final FormMetadata formMeta = (FormMetadata) ctx.getJXPathContext()
-            .getVariables()
-            .getVariable(DefaultFormController.FORM_METADATA_KEY);
+            .getVariables().getVariable(FormController.FORM_METADATA_KEY);
       final String propertyName = getSimplePropertyName(nodeSet);
 
       return formMeta.getFieldMetadata(getSimplePropertyName(nodeSet))
@@ -162,5 +162,4 @@ public class ExtensionFunctions {
          final Object arg2) throws Exception {
       return !equals(ctx, arg1, arg2);
    }
-
 }

@@ -48,7 +48,7 @@ public class ThinletMetadata {
       afterActions.put(actionName, methodName);
    }
 
-   public boolean invokePreAction(final Object target, final String actionName)
+   public boolean invokeBeforeAction(final Object target, final String actionName)
          throws NoSuchMethodException, IllegalAccessException,
          ClassNotFoundException, InvocationTargetException {
 
@@ -64,7 +64,7 @@ public class ThinletMetadata {
       return !Boolean.FALSE.equals(result);
    }
 
-   public void invokePosAction(final Object target, final String actionName)
+   public void invokeAfterAction(final Object target, final String actionName)
          throws NoSuchMethodException, IllegalAccessException,
          ClassNotFoundException, InvocationTargetException {
 
