@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import org.apache.commons.beanutils.BeanUtils;
+import net.java.dev.genesis.text.FormatterRegistry;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.Arg;
@@ -144,11 +145,26 @@ public final class ValidationUtils {
 
    public boolean isValid(net.java.dev.genesis.ui.Form f) throws ValidatorException {
       try {
-         return f.validate(BeanUtils.describe(f)).isEmpty();
+         return f.validate(getPropertiesMap(f)).isEmpty();
       } catch (ValidatorException ve) {
          throw ve;
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
    }
+   
+   private Map getPropertiesMap(net.java.dev.genesis.ui.Form f) throws Exception {
+      Map ret = PropertyUtils.describe(f);
+      Map.Entry entry;
+      for (Iterator i = ret.entrySet().iterator(); i.hasNext();) {
+         entry = (Map.Entry) i.next();
+         if ("class".equals(entry.getKey())) {
+            i.remove();
+         }
+         entry.setValue(FormatterRegistry.getInstance()
+               .format(entry.getValue()));
+      }
+      return ret;
+   }
+
 }
