@@ -579,8 +579,8 @@ public class ExemploDataProviderForm {
 }
 </source>
       <p>No primeiro bloco vemos o xml da tela que exibe um <code>label</code> e
-      um combobox que conterá os estados em tempo de execução. A propriedade
-      <code>name</code> possui o mesmo valor que o atributo
+      um <code>combobox</code> que conterá os estados em tempo de execução. A
+      propriedade <code>name</code> possui o mesmo valor que o atributo
       <code>objectField</code> da anotação <code>@DataProvider</code> do
       terceiro bloco. Pode-se notar alguns valores configurados no atributo
       <code>property</code>. Os seguintes valores são utilizados no caso de
@@ -679,7 +679,7 @@ public class ExemploDataProviderForm {
         <li><code><b>byte</b>, <b>short</b>, <b>int</b>, <b>long</b>,
         <b>float</b> e <b>double</b></code>: verificam se o dado pode ser
         convertido para um desses tipos sem estouro de faixa.</li>
-        <li><code><b>bigDecimal</b></code>: verifica se o tipo pode ser
+        <li><code><b>bigDecimal</b></code>: verifica se o dado pode ser
         convertido para <code>java.math.BigDecimal</code> utilizando o conversor
         padrão do <a href="http://jakarta.apache.org/commons/beanutils">
         BeanUtils</a> registrado para ele. O genesis provê uma implementação
@@ -687,7 +687,7 @@ public class ExemploDataProviderForm {
         <code>net.java.dev.genesis.commons.beanutils.converters</code>, visto
         que as implementações que acompanham com o BeanUtils não funcionam da
         maneira esperada para o Locale pt-BR.</li>
-        <li><code><b>date</b></code>: implementação validação de datas. Pode
+        <li><code><b>date</b></code>: implementação de validação de datas. Pode
         utilizar a variável <code>pattern</code> como padrão de data válido.
         Este padrão é compatível com os especificados para a classe
         <code>java.text.DateFormat</code>.</li>
