@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Generic Scripting Support</title>
+    <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
+    </author>
+  </properties>
+  <body>
+    <section name="Generic scripting support">
+      <p>Scripts are used for fields validation, conditions evaluation for
+      field enabling/disabling or making them visible/invisible. For this
+      matter, genesis framework has a generic scripting language support.</p>
+      <p>So, although the default scripting language is <code>JXPath</code>,
+      it is possible to change this default in a way that all 
+      <code>Forms</code> classes will be using the new scripting language.</p>
+      <p>
+      <ul>
+        <li><a href="#Changing the default scripting language">
+        Changing the default scripting language</a></li>
+        <li><a href="#Defining and using a new scripting language">
+        Defining and using a new scripting language</a></li>
+      </ul>
+      </p>
+
+      <subsection name="Changing the default scripting language">
+        <p>The <code>aop.xml</code> file must be modified in order to
+        make genesis work with another scripting language in 
+        <code>Form</code> classes. That file must have a similar line
+        like the following:</p>
+<source>
+<![CDATA[
+<aspect class="FormControllerFactoryAspect" />
+]]>
+</source>
+        <p>The line above allow the definition of two parameters like
+        the following example:</p>
+<source>
+<![CDATA[
+<aspect class="FormControllerFactoryAspect" >
+   <param name="scriptFactory" value="javascript" />
+   <param name="scriptFactoryProps" value="lang=xyz,time=hh24miss" />
+</aspect>
+]]>
+</source>
+        <p>The <code>scriptFactory</code> parameter defines the scripting
+        language itself. genesis framework already supports several pre-build
+        scripting language - in order to use them, all that is needed is to
+        provide one of the following values for this parameter:
+        <ul>
+          <li>jxpath (default value)</li>
+          <li>javascript</li>
+          <li>beanshell</li>
+          <li>el</li>
+        </ul>
+        </p>
+        <p>The <code>scriptFactoryProps</code> parameter defines properties
+        that <code>ScriptFactory</code> class may use. The value of this 
+        parameter is in the <code>propertyName=propertyValue</code>
+        form and in cases where more than one property is required, the tuples
+        are comma separated. For instance, in case of using "beanshell", the
+        <code>BSFScriptFactory</code> class accepts a property called "lang".
+        This property will make the following configuration the same:</p>
+<source>
+<![CDATA[
+<aspect class="FormControllerFactoryAspect" >
+   <param name="scriptFactory" value="beanshell" />
+   <param name="scriptFactoryProps" value="lang=javascript" />
+</aspect>
+]]>
+</source>
+<source>
+<![CDATA[
+<aspect class="FormControllerFactoryAspect" >
+   <param name="scriptFactory" value="javascript" />
+</aspect>
+]]>
+</source>
+      </subsection>
+      <subsection name="Defining and using a new scripting language">
+        <p>genesis framework allows the developer to extend its scripting
+        support. To do this, all that is needed is to create a new class that
+        implements <code>net.java.dev.genesis.script.ScriptFactory</code>
+        interface. For instance:</p>
+<source>
+package com.java.dev.app.myScript;
+
+import net.java.dev.genesis.script.Script;
+import net.java.dev.genesis.script.ScriptFactory;
+
+public class MyScriptFactory implements ScriptFactory {
+   public Script newScript() {
+      return new MyScript();
+   }
+}
+</source>
+        <p>In this case, the <code>aop.xml</code> file must be changed in
+        order the <code>scriptFactory</code> parameter of the 
+        <code>FormControllerFactoryAspect</code> aspect to have the full
+        qualified class name, like the following example:</p>
+<source>
+<![CDATA[
+<aspect class="FormControllerFactoryAspect" >
+   <param name="scriptFactory" value="com.java.dev.app.myScript.MyScriptFactory" />
+   ...
+</aspect>
+]]>
+</source>
+        <p>Back to <code>MyScriptFactory</code> code, we note that it defines
+        a method that should return a 
+        <code>net.java.dev.genesis.script.Script</code>. Here is a example
+        of how <code>MyScript</code> should look like:</p>
+<source>
+package com.java.dev.app.myScript;
+
+import net.java.dev.genesis.script.Script;
+import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.script.ScriptExpression;
+
+public class MyScript implements Script {
+   public ScriptContext newContext(Object root) {
+      return new MyScriptContext(root);
+   }
+   public ScriptExpression compile(String expression) {
+      return new MyScriptExpression(expression);
+   }
+}
+</source>
+        <p>In the same way, the above code has two methods - one of them will 
+        return a class that implements 
+        <code>net.java.dev.genesis.script.ScriptContext</code> and the other 
+        one will extend 
+        <code>net.java.dev.genesis.script.ScriptExpression</code>:</p>
+        <ul>
+          <li><code>ScriptContext</code> is a class that represents the
+          context of a <code>Form</code> - it will have access to variables
+          (named conditions), the form itself, pre-built genesis functions
+          (such as isEmpty, hasChanged, equals, etc) and pre-built functions
+          specific to each kind of script.</li>
+          <li><code>ScriptExpression</code> represents an abstraction of
+          an expression in the given kind of script.</li>
+        </ul>
+        <p>So, should the developer provide those classes the 
+        <code>genesis</code> framework will support a new scripting languange.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>
