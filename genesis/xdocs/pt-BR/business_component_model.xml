@@ -361,7 +361,8 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       método <code>getCriteria()</code>, além de outros métodos utilitários.</p>
       <p>O método de negócio que precisa da instância de <code>Criteria</code>
       para sua execução recebe a anotação <code>@Criteria
-      &lt;NomeDaClasseMapeadaNoHibernate&gt;</code>. Essa anotação implica
+      &lt;NomeDaClasseMapeadaNoHibernate&gt; order-by=&lt;propriedades&gt;</code>.
+      Essa anotação implica
       que o método também é <code>@Remotable</code>, mantendo assim a
       remotabilidade transparente. Antes de invocar este método e depois de ter
       invocado <code>setCriteria(Criteria)</code>, os setters das propriedades
@@ -389,7 +390,7 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
    }
 
    /**
-    * @Criteria Pessoa
+    * @Criteria Pessoa order-by=nome, sobrenome asc
     */
    public Page getPessoas(int numeroPagina) throws PagingException {
       return getPage(getCriteria(), numeroPagina);

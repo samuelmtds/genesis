@@ -354,7 +354,8 @@ public class HibernatePagingExample extends AbstractHibernateCommand {
       <code>getCriteria()</code> method, besides other ones.</p>
       <p>The business method that needs a <code>Criteria</code> instance in
       order to be executed receives a
-      <code>@Criteria HibernateMappedClassName</code> annotation. This
+      <code>@Criteria &lt;HibernateMappedClassName&gt; order-by=&lt;properties&gt;</code>
+      annotation. This
       annotation implies the method is also <code>@Remotable</code>, keeping the
       transparent remoting. Before calling this method and right after
       <code>setCriteria(Criteria)</code> execution, the properties' setters
@@ -380,7 +381,7 @@ public class PersonSearch extends AbstractHibernateCriteria {
    }
 
    /**
-    * @Criteria Person
+    * @Criteria Person order-by=name, lastName asc
     */
    public Page getPeople(int pageNumber) throws PagingException {
       return getPage(getCriteria(), pageNumber);

@@ -725,8 +725,7 @@ public class InsertUpdateForm {
       </subsection>
       <subsection name="@Criteria">
         <p>Utilizado em métodos que fazem pesquisa dinâmicas. O método de
-        negócio que precisa da instância de Criteria para sua execução recebe a
-        anotação <code>@Criteria &lt;NomeDaClasseMapeadaNoHibernate&gt;</code>.
+        negócio que precisa da instância de Criteria para sua execução.
         Essa anotação implica que o método também é <a href="#@Remotable">
         @Remotable</a>, mantendo assim a remotabilidade transparente. Apenas
         métodos concretos, não-estáticos, não-nativos e públicos podem receber
@@ -743,6 +742,12 @@ public class InsertUpdateForm {
             <td>Nome qualificado completo de classe</td>
             <td>Nome da classe mapeada no Hibernate para a qual se deseja criar
             o Criteria</td>
+            <td>Obrigatório apenas se possuir propriedades de ordenação</td>
+          </tr>
+          <tr>
+            <td>propriedades de ordenação</td>
+            <td>Nome das propriedades a serem usadas numa ordenação separadas por vírgula</td>
+            <td>@Criteria meupacote.MinhaClasse order-by=propriedade1, propriedade2 DESC, propriedade3 ASC</td>
             <td>Não</td>
           </tr>
         </table>
@@ -752,7 +757,8 @@ public class InsertUpdateForm {
 public class UserSearchCommand extends AbstractHibernateCriteria {
    <b>...</b>
    /**
-    * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User</b>
+    * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User
+    *                 order-by=name asc, birthday desc</b>
     */
    public Page getUsers(final int pageNumber)
    <b>...</b>

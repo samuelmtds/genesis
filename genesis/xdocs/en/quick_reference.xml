@@ -717,6 +717,12 @@ public class InsertUpdateForm {
             <td>anonymous</td>
             <td>Fully qualified class name</td>
             <td>Hibernate mapped class name</td>
+            <td>Required if order-by properties are defined</td>
+          </tr>
+          <tr>
+            <td>order-by properties</td>
+            <td>Comma separated names of the order-by properties</td>
+            <td>@Criteria mypackage.MyClass order-by=firstProperty, secondProperty DESC, thirdProperty ASC</td>
             <td>No</td>
           </tr>
         </table>
@@ -726,7 +732,8 @@ public class InsertUpdateForm {
 public class UserSearchCommand extends AbstractHibernateCriteria {
    <b>...</b>
    /**
-    * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User</b>
+    * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User
+                      order-by=name asc, birthday desc</b>
     */
    public Page getUsers(final int pageNumber)
    <b>...</b>
