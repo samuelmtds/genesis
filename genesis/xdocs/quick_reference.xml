@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>genesis Annotations Quick Reference Guide</title>
+    <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
+  </properties>
+  <body>
+    <section name="Guia Rápido do genesis">
+	<p>
+	O desenvolvedor usa o genesis atraves da inclusão de tags espcíficas (chamadas Annotations) no código. 
+	Este guia rápido orienta o uso dos tags, os links remetem para explanações detalhadas e exemplo de uso.
+	</p>
+   </section>
+    <section name="Tags do genesis">
+	<p>
+	Os tags estão classificados pela posição (escopo) onde podem ser colocados : 
+	<ul>
+		<li><b>Classe</b>: antes da definição da classe</li>
+		<li><b>Atributo</b>: antes de um get ou set de atributo</li>
+		<li><b>Método</b>: antes da definição de um método</li>
+	</ul>
+	 
+	Alguns tags são válidos em mais de um escopo.
+	</p>
+
+<table>
+	<tr>
+			<th>Elemento do genesis</th>
+			<th>Forms</th>
+			<th>Views</th>
+			<th>Commands</th>
+	</tr>
+	<tr>
+		<td>
+		<table>
+			<tr>
+				<th>
+					Escopo
+				</th>
+							
+			</tr>
+			<tr>
+				<td></td>			
+			</tr>
+		</table>			
+		</td>		
+		<td>
+		<table>
+			<tr>
+				<th>Classe</th>
+				<th>Atributo</th>
+				<th>Método</th>
+				
+			</tr>
+			<tr>
+				<td>
+					<ul>
+						<li><a href="#@Form">@Form</a></li>
+						<li><a href="#@Condition">@Condition</a></li>
+					</ul>
+				</td>
+				<td>
+					<ul>
+						<li><a href="#@Condition">@Condition</a></li>
+						<li><a href="#@EnabledWhen">@EnabledWhen</a></li>
+						<li><a href="#@VisibleWhen">@VisibleWhen</a></li>
+						<li><a href="#@EqualityComparator">@EqualityComparator</a></li>
+						<li><a href="@EmptyResolver">@EmptyResolver</a></li>
+					</ul>
+				</td>
+				<td>
+					<ul>
+						<li><a href="@Action">@Action</a></li>
+						<li><a href="@DataProvider">@DataProvider</a></li>
+					</ul>
+				</td>
+			</tr>
+		</table>			
+		</td>		
+		<td>
+		<table>
+			<tr>
+				<th>Classe</th>
+				<th>Atributo</th>
+				<th>Método</th>
+			</tr>
+			<tr>
+				<td>
+				</td>
+			
+				<td>
+				</td>
+			
+				<td>
+					<ul>
+						<li><a href="@PreAction">@PreAction</a></li>
+						<li><a href="@PosAction">@PosAction</a></li>
+					</ul>
+				</td>
+			</tr>
+		</table>			
+		</td>		
+		<td>
+		<table>
+			<tr>
+				<th>Classe</th>
+				<th>Atributo</th>
+				<th>Método</th>
+			</tr>
+			<tr>
+				<td>
+					<ul>
+						<li><a href="@Criteria">@Criteria</a></li>
+					</ul>
+				</td>
+			
+				<td>
+				</td>
+			
+				<td>
+					<ul>
+						<li><a href="@Remotable">@Remotable</a></li>
+						<li><a href="@Transactional">@Transactional</a></li>
+					</ul>
+				</td>
+				
+			</tr>
+		</table>			
+		</td>		
+	</tr>
+</table>
+
+	<subsection name="Funções JXPath do genesis">
+	<p>
+		Além dos tags, foram implementadas funções de extensão ao JXPath:
+		<ul>
+			<li>g:isEmpty(any), g:isNotEmpty(any)</li>
+			<li>g:equals(any,any), g:notEquals(any,any)</li>
+			<li>g:hasChanged(propriedadeDoForm), g:hasNotChanged(propriedadeDoForm)</li>
+		</ul>
+	</p>
+	<p>
+		Podem ser usadas pelas anotações que precisam de expressões JXPath booleanas.
+		O <b>g:</b> indica o namespace do genesis. As funções core do JXPath não tem namespace.
+	</p>
+	</subsection>
+	
+	<subsection name="g:isEmpty(any), g:isNotEmpty(any)">
+	<p>
+		Verifica se um objeto esta vazio. Recebe como argumento um numero, uma string, uma função do JXPath
+		que retorna um objeto qualqer, ou o nome de um campo no form.
+	</p>
+	</subsection>
+	
+	<subsection name="g:equals(any,any), g:notEquals(any,any)">
+	<p>
+		Verifica se dois objetos são iguais. Usa os <a href="@EqualityComparator">@EqualityComparator</a>'s caso existam, para efetuar a comparação.
+		Recebe como argumentos numeros, strings, funções do JXPath
+		que retornam um objeto qualqer, ou nomes de campos no form.
+	</p>
+	</subsection>
+	
+	<subsection name="g:hasChanged(propriedadeDoForm), g:hasChanged(propriedadeDoForm)">
+	<p>
+	 Verifica se um campo do form foi alterado ou não. O parâmetro tem que ser o nome de um campo do form.
+	</p>	
+	</subsection>
+	
+<subsection name="@Form">
+	<p>
+		Indica que a classe é um Form e suporta os annotation definidos no genesis (@Action,etc).
+		A implementação default do genesis utiliza essa anotação para gerar a meta-informação do form.
+		TODO: melhorar todos os comentarios
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td>Não utiliza</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@Condition">
+	<p>
+		Declara uma variavel de condição que pode ser usada em qualquer lugar.Essa condição tem um nome e 
+		uma expressão JXPath booleana. A variavel e acessada depois em outras annota?ões como $NomeDaVariavel. 
+		Pode estar no escopo da classe (junto com as anotações de @Form)
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td>NomeDaVariavel=</td>
+			<td>expressão JXPath boolean</td>
+			<td>@Condition usersSelected=g:isNotEmpty(users)</td>
+			<td>Ver <a href="Funções JXPath do genesis">funções JXPath do genesis</a></td>
+			<td><b>Sim</b></td>
+		</tr>	
+	</table>
+	
+</subsection>
+
+	<subsection name="@DataProvider">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+	<subsection name="@EnabledWhen">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@VisibleWhen">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@EqualityComparator">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@EmptyResolver">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@Action">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@PreAction">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@PosAction">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@Criteria">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@Remotable">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+<subsection name="@Transactional">
+	<p>
+		bla,bla
+	</p>
+	<table>
+		<tr>
+			<th>Parâmetros</th>
+			<th>Tipo</th>
+			<th>Uso</th>
+			<th>Descrição</th>
+			<th>Obrigatório</th>
+		</tr>	
+		<tr>
+			<td>Não tem</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>	
+	</table>
+</subsection>
+
+</section>
+
+ </body>
+</document> 
