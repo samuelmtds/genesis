@@ -19,6 +19,7 @@
 package net.java.dev.genesis.aspect;
 
 import java.util.Map;
+
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
@@ -64,13 +65,57 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
 
       final UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
             .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
-      final String persisterClassName = annon.getValue();
+      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.getValue());
       
       return new CriteriaCommandExecutor(obj, methodName, classNames,
-            parameterValues, persisterClassName, obj.getPropertiesMap())
+            parameterValues, parser.getPersisterClassName(), parser
+                  .getOrderBy(), parser.isAsc(), obj.getPropertiesMap())
             .execute();
    }
-   
+
+   public static class CriteriaAnnotationParser {
+      private String persisterClassName;
+      private String orderBy;
+      private boolean isAsc;
+
+      public CriteriaAnnotationParser(String annotation) {
+         String[] values = annotation.trim().split("\\s*(\\s+|(order-by=))");
+         
+         if (values.length > 0) {
+            persisterClassName = values[0];
+            
+            if (values.length > 1) {
+               orderBy = values[1];
+               
+               if (values.length > 2) {
+                  if (values[2].equalsIgnoreCase("asc")) {
+                     isAsc = true;
+                  } else if (values[2].equalsIgnoreCase("desc")){
+                     isAsc = false;
+                  } else {
+                     throw new IllegalArgumentException("Malformed Criteria" +
+                     		"annotation: order-by clause must be 'asc' or 'desc'");
+                  }
+               } else {
+                  isAsc = true;
+               }
+            }
+         }
+      }
+
+      public String getPersisterClassName() {
+         return persisterClassName;
+      }
+
+      public boolean isAsc() {
+         return isAsc;
+      }
+
+      public String getOrderBy() {
+         return orderBy;
+      }
+   }
+
    /**
     * @Introduce criteriaResolverIntroduction deployment-model=perInstance
     */

@@ -22,26 +22,34 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
+import net.sf.hibernate.Criteria;
 import net.sf.hibernate.Session;
+import net.sf.hibernate.expression.Order;
+
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class CriteriaCommandExecutor extends AbstractHibernateCommand {
-   private Object realCommand;
-   private String methodName;
-   private String[] classNames;
-   private Object[] args;
-   private String persisterClassName;
+   private final Object realCommand;
+   private final String methodName;
+   private final String[] classNames;
+   private final Object[] args;
+   private final String persisterClassName;
+   private final String orderBy;
+   private final boolean isAsc;
 
    private Map propertiesMap;
 
    public CriteriaCommandExecutor(Object realCommand, String methodName,
          String[] classNames, Object[] args, String persisterClassName,
+         String orderBy, boolean isAsc,
          Map propertiesMap) {
       this.realCommand = realCommand;
       this.methodName = methodName;
       this.classNames = classNames;
       this.args = args;
       this.persisterClassName = persisterClassName;
+      this.orderBy = orderBy;
+      this.isAsc = isAsc;
       this.propertiesMap = propertiesMap;
    }
 
@@ -52,8 +60,14 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
       final HibernateCriteria hibCriteria = (HibernateCriteria) realCommand;
 
       if (persisterClassName != null && persisterClassName.trim().length() != 0) {
-         hibCriteria.setCriteria(getSession().createCriteria(
-               ClassesCache.getClass(persisterClassName)));
+         final Criteria crit = getSession().createCriteria(
+               ClassesCache.getClass(persisterClassName));
+         
+         if (orderBy != null && orderBy.trim().length() != 0) {
+            crit.addOrder(isAsc ? Order.asc(orderBy) : Order.desc(orderBy));
+         }
+         
+         hibCriteria.setCriteria(crit);
       } else {
          hibCriteria.setCriteria(null);
       }
