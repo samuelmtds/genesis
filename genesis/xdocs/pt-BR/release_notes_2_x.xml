@@ -8,7 +8,7 @@
   <body>
     <section name="Downloads e notas de versão (2.x/0.2.x)">
       <ul>
-        <li><a href="#0.2">0.2 (2.0)</a></li>
+        <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.2-RC2">0.2-RC2</a></li>
         <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
@@ -26,6 +26,8 @@
         <p>Uma lista completa das alterações ocorridas entre a versão 0.2 e a
         0.2-RC2 pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?target_milestone=0.2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
@@ -88,6 +90,8 @@
         <p>A lista completa das alterações ocorridas entre o 0.2-RC1 e
         0.2-RC2 pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2-RC2/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
@@ -167,6 +171,8 @@
         <p>Uma lista completa das alterações ocorridas entre o 0.2-beta2 e
         0.2-RC1 pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;target_milestone=0.2-RC1">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2-RC1/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
@@ -273,6 +279,8 @@
         <p>Uma lista completa das alterações ocorridas entre o 0.2-beta1 e
         0.2-beta2 pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;target_milestone=0.2-beta2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2-beta2/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
@@ -319,6 +327,8 @@
           <li>Modelo de interface gráfica totalmente reformulado e muito mais
           expressivo e poderoso</li>
         </ul>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2-beta1/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta

@@ -8,11 +8,85 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
-        <li><a href="#0.2">0.2</a></li>
-        <li><a href="#0.1">0.1</a></li>
+        <li><a href="#2.1-RC1">2.1-RC1</a></li>
+        <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
+        <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
-    <section name="0.2">
+    <section name="2.1-RC1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2861&amp;expandFolder=2861&amp;folderID=0">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li><a href="ui_additional_features.html#Utilizando_POJOs_para_tratar_eventos">POJOs</a>
+          podem ser usados para tratar todos os tipos de eventos</li>
+          <li>Os conversores do BeanUtils usam a mesma busca hierárquica dos
+          outros componentes do genesis</li>
+          <li>A versão do Hibernate que acompanha o genesis agora é a 2.1.8</li>
+          <li>As referências diretas a classes do Commons JXPath foram
+          deprecated. A próxima versão do genesis conterá suporte genérico a
+          linguagens de script</li>
+          <li>Uma seção de <a href="faq.html">FAQ</a> foi adicionada à
+          documentação</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>Uma exceção é lançada quando um item numa <code>list</code>
+          ligada a uma <code>Collection</code> ou array é selecionado
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=192">Issue
+          # 192</a>)</li>
+          <li>O reset do estado do form pode lançar uma
+          <code>NullPointerException</code> sob condições específicas
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=193">Issue
+          # 193</a>)</li>
+          <li>Uma exceção é lançada se o <code>objectField</code> de um
+          <code>@DataProvider</code> for uma array de qualquer subclasse de
+          <code>Object</code>
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=194">Issue
+          # 194</a>)</li>
+          <li>O conversor padrão registrado para <code>Object</code> está errado
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=202">Issue
+          # 202</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 0.2 e a 2.1-RC1
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;target_milestone=2.1">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/2.1-RC1/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Liaw Mike</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="0.2 (2.0)">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0">aqui</a>.</p>
@@ -31,6 +105,8 @@
         </ul>
         <p>Para obter a lista detalhada de mudanças nas versões intermediárias
         do 0.2.x (betas e RCs), clique <a href="release_notes_2_x.html">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
@@ -70,7 +146,7 @@
           </ul>
       </subsection>
     </section>
-    <section name="0.1">
+    <section name="0.1 (1.0)">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2301&amp;expandFolder=2301&amp;folderID=2342">aqui</a>.</p>

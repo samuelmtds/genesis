@@ -7,7 +7,7 @@
   <body>
     <section name="Downloads and release notes (2.x/0.2.x)">
       <ul>
-        <li><a href="#0.2">0.2 (2.0)</a></li>
+        <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.2-RC2">0.2-RC2</a></li>
         <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
@@ -24,6 +24,8 @@
         documentation.</p>
         <p>The full change log for 0.2 can be found  <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?target_milestone=0.2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
@@ -83,6 +85,8 @@
         </ul>
         <p>The full change log between 0.2-RC1 and 0.2-RC2 can be found <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-RC2/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
@@ -160,6 +164,8 @@
         </ul>
         <p>The full change log between 0.2-beta2 and 0.2-RC1 can be found <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;target_milestone=0.2-RC1">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-RC1/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
@@ -263,6 +269,8 @@
         </ul>
         <p>The full change log between 0.2-beta1 and 0.2-beta2 can be found <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;target_milestone=0.2-beta2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-beta2/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
@@ -308,6 +316,8 @@
           <li>Brand new redesigned UI model, much more expressive and powerful
           </li>
         </ul>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-beta1/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
