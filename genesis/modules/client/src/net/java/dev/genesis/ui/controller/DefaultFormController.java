@@ -55,11 +55,6 @@ public class DefaultFormController implements FormController {
          "formMetadata", "functions", "variables", "variablesMap", "context",
          "enabledWhen", "callActions", "dataProviderActions", "changedMap" };
 
-   static {
-      System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
-            JXPathContextFactory.class.getName());
-   }
-
    private Object form;
    private FormMetadata formMetadata;
    private JXPathContext ctx;

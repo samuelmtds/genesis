@@ -24,8 +24,9 @@
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="ThinletMetadataFactoryAspect" />
-      <aspect class="TimeoutAspect">
+      <aspect class="TimeoutAspect" deployment-model="perThread">
          <param name="timeout" value="60000" />
+         <param name="keepThreadInstance" value="true" />
       </aspect>
       <!-- aspect class="LocalCommandExecutionAspect" >
       	<param name="transactionalInjector" 

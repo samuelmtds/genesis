@@ -18,12 +18,15 @@
  */
 package net.java.dev.genesis.samples.simplecalc;
 
-import net.java.dev.genesis.samples.simplecalc.ui.UIUtils;
+import net.java.dev.genesis.helpers.StartupHelper;
 import net.java.dev.genesis.samples.simplecalc.ui.CalculatorView;
 
 public class SimpleCalc {
    public static void main(String[] args) throws Exception {
-      UIUtils.getInstance().initialize();
+      StartupHelper helper = new StartupHelper();
+      helper.setLoadValidatorRules(false);
+      helper.initialize();
+
       new CalculatorView().display();
    }
 }

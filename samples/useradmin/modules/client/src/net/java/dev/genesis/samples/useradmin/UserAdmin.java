@@ -18,12 +18,13 @@
  */
 package net.java.dev.genesis.samples.useradmin;
 
-import net.java.dev.genesis.samples.useradmin.ui.UIUtils;
+import java.util.Locale;
+import net.java.dev.genesis.helpers.StartupHelper;
 import net.java.dev.genesis.samples.useradmin.ui.UserListView;
 
 public class UserAdmin {
    public static void main(String[] args) throws Exception {
-      UIUtils.getInstance().initialize();
+      new StartupHelper(Locale.ENGLISH, "MM/dd/yyyy").initialize();
       new UserListView().display();
    }
 }

@@ -18,11 +18,14 @@
  */
 package net.java.dev.genesis.emptyproject;
 
-import net.java.dev.genesis.emptyproject.ui.UIUtils;
+import net.java.dev.genesis.helpers.StartupHelper;
 
 public class MyGenesisApp {
    public static void main(String[] args) {
-      UIUtils.getInstance().initialize();
+      StartupHelper helper = new StartupHelper();
+      // Comment the following line if use validation
+      helper.setLoadValidatorRules(false);
+      helper.initialize();
       // Your code here
    }
 }
