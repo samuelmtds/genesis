@@ -5,7 +5,7 @@
 	<property file="build.properties" />
 	<property file="project.properties" />
 
-	<property name="version" value="0.2-dev" />
+	<property name="genesis.version" value="0.2-dev" />
 	<property name="xdoclet.validatexml" value="false" />
 	<property name="modules.dir" value="modules" />
 	<property name="build.dir" value="target" />
@@ -131,10 +131,10 @@
 
 	<target name="shared:jar">
 		<mkdir dir="${genesis.dist.dir}" />
-		<jar destfile="${genesis.dist.dir}/genesis-shared-${version}.jar">
+		<jar destfile="${genesis.dist.dir}/genesis-shared-${genesis.version}.jar">
 			<fileset dir="${genesis.module.shared}/${build.dest}" />
 		</jar>
-		<jar destfile="${genesis.dist.dir}/genesis-shared-annotated-${version}.jar">
+		<jar destfile="${genesis.dist.dir}/genesis-shared-annotated-${genesis.version}.jar">
 			<fileset dir="${genesis.module.shared}/${genesis.annotation.dest}" />
 		</jar>
 	</target>
@@ -194,7 +194,7 @@
 
 	<target name="server:jar">
 		<mkdir dir="${genesis.dist.dir}" />
-		<jar destfile="${genesis.dist.dir}/genesis-server-${version}.jar">
+		<jar destfile="${genesis.dist.dir}/genesis-server-${genesis.version}.jar">
 			<fileset dir="${genesis.module.server}/${build.dest}" />
 		</jar>
 	</target>
@@ -222,7 +222,7 @@
 
 	<target name="client:jar">
 		<mkdir dir="${genesis.dist.dir}" />
-		<jar destfile="${genesis.dist.dir}/genesis-client-${version}.jar">
+		<jar destfile="${genesis.dist.dir}/genesis-client-${genesis.version}.jar">
 			<fileset dir="${genesis.module.client}/${build.dest}" />
 		</jar>
 	</target>
@@ -268,10 +268,10 @@
 
 	<target name="aspect:jar">
 		<mkdir dir="${genesis.dist.dir}" />
-		<jar destfile="${genesis.dist.dir}/genesis-aspect-${version}.jar">
+		<jar destfile="${genesis.dist.dir}/genesis-aspect-${genesis.version}.jar">
 			<fileset dir="${genesis.module.aspect}/${build.dest}" />
 		</jar>
-		<jar destfile="${genesis.dist.dir}/genesis-aspect-annotated-${version}.jar">
+		<jar destfile="${genesis.dist.dir}/genesis-aspect-annotated-${genesis.version}.jar">
 			<fileset dir="${genesis.module.aspect}/${genesis.annotation.dest}" />
 		</jar>
       <copy todir="${genesis.dist.dir}">
