@@ -31,6 +31,7 @@ import java.util.Map;
 
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.Form;
+import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.reusablecomponents.lang.Enum;
@@ -669,8 +670,7 @@ public abstract class BaseThinlet extends Thinlet {
 
    public void handleException(Throwable throwable) {
       if (throwable instanceof ScreenNotFoundException) {
-         handleException("Um arquivo necessário para exibição de uma tela " + 
-                        "não pôde ser encontrado", throwable);
+         handleException("The error screen file could not be found", throwable);
 
          return;
       } else if (throwable instanceof ValidationException) {
@@ -692,7 +692,7 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void handleUnknownException(Throwable t) {
-      handleException("Ocorreu um erro inesperado", t);
+      handleException("Unexpected error occurred", t);
    }
 
    protected boolean handleCustomException(Throwable t) throws Exception {
@@ -712,8 +712,8 @@ public abstract class BaseThinlet extends Thinlet {
       }
 
       try {
-         MessageDialog.show(this, "Erros de validação", 
-                                          displayMessage.toString());
+         MessageDialog.show(this, UIUtils.getInstance().getBundle().getString(
+               "validation.errors.title"), displayMessage.toString());
       } catch (ScreenNotFoundException snfe) {
          handleException(snfe);
       }

@@ -25,13 +25,13 @@ public class NoopCommand implements Serializable {
    /**
     * @Remotable
     */
-   public void remotable() throws Exception {
+   public void remotable() {
    }
 
    /**
     * @Transactional
     */
-   public void transactional() throws Exception {
+   public void transactional() {
    }
 
 }
