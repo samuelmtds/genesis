@@ -22,6 +22,8 @@
         Utilizando as classes auxiliares de interface gráfica</a></li>
         <li><a href="#Tratando erros">Tratando erros</a></li>
         <li><a href="#Entendendo os forms">Entendendo os forms</a></li>
+        <li><a href="#Implementando ações no form e na view">Implementando ações
+        no form e na view</a></li>
       </ul>
       </p>
     </section>
@@ -410,6 +412,193 @@ public class LoginView extends BaseDialogThinlet {
       exemplo dado, ao clicar em Login o valor dos campos Usuário e Senha é
       impresso na saída padrão enquanto acionar o botão Limpar exclui o conteúdo
       dos campos tanto na tela quanto no form.</p>
+    </section>
+    <section name="Implementando ações no form e na view">
+      <p>Embora o genesis possibilite que seja feito o binding de ações do form
+      com controles na tela, nada impede o uso do recurso já presente no Thinlet
+      de se invocar métodos configurando-os no xml da tela. Desta forma, uma
+      questão recorrente na mente dos desenvolvedores é quando usar
+      <code>@Action</code> e quando utilizar <code>action="metodo()"</code>
+      diretamente na classe da view. Alguns princípios básicos podem ser usados
+      para se tomar esta decisão.</p>
+      <p>Se uma ação modifica o form ou não está ligada a API gráfica, esta deve
+      ser implementada no form com o uso de <code>@Action</code>. Se a resposta
+      a determinado controle é simplesmente exibir uma nova tela, janela de
+      diálogo ou alguma tarefa específica da API gráfica sendo utilizada, deve-
+      se implementá-la na view e acioná-la com <code>action="metodo()"</code>.
+      Porém, existem situações que não tão simples e em que a manipulação do
+      form e da view se misturam. Estes casos são considerados abaixo.</p>
+      <subsection name="Usando @PreAction">
+        <p>Consideremos o seguinte exemplo: deve-se implementar a exclusão de um
+        dado. Mas antes de exclui-lo o usuário deve confirmar a operação. Essa
+        confirmação poderia ser implementada exibindo uma
+        <code>OptionDialog</code> para o usuário e prosseguindo com a operação
+        somente se ele concordasse. A operação de exclusão não é específica da
+        API gráfica e, por tanto, deve ser implementada no form. Como
+        implementar isso?</p>
+        <p>A fim de se executar um método na interface gráfica antes de invocar
+        um método no form - e até mesmo impedir a execução do mesmo - utiliza-se
+        a anotação <code>@PreAction</code>. Esta anotação deve ser colocada no
+        método da view que se deseja executar antes do método do form e pode
+        tanto retornar <code>boolean</code> como <code>void</code>. Quando o
+        método retorna <code>false</code> o método no form não é invocado.</p>
+        <p>Se o nome do método na view for o mesmo do método no form não é
+        necessário utilizar nenhum parâmetro adicional para a anotação. Em
+        certos casos, porém, o nome do método na view não pode ser o mesmo
+        utilizado no form. Para indicar a execução de qual método do form deve
+        ser precedida da execução do método na view, coloca-se ao lado da
+        anotação o nome do método no form. Um exemplo completo de uso encontra-
+        se abaixo. Primeiro, a view:</p>
+<source>
+public class ExemploPreActionView extends BaseThinlet {
+   public ExemploPreActionView() {
+      // lógica de inicializacao
+      bind(new ExemploPreActionForm());
+   }
+
+   /**
+    * @PreAction excluir
+    */
+   public boolean confirmaExclusao() {
+      return OptionDialog.displayYesNo(this, "Excluindo registro...",
+            "Deseja realmente excluir o registro?") == Option.YES;
+   }
+
+   // ...
+}
+</source>
+        <p>Abaixo temos o form:</p>
+<source>
+/**
+ * @Form
+ */
+public class ExemploPreActionForm {
+   /**
+    * @Action
+    */
+   public void excluir() {
+      // implementa aqui a lógica de exclusão.
+   }
+
+   // ...
+}
+</source>
+        <p>Quando o botão com <code>name="excluir"</code> é acionado, o genesis
+        invoca o método <code>confirmaExclusao()</code> em
+        <code>ExemploPreActionView</code> visto que este está configurado com a
+        anotação <code>@PreAction excluir</code>. Caso o nome do método na view
+        fosse <code>excluir</code> não seria necessário passar o nome do método
+        como parâmetro para a anotação.</p>
+        <p>Visto que <code>confirmaExclusao()</code> possui como retorno um
+        <code>boolean</code>, o método no form só será invocado quando o retorno
+        for <code>true</code>. No exemplo específico, isso só acontecerá quando
+        o usuário escolher a opção "Sim" na janela que será exibida. Quando a
+        confirmação ocorre, o método <code>excluir()</code> é invocado pelo
+        framework e o tratamento do acionamento do botão, encerrado.</p>
+      </subsection>
+      <subsection name="Usando @PosAction">
+        <p>Após a execução de um método do form pode ser necessário utilizar
+        algum recurso da API gráfica, como, por exemplo, fechar a janela sendo
+        exibida. A fim de possibilitar isso o genesis suporta a anotação
+        <code>@PosAction</code>, que deve ser colocada no método da view a ser
+        invocado. Sua sintaxe é muito similar a da anotação
+        <code>@PreAction</code>, exceto que o método que possui a anotação deve
+        retornar <code>void</code>. Abaixo há um exemplo do uso:</p>
+<source>
+public class ExemploPosActionView extends BaseDialogThinlet {
+   public ExemploPosActionView() {
+      // lógica de inicializacao
+      bind(new ExemploPosActionForm());
+   }
+
+   /**
+    * @PosAction salvar
+    */
+   public void fechaJanela() {
+      getDialog().dispose();
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploPosActionForm {
+   /**
+    * @Action
+    */
+   public void salvar() {
+      // implementa aqui a lógica para salvar
+   }
+
+   // ...
+}
+</source>
+        <p>No exemplo acima, quando o botão com <code>name="salvar"</code> é
+        chamado, o método <code>salvar()</code> é invocado no form. Após a
+        execução, o método <code>fechaJanela()</code> na view, que está anotado
+        como <code>@PosAction salvar</code> é executado. Assim como no caso de
+        <code>@PreAction</code>, caso o nome do método na view também fosse
+        <code>salvar()</code> não seria necessário passá-lo na anotação.</p>
+      </subsection>
+      <subsection name="Usando invokeFormAction(String)">
+        <p>Em algumas ocasiões pode ser necessário invocar um ou mais métodos do
+        form de dentro de um método da view sob determinadas condições
+        específicas e o uso de <code>@PreAction</code> e <code>@PosAction</code>
+        não é possível. Embora a execução direta de um método do form seja
+        possível, ela ocorrerá sem que o framework seja notificado disso, o que
+        terá diversas conseqüências como a não atualização da interface gráfica,
+        por exemplo.</p>
+        <p>Para chamar um método do form e manter o sincronismo automático deve-
+        se utilizar o método <code>invokeFormAction(String)</code>. O parâmetro
+        que este recebe é o nome do método do form a ser invocado. Um exemplo
+        encontra-se abaixo:</p>
+<source>
+public class ExemploInvokeFormActionView extends BaseThinlet {
+   private ExemploInvokeFormActionForm form;
+
+   public ExemploInvokeFormActionView() {
+      // lógica de inicializacao
+      bind(form = new ExemploInvokeFormActionForm());
+   }
+
+   public void selecionaIndicesFinanceiros() {
+      BigDecimal indice = //... obtem o indice a partir do input de outra
+                          // janela, por exemplo
+      form.setIndice(indice);
+      invokeFormAction("recalculaTotais");
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploInvokeFormActionForm {
+   private BigDecimal indice;
+   // ...
+
+   public BigDecimal getIndice() {
+      return indice;
+   }
+
+   public void setIndice(BigDecimal indice) {
+      this.indice = indice;
+   }
+
+   /**
+    * @Action
+    */
+   public void recalculaTotais() {
+      // logica que altera diversas outras propriedades
+   }
+}
+</source>
+      </subsection>
     </section>
   </body>
 </document>
