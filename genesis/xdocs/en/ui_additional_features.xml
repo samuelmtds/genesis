@@ -599,29 +599,28 @@ public void calculateRemainingAmount() {
               &lt;callOnInit=booleanValue&gt;
 </source>
       <p>This annotation may be used in methods returning either a
-      <code>java.util.List</code> or an array of Objects. Values returned by
-      the method will be used to populate the combo or the table.
-      <code>objectField</code>,
-      if specified, should receive as a parameter the name of a property that
-      will hold the instance selected on the widget. This property should be of
-      the same type or a superclass of the type returned by the annotated
-      method, an array of this type or a <code>Collection</code>.
-      <code>indexField</code> is the property that will hold indexes for the
-      selected elements on the widget. It must be an <code>int</code> or an
-      <code>Integer</code>, an array of one of these types or a
-      <code>Collection</code>.
-      In case <code>widgetName</code> is used it must receive the widget
-      name defined in Thinlet XML. This widget will be the one to receive
+      <code>java.util.List</code> or an array of <code>Object</code>s. Values
+      returned by the method will be used to populate a combobox, list or table.
+      <code>objectField</code>, if specified, should receive as a parameter the
+      name of a property that will hold the instance selected on the widget.
+      This property should be of the same type or a superclass of the type
+      returned by the annotated method, an array of this type or a
+      <code>Collection</code>. <code>indexField</code> is the property that
+      will hold indexes for the selected elements on the widget. It must be an
+      <code>int</code> or an <code>Integer</code>, an array of one of these
+      types or a <code>Collection</code>.
+      In case <code>widgetName</code> is used, its value must be the name of a
+      widget defined in the view xml file. This widget will be the one to receive
       the data provided by the annotated method.
-      <b>Attention:</b> At least one of these three parameters must be
-      informed.</p>
+      <b>At least one of these three parameters must be
+      informed</b>.</p>
       <p>The widget <code>name</code> is equal to the value specified for
-      <code>widgetName</code> or <code>objectField</code>
-      or <code>indexField</code> in that order of specification priority.</p>
+      <code>widgetName</code>, <code>objectField</code> or <code>indexField</code>
+      in that order.</p>
       <p>As mentioned earlier, both <code>objectField</code> and
       <code>indexField</code> receive as parameter the name of a property that
-      might return a Bean or an array or a <code>Collection</code>. Let's
-      examine each case:
+      might be a bean, an array or a <code>Collection</code>. Let's
+      examine when to use each type:</p>
       <table>
         <tr>
           <th>Return type and Usage</th>
@@ -630,20 +629,19 @@ public void calculateRemainingAmount() {
         </tr>
         <tr>
           <td>Bean: always used with comboboxes or lists/tables with single
-          selection allowed</td>
+          selection mode</td>
           <td>Any Java class (cannot be a primitive type)</td>
-          <td>Integer class only or int primitive type</td>
+          <td><code>Integer</code> or <code>int</code></td>
         </tr>
         <tr>
-          <td>Array or <code>Collection</code>: used for lists/tables with
+          <td><code>Collection</code> or array: used for lists/tables with
           multiple selection enabled</td>
           <td>Array of any Java class (cannot be of a primitive type) or
           <code>Collection</code> of any Java class</td>
-          <td>Array of Integers (or of the int primitive type) or
-          <code>Collection</code> of Integers</td>
+          <td>Array of <code>Integer</code>s or of <code>int</code>s or
+          <code>Collection</code> of <code>Integer</code>s</td>
         </tr>
       </table>
-      </p>
       <p>An example of how to use this annotation is shown below:</p>
 <source>
 <![CDATA[

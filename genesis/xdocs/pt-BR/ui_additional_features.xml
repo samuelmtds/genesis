@@ -614,8 +614,8 @@ public void calculaMontanteCorrigido() {
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
       <code>java.util.List</code> ou uma array de Objetos.
-      O retorno dos métodos será
-      utilizado para popular a combo ou tabela. <code>objectField</code> deve
+      O retorno dos métodos será utilizado para popular a combobox, lista ou tabela.
+      <code>objectField</code> deve
       receber o nome da propriedade, se houver, que guardará a instância
       selecionada no widget. Deve ser do mesmo tipo ou uma superclasse do tipo
       retornado no método anotado, uma array do tipo ou uma
@@ -623,18 +623,18 @@ public void calculaMontanteCorrigido() {
       guardará os índices dos elementos selecionados no widget. Deve ser um
       <code>int</code> ou um <code>Integer</code>, uma array de um desses tipos
       ou uma <code>Collection</code>. No caso de <code>widgetName</code>,
-      se utilizado, deve receber o nome do widget, definido no Thinlet XML,
+      se utilizado, deve receber o nome do widget, definido no xml da view,
       que irá receber as informações retornadas pelo método anotado.
-      <b>Atenção:</b> Pelo menos uma dessas três propriedades deve ser
-      informado.</p>
+      <b>Pelo menos uma dessas três propriedades deve ser
+      informado</b>.</p>
       <p>O <code>name</code> do widget na tela é igual ao nome da propriedade
-      informada como <code>widgetName</code> ou <code>objectField</code>
+      informada como <code>widgetName</code>, <code>objectField</code>
       ou <code>indexField</code>, sendo esta a ordem de prioridade para
       determinação do nome.</p>
       <p>Como mencionado acima, <code>objectField</code> e
       <code>indexField</code> recebem um nome de propriedade que pode retornar
-      um Bean ou uma array ou uma <code>Collection</code>. Vejamos cada
-      caso:
+      um bean, uma array ou uma <code>Collection</code>. Vejamos quando cada
+      tipo poderá ser utilizado:</p>
       <table>
         <tr>
           <th>Tipo de Retorno e Utilização</th>
@@ -642,21 +642,21 @@ public void calculaMontanteCorrigido() {
           <th>indexField</th>
         </tr>
         <tr>
-          <td>Bean: usado sempre para comboboxes e
+          <td>bean: usado sempre para comboboxes e
           listas/tabelas que permitem apenas seleção única</td>
           <td>Qualquer classe (não pode ser tipo primitivo)</td>
-          <td>Apenas Integer ou tipo primitivo int</td>
+          <td>Apenas <code>Integer</code> ou tipo primitivo <code>int</code></td>
         </tr>
         <tr>
-          <td>Array ou <code>Collection</code>: utilizado
+          <td><code>Collection</code> ou arrays: utilizado
           para listas/tabelas que permitem seleções múltiplas</td>
           <td>Array de qualquer classe (não pode ser de tipo primitivo) ou
           <code>Collection</code> de qualquer classe</td>
-          <td>Apenas Array de Integers (ou de tipo primitivo int) ou
-          <code>Collection</code> de Integers</td>
+          <td>Apenas array de <code>Integer</code>s (ou de tipo primitivo
+          <code>int</code>) ou <code>Collection</code> de
+          <code>Integer</code>s</td>
         </tr>
       </table>
-      </p>
       <p>Um exemplo de uso desta anotação é ilustrado abaixo:</p>
 <source>
 <![CDATA[
