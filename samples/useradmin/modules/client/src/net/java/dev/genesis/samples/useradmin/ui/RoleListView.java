@@ -25,10 +25,16 @@ import net.java.dev.genesis.samples.useradmin.databeans.Role;
 
 public class RoleListView extends BaseDialogView {
    private final RoleListForm form;
+   private boolean hasChanged;
 
    public RoleListView(final Frame frame) throws Exception {
       super(frame,"RoleListView.title","role-list.xml", false, true);
       bind(form = new RoleListForm());
+   }
+
+   public boolean showView() throws Exception {
+      display();
+      return hasChanged;
    }
 
    public Dimension getPreferredSize() {
@@ -48,6 +54,7 @@ public class RoleListView extends BaseDialogView {
     */
    public void select() throws Exception {
       getDialog().dispose();
+      hasChanged = true;
    }
 
    public void create() throws Exception {

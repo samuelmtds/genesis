@@ -52,8 +52,9 @@ public class InsertUpdateView extends BaseDialogView {
     */
    public void chooseRole() throws Exception {
       final RoleListView view = new RoleListView(getFrame());
-      view.display();
-      form.setRole(view.getRole());
+      if(view.showView()) {
+         form.setRole(view.getRole());
+      }
    }
 
    /**
