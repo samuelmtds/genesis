@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - Empty project structure</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro
+    "></meta><meta name="email" content="allanjones@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 29 January 2005
+                  | Doc for 0.2</div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/screenshots.html">Screenshots</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="collapsed"><a href="../en/documentation_intro.html">User manual</a></li><li class="none"><a href="../en/jars_explained.html">Understanding genesis jars</a></li><li class="none"><strong><a href="../en/empty_project.html">Developing with genesis</a></strong></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="collapsed"><a href="../en/advanced_introduction.html">Advanced guide</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="How_to_start_"></a><h2>How to start?</h2><p>genesis was conceived having as a goal to make development easier and
+      faster. In order to allow someone to use it in an easier and faster way,
+      we made available a whole empty project structure, so you just need to
+      code your own classes. All compilation and installations process are
+      already configured in this empty project.</p><p>It's extremely important you have already read genesis docs and
+      understood its concepts and features. Before starting to code, read the <a href="documentation_intro.html">User Manual</a> and <a href="jars_explained.html">understand genesis distribution jars</a>.</p><p>We call an empty project strutucture <code>empty-project</code> and it
+      comes with every genesis distribution. This structure can be found in dir
+      <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.
+      </p></div><div class="section"><a name="What_is_needed_"></a><h2>What is needed?</h2><p>Besides genesis, it is necessary:</p><ul>
+        <li>genesis distribution along its dependency libraries.</li>
+        <li><a href="http://www.jboss.org/" class="externalLink" title="External Link">JBoss</a> server. We recommend a
+        3.2.x release.</li>
+        <li>To compile and install the application we recommend <a href="http://ant.apache.org/" class="externalLink" title="External Link">Apache Ant</a> and <a href="http://xdoclet.sourceforge.net/" class="externalLink" title="External Link">XDoclet</a> release 1.2 with some
+        modified libraries available <a href="https://genesis.dev.java.net/files/documents/2063/11045/modified-xdoclet.zip">here</a>.</li>
+      </ul></div><div class="section"><a name="Configuring_a_new_project"></a><h2>Configuring a new project</h2><p>You can copy the whole <b>empty-project</b> structure to a development
+      directory of your choice. The first step to configure a new project is to
+      copy the file named <code>build.properties.sample</code> to a new one
+      named <code>build.properties</code>. File <code>build.properties</code>
+      defines certain proprerties that are project or developer specific. The
+      initial content for <code>build.properties.sample</code> is as follows:</p>
+    <div class="source"><pre>
+## Build properties sample
+
+# The following property must be defined in build.properties with an appropriate
+# value for the local environment
+jboss.home=/opt/jboss-3.2.5
+genesisBasedApplication.name=empty-project
+genesisBasedApplication.mainClass=net.java.dev.genesis.emptyproject.MyGenesisApp
+genesisBasedApplication.prettyName=Empty Project
+
+# These properties already have a default value defined in build.xml and only
+# need to be defined in build.properties if their values are different in your
+# local setup
+genesis.home=../../genesis
+xdoclet.dist=../../xdoclet/dist
+generate.validation=true
+jboss.provider.url=jnp://localhost
+jboss.datasource.jndi.name=java:/DefaultDS
+jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+webstart.server=localhost
+webstart.port=8080
+hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+hibernate.version=2.1.6
+hibernate.show.sql=true
+hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+</pre></div>
+  <p>At least four properties must be defined:</p><ul>
+        <li><code><b>jboss.home</b></code>: Indicates where JBoss 3.2.x is
+        installed</li>
+        <li><code><b>genesisBasedApplication.name</b></code>: Choose a name for
+        your project, preferably with no spaces in it.</li>
+        <li><code><b>genesisBasedApplication.mainClass</b></code>: Defines the
+        full qualified name of the project's main class (the class that has a
+        <code>main</code> method defined for execution).</li>
+        <li><code><b>genesisBasedApplication.prettyName</b></code>: Defines a
+        descriptive name for your project. This name may contain spaces.</li>
+      </ul><p>There are other optional properties that have got a default value, but
+      may be redefined. Some of them are:</p><ul>
+        <li><code><b>genesis.home</b></code>: Indicates where genesis is
+        located. Usually this directory will be something like <code><b>&lt;
+        SOME_DIRECTORY&gt;/genesis-&lt;version&gt;/genesis</b></code></li>
+        <li><code><b>xdoclet.dist</b></code>: Indicates the distribution dir for
+        XDoclet. The distribution used by the build process and therefore
+        recommended is the 1.2 release together with some modified libraries
+        available <a href="https://genesis.dev.java.net/files/documents/2063/11045/modified-xdoclet.zip">here</a>.
+        Note: install the 1.2
+        XDoclet dist and copy the modified libraries to
+        <code>&lt;XDOCLET_DIR&gt;/lib</code> overriding the original ones.</li>
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indicates the JBoss datasource config file location.
+        You can supply another config file that matches your database configuration.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect Hibernate will use.
+        If you're going to use other database than HSQLDB, you must supply the correct dialect.
+        You can find further information about how to configure dialects at the
+        <a href="http://www.hibernate.org/" class="externalLink" title="External Link">Hibernate site</a>.
+        </li>
+      </ul><p>To make understanding easier, let's imagine a cenario for a new genesis
+      based project creation:</p><ul>
+        <li>We have JBoss 3.2.6 installed at <code>C:\servers\jboss-3.2.6</code>
+        </li>
+        <li>We install genesis dist at <code>C:\projects</code>, what creates a
+        <code>C:\projects\genesis-&lt;version&gt;</code> dir.</li>
+        <li>We install XDoclet 1.2 dist together with modified jars at
+        <code>C:\projects\xdoclet-1.2</code>.</li>
+        <li>The project will be called<b>helloworld</b> and its descriptive name
+        will be <b>Hello World</b>.</li>
+        <li>The main project class will be <b>exemplo.HelloWorld</b>.</li>
+      </ul><p>Our <code><b>build.properties</b></code> file may look like:</p>
+    <div class="source"><pre>
+jboss.home=c:/servers/jboss-3.2.6
+genesisBasedApplication.name=helloworld
+genesisBasedApplication.mainClass=exemplo.HelloWorld
+genesisBasedApplication.prettyName=Hello World
+
+genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
+xdoclet.dist=c:/projects/xdoclet-1.2/lib
+</pre></div>
+  </div><div class="section"><a name="Developing_with_genesis"></a><h2>Developing with genesis</h2><p>There are two source dirs in the project:</p><ul>
+        <li><b>&lt;PROJECT_DIR&gt;/modules/client/src</b>: Dir that contains all
+        source files related to the client side of your application (forms,
+        views, xmls, etc.).</li>
+        <li><b>&lt;PROJECT_DIR&gt;/modules/shared/src</b>: Dir that contains all
+        source files that both the client side and the server side will need.
+        Generally classes that represent business logic and have
+        transactional/remotable methods (<b>Commands</b>) are put there.
+        Together with them, we have what we call <b>Databeans</b>, i.e.,
+        Hibernate mapped objects, named that way since they go from the view
+        layer to the persistence layer.</li>
+      </ul><p>In the client side source dir, a few source files are already available
+      to make development easier. They are:</p><ul>
+        <li><b>message.properties</b>: It has every name/value pair for your
+        application and it is used for i18n. This file already contains a set of
+        values used by genesis, so it is only necessary to expand this set as
+        your project gets developed.</li>
+        <li><b>validator-rules.xml</b>: Defines all validators used by your
+        project, as the Struts <code>validator</code> does. It is not necessary
+        to change this file, unless your project needs new validators - whose
+        implementation should be available on this same source dir.</li>
+        <li><b>META-INF/aop.xml</b>: File defining all aspects applied to the
+        system. In practice, it's not necessary to change this file, unless you
+        need/want to tune some aspects' parameters or add brand new aspects to
+        the application.</li>
+        <li><b>net/java/dev/genesis/emptyproject/MyGenesisApp.java</b>: A file
+        that does nothing besides using <code>StartupHelper</code> for initialization.
+        This is your project's main file and you should
+        implement your project by initially adding code to it. As mentioned
+        before, you can define which main class to use by just changing
+        <code>build.properties</code>. Therefore, you can delete this file if
+        you want to use another one.</li>
+      </ul><p>We have a few sample projects that show how genesis development is done
+      and use the same structure proposed by this empty project. Analyzing these
+      samples may solve some questions, besides teaching you best practices for
+      developing with genesis. The main sample is called <b>useradmin</b> and
+      shows how to use most genesis features. Its documentation can be found <a href="useradmin_sample.html">here</a>.</p></div><div class="section"><a name="Compiling_and_installing_your_application"></a><h2>Compiling and installing your application</h2><p>The project can be compiled and installed on JBoss using <a href="http://ant.apache.org/" class="externalLink" title="External Link">Ant</a>.</p><p>To compile and install your application we have the following basic Ant
+      targets:</p><ul>
+        <li><b>genesis.app:compile</b>: Compiles your application.</li>
+        <li><b>genesis.app:jar</b>: Creates jars for your application.</li>
+        <li><b>genesis.app:clean</b>: Deletes all files generated during
+        compilation.</li>
+        <li><b>genesis.app:deploy</b>: Installs your application on JBoss. It is
+        not necessary to have the server started to run this target.</li>
+        <li><b>genesis.app:deploy.webstart</b>: Installs your application on
+        JBoss together with all files needed to use it through Java Web Start
+        </li>
+        <li><b>genesis.run</b>: Starts your application. It is necessary that
+        your application is compiled, packaged in jars and installed on JBoss.
+        Obviously, the server must be running.</li>
+        <li><b>genesis.all</b>: It does the same as running
+        <code>genesis.app:clean</code>, <code>genesis.app:compile</code>,
+        <code>genesis.app:jar</code> and <code>genesis.app:deploy</code> in
+        sequence.</li>
+        <li><b>genesis.all.with.webstart</b>: It does the same as running
+        <code>genesis.app:clean</code>, <code>genesis.app:compile</code>,
+        <code>genesis.app:jar</code> and <code>genesis.app:deploy.webstart</code> in sequence.</li>
+      </ul><p>The faster way to put your project to run is:
+
+    <div class="source"><pre>
+ant genesis.app:all
+&lt;JBOSS_DIR&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
+ant genesis.app:run
+</pre></div>
+  
+      </p></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
