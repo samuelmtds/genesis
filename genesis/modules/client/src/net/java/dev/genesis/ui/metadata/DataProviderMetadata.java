@@ -36,9 +36,12 @@ public class DataProviderMetadata {
 
    protected DataProviderMetadata(Method method) {
       this.name = method.getName();
-      if (!method.getReturnType().isArray() || !List.class.isAssignableFrom(method.getReturnType())) {
-         throw new IllegalArgumentException("Method '" + name
-               + "' is a DataProvider and does not return an array or java.util.List");
+
+      if (!method.getReturnType().isArray() && !List.class.isAssignableFrom(
+            method.getReturnType())) {
+         throw new IllegalArgumentException("Method '" + name + "' is a " +
+               "DataProvider and does not have an array or java.util.List as " +
+               "its return type");
       }
    }
 
