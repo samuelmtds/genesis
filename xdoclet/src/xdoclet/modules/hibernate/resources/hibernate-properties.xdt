@@ -53,7 +53,14 @@
                 <XDtMethod:forAllMethods superclasses="true" sort="true">
                     <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-properties.xdt">
                     </XDtMerge:merge>
-                </XDtMethod:forAllMethods>    
+                </XDtMethod:forAllMethods>
+                <XDtMerge:merge file="hibernate-properties-{0}.xml">
+                    <!--
+                        To add non XDoclet property mappings, create a file named
+                            hibernate-properties-<XDtClass:className />.xml
+                        containing the additional properties and place it in your merge dir.
+                    -->
+                </XDtMerge:merge>
             </XDtClass:pushClass>
         </component>
      </XDtMethod:ifHasMethodTag>
