@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
@@ -51,9 +50,6 @@ public class DefaultFormController implements FormController {
 
    private static final Log log = LogFactory
          .getLog(DefaultFormController.class);
-   private static final String[] ignoredProperties = new String[] { "form",
-         "formMetadata", "functions", "variables", "variablesMap", "context",
-         "enabledWhen", "callActions", "dataProviderActions", "changedMap" };
 
    private Object form;
    private FormMetadata formMetadata;
