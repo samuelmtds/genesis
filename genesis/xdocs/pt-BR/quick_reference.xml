@@ -115,10 +115,10 @@
         efetuar a comparação. Recebe como argumentos números, Strings, variáveis
         ou funções JXPath, ou nomes de propriedades no form.</p>
       </subsection>
-      <subsection name="g:hasChanged(any),
-                        g:hasChanged(any)">
+      <subsection name="g:hasChanged(campo),
+                        g:hasNotChanged(campo)">
         <p>Verifica se um campo do form foi alterado ou não. O parâmetro tem que
-        ser o nome de um campo do form.</p>
+        ser um campo do form.</p>
       </subsection>
     <p><a href="ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">Mais informações...</a></p>
     </section>
