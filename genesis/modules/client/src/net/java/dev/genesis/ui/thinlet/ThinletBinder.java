@@ -385,8 +385,10 @@ public class ThinletBinder implements FormControllerListener {
             }
          }
       }
+      final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvided
+            .get(name);
 
-      controller.updateSelection(name, selected);
+      controller.updateSelection(dataMeta, selected);
    }
 
    public void invokeAction(String name) throws Exception {

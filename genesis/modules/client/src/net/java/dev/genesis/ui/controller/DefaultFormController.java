@@ -588,7 +588,7 @@ public class DefaultFormController implements FormController {
          log.debug("Reseting form '" + form + "'");
       }
 
-      currentState = state;
+      currentState = state = createFormState(state);
       ctx.getVariables().declareVariable(CURRENT_STATE_KEY, currentState);
 
       fireEnabledConditionChanged(state.getEnabledMap());
@@ -699,21 +699,15 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   public void updateSelection(String dataProviderName, int[] selected) 
-         throws Exception {
+   public void updateSelection(DataProviderMetadata dataProviderMetadata, 
+         int[] selected) throws Exception {
       previousState = createFormState(currentState);
 
       try {
-         final MethodEntry entry = new MethodEntry(dataProviderName, 
-               new String[0]);
-         final MethodMetadata methodMetadata = getFormMetadata()
-               .getMethodMetadata(entry);
-         final DataProviderMetadata dataMetadata = methodMetadata
-               .getDataProviderMetadata();
          final List list = (List)currentState.getDataProvidedMap().get(
-               dataMetadata);
+               dataProviderMetadata);
 
-         dataMetadata.populateSelectedFields(form, list, selected);
+         dataProviderMetadata.populateSelectedFields(form, list, selected);
 
          update();
       } catch (Exception e) {
@@ -740,10 +734,11 @@ public class DefaultFormController implements FormController {
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
          DataProviderMetadata dataMetadata = (DataProviderMetadata) i.next();
+         String fieldName = dataMetadata.getIndexField().getFieldName();
+         Object currentValue = currentValues.get(fieldName);
 
          listener.dataProvidedIndexesChanged(dataMetadata,
-               dataMetadata.getSelectedIndexes(currentValues.get(dataMetadata.
-               getIndexField().getFieldName())));
+               dataMetadata.getSelectedIndexes(currentValue));
       }
 
       for (final Iterator i = currentValues.entrySet().iterator(); 
