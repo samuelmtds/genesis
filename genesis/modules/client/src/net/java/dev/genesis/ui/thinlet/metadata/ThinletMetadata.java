@@ -58,7 +58,7 @@ public class ThinletMetadata {
       }
       final Object result = ReflectionInvoker.getInstance().invoke(target,
             methodName);
-      return !(result instanceof Boolean) || ((Boolean)result).booleanValue();
+      return Boolean.TRUE.equals(result);
    }
 
    public void invokePosAction(final Object target, final String actionName)
