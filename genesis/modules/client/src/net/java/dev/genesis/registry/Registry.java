@@ -32,17 +32,22 @@ public class Registry {
       return registry.get(clazz);
    }
 
+   //TODO: fully support interface hierarchies
    public Object get(Class clazz, boolean superClass) {
       if (!superClass) {
          return get(clazz);
       }
+
       Object o = null;
-      if(clazz.isInterface()){
-         return get(Object.class);
-      }
-      while (clazz != null && (o = get(clazz)) == null && !clazz.equals(Object.class)) {
+
+      while ((o = get(clazz)) == null && !Object.class.equals(clazz)) {
          clazz = clazz.getSuperclass();
+
+         if (clazz == null) {
+            clazz = Object.class;
+         }
       }
+
       return o;
    }
 

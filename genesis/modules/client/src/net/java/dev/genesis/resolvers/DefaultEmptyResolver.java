@@ -24,18 +24,6 @@ import java.util.Map;
 
 public class DefaultEmptyResolver implements EmptyResolver {
    public boolean isEmpty(Object o) {
-      if(o == null){
-         return true;
-      }
-      if(o.getClass().isArray()){
-         return Array.getLength(o) == 0;
-      }
-      if(o instanceof Collection){
-         return ((Collection)o).isEmpty();
-      }
-      if(o instanceof Map){
-         return ((Map)o).isEmpty();
-      }
-      return false;
+      return o == null || (o.getClass().isArray() && Array.getLength(o) == 0);
    }
 }

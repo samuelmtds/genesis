@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.resolvers;
 
+import java.util.Collection;
 import java.util.Map;
 
 import net.java.dev.genesis.registry.RegistryFactory;
@@ -30,6 +31,8 @@ public class EmptyResolverRegistry {
 	private EmptyResolverRegistry() {
 		factory.register(Object.class, new DefaultEmptyResolver());
 		factory.register(String.class, new StringEmptyResolver());
+      factory.register(Collection.class, new CollectionEmptyResolver());
+      factory.register(Map.class, new MapEmptyResolver());
 	}
 
 	public static EmptyResolverRegistry getInstance() {

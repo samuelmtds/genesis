@@ -18,30 +18,10 @@
  */
 package net.java.dev.genesis.resolvers;
 
-public class StringEmptyResolver implements EmptyResolver {
+import java.util.Map;
 
-    private boolean trim = true;
-
-    public boolean isTrim() {
-        return trim;
-    }
-
-    public void setTrim(boolean trim) {
-        this.trim = trim;
-    }
-
-    public boolean isEmpty(Object o) {
-        if (o == null) {
-            return true;
-        }
-
-        String s = o.toString();
-
-        if (trim) {
-            s = s.trim();
-        }
-
-        return s.length() == 0;
-    }
-
+public class MapEmptyResolver implements EmptyResolver {
+   public boolean isEmpty(Object o) {
+      return o == null || ((Map)o).isEmpty();
+   }
 }
