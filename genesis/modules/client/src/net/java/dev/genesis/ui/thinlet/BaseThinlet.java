@@ -599,7 +599,14 @@ public abstract class BaseThinlet extends Thinlet {
       final Object[] columns = getTableColumns(component); 
       
       for (int i = 0; i < columns.length; i++) {
-         propertyNames.add(getName(columns[i]));
+         final String name = getName(columns[i]);
+
+         if (name == null) {
+            throw new IllegalArgumentException("column (index " + i + ") in " + 
+                  "table " + getName(component) + " does not have a name");
+         }
+
+         propertyNames.add(name);
       }
 
       String propertyName;
