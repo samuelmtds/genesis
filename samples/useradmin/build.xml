@@ -392,7 +392,7 @@
 	       depends="useradmin:all,useradmin:deploy.webstart" />
 
    <target name="useradmin:run">
-      <java classname="example.Sample" fork="true" failonerror="true">
+      <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="org.jnp.interfaces.NamingContextFactory" />
          <sysproperty key="java.naming.provider.url"
@@ -407,7 +407,7 @@
    </target>
 
    <target name="useradmin:run-with-debug">
-      <java classname="example.Sample" fork="true" failonerror="true">
+      <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="org.jnp.interfaces.NamingContextFactory" />
          <sysproperty key="java.naming.provider.url"
@@ -424,7 +424,7 @@
    </target>
 
    <target name="useradmin:run-with-logging-on">
-      <java classname="example.Sample" fork="true" failonerror="true">
+      <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="org.jnp.interfaces.NamingContextFactory" />
          <sysproperty key="java.naming.provider.url"

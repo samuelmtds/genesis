@@ -44,5 +44,5 @@
         <property name="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
     </resources>
 
-    <application-desc main-class="example.Sample"></application-desc>
+    <application-desc main-class="net.java.dev.genesis.samples.useradmin.Sample"></application-desc>
 </jnlp>
