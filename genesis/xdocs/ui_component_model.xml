@@ -28,6 +28,7 @@
         >Controlando a interface gráfica e o form condicionalmente</a></li>
         <li><a href="#Determinando se o campo está vazio">Determinando se o
         campo está vazio</a></li>
+        <li><a href="#Comparando valores">Comparando valores</a></li>
       </ul>
       </p>
     </section>
@@ -629,11 +630,16 @@ public class ExemploInvokeFormActionForm {
 </source>
         <p>A variável <code>nomeCondicao</code> é exportada de modo a
         representar a expressão <code>expressaoJXPath</code> em outros pontos do
-        código. Esta anotação pode ser usada tanto na classe, no getter de um
+        código. Como toda variável JXPath, quando for utilizada numa expressão
+        deve-se preceder o seu nome com <code>$</code>. Para o exemplo dado,
+        deve-se referenciar a variável em uma expressão condicional como
+        <code>$nomeCondicao</code>.</p>
+        <p>Esta anotação pode ser usada tanto na classe, no getter de um
         atributo ou em um método anotado com <code>@Action</code>. Seu escopo
         sempre será o de classe, não importando onde ela seja declarada.
         Obviamente, esta anotação é útil somente quando usada em conjunto com
-        outra anotação condicional, como as mencionadas abaixo.</p>
+        outra anotação condicional que referencie a variável exportada, como as
+        mencionadas abaixo.</p>
       </subsection>
       <subsection name="Habilitando e desabilitando componentes">
         <p>É muito comum no desenvolvimento de interfaces gráficas a situação em
@@ -903,11 +909,137 @@ public void setAtributoDependente(String atributoDependente) {
 </source>
       </subsection>
     </section>
+    <section name="Comparando valores">
+      <p>Tanto o próprio framework como o desenvolvedor precisa diversas vezes
+      verificar se algum campo teve seu valor alterado ou se seu valor é igual
+      ao de uma constante ou ao conteúdo de outro campo. A interface
+      <code>EqualityComparator</code> definida em
+      <code>net.java.dev.genesis.equality</code> é implementada por classes
+      capazes de tomar essa decisão.</p>
+      <p>Nesta interface é definido o método <code>equals(Object,Object)</code>
+      que retorna um <code>boolean</code> indicando se as instâncias comparadas
+      são iguais. A anotação de mesmo nome, <code>@EqualityComparator</code>
+      pode ser usada para definir explicitamente a implementação utilizada para
+      determinado atributo. Sua sintaxe é semelhante a de
+      <code>@EmptyResolver</code>:</p>
+<source>
+@EqualityComparator &lt;nomeCompletoClasseQueImplementaInterface&gt;
+                    &lt;atributos&gt;
+</source>
+      <p>Na maioria dos casos não será necessário utilizar a anotação visto que
+      o genesis possui também para este caso um mecanismo padrão para determinar
+      qual implementação da interface deve ser utilizada para um dado atributo.
+      O registro das classes e suas implementações é mantido por
+      <code>EqualityComparatorRegistry</code>. As implementações registradas por
+      padrão são:</p>
+      <ul>
+        <li><code>BigDecimalEqualityComparator</code> considera duas instâncias
+        de <code>java.math.BigDecimal</code> iguais se ambas forem nulas ou se o
+        retorno do método <code>compareTo(BigDecimal)</code> invocado sobre uma
+        delas for zero.</li>
+        <li><code>StringEqualityComparator</code> considera <code>String</code>s
+        nulas ou de tamanho zero após removidos os espaços como iguais. Também
+        são consideradas iguais se <code>s1.trim().equals(s2.trim())</code>.</li
+        >
+        <li>Os casos restantes são tratados por
+        <code>DefaultEqualityComparator</code> que determina como iguais duas
+        instâncias nulas ou utiliza o retorno de <code>o1.equals(o2)</code>.</li
+        >
+      </ul>
+      <subsection name="Verificando mudanças de valores em campos e fazendo
+          comparações em expressões condicionais">
+        <p>Quatro funções JXPath são exportadas pelo genesis para auxiliar o
+        programador em tarefas comuns:</p>
+        <ul>
+          <li><code>g:hasChanged(propriedade)</code> e
+          <code>g:hasNotChanged(propriedade)</code> verificam se ocorreram ou
+          não mudanças no valor da propriedade do form.</li>
+          <li><code>g:equals(any,any)</code> e <code>g:notEquals(any,any)</code>
+          comparam dois valores - que podem ser constantes, propriedades do form
+          ou variáveis - e retornam o resultado da comparação.</li>
+        </ul>
+        <p>O genesis mantém internamente um controle dos campos que tiveram seu
+        valor alterado na iteração atual. É esta lista que é consultada pelas
+        funções <code>g:hasChanged(propriedade)</code> e
+        <code>g:hasNotChanged(propriedade)</code>. Para determinar se um valor
+        foi alterado ou não e popular esta lista interna, o framework utiliza a
+        instância de <code>EqualityComparator</code> configurada para a
+        propriedade.</p>
+        <p>As funções <code>g:equals(any,any)</code> e
+        <code>g:notEquals(any,any)</code> também utilizam instâncias de
+        <code>EqualityComparator</code> para determinar seu retorno. No entanto,
+        o processo para isto é um pouco mais complexo, conforme explicado
+        abaixo:</p>
+        <ul>
+          <li>É determinada a instância de <code>EqualityComparator</code> para
+          cada um dos parâmetros. Se o parâmetro for uma propriedade do form, a
+          implementação configurada para ele será utilizada. Caso contrário,
+          será considerada a implementação padrão obtida através de consulta a
+          <code>EqualityComparatorRegistry</code>.</li>
+          <li>Se os comparadores dos dois parâmetros forem iguais, o primeiro
+          deles será utilizado para compará-los.</li>
+          <li>Se o primeiro parâmetro for da mesma classe ou uma subclasse do
+          tipo do segundo parâmetro, a sua instância de
+          <code>EqualityComparator</code> será utilizada para efetuar a
+          comparação.</li>
+          <li>Se o segundo parâmetro for da mesma classe ou uma subclasse do
+          tipo do primeiro parâmetro, a sua instância de
+          <code>EqualityComparator</code> será utilizada para efetuar a
+          comparação.</li>
+          <li>Se nenhuma das condições acima for verdade será retornado
+          <code>false</code>.</li>
+        </ul>
+        <p>O uso de uma função de cada par é demonstrado abaixo:</p>
+<source>
+public BigDecimal getTaxa() {
+   return taxa;
+}
+
+public void setTaxa(BigDecimal taxa) {
+   this.taxa = taxa;
+}
+
+/**
+ * @Action
+ * @CallWhen g:hasChanged(taxa)
+ */
+public void recalculaValores() {
+   // lógica de recálculo
+}
+</source>
+<source>
+public BigDecimal valorDevido() {
+   return valorDevido;
+}
+
+public void setValorDevido(BigDecimal valorDevido) {
+   this.valorDevido = valorDevido;
+}
+
+public BigDecimal valorPago() {
+   return valorPago;
+}
+
+public void setValorPago(BigDecimal valorPago) {
+   this.valorPago = valorPago;
+}
+
+/**
+ * @Action
+ * @CallWhen g:notEquals(valorDevido,valorPago)
+ */
+public void calculaMontanteCorrigido() {
+   // lógica para cálculo do montante corrigido
+}
+</source>
+      </subsection>
+    </section>
 <!--
-EqualityComparator=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
 DataProvider=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
 DisplayOnly=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
 ValidateBefore=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
+ResourceBundle
+Criteria
 -->
   </body>
 </document>
