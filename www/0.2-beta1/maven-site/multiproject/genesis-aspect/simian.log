@@ -5,4 +5,4 @@ Found 13 duplicate lines in the following files:
  Between lines 141 and 157 in F:\Desenvolvimento\OpenSource\genesis\genesis\modules\aspect\src\net\java\dev\genesis\aspect\FormMetadataFactoryAspect.java
 Found 26 duplicate lines of code in 2 blocks in 1 files
 Processed a total of 648 lines of code in 10 files
-Processing time: 219ms
+Processing time: 172ms
