@@ -719,15 +719,14 @@ public class InsertUpdateForm {
    <b>...</b>
 	</source>
     <p><a href="business_component_model.html#Suporte_a_transações">Mais informações...</a></p>
-      </subsection>
+      </subsection -->
       <subsection name="@Criteria">
-        <p>Utilizado em métodos que fazem pesquisa dinâmicas. O método de
-        negócio que precisa da instância de Criteria para sua execução recebe a
-        anotação <code>@Criteria NomeDaClasseMapeadaNoHibernate</code>. Essa
-        anotação implica que o método também é <a href="#@Remotable">@Remotable
-        </a>, mantendo assim a remotabilidade transparente. Apenas métodos
-        concretos, não-estáticos, não-nativos e públicos podem receber esta
-        anotação.</p>
+        <p>
+	genesis support for Hibernate dynamic searches. This annotation implies the business method 
+	needs a <code>Criteria</code> instance in order to be executed, is 
+        also <a href="#@Remotable">@Remotable</a>, keeping the transparent remoting.
+	Apply to public, concrete, non-static and non-native methods only.
+	</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -736,13 +735,12 @@ public class InsertUpdateForm {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anônimo</td>
-            <td>Nome qualificado completo de classe</td>
-            <td>Nome da classe mapeada no Hibernate para a qual se deseja criar
-            o Criteria</td>
-            <td><b>Sim</b></td>
+            <td>anonymous</td>
+            <td>Fully qualified class name</td>
+            <td>Hibernate mapped class name</td>
+            <td><b>Yes</b></td>
           </tr>
-	<p>Exemplo de uso (UserSearchCommand.java):</p>
+	<p>Example (UserSearchCommand.java):</p>
 	<source>
    <b>...</b>
 public class UserSearchCommand extends AbstractHibernateCriteria {
@@ -754,8 +752,8 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    <b>...</b>
 	</source>
         </table>
-    <p><a href="business_component_model.html#Pesquisas_dinâmicas_com_Criteria">Mais informações...</a></p>
-      </subsection -->
+    <p><a href="business_component_model.html#Dynamic_criteria_searching">More info...</a></p>
+      </subsection>
     </section>
   </body>
 </document>
