@@ -124,7 +124,22 @@ public class RegistryTest extends GenesisTestCase {
       //and there is nothing more in the registry
       assertNull(registry.get(ArrayList.class, true));
    }
-   
+
+   public void testGetClassAndSuperClassWithInterfaces() throws Exception {
+      addArrayListHierarchy();
+
+      // identity lookups should work
+      assertEquals(registry.get(Serializable.class, true), "Serializable");
+
+      // hierarchial lookups should also work
+      assertEquals(registry.get(List.class, true), "List");
+      registry.deregister(List.class);
+      assertEquals(registry.get(List.class, true), "Collection");
+      
+      // lookups for unregistered interfaces should return Object
+      assertEquals(registry.get(Runnable.class, true), "Object");
+   }
+
    public void testGetObject() throws Exception {
       addArrayListHierarchy();
 
