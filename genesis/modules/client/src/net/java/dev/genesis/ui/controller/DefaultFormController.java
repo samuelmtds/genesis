@@ -206,8 +206,12 @@ public class DefaultFormController implements FormController {
    }
 
    protected void evaluate(boolean updateMaps) throws Exception {
-      evaluateClearOnConditions();
       evaluateNamedConditions();
+
+      if (evaluateClearOnConditions()) {
+         evaluateNamedConditions();
+      }
+
       evaluateEnabledWhenConditions();
       evaluateVisibleWhenConditions();
       evaluateCallWhenConditions();
@@ -223,7 +227,7 @@ public class DefaultFormController implements FormController {
       last.putAll(newData);
    }
 
-   protected void evaluateClearOnConditions() throws Exception {
+   protected boolean evaluateClearOnConditions() throws Exception {
       final Map fieldMetadatas = formMetadata.getFieldMetadatas();
       final Map toCopy = new HashMap();
 
@@ -266,10 +270,14 @@ public class DefaultFormController implements FormController {
          if (log.isDebugEnabled()) {
             log.debug("Nothing changed in ClearOn conditions.");
          }
-      } else {
-         PropertyUtils.copyProperties(form, toCopy);
-         changedMap.putAll(toCopy);
+
+         return false;
       }
+
+      PropertyUtils.copyProperties(form, toCopy);
+      changedMap.putAll(toCopy);
+
+      return true;
    }
 
    protected void evaluateNamedConditions() {
