@@ -30,7 +30,7 @@
         <li>To compile and install the application we recommend <a href=
         "http://ant.apache.org/">Apache Ant</a> and <a href=
         "http://xdoclet.sourceforge.net/">XDoclet</a> release 1.2 with some
-        modified libraries available <a href="#TODO:broken link">here</a>.</li>
+        modified libraries available <a href="https://genesis.dev.java.net/files/documents/2063/9021/modified-xdoclet-1.2.zip">here</a>.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
@@ -81,7 +81,8 @@ webstart.port=8080
         <li><code><b>xdoclet.dist</b></code>: Indicates the distribution dir for
         XDoclet. The distribution used by the build process and therefore
         recommended is the 1.2 release together with some modified libraries
-        available <a href="#TODO: broken link">here</a>. Note: install the 1.2
+        available <a href="https://genesis.dev.java.net/files/documents/2063/9021/modified-xdoclet-1.2.zip">here</a>.
+        Note: install the 1.2
         XDoclet dist and copy the modified libraries to
         <code>&lt;XDOCLET_DIR&gt;/lib</code> overriding the original ones.</li>
       </ul>

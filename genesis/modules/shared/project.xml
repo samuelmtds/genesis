@@ -2,11 +2,18 @@
     <extend>../../project.xml</extend>
     <artifactId>genesis-shared</artifactId>
     <name>Genesis Shared Technology</name>
+    <repository>
+		<connection>
+         scm:cvs:pserver:${maven.guest.username}@cvs.dev.java.net:/cvs:genesis</connection>
+      <developerConnection>
+         scm:cvs:pserver:${maven.username}@cvs.dev.java.net:/cvs:genesis</developerConnection>
+      <url>https://genesis.dev.java.net/source/browse/genesis/genesis/modules/shared/</url>
+    </repository>
     <dependencies>
         <dependency>
             <groupId>hibernate</groupId>
             <artifactId>hibernate</artifactId>
-            <version>2.1.5</version>
+            <version>2.1.6</version>
             <type>jar</type>
             <url>http://www.hibernate.org/</url>
             <properties/>

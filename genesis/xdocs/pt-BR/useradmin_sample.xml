@@ -9,9 +9,9 @@
     <section name="Instalação do exemplo useradmin">
       <p>A instalação do exemplo <code>useradmin</code> é relativamente simples.
       A distribuição do exemplo <code>useradmin</code> se encontra nos pacotes
-      de <a href="#TODO: broken link">distribuição completa do genesis</a> ou na
-      <a href="#TODO: broken link">distribuição dos binários completos</a>. A
-      distribuição de todos exemplos do genesis já vem preparadas para rodar
+      de distribuição completa e da distribuição binária do genesis que podem
+      ser encontrados <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&expandFolder=2342&folderID=1756">aqui</a>.
+      A distribuição de todos exemplos do genesis já vem preparadas para rodar
       sobre o servidor de aplicações <a href="http://www.jboss.org/">JBoss</a>,
       que é um servidor gratuito e open-source. Isso não significa que o genesis
       só rode nesse servidor; o genesis foi desenvolvido totalmente compatível
