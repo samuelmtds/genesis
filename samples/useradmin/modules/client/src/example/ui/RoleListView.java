@@ -67,7 +67,7 @@ public class RoleListView extends BaseDialogThinlet {
    public void create() throws Exception {
       final InsertRoleView thinlet = new InsertRoleView(getFrame());
       if (thinlet.showView()) {
-         action("provideRoles");
+         invokeFormAction("provideRoles");
       }
    }
    
@@ -75,7 +75,7 @@ public class RoleListView extends BaseDialogThinlet {
     * @PosAction
     */
    public void remove() throws Exception {
-      action("provideRoles");
+      invokeFormAction("provideRoles");
    }
 
 }

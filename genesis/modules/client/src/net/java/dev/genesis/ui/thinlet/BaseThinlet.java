@@ -624,13 +624,13 @@ public abstract class BaseThinlet extends Thinlet {
       getBinder(widget, form).bind();
    }
    
-   public void action(String actionName) throws Exception {
+   public void invokeFormAction(String actionName) throws Exception {
       binder.invokeAction(actionName);
    }
    
-   public void action(Object component) throws Exception {
+   public void invokeFormAction(Object component) throws Exception {
       if (isEnabled(component) && isVisible(component)) {
-         action(getName(component));
+         invokeFormAction(getName(component));
       }
    }
 

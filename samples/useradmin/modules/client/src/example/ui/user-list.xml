@@ -16,7 +16,7 @@
    </panel>
    <panel weightx="1" weighty="1" columns="1" border="true" gap="5" top="5" left="5" bottom="5" right="5">
       <panel columns="1" weightx="1" weighty="1" scrollable="true">
-         <table name="users" weightx="1" weighty="1" perform="action(update)" selection="multiple">
+         <table name="users" weightx="1" weighty="1" perform="invokeFormAction(update)" selection="multiple">
             <header>
                <column name="name" text="i18n.User.name" alignment="left" font="bold" width="200"/>
                <column name="login" text="i18n.User.login" alignment="left" font="bold" width="100"/>
