@@ -89,9 +89,7 @@
 
       <patternset id="genesis-xdoclet-extensions.pattern">
          <patternset refid="genesis-license.pattern" />
-         <include name="${xdoclet.dist}/xdoclet-jboss-module-1.2.jar" />
-         <include name="${xdoclet.dist}/xdoclet-hibernate-module-1.2.jar" />
-         <include name="${xdoclet.dist}/xdoclet-apache-module-1.2.jar" />
+         <include name="${xdoclet.dist}/xdoclet-genesis-module-*.jar" />
       </patternset>
 
       <patternset id="genesis-all.pattern">
