@@ -17,7 +17,7 @@
    <siteAddress>https://genesis.dev.java.net/</siteAddress>
    <repository>
       <connection>
-         scm:cvs:pserver:guest@cvs.dev.java.net:/cvs:genesis</connection>
+         scm:cvs:pserver:anonymous@cvs.dev.java.net:/cvs:genesis</connection>
       <developerConnection>
          scm:cvs:pserver:${maven.username}@cvs.dev.java.net:/cvs:genesis</developerConnection>
       <url>/cgi-bin/viewcvs/</url>
