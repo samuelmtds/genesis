@@ -241,9 +241,9 @@ public class User implements Serializable {
         modificando ou comentado os valores das propriedades de acordo com o
         ambiente de execução</li>
         <li>Na linha de comando, execute o script ant com o seguinte comando:
-        ant useradmin:install. Esse comando irá iniciar o processo de instalação
-        do exemplo no JBoss. Esse processo criará um diretório chamado
-        "useradmin" na pasta <code>servers</code> do JBoss contendo a aplicação
+        <code>ant useradmin:install</code>. Esse comando irá iniciar o
+        processo de instalação do exemplo no servidor, criando um diretório chamado
+        "useradmin" na pasta <code>server</code> do JBoss contendo a aplicação
         do exemplo e todas as suas dependências e configurações.</li>
         <li>Uma vez finalizado o processo de instalação, o JBoss poderá ser
         iniciado através do comando:

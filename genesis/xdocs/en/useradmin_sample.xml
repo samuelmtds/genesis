@@ -234,9 +234,9 @@ public class User implements Serializable {
         <li>Edit the new <code>build.properties</code> file in order to modify
         or comment the properties according to your execution environment.</li>
         <li>Within command line, run the ant script by just typing: <code>
-        ant useradmin:install</code>. This command will initiate the deploy
-        process which will install this sample application inside
-        "useradmin" directory at JBoss servers folder.</li>
+        ant useradmin:install</code>. This command will start the deployment
+        process, which will install the sample application in a directory
+        named useradmin at your JBoss server folder.</li>
         <li>Once the instalation process has finished, JBoss server can be
         started by the following command:
         <code>&lt;JBOSS_DIRECTORY&gt;/bin/run -c useradmin</code></li>
