@@ -111,7 +111,7 @@
         </li>
       </ul>
       <p>Podem ser usadas pelas anotações que aceitam expressões condicionais
-      de script. No caso de JXPath, o <b>g:</b> indica o namespace do genesis. 
+      de script. No caso de JXPath, o <b>g:</b> indica o namespace do genesis.
       As funções core do JXPath não utilizam namespace.</p>
       <subsection name="isEmpty(any), isNotEmpty(any)">
         <p>Verifica se um dado está vazio. Usa o <a href="#@EmptyResolver">
@@ -132,7 +132,7 @@
             <td>g:isNotEmpty(campoDoForm)</td>
           </tr>
           <tr>
-            <th>javascript ou Beanshell</th>
+            <th>JavaScript/Beanshell</th>
             <td>genesis.isEmpty("form:campoDoForm")</td>
             <td>genesis.isNotEmpty("form:campoDoForm")</td>
           </tr>
@@ -147,7 +147,7 @@
         <p>Verifica se dois objetos são iguais. Usa os <a href=
         "#@EqualityComparator">@EqualityComparator</a>s, caso existam, para
         efetuar a comparação. Recebe como argumentos números, Strings, variáveis
-        ou funções pré-definidas da linguagem de script, ou nomes de 
+        ou funções pré-definidas da linguagem de script, ou nomes de
         campos do <code>Form</code>.</p>
         <p>A sintaxe específica para cada linguagem de script segue a tabela
         abaixo:</p>
@@ -163,7 +163,7 @@
             <td>g:notEquals(campoDoForm, outroCampo)</td>
           </tr>
           <tr>
-            <th>javascript ou Beanshell</th>
+            <th>JavaScript/Beanshell</th>
             <td>genesis.equals("form:campoDoForm", "form:outroCampo")</td>
             <td>genesis.notEquals("form:campoDoForm", "form:outroCampo")</td>
           </tr>
@@ -192,7 +192,7 @@
             <td>g:hasNotChanged(campoDoForm)</td>
           </tr>
           <tr>
-            <th>javascript ou Beanshell</th>
+            <th>JavaScript/Beanshell</th>
             <td>genesis.hasChanged("form:campoDoForm")</td>
             <td>genesis.hasNotChanged("form:campoDoForm")</td>
           </tr>

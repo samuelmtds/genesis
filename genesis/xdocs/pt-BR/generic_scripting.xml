@@ -9,14 +9,14 @@
   </properties>
   <body>
     <section name="Suporte a linguagens de script">
-      <p>Scripts são utilizados para, por exemplo, realizar validações de 
-      campos, determinar condições booleanas para regras de habilitação ou
-      de visibilidade de um campo. Neste sentido, o genesis possui suporte 
-      genérico a linguagens de script para realizar esta tarefa.</p>
+      <p>Scripts são utilizados no genesis para determinar condições booleanas
+      para regras de habilitação, visibilidade de um campo e outras
+      funcionalidades. O framework possui suporte genérico a linguagens de
+      script para realizar esta tarefa a partir da versão 3.0.</p>
       <p>Embora a linguagem de script padrão definido pelo genesis seja
       <code>JXPath</code>, é possível modificar esse padrão de modo
-      que todos os <code>Forms</code> de uma aplicação tenham scripts
-      na linguagem definida.</p>
+      que todos os forms de uma aplicação tenham seus scripts expressados
+      em uma determinada linguagem.</p>
       <p>
       <ul>
         <li><a href="#Mudando a linguagem de scripts">
@@ -27,57 +27,57 @@
       </p>
 
       <subsection name="Mudando a linguagem de scripts">
-        <p>O arquivo <code>aop.xml</code> deve ser modificado de modo a 
+        <p>O arquivo <code>aop.xml</code> deve ser modificado de modo a
         informar que uma outra linguagem de script deve ser utilizada nos
-        <code>Forms</code>. O arquivo em questão deve conter a linha
-        semelhante à seguir:</p> 
+        forms. O arquivo em questão deve conter a linha
+        semelhante à seguir:</p>
 <source>
 <![CDATA[
-<aspect class="FormControllerFactoryAspect" />
+<aspect class="FormMetadataFactoryAspect" />
 ]]>
 </source>
         <p>Este aspecto permite a definição de dois parâmetros conforme
         o exemplo abaixo:</p>
 <source>
 <![CDATA[
-<aspect class="FormControllerFactoryAspect" >
+<aspect class="FormMetadataFactoryAspect" >
    <param name="scriptFactory" value="beanshell" />
-   <param name="scriptFactoryProps" value="lang=beanshell" />
+   <param name="scriptFactoryProperties" value="lang=beanshell" />
 </aspect>
 ]]>
 </source>
         <p>O parâmetro <code>scriptFactory</code> define a linguagem
         de script propriamente dita. O genesis já possui pré-definidos
-        algumas linguagens de script que podem ser utilizadas imediatamente - 
+        algumas linguagens de script que podem ser utilizadas imediatamente -
         Para utilizá-las, basta fornecer um dos seguintes valores:
         <ul>
-          <li>jxpath (valor padrão - assumido mesmo que o parâmetro não 
+          <li>jxpath (valor padrão - assumido mesmo que o parâmetro não
           exista)</li>
           <li>javascript</li>
           <li>beanshell</li>
           <li>el</li>
         </ul>
         </p>
-        <p>O parâmetro <code>scriptFactoryProps</code> define as 
-        propriedades que o <code>ScriptFactory</code> necessita. O valor desse
-        paramêtro toma o formato 
+        <p>O parâmetro <code>scriptFactoryProperties</code> define as
+        propriedades que a implementação de <code>ScriptFactory</code>
+        necessita. O valor desse paramêtro toma o formato
         <code>nomeDaPropriedade=valorDaPropriedade</code> e em casos onde há
         mais de uma propriedade, estas tuplas devem ser separadas pelo
         caractere "," (vírgula). No caso de
         "beanshell", a classe <code>BSFScriptFactory</code> aceita uma
-        propriedade denominada "lang". O que torna as duas definições abaixo
+        propriedade denominada "lang", o que torna as duas definições abaixo
         equivalentes:</p>
 <source>
 <![CDATA[
-<aspect class="FormControllerFactoryAspect" >
+<aspect class="FormMetadataFactoryAspect" >
    <param name="scriptFactory" value="beanshell" />
-   <param name="scriptFactoryProps" value="lang=javascript" />
+   <param name="scriptFactoryProperties" value="lang=javascript" />
 </aspect>
 ]]>
 </source>
 <source>
 <![CDATA[
-<aspect class="FormControllerFactoryAspect" >
+<aspect class="FormMetadataFactoryAspect" >
    <param name="scriptFactory" value="javascript" />
 </aspect>
 ]]>
@@ -86,11 +86,11 @@
       <subsection name="Definindo uma nova linguagem de script">
         <p>O genesis permite que o desenvolvedor extenda o suporte a linguagens
         de script - ou seja, permite que o desenvolvedor inclua suporte a outras
-        linguagens de script. Para isso, basta criar uma classe e fazer com 
-        que essa classe implemente a interface 
+        linguagens de script. Para isso, basta criar uma classe e fazer com
+        que essa classe implemente a interface
         <code>net.java.dev.genesis.script.ScriptFactory</code>. Exemplo:</p>
 <source>
-package com.java.dev.app.meuScript;
+package com.empresa.genesis.script;
 
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptFactory;
@@ -101,24 +101,24 @@ public class MinhaFabricaScript implements ScriptFactory {
    }
 }
 </source>
-        <p>Neste caso, o arquivo <code>aop.xml</code> deve ser modificado de 
+        <p>Neste caso, o arquivo <code>aop.xml</code> deve ser modificado de
         modo que o parâmetro <code>scriptFactory</code> do aspecto
-        <code>FormControllerFactoryAspect</code> contenha o nome qualificado
+        <code>FormMetadataFactoryAspect</code> contenha o nome qualificado
         completo da classe. Veja abaixo:</p>
 <source>
 <![CDATA[
-<aspect class="FormControllerFactoryAspect" >
-   <param name="scriptFactory" value="com.java.dev.app.meuScript.MinhaFabricaScript" />
+<aspect class="FormMetadataFactoryAspect" >
+   <param name="scriptFactory" value="com.empresa.genesis.script.MinhaFabricaScript" />
    ...
 </aspect>
 ]]>
 </source>
         <p>Voltando ao código de <code>MinhaFabricaScript</code> vemos que esta
-        define um método que deve retornar um 
+        define um método que deve retornar um
         <code>net.java.dev.genesis.script.Script</code>. Eis o código-exemplo
         da classe <code>MeuScript</code>:</p>
 <source>
-package com.java.dev.app.meuScript;
+package com.empresa.genesis.script;
 
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptContext;
@@ -128,26 +128,27 @@ public class MeuScript implements Script {
    public ScriptContext newContext(Object root) {
       return new MeuContextoScript(root);
    }
+
    public ScriptExpression compile(String expression) {
       return new MinhaExpressaoScript(expression);
    }
 }
 </source>
         <p>Da mesma forma, o código acima possui dois métodos sendo que um deles
-        deve retornar uma classe que implementa 
+        deve retornar uma classe que implementa
         <code>net.java.dev.genesis.script.ScriptContext</code> e a outra, uma
-        classe que extende 
+        classe que estende
         <code>net.java.dev.genesis.script.ScriptExpression</code>:</p>
         <ul>
           <li><code>ScriptContext</code> é um contexto que contém as variáveis
-          ("named conditions"), o form e as funções pré-contruídas do genesis
-          (tais como isEmpty, hasChanged, equals, etc) e as funções 
+          ("named conditions"), o form, as funções pré-contruídas do genesis
+          (tais como isEmpty, hasChanged, equals, etc) e as funções
           pré-construídas específicas de cada linguagem de script.</li>
           <li><code>ScriptExpression</code> é a abstração de uma expressão
           qualquer de cada linguagem de script.</li>
         </ul>
-        <p>Portanto, basta o desenvolvedor prover essas classes e o genesis 
-        poderá suportar uma nova linguagem de script.</p>
+        <p>Apenas estes passos são necessários para que o genesis possa
+        suportar uma nova linguagem de script.</p>
       </subsection>
     </section>
   </body>

@@ -78,7 +78,7 @@ public class FormMetadataFactoryAspect {
                .getClassLoader());
          String factoryName = (String)parameters.get("scriptFactory");
          String scriptFactoryProps = (String)parameters
-               .get("scriptFactoryProps");
+               .get("scriptFactoryProperties");
 
          if (factoryName == null) {
             factoryName = "jxpath";

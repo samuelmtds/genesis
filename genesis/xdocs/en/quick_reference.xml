@@ -109,20 +109,20 @@
         </li>
       </ul>
       <p>These functions may be applied to all annotations that accept boolean
-      scripting expressions as parameters. 
+      scripting expressions as parameters.
       With <a href="generic_scripting.html">JXPath</a>
-      the <b>g:</b> prefix defines the genesis
-      namespace. Core JXPath functions don't use any prefix.</p>
+      the <b>g:</b> prefix identifies the genesis functions' namespace. Core
+      JXPath functions don't use any prefix.</p>
       <subsection name="isEmpty(any), isNotEmpty(any)">
-        <p>Checks whether a field is empty or not. When the argument is a form property,
-        the <code>EmptyResolver</code> instance configured for it is used to
-        determine the return value. If the argument is a variable or a constant,
+        <p>Checks whether a field is empty or not. When the argument is a form
+        property, the <code>EmptyResolver</code> instance configured for it is
+        used to determine the return value. If the argument is a variable or a constant,
         a default <code>EmptyResolver</code> instance for the expression type is
         obtained from <code>EmptyResolverRegistry</code> and used for
         evaluation.
         </p>
         <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
-        <p>Specific syntax for default supported script languages are shown 
+        <p>Specific syntax for default supported script languages are shown
         bellow:</p>
         <table>
           <tr>
@@ -136,7 +136,7 @@
             <td>g:isNotEmpty(formField)</td>
           </tr>
           <tr>
-            <th>javascript or Beanshell</th>
+            <th>JavaScript/Beanshell</th>
             <td>genesis.isEmpty("form:formField")</td>
             <td>genesis.isNotEmpty("form:formField")</td>
           </tr>
@@ -152,7 +152,7 @@
         value. Uses any <code>@EqualityComparator</code> defined class available
         or a default implementation to make this decision. Accepts numbers,
         strings, fields or script functions as arguments.</p>
-        <p>Specific syntax for default supported script languages are shown 
+        <p>Specific syntax for default supported script languages are shown
         bellow:</p>
         <table>
           <tr>
@@ -166,7 +166,7 @@
             <td>g:notEquals(formField, otherField)</td>
           </tr>
           <tr>
-            <th>javascript ou Beanshell</th>
+            <th>JavaScript/Beanshell</th>
             <td>genesis.equals("form:formField", "form:otherField")</td>
             <td>genesis.notEquals("form:formField", "form:otherField")</td>
           </tr>
@@ -184,7 +184,7 @@
         current iteraction using the <code>EqualityComparator</code> instance
         configured for the property.
         </p>
-        <p>Specific syntax for default supported script languages are shown 
+        <p>Specific syntax for default supported script languages are shown
         bellow:</p>
         <table>
           <tr>
