@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE panel PUBLIC '-//Thinlets 1.0//EN' 'https://thinlet.dev.java.net/thinlet.dtd'>
+<panel gap="20" top="10" left="10" bottom="10" right="10"
+       weightx="1" columns="1" halign="center">
+    <textarea name="message" weightx="1" weighty="1" editable="false" 
+              border="false" font="bold" focusgained="loseFocus()"/>
+    <panel gap="10" weightx="1" halign="center">
+        <panel />
+        <button name="close" text="Fechar" action="close()" weightx="0" 
+                type="default" mnemonic="0" font="bold" />
+        <panel />
+    </panel>
+</panel>
