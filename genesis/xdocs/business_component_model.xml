@@ -12,6 +12,8 @@
       compreendido. Os seguintes conceitos e/ou características são
       abordados abaixo:
       <ul>
+        <li><a href="#Uso das classes de negócio no cliente">Uso das classes de
+        negócio no cliente</a></li>
         <li><a href="#Remotabilidade transparente">Remotabilidade transparente
         </a></li>
         <li><a href="#Suporte a transações">Suporte a transações
@@ -23,6 +25,24 @@
         <li><a href="#Pesquisas dinâmicas com Criteria">Pesquisas dinâmicas com
         Criteria
         </a></li>
+      </ul>
+      </p>
+    </section>
+    <section name="Uso das classes de negócio no cliente">
+      <p>O uso de uma classe de negócio do genesis no código cliente não impõe
+      nenhuma restrição. Isto significa que:
+      <ul>
+        <li>Não é necessário criar uma interface para sua classe de negócio por
+        causa do genesis. Outros fatores de boa orientaçào a objetos podem levar
+        a isso, mas não o framework.</li>
+        <li>Para se obter uma instância de uma das classes, basta usar <code>new
+        </code> ou qualquer outro recurso OO ou Java que já seria usado (uma
+        Factory, por exemplo, ou reflection).</li>
+        <li>Não é necessário notificar ao framework que certa instância deve ser
+        gerenciada por ele. A única configuração requerida pelo genesis
+        atualmente é a configuração dos aspectos, feita uma vez no <code>aop.xml
+        </code>. Esta configuração pode ser copiada dos exemplos e se precisar
+        ser alterada, isso provavelmente só ocorrerá uma vez.</li>
       </ul>
       </p>
     </section>
@@ -198,9 +218,9 @@ valor em remoto(): 2
        // ...
     }
 </source>
-        <p>Isso pode parecer assustador para alguns à primeira vista, mas é
-        exatamente como funciona um Stateless Session Bean (SSB), por exemplo,
-        ou o comportamento de parâmetros não-remotos passados a uma chamada RMI.
+        <p>Isso pode intimidar alguns inicialmente, mas é exatamente como
+        funciona um Stateless Session Bean (SSB), por exemplo, ou o
+        comportamento de parâmetros não-remotos passados a uma chamada RMI.
         Um modelo de componentes com estado (stateful) deve ser implementado
         futuramente, provavelmente na release 0.3, embora a experiência nos
         tenha mostrado que isto não é necessário para clientes desktop e web,
@@ -353,14 +373,25 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       framework de modo que a recém-injetada instância de <code>Criteria</code>
       possa ser configurada apropriadamente. Finalmente o método de negócios
       será invocado e seu retorno repassado ao código cliente.</p>
-      <p>Para entender melhor esse conceito, o exemplo abaixo pode ser de ajuda:
-      </p>
-      <p><b>TODO: substituir por exemplo</b></p>
+      <p>Para entender melhor esse conceito, o exemplo abaixo pode ser de ajuda.
+      Supondo-se que existe uma classe <code>Pessoa</code> mapeada via
+      Hibernate, que, entre outros atributos, possua <code>nome</code> e <code>
+      sobrenome</code>, que são os critérios de pesquisa, podemos implementar
+      uma pesquisa dinâmica e paginada sobre a classe da seguinte forma:</p>
+<source>
+public class PesquisaPessoa extends AbstractHibernateCriteria {
+   public void setNome(String nome) {
+      getCriteria().add(Expression.ilike("nome", nome, MatchMode.START));
+   }
+
+   public void setSobrenome(String sobrenome) {
+      getCriteria().add(Expression.ilike("sobrenome", sobrenome,
+            MatchMode.START));
+   }
+
+}
+</source>
+      <p><b>TODO:completar exemplo e explicacao</b></p>
     </section>
   </body>
 </document>
-
-
-
-
-
