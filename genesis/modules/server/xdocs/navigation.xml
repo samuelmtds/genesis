@@ -3,15 +3,11 @@
   <title>genesis-server</title>
   <body>
     <links>
-      <item name="genesis" href="/index.html"/>
-      <item name="genesis-server" href="/multiproject/genesis-server/index.html"
-      />
-      <item name="genesis-client" href="/multiproject/genesis-client/index.html"
-      />
-      <item name="genesis-shared" href="/multiproject/genesis-shared/index.html"
-      />
-      <item name="genesis-aspect" href="/multiproject/genesis-aspect/index.html"
-      />
+      <item name="genesis" href="../../index.html" />
+      <item name="genesis-server" href="../genesis-server/index.html" />
+      <item name="genesis-client" href="../genesis-client/index.html" />
+      <item name="genesis-shared" href="../genesis-shared/index.html" />
+      <item name="genesis-aspect" href="../genesis-aspect/index.html" />
     </links>
     <menu name="Projects">
       <item name="genesis" href="../../index.html" />
