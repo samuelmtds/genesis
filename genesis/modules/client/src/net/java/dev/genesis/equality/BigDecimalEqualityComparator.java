@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 
 public class BigDecimalEqualityComparator implements EqualityComparator {
    public boolean equals(Object o1, Object o2) {
-      return o1 == null || o2 == null ? o1 == o2 : 
+      return (o1 == null || o2 == null) ? o1 == o2 : 
             ((BigDecimal)o1).compareTo((BigDecimal)o2) == 0;
    }
 }
