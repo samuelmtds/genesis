@@ -47,27 +47,27 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    private CommandExecutorHome getHome() throws Exception {
-      if (home != null) {
-         return home;
+      if (home == null) {
+         home = (CommandExecutorHome)PortableRemoteObject.narrow(
+               new InitialContext().lookup(ccInfo.getParameter("jndiName")),
+               CommandExecutorHome.class);
       }
-      home = (CommandExecutorHome)PortableRemoteObject.narrow(
-            new InitialContext().lookup(ccInfo.getParameter("jndiName")),
-            CommandExecutorHome.class);
+
       return home;
    }
 
    private CommandExecutor getCommandExecutor() {
-      if (session != null) {
-         return session;
+      if (session == null) {
+         try {
+            session = getHome().create();
+         } catch (final Exception e) {
+            home = null;
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+         }
       }
-      try {
-         session = getHome().create();
-         return session;
-      } catch (final Exception e) {
-         home = null;
-         log.error(e.getMessage(), e);
-         throw new RuntimeException(e);
-      }
+
+      return session;
    }
 
    /**
@@ -80,7 +80,6 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
     * @Around ejbCommandExecution
     */
    public Object commandExecution(final JoinPoint jp) throws Throwable {
-
       final MethodRtti rtti = (MethodRtti)jp.getRtti();
       final CommandResolver obj = (CommandResolver)jp.getTarget();
       final Class[] classes = rtti.getParameterTypes();
@@ -105,15 +104,20 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
                parameterValues);
       } catch (final RemoteException re) {
          log.error("RemoteException occured", re);
-         session = null;
+
+         if (session != null) {
+            try {
+               session.remove();
+            } catch (Throwable t) {
+               log.error("An error ocurred while removing EJB instance", t);
+            }
+
+            session = null;
+         }
+
          throw re;
       } catch (final InvocationTargetException ite) {
          throw ite.getTargetException();
-      } finally {
-         if (commandExecutor != null) {
-            commandExecutor.remove();
-         }
       }
-
    }
 }
