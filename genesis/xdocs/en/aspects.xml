@@ -36,7 +36,7 @@
 <source>
 public interface CommandResolver {
    public boolean isRemotable(Method m);
-   public boolean isTransaction(Method m);
+   public boolean isTransactional(Method m);
 }
 </source>
       <p>Aspect <code>CommandInvocationAspect</code>, defined in the same
@@ -45,9 +45,13 @@ public interface CommandResolver {
       is remotable/transactional or not if it is annotated with
       <code>@Remotable</code> or <code>@Transactional</code> or if the class
       containing the method implements <code>Query</code> or
-      <code>Transaction</code>, deprecated interfaces from genesis 0.1. This
-      implementation is introduced in classes selected by the pointcut named
-      <code>commandResolverIntroduction</code>.</p>
+      <code>Transaction</code>, deprecated interfaces from genesis 0.1.</p>
+      <p>If the value for the aspect parameter named <code>useFastMode</code> is
+      <code>true</code> - that is its default value -, any method will be
+      considered remotable, since in the provided aop.xml configuration only
+      remotable or transactional methods are intercepted by the execution
+      pointcut. This implementation is introduced in classes selected by the
+      pointcut named <code>commandResolverIntroduction</code>.</p>
       <p>If it is necessary to determine if a method is remotable or
       transactional using a different strategy - based on an external xml
       definition instead of using annotation, for example -, one just have to
@@ -292,6 +296,16 @@ public interface ThinletMetadataFactory {
             <th>Default value</th>
           </tr>
           <tr>
+            <td>CommandInvocationAspect</td>
+            <td>useFastMode</td>
+            <td>boolean</td>
+            <td>Indicates whether the process that decides whether a method is
+            remotable or not will be actually executed or if every intercepted
+            method will be considered as being at least remotable</td>
+            <td><b>Yes</b></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
             <td rowspan="2">EJBCommandExecutionAspect</td>
             <td>jndiName</td>
             <td>String</td>
@@ -475,3 +489,4 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
+
