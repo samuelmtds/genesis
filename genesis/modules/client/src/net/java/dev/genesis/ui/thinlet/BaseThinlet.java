@@ -572,7 +572,6 @@ public abstract class BaseThinlet extends Thinlet {
       String key;
       String description;
       Object o;
-      Map properties;
 
       removeAll(component);
 
@@ -582,11 +581,12 @@ public abstract class BaseThinlet extends Thinlet {
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
-         properties = BeanUtils.describe(o);
 
-         key = FormatterRegistry.getInstance().format(properties.get(keyProperty));
+         key = FormatterRegistry.getInstance().format(PropertyUtils.getProperty(
+               o, keyProperty));
          description = FormatterRegistry.getInstance().format(
-               valueProperty == null ? o : properties.get(valueProperty));
+               valueProperty == null ? o : PropertyUtils.getProperty(o, 
+               valueProperty));
 
          add(component, createChoice(key, description));
       }
