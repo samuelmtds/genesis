@@ -37,6 +37,9 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
       injector = (ccInfo.isPrototype()) ? null : (TransactionalInjector)
             Class.forName(ccInfo.getParameter("transactionalInjector"), true, 
             Thread.currentThread().getContextClassLoader()).newInstance();
+      if (!ccInfo.isPrototype()) {
+         injector.init(ccInfo);
+      }
    }
     
    /**
