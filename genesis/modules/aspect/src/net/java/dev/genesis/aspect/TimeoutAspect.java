@@ -38,6 +38,7 @@ public class TimeoutAspect {
       private Object lock = new Object();
       private boolean started;
       private boolean running;
+      private boolean waiting;
 
       public WorkerThread() {
          setDaemon(true);
@@ -48,6 +49,7 @@ public class TimeoutAspect {
          returnValue = null;
          throwable = null;
          running = true;
+         waiting = false;
 
          if (!started) {
             started = true;
@@ -60,6 +62,7 @@ public class TimeoutAspect {
 
          synchronized (lock) {
             try {
+               waiting = true;
                lock.wait(timeout);
             } catch (InterruptedException ie) {
                log.info(ie);
@@ -77,6 +80,16 @@ public class TimeoutAspect {
 
             running = false;
             jp = null;
+
+            while (!waiting) {
+               try {
+                  Thread.sleep(10);
+               } catch (InterruptedException ie) {
+                  if (log.isTraceEnabled()) {
+                     log.trace(ie);
+                  }
+               }
+            }
 
             synchronized (lock) {
                lock.notifyAll();
