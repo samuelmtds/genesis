@@ -97,7 +97,7 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         You can supply another config file that matches your database configuration.</li>
         <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect Hibernate will use.
         If you're going to use other database than HSQLDB, you must supply the correct dialect.
-        You can find further information about how to configure a dialects at the
+        You can find further information about how to configure dialects at the
         <a href="http://www.hibernate.org/">Hibernate site</a>.
         </li>
       </ul>
