@@ -189,7 +189,7 @@ public class VisibleWhenFormExample {
       </subsection>
       <subsection name="Widgets Grouping">
         <p>In many cases, certain operations need to be executed for a group
-        of widgets. An example of this situation is to make a whole group 
+        of widgets. An example of this situation is to make a whole group
         visible or enabled - see the Thinlet code below:</p>
 <source>
 <![CDATA[
@@ -212,10 +212,10 @@ public Date getCurrentDate() {
    ...
 }
 </source>
-        <p>However, in this case, what happens is that only the 
+        <p>However, in this case, what happens is that only the
         <code>textfield</code> will become invisible (in case those
         conditions are not satisfied). Notice that the <code>label</code>
-        and the <code>panel</code> used for spacing will not become 
+        and the <code>panel</code> used for spacing will not become
         invisible - this clearly is not what was originally intented. All three
         controls should follow just the same conditions for visibility.</p>
         <p>To make this occur, we need to use the <code>widgetGoup</code>
@@ -234,7 +234,7 @@ public Date getCurrentDate() {
         <p>Notice that the widgets <code>label</code> and <code>panel</code>
         are now named and referred inside the <code>widgetGroup</code>,
         separated by a comma. This way, all three widgets will follow
-        the same visibility rule annoted in the <code>form</code> code 
+        the same visibility rule annoted in the <code>form</code> code
         earlier.</p>
       </subsection>
       <subsection name="Clearing field content">
@@ -656,7 +656,7 @@ public class DataProviderFormExample {
       instance and each column will be filled with a bean property whose name is
       their <code>name</code>.</p>
       <p>There is a variation for this annotation which happens with the use
-      of the <code>callOnInit</code> property. Imagine the above 
+      of the <code>callOnInit</code> property. Imagine the above
       <code>combobox</code> or the <code>table</code> widgets <b> are not
       supposed</b> to be filled at the dialog startup. In this case, to
       accomplish this requirement in a easier way, we only have to rewrite
@@ -673,7 +673,7 @@ public class DataProviderFormExample {
 
    // ...
 </source>
-      <p>This way, at dialog startup, the <code>combobox</code> or 
+      <p>This way, at dialog startup, the <code>combobox</code> or
       <code>table</code> widgets will be empty. In order to populate them
       a <code>@CallWhen</code> annotation can be added and used together.
       That is, <code>@CallWhen</code> annotation may be used together with
@@ -1243,6 +1243,79 @@ CriteriaPropertyHelper.fillCriteria(hibernateCriteria, form);
       is empty</a>. A call to
       <code>fillCriteria(HibernateCriteria, Object)</code> must be done before
       calling the method annotated with <code>@Criteria</code>.</p>
+      <p>To make it even simpler to buld dynamic searches with paged results, two
+      helper classes are defined in package
+      <code>net.java.dev.genesis.ui.paging</code>: <code>BaseSearchForm</code>
+      and <code>BaseCriteriaSearchForm</code>. These abstract classes can be
+      extended by forms, minimizing implementation efforts.</p>
+      <p><code>BaseSearchForm</code> contains paging-related logic, besides
+      abstracting how the query is actually performed. Some of its actions and
+      properties may be directly used to assemble the UI:</p>
+      <ul>
+        <li><code>previousPage()</code> and <code>nextPage()</code> are genesis
+        actions that can be bound to buttons that will perform navigation through
+        the results. They have <code>@VisibleWhen</code> annotations that will
+        hide the widgets whenever it is appropriate.</li>
+        <li><code>pageNumber</code> is a property that contains the number of
+        current page.</li>
+      </ul>
+      <p>This class also defines the abstract <code>performSearch()</code>
+      method, that returns a <code>net.java.dev.genesis.paging.Page</code>
+      instance, and exposes the <code>runSearch</code> property, that is
+      supposed to be used to define the conditional expression for performing
+      the search in subclasses. Most of the times it won't be necessary to use
+      it directly, since <code>BaseCriteriaSearchForm</code> provides a higher
+      abstraction level when the search is performed by a
+      <code>HibernateCriteria</code> implementation. In this case, it will only
+      be necessary to implement a couple of methods:
+      <code>getHibernateCriteria()</code>, that should return the business
+      object that will receive the criteria by calling
+      <code>CriteriaPropertyHelper</code> and
+      <code>performSearch(int pageNumber)</code>. Below there is an example of
+      how to use this class extracted from the useradmin sample. First, let's
+      see the relevant code snippet for the form:</p>
+<source>
+/**
+ * @Form
+ */
+public class UserListForm extends BaseCriteriaSearchForm {
+   private final UserSearchCommand command = new UserSearchCommand();
+
+   // getters and setters for search criteria omitted
+
+   public List getUsers() { /* ... */ }
+
+   public void setUsers(List users) { /* ... */ }
+
+   protected HibernateCriteria getHibernateCriteria() {
+      return command;
+   }
+
+   protected Page performSearch(int pageNumber) throws Exception {
+      return command.getUsers(pageNumber);
+   }
+
+   /**
+    * @Action
+    * @CallWhen runSearch=true()
+    * @DataProvider objectField=users callOnInit=false
+    */
+   public List doSearch() throws Exception {
+      search();
+
+      return getPage().getResults();
+   }
+
+   // more code
+</source>
+      <p>And now, how to use the built-in actions for the navigation buttons, as
+      defined in the UI xml file:</p>
+<source>
+<![CDATA[
+<button name="previousPage" text="<<" font="bold" type="default" alignment="left"/>
+<button name="nextPage" text=">>" font="bold" type="default" alignment="right"/>
+]]>
+</source>
     </section>
   </body>
 </document>

@@ -222,13 +222,13 @@ public Date getDataCorrente() {
 }
 </source>
         <p>Porém, neste caso, o que ocorre é que apenas o <code>textfield</code>
-        fica invisível (caso as referidas condições não sejam satisfeitas). 
+        fica invisível (caso as referidas condições não sejam satisfeitas).
         Atente para o fato de que o <code>label</code> e o
         <code>panel</code> de espaçamento não ficam invisíveis - isto claramente
         não é o que deve ocorrer nestas situações. O desejável é que esses
         três controles sigam a mesma regra de visibilidade.</p>
-        <p>Para que isto ocorra, utiliza-se a propriedade 
-        <code>widgetGroup</code> no atributo "property" do 
+        <p>Para que isto ocorra, utiliza-se a propriedade
+        <code>widgetGroup</code> no atributo "property" do
         <code>textfield</code> no xml do Thinlet, conforme o exemplo abaixo:</p>
 <source>
 <![CDATA[
@@ -240,14 +240,14 @@ public Date getDataCorrente() {
 ...
 ]]>
 </source>
-        <p>Veja que os controles <code>label</code> e 
+        <p>Veja que os controles <code>label</code> e
         <code>panel</code> agora estão nomeados e referenciados dentro do
         <code>widgetGroup</code>, separados por vírgula.
         Desse modo, os três controles irão obedecer
         à regra de visibilidade anotada no <code>form</code> anteriormente.</p>
       </subsection>
       <subsection name="Limpando o conteúdo dos campos">
-        <p>Sob diversas condições é necessário limpar o conteúdo de certos        
+        <p>Sob diversas condições é necessário limpar o conteúdo de certos
         campos. O genesis pode fazer isso automaticamente pelo programador
         através do uso da anotação <code>@ClearOn</code>. Embora sua sintaxe
         seja semelhante a de <code>@EnabledWhen</code> e
@@ -673,7 +673,7 @@ public class ExemploDataProviderForm {
       coluna será preenchida com a propriedade do bean cujo nome é o valor de
       <code>name</code> em cada uma delas.</p>
       <p>Uma variação desta anotação ocorre com a utilização do atributo
-      <code>callOnInit</code>. Suponha que o <code>combobox</code> ou a 
+      <code>callOnInit</code>. Suponha que o <code>combobox</code> ou a
       <code>table</code> dos exemplos acima <b>não devam ser preenchidas</b> na
       inicialização da janela em questão. Neste caso, a anotação deverá ser
       reescrita da seguinte forma:</p>
@@ -689,11 +689,11 @@ public class ExemploDataProviderForm {
 
    // ...
 </source>
-      <p>Desta forma, na inicialização da janela, os widgets 
-      <code>combobox</code> ou <code>table</code> estarão vazios. 
+      <p>Desta forma, na inicialização da janela, os widgets
+      <code>combobox</code> ou <code>table</code> estarão vazios.
       O preenchimento dos mesmos poderá ser acionado mediante a anotação
-      <code>@CallWhen</code>. Isto é, a anotação <code>@CallWhen</code> pode ser 
-      usada em conjunto com <code>@DataProvider</code> para 
+      <code>@CallWhen</code>. Isto é, a anotação <code>@CallWhen</code> pode ser
+      usada em conjunto com <code>@DataProvider</code> para
       indicar sob que condição a tabela/combo
       será repopulada. <code>@Action</code> pode ser usado no mesmo método caso
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
@@ -1268,6 +1268,80 @@ CriteriaPropertyHelper.fillCriteria(hibernateCriteria, form);
       campos vazios</a>. A chamada a <code>fillCriteria(HibernateCriteria,
       Object)</code> deverá ser feita antes da chamada ao método anotado com
       <code>@Criteria</code>.</p>
+      <p>Para tornar ainda mais simples a construção de pesquisas dinâmicas com
+      resultados paginados, duas classes auxiliares são definidas no pacote
+      <code>net.java.dev.genesis.ui.paging</code>: <code>BaseSearchForm</code> e
+      <code>BaseCriteriaSearchForm</code>. Estas classes abstratas podem ser
+      estendidas pelos forms, diminuindo o esforço de implementação.</p>
+      <p><code>BaseSearchForm</code> contém lógica relacionada com a paginação,
+      além de abstrair o processo de execução da pesquisa. Algumas ações e
+      propriedades podem ser utilizadas diretamente na construção da interface
+      gráfica:</p>
+      <ul>
+        <li><code>previousPage()</code> e <code>nextPage()</code> são ações do
+        genesis que podem ser ligadas aos botões na tela que navegarão para a
+        página anterior e a próxima página de resultados, respectivamente.
+        Possuem anotações <code>@VisibleWhen</code> que ocultarão os widgets
+        nas situações corretas.</li>
+        <li><code>pageNumber</code> é a propriedade que contém o número da
+        página de resultados atual.</li>
+      </ul>
+      <p>Esta classe também define o método abstrato <code>performSearch()</code
+      >, que retorna uma instância de
+      <code>net.java.dev.genesis.paging.Page</code> e expõe a propriedade
+      <code>runSearch</code>, que deve ser usada na expressão condicional de
+      execução da busca nas subclasses. Normalmente, não será necessário
+      utilizá-la diretamente, já que <code>BaseCriteriaSearchForm</code> provê
+      um nível de abstração maior quando a pesquisa é realizada por uma
+      implementação de <code>HibernateCriteria</code>. Neste caso, bastará
+      implementar os métodos <code>getHibernateCriteria()</code> de modo a
+      retornar o objeto de negócios - que receberá os critérios de busca através
+      de uma  chamada a <code>CriteriaPropertyHelper</code> - e o método
+      <code>performSearch(int pageNumber)</code>, que efetuará a pesquisa.
+      Abaixo encontra-se um exemplo de seu uso extraído do useradmin. Primeiro,
+      vemos o trecho de código relevante do form:</p>
+<source>
+/**
+ * @Form
+ */
+public class UserListForm extends BaseCriteriaSearchForm {
+   private final UserSearchCommand command = new UserSearchCommand();
+
+   // codigo para getters e setters de criterios de pesquisa
+
+   public List getUsers() { /* ... */ }
+
+   public void setUsers(List users) { /* ... */ }
+
+   protected HibernateCriteria getHibernateCriteria() {
+      return command;
+   }
+
+   protected Page performSearch(int pageNumber) throws Exception {
+      return command.getUsers(pageNumber);
+   }
+
+   /**
+    * @Action
+    * @CallWhen runSearch=true()
+    * @DataProvider objectField=users callOnInit=false
+    */
+   public List doSearch() throws Exception {
+      search();
+
+      return getPage().getResults();
+   }
+
+   // codigo restante
+</source>
+      <p>E o uso das ações para os botões de navegação no xml da interface
+      gráfica:</p>
+<source>
+<![CDATA[
+<button name="previousPage" text="<<" font="bold" type="default" alignment="left"/>
+<button name="nextPage" text=">>" font="bold" type="default" alignment="right"/>
+]]>
+</source>
     </section>
   </body>
 </document>
