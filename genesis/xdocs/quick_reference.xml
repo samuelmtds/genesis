@@ -147,14 +147,16 @@
 	
 	<subsection name="g:isEmpty(any), g:isNotEmpty(any)">
 	<p>
-		Verifica se um objeto esta vazio. Recebe como argumento um numero, uma string, uma função do JXPath
-		que retorna um objeto qualqer, ou o nome de um campo no form.
+		Verifica se um objeto esta vazio. Usa o <a href="EmptyResolver">EmptyResolver</a> quando disponível.
+		Recebe como argumento um numero, uma string, uma função do JXPath
+		que retorna um objeto qualquer, ou o nome de um campo no form.
 	</p>
 	</subsection>
 	
 	<subsection name="g:equals(any,any), g:notEquals(any,any)">
 	<p>
-		Verifica se dois objetos são iguais. Usa os <a href="@EqualityComparator">@EqualityComparator</a>'s caso existam, para efetuar a comparação.
+		Verifica se dois objetos são iguais. Usa os <a href="@EqualityComparator">@EqualityComparator</a>'s caso existam, 
+		para efetuar a comparação.
 		Recebe como argumentos numeros, strings, funções do JXPath
 		que retornam um objeto qualqer, ou nomes de campos no form.
 	</p>
@@ -193,7 +195,7 @@
 <subsection name="@Condition">
 	<p>
 		Declara uma variavel de condição que pode ser usada em qualquer lugar.Essa condição tem um nome e 
-		uma expressão JXPath booleana. A variavel e acessada depois em outras annota?ões como $NomeDaVariavel. 
+		uma expressão JXPath booleana. A variavel e acessada depois em outras annota?ões como $nomeDaVariavel. 
 		Pode estar no escopo da classe (junto com as anotações de @Form)
 	</p>
 	<table>
@@ -205,8 +207,8 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td>NomeDaVariavel=</td>
-			<td>expressão JXPath boolean</td>
+			<td>nomeDaVariavel=</td>
+			<td>texto de uma expressão JXPath booleana válida</td>
 			<td>@Condition usersSelected=g:isNotEmpty(users)</td>
 			<td>Ver <a href="Funções JXPath do genesis">funções JXPath do genesis</a></td>
 			<td><b>Sim</b></td>
@@ -217,7 +219,14 @@
 
 	<subsection name="@DataProvider">
 	<p>
-		bla,bla
+		Usado antes de um método que retorna um array ou uma collection. O que o método retornar, será utilizado 
+		para popular um componente da GUI (widget - p.ex:combo, table list, etc) que deve possuir o nome 
+		indicado por objectField ou indexField.
+		O form deve possuir um atributo do tipo Collection ou array do tipo do dado, com o mesmo nome.
+		Este atributo sera sempre atualizado com os dados selecionados pelo usuario no widget.
+		O objectField guarda e recebe uma coleção de objetos. O indexField guarda e recebe uma 
+		coleção de índices para a coleção de objetos. No caso do indexField o atributo do form deve 
+		ser uma Collection de Integer ou um array de int/Integer.
 	</p>
 	<table>
 		<tr>
@@ -228,18 +237,32 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>objectField = </td>
+			<td>texto do nomeDoWidgetEnomeDoAtributoDoForm</td>
+			<td>@DataProvider objectField=users indexField=usersId</td>
+			<td>Nome do widget da GUI que sera atualizado com o resultado retornado pelo metodo. 
+			Nome do campo do form que mantem o conteúdo dos registros selecionados na GUI.</td>
+			<td>algum dos dois ou os dois devem estar presentes</td>
+		</tr>	
+		<tr>
+			<td>indexField = </td>
+			<td>nomeDoWidgetEnomeDoAtributoDoForm</td>
+			<td>@DataProvider objectField=users indexField=usersId</td>
+			<td>Nome do widget da GUI que sera atualizado com o resultado retornado 
+			pelo metodo sendo esta interpretada como uma coleção de índices. 
+			Nome do atributo do form, de tipo Collection de Integer ou array de int/Integer 
+			que mantem o conteúdo dos índices dos dados selecionados no widget.</td>
+			<td>algum dos dois ou os dois devem estar presentes</td>
 		</tr>	
 	</table>
 </subsection>
 
 	<subsection name="@EnabledWhen">
 	<p>
-		bla,bla
+		Mantem uma expressão JXPath booleana. Pode ser usado para atributos do form, anontando nos gets. 
+		Pode ser usado para actions (metodos). Pode usar variaveis de <a href="@Condition">@Condition</a> definidos 
+		ateriormente.
+		Por exemplo, se o action for representado por um widget de botao, ele vai habilitar ou deshabilitar o botão.
 	</p>
 	<table>
 		<tr>
@@ -250,8 +273,8 @@
 			<th>Obrigatório</th>
 		</tr>	
 		<tr>
-			<td></td>
-			<td></td>
+			<td>variável ou expressão JXPath booleana</td>
+			<td>texto de uma expressão JXPath booleana válida</td>
 			<td></td>
 			<td></td>
 			<td></td>
