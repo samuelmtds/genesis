@@ -34,7 +34,7 @@
                 method="validateDouble" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.double"/>
-		  <validator name="bigDecimal" 
+        <validator name="bigDecimal" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateBigDecimal" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
@@ -84,7 +84,7 @@
                 method="validateDoubleRange" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.doubleRange"/>		
-		  <validator name="bigDecimalRange" 
+        <validator name="bigDecimalRange" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateBigDecimalRange" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
