@@ -1,16 +1,108 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Downloads and release notes</title>
+    <title>Release Notes</title>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2-RC1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">TODO: link</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>@Criteria annotation with 
+          <a href="quick_reference.html#@Criteria">order-by</a>.</li>
+          <li>Support 
+          <a href="ui_additional_features.html#Conditionally_controlling_a_form_and_a_UI">enabledWidgetGroup and visibleWidgetGroup</a>
+          which allows the user to define differents groups for enabling/disabling
+          and visible/invisible rules.</li>
+          <li>Allow users to specify a label for 
+          <a href="ui_additional_features.html#Populating_comboboxes__lists_and_tables">blank</a> 
+          element in combos.</li>
+          <li>Improve @DataProvider syntax to support 
+          <a href="ui_additional_features.html#Populating_comboboxes__lists_and_tables">widget name</a>.
+          This feature will also support read-only widgets.</li>
+          <li>Implement support for <code>@DataProvider</code> 
+          <a href="ui_additional_features.html#Populating_comboboxes__lists_and_tables">indexField</a>.
+          </li>
+          <li><a href="quick_reference.html#@ClearOn"><code>@ClearOn</code></a>
+          annotation works with <code>@DataProvider</code>.</li>
+          <li>Support for 
+          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">list</a>
+          binding.</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Validation should be performed on the values being displayed, 
+          not the values assigned to the form instance
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=134">
+          Issue # 134</a>)</li>
+          <li>If a user types invalid data for an int field, for instance, 
+          a NullPointerException gets thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=135">
+          Issue # 135</a>)</li>
+          <li>If blank=true is specified for a combo that is populated using 
+          a @DataProvider, selecting an element always highlight the wrong 
+          element or throws an Exception
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=138">
+          Issue # 138</a>)</li>
+          <li>Empyt-project build file has genesis.app:run task that 
+          does not work since it refers to a path that cannot be found (<a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=156">
+          Issue # 156</a>)</li>
+          <li>Using checkboxes without a group makes genesis to update its text
+          (and not its state). If the user tries to click on the checkbox, 
+          a NullPointerException is thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=165">
+          Issue # 165</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-beta2 and 0.2-RC1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;target_milestone=0.2-RC1">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Liaw Mike</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>Special acknoledgements to the following people for the ideas,
+        feedbacks and comments they have sent:</p>
+          <ul>
+            <li>Cláudio Rocha</li>
+            <li>Bruno Borges</li>
+            <li>Marcelo Módolo</li>
+          </ul>
+        <p>Cláudio Rocha has also fixed the empty-project build file.</p>
+      </subsection>
     </section>
     <section name="0.2-beta2">
       <subsection name="Downloads">

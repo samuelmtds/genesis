@@ -1,16 +1,110 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Downloads e notas de versão</title>
+    <title>Notas de Versão</title>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2-RC1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">TODO: link</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Anotação @Criteria possui nova propriedade 
+          <a href="quick_reference.html#@Criteria">order-by</a></li>
+          <li>Suporte a agrupamentos específicos de widgets para regras de
+          habilitação/desabilitação e visibilidade/invisibilidade, 
+          <a href="ui_additional_features.html#Controlando_a_interface_gr%E1fica_e_o_form_condicionalmente">enabledWidgetGroup e visibleWidgetGroup</a></li>
+          <li>Suporte a definição a um texto para o elemento 
+          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">vazio</a> de 
+          comboboxes</li>
+          <li><code>@DataProvider</code> pode referenciar o nome de um widget
+          diretamente através da propriedade
+          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">widgetName</a>.
+          Esta propriedade também permite um <code>@DataProvider</code> de 
+          leitura apenas (read-only).</li>
+          <li><code>@DataProvider</code> também pode retornar o(s) índice(s) 
+          do(s) elemento(s) selecionado(s) através da utilização de
+          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">indexField</a>.
+          </li>
+          <li><code>@DataProvider</code> suporta a anotação 
+          <a href="quick_reference.html#@ClearOn"><code>@ClearOn</code></a> 
+          para limpar o conteúdo do widget correspondente.</li>
+          <li>Suporte a utilização de 
+          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">listas</a>.</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>A validação deve ocorrer sobre os valores mostrados e não sobre
+          os valores contidos no <code>form</code> 
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=134">
+          Issue # 134</a>)</li>
+          <li>Dados inválidos para propriedades de tipos primitivos causam 
+          uma NullPointerException
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=135">
+          Issue # 135</a>)</li>
+          <li>Erros no comportamento de combobox com blank=true afetam
+          o elemento selecionado ou causam uma exceção
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=138">
+          Issue # 138</a>)</li>
+          <li>Tarefa genesis.app:run do projeto empty-project não
+          funciona (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=156">
+          Issue # 156</a>)</li>
+          <li>Utilização de checkbox sem um grupo faz com que o texto do mesmo
+          seja atualizado (e não o seu estado). Caso o usuário clique no
+          checkbox, uma NullPointerException ocorre
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=165">
+          Issue # 165</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre o 0.2-beta2 e
+        0.2-RC1 pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;target_milestone=0.2-RC1">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Liaw Mike</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>Agradecimentos especiais às seguintes pessoas, pelas idéias, 
+        feedback e comentários:</p>
+          <ul>
+            <li>Cláudio Rocha</li>
+            <li>Bruno Borges</li>
+            <li>Marcelo Módolo</li>
+          </ul>
+        <p>Cláudio Rocha também corrigiu o erro de build no empty-project.</p>  
+      </subsection>
     </section>
     <section name="0.2-beta2">
       <subsection name="Downloads">
