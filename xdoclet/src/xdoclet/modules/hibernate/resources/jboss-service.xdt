@@ -6,7 +6,7 @@
 <server>
    <mbean code="<XDtHibernate:serviceClassName/>" name="jboss.jca:service=<XDtHibernate:serviceName/>">
        <depends>jboss.jca:service=RARDeployer</depends>
-       <depends>jboss.jca:service=LocalTxCM,name=DefaultDS</depends>
+       <depends><XDtConfig:configParameterValue paramName="depends"/></depends>
        <attribute name="MapResources"><XDtHibernate:mappingList/></attribute>
        <attribute name="JndiName"><XDtHibernate:jndiName/></attribute>
        <attribute name="Datasource"><XDtHibernate:dataSource/></attribute>
