@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,22 +20,16 @@ package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
 
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
 import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 public class ThinletMetadataFactoryAspect {
-   protected final CrossCuttingInfo ccInfo;
-
-   public ThinletMetadataFactoryAspect(final CrossCuttingInfo ccInfo) {
-      this.ccInfo = ccInfo;
-   }
-
    /**
     * @Introduce thinletMetadataFactoryIntroduction deploymentModel=perJVM
     */
@@ -64,9 +58,10 @@ public class ThinletMetadataFactoryAspect {
          UntypedAnnotationProxy annon;
 
          for (int i = 0; i < methods.length; i++) {
-            annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
-                  "BeforeAction", methods[i]);
-            if (annon != null) {
+            for (final Iterator it = Annotations.getAnnotations(
+                  "BeforeAction", methods[i]).iterator(); it.hasNext(); ) {
+               annon = (UntypedAnnotationProxy)it.next();
+
                final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
                thinletMetadata.addBeforeAction(
@@ -74,9 +69,10 @@ public class ThinletMetadataFactoryAspect {
                      methodName);
             }
 
-            annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
-                  "AfterAction", methods[i]);
-            if (annon != null) {
+            for (final Iterator it = Annotations.getAnnotations(
+                  "AfterAction", methods[i]).iterator(); it.hasNext(); ) {
+               annon = (UntypedAnnotationProxy)it.next();
+
                final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
                thinletMetadata.addAfterAction(
