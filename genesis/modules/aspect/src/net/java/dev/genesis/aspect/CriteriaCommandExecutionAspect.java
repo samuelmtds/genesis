@@ -31,7 +31,9 @@ import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
 import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
-
+/**
+ * @Aspect deployment-model=perJVM
+ */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
 
    private static final String CRITERIA_ATTRIBUTE = "Criteria";
@@ -41,9 +43,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    /**
-    * Around Advice
-    * 
-    * 
+    * @Around criteriaCommandExecution
     */
    public Object commandExecution(JoinPoint jp) throws Throwable {
       final CriteriaResolver obj = (CriteriaResolver)jp.getTargetInstance();
@@ -63,7 +63,10 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       return new CriteriaCommandExecutor(obj, methodName, classNames,
             parameterValues, persisterClass, obj.getPropertiesMap()).execute();
    }
-
+   
+   /**
+    * @Introduce criteriaResolverIntroduction deployment-model=perInstance
+    */
    public static class CriteriaResolverImpl implements CriteriaResolver {
 
       private Map propertiesMap;

@@ -24,7 +24,9 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
-
+/**
+ * @Aspect deployment-model=perThread
+ */
 public class TimeoutAspect {
     private final long timeout;
     
@@ -35,6 +37,10 @@ public class TimeoutAspect {
         this.timeout = Long.parseLong(ccInfo.getParameter("timeout"));
     }
     
+    /**
+     * @Around timeout
+     * 
+     */
     public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
         t = null;
         ret = null;

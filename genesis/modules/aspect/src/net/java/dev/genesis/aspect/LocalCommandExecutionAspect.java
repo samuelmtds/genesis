@@ -30,24 +30,29 @@ import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
 
-
+/**
+ * @Aspect deployment-model=perJVM
+ */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
 
     public LocalCommandExecutionAspect(CrossCuttingInfo ccInfo) {
         super(ccInfo);
     }
-
+    
+    /**
+     * @Around localCommandExecution
+     */
     public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
         
         final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        final CommandResolver cr = (CommandResolver) joinPoint.getTargetInstance();
-        if(!(cr instanceof HibernateCommand)){
+        final CommandResolver obj = (CommandResolver)joinPoint.getTargetInstance();
+        if(!(obj instanceof HibernateCommand)){
             return joinPoint.proceed();
         }
 
-        final HibernateCommand hibernateCommand = (HibernateCommand) cr;
+        final HibernateCommand hibernateCommand = (HibernateCommand) obj;
         final Session session = HibernateHelper.getInstance().createSession();
-        final boolean transactional = cr.isTransaction(methodSignature.getMethod());
+        final boolean transactional = obj.isTransaction(methodSignature.getMethod());
 
         Transaction transaction = null;
         Object ret;

@@ -24,7 +24,14 @@ import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
+/**
+ * @Aspect deployment-model=perJVM
+ */
 public class WaitCursorAspect {
+   
+   /**
+    * @Around waitCursorExecution
+    */
    public Object waitCursorExecution(final JoinPoint jp) throws Throwable {
       final BaseThinlet o = (BaseThinlet) jp.getTargetInstance();
       final Cursor oldCursor = o.getCursor();

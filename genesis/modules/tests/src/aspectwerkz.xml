@@ -3,50 +3,35 @@
       "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
 <aspectwerkz>
    <system id="tests" base-package="net.java.dev.genesis.aspect">
-      <pointcut name="commandClass" expression="within(net.java.dev.genesis.command.Command+)" />
-      <pointcut name="hibernateCriteriaClass" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
+      <!-- helpers pointcuts -->
+      <pointcut name="oldExecuteCommand"
+         expression="execution(* net.java.dev.genesis.command.Command+.invoke*(..))
+            AND (execution(* net.java.dev.genesis.command.Query+.*(..)) OR execution(* net.java.dev.genesis.command.Transaction+.*(..)))" />
+      <pointcut name="executeCommand"
+         expression="oldExecuteCommand OR execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
+      <pointcut name="localExecution" expression="execution(* net.java.dev.genesis.tests....LocalCommandExecutionTest$*.*(..))" />
+
+      <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="within(@Form ..)" />
-
-      <pointcut name="executeOldQueryMethod" expression="execution(* net.java.dev.genesis.command.Query+.*(..))" />
-      <pointcut name="executeOldTransactionMethod" expression="execution(* net.java.dev.genesis.command.Transaction+.*(..))" />
-      <pointcut name="executeOldCommandMethod" expression="execution(* net.java.dev.genesis.command.Command+.invoke*(..)) AND (executeOldQueryMethod OR executeOldTransactionMethod)" />
-      <pointcut name="executeQueryMethod" expression="execution(@Remotable * ...*(..))" />
-      <pointcut name="executeTransactionMethod" expression="execution(@Transactional * ...*(..))" />
-      <pointcut name="executeCommandMethod" expression="executeQueryMethod OR executeTransactionMethod" />
-      <pointcut name="criteriaCommand" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
-      <pointcut name="executeCommand" expression="executeOldCommandMethod OR executeCommandMethod" />
-
-      <pointcut name="waitMethodPointCut" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
-
-      <pointcut name="localExecutionTest" expression="execution(* net.java.dev.genesis.tests....LocalCommandExecutionTest$*.*(..))" />
-      <pointcut name="timeoutTest" expression="execution(* net.java.dev.genesis.tests....TimeoutTest$*.*(..))" />
-      <pointcut name="testsCommandClass" expression="within(net.java.dev.genesis.tests....*$*Command)" />
-
-      <aspect class="FormMetadataFactoryAspect" deployment-model="perJVM">
-         <introduce 
-            class="FormMetadataFactoryAspect$FormMetadataFactoryImpl" 
-            deployment-model="perJVM" 
-            bind-to="formMetadataFactoryIntroduction" />
-      </aspect>
-      <aspect class="TimeoutAspect" deployment-model="perThread">
+      <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
+      <pointcut name="commandResolverIntroduction" expression="within(net.java.dev.genesis.command.Command+) OR within(net.java.dev.genesis.tests....*$*Command)" />
+      <pointcut name="timeout" expression="execution(* net.java.dev.genesis.tests....TimeoutTest$*.*(..))" />
+      <pointcut name="ejbCommandExecution" expression="executeCommand AND NOT localExecution" />
+      <pointcut name="localCommandExecution" expression="executeCommand AND localExecution" />
+      <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
+      <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
+      
+      <!-- Genesis Aspects -->
+      <aspect class="CommandInvocationAspect" />
+      <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="TimeoutAspect">
          <param name="timeout" value="2500" />
-         <pointcut name="executePointCut" expression="timeoutTest" />
-         <advice name="timeoutAdvice" type="around" bind-to="executePointCut" />
       </aspect>
-      <aspect class="EJBCommandExecutionAspect" deployment-model="perJVM" name="ejbCommandExecution">
+      <aspect class="EJBCommandExecutionAspect">
          <param name="jndiName" value="ejb/HibernateCommandExecutor"/>
-         <advice name="commandExecution" type="around" bind-to="executeCommand AND NOT localExecutionTest" />
-         <introduce class="CommandInvocationAspect$CommandResolverImpl" bind-to="commandClass OR testsCommandClass" deployment-model="perJVM" />
       </aspect>
-      <aspect class="LocalCommandExecutionAspect" deployment-model="perJVM">
-         <advice name="commandExecution" type="around" bind-to="localExecutionTest AND executeCommand" />
-      </aspect>
-      <aspect class="CriteriaCommandExecutionAspect" deployment-model="perJVM">
-         <advice name="commandExecution" type="around" bind-to="criteriaCommand" />
-         <introduce class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" bind-to="hibernateCriteriaClass" deployment-model="perInstance" />
-      </aspect>
-      <aspect class="WaitCursorAspect" deployment-model="perJVM">	
-         <advice name="waitCursorExecution" type="around" bind-to="waitMethodPointCut" />
-      </aspect>
+      <aspect class="LocalCommandExecutionAspect"/>
+      <aspect class="CriteriaCommandExecutionAspect"/>
+      <aspect class="WaitCursorAspect"/>
    </system>
 </aspectwerkz>

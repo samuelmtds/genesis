@@ -19,20 +19,19 @@
 package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.InvocationTargetException;
-
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
-
+import net.java.dev.genesis.ejb.CommandExecutor;
+import net.java.dev.genesis.ejb.CommandExecutorHome;
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
 import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
-import net.java.dev.genesis.ejb.CommandExecutor;
-import net.java.dev.genesis.ejb.CommandExecutorHome;
-
+/**
+ * @Aspect deployment-model=perJVM
+ */
 public class EJBCommandExecutionAspect extends CommandInvocationAspect {
-
     public EJBCommandExecutionAspect(CrossCuttingInfo ccInfo) {
         super(ccInfo);
     }
@@ -50,17 +49,18 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
     }
 
     /**
-     * The command execution implemented as a remote EJB call.
      * 
      * @param jp
      *            the join point
      * @return the resulting object
      * @throws Throwable
+     * 
+     * @Around ejbCommandExecution
      */
     public Object commandExecution(final JoinPoint jp) throws Throwable {
         
         final MethodRtti rtti = (MethodRtti)jp.getRtti();
-        final CommandResolver obj = (CommandResolver) jp.getTargetInstance();
+        final CommandResolver obj = (CommandResolver)jp.getTargetInstance();
         try {
             final Class[] classes = rtti.getParameterTypes();
             final String[] classNames = new String[classes.length];
