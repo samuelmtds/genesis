@@ -61,12 +61,15 @@ public class ThinletBinder {
    private final BaseThinlet thinlet;
    private final Object root;
    private final Object form;
+   private final FormController controller;
+
+   private final Collection boundFieldNames = new HashSet();
+
+   private final Map widgetGroupMap = new HashMap();
    private final Map visibleStateMap = new HashMap();
    private final Map enabledStateMap = new HashMap();
-   private final FormController controller;
-   private final Collection boundFieldNames = new HashSet();
+
    private final Map dataProvidedListByFieldName = new HashMap();
-   
    private final Map dataProvided = new HashMap();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, 
@@ -159,7 +162,8 @@ public class ThinletBinder {
             continue;
          }
 
-         final String className = Thinlet.getClass(components.get(0));
+         final Object mainComponent = components.get(0);
+         final String className = Thinlet.getClass(mainComponent);
          final FieldMetadata fieldMetadata = (FieldMetadata)entry.getValue();
 
          if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
@@ -185,6 +189,8 @@ public class ThinletBinder {
          }
 
          boundFieldNames.add(name);
+
+         createWidgetGroup(mainComponent, name);
 
          for (final Iterator it = components.iterator(); it.hasNext(); ) {
             final Object component = it.next();
@@ -223,6 +229,25 @@ public class ThinletBinder {
       }
 
       return groupComponents;
+   }
+
+   private void createWidgetGroup(Object component, String name) {
+      final Collection widgetGroupCollection = new ArrayList();
+      widgetGroupCollection.add(name);
+
+      final String widgetGroup = (String)thinlet.getProperty(component, 
+            "widgetGroup");
+
+      if (widgetGroup != null) {
+         widgetGroupCollection.addAll(Arrays.asList(widgetGroup.split(",")));
+
+         if (log.isDebugEnabled()) {
+            log.debug("Adding " + widgetGroup + " as a widget group for " +
+                  name + " in class " + form.getClass());
+         }
+      }
+
+      widgetGroupMap.put(name, widgetGroupCollection);
    }
 
    public void setValue(Object component, String name) throws Exception {
@@ -281,6 +306,8 @@ public class ThinletBinder {
             continue;
          }
 
+         createWidgetGroup(component, name);
+         
          if (log.isTraceEnabled()) {
             log.trace("Binding action " + name + " in " + form.getClass().getName());
          }
@@ -342,6 +369,8 @@ public class ThinletBinder {
                   "data provider");
             continue;
          }
+
+         createWidgetGroup(component, name);
 
          if (log.isDebugEnabled()) {
             log.debug("Binding an action method for " + name);
@@ -480,13 +509,27 @@ public class ThinletBinder {
             i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
 
-         if (!enabledStateEntries.contains(entry)) {
-            if (log.isDebugEnabled()) {
-               log.debug("Changing " + entry.getKey() + " enabled state to " + 
-                     entry.getValue());
-            }
+         if (enabledStateEntries.contains(entry)) {
+            continue;
+         }
 
-            final Object widget = thinlet.find(root, entry.getKey().toString());
+         final Collection widgetGroup = (Collection)widgetGroupMap.get(
+               entry.getKey().toString());
+
+         if (widgetGroup == null) {
+            log.warn(entry.getKey() + " enabled state should be changed, " +
+                  "but could not be found in the view component for " + 
+                  form.getClass());
+            continue;
+         }
+
+         if (log.isDebugEnabled()) {
+            log.debug("Changing " + entry.getKey() + " enabled state to " + 
+                  entry.getValue());
+         }
+
+         for (Iterator it = widgetGroup.iterator(); it.hasNext(); ) {
+            final Object widget = thinlet.find(root, it.next().toString());
 
             if (widget == null) {
                log.warn(entry.getKey() + " enabled state should be changed, " +
@@ -511,13 +554,27 @@ public class ThinletBinder {
             i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
 
-         if (!visibleStateEntries.contains(entry)) {
-            if (log.isDebugEnabled()) {
-               log.debug("Changing " + entry.getKey() + " visible state to " + 
-                     entry.getValue());
-            }
+         if (visibleStateEntries.contains(entry)) {
+             continue;
+         }
 
-            final Object widget = thinlet.find(root, entry.getKey().toString());
+         final Collection widgetGroup = (Collection)widgetGroupMap.get(
+               entry.getKey().toString());
+
+         if (widgetGroup == null) {
+            log.warn(entry.getKey() + " visible state should be changed, " +
+                  "but could not be found in the view component for " + 
+                  form.getClass());
+            continue;
+         }
+
+         if (log.isDebugEnabled()) {
+            log.debug("Changing " + entry.getKey() + " visible state to " + 
+                  entry.getValue());
+         }
+
+         for (Iterator it = widgetGroup.iterator(); it.hasNext(); ) {
+            final Object widget = thinlet.find(root, it.next().toString());
 
             if (widget == null) {
                log.warn(entry.getKey() + " visible state should be changed, " +
