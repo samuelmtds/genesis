@@ -35,9 +35,6 @@ import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFactory;
-import net.java.dev.genesis.script.bsf.BSFScriptFactory;
-import net.java.dev.genesis.script.el.ELScriptFactory;
-import net.java.dev.genesis.script.jxpath.JXPathScriptFactory;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
@@ -63,10 +60,10 @@ public class FormMetadataFactoryAspect {
    public static class AspectFormMetadataFactory implements FormMetadataFactory {
       private final Map FACTORIES = new HashMap();
       {
-         FACTORIES.put("jxpath", new JXPathScriptFactory());
-         FACTORIES.put("javascript", new BSFScriptFactory("javascript"));
-         FACTORIES.put("beanshell", new BSFScriptFactory("beanshell"));
-         FACTORIES.put("el", new ELScriptFactory());
+         FACTORIES.put("jxpath", "net.java.dev.genesis.script.jxpath.JXPathScriptFactory");
+         FACTORIES.put("javascript", "net.java.dev.genesis.script.bsf.BSFScriptFactory");
+         FACTORIES.put("beanshell", "net.java.dev.genesis.script.bsf.BSFScriptFactory");
+         FACTORIES.put("el", "net.java.dev.genesis.script.el.ELScriptFactory");
       }
 
       private ScriptFactory scriptFactory;
@@ -77,23 +74,32 @@ public class FormMetadataFactoryAspect {
          Map parameters = Mixins.getParameters(getClass(), getClass()
                .getClassLoader());
          String factoryName = (String)parameters.get("scriptFactory");
-         String scriptFactoryProps = (String)parameters
+         String scriptFactoryProperties = (String)parameters
                .get("scriptFactoryProperties");
+
+         Map properties = new HashMap();
 
          if (factoryName == null) {
             factoryName = "jxpath";
          } 
-         
-         scriptFactory = (ScriptFactory)FACTORIES.get(factoryName);
-         if (scriptFactory == null) {
-            scriptFactory = (ScriptFactory)ClassesCache.getClass(factoryName)
-                  .newInstance();
+
+         String scriptFactoryName = (String)FACTORIES.get(factoryName);
+         if (scriptFactoryName == null) {
+            scriptFactoryName = factoryName;
+         } else {
+            properties.put("lang", factoryName);
          }
 
-         if (scriptFactoryProps != null) {
-            Map props = GenesisUtils
-                  .getAttributesMap(scriptFactoryProps, ",", "=");
-            PropertyUtils.copyProperties(scriptFactory, props);
+         scriptFactory = (ScriptFactory)ClassesCache
+               .getClass(scriptFactoryName).newInstance();
+
+         if (scriptFactoryProperties != null) {
+            properties.putAll(GenesisUtils
+                  .getAttributesMap(scriptFactoryProperties, ",", "="));
+         }
+
+         if (!properties.isEmpty()) {
+            PropertyUtils.copyProperties(scriptFactory, properties);
          }
       }
       
