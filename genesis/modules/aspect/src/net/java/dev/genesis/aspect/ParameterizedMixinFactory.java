@@ -91,6 +91,11 @@ public class ParameterizedMixinFactory implements MixinFactory {
             isMixinDefinition = false;
          }
       }
+
+      if (constructor == null) {
+         throw new DefinitionException("There is no suitable constructor for " + 
+               mixinClass.getName());
+      }
    }
 
    public Object mixinOf() {
