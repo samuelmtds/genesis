@@ -17,7 +17,6 @@
 
 	<path id="xdoclet.path">
 		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
-		<fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
 	</path>
 
 	<path id="aspectwerkz.path">
@@ -106,7 +105,7 @@
    <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
    <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
    <taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask" classpathref="xdoclet.path" />
-   <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
+   <taskdef name="genesisdoclet" classname="xdoclet.modules.genesis.GenesisDocletTask" classpathref="xdoclet.path" />
    <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
    
 	<target name="shared:compile">
@@ -323,10 +322,10 @@
 
    <target name="test:webdoclet">
       <mkdir dir="${genesis.module.tests}/${build.src}" />
-      <webdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
+      <genesisdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
          <fileset dir="${basedir}/${genesis.module.tests}/${src.dir}" includes="**/*.java" />
          <strutsvalidationxml xmlencoding="ISO-8859-1" />
-      </webdoclet>
+      </genesisdoclet>
    </target>  
 
 	<target name="test:annotation">

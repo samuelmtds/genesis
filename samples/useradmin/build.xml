@@ -65,7 +65,6 @@
       </path>
 
       <path id="xdoclet.path">
-         <path refid="j2ee.path" />
          <fileset dir="${xdoclet.dist}" includes="*.jar" />
       </path>
 
@@ -176,7 +175,7 @@
       <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
       <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
       <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
-      <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
+      <taskdef name="genesisdoclet" classname="xdoclet.modules.genesis.GenesisDocletTask" classpathref="xdoclet.path" />
 
       <condition property="generate.validation">
          <istrue value="${generate.client.validation}" />
@@ -278,10 +277,10 @@
    </target>
 
    <target name="client:validation" if="generate.validation" depends="init">
-      <webdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
+      <genesisdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
          <fileset dir="${module.client}/${src.dir}" includes="**/*.java" />
          <strutsvalidationxml xmlencoding="ISO-8859-1" />
-      </webdoclet>
+      </genesisdoclet>
    </target>
 
    <target name="useradmin:weaving" depends="init">

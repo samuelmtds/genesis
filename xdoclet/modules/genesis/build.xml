@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<!-- Define references to files containing common targets -->
+<!DOCTYPE project [
+    <!ENTITY modules-common SYSTEM "../modules-common.ent">
+]>
+
+<!-- the project element's name attribute will be used in the name of the module's jar file -->
+<project name="genesis" default="all">
+   <!-- Include the file containing common targets. -->
+   &modules-common;
+</project>
