@@ -43,13 +43,13 @@
         <item name="Annotation quick reference guide"
               href="/en/quick_reference.html" />
       </item>
-      <item name="genesis aspects" href="/en/aspects.html" />
       <item name="Understanding genesis jars" href="/en/jars_explained.html" />
       <item name="Developing with genesis" href="/en/empty_project.html" />
-      <item name="Samples" collapse="true"
-            href="/en/useradmin_sample.html">
-         <item name="UserAdmin"
-              href="/en/useradmin_sample.html" />
+      <item name="Using the UserAdmin sample"
+            href="/en/useradmin_sample.html" />
+      <item name="Advanced guide" collapse="true"
+            href="/en/advanced_introduction.html">
+        <item name="genesis aspects" href="/en/aspects.html" />
       </item>
     </menu>
     <menu name="java.net" type="footer">
