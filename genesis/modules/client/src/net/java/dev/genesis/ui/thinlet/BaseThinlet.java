@@ -330,12 +330,12 @@ public abstract class BaseThinlet extends Thinlet {
       setString(component, TOOLTIP, tooltip);
    }
 
-   protected void setValue(Object component, String value) {
-      setString(component, VALUE, value);
+   protected void setValue(Object component, int value) {
+      setInteger(component, VALUE, value);
    }
 
-   protected String getValue(Object component) {
-      return getString(component, VALUE);
+   protected int getValue(Object component) {
+      return getInteger(component, VALUE);
    }
 
    protected boolean isVisible(Object component) {
@@ -457,8 +457,8 @@ public abstract class BaseThinlet extends Thinlet {
                }
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
-            setValue(component, getPropertyValue(properties, propertyName, 
-                  false, formatters));
+            setValue(component, Integer.parseInt(getPropertyValue(properties, propertyName, 
+                  false, formatters)));
          } else if (type.equals(PANEL)) {
             displayBean(properties.get(propertyName), component);
          } else if (type.equals(CHECKBOX)) {
@@ -566,7 +566,7 @@ public abstract class BaseThinlet extends Thinlet {
                properties.put(propertyName, null);
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
-            properties.put(propertyName, getValue(component));
+            properties.put(propertyName, String.valueOf(getValue(component)));
          } else if (type.equals(TABLE)) {
             // skip it intentionally
          } else {
