@@ -614,7 +614,8 @@ public void calculaMontanteCorrigido() {
               &lt;callOnInit=valorBooleano&gt;
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
-      <code>java.util.List</code> ou uma array. O retorno dos métodos será
+      <code>java.util.List</code> ou uma array de Objetos. 
+      O retorno dos métodos será
       utilizado para popular a combo ou tabela. <code>objectField</code> deve
       receber o nome da propriedade, se houver, que guardará a instância
       selecionada no widget. Deve ser do mesmo tipo ou uma superclasse do tipo
@@ -628,9 +629,36 @@ public void calculaMontanteCorrigido() {
       <b>Atenção:</b> Pelo menos uma dessas três propriedades deve ser 
       informado.</p>
       <p>O <code>name</code> do widget na tela é igual ao nome da propriedade
-      informada como <code>objectField</code> ou <code>indexField</code>, sendo
-      que a primeira tem prioridade quando ambas forem informadas. Um exemplo de
-      uso desta anotação é ilustrado abaixo:</p>
+      informada como <code>widgetName</code> ou <code>objectField</code> 
+      ou <code>indexField</code>, sendo esta a ordem de prioridade para
+      determinação do nome.</p>
+      <p>Como mencionado acima, <code>objectField</code> e 
+      <code>indexField</code> recebem um nome de propriedade que pode retornar
+      um Bean ou uma array ou uma <code>Collection</code>. Vejamos cada 
+      caso:
+      <table>
+        <tr>
+          <th>Tipo de Retorno e Utilização</th>
+          <th>objectField</th>
+          <th>indexField</th>
+        </tr>
+        <tr>
+          <td>Bean: usado sempre para comboboxes e 
+          listas/tabelas que permitem apenas seleção única</td>
+          <td>Qualquer classe (não pode ser tipo primitivo)</td>
+          <td>Apenas Integer ou tipo primitivo int</td>
+        </tr>
+        <tr>
+          <td>Array ou <code>Collection</code>: utilizado
+          para listas/tabelas que permitem seleções múltiplas</td>
+          <td>Array de qualquer classe (não pode ser de tipo primitivo) ou
+          <code>Collection</code> de qualquer classe</td>
+          <td>Apenas Array de Integers (ou de tipo primitivo int) ou
+          <code>Collection</code> de Integers</td>
+        </tr>
+      </table>
+      </p>
+      <p>Um exemplo de uso desta anotação é ilustrado abaixo:</p>
 <source>
 <![CDATA[
 <panel gap="5">
