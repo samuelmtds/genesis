@@ -427,5 +427,20 @@ public class FormMetadataFactoryTest extends TestCase {
          return new ArrayList();
       }
 
+      public List getCodes() {
+         return codes;
+      }
+
+      public void setCodes(List codes) {
+         this.codes = codes;
+      }
+
+      public Long[] getIds() {
+         return ids;
+      }
+
+      public void setIds(Long[] ids) {
+         this.ids = ids;
+      }
    }
 }
