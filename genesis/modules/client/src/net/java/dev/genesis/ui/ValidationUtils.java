@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.Arg;
 import org.apache.commons.validator.Form;
 import org.apache.commons.validator.Field;
+import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorException;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.ValidatorResult;
@@ -143,6 +144,9 @@ public final class ValidationUtils {
       return messages;
    }
 
+   /**
+    * @deprecated
+    */
    public boolean isValid(net.java.dev.genesis.ui.Form f) throws ValidatorException {
       try {
          return f.validate(getPropertiesMap(f)).isEmpty();
@@ -152,9 +156,41 @@ public final class ValidationUtils {
          throw new RuntimeException(e);
       }
    }
-   
-   private Map getPropertiesMap(net.java.dev.genesis.ui.Form f) throws Exception {
-      Map ret = PropertyUtils.describe(f);
+
+   public boolean isValid(Object form) throws ValidatorException {
+      try {
+         return validate(form, form.getClass().getName()).isEmpty();
+      } catch (ValidatorException ve) {
+         throw ve;
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
+   }
+
+   public ValidatorResults validate(Object form, String formName) 
+         throws ValidatorException {
+      final Validator validator = new Validator(ValidationUtils.getInstance()
+            .getResources(), formName);
+      validator.setOnlyReturnErrors(true);
+      validator.setUseContextClassLoader(true);
+
+      try {
+         validator.setParameter(Validator.BEAN_PARAM, getPropertiesMap(form));
+      } catch (Exception e) {
+         final ValidatorException validatorException = new ValidatorException();
+         validatorException.initCause(e);
+         throw validatorException;
+      }
+
+      return validator.validate();
+   }
+
+   private Map getPropertiesMap(Object form) throws Exception {
+      if (form instanceof Map) {
+         return (Map)form;
+      }
+
+      Map ret = PropertyUtils.describe(form);
       Map.Entry entry;
       for (Iterator i = ret.entrySet().iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
@@ -166,5 +202,4 @@ public final class ValidationUtils {
       }
       return ret;
    }
-
 }

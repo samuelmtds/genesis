@@ -29,13 +29,7 @@ import org.apache.commons.validator.ValidatorResults;
  */
 public class Form implements Serializable {
    public ValidatorResults validate(Map m) throws ValidatorException {
-      final Validator validator = new Validator(ValidationUtils.getInstance()
-                                                .getResources(), getFormName());
-      validator.setOnlyReturnErrors(true);
-      validator.setUseContextClassLoader(true);
-      validator.setParameter(Validator.BEAN_PARAM, m);
-
-      return validator.validate();
+      return ValidationUtils.getInstance().validate(m, getFormName());
    }
 
    public String getFormName() {
