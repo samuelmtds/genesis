@@ -224,8 +224,9 @@ public interface CriteriaResolver {
       this method is annotated as <code>@Remotable</code>, it will be
       intercepted for <a
       href="#Remote EJB execution">remote execution</a>. This method initializes
-      a <code>Criteria</code> instance, injects it into the instance, invokes
-      setters for search criteria and invokes the search method.</p>
+      a <code>Criteria</code> instance (when the name of a Hibernate mapped
+      class is configured for the annotation), injects it into the instance,
+      invokes setters for search criteria and invokes the search method.</p>
     </section>
     <section name="Limiting method execution time">
       <p>Aspect <code>TimeoutAspect</code> allows controlling how long a method
@@ -502,6 +503,3 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
-
-
-

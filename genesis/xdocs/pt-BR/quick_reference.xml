@@ -120,7 +120,10 @@
         <p>Verifica se um campo do form foi alterado ou não. O parâmetro tem que
         ser um campo do form.</p>
       </subsection>
-    <p><a href="ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">Mais informações...</a></p>
+    <p><a href=
+    "ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_faz
+    endo___________comparações_em_expressões_condicionais">Mais informações...
+    </a></p>
     </section>
     <section name="Referência">
       <subsection name="@Form">
@@ -146,14 +149,16 @@
   <source>
 /**
  * <b>@Form</b>
- * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
+ * @Condition findRoleCondition=g:isNotEmpty(roleCode) and
+ g:hasChanged(roleCode)
  *
  * @struts.form
  */
 public class InsertUpdateForm {
 <b>...</b>
   </source>
-    <p><a href="ui_basic_concepts.html#Entendendo_os_forms">Mais informações...</a></p>
+    <p><a href="ui_basic_concepts.html#Entendendo_os_forms">Mais informações...
+    </a></p>
       </subsection>
       <subsection name="@Condition">
         <p>Declara uma variavel de condição que pode ser usada em qualquer
@@ -180,7 +185,8 @@ public class InsertUpdateForm {
   <source>
 /**
  * @Form
- * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)</b>
+ * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and
+ g:hasChanged(roleCode)</b>
  *
  * @struts.form
  */
@@ -193,7 +199,8 @@ public class InsertUpdateForm {
    public void findRole() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Declarando_condições">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Declarando_condições">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@DataProvider">
         <p>Usado antes de um método que retorna um array ou uma
@@ -245,7 +252,8 @@ public class InsertUpdateForm {
    public Collection provideCountries() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Populando_combos_e_tabelas">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Populando_combos_e_tabelas">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@EnabledWhen">
         <p>Habilita ou desabilita um widget em função do resultado de uma
@@ -275,7 +283,9 @@ public class InsertUpdateForm {
    public void remove() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Habilitando_e_desabilitando_componentes">Mais informações...</a></p>
+    <p><a href=
+    "ui_additional_features.html#Habilitando_e_desabilitando_componentes">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@VisibleWhen">
         <p>Apresenta ou não um widget em função do resultado da avaliação de uma
@@ -305,7 +315,8 @@ public class InsertUpdateForm {
    public void previousPage() {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Controlando_a_visibilidade">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Controlando_a_visibilidade">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@CallWhen">
         <p>Chama o método indicado quando a condição JXPath é satisfeita. Só
@@ -336,7 +347,8 @@ public class InsertUpdateForm {
    public Collection provideState() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Invocando_métodos_automaticamente">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Invocando_métodos_automaticamente">
+    Mais informações...</a></p>
       </subsection>
       <subsection name="@ClearOn">
         <p>Limpa o conteúdo do atributo indicado quando a condição JXPath é
@@ -367,7 +379,8 @@ public class InsertUpdateForm {
 
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@ValidateBefore">
         <p>
@@ -401,7 +414,8 @@ public class InsertUpdateForm {
    public void save() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Validando_os_dados">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Validando_os_dados">Mais
+    informações...</a></p>
       </subsection>
       <!--subsection name="@DisplayOnly">
         <p>Define um atributo como sendo apenas para apresentação impedindo a
@@ -459,7 +473,8 @@ public class InsertUpdateForm {
             <td><b>Não</b></td>
           </tr>
         </table>
-    <p><a href="ui_additional_features.html#Comparando_valores">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Comparando_valores">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@EmptyResolver">
         <p>Anotação colocada antes de getter de atributos do form. Identifica a
@@ -496,7 +511,8 @@ public class InsertUpdateForm {
             <td><b>Não</b></td>
           </tr>
         </table>
-    <p><a href="ui_additional_features.html#Determinando_se_o_campo_está_vazio">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Determinando_se_o_campo_está_vazio">
+    Mais informações...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
         <p>Especifica o valor vazio de um campo. Utilizado em conjunto com <a
@@ -517,7 +533,8 @@ public class InsertUpdateForm {
             <td><b>Sim</b></td>
           </tr>
         </table>
-    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@Action">
         <p>Define um método como alvo de binding com a interface gráfica. A ação
@@ -551,7 +568,8 @@ public class InsertUpdateForm {
   </source>
         <p>define o método <b>save</b> como alvo do acionamento de um botão
         com nome "save" na interface gráfica.</p>
-    <p><a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">Mais informações...</a></p>
+    <p><a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
+    Mais informações...</a></p>
       </subsection>
       <subsection name="@BeforeAction">
         <p>Aplica-se a métodos de uma view. As views são classes que estendem
@@ -587,7 +605,8 @@ public class InsertUpdateForm {
    public void chooseRole() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_basic_concepts.html#Usando_@BeforeAction">Mais informações...</a></p>
+    <p><a href="ui_basic_concepts.html#Usando_@BeforeAction">Mais informações...
+    </a></p>
       </subsection>
       <subsection name="@AfterAction">
         <p>Aplica-se a métodos de uma view. As views são classes que estendem
@@ -623,7 +642,8 @@ public class InsertUpdateForm {
    public void save() {
    <b>...</b>
   </source>
-    <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...</a></p>
+    <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...
+    </a></p>
       </subsection>
       <subsection name="@Remotable">
         <p>Utilizado para anotar métodos de classes de negócio. Os métodos
@@ -658,7 +678,8 @@ public class InsertUpdateForm {
    }
    <b>...</b>
   </source>
-    <p><a href="business_component_model.html#Remotabilidade_transparente">Mais informações...</a></p>
+    <p><a href="business_component_model.html#Remotabilidade_transparente">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@Transactional">
         <p>Utilizado para anotar métodos de classes de negócio. Os métodos
@@ -694,16 +715,17 @@ public class InsertUpdateForm {
    public boolean removeRole(final Role role) throws Exception {
    <b>...</b>
   </source>
-    <p><a href="business_component_model.html#Suporte_a_transações">Mais informações...</a></p>
+    <p><a href="business_component_model.html#Suporte_a_transações">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@Criteria">
         <p>Utilizado em métodos que fazem pesquisa dinâmicas. O método de
         negócio que precisa da instância de Criteria para sua execução recebe a
-        anotação <code>@Criteria NomeDaClasseMapeadaNoHibernate</code>. Essa
-        anotação implica que o método também é <a href="#@Remotable">@Remotable
-        </a>, mantendo assim a remotabilidade transparente. Apenas métodos
-        concretos, não-estáticos, não-nativos e públicos podem receber esta
-        anotação.</p>
+        anotação <code>@Criteria &lt;NomeDaClasseMapeadaNoHibernate&gt;</code>.
+        Essa anotação implica que o método também é <a href="#@Remotable">
+        @Remotable</a>, mantendo assim a remotabilidade transparente. Apenas
+        métodos concretos, não-estáticos, não-nativos e públicos podem receber
+        esta anotação.</p>
         <table>
           <tr>
             <th>Parâmetros</th>
@@ -716,10 +738,11 @@ public class InsertUpdateForm {
             <td>Nome qualificado completo de classe</td>
             <td>Nome da classe mapeada no Hibernate para a qual se deseja criar
             o Criteria</td>
-            <td><b>Sim</b></td>
+            <td>Não</td>
           </tr>
-  <p>Exemplo de uso (UserSearchCommand.java):</p>
-  <source>
+        </table>
+        <p>Exemplo de uso (UserSearchCommand.java):</p>
+<source>
    <b>...</b>
 public class UserSearchCommand extends AbstractHibernateCriteria {
    <b>...</b>
@@ -728,9 +751,9 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
     */
    public Page getUsers(final int pageNumber)
    <b>...</b>
-  </source>
-        </table>
-    <p><a href="business_component_model.html#Pesquisas_dinâmicas_com_Criteria">Mais informações...</a></p>
+</source>
+    <p><a href="business_component_model.html#Pesquisas_dinâmicas_com_Criteria">
+    Mais informações...</a></p>
       </subsection>
     </section>
   </body>

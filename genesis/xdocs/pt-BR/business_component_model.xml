@@ -351,17 +351,17 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       camada de negócios.</p>
       <p>Existe uma subinterface de <code>HibernateCommand</code> chamada <code>
       HibernateCriteria</code>. Assim como a <code>Session</code> é injetada
-      para instâncias de <code>HibernateCommand</code>, uma instância de <code>
-      Criteria</code> é atribuída através do método <code>setCriteria(Criteria)
-      </code> para implementações de <code>HibernateCriteria</code> nos momentos
-      apropriados. Da mesma forma que ocorre com a primeira interface, existe
-      uma classe base para facilitar a implementação de <code>HibernateCriteria
-      </code>, <code>AbstractHibernateCriteria</code>. Esta classe auxiliar
-      define o método <code>getCriteria()</code>, além de outros métodos
-      utilitários.</p>
+      para instâncias de <code>HibernateCommand</code>, uma instância de
+      <code>Criteria</code> é atribuída através do método
+      <code>setCriteria(Criteria)</code> para implementações de
+      <code>HibernateCriteria</code> nos momentos apropriados. Da mesma forma
+      que ocorre com a primeira interface, existe uma classe base para facilitar
+      a implementação de <code>HibernateCriteria</code>,
+      <code>AbstractHibernateCriteria</code>. Esta classe auxiliar define o
+      método <code>getCriteria()</code>, além de outros métodos utilitários.</p>
       <p>O método de negócio que precisa da instância de <code>Criteria</code>
       para sua execução recebe a anotação <code>@Criteria
-      NomeDaClasseMapeadaNoHibernate</code>. Essa anotação implica
+      &lt;NomeDaClasseMapeadaNoHibernate&gt;</code>. Essa anotação implica
       que o método também é <code>@Remotable</code>, mantendo assim a
       remotabilidade transparente. Antes de invocar este método e depois de ter
       invocado <code>setCriteria(Criteria)</code>, os setters das propriedades
@@ -422,7 +422,12 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
         resultado retornado para o cliente de forma transparente.</li>
       </ul>
       </p>
+      <p>É possível utilizar a anotação sem informar o nome da classe mapeada no
+      Hibernate. Neste caso, a instância de <code>Criteria</code> não será
+      criada e o valor injetado na classe será <code>null</code>, mas o resto do
+      comportamento descrito acima será mantido. Isto é útil quando é necessário
+      realizar pesquisas dinâmicas complexas que não podem ser implementadas com
+      <code>Criteria</code>.</p>
     </section>
   </body>
 </document>
-

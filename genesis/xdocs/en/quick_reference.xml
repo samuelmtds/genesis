@@ -7,8 +7,10 @@
   </properties>
   <body>
     <section name="Annotation quick reference guide">
-      <p>This quick reference guide documents the annotations used by genesis. This includes annotations for UI and server components.
-  Examples provided with each tag come from <a href="useradmin_sample.html">useradmin</a> sample application.</p>
+      <p>This quick reference guide documents the annotations used by genesis.
+      This includes annotations for UI and server components. Examples provided
+      with each tag come from <a href="useradmin_sample.html">useradmin</a>
+      sample application.</p>
     </section>
     <section name="genesis Annotations">
       <p>genesis annotations are classified by it's scope in:</p>
@@ -96,8 +98,9 @@
         <li>g:hasChanged(any), g:hasNotChanged(any)
         </li>
       </ul>
-      <p>These functions may be applied to all annotations that accept boolean JXPath expressions as parameters.
-        The <b>g:</b> prefix defines the genesis namespace. Core JXPath functions don't use any prefix.</p>
+      <p>These functions may be applied to all annotations that accept boolean
+      JXPath expressions as parameters. The <b>g:</b> prefix defines the genesis
+      namespace. Core JXPath functions don't use any prefix.</p>
       <subsection name="g:isEmpty(any), g:isNotEmpty(any)">
         <p>
   Checks whether a field is empty or not.When the argument is a form property,
@@ -110,30 +113,27 @@
     <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
       </subsection>
       <subsection name="g:equals(any,any), g:notEquals(any,any)">
-        <p>
-           Checks if a field value is equal to some constant or another field value.
-           Uses any <code>@EqualityComparator</code> defined class
-           available or a default implementation to make this decision.
-           Accepts numbers, strings, fields or JXPath functions as arguments.
-  </p>
+        <p>Checks if a field value is equal to some constant or another field
+        value. Uses any <code>@EqualityComparator</code> defined class available
+        or a default implementation to make this decision. Accepts numbers,
+        strings, fields or JXPath functions as arguments.</p>
       </subsection>
       <subsection name="g:hasChanged(property),
                         g:hasNotChanged(property)">
-        <p>
-  Checks whether a field value has been changed or not. genesis internally keeps control of fields that
-  have their value changed in the current iteraction using the <code>EqualityComparator</code> instance configured
-        for the property.
+        <p>Checks whether a field value has been changed or not. genesis
+        internally keeps control of fields that have their value changed in the
+        current iteraction using the <code>EqualityComparator</code> instance
+        configured for the property.
   </p>
       </subsection>
     <p><a href="ui_additional_features.html#Verifying_field_value_changes_and_doing_comparisson_in___________conditional_expressions">More info...</a></p>
     </section>
     <section name="Tag Reference">
       <subsection name="@Form">
-        <p>
-  Mark this class as a genesis form. genesis forms contain UI logic and are not coupled to the graphical API
-  used to display screens. A form is just a JavaBean that has annotations
-        that indicate how its properties and methods should be handled by a UI.
-        </p>
+        <p>Mark this class as a genesis form. genesis forms contain UI logic and
+        are not coupled to the graphical API used to display screens. A form is
+        just a JavaBean that has annotations that indicate how its properties
+        and methods should be handled by a UI.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -162,17 +162,14 @@ public class InsertUpdateForm {
     <p><a href="ui_basic_concepts.html#Understanding_forms">More info...</a></p>
       </subsection>
       <subsection name="@Condition">
-        <p>
-  Names <code>conditionName</code> as a condition variable that is exported in order to
-        represent the expression <code>jxpathExpression</code> in other points
-        in the code. As every other JXPath variable, when it's used on a
-        expression its name should be preceeded by <b>$</b> as in <code>$conditionName</code>.
-  </p>
-  <p>
-  This annotation may be used at class level, in an attribute getter or
+        <p>Names <code>conditionName</code> as a condition variable that is
+        exported in order to represent the expression
+        <code>jxpathExpression</code> in other points in the code. As every
+        other JXPath variable, when it's used on a expression its name should be
+        preceeded by <b>$</b> as in <code>$conditionName</code>.</p>
+        <p>This annotation may be used at class level, in an attribute getter or
         in a method annotated as <code>@Action</code>. Its scope will always be
-        class-wide, no matter where it's declared.
-  </p>
+        class-wide, no matter where it's declared.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -244,10 +241,10 @@ public class InsertUpdateForm {
             <td>indexField</td>
             <td>name of a form's property.
     (also widget's name if no <code>objectField</code> specified)</td>
-            <td>name of a form's property that holds indexes of the selected elements on the widget.
-    It must be an <code>int</code> or an <code>Integer</code>, an array of one of
-    these types or a <code>Collection</code>
-      </td>
+            <td>name of a form's property that holds indexes of the selected
+            elements on the widget. It must be an <code>int</code> or an
+            <code>Integer</code>, an array of one of these types or a
+            <code>Collection</code></td>
             <td>just in case there is no <code>objectField</code> defined</td>
           </tr>
         </table>
@@ -262,10 +259,9 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Populating_comboboxes_and_tables">More info...</a></p>
       </subsection>
       <subsection name="@EnabledWhen">
-        <p>
-  Enables a widget upon a certain condition (JXPath expression or <a href="#@Condition">@Condition</a> variable) is true.
-  This annotation may be used in attributes and actions.
-  </p>
+        <p>Enables a widget upon a certain condition (JXPath expression or <a
+        href="#@Condition">@Condition</a> variable) is true. This annotation may
+        be used in attributes and actions.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -292,11 +288,10 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Enabling_and_disabling_components">More info...</a></p>
       </subsection>
       <subsection name="@VisibleWhen">
-        <p>
-  Show or hide widgets as results from evaluating a boolean JXPath expression.
-  Its syntax is similar to the one for <code>@EnabledWhen</code> and it also may be used to annotate
-        attributes and actions.
-  </p>
+        <p>Show or hide widgets as result from evaluating a boolean JXPath
+        expression. Its syntax is similar to the one for
+        <code>@EnabledWhen</code> and it also may be used to annotate attributes
+        and actions.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -323,10 +318,10 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Controlling_visibility">More info...</a></p>
       </subsection>
       <subsection name="@CallWhen">
-        <p>
-  Call the action when the boolean JXPath expression (or <a href="#@Condition">@Condition</a>variable) evaluates to true.
-  May be only used for actions (methods with <a href="#@Action">@Action</a> annotation)
-  and not for attributes.
+        <p>Call the action when the boolean JXPath expression (or <a
+        href="#@Condition">@Condition</a>variable) evaluates to true. It can
+        only be used for actions (methods with <a href="#@Action">@Action</a>
+        annotation) and not for attributes.
         </p>
         <table>
           <tr>
@@ -356,13 +351,11 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Automatically_invoking_methods">More info...</a></p>
       </subsection>
       <subsection name="@ClearOn">
-        <p>
-  Cleans field content upon a true condition (JXPath boolean expression or <a href="#@Condition">@Condition</a> variable).
-  This annotation may only be used for attributes and not for actions (since actions do not have content).
-        </p>
-  <p>
-  The value used for resetting the field is defined by the <a href="#@EmptyValue">@EmptyValue</a> annotation.
-        </p>
+        <p>Cleans field content upon a true condition (JXPath boolean expression
+        or <a href="#@Condition">@Condition</a> variable). This annotation may
+        only be used for attributes and not for actions (since actions do not
+        have content).</p>
+        <p>The value used for resetting the field is defined by the <a href="#@EmptyValue">@EmptyValue</a> annotation.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -491,15 +484,15 @@ public class InsertUpdateForm {
             <td>@EmptyResolver package.MyEmptyResolver
                                zerosAsEmpty=true</td>
             <td>Property name of the class that implements
-            <code>EmptyResolver</code> interface. Might have many parameters.</td>
+            <code>EmptyResolver</code> interface. Might have many parameters.
+            </td>
             <td><b>No</b></td>
           </tr>
         </table>
     <p><a href="ui_additional_features.html#Determining_if_a_field_is_empty">More info...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
-        <p>It specifies the empty value of a field. It's used together with the <a
-        href="#@ClearOn">@ClearOn</a> annotation.</p>
+        <p>It specifies the empty value of a field. It's used together with the <a href="#@ClearOn">@ClearOn</a> annotation.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -547,19 +540,19 @@ public class InsertUpdateForm {
    public void save() throws Exception {
    <b>...</b>
   </source>
-        <p>defines the <b>save</b> method as the target of a button action that has
-        a "save" as the its name in the graphical interface.</p>
-    <p><a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">More info...</a></p>
+        <p>defines the <b>save</b> method as the target of a button action that
+        has a "save" as the its name in the graphical interface.</p>
+        <p><a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">More info...</a></p>
       </subsection>
       <subsection name="@BeforeAction">
         <p>It may be applied to a view method. Views are classes that extend
         one of the supported graphical interface classes. Currently, a view
         is a class that inherits the <code>BaseThinlet</code> class
-        (or <code>BaseDialogThinlet</code> class).
-        The <code>@BeforeAction</code> annotation applies to a view method that
-        needs to be executed <b>before</b> the <code>@Action</code> annotated method.
-        The method name must match the @Action name or this name must be indicated
-        by an anonymous parameter.</p>
+        (or <code>BaseDialogThinlet</code> class). The <code>@BeforeAction</code
+        > annotation applies to a view method that needs to be executed <b>
+        before</b> the <code>@Action</code> annotated method. The method name
+        must match the @Action name or this name must be indicated by an
+        anonymous parameter.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -593,12 +586,11 @@ public class InsertUpdateForm {
         <p>It may be applied to a view method. Views are classes that extend
         one of the supported graphical interface classes. Currently, a view
         is a class that inherits the <code>BaseThinlet</code> class
-        (or <code>BaseDialogThinlet</code> class).
-        The <code>@AfterAction</code> annotation applies to a view method that
-        needs to be executed <b>after</b> the <code>@Action</code> annotated method.
-        The method name must match the @Action name or this name must be indicated
-        by an anonymous parameter.</p>
-
+        (or <code>BaseDialogThinlet</code> class). The <code>@AfterAction</code>
+        annotation applies to a view method that needs to be executed <b>after
+        </b> the <code>@Action</code> annotated method. The method name must
+        match the @Action name or this name must be indicated by an anonymous
+        parameter.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -630,10 +622,10 @@ public class InsertUpdateForm {
       </subsection>
       <subsection name="@Remotable">
         <p>It may be used to annotate business class methods. Methods annotated
-        as <code>@Remotable</code> are intercepted by an aspect that transfers the
-        instance in which the method has been invoked to the server, executing it
-        there and returning the result back to the client.
-        This feature is called <b>transparent remoting</b>.</p>
+        as <code>@Remotable</code> are intercepted by an aspect that transfers
+        the instance in which the method has been invoked to the server,
+        executing it there and returning the result back to the client. This
+        feature is called <b>transparent remoting</b>.</p>
         <p>Only concrete, non-static, non-native public methods can be annotated
         as <code>@Remotable</code>.</p>
         <table>
@@ -664,24 +656,20 @@ public class InsertUpdateForm {
     <p><a href="business_component_model.html#Transparent_remoting">More info...</a></p>
       </subsection>
       <subsection name="@Transactional">
-  <p>
-  The use of <code>@Transactional</code> automatically applies a
-      <code>@Remotable</code> annotation to the method. This way the use of only
-      one of these annotation above in a given method is needed. Besides
-      maintaining transparent remoting characteristics,
-      <code>@Transactional</code> forces the method to be executed inside a JTA
-      transaction.
-      </p>
-      <p>
-  Any other JTA resources accessed inside its execution will be
-      automatically included in the same transaction. The transaction context
-      will be propagated to any other method or component invoked by the first
-      one <code>@Transactional</code> annotation, without the need of any
-      additional coding.</p><p>If the method execution runs as expected, the transaction will be
-      committed at the end of the method. In case a exception is launched a
-      rollback command will be given and the exception will be forwarded to the
-      client-side's code.
-      </p>
+        <p>The use of <code>@Transactional</code> automatically applies a
+        <code>@Remotable</code> annotation to the method. This way the use of
+        only one of these annotation above in a given method is needed. Besides
+        maintaining transparent remoting characteristics,
+        <code>@Transactional</code> forces the method to be executed inside a
+        JTA transaction.</p>
+        <p>Any other JTA resources accessed inside its execution will be
+        automatically included in the same transaction. The transaction context
+        will be propagated to any other method or component invoked by the first
+        one <code>@Transactional</code> annotation, without the need of any
+        additional coding.</p><p>If the method execution runs as expected, the
+        transaction will be committed at the end of the method. In case a
+        exception is launched a rollback command will be given and the exception
+        will be forwarded to the client-side's code.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -708,12 +696,11 @@ public class InsertUpdateForm {
     <p><a href="business_component_model.html#Transaction_support">More info...</a></p>
       </subsection>
       <subsection name="@Criteria">
-        <p>
-  genesis support for Hibernate dynamic searches. This annotation implies the business method
-  needs a <code>Criteria</code> instance in order to be executed, is
-        also <a href="#@Remotable">@Remotable</a>, keeping the transparent remoting.
-  Apply to public, concrete, non-static and non-native methods only.
-  </p>
+        <p>Used in methods that perform dynamic searches. This annotation
+        implies the business method needs a <code>Criteria</code> instance in
+        order to be executed, is also <a href="#@Remotable">@Remotable</a>,
+        keeping the transparent remoting. Apply to public, concrete, non-static
+        and non-native methods only.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -725,9 +712,10 @@ public class InsertUpdateForm {
             <td>anonymous</td>
             <td>Fully qualified class name</td>
             <td>Hibernate mapped class name</td>
-            <td><b>Yes</b></td>
+            <td>No</td>
           </tr>
-  <p>Example (UserSearchCommand.java):</p>
+        </table>
+<p>Example (UserSearchCommand.java):</p>
   <source>
    <b>...</b>
 public class UserSearchCommand extends AbstractHibernateCriteria {
@@ -738,7 +726,6 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    public Page getUsers(final int pageNumber)
    <b>...</b>
   </source>
-        </table>
     <p><a href="business_component_model.html#Dynamic_criteria_searching">More info...</a></p>
       </subsection>
     </section>

@@ -227,8 +227,9 @@ public interface CriteriaResolver {
       >. Na nova instância será chamado o método <code>execute()</code>, que
       possui uma anotação <code>@Remotable</code> e será interceptado para <a
       href="#Execução em EJB com chamada remota">execução remota</a>. Este
-      método inicializa o <code>Criteria</code>, injeta-o na instância, invocar
-      os setters dos critérios de pesquisa e chama o método de pesquisa.</p>
+      método inicializa o <code>Criteria</code> (quando o nome da classe mapeada
+      é informado), injeta-o na instância, invoca os setters dos critérios de
+      pesquisa e chama o método de pesquisa.</p>
     </section>
     <section name="Limitando o tempo de execução de um método">
       <p>O aspecto <code>TimeoutAspect</code> permite controlar o tempo limite
@@ -507,7 +508,3 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
-
-
-
-
