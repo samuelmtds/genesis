@@ -244,7 +244,7 @@
       <annotationc verbose="true"
             srcdir="${genesis.module.aspect}/${src.dir}"
             destdir="${genesis.module.aspect}/${genesis.annotation.dest}"
-            classpath="${genesis.module.aspect}/${build.dest}"
+            classpath="${genesis.module.aspect}/${build.dest}${path.separator}${genesis.module.client}/${build.dest}"
             properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.aspect}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.aspect}/${build.dest}" />
