@@ -358,13 +358,14 @@
    <target name="test:create.jboss.app.dir" unless="app.dir.exists">
       <mkdir dir="${genesis.jboss.app}" />
       <copy todir="${genesis.jboss.app}">
-         <fileset dir="${jboss.home}/server/default">
+         <fileset dir="${genesis.jboss.home}/server/default">
             <include name="deploy/hsqldb-ds.xml" />
             <include name="deploy/jboss-jca.sar" />
             <include name="deploy/jboss-local-jdbc.rar" />
             <include name="deploy/transaction-service.xml" />
             <include name="conf/**" />
             <include name="lib/**" />
+         	<exclude name="lib/hibernate2.jar" />
          </fileset>
       </copy>    
    </target>  
