@@ -21,11 +21,18 @@ package net.java.dev.genesis.text;
 import net.java.dev.genesis.GenesisTestCase;
 
 public class DefaultFormatterTest extends GenesisTestCase {
-   public void testFormat() {
-      DefaultFormatter formatter = new DefaultFormatter();
+   public void testDefaultConstructor() {
+      testFormat(new DefaultFormatter(), "");
+   }
 
+   public void testStringConstructor() {
+      String defaultValue = "default";
+      testFormat(new DefaultFormatter(defaultValue), defaultValue);
+   }
+
+   private void testFormat(DefaultFormatter formatter, String defaultValue) {
       // Test for null
-      assertEquals(formatter.format(null), "");
+      assertSame(formatter.format(null), defaultValue);
 
       // Test for an object
       String text = "text";
