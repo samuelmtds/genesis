@@ -3,7 +3,7 @@
    <artifactId>genesis</artifactId>
    <name>SOL Genesis</name>
    <groupId>net.java.dev.genesis</groupId>
-   <currentVersion>0.2-RC1-dev</currentVersion>
+   <currentVersion>0.2-RC1</currentVersion>
    <organization>
       <name>Summa Tecnologies do Brasil Ltda.</name>
       <url>http://www.summa-tech.com/</url>
@@ -12,7 +12,7 @@
    <package>net.java.dev.genesis</package>
    <logo>/genesis.gif</logo>
    <description>SOL Genesis</description>
-   <shortDescription>And during the seventh day, they reinvented client-server 
+   <shortDescription>And during the seventh day, they reinvented client-server
       applications...</shortDescription>
    <url>https://genesis.dev.java.net/</url>
    <issueTrackingUrl>https://genesis.dev.java.net/servlets/ProjectIssues/</issueTrackingUrl>
@@ -25,6 +25,11 @@
       <url>https://genesis.dev.java.net/source/browse/genesis/genesis/</url>
    </repository>
    <versions>
+      <version>
+         <id>0.2-RC1</id>
+         <name>0.2-RC1</name>
+         <tag>GENESIS_0_2_RC_1</tag>
+      </version>
       <version>
          <id>0.2-beta2</id>
          <name>0.2-beta2</name>
@@ -43,40 +48,40 @@
    </versions>
    <mailingLists>
       <mailingList>
-         <name>Announcements</name> 
-         <subscribe>announce-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>announce-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=announce</archive> 
+         <name>Announcements</name>
+         <subscribe>announce-subscribe@genesis.dev.java.net</subscribe>
+         <unsubscribe>announce-unsubscribe@genesis.dev.java.net</unsubscribe>
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=announce</archive>
       </mailingList>
       <mailingList>
-         <name>CVS commit logs</name> 
-         <subscribe>cvs-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>cvs-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=cvs</archive> 
+         <name>CVS commit logs</name>
+         <subscribe>cvs-subscribe@genesis.dev.java.net</subscribe>
+         <unsubscribe>cvs-unsubscribe@genesis.dev.java.net</unsubscribe>
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=cvs</archive>
       </mailingList>
       <mailingList>
-         <name>Developer List</name> 
-         <subscribe>dev-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>dev-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=dev</archive> 
+         <name>Developer List</name>
+         <subscribe>dev-subscribe@genesis.dev.java.net</subscribe>
+         <unsubscribe>dev-unsubscribe@genesis.dev.java.net</unsubscribe>
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=dev</archive>
       </mailingList>
       <mailingList>
-         <name>Notifications of issue's creation/modification</name> 
-         <subscribe>issues-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>issues-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=issues</archive> 
+         <name>Notifications of issue's creation/modification</name>
+         <subscribe>issues-subscribe@genesis.dev.java.net</subscribe>
+         <unsubscribe>issues-unsubscribe@genesis.dev.java.net</unsubscribe>
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=issues</archive>
       </mailingList>
       <mailingList>
-         <name>User list</name> 
-         <subscribe>users-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>users-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=users</archive> 
+         <name>User list</name>
+         <subscribe>users-subscribe@genesis.dev.java.net</subscribe>
+         <unsubscribe>users-unsubscribe@genesis.dev.java.net</unsubscribe>
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=users</archive>
       </mailingList>
       <mailingList>
-         <name>Lista dos usuários</name> 
-         <subscribe>usuarios-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>usuarios-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=usuarios</archive> 
+         <name>Lista dos usuários</name>
+         <subscribe>usuarios-subscribe@genesis.dev.java.net</subscribe>
+         <unsubscribe>usuarios-unsubscribe@genesis.dev.java.net</unsubscribe>
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=usuarios</archive>
       </mailingList>
    </mailingLists>
    <developers>

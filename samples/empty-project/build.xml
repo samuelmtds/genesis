@@ -4,7 +4,7 @@
 
    <property name="genesis.home" location="../../genesis" />
    <property name="genesis.dist" location="${genesis.home}/dist" />
-   <property name="genesis.version" value="0.2-RC1-dev" />
+   <property name="genesis.version" value="0.2-RC1" />
    <property name="xdoclet.dist" location="../../xdoclet/dist" />
    <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
    <property name="commons.dist" location="${genesis.home}/lib/commons" />
@@ -25,7 +25,7 @@
    <property name="src.dir" value="src" />
    <property name="webstart.dir" location="webstart" />
 
-   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />  
+   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />
 
    <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
@@ -363,7 +363,7 @@
             <include name="lib/**" />
             <exclude name="lib/hibernate2.jar" />
          </fileset>
-      </copy>    
+      </copy>
    </target>
 
    <target name="genesis.app:deploy" depends="genesis.app:sar">
@@ -392,7 +392,7 @@
 
    <target name="genesis.app:all"
            depends="genesis.app:compile,genesis.app:jar,genesis.app:deploy" />
-   
+
    <target name="genesis.app:all.with.webstart"
           depends="genesis.app:all,genesis.app:deploy.webstart" />
 
