@@ -77,6 +77,8 @@
           using the caller <code>Session</code> instance as parameter.</li>
           <li>In case it is first time one is trying to build a new
           project, the build process may not be working properly.</li>
+          <li>The method hasn't been properly annotated with @Remotable, 
+          @Transactional or @Criteria</li>
         </ul>
         </p>
       </subsection>

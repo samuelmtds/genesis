@@ -18,9 +18,9 @@
       e <a href="jars_explained.html">entenda os jars da distribuição do genesis
       </a>.</p>
       <p>À estrutura de um projeto vazio chamamos de <code>empty-project</code>
-      e este acompanha todas as distribuições do genesis. A estrutura se
-      encontra no diretório <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;
-      /samples/empty-project/</b></code>.</p>
+      e este está presente na distribuição empty-project ou na distribuição completa do genesis.
+      A estrutura se encontra no diretório
+      <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-project/</b></code>.</p>
     </section>
     <section name="O que é necessário?">
       <p>Além do genesis, é necessário ter instalado:</p>

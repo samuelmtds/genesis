@@ -9,7 +9,7 @@
     <section name="Instalação do exemplo useradmin">
       <p>A instalação do exemplo <code>useradmin</code> é relativamente simples.
       A distribuição do exemplo <code>useradmin</code> se encontra nos pacotes
-      de distribuição completa e da distribuição binária do genesis que podem
+      de distribuição do useradmin ou distribuição completa do genesis que podem
       ser encontrados <a href="download.html">aqui</a>.
       A distribuição de todos exemplos do genesis já vem preparadas para rodar
       como aplicação independente (modo standalone/local) ou sobre o servidor

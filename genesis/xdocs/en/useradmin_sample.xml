@@ -7,9 +7,9 @@
   </properties>
   <body>
     <section name="Installing the useradmin sample">
-      <p>Installing the  <code>useradmin</code> sample is a simple task.
-      <code>useradmin</code> distribution can be found in the full distribution
-      or the full binary distribution genesis packages that can be found
+      <p>Installing the <code>useradmin</code> sample is a simple task.
+      <code>useradmin</code> distribution can be found in the useradmin distribution
+      or the full distribution genesis packages that can be found
       <a href="download.html">here</a>.
       Distributions for all samples
       are already setup to be run in standalone/local mode or with the <a
