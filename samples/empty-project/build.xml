@@ -90,7 +90,6 @@
 
    <path id="run.classpath">
       <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-weaved.jar" />
-      <fileset dir="${build.dir}/${lib.dir}" includes="*.jar" />
       <fileset dir="${hibernate.dist}" includes="commons-collection*.jar" />
       <fileset dir="${genesis.dist}"
                includes="genesis-aspect-annotated-${genesis.version}.jar" />
