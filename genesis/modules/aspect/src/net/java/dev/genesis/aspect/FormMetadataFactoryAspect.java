@@ -518,8 +518,9 @@ public class FormMetadataFactoryAspect {
       }
 
       private void processFieldsAnnotations(final FormMetadata formMetadata) {
+         final Class clazz = formMetadata.getFormClass();
          final PropertyDescriptor[] propertyDescriptors = PropertyUtils
-               .getPropertyDescriptors(formMetadata.getFormClass());
+               .getPropertyDescriptors(clazz);
          PropertyDescriptor propDesc;
          FieldMetadata fieldMetadata;
          for (int i = 0; i < propertyDescriptors.length; i++) {
@@ -530,8 +531,8 @@ public class FormMetadataFactoryAspect {
                fieldMetadata = new FieldMetadata(propDesc.getName(), propDesc
                      .getPropertyType());
                formMetadata.addFieldMetadata(propDesc.getName(), fieldMetadata);
-               processFieldAnnotations(formMetadata, fieldMetadata, propDesc
-                     .getReadMethod());
+               processFieldAnnotations(formMetadata, fieldMetadata, 
+                     getReadMethod(clazz, propDesc));
             }
          }
       }
@@ -609,5 +610,16 @@ public class FormMetadataFactoryAspect {
          }
       }
 
+      // Work around for bug in JDK 1.4.2
+      private Method getReadMethod(Class clazz, PropertyDescriptor pd) {
+         Method method = pd.getReadMethod();
+
+         try {
+            return (clazz.equals(method.getDeclaringClass())) ? method :
+               clazz.getMethod(method.getName(), method.getParameterTypes());
+         } catch (NoSuchMethodException nsme) {
+            return method;
+         }
+      }
    }
 }
