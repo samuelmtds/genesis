@@ -82,7 +82,6 @@ public class UserListForm implements Serializable {
    }
 
    /**
-    * TODO EnabledWhen emailFilled or loginFilled or nameFilled
     * @DataProvider users
     */
    public List search() throws Exception {
@@ -99,6 +98,15 @@ public class UserListForm implements Serializable {
       if (users != null) {
          new UserRemoveCommand().removeUser(users);
       }
+   }
+   
+   /**
+    * @Action
+    */
+   public void reset(){
+      setName(null);
+      setEmail(null);
+      setLogin(null);
    }
 
 }
