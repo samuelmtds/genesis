@@ -252,7 +252,10 @@ public interface CriteriaResolver {
       implementam o tratamento de eventos e devem ser interceptados pelo advice
       de mesmo nome - <code>waitCursorExecution(JoinPoint)</code>. Este advice
       salva o cursor atual, troca-o para o cursor de espera e restaura o cursor
-      original quando o tratamento de eventos termina.</p>
+      original quando o tratamento de eventos termina. Espera-se que os métodos
+      interceptados pertençam a uma instância de
+      <code>java.awt.Component</code>, onde estão definidos métodos para obter e
+      definir o cursor em uso.</p>
     </section>
     <section name="Instanciando os metadados">
       <p>Todo o binding de uma form com a view baseia-se em metadados das duas
@@ -504,6 +507,7 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
+
 
 
 

@@ -248,7 +248,10 @@ public interface CriteriaResolver {
       perform event handling and must be intercepted by the advice named
       <code>waitCursorExecution(JoinPoint)</code>. This advice saves the current
       cursor, changes it to a wait cursor and then restore the original cursor
-      when event handling is done.</p>
+      when event handling is done. It is expected that the intercepted methods
+      belong to a <code>java.awt.Component</code> instance, since this class is
+      the one that defines methods for getting and setting the current cursor.
+      </p>
     </section>
     <section name="Instantiating metadata">
       <p>All form to view binding is based on metadata exposed by both sides.
@@ -499,5 +502,6 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
+
 
 
