@@ -596,7 +596,7 @@ public class RefreshViewExampleForm {
 }
 </source>
       </subsection>
-      <subsection name="Using invokeFormAction(String)">
+      <subsection name="Using invokeFormAction(..)">
         <p>In some situations it may be necessary to invoke one or more form
         methods inside a view method under certain specific conditions where
         using <code>@BeforeAction</code> and <code>@AfterAction</code> is not

@@ -7,9 +7,112 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2-beta2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>New helper class to make it easier to initialize the application,
+          <a
+          href="ui_basic_concepts.html#Configuring_genesis_at_startup">StartupHelper</a>
+          </li>
+          <li>A new attribute in <code>@DataProvider</code>, is now supported,
+          <a href="ui_additional_features.html#Populating_comboboxes_and_tables"><code>callOnInit</code></a>
+          </li>
+          <li>Support for defining <a
+          href="ui_additional_features.html#Widget groups">widget groups</a>
+          to be used with <code>@EnabledWhen</code> /
+          <code>@VisibleWhen</code> annotations</li>
+          <li>New helper classes for paging and dynamic searches, <a
+          href="ui_additional_features.html#Working_with_dynamic_searches"><code>BaseSearchForm</code>
+          and <code>BaseCriteriaSearchForm</code></a></li>
+          <li>Simplified binding usage with <a
+          href="ui_basic_concepts.html#Using_invokeFormAction____"><code>invokeFormAction(..)</code></a>,
+          <a href="ui_basic_concepts.html#Using_refreshView_____and_refreshViewFromForm_Object_"><code>refreshView(..)</code> and
+          <code>refreshViewFromForm(Object)</code></a></li>
+          <li><a href="aspects.html#Local_EJB_execution">Local EJB execution</a></li>
+          <li>Several new configuration parameters and improvements in
+          <a href="aspects.html">aspects</a></li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Form state is not reset when an exception occurs (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=55">Issue #
+          55</a>)</li>
+          <li><code>CommandResolver.isRemotable(Method)</code> is not always
+          invoked (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=74">Issue #
+          74</a>)</li>
+          <li><code>@DataProvider</code> does not work properly with combos (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=81">Issue #
+          81</a>)</li>
+          <li><code>@ClearOn</code> does not work properly with
+          <code>@Condition</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=88">Issue #
+          88</a>)</li>
+          <li>Unit tests cannot be executed because task
+          <code>&lt;webdoclet&gt;</code> is undefined (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=91">Issue #
+          91</a>)</li>
+          <li>A <code>ClassCastException</code> may occur when
+          <code>@DataProvider</code> is used (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=93">Issue #
+          93</a>)</li>
+          <li><code>@EnabledWhen</code>/<code>@VisibleWhen</code> do not work
+          with not bound properties (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=110">Issue
+          # 110</a>)</li>
+          <li><code>@Action</code> and <code>@DataProvider</code> in inherited
+          methods are ignored (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=115">Issue
+          # 115</a>)</li>
+          <li>JDK 1.4.2 bug in
+          <code>PropertyDescriptor.getReadMethod()</code> affects
+          <code>FieldMetadata</code> instance configuration (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=116">Issue
+          # 116</a>)</li>
+          <li>Annotation parsing for <code>ThinletMetadata</code> ignores
+          inherited methods (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=122">Issue
+          # 122</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-beta1 and 0.2-beta2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;target_milestone=0.2-beta2">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>Liaw Mike is now part of the official project team and works on
+        documentation.</p>
+      </subsection>
     </section>
     <section name="0.2-beta1">
       <subsection name="Downloads">

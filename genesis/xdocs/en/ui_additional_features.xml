@@ -187,7 +187,7 @@ public class VisibleWhenFormExample {
         be visible only when <code>dependantNumber</code> is greater than zero.
         </p>
       </subsection>
-      <subsection name="Widgets Grouping">
+      <subsection name="Widget groups">
         <p>In many cases, certain operations need to be executed for a group
         of widgets. An example of this situation is to make a whole group
         visible or enabled - see the Thinlet code below:</p>

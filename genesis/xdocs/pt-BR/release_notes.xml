@@ -7,13 +7,119 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
     </section>
+    <section name="0.2-beta2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Nova classe auxiliar para facilitar o processo de inicialização
+          da aplicação, <a
+          href="ui_basic_concepts.html#Configurando_o_genesis_na_inicialização">StartupHelper</a>
+          </li>
+          <li>Suporte a um novo atributo em <code>@DataProvider</code>, <a
+          href="ui_additional_features.html#Populando_combos_e_tabelas"><code>callOnInit</code></a>
+          </li>
+          <li>Suporte a definição de <a
+          href="ui_additional_features.html#Agrupamento_de_widgets">grupos de
+          widgets</a> para uso com as anotações <code>@EnabledWhen</code> /
+          <code>@VisibleWhen</code></li>
+          <li>Novas classes auxiliares para paginação e pesquisas dinâmicas, <a
+          href="ui_additional_features.html#Trabalhando_com_pesquisas_dinâmicas"><code>BaseSearchForm</code>
+          e <code>BaseCriteriaSearchForm</code></a></li>
+          <li>Maior simplicidade no uso do binding, com <a
+          href="ui_basic_concepts.html#Usando_invokeFormAction____"><code>invokeFormAction(..)</code></a>,
+          <a href="ui_basic_concepts.html#Usando_refreshView_____e_refreshViewFromForm_Object_"><code>refreshView(..)</code> e
+          <code>refreshViewFromForm(Object)</code></a></li>
+          <li><a href="aspects.html#Execução_em_EJB_com_chamada_local">Execução
+          em EJB com chamada local</a></li>
+          <li>Diversos novos parâmetros de configuração e melhorias nos
+          <a href="aspects.html">aspectos</a></li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>O estado do form não é resetado quando ocorre uma exceção (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=55">Issue #
+          55</a>)</li>
+          <li><code>CommandResolver.isRemotable(Method)</code> não é sempre
+          invocado (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=74">Issue #
+          74</a>)</li>
+          <li><code>@DataProvider</code> não funciona corretamente com combos (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=81">Issue #
+          81</a>)</li>
+          <li><code>@ClearOn</code> não funciona corretamente com
+          <code>@Condition</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=88">Issue #
+          88</a>)</li>
+          <li>Os testes unitários não podem ser executados porque a task
+          <code>&lt;webdoclet&gt;</code> não está definida (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=91">Issue #
+          91</a>)</li>
+          <li>Pode ocorrer um <code>ClassCastException</code> quando se utiliza
+          <code>@DataProvider</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=93">Issue #
+          93</a>)</li>
+          <li><code>@EnabledWhen</code>/<code>@VisibleWhen</code> não funcionam
+          com propriedades não ligadas (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=110">Issue
+          # 110</a>)</li>
+          <li><code>@Action</code> e <code>@DataProvider</code> em métodos
+          herdados são ignoradas (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=115">Issue
+          # 115</a>)</li>
+          <li>Bug do JDK 1.4.2 em
+          <code>PropertyDescriptor.getReadMethod()</code> afeta a configuração
+          da instância de <code>FieldMetadata</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=116">Issue
+          # 116</a>)</li>
+          <li>O parsing de anotações para <code>ThinletMetadata</code> ignora
+          métodos herdados (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=122">Issue
+          # 122</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre o 0.2-beta1 e
+        0.2-beta2 pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;target_milestone=0.2-beta2">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>Liaw Mike passou a integrar o time do projeto colaborando em trechos
+        da documentação.</p>
+      </subsection>
+    </section>
     <section name="0.2-beta1">
       <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&amp;expandFolder=2342&amp;folderID=1756">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
@@ -56,7 +162,6 @@
             <li>José Geraldo</li>
             <li>Liaw Mike</li>
             <li>Marcos Caldeira</li>
-            <li>Pablo Madril</li>
             <li>Paulo Pacheco</li>
             <li>Pedro Barelli</li>
             <li>Richard Nill</li>
@@ -68,7 +173,7 @@
     </section>
     <section name="0.1">
       <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2301&amp;expandFolder=2301&amp;folderID=2342">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
@@ -88,7 +193,6 @@
             <li>Jonas Boner</li>
             <li>José Geraldo</li>
             <li>Liaw Mike</li>
-            <li>Pablo Madril</li>
             <li>Paulo Pacheco</li>
             <li>Roberto Arnaldo</li>
             <li>Valéria Fernandes</li>
