@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis-shared - Software Evolution</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="Genesis Shared Technology" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 19 November 2004
+                  | Doc for 0.2-beta1</div><div class="xright">
+        
+        <a href="../../../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-aspect/index.html">genesis-aspect</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuProjects"><h5>Projects</h5><ul><li class="none"><a href="../../../index.html">genesis</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About Genesis Shared Technology</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Software_Evolution"></a><h2>Software Evolution</h2><p>
+        <a href="index.html">Back to Index Page</a>
+      </p></div><div class="section"><a name="Software_Evolution_Matrix"></a><h2>Software Evolution Matrix</h2><map name="evomatrix">
+        <area shape="rect" coords="8, 87, 216, 91" alt="src/net/java/dev/genesis/command/Command.java" title="src/net/java/dev/genesis/command/Command.java" href="#"></area>
+        <area shape="rect" coords="8, 92, 216, 96" alt="src/net/java/dev/genesis/command/NoopCommand.java" title="src/net/java/dev/genesis/command/NoopCommand.java" href="#"></area>
+        <area shape="rect" coords="8, 97, 216, 101" alt="src/net/java/dev/genesis/command/NoopQuery.java" title="src/net/java/dev/genesis/command/NoopQuery.java" href="#"></area>
+        <area shape="rect" coords="8, 102, 216, 106" alt="src/net/java/dev/genesis/command/Query.java" title="src/net/java/dev/genesis/command/Query.java" href="#"></area>
+        <area shape="rect" coords="8, 107, 216, 111" alt="src/net/java/dev/genesis/command/Transaction.java" title="src/net/java/dev/genesis/command/Transaction.java" href="#"></area>
+        <area shape="rect" coords="8, 112, 216, 116" alt="src/net/java/dev/genesis/command/TransactionalInjector.java" title="src/net/java/dev/genesis/command/TransactionalInjector.java" href="#"></area>
+        <area shape="rect" coords="8, 129, 216, 133" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCommand.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCommand.java" href="#"></area>
+        <area shape="rect" coords="8, 134, 216, 138" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCriteria.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCriteria.java" href="#"></area>
+        <area shape="rect" coords="8, 139, 216, 143" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateQuery.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateQuery.java" href="#"></area>
+        <area shape="rect" coords="8, 144, 216, 148" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateTransaction.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateTransaction.java" href="#"></area>
+        <area shape="rect" coords="8, 149, 216, 153" alt="src/net/java/dev/genesis/command/hibernate/CriteriaCommandExecutor.java" title="src/net/java/dev/genesis/command/hibernate/CriteriaCommandExecutor.java" href="#"></area>
+        <area shape="rect" coords="8, 154, 216, 158" alt="src/net/java/dev/genesis/command/hibernate/CriteriaResolver.java" title="src/net/java/dev/genesis/command/hibernate/CriteriaResolver.java" href="#"></area>
+        <area shape="rect" coords="8, 159, 216, 163" alt="src/net/java/dev/genesis/command/hibernate/HibernateCommand.java" title="src/net/java/dev/genesis/command/hibernate/HibernateCommand.java" href="#"></area>
+        <area shape="rect" coords="8, 164, 216, 168" alt="src/net/java/dev/genesis/command/hibernate/HibernateCriteria.java" title="src/net/java/dev/genesis/command/hibernate/HibernateCriteria.java" href="#"></area>
+        <area shape="rect" coords="8, 169, 216, 173" alt="src/net/java/dev/genesis/command/hibernate/HibernateQuery.java" title="src/net/java/dev/genesis/command/hibernate/HibernateQuery.java" href="#"></area>
+        <area shape="rect" coords="8, 174, 216, 178" alt="src/net/java/dev/genesis/command/hibernate/HibernateTransaction.java" title="src/net/java/dev/genesis/command/hibernate/HibernateTransaction.java" href="#"></area>
+        <area shape="rect" coords="8, 191, 216, 195" alt="src/net/java/dev/genesis/exception/BusinessException.java" title="src/net/java/dev/genesis/exception/BusinessException.java" href="#"></area>
+        <area shape="rect" coords="8, 196, 216, 200" alt="src/net/java/dev/genesis/exception/TimeoutException.java" title="src/net/java/dev/genesis/exception/TimeoutException.java" href="#"></area>
+        <area shape="rect" coords="8, 213, 216, 217" alt="src/net/java/dev/genesis/hibernate/EnumType.java" title="src/net/java/dev/genesis/hibernate/EnumType.java" href="#"></area>
+        <area shape="rect" coords="8, 230, 216, 234" alt="src/net/java/dev/genesis/hibernate/type/HibernateTypeValue.java" title="src/net/java/dev/genesis/hibernate/type/HibernateTypeValue.java" href="#"></area>
+        <area shape="rect" coords="8, 235, 216, 239" alt="src/net/java/dev/genesis/hibernate/type/SimNaoType.java" title="src/net/java/dev/genesis/hibernate/type/SimNaoType.java" href="#"></area>
+        <area shape="rect" coords="8, 252, 216, 256" alt="src/net/java/dev/genesis/paging/Page.java" title="src/net/java/dev/genesis/paging/Page.java" href="#"></area>
+        <area shape="rect" coords="8, 257, 216, 261" alt="src/net/java/dev/genesis/paging/PageImpl.java" title="src/net/java/dev/genesis/paging/PageImpl.java" href="#"></area>
+        <area shape="rect" coords="8, 262, 216, 266" alt="src/net/java/dev/genesis/paging/Pager.java" title="src/net/java/dev/genesis/paging/Pager.java" href="#"></area>
+        <area shape="rect" coords="8, 267, 216, 271" alt="src/net/java/dev/genesis/paging/PagingException.java" title="src/net/java/dev/genesis/paging/PagingException.java" href="#"></area>
+        <area shape="rect" coords="8, 284, 216, 288" alt="src/net/java/dev/genesis/paging/hibernate/CriteriaPager.java" title="src/net/java/dev/genesis/paging/hibernate/CriteriaPager.java" href="#"></area>
+        <area shape="rect" coords="8, 289, 216, 293" alt="src/net/java/dev/genesis/paging/hibernate/QueryPager.java" title="src/net/java/dev/genesis/paging/hibernate/QueryPager.java" href="#"></area>
+        <area shape="rect" coords="8, 306, 216, 310" alt="src/net/java/dev/genesis/reflection/ClassesCache.java" title="src/net/java/dev/genesis/reflection/ClassesCache.java" href="#"></area>
+        <area shape="rect" coords="8, 311, 216, 315" alt="src/net/java/dev/genesis/reflection/FieldEntry.java" title="src/net/java/dev/genesis/reflection/FieldEntry.java" href="#"></area>
+        <area shape="rect" coords="8, 316, 216, 320" alt="src/net/java/dev/genesis/reflection/MethodEntry.java" title="src/net/java/dev/genesis/reflection/MethodEntry.java" href="#"></area>
+        <area shape="rect" coords="8, 321, 216, 325" alt="src/net/java/dev/genesis/reflection/ReflectionInvoker.java" title="src/net/java/dev/genesis/reflection/ReflectionInvoker.java" href="#"></area>
+        <area shape="rect" coords="8, 338, 216, 342" alt="src/net/java/dev/genesis/util/GenesisUtils.java" title="src/net/java/dev/genesis/util/GenesisUtils.java" href="#"></area>
+        <area shape="rect" coords="216, 87, 424, 91" alt="src/net/java/dev/genesis/command/Command.java" title="src/net/java/dev/genesis/command/Command.java" href="#"></area>
+        <area shape="rect" coords="216, 92, 424, 96" alt="src/net/java/dev/genesis/command/NoopCommand.java" title="src/net/java/dev/genesis/command/NoopCommand.java" href="#"></area>
+        <area shape="rect" coords="216, 97, 424, 101" alt="src/net/java/dev/genesis/command/NoopQuery.java" title="src/net/java/dev/genesis/command/NoopQuery.java" href="#"></area>
+        <area shape="rect" coords="216, 102, 424, 106" alt="src/net/java/dev/genesis/command/Query.java" title="src/net/java/dev/genesis/command/Query.java" href="#"></area>
+        <area shape="rect" coords="216, 107, 424, 111" alt="src/net/java/dev/genesis/command/Transaction.java" title="src/net/java/dev/genesis/command/Transaction.java" href="#"></area>
+        <area shape="rect" coords="216, 112, 424, 116" alt="src/net/java/dev/genesis/command/TransactionalInjector.java" title="src/net/java/dev/genesis/command/TransactionalInjector.java" href="#"></area>
+        <area shape="rect" coords="216, 129, 424, 133" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCommand.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCommand.java" href="#"></area>
+        <area shape="rect" coords="216, 134, 424, 138" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCriteria.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCriteria.java" href="#"></area>
+        <area shape="rect" coords="216, 139, 424, 143" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateQuery.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateQuery.java" href="#"></area>
+        <area shape="rect" coords="216, 144, 424, 148" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateTransaction.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateTransaction.java" href="#"></area>
+        <area shape="rect" coords="216, 149, 424, 153" alt="src/net/java/dev/genesis/command/hibernate/CriteriaCommandExecutor.java" title="src/net/java/dev/genesis/command/hibernate/CriteriaCommandExecutor.java" href="#"></area>
+        <area shape="rect" coords="216, 154, 424, 158" alt="src/net/java/dev/genesis/command/hibernate/CriteriaResolver.java" title="src/net/java/dev/genesis/command/hibernate/CriteriaResolver.java" href="#"></area>
+        <area shape="rect" coords="216, 159, 424, 163" alt="src/net/java/dev/genesis/command/hibernate/HibernateCommand.java" title="src/net/java/dev/genesis/command/hibernate/HibernateCommand.java" href="#"></area>
+        <area shape="rect" coords="216, 164, 424, 168" alt="src/net/java/dev/genesis/command/hibernate/HibernateCriteria.java" title="src/net/java/dev/genesis/command/hibernate/HibernateCriteria.java" href="#"></area>
+        <area shape="rect" coords="216, 169, 424, 173" alt="src/net/java/dev/genesis/command/hibernate/HibernateQuery.java" title="src/net/java/dev/genesis/command/hibernate/HibernateQuery.java" href="#"></area>
+        <area shape="rect" coords="216, 174, 424, 178" alt="src/net/java/dev/genesis/command/hibernate/HibernateTransaction.java" title="src/net/java/dev/genesis/command/hibernate/HibernateTransaction.java" href="#"></area>
+        <area shape="rect" coords="216, 191, 424, 195" alt="src/net/java/dev/genesis/exception/BusinessException.java" title="src/net/java/dev/genesis/exception/BusinessException.java" href="#"></area>
+        <area shape="rect" coords="216, 196, 424, 200" alt="src/net/java/dev/genesis/exception/TimeoutException.java" title="src/net/java/dev/genesis/exception/TimeoutException.java" href="#"></area>
+        <area shape="rect" coords="216, 213, 424, 217" alt="src/net/java/dev/genesis/hibernate/EnumType.java" title="src/net/java/dev/genesis/hibernate/EnumType.java" href="#"></area>
+        <area shape="rect" coords="216, 230, 424, 234" alt="src/net/java/dev/genesis/hibernate/type/HibernateTypeValue.java" title="src/net/java/dev/genesis/hibernate/type/HibernateTypeValue.java" href="#"></area>
+        <area shape="rect" coords="216, 235, 424, 239" alt="src/net/java/dev/genesis/hibernate/type/SimNaoType.java" title="src/net/java/dev/genesis/hibernate/type/SimNaoType.java" href="#"></area>
+        <area shape="rect" coords="216, 252, 424, 256" alt="src/net/java/dev/genesis/paging/Page.java" title="src/net/java/dev/genesis/paging/Page.java" href="#"></area>
+        <area shape="rect" coords="216, 257, 424, 261" alt="src/net/java/dev/genesis/paging/PageImpl.java" title="src/net/java/dev/genesis/paging/PageImpl.java" href="#"></area>
+        <area shape="rect" coords="216, 262, 424, 266" alt="src/net/java/dev/genesis/paging/Pager.java" title="src/net/java/dev/genesis/paging/Pager.java" href="#"></area>
+        <area shape="rect" coords="216, 267, 424, 271" alt="src/net/java/dev/genesis/paging/PagingException.java" title="src/net/java/dev/genesis/paging/PagingException.java" href="#"></area>
+        <area shape="rect" coords="216, 284, 424, 288" alt="src/net/java/dev/genesis/paging/hibernate/CriteriaPager.java" title="src/net/java/dev/genesis/paging/hibernate/CriteriaPager.java" href="#"></area>
+        <area shape="rect" coords="216, 289, 424, 293" alt="src/net/java/dev/genesis/paging/hibernate/QueryPager.java" title="src/net/java/dev/genesis/paging/hibernate/QueryPager.java" href="#"></area>
+        <area shape="rect" coords="216, 306, 424, 310" alt="src/net/java/dev/genesis/reflection/ClassesCache.java" title="src/net/java/dev/genesis/reflection/ClassesCache.java" href="#"></area>
+        <area shape="rect" coords="216, 311, 424, 315" alt="src/net/java/dev/genesis/reflection/FieldEntry.java" title="src/net/java/dev/genesis/reflection/FieldEntry.java" href="#"></area>
+        <area shape="rect" coords="216, 316, 424, 320" alt="src/net/java/dev/genesis/reflection/MethodEntry.java" title="src/net/java/dev/genesis/reflection/MethodEntry.java" href="#"></area>
+        <area shape="rect" coords="216, 321, 424, 325" alt="src/net/java/dev/genesis/reflection/ReflectionInvoker.java" title="src/net/java/dev/genesis/reflection/ReflectionInvoker.java" href="#"></area>
+        <area shape="rect" coords="216, 338, 424, 342" alt="src/net/java/dev/genesis/util/GenesisUtils.java" title="src/net/java/dev/genesis/util/GenesisUtils.java" href="#"></area>
+        <area shape="rect" coords="424, 87, 632, 91" alt="src/net/java/dev/genesis/command/Command.java" title="src/net/java/dev/genesis/command/Command.java" href="#"></area>
+        <area shape="rect" coords="424, 92, 632, 96" alt="src/net/java/dev/genesis/command/NoopCommand.java" title="src/net/java/dev/genesis/command/NoopCommand.java" href="#"></area>
+        <area shape="rect" coords="424, 97, 632, 101" alt="src/net/java/dev/genesis/command/NoopQuery.java" title="src/net/java/dev/genesis/command/NoopQuery.java" href="#"></area>
+        <area shape="rect" coords="424, 102, 632, 106" alt="src/net/java/dev/genesis/command/Query.java" title="src/net/java/dev/genesis/command/Query.java" href="#"></area>
+        <area shape="rect" coords="424, 107, 632, 111" alt="src/net/java/dev/genesis/command/Transaction.java" title="src/net/java/dev/genesis/command/Transaction.java" href="#"></area>
+        <area shape="rect" coords="424, 112, 632, 116" alt="src/net/java/dev/genesis/command/TransactionalInjector.java" title="src/net/java/dev/genesis/command/TransactionalInjector.java" href="#"></area>
+        <area shape="rect" coords="424, 129, 632, 133" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCommand.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCommand.java" href="#"></area>
+        <area shape="rect" coords="424, 134, 632, 138" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCriteria.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateCriteria.java" href="#"></area>
+        <area shape="rect" coords="424, 139, 632, 143" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateQuery.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateQuery.java" href="#"></area>
+        <area shape="rect" coords="424, 144, 632, 148" alt="src/net/java/dev/genesis/command/hibernate/AbstractHibernateTransaction.java" title="src/net/java/dev/genesis/command/hibernate/AbstractHibernateTransaction.java" href="#"></area>
+        <area shape="rect" coords="424, 149, 632, 153" alt="src/net/java/dev/genesis/command/hibernate/CriteriaCommandExecutor.java" title="src/net/java/dev/genesis/command/hibernate/CriteriaCommandExecutor.java" href="#"></area>
+        <area shape="rect" coords="424, 154, 632, 158" alt="src/net/java/dev/genesis/command/hibernate/CriteriaResolver.java" title="src/net/java/dev/genesis/command/hibernate/CriteriaResolver.java" href="#"></area>
+        <area shape="rect" coords="424, 159, 632, 163" alt="src/net/java/dev/genesis/command/hibernate/HibernateCommand.java" title="src/net/java/dev/genesis/command/hibernate/HibernateCommand.java" href="#"></area>
+        <area shape="rect" coords="424, 164, 632, 168" alt="src/net/java/dev/genesis/command/hibernate/HibernateCriteria.java" title="src/net/java/dev/genesis/command/hibernate/HibernateCriteria.java" href="#"></area>
+        <area shape="rect" coords="424, 169, 632, 173" alt="src/net/java/dev/genesis/command/hibernate/HibernateQuery.java" title="src/net/java/dev/genesis/command/hibernate/HibernateQuery.java" href="#"></area>
+        <area shape="rect" coords="424, 174, 632, 178" alt="src/net/java/dev/genesis/command/hibernate/HibernateTransaction.java" title="src/net/java/dev/genesis/command/hibernate/HibernateTransaction.java" href="#"></area>
+        <area shape="rect" coords="424, 191, 632, 195" alt="src/net/java/dev/genesis/exception/BusinessException.java" title="src/net/java/dev/genesis/exception/BusinessException.java" href="#"></area>
+        <area shape="rect" coords="424, 196, 632, 200" alt="src/net/java/dev/genesis/exception/TimeoutException.java" title="src/net/java/dev/genesis/exception/TimeoutException.java" href="#"></area>
+        <area shape="rect" coords="424, 213, 632, 217" alt="src/net/java/dev/genesis/hibernate/EnumType.java" title="src/net/java/dev/genesis/hibernate/EnumType.java" href="#"></area>
+        <area shape="rect" coords="424, 230, 632, 234" alt="src/net/java/dev/genesis/hibernate/type/HibernateTypeValue.java" title="src/net/java/dev/genesis/hibernate/type/HibernateTypeValue.java" href="#"></area>
+        <area shape="rect" coords="424, 235, 632, 239" alt="src/net/java/dev/genesis/hibernate/type/SimNaoType.java" title="src/net/java/dev/genesis/hibernate/type/SimNaoType.java" href="#"></area>
+        <area shape="rect" coords="424, 252, 632, 256" alt="src/net/java/dev/genesis/paging/Page.java" title="src/net/java/dev/genesis/paging/Page.java" href="#"></area>
+        <area shape="rect" coords="424, 257, 632, 261" alt="src/net/java/dev/genesis/paging/PageImpl.java" title="src/net/java/dev/genesis/paging/PageImpl.java" href="#"></area>
+        <area shape="rect" coords="424, 262, 632, 266" alt="src/net/java/dev/genesis/paging/Pager.java" title="src/net/java/dev/genesis/paging/Pager.java" href="#"></area>
+        <area shape="rect" coords="424, 267, 632, 271" alt="src/net/java/dev/genesis/paging/PagingException.java" title="src/net/java/dev/genesis/paging/PagingException.java" href="#"></area>
+        <area shape="rect" coords="424, 284, 632, 288" alt="src/net/java/dev/genesis/paging/hibernate/CriteriaPager.java" title="src/net/java/dev/genesis/paging/hibernate/CriteriaPager.java" href="#"></area>
+        <area shape="rect" coords="424, 289, 632, 293" alt="src/net/java/dev/genesis/paging/hibernate/QueryPager.java" title="src/net/java/dev/genesis/paging/hibernate/QueryPager.java" href="#"></area>
+        <area shape="rect" coords="424, 306, 632, 310" alt="src/net/java/dev/genesis/reflection/ClassesCache.java" title="src/net/java/dev/genesis/reflection/ClassesCache.java" href="#"></area>
+        <area shape="rect" coords="424, 311, 632, 315" alt="src/net/java/dev/genesis/reflection/FieldEntry.java" title="src/net/java/dev/genesis/reflection/FieldEntry.java" href="#"></area>
+        <area shape="rect" coords="424, 316, 632, 320" alt="src/net/java/dev/genesis/reflection/MethodEntry.java" title="src/net/java/dev/genesis/reflection/MethodEntry.java" href="#"></area>
+        <area shape="rect" coords="424, 321, 632, 325" alt="src/net/java/dev/genesis/reflection/ReflectionInvoker.java" title="src/net/java/dev/genesis/reflection/ReflectionInvoker.java" href="#"></area>
+        <area shape="rect" coords="424, 338, 632, 342" alt="src/net/java/dev/genesis/util/GenesisUtils.java" title="src/net/java/dev/genesis/util/GenesisUtils.java" href="#"></area>
+      </map><p align="center">
+        <img border="0" src="evolution.png" usemap="#evomatrix" alt=""></img>
+      </p></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
