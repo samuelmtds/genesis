@@ -18,13 +18,10 @@
  */
 package net.java.dev.genesis.tests.ui;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
-import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
@@ -33,32 +30,8 @@ import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.BooleanConverter;
-import org.apache.commons.beanutils.converters.ByteConverter;
-import org.apache.commons.beanutils.converters.CharacterConverter;
-import org.apache.commons.beanutils.converters.DoubleConverter;
-import org.apache.commons.beanutils.converters.FloatConverter;
-import org.apache.commons.beanutils.converters.IntegerConverter;
-import org.apache.commons.beanutils.converters.LongConverter;
-import org.apache.commons.beanutils.converters.ShortConverter;
-
-
 
 public class FormControllerEvaluateConditionsTest extends TestCase {
-
-   static {
-      ConvertUtils.register(ConvertUtils.lookup(String.class), Object.class);
-      ConvertUtils.register(new BigDecimalConverter(), BigDecimal.class);
-      ConvertUtils.register(new BooleanConverter(null), Boolean.class);
-      ConvertUtils.register(new CharacterConverter(null), Character.class);
-      ConvertUtils.register(new ByteConverter(null), Byte.class);
-      ConvertUtils.register(new ShortConverter(null), Short.class);
-      ConvertUtils.register(new IntegerConverter(null), Integer.class);
-      ConvertUtils.register(new LongConverter(null), Long.class);
-      ConvertUtils.register(new DoubleConverter(null), Double.class);
-      ConvertUtils.register(new FloatConverter(null), Float.class);
-   }
 
    private FormController getController(Object form) throws Exception {
       final FormController formController = new DefaultFormController();
