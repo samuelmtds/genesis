@@ -90,12 +90,16 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
       try {
          commandExecutorLocal = getCommandExecutor();
 
-         if (obj.isTransaction(rtti.getMethod())) {
+         if (obj.isTransactional(rtti.getMethod())) {
             return commandExecutorLocal.executeTransaction(obj, methodName,
                   classNames, parameterValues);
+         } else if (obj.isRemotable(rtti.getMethod())) {
+            return commandExecutorLocal.executeQuery(obj, methodName, 
+                  classNames, parameterValues);
+         } else {
+            throw new IllegalArgumentException("Method " + rtti.getMethod() +
+                  " is neither remotable nor transactional");
          }
-
-         return commandExecutorLocal.executeQuery(obj, methodName, classNames, parameterValues);
       } catch (final InvocationTargetException ite) {
          throw ite.getTargetException();
       }

@@ -48,7 +48,13 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
    public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
       final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
       final CommandResolver obj = (CommandResolver)joinPoint.getTarget();
-      final boolean transactional = obj.isTransaction(methodSignature.getMethod());
+      final boolean transactional = obj.isTransactional(methodSignature.getMethod());
+
+      if (!transactional && !obj.isRemotable(methodSignature.getMethod())) {
+         throw new IllegalArgumentException("Method " + 
+               methodSignature.getMethod() + " is neither remotable nor " +
+               "transactional");
+      }
 
       try {
          injector.beforeInvocation(obj, transactional);
