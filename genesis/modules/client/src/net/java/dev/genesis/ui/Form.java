@@ -20,7 +20,6 @@ package net.java.dev.genesis.ui;
 
 import java.io.Serializable;
 import java.util.Map;
-import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorException;
 import org.apache.commons.validator.ValidatorResults;
 

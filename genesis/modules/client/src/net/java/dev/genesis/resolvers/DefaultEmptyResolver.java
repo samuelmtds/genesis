@@ -19,8 +19,6 @@
 package net.java.dev.genesis.resolvers;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Map;
 
 public class DefaultEmptyResolver implements EmptyResolver {
    public boolean isEmpty(Object o) {
