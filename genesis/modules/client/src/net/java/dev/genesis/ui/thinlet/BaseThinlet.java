@@ -122,7 +122,7 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
-   public static class ItemType extends Enum {
+   public static final class ItemType extends Enum {
       public static final ItemType CELL = new ItemType(BaseThinlet.CELL);
       public static final ItemType CHOICE = new ItemType(BaseThinlet.CHOICE);
       public static final ItemType ITEM = new ItemType(BaseThinlet.ITEM);
