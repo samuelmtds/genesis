@@ -158,6 +158,8 @@ public class ThinletBinder implements FormControllerListener {
             continue;
          }
 
+         createWidgetGroup(mainComponent, name);
+
          if (!fieldMetadata.isWriteable()) {
             if (log.isDebugEnabled()) {
                log.debug(name + " is a display only field, skipping...");
@@ -172,8 +174,6 @@ public class ThinletBinder implements FormControllerListener {
          }
 
          boundFieldNames.add(name);
-
-         createWidgetGroup(mainComponent, name);
 
          for (final Iterator it = components.iterator(); it.hasNext(); ) {
             final Object component = it.next();
