@@ -63,12 +63,5 @@ public class RoleListView extends BaseDialogView {
          invokeFormAction("provideRoles");
       }
    }
-   
-   /**
-    * @AfterAction
-    */
-   public void remove() throws Exception {
-      invokeFormAction("provideRoles");
-   }
 
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import net.java.dev.genesis.samples.useradmin.business.RoleRemoveCommand;
 import net.java.dev.genesis.samples.useradmin.business.RoleSearchCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
+import net.java.dev.genesis.ui.ActionInvoker;
 
 /**
  * @Form
@@ -52,6 +53,7 @@ public class RoleListForm {
     */
    public void remove() throws Exception {
       new RoleRemoveCommand().removeRole(role);
+      ActionInvoker.invoke(this, "provideRoles");
    }
    
    /**
