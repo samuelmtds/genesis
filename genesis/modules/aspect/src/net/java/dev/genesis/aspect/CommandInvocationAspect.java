@@ -36,10 +36,18 @@ public class CommandInvocationAspect {
     * @Introduce commandResolverIntroduction deployment-model=perJVM
     */
    public static class CommandResolverImpl implements CommandResolver, Serializable {
+      private final boolean useFastMode;
+
+      public CommandResolverImpl(CrossCuttingInfo ccInfo) {
+         useFastMode = (ccInfo.isPrototype()) ? true :
+               !"false".equals(ccInfo.getParameter("useFastMode"));
+      }
+
       public boolean isRemotable(Method m) {
-         return Annotations.getAnnotation("Remotable", m) != null
+         return (useFastMode) ? true : 
+               Annotations.getAnnotation("Remotable", m) != null
                || Query.class.isAssignableFrom(m.getDeclaringClass())
-               || isTransaction(m);
+               || isTransactional(m);
       }
 
       /**
@@ -55,7 +63,7 @@ public class CommandInvocationAspect {
        * @param m
        *            The proxy method
        */
-      public boolean isTransaction(Method m) {
+      public boolean isTransactional(Method m) {
          return Annotations.getAnnotation("Transactional", m) != null
                || Transaction.class.isAssignableFrom(m.getDeclaringClass());
       }
