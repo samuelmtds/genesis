@@ -259,6 +259,18 @@ public interface CriteriaResolver {
       interceptado numa outra thread e aguarda seu término por
       <code>timeout</code> segundos. Qualquer exceção que seria normalmente
       lançada pelo método interceptado é repassada para quem o chamou.</p>
+      <p>O parâmetro <code>keepThreadInstance</code> define a reutilização
+      ou não da thread que faz o controle de tempo de execução 
+      de um método. Caso seja atribuído o valor <code>true</code> para 
+      esse parâmetro, o aspecto irá criar e manter uma única thread
+      de modo que subsequentes execuções de métodos definidos
+      pelo pointcut <code>timeout</code>
+      reutilizem essa mesma thread. Desse modo, a perfomance
+      da aplicação final será maior.</p>
+      <p>Porém, no caso da aplicação utilizar diversas threads,
+      esse parâmetro irá permitir que diversas threads filhas
+      fiquem em memória ocupando recursos - assim, neste caso o ideal é que 
+      seja atribuído o valor <code>false</code> para este parâmetro.</p>
     </section>
     <section name="Trocando o cursor do mouse durante o tratamento de eventos">
       <p>Com o intuito de que o usuário perceba que uma operação longa está
@@ -376,13 +388,22 @@ public interface ThinletMetadataFactory {
             <td>Não possui</td>
           </tr>
           <tr>
-            <td>TimeoutAspect</td>
+            <td rowspan="2">TimeoutAspect</td>
             <td>timeout</td>
             <td>long</td>
             <td>Número máximo de milisegundos em que o método pode ser executado
             </td>
             <td><b>Sim</b></td>
             <td>Não possui</td>
+          </tr>
+          <tr>
+            <td>keepThreadInstance</td>
+            <td>boolean</td>
+            <td>Indica se a thread de controle de timeout deve ser 
+            mantida e reutilizada entre as execuções dos métodos 
+            interceptados</td>
+            <td>Não</td>
+            <td><code>false</code></td>
           </tr>
         </table>
       </subsection>
@@ -527,6 +548,7 @@ public interface ThinletMetadataFactory {
       <aspect class="ThinletMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
+         <param name="keepThreadInstance" value="true" />
       </aspect>
       <aspect class="EJBCommandExecutionAspect">
          <param name="jndiName" value="ejb/CommandExecutor"/>

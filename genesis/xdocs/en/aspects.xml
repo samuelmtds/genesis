@@ -257,6 +257,16 @@ public interface CriteriaResolver {
       intercepted method in a new thread and waits for its completion for
       <code>timeout</code> seconds. Any exception that could be normally thrown
       by the intercepted method is thrown back to the caller.</p>
+      <p>The <code>keepThreadInstance</code> parameter defines whether genesis 
+      should reuse the thread which controls the execution timeout of a method.
+      In case this parameter is set to <code>true</code>, the aspect will create
+      and maintain a single thread and therefore all next intercepted methods 
+      executions will reuse the same thread. This way the application perfomance
+      will be increased.</p>
+      <p>However in case the application needs quite a few threads to run, this
+      parameter (if set to true) will keep a lot of children threads in memory 
+      that might consume system resources - this way, in this particular case,
+      it is recommended setting this parameter to <code>false</code>.</p>
     </section>
     <section name="Changing mouse cursor during event handling">
       <p>In order to allow a user to realize a time consuming operation is being
@@ -375,12 +385,20 @@ public interface ThinletMetadataFactory {
             <td>None</td>
           </tr>
           <tr>
-            <td>TimeoutAspect</td>
+            <td rowspan="2">TimeoutAspect</td>
             <td>timeout</td>
             <td>long</td>
             <td>Maximum amount of milliseconds a method execution can take</td>
             <td><b>Yes</b></td>
             <td>None</td>
+          </tr>
+          <tr>
+            <td>keepThreadInstance</td>
+            <td>boolean</td>
+            <td>Indicates whether the timeout controlling thread should be
+            kept and reused by all intercepted methods</td>
+            <td>No</td>
+            <td><code>false</code></td>
           </tr>
         </table>
       </subsection>
