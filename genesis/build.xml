@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project basedir="." default="init" name="genesis">
+<project basedir="." default="all" name="genesis">
 
 	<target name="init">
 		<property file="build.properties" />
@@ -183,6 +183,7 @@
 
 		<jar destfile="${client.jar}">
 			<fileset dir="${client.classes.dir}" />
+			<fileset dir="${client.dir}" excludes="**/*.java"/>
 		</jar>
 
 		<jar destfile="${aspect.jar}">
@@ -190,5 +191,7 @@
 		</jar>
 
 	</target>
+	
+	<target name="all" depends="clean,build.jars"/>
 
 </project>
