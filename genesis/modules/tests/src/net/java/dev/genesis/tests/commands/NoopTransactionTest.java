@@ -19,6 +19,7 @@
 package net.java.dev.genesis.tests.commands;
 
 import javax.naming.InitialContext;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import net.java.dev.genesis.command.Transaction;
@@ -36,7 +37,7 @@ public class NoopTransactionTest extends TestCase {
 
     public void testTransactional() throws Exception {
         NoopTransaction transaction = new NoopTransaction();
-        assertEquals(transaction.invokeTransactional(), 0);
+        assertEquals(transaction.invokeTransactional(), Status.STATUS_ACTIVE);
         assertTrue(transaction.value == 0);
     }
 

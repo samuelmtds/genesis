@@ -21,6 +21,7 @@ package net.java.dev.genesis.tests.commands;
 import java.io.Serializable;
 
 import javax.naming.InitialContext;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import net.java.dev.genesis.tests.TestCase;
@@ -35,13 +36,13 @@ public class NoopCommandTest extends TestCase {
 
     public void testRemotable() throws Exception {
         NoopCommand command = new NoopCommand();
-        assertEquals(command.remotable(), 6);
+        assertEquals(command.remotable(), Status.STATUS_NO_TRANSACTION);
         assertTrue(command.value == 0);
     }
 
     public void testTransactional() throws Exception {
         NoopCommand command = new NoopCommand();
-        assertEquals(command.transactional(), 0);
+        assertEquals(command.transactional(), Status.STATUS_ACTIVE);
         assertTrue(command.value == 0);
     }
 

@@ -19,6 +19,7 @@
 package net.java.dev.genesis.tests.commands;
 
 import javax.naming.InitialContext;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import net.java.dev.genesis.command.Query;
@@ -36,7 +37,7 @@ public class NoopQueryTest extends TestCase {
 
     public void testRemotable() throws Exception {
         NoopQuery query = new NoopQuery();
-        assertEquals(query.invokeRemotable(), 6);
+        assertEquals(query.invokeRemotable(), Status.STATUS_NO_TRANSACTION);
         assertTrue(query.value == 0);
 
     }

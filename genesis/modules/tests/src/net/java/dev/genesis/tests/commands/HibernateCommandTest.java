@@ -19,6 +19,7 @@
 package net.java.dev.genesis.tests.commands;
 
 import javax.naming.InitialContext;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import net.java.dev.genesis.command.hibernate.AbstractHibernateCommand;
@@ -39,13 +40,13 @@ public class HibernateCommandTest extends TestCase {
     public void testCommandRemotable() throws Exception {
        System.out.println("remotable");
         HibernateCommand command = new HibernateCommand();
-        assertEquals(command.remotable(), 6);
+        assertEquals(command.remotable(), Status.STATUS_NO_TRANSACTION);
         assertTrue(command.value == 0);
     }
 
     public void testCommandTransactional() throws Exception {
         HibernateCommand command = new HibernateCommand();
-        assertEquals(command.transactional(), 0);
+        assertEquals(command.transactional(), Status.STATUS_ACTIVE);
         assertTrue(command.value == 0);
     }
 
@@ -57,7 +58,7 @@ public class HibernateCommandTest extends TestCase {
 
     public void testQueryRemotable() throws Exception {
         HibernateQuery command = new HibernateQuery();
-        assertEquals(command.invokeRemotable(), 6);
+        assertEquals(command.invokeRemotable(), Status.STATUS_NO_TRANSACTION);
         assertTrue(command.value == 0);
     }
 
@@ -69,7 +70,7 @@ public class HibernateCommandTest extends TestCase {
 
     public void testTransactionTransactional() throws Exception {
         HibernateTransaction command = new HibernateTransaction();
-        assertEquals(command.invokeTransactional(), 0);
+        assertEquals(command.invokeTransactional(), Status.STATUS_ACTIVE);
         assertTrue(command.value == 0);
     }
 
