@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,6 +50,8 @@ import org.apache.commons.logging.LogFactory;
 public class DefaultFormController implements FormController {
    private static final Log log = LogFactory
          .getLog(DefaultFormController.class);
+
+   private boolean setup;
 
    private Object form;
    private FormMetadata formMetadata;
@@ -121,6 +123,12 @@ public class DefaultFormController implements FormController {
       }
 
       evaluate(true);
+
+      setup = true;
+   }
+   
+   public boolean isSetup() {
+      return setup;
    }
 
    public void addFormControllerListener(FormControllerListener listener) {

@@ -37,6 +37,7 @@ public interface FormController {
    public Collection getFormControllerListeners();
 
    public void setup() throws Exception;
+   public boolean isSetup();
 
    public void populate(Map properties) throws Exception;
    public void invokeAction(String actionName, Map stringProperties) 

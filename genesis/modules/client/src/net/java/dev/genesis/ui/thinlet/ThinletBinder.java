@@ -76,12 +76,36 @@ public class ThinletBinder implements FormControllerListener {
       this.controller = getController(form);
    }
    
-   private ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
+   protected final ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
+      if (!(form instanceof ThinletMetadataFactory)) {
+         throw new IllegalArgumentException(thinlet + " should implement " + 
+               "ThinletMetadataFactory; probably your aop.xml/weaving process" + 
+               " should be properly configured.");
+      }
+
       return ((ThinletMetadataFactory)thinlet).getThinletMetadata(thinlet.getClass());
    }
 
-   protected FormController getController(final Object form) {
+   protected final FormController getController(final Object form) {
+      if (!(form instanceof FormControllerFactory)) {
+         throw new IllegalArgumentException(form + " should implement " + 
+               "FormControllerFactory; probably it should have been annotated " +
+               "with @Form or your aop.xml/weaving process should be " +
+               "properly configured.");
+      }
+
       return ((FormControllerFactory)form).retrieveFormController();
+   }
+
+   protected FormMetadata getFormMetadata(final Object form) {
+      if (!(form instanceof FormMetadataFactory)) {
+         throw new IllegalArgumentException(form + " should implement " + 
+               "FormMetadataFactory; probably it should have been annotated " +
+               "with @Form or your aop.xml/weaving process should be " +
+               "properly configured.");
+      }
+
+      return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
    }
 
    public void bind() throws Exception {
@@ -98,17 +122,6 @@ public class ThinletBinder implements FormControllerListener {
       bindDataProviders(dataProviders);
 
       controller.setup();
-   }
-
-   protected FormMetadata getFormMetadata(final Object form) {
-      if (!(form instanceof FormMetadataFactory)) {
-         throw new IllegalArgumentException(form + " should implement " + 
-               "FormMetadataFactory; probably it should have been annotated " +
-               "with @Form or your aop.xml/weaving process should be " +
-               "properly configured.");
-      }
-
-      return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
    }
 
    protected void bindFieldMetadatas(final FormMetadata formMetadata) {
