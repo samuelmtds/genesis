@@ -31,7 +31,7 @@
           <a href="#TODO: insert link">new properties</a> for defining database
           access configuration</li>
         </ul>
-        <p>The following bug has been fixed in this release:</p>
+        <p>The following bugs have been fixed in this release:</p>
         <ul>
           <li>The <code>objectField</code> property value is set to
           <code>null</code> instead of an empty collection
@@ -39,6 +39,13 @@
           <code>@DataProvider</code> method is bound to a table
           (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173">Issue
           # 173</a>)</li>
+          <li>The <code>indexField</code> property first value is ignored 
+          at binding time and if an <code>objectField</code> whose type is an
+          array or a <code>Collection</code> is used together with it, a 
+          <code>-1</code> value in the <code>indexField</code> causes an
+          <code>ArrayIndexOutOfBoundsException</code> to be thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=181">Issue
+          # 181</a>)</li>
         </ul>
         <p>The full change log between 0.2-RC1 and 0.2-RC2 can be found <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2">here</a>.</p>

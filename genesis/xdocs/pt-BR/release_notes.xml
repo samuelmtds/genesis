@@ -32,7 +32,7 @@
           <a href="#TODO: insert link">novas propriedades</a> para definição
           dos parâmetros de acesso ao banco de dados</li>
         </ul>
-        <p>O seguinte bug foi corrigido nessa versão:</p>
+        <p>Os seguintes bug foram corrigidos nessa versão:</p>
         <ul>
           <li>A propriedade <code>objectField</code> é setada para
           <code>null</code> ao invés de uma coleção vazia
@@ -40,6 +40,13 @@
           <code>@DataProvider</code> está ligado a uma tabela
           (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173">Issue
           # 173</a>)</li>
+          <li>A propriedade <code>indexField</code> é ignorada inicialmente
+          ao fazer o binding e caso um <code>objectField</code> que seja uma
+          array ou <code>Collection</code> seja usada em conjunto com ele,
+          o uso do valor <code>-1</code> lança uma
+          <code>ArrayIndexOutOfBoundsException</code>
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=181">Issue
+          # 181</a>)</li>
         </ul>
         <p>A lista completa das alterações ocorridas entre o 0.2-RC1 e
         0.2-RC2 pode ser obtida <a
