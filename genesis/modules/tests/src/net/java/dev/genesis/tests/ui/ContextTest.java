@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ public class ContextTest extends TestCase {
 
       final Map newValues = new HashMap();
       newValues.put("string1", " a342 23");
-      controller.populate(newValues);
+      controller.populate(newValues, null);
 
       assertEquals(form.context.get("someVar"), Boolean.FALSE);
    }

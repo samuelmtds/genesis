@@ -48,7 +48,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       final Map someValues = BeanUtils.describe(form);
       someValues.put("field2", "12");
       someValues.put("field3", "abc");
-      controller.populate(someValues);
+      controller.populate(someValues, null);
 
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
@@ -58,7 +58,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       someValues.put("field2", "12");
       someValues.put("field3", "abcd");
       someValues.put("field4", "notEmpty");
-      controller.populate(someValues);
+      controller.populate(someValues, null);
 
       //final ActionMetadata calculateMetadata = getFormMetadata(form)
       //      .getActionMetadata(form.getClass().getMethod("calculate", new Class[]{}));

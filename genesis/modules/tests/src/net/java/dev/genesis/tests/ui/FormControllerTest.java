@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -88,7 +88,7 @@ public class FormControllerTest extends TestCase {
       final FooForm someForm = new FooForm();
       final FormController controller = getController(someForm);
       final Map describedMap = BeanUtils.describe(someForm);
-      controller.populate(describedMap);
+      controller.populate(describedMap, null);
       final Map afterPopulateMap = BeanUtils.describe(someForm);
       assertDescribedMapEquals(describedMap, afterPopulateMap);
    }
@@ -98,7 +98,7 @@ public class FormControllerTest extends TestCase {
       final FormController controller = getController(someForm);
 
       final Map someValues = getSomeValues();
-      controller.populate(someValues);
+      controller.populate(someValues, null);
       final Map newValuesAfterPopulate = BeanUtils.describe(someForm);
       newValuesAfterPopulate.put("fieldBigDecimal", newValuesAfterPopulate.get(
             "fieldBigDecimal").toString().replaceAll("[.]", ","));
@@ -112,7 +112,7 @@ public class FormControllerTest extends TestCase {
       final Map describedMap = PropertyUtils.describe(someForm);
       final Map someValues = getSomeValues();
       final FormState state = new FormStateImpl(controller.getFormState());
-      controller.populate(someValues);
+      controller.populate(someValues, null);
       controller.reset(state);
       assertDescribedMapEquals(describedMap, PropertyUtils.describe(someForm));
    }
