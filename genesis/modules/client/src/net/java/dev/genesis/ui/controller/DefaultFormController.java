@@ -229,7 +229,9 @@ public class DefaultFormController implements FormController {
          evaluateNamedConditions();
       }
 
-      evaluateCallWhenConditions(firstCall);
+      if (evaluateCallWhenConditions(firstCall)) {
+         evaluateNamedConditions();
+      }
 
       final Map newData = PropertyUtils.describe(form);
       updateChangedMap(newData, false);
@@ -402,19 +404,23 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected void evaluateCallWhenConditions(boolean firstCall) throws Exception {
+   protected boolean evaluateCallWhenConditions(boolean firstCall) throws Exception {
+      boolean changed = false;
+
       for (final Iterator i = formMetadata.getActionMetadatas().values()
             .iterator(); i.hasNext(); ) {
-         invokeAction((DataProviderMetadata)i.next(), firstCall, true);
+         changed |= invokeAction((DataProviderMetadata)i.next(), firstCall, true);
       }
 
       for (final Iterator i = formMetadata.getDataProviderMetadatas().values()
             .iterator(); i.hasNext();) {
-         invokeAction((DataProviderMetadata)i.next(), firstCall, true);
+         changed |= invokeAction((DataProviderMetadata)i.next(), firstCall, true);
       }
+
+      return changed;
    }
 
-   protected void invokeAction(DataProviderMetadata dataProviderMetadata, 
+   protected boolean invokeAction(DataProviderMetadata dataProviderMetadata, 
          boolean firstCall, boolean conditionally) throws Exception {
       final boolean provider = dataProviderMetadata.isProvider();
       List items = null;
@@ -422,7 +428,7 @@ public class DefaultFormController implements FormController {
       if ((dataProviderMetadata.getCallCondition() == null || firstCall) 
             && conditionally) {
          if (!provider || (conditionally && !firstCall)) {
-            return;
+            return false;
          }
 
          if (!dataProviderMetadata.isCallOnInit()) {
@@ -430,7 +436,7 @@ public class DefaultFormController implements FormController {
                   items = new ArrayList());
             fireDataProvidedListMetadataChanged(dataProviderMetadata, items);
 
-            return;
+            return true;
          } else {
             conditionally = false;
          }
@@ -441,7 +447,7 @@ public class DefaultFormController implements FormController {
 
       if (satisfied) {
          if (!provider && !beforeInvokingMethod(dataProviderMetadata)) {
-            return;
+            return false;
          }
 
          final Object ret = dataProviderMetadata.invoke(form);
@@ -461,6 +467,8 @@ public class DefaultFormController implements FormController {
                dataProviderMetadata.getName() + "' evaluated as '" + 
                satisfied + "'");
       }
+
+      return satisfied;
    }
 
    protected boolean beforeInvokingMethod(DataProviderMetadata metadata) 
