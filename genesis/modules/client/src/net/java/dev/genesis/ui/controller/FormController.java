@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ public interface FormController {
    public void setup() throws Exception;
    public boolean isSetup();
 
-   public void populate(Map properties) throws Exception;
+   public void populate(Map properties, Map converters) throws Exception;
    public void invokeAction(String actionName, Map stringProperties) 
          throws Exception;
    public void updateSelection(DataProviderMetadata dataProviderMetadata, 

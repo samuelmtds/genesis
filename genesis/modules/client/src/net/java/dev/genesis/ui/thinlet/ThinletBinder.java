@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
@@ -39,6 +40,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
+import org.apache.commons.beanutils.Converter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -70,6 +72,9 @@ public class ThinletBinder implements FormControllerListener {
 
    private final Map enabledWidgetGroupMap = new HashMap();
    private final Map visibleWidgetGroupMap = new HashMap();
+
+   private final Map formatters = new HashMap();
+   private final Map converters = new HashMap();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, final Object form) {
       this.thinlet = thinlet;
@@ -287,7 +292,7 @@ public class ThinletBinder implements FormControllerListener {
       final Map properties = new HashMap();
       properties.put(name, value);
 
-      controller.populate(properties);
+      controller.populate(properties, converters);
    }
 
    protected void bindActionMetadatas(final FormMetadata formMetadata) {
@@ -385,6 +390,7 @@ public class ThinletBinder implements FormControllerListener {
             }
          }
       }
+
       final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvided
             .get(name);
 
@@ -414,9 +420,17 @@ public class ThinletBinder implements FormControllerListener {
    public void refresh() throws Exception {
       controller.update();
    }
-   
+
+   public Formatter registerFormatter(String key, Formatter formatter) {
+      return (Formatter)formatters.put(key, formatter);
+   }
+
+   public Converter registerConverter(String key, Converter converter) {
+      return (Converter)converters.put(key, converter);
+   }
+
    public void valuesChanged(Map updatedValues) throws Exception {
-      thinlet.displayBean(updatedValues, root);
+      thinlet.displayBean(updatedValues, root, formatters);
    }
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
@@ -450,7 +464,7 @@ public class ThinletBinder implements FormControllerListener {
 
       if (className.equals(BaseThinlet.TABLE)) {
          metadata.resetSelectedFields(form);
-         thinlet.populateFromCollection(component, items);
+         thinlet.populateFromCollection(component, items, formatters);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
          //TODO: This parsing shouldn't occur every time
@@ -467,7 +481,7 @@ public class ThinletBinder implements FormControllerListener {
                "blankLabel");
 
          thinlet.populateFromCollection(component, items, key, value, blank, 
-               blankLabel);
+               blankLabel, formatters);
       } else {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");

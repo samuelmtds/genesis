@@ -29,6 +29,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import net.java.dev.genesis.text.Formatter;
 
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.Form;
@@ -359,6 +360,12 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected void displayBean(Object bean, Object root) throws IllegalAccessException,
                               InvocationTargetException, NoSuchMethodException {
+      displayBean(bean, root, null);
+   }
+
+   protected void displayBean(Object bean, Object root, Map formatters) 
+         throws IllegalAccessException, InvocationTargetException, 
+                NoSuchMethodException {
       final Map properties = bean instanceof Map ? (Map)bean : 
             PropertyUtils.describe(bean);
 
@@ -389,7 +396,8 @@ public abstract class BaseThinlet extends Thinlet {
                if (propertyName.equals(getGroup(component)) && 
                       getName(component) != null ) {
                   if (propertyValue == null) {
-                     propertyValue = getPropertyValue(properties, propertyName, true);
+                     propertyValue = getPropertyValue(properties, propertyName, 
+                           true, formatters);
                   }
 
                   if (getName(component).equals(propertyValue)) {
@@ -420,11 +428,13 @@ public abstract class BaseThinlet extends Thinlet {
 
             if (valuePropertyName != null) {
                Object o = properties.get(propertyName);
-               propertyValue = FormatterRegistry.getInstance().format(
-                     o == null ? null : PropertyUtils.getProperty(
-                     properties.get(propertyName), valuePropertyName));
+               o = o == null ? null : PropertyUtils.getProperty(
+                     properties.get(propertyName), valuePropertyName);
+
+               propertyValue = format(formatters, valuePropertyName, o);
             } else {
-               propertyValue = getPropertyValue(properties, propertyName, true);
+               propertyValue = getPropertyValue(properties, propertyName, true, 
+                     formatters);
             }
 
             selectedComponent = find(component, propertyValue);
@@ -437,23 +447,40 @@ public abstract class BaseThinlet extends Thinlet {
                }
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
-            setValue(component, getPropertyValue(properties, propertyName, false));
+            setValue(component, getPropertyValue(properties, propertyName, 
+                  false, formatters));
          } else if (type.equals(PANEL)) {
             displayBean(properties.get(propertyName), component);
          } else if (type.equals(CHECKBOX)) {
             setSelected(component, Boolean.TRUE.equals(properties.get(propertyName)));
          } else if (!type.equals(TABLE)){
-            setText(component, getPropertyValue(properties, propertyName, false));
+            setText(component, getPropertyValue(properties, propertyName, 
+                  false, formatters));
          }
       }
    }
 
    protected String getPropertyValue(Map properties, String propertyName,
-            boolean enumKey) {
-        Object o = properties.get(propertyName);
-        return (enumKey && o instanceof Enum) ? o.toString()
-                : FormatterRegistry.getInstance().format(o);
-    }
+         boolean enumKey, Map formatters) {
+      Object o = properties.get(propertyName);
+
+      if (enumKey && o instanceof Enum) {
+        return o.toString();
+      }
+
+      return format(formatters, propertyName, o);
+   }
+
+   protected String format(Map formatters, String propertyName, Object value) {
+      Formatter formatter = null;
+
+      if (formatters != null) {
+         formatter = (Formatter)formatters.get(propertyName);
+      }
+
+      return (formatter == null) ? FormatterRegistry.getInstance().format(value) :
+           formatter.format(value);
+   }
 
    protected void populate(Form bean) throws IllegalAccessException, 
                               InvocationTargetException, NoSuchMethodException {
@@ -620,6 +647,15 @@ public abstract class BaseThinlet extends Thinlet {
                         String blankLabel) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
+       populateFromCollection(component, c, keyProperty, valueProperty, blank,
+                        blankLabel, null);
+   }
+
+   protected void populateFromCollection(Object component, Collection c, 
+                        String keyProperty, String valueProperty, boolean blank,
+                        String blankLabel, Map formatters) 
+         throws IllegalAccessException, InvocationTargetException, 
+                NoSuchMethodException {
       final boolean combobox = getClass(component).equals(COMBOBOX);
 
       if (!combobox && !getClass(component).equals(LIST)) {
@@ -639,13 +675,16 @@ public abstract class BaseThinlet extends Thinlet {
                "" : blankLabel, type));
       }
 
+      final String componentName = getName(component);
+
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
 
-         key = FormatterRegistry.getInstance().format(PropertyUtils.getProperty(
-               o, keyProperty));
-         description = FormatterRegistry.getInstance().format(
-               valueProperty == null ? o : PropertyUtils.getProperty(o, 
+         key = format(formatters, componentName + '.' + keyProperty, PropertyUtils
+               .getProperty(o, keyProperty));
+         description = valueProperty == null ? 
+               format(formatters, componentName + '.', o) : format(formatters, 
+               componentName + '.' + valueProperty, PropertyUtils.getProperty(o, 
                valueProperty));
 
          add(component, createItemOfType(key, description, type));
@@ -661,11 +700,18 @@ public abstract class BaseThinlet extends Thinlet {
    protected void populateFromCollection(Object component, Collection c)
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
+      populateFromCollection(component, c, null);
+   }
+   
+   protected void populateFromCollection(Object component, Collection c, 
+         Map formatters) throws IllegalAccessException, 
+         InvocationTargetException, NoSuchMethodException {
       if (!getClass(component).equals(TABLE)) {
          throw new UnsupportedOperationException();
       }
 
       removeAll(component);
+
       final Collection propertyNames = new ArrayList();
       final Object[] columns = getTableColumns(component); 
       
@@ -679,6 +725,8 @@ public abstract class BaseThinlet extends Thinlet {
 
          propertyNames.add(name);
       }
+
+      final String componentName = getName(component);
 
       String propertyName;
       Object row;
@@ -700,7 +748,8 @@ public abstract class BaseThinlet extends Thinlet {
                if (PropertyUtils.getProperty(bean, 
                      propertyName.substring(0, indexOfDot)) == null) {
                   add(row, createCell(propertyName, 
-                        FormatterRegistry.getInstance().format(null)));
+                        format(formatters, componentName + '.' + propertyName, 
+                        null)));
                   skip = true;
                   break;
                }
@@ -712,17 +761,13 @@ public abstract class BaseThinlet extends Thinlet {
                continue;
             }
 
-            add(row, createCell(propertyName, 
-                    FormatterRegistry.getInstance().format(
-                           PropertyUtils.getProperty(bean, propertyName))));
+            add(row, createCell(propertyName, format(formatters, 
+                  componentName + '.' + propertyName, 
+                  PropertyUtils.getProperty(bean, propertyName))));
          }
 
          add(component, row);
       }
-   }
-
-   protected ThinletBinder createBinder(Object widget, Object form){
-      return new ThinletBinder(this, widget, form);
    }
 
    protected void bind(Object form) throws Exception {
@@ -730,6 +775,11 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void bind(Object widget, Object form) throws Exception {
+      prepareBinder(widget, form).bind();
+   }
+
+   protected ThinletBinder prepareBinder(Object widget, Object form) 
+         throws Exception {
       Map formPerClass = (Map)formPerClassPerComponent.get(widget);
 
       if (formPerClass == null) {
@@ -748,7 +798,11 @@ public abstract class BaseThinlet extends Thinlet {
       final ThinletBinder binder = createBinder(widget, form);
       binderPerForm.put(form, binder);
 
-      binder.bind();
+      return binder;
+   }
+
+   protected ThinletBinder createBinder(Object widget, Object form){
+      return new ThinletBinder(this, widget, form);
    }
 
    public void invokeFormAction(Object component) throws Exception {
@@ -858,7 +912,8 @@ public abstract class BaseThinlet extends Thinlet {
          setSelected(items[i], true);
          j++;
       }
-      // Thinlet bug... component needs to be repainted
+
+      // TODO: Thinlet bug... component needs to be repainted... verify
       repaint(component);
    }
 

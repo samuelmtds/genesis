@@ -37,6 +37,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
+import org.apache.commons.beanutils.Converter;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.ClassFunctions;
@@ -147,15 +148,16 @@ public class DefaultFormController implements FormController {
       return new ArrayList(listeners);
    }
 
-   public void populate(Map properties) throws Exception {
-      populate(properties, true);
+   public void populate(Map properties, Map converters) throws Exception {
+      populate(properties, true, converters);
    }
 
    public void update() throws Exception {
-      populate(null, false);
+      populate(null, false, null);
    }
 
-   protected void populate(Map properties, boolean stringMap) throws Exception {
+   protected void populate(Map properties, boolean stringMap, Map converters) 
+         throws Exception {
       if (previousState == null) {
          previousState = createFormState(currentState);
       }
@@ -165,7 +167,7 @@ public class DefaultFormController implements FormController {
             properties = PropertyUtils.describe(form);
          }
 
-         updateChangedMap(properties, stringMap);
+         updateChangedMap(properties, stringMap, converters);
 
          if (currentState.getChangedMap().isEmpty()) {
             log.debug("Nothing changed.");
@@ -187,7 +189,8 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected void updateChangedMap(Map newData, boolean stringMap) {
+   protected void updateChangedMap(Map newData, boolean stringMap, 
+            Map converters) {
       Object value;
       FieldMetadata fieldMeta;
       Map.Entry entry;
@@ -209,7 +212,7 @@ public class DefaultFormController implements FormController {
             continue;
          }
 
-         value = (stringMap) ? fieldMeta.getConverter().convert(
+         value = (stringMap) ? getConverter(fieldMeta, converters).convert(
                fieldMeta.getFieldClass(), entry.getValue()) : entry.getValue();
 
          if (previousState != null && fieldMeta.getEqualityComparator().equals(
@@ -240,6 +243,17 @@ public class DefaultFormController implements FormController {
       }
    }
 
+   private Converter getConverter(FieldMetadata fieldMetadata, Map converters) {
+      if (converters == null) {
+         return fieldMetadata.getConverter();
+      }
+
+      final Converter converter = (Converter)converters.get(
+            fieldMetadata.getName());
+
+      return (converter == null) ? fieldMetadata.getConverter() : converter;
+   }
+
    protected void evaluate(boolean firstCall) throws Exception {
       evaluateNamedConditions();
 
@@ -256,7 +270,7 @@ public class DefaultFormController implements FormController {
       }
 
       final Map newData = PropertyUtils.describe(form);
-      updateChangedMap(newData, false);
+      updateChangedMap(newData, false, null);
 
       fireValuesChanged(currentState.getChangedMap());
 
