@@ -82,6 +82,7 @@
          <organization>Summa Technologies do Brasil Ltda.</organization>
          <roles>
             <role>Developer</role>
+            <role>Documentation</role>
          </roles>
       </developer>
       <developer>
@@ -90,8 +91,9 @@
          <email>michael@summa-tech.com</email>
          <organization>Summa Technologies do Brasil Ltda.</organization>
          <roles>
-            <role>Founder</role>
             <role>Developer</role>
+            <role>Documentation</role>
+            <role>Founder</role>
          </roles>
       </developer>
       <developer>
