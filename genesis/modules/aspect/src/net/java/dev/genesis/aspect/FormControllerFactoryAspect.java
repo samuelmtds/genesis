@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.aspect;
 
+import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
@@ -54,12 +55,7 @@ public class FormControllerFactoryAspect {
       }
 
       protected FormMetadata getFormMetadata(final Object form) {
-         if (!(form instanceof FormMetadataFactory)) {
-            throw new IllegalArgumentException(form + " should implement " + 
-                  "FormMetadataFactory; probably it should have been " +
-                  "annotated with @Form or your aop.xml/weaving process should " +
-                  "be properly configured.");
-         }
+         TypeChecker.checkFormMetadataFactory(form);
 
          return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
       }

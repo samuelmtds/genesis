@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.ui.ValidationUtils;
@@ -84,33 +86,19 @@ public class ThinletBinder implements FormControllerListener {
    }
    
    protected final ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
-      if (!(thinlet instanceof ThinletMetadataFactory)) {
-         throw new IllegalArgumentException(thinlet + " should implement " + 
-               "ThinletMetadataFactory; probably your aop.xml/weaving process" + 
-               " should be properly configured.");
-      }
+      TypeChecker.checkThinletMetadataFactory(thinlet);
 
       return ((ThinletMetadataFactory)thinlet).getThinletMetadata(thinlet.getClass());
    }
 
-   protected final FormController getFormController(final Object form) {
-      if (!(form instanceof FormControllerFactory)) {
-         throw new IllegalArgumentException(form + " should implement " + 
-               "FormControllerFactory; probably it should have been annotated " +
-               "with @Form or your aop.xml/weaving process should be " +
-               "properly configured.");
-      }
+   protected FormController getFormController(final Object form) {
+      TypeChecker.checkFormControllerFactory(form);
 
       return ((FormControllerFactory)form).getFormController(form);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
-      if (!(form instanceof FormMetadataFactory)) {
-         throw new IllegalArgumentException(form + " should implement " + 
-               "FormMetadataFactory; probably it should have been annotated " +
-               "with @Form or your aop.xml/weaving process should be " +
-               "properly configured.");
-      }
+      TypeChecker.checkFormMetadataFactory(form);
 
       return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
    }
@@ -124,6 +112,10 @@ public class ThinletBinder implements FormControllerListener {
       bindActionMetadatas(formMetadata);
       bindDataProviders(dataProviders);
 
+      setupController();
+   }
+
+   protected void setupController() throws Exception {
       if (!controller.isSetup()) {
          controller.addFormControllerListener(this);
          controller.setup();
