@@ -248,30 +248,42 @@ public class FormMetadataFactoryAspect {
                         methodMetadata.getMethodEntry().getMethodName());
                }
 
+               PropertyDescriptor[] descriptors = PropertyUtils
+                     .getPropertyDescriptors(formMetadata.getFormClass());
+
+               Map descriptorsPerPropertyName = new HashMap();
+
+               for (int i = 0; i < descriptors.length; i++) {
+                  descriptorsPerPropertyName.put(descriptors[i].getName(), 
+                        descriptors[i]);
+               }
+
                if (objectFieldName != null) {
-                  try {
-                     dataProviderMetadata.setObjectField(new FieldEntry(
-                           formMetadata.getFormClass().getDeclaredField(
-                           objectFieldName)));
-                  } catch (NoSuchFieldException nsfe) {
+                  PropertyDescriptor descriptor = (PropertyDescriptor)
+                        descriptorsPerPropertyName.get(objectFieldName);
+                  
+                  if (descriptor == null) {
                      throw new RuntimeException("The object "
                            + formMetadata.getFormClass()
-                           + " doesn´t have the field called " + objectFieldName,
-                           nsfe);
+                           + " doesn´t have a field called " + objectFieldName);
                   }
+
+                  dataProviderMetadata.setObjectField(new FieldEntry(
+                        descriptor.getName(), descriptor.getPropertyType()));
                }
 
                if (indexFieldName != null) {
-                  try {
-                     dataProviderMetadata.setIndexField(new FieldEntry(
-                           formMetadata.getFormClass().getDeclaredField(
-                           indexFieldName)));
-                  } catch (NoSuchFieldException nsfe) {
+                  PropertyDescriptor descriptor = (PropertyDescriptor)
+                        descriptorsPerPropertyName.get(indexFieldName);
+                  
+                  if (descriptor == null) {
                      throw new RuntimeException("The object "
                            + formMetadata.getFormClass()
-                           + " doesn´t have the field called " + indexFieldName,
-                           nsfe);
+                           + " doesn´t have a field called " + indexFieldName);
                   }
+
+                  dataProviderMetadata.setIndexField(new FieldEntry(
+                        descriptor.getName(), descriptor.getPropertyType()));
                }
             }
          }

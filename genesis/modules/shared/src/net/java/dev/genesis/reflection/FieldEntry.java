@@ -19,7 +19,6 @@
 package net.java.dev.genesis.reflection;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.Collection;
 
 public class FieldEntry implements Serializable {
@@ -28,12 +27,11 @@ public class FieldEntry implements Serializable {
    private final boolean isArray;
    private final boolean isCollection;
 
-   public FieldEntry(final Field field) {
-      this.fieldName = field.getName();
-      this.fieldTypeName = field.getType().getName();
-      this.isArray = field.getType().isArray();
-      this.isCollection = Collection.class.isAssignableFrom(field
-            .getType());
+   public FieldEntry(final String fieldName, final Class fieldType) {
+      this.fieldName = fieldName;
+      this.fieldTypeName = fieldType.getName();
+      this.isArray = fieldType.isArray();
+      this.isCollection = Collection.class.isAssignableFrom(fieldType);
    }
 
    public String getFieldTypeName() {
