@@ -246,6 +246,31 @@ public Date getDataCorrente() {
         <code>widgetGroup</code>, separados por vírgula.
         Desse modo, os três controles irão obedecer
         à regra de visibilidade anotada no <code>form</code> anteriormente.</p>
+        <p>Além do agrupamento genérico <code>widgetGroup</code>, pode-se
+        utilizar as propriedades mais específicas <code>enabledWidgetGroup</code>
+        e <code>visibleWidgetGroup</code> que definem um grupo de widgets que
+        seguem respectivamente as regras de habilitação/desabilitação e 
+        visibilidade/invisibilidade de forma separada.
+        Essas propriedades são disponibilizadas, pois em muitos casos, o
+        agrupamento de widgets é diferente em cada caso. Exemplo:</p>
+<source>
+<![CDATA[
+...
+<label name="clienteLabel" text="Cliente:" font="bold"/>
+<panel name="clienteEspaco1" width="10" height="1" />
+<textfield name="codigoCliente" ... />
+<panel name="clienteEspaco2" width="10" height="1" />
+<textfield name="nomeCliente"
+      property="enabledWidgetGroup=codigoCliente;
+            visibleWidgetGroup=clienteLabel,clienteEspaco1,
+                               codigoCliente,clienteEspaco2"/>
+...
+]]>
+</source>
+        <p>Dessa forma, pode-se definir uma regra de habilitação/desabilitação
+        de edição que afetará apenas os widgets <code>codigoCliente</code> e
+        <code>nomeCliente</code> e uma outra regra de visibilidade para o
+        conjunto completo, incluindo o label e os espaçamentos.</p>
       </subsection>
       <subsection name="Limpando o conteúdo dos campos">
         <p>Sob diversas condições é necessário limpar o conteúdo de certos

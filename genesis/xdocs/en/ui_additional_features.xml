@@ -236,6 +236,30 @@ public Date getCurrentDate() {
         separated by a comma. This way, all three widgets will follow
         the same visibility rule annoted in the <code>form</code> code
         earlier.</p>
+        <p>Besides the regular widgetGroup property, there are two more
+        specific properties: <code>enabledWidgetGroup</code>
+        and <code>visibleWidgetGroup</code>. They define different widget
+        groups that will follow enable/disable and visible/invisible rules.
+        Those properties will mostly be used because the group of widgets in
+        each case is different. For example:</p>
+<source>
+<![CDATA[
+...
+<label name="clientLabel" text="Client:" font="bold"/>
+<panel name="clientSpace1" width="10" height="1" />
+<textfield name="clientCode" ... />
+<panel name="clientSpace2" width="10" height="1" />
+<textfield name="clientName"
+      property="enabledWidgetGroup=clientCode;
+            visibleWidgetGroup=clientLabel,clientSpace1,
+                               clientCode,clientSpace2"/>
+...
+]]>
+</source>
+        <p>This way, enabling/disabling rule will only affect 
+        <code>clientCode</code> and <code>clientName</code> widgets only.
+        On another hand, visibility rule will affect the whole group, including
+        the label and all panels for spacing.</p>
       </subsection>
       <subsection name="Clearing field content">
         <p>Under many conditions it is necessary to clean field content. genesis
