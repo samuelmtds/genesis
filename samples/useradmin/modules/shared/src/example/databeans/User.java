@@ -32,6 +32,7 @@ public class User implements Serializable {
    private String password;
    private String email;
    private Date birthday;
+   private String address;
    private Role role;
    private Country country;
    private State state;
@@ -67,6 +68,17 @@ public class User implements Serializable {
 
    public void setEmail(String email) {
       this.email = email;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
    }
 
    /**

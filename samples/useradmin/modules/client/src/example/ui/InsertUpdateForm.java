@@ -43,6 +43,7 @@ public class InsertUpdateForm {
    private String password;
    private String email;
    private Date birthday;
+   private String address;
    private Role role;
    private Country country;
    private State state;
@@ -109,6 +110,14 @@ public class InsertUpdateForm {
 
    public void setPassword(String password) {
       this.password = password;
+   }
+
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
    }
 
    /**
