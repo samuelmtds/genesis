@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - Sample application - useradmin</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro
+    "></meta><meta name="email" content="allanjones@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 19 January 2005
+                  | Doc for 0.2-RC2</div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/screenshots.html">Screenshots</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="collapsed"><a href="../en/documentation_intro.html">User manual</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/jars_explained.html">Understanding genesis jars</a></li><li class="none"><a href="../en/empty_project.html">Developing with genesis</a></li><li class="expanded"><strong><a href="../en/useradmin_sample.html">Samples</a></strong><ul><li class="none"><strong><a href="../en/useradmin_sample.html">UserAdmin</a></strong></li></ul></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Installing_the_useradmin_sample"></a><h2>Installing the useradmin sample</h2><p>Installing the  <code>useradmin</code> sample is a simple task.
+      <code>useradmin</code> distribution can be found in the full distribution
+      or the full binary distribution genesis packages that can be found
+      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2654&amp;expandFolder=2654&amp;folderID=1756">here</a>.
+      Distributions for all samples
+      are already setup to be run in standalone/local mode or with the <a href="http://www.jboss.org/" class="externalLink" title="External Link">JBoss</a> application server, an open-source
+      free server. This does not mean genesis only runs on this server; genesis
+      was developed in a J2EE compatible way.</p><p>There are 3 simple steps necessary to install the useradmin sample in
+      the application server:</p><ol>
+        <li>Download and install <a href="http://www.jboss.org/" class="externalLink" title="External Link">JBoss</a> application server. It is recommended
+        to use its latest 3.2.x release.</li>
+        <li>Run the ant scripts to deploy the example
+        <a href="#Running_the_useradmin_sample">(as instructed later in
+        this document)</a>. These scripts are distributed together with
+        genesis.</li>
+        <li>Start the JBoss server <a href="#Running_the_useradmin_sample">
+        (as instructed later in this document)</a>.</li>
+      </ol><p>After installing and starting JBoss, we can run the sample by accessing
+      a Java Web start link or by using the ant scripts to run the sample
+      application <a href="#Running_the_useradmin_sample">
+        (as instructed later in this document)</a>.</p></div><div class="section"><a name="useradmin_sample_s_purpose"></a><h2>useradmin sample's purpose</h2><p>useradmin sample's purpose is to demonstrate to users genesis major
+      features and also shows the transparent remoting, cause just with the
+      same source code, it's possible to run the sample using either
+      remote calls or local calls.</p><p>The sample has two source code dirs: the directory
+      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/client/src
+      </code> and the directory
+      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/shared/src
+      </code> that contain the client module and the client/server shared module
+      each.</p><p>The client module source dir contains sets comprised of three source
+      files: one for the form, one for the UI xml (Thinlet xml) and one for the
+      view definition. For example, let's consider the initial useradmin screen:
+      </p><ul>
+        <li><code><b>user-list.xml</b></code>: Thinlet xml file that describes
+        how UI components are arranged on the screen. Component names match
+        field names and method names in the form.</li>
+        <li><code><b>UserListForm.java</b></code>: Java class whose fields keep
+        data displayed on the screen and whose methods are screen actions.</li>
+        <li><code><b>UserListView.java</b></code>: Java class responsible for
+        the screen, where the UI dimensions are defined, which UI xml file to
+        use and that <code>binds</code> a form to a view. Other auxiliary
+        methods may be defined by this class in order to allow other screens to
+        be open or to programatically invoke a form action.</li>
+      </ul><p>The shared module source dir contains the source files that implement
+      business logic (commands) and others that are Hibernate mapped classes
+      (databeans). A command example is
+      <code>net.java.dev.genesis.samples.useradmin.business.UserCreateCommand
+      </code>:</p>
+    <div class="source"><pre>
+public class UserCreateCommand extends AbstractHibernateCommand {
+
+   /**
+    * @Transactional
+    */
+   public Serializable createUser(final User user) throws Exception {
+      return getSession().save(user);
+   }
+
+
+}
+</pre></div>
+  <p>This example shows how simple and straight commands can be. The command
+      shown above has just a transactional method that persists a user in the
+      database. Transaction commit/rollback is automatically hanlded by genesis.
+      </p><p>As a databean example, let's examine
+      <code>net.java.dev.genesis.samples.useradmin.databeans.User</code>, a
+      class that represents a User entity mapped to a table using XDoclet tags:
+      </p>
+    <div class="source"><pre>
+/**
+ * @hibernate.class
+ *
+ * @hibernate.query name="User.findByRole"
+ *          query="from User u where u.role.code = :roleCode"
+ */
+public class User implements Serializable {
+   private Long id;
+   private String name;
+   private String login;
+   private String password;
+   private String email;
+   private Date birthday;
+   private String address;
+   private Role role;
+   private Country country;
+   private State state;
+
+   /**
+    * @hibernate.property
+    */
+   public Date getBirthday() {
+      return birthday;
+   }
+
+   public void setBirthday(Date birthday) {
+      this.birthday = birthday;
+   }
+
+   /**
+    * @hibernate.property
+    type="net.java.dev.genesis.samples.useradmin.databeans.CountryType"
+    */
+   public Country getCountry() {
+      return country;
+   }
+
+   public void setCountry(Country country) {
+      this.country = country;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   /**
+    * @hibernate.many-to-one
+    */
+   public Role getRole() {
+      return role;
+   }
+
+   public void setRole(Role role) {
+      this.role = role;
+   }
+
+   /**
+    * @hibernate.id generator-class="increment"
+    */
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getLogin() {
+      return login;
+   }
+
+   public void setLogin(String login) {
+      this.login = login;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   /**
+    * @hibernate.property
+    type="net.java.dev.genesis.samples.useradmin.databeans.StateType"
+    */
+   public State getState() {
+      return state;
+   }
+
+   public void setState(State state) {
+      this.state = state;
+   }
+}
+</pre></div>
+  <p>A databean is JavaBean compliant class, i.e., one that exposes
+      properties through getters and setters. It doesn't have to implement any
+      interface nor to extend any abstract class. It is convenient to implement
+      <code>java.io.Serializable</code> so the class can be used as a parameter
+      or as a return value for a remote call.</p></div><div class="section"><a name="Running_the_useradmin_sample"></a><h2>Running the useradmin sample</h2><p>To run this sample, ant scripts have been provided in order to perfom
+      this task. To use those scripts, execute the following steps:</p><ul>
+        <li>Make a copy the <code>buid.properties.sample</code> file and
+        rename it to <code>build.properties</code></li>
+        <li>Edit the new <code>build.properties</code> file in order to modify
+        or comment the properties according to your execution environment.</li>
+        <li>Within command line, run the ant script by just typing: <code>
+        ant useradmin:install</code>. This command will start the deployment
+        process, which will install the sample application in a directory
+        named useradmin at your JBoss server folder.</li>
+        <li>Once the instalation process has finished, JBoss server can be
+        started by the following command:
+        <code>&lt;JBOSS_DIRECTORY&gt;/bin/run -c useradmin</code></li>
+        <li>After JBoss has started, this sample can be executed by accessing
+        <a href="http://localhost:8080/useradmin/" class="externalLink" title="External Link">
+        http://localhost:8080/useradmin/</a> URL. Through this page, the link
+        will activate the application download and run it using Java Web
+        Start technology.</li>
+        <li>Another option to run this sample is to use an ant task with
+        the following command: <code>ant useradmin:run.remote</code>. This
+        command will run the useradmin sample with remote calls to the JBoss
+        server</li>
+        <li>It's also possible to execute this sample with local calls
+        configuration only - i.e. the sample will not use the JBoss server in
+        anyway. In order to perfom this, use the following command:
+        <code>ant useradmin:run.local</code></li>
+      </ul><p>This sample goal is to demonstrate how a project might be structured
+      and how to use genesis features. It's recommended to start new genesis-
+      based projects by using the <a href="empty_project.html">empty project</a>
+      as a start point and use this sample as a refenrece.</p></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
