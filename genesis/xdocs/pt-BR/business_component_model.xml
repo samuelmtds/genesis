@@ -217,7 +217,7 @@ valor em remoto(): 2
         funciona um Stateless Session Bean (SSB), por exemplo, ou o
         comportamento de parâmetros não-remotos passados a uma chamada RMI.
         Um modelo de componentes com estado (stateful) deve ser implementado
-        futuramente, provavelmente na release 0.3, embora a experiência nos
+        futuramente, provavelmente na release 3.0, embora a experiência nos
         tenha mostrado que isto não é necessário para clientes desktop e web,
         bastando lidar com o problema da mesma forma que se lida com o ele
         usando-se SSBs ou componentes RMI: retornando os dados alterados no
@@ -257,7 +257,7 @@ public void metodoTransacional() {
       deve implementar a interface <code>
       net.java.dev.genesis.command.hibernate.HibernateCommand</code> diretamente
       ou através de introduction. Futuramente essa limitação será removida,
-      provavelmente na versão 0.3.</p>
+      provavelmente na versão 3.0.</p>
       <p>Essa interface expõe o método <code>setSession(Session)</code> que é
       invocado automaticamente pelo framework no servidor antes da execução de
       cada método remoto injetando uma sessão válida e após com o valor <code>
