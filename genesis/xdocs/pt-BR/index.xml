@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Genesis Home</title>
+    <title>genesis</title>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
     <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
   </properties>
   <body>
     <section name="Bem-vindo ao genesis">
-    <p>
-    O <b>genesis</b> é um framework open source que tem como objetivo atingir a
-    <b>simplicidade, produtividade, testabilidade e escalabilidade</b> no
-    desenvolvimento de aplicações corporativas.<br/>
-    Ele combina de forma única biblotecas públicas que se tornaram padrões de
-    mercado como <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b> entre
-    outras e reúne toda a experiência da <b>Summa</b> na construção de
-    aplicações de missão crítica.<br/>
-    Foi desenvolvido e testado a partir dos requisitos de usuários reais,
-    sendo resultado da experiência obtida na execução de projetos. Uma das
-    soluções hoje implantadas em um cliente lida com mais de 1 milhão de
-    transações por dia, o que comprova a escalabilidade da solução.
-    </p>
+      <p>O <b>genesis</b> é um framework open source que tem como objetivo
+      atingir a <b>simplicidade, produtividade, testabilidade e escalabilidade
+      </b> no desenvolvimento de aplicações corporativas.</p>
+      <p>Ele combina de forma única biblotecas públicas que se tornaram padrões
+      de mercado como <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b>
+      entre outras e reúne toda a experiência da <b>Summa</b> na construção de
+      aplicações de missão crítica.</p>
+      <p>Foi desenvolvido e testado a partir dos requisitos de usuários reais,
+      sendo resultado da experiência obtida na execução de projetos. Uma das
+      soluções hoje implantadas em um cliente lida com mais de 1 milhão de
+      transações por dia, o que comprova a escalabilidade da solução.</p>
     </section>
     <section name="Principais características">
-    <p>
-    Entre as principais características do genesis pode-se citar:
+      <p>Entre as principais características do genesis pode-se citar:</p>
     <ul>
        <li><b>Simplicidade:</b> não existem requirementos complexos da parte do
        framework: seus componentes não precisam estender classes, não é
@@ -56,7 +53,6 @@
     </ul>
     <!--p><b>TODO: mover seções subsequentes para outro lugar e fazer uma seção
     para onde vou a partir daqui?</b></p-->
-    </p>
     </section>
     <!-- section name="Genesis Server">
     <p>
@@ -140,3 +136,4 @@
     </section-->
  </body>
 </document>
+
