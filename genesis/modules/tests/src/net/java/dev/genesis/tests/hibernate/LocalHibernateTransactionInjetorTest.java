@@ -131,7 +131,10 @@ public class LocalHibernateTransactionInjetorTest extends TestCase {
          bean.setCode(code);
          getSession().save(bean);
       }
-
+      
+      /**
+       * @Transactional
+       */
       public void insertBeans() throws Exception {
          final HibernateBean bean = new HibernateBean();
          final HibernateBean bean2 = new HibernateBean();
