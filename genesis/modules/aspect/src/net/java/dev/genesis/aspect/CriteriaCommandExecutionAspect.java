@@ -60,7 +60,6 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       final String methodName = useOriginalMethod ? methodTuple
             .getOriginalMethod().getName() : methodTuple.getWrapperMethod()
             .getName();
-            System.out.println(useOriginalMethod + ": " + methodName);
       final Object[] parameterValues = rtti.getParameterValues();
 
       final UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
