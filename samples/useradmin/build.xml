@@ -38,8 +38,8 @@
 	   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
 	   <property name="jboss.provider.url" value="jnp://localhost" />
 	   <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
-	   <property name="jboss.data_source.jndiname" value="java:/DefaultDS" />
-	   <property name="jboss.datasource_config.xml" location="${jboss.home}/server/default/deploy/hsqldb-ds.xml" />
+	   <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
+	   <property name="jboss.datasource.config.xml" location="${jboss.home}/server/default/deploy/hsqldb-ds.xml" />
 	   <property name="webstart.server" value="localhost" />
 	   <property name="webstart.port" value="8080" />
 	
@@ -50,9 +50,9 @@
 	   <property name="hibernate.dialect" value="net.sf.hibernate.dialect.HSQLDialect"/>
 	   <property name="hibernate.version" value="2.1.6" />
 	   <property name="hibernate.show.sql" value="true" />
-	   <property name="hibernate.session_factory.jndiname" value="jboss:/hibernate/SessionFactory" />
-	   <property name="hibernate.jbossservice.name" value="HibernateFactory,name=HibernateFactory" />
-	   <property name="hibernate.connection_url" value="jdbc:hsqldb:genesis/useradmin" />
+	   <property name="hibernate.session.factory.jndi.name" value="jboss:/hibernate/SessionFactory" />
+	   <property name="hibernate.jboss.service.name" value="HibernateFactory,name=HibernateFactory" />
+	   <property name="hibernate.connection.url" value="jdbc:hsqldb:genesis/useradmin" />
 	
 	   <path id="j2ee.path">
 	      <fileset dir="${j2ee.dist}" includes="*.jar" />
@@ -177,7 +177,7 @@
    </target>
 
    <target name="shared:hibernatedoclet" depends="init">
-      <basename property="jboss.ds.name" file="${jboss.data_source.jndiname}"/>
+      <basename property="jboss.ds.name" file="${jboss.data.source.jndi.name}"/>
       <mkdir dir="${module.shared}/${build.src}" />
       <hibernatedoclet destdir="${module.shared}/${build.src}" verbose="${verbose}">
          <fileset dir="${module.shared}/${src.dir}">
@@ -186,10 +186,10 @@
          <hibernate version="2.0"
                     xmlencoding="ISO-8859-1"
                     validateXML="false" />
-         <jbossservice jndiName="${hibernate.session_factory.jndiname}"
-                       serviceName="${hibernate.jbossservice.name}"
+         <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
+                       serviceName="${hibernate.jboss.service.name}"
                        dialect="${hibernate.dialect}"
-                       dataSource="${jboss.data_source.jndiname}"
+                       dataSource="${jboss.data.source.jndi.name}"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
                        transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
                        userTransactionName="UserTransaction"
@@ -200,7 +200,7 @@
                        userName="${jdbc.username}"
                        password="${jdbc.password}"
                        driver="${jdbc.driver.class}"
-                       jdbcUrl="${hibernate.connection_url}"
+                       jdbcUrl="${hibernate.connection.url}"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
                        showSql="${hibernate.show.sql}" />
       </hibernatedoclet>
@@ -451,7 +451,7 @@
       <antcall target="useradmin:create.jboss.app.dir"/>
       <delete dir="${jboss.app}/deploy" includes="*-ds.xml" />
       <copy todir="${jboss.app}/deploy">
-         <fileset file="${jboss.datasource_config.xml}" />
+         <fileset file="${jboss.datasource.config.xml}" />
          <fileset dir="${genesis.dist}">
             <include name="genesis-server-${genesis.version}.jar"/>
          </fileset>
