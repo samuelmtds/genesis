@@ -206,16 +206,15 @@
 
    <target name="genesis.app:weaving">
       <mkdir dir="${weaving.dest}" />
-      <mkdir dir="${build.dir}/${lib.dir}" />
       <copy todir="${weaving.dest}" overwrite="true">
          <fileset dir="${module.client}/${annotation.dest}" />
          <fileset dir="${module.shared}/${annotation.dest}" />
       </copy>
-      <copy todir="${build.dir}/${lib.dir}" overwrite="true">
-         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
-         <fileset dir="${genesis.dist}"
-                  includes="genesis-shared-annotated-${genesis.version}.jar" />
-      </copy>
+      <unjar dest="${weaving.dest}" overwrite="true">
+          <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+          <fileset dir="${genesis.dist}"
+                   includes="genesis-shared-annotated-${genesis.version}.jar" />
+      </unjar>
       <awc verbose="true">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
@@ -224,7 +223,6 @@
             <path refid="j2ee.path" />
          </classpath>
          <targetpath location="${weaving.dest}"/>
-         <targetpath location="${build.dir}/${lib.dir}"/>
       </awc>
    </target>
 
@@ -289,10 +287,6 @@
          <fileset dir="${build.dir}">
             <include name="${genesisBasedApplication.name}-weaved.jar" />
          </fileset>
-         <fileset dir="${build.dir}/${lib.dir}">
-            <include name="genesis-shared-annotated-${genesis.version}.jar" />
-            <include name="thinlet*.jar" />
-         </fileset>
          <fileset dir="${hibernate.dist}">
             <include name="commons-collection*.jar" />
             <include name="hibernate*.jar" />
@@ -311,8 +305,7 @@
             <include name="reusable-components*.jar"/>
          </fileset>
          <fileset dir="${genesis.home}/lib/aspectwerkz">
-            <include name="aspectwerkz-1.0.jar" />
-            <include name="aspectwerkz-core-1.0.jar" />
+            <include name="aspectwerkz-*.jar" />
             <include name="dom4j*.jar" />
             <include name="jrexx-*.jar" />
             <include name="trove*.jar" />
@@ -367,6 +360,7 @@
             <include name="deploy/jbossweb-tomcat*.sar/**" />
             <include name="conf/**" />
             <include name="lib/**" />
+            <exclude name="lib/hibernate2.jar" />
          </fileset>
       </copy>    
    </target>
