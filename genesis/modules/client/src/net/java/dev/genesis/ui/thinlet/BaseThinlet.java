@@ -74,6 +74,8 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String ROW = "row";
    public static final String ROWS = "rows";
    public static final String SELECTED = "selected";
+   public static final String SELECTION = "selection";
+   public static final String SINGLE = "single";
    public static final String SLIDER = "slider";
    public static final String SPINBOX = "spinbox";
    public static final String START = "start";
@@ -292,6 +294,14 @@ public abstract class BaseThinlet extends Thinlet {
       return getInteger(component, SELECTED);
    }
 
+   protected String getSelection(Object component) {
+      return getChoice(component, SELECTION);
+   }
+
+   protected void setSelection(Object component, String selection) {
+      setChoice(component, SELECTION, selection);
+   }
+
    protected int getStart(Object component) {
       return getInteger(component, START);
    }
@@ -412,7 +422,7 @@ public abstract class BaseThinlet extends Thinlet {
 
          type = getClass(component);
 
-         if (type.equals(COMBOBOX) || type.equals(LIST)) {
+         if (type.equals(COMBOBOX) || (type.equals(LIST) && getSelection(component).equals(SINGLE))) {
             Object selectedComponent = getSelectedItem(component);
 
             if (selectedComponent != null && type.equals(LIST)) {
@@ -453,7 +463,7 @@ public abstract class BaseThinlet extends Thinlet {
             displayBean(properties.get(propertyName), component);
          } else if (type.equals(CHECKBOX)) {
             setSelected(component, Boolean.TRUE.equals(properties.get(propertyName)));
-         } else if (!type.equals(TABLE)){
+         } else if (!type.equals(TABLE) && !type.equals(LIST)){
             setText(component, getPropertyValue(properties, propertyName, 
                   false, formatters));
          }
