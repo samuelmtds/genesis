@@ -98,6 +98,7 @@
 
       <path id="client.dependency.classpath">
          <path location="${module.shared}/${build.dest}" />
+         <path refid="aspectwerkz.path" />
          <fileset dir="${genesis.dist}">
             <include name="genesis-shared-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
@@ -279,7 +280,7 @@
    <target name="client:validation" if="generate.validation" depends="init">
       <genesisdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
          <fileset dir="${module.client}/${src.dir}" includes="**/*.java" />
-         <strutsvalidationxml xmlencoding="ISO-8859-1" />
+         <genesisvalidationxml xmlencoding="ISO-8859-1" />
       </genesisdoclet>
    </target>
 

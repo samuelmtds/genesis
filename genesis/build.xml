@@ -15,7 +15,7 @@
 	<property name="test.dest" value="${build.dir}/test-classes" />
 	<property name="test.reportsDirectory" value="${build.dir}/test-reports" />
 
-	<path id="xdoclet.path">
+   <path id="xdoclet.path">
       <fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
 		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
 	</path>
@@ -325,7 +325,7 @@
       <mkdir dir="${genesis.module.tests}/${build.src}" />
       <genesisdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
          <fileset dir="${basedir}/${genesis.module.tests}/${src.dir}" includes="**/*.java" />
-         <strutsvalidationxml xmlencoding="ISO-8859-1" />
+         <genesisvalidationxml xmlencoding="ISO-8859-1" />
       </genesisdoclet>
    </target>  
 

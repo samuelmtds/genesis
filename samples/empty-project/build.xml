@@ -118,6 +118,7 @@
          </fileset>
          -->
          <path location="${module.shared}/${build.dest}" />
+         <path refid="aspectwerkz.path" />
          <fileset dir="${genesis.dist}">
             <include name="genesis-shared-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />

@@ -25,7 +25,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * @Form
- * @struts.form
+ * @genesis.form
  */
 public class InsertRoleForm {
    private String code;
@@ -36,8 +36,8 @@ public class InsertRoleForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="Role.code"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="Role.code"
     */
    public void setCode(String code) {
       this.code = code;
@@ -48,8 +48,8 @@ public class InsertRoleForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="Role.label"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="Role.label"
     */
    public void setLabel(String label) {
       this.label = label;
