@@ -31,29 +31,29 @@ public class PagingTest extends TestCase {
 	}
 
 	public void testEmptyPage() throws Exception {
-		Page page = dbActions.getPageUsingCriteria(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		Page page = dbActions.getPageUsingCriteria(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertTrue(page.getResults().isEmpty());
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingCriteria(5, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingCriteria(4, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertTrue(page.getResults().isEmpty());
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertTrue(page.getResults().isEmpty());
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(5, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(4, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertTrue(page.getResults().isEmpty());
 		assertTrue(page.isFirst());
@@ -62,29 +62,29 @@ public class PagingTest extends TestCase {
 
 	public void testOnePage() throws Exception {
 		dbActions.insert(7);
-		Page page = dbActions.getPageUsingCriteria(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		Page page = dbActions.getPageUsingCriteria(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 7);
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingCriteria(20, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingCriteria(19, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 7);
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 7);
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(20, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(19, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 7);
 		assertTrue(page.isFirst());
@@ -93,27 +93,27 @@ public class PagingTest extends TestCase {
 
 	public void testMoreThanOnePage() throws Exception {
 		dbActions.insert(17);
-		Page page = dbActions.getPageUsingCriteria(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		Page page = dbActions.getPageUsingCriteria(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertTrue(page.isFirst());
 		assertFalse(page.isLast());
-		page = dbActions.getPageUsingCriteria(2, 10);
-		assertEquals(page.getPageNumber(), 2);
+		page = dbActions.getPageUsingCriteria(1, 10);
+		assertEquals(page.getPageNumber(), 1);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 7);
 		assertFalse(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertTrue(page.isFirst());
 		assertFalse(page.isLast());
-		page = dbActions.getPageUsingQuery(2, 10);
-		assertEquals(page.getPageNumber(), 2);
+		page = dbActions.getPageUsingQuery(1, 10);
+		assertEquals(page.getPageNumber(), 1);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 7);
 		assertFalse(page.isFirst());
@@ -122,39 +122,39 @@ public class PagingTest extends TestCase {
 
 	public void testExactlyTwoPages() throws Exception {
 		dbActions.insert(20);
-		Page page = dbActions.getPageUsingCriteria(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		Page page = dbActions.getPageUsingCriteria(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertTrue(page.isFirst());
 		assertFalse(page.isLast());
-		page = dbActions.getPageUsingCriteria(2, 10);
-		assertEquals(page.getPageNumber(), 2);
+		page = dbActions.getPageUsingCriteria(1, 10);
+		assertEquals(page.getPageNumber(), 1);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertFalse(page.isFirst());
 		assertFalse(page.isLast());
-		page = dbActions.getPageUsingCriteria(3, 10);
-		assertEquals(page.getPageNumber(), 2);
+		page = dbActions.getPageUsingCriteria(2, 10);
+		assertEquals(page.getPageNumber(), 1);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertFalse(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(1, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(0, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertTrue(page.isFirst());
 		assertFalse(page.isLast());
-		page = dbActions.getPageUsingQuery(2, 10);
-		assertEquals(page.getPageNumber(), 2);
+		page = dbActions.getPageUsingQuery(1, 10);
+		assertEquals(page.getPageNumber(), 1);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertFalse(page.isFirst());
 		assertFalse(page.isLast());
-		page = dbActions.getPageUsingQuery(3, 10);
-		assertEquals(page.getPageNumber(), 2);
+		page = dbActions.getPageUsingQuery(2, 10);
+		assertEquals(page.getPageNumber(), 1);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 10);
 		assertFalse(page.isFirst());
@@ -162,15 +162,15 @@ public class PagingTest extends TestCase {
 	}
 
 	public void testPageNotExists() throws Exception {
-		Page page = dbActions.getPageUsingCriteria(5, 10);
-		assertEquals(page.getPageNumber(), 1);
+		Page page = dbActions.getPageUsingCriteria(4, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 0);
 		assertTrue(page.isFirst());
 		assertTrue(page.isLast());
 
-		page = dbActions.getPageUsingQuery(5, 10);
-		assertEquals(page.getPageNumber(), 1);
+		page = dbActions.getPageUsingQuery(4, 10);
+		assertEquals(page.getPageNumber(), 0);
 		assertEquals(page.getResultsPerPage(), 10);
 		assertEquals(page.getResults().size(), 0);
 		assertTrue(page.isFirst());

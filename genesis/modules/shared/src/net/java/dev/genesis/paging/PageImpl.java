@@ -47,7 +47,7 @@ public class PageImpl implements Page {
    }
 
    public boolean isFirst() {
-      return pageNumber == 1;
+      return pageNumber == 0;
    }
 
    public boolean isLast() {

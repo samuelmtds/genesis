@@ -32,7 +32,7 @@ import net.java.dev.genesis.samples.useradmin.databeans.User;
  */
 public class UserListForm implements Serializable {
    private Page page;
-   private int pageNumber = 1;
+   private int pageNumber;
 
    private String name;
    private String login;
@@ -125,7 +125,7 @@ public class UserListForm implements Serializable {
 
    /**
     * @Action
-    * @VisibleWhen pageNumber > 1
+    * @VisibleWhen pageNumber > 0
     */
    public void previousPage() {
       pageNumber--;

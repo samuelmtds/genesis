@@ -44,10 +44,10 @@ public class CriteriaPager implements Pager {
    public Page getPage(final int pageNumber, final int resultsPerPage,
          boolean last) throws PagingException {
       try {
-         crit.setFirstResult((pageNumber - 1) * resultsPerPage);
+         crit.setFirstResult(pageNumber * resultsPerPage);
          crit.setMaxResults(resultsPerPage);
          final List results = crit.list();
-         if (pageNumber > 1 && results.isEmpty()) {
+         if (pageNumber > 0 && results.isEmpty()) {
             return getPage(pageNumber - 1, resultsPerPage, true);
          }
          return new PageImpl(results, pageNumber, resultsPerPage, last || 

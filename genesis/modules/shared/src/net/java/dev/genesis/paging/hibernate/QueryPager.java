@@ -44,10 +44,10 @@ public class QueryPager implements Pager {
    private Page getPage(final int pageNumber, final int resultsPerPage,
          boolean last) throws PagingException {
       try {
-         query.setFirstResult((pageNumber - 1) * resultsPerPage);
+         query.setFirstResult(pageNumber * resultsPerPage);
          query.setMaxResults(resultsPerPage);
          List results = query.list();
-         if (pageNumber > 1 && results.isEmpty()) {
+         if (pageNumber > 0 && results.isEmpty()) {
             return getPage(pageNumber - 1, resultsPerPage, true);
          }
          return new PageImpl(results, pageNumber, resultsPerPage, last || 
