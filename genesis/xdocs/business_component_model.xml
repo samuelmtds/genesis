@@ -247,7 +247,10 @@ public void metodoTransacional() {
       remotabilidade transparente, <code>@Transactional</code> faz com que o
       método seja executado dentro de uma transação JTA. Quaisquer recursos
       transacionais que sejam acessados durante sua execução e tenham suporte a
-      JTA serão automaticamente incluídos na transação.</p>
+      JTA serão automaticamente incluídos na transação. O contexto transacional
+      se propagará automaticamente para qualquer outro componente ou método que
+      for invocado durante a execução do método <code>@Transactional</code>, sem
+      que nenhuma programação adicional tenha de ser feita para isso.</p>
       <p>Se a execução do método transcorrer normalmente, a transação será
       automaticamente comitada ao final. Caso seja lançada qualquer exceção
       haverá rollback automático das alterações e a exceção será propagada
@@ -426,4 +429,5 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
     </section>
   </body>
 </document>
+
 
