@@ -293,6 +293,34 @@ public class ValidatorTest extends TestCase {
       valueTest(map, methodName, field, action, false);
    }
 
+   public void testBigDecimal() throws Exception {
+      final Field field = form.getField("someBigDecimal");
+      final String methodName = "validateBigDecimal";
+      final String action = "bigDecimal";
+      final Map map = new HashMap();
+
+      map.put(field.getProperty(), "");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "          ");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "1328217321.2312318732131");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "-1328217321.2312318732131");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), new Object());
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "invalid");
+      valueTest(map, methodName, field, action, false);
+      
+      map.put(field.getProperty(), "-1328217321.231sfdsdf2318732131");
+      valueTest(map, methodName, field, action, false);
+   }
+
    public void testEmail() throws Exception {
       final Field field = form.getField("email");
       final String methodName = "validateEmail";
@@ -497,6 +525,28 @@ public class ValidatorTest extends TestCase {
       valueTest(map, methodName, field, action, true);
 
       map.put(field.getProperty(), "10");
+      valueTest(map, methodName, field, action, true);
+   }
+   
+   public void testBigDecimalRange() throws Exception {
+      final Field field = form.getField("bigDecimalRange");
+      final String methodName = "validateBigDecimalRange";
+      final String action = "bigDecimalRange";
+      final Map map = new HashMap();
+
+      map.put(field.getProperty(), "213123213213.21312321");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "5.123399999999");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "9.123400000001");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "5.1234");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "9.1234");
       valueTest(map, methodName, field, action, true);
    }
 

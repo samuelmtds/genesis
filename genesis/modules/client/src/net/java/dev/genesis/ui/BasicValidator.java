@@ -42,6 +42,7 @@ public class BasicValidator {
       return GenericValidator.isBlankOrNull(value) ||
       GenericValidator.isByte(value);
    }
+
    public static boolean validateBigDecimal(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       

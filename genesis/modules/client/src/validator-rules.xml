@@ -34,6 +34,11 @@
                 method="validateDouble" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.double"/>
+		  <validator name="bigDecimal" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateBigDecimal" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.bigdecimal"/>
         <validator name="required" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateRequired" 
@@ -78,7 +83,12 @@
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateDoubleRange" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
-                msg="errors.doubleRange"/>			
+                msg="errors.doubleRange"/>		
+		  <validator name="bigDecimalRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateBigDecimalRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.bigDecimalRange"/>	
         <validator name="jxpath" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateJXPath" 

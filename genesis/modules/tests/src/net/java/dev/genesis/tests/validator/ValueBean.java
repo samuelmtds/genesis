@@ -19,6 +19,7 @@
 package net.java.dev.genesis.tests.validator;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -32,6 +33,7 @@ public class ValueBean implements Serializable {
    private Long someLong;
    private Float someFloat;
    private Double someDouble;
+   private BigDecimal someBigDecimal;
    private String email;
    private Object requiredIf;
    private String requiredIfDependency;
@@ -41,6 +43,7 @@ public class ValueBean implements Serializable {
    private String minLength;
    private Long longRange;
    private Double doubleRange;
+   private BigDecimal bigDecimalRange;
    private String jxpath;
    private Integer jxpathDependency;
 
@@ -126,6 +129,18 @@ public class ValueBean implements Serializable {
     */
    public void setSomeDouble(Double double1) {
       someDouble = double1;
+   }
+
+   public BigDecimal getSomeBigDecimal() {
+      return someBigDecimal;
+   }
+
+   /**
+    * @struts.validator type="bigDecimal"
+    * @struts.validator-args arg0resource="validatorTest.bigDecimal"
+    */
+   public void setSomeBigDecimal(BigDecimal someBigDecimal) {
+      this.someBigDecimal = someBigDecimal;
    }
 
    public String getEmail() {
@@ -240,6 +255,20 @@ public class ValueBean implements Serializable {
     */
    public void setDoubleRange(Double doubleRange) {
       this.doubleRange = doubleRange;
+   }
+
+   public BigDecimal getBigDecimalRange() {
+      return bigDecimalRange;
+   }
+
+   /**
+    * @struts.validator type="bigDecimalRange"
+    * @struts.validator-args arg0resource="validatorTest.bigDecimalRange"
+    * @struts.validator-var name="min" value="5.1234"
+    * @struts.validator-var name="max" value="9.1234"
+    */
+   public void setBigDecimalRange(BigDecimal bigDecimalRange) {
+      this.bigDecimalRange = bigDecimalRange;
    }
 
    public String getJxpath() {
