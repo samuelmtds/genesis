@@ -108,7 +108,7 @@ public interface TransactionalInjector {
       <p>By using custom aspects and implementations of
       <code>TransactionalInjector</code> it is possible to completely change the
       way transactions are executed and perform any type of dependency
-      injection in business components. Two powerful execution modes are
+      injection in business components. Three powerful execution modes are
       provided with genesis and explained below.</p>
       <subsection name="Local execution">
         <p>Local execution is performed by the
@@ -185,6 +185,23 @@ try {
         in execution. Rollback will be performed, if necessary, by calling
         <code>setRollbackOnly()</code> in the <code>SessionContext</code>
         instance.</p>
+      </subsection>
+      <subsection name="Local EJB execution">
+        <p>Executing the method inside a Stateless Session Bean instance with
+        CMT through the EJB local interface might be a better option in some
+        environments, such as web applications, for example. The aspect named
+        <code>LocalEJBCommandExecutionAspect</code> invokes the
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code> instance using the
+        exposed local interface and its behaviour is basically the same as the
+        behaviour of the previously aspect mentioned,
+        <code>EJBCommandExecutionAspect</code>, except for the following
+        things:</p>
+        <ul>
+          <li>The name of the execution pointcut is
+          <code>localEjbCommandExecution</code></li>
+          <li>Only the parameter named <code>jndiName</code> is meaningful,
+          since there is no remote communication with the server</li>
+        </ul>
       </subsection>
     </section>
     <section name="Executing dynamic searches">
@@ -323,9 +340,9 @@ public interface ThinletMetadataFactory {
             <td rowspan="2">EJBCommandExecutionAspect</td>
             <td>jndiName</td>
             <td>String</td>
-            <td>JNDI address a
+            <td>A JNDI address from where a
             <code>net.java.dev.genesis.ejb.CommandExecutorHome</code> instance
-            can be obtained from</td>
+            can be obtained</td>
             <td><b>Yes</b></td>
             <td>None</td>
           </tr>
@@ -344,6 +361,16 @@ public interface ThinletMetadataFactory {
             <td>Name for a
             <code>net.java.dev.genesis.command.TransactionalInjector</code>
             implementation</td>
+            <td><b>Yes</b></td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td>LocalEJBCommandExecutionAspect</td>
+            <td>jndiName</td>
+            <td>String</td>
+            <td>A JNDI address from where a
+            <code>net.java.dev.genesis.ejb.CommandExecutorLocalHome</code>
+            instance can be obtained</td>
             <td><b>Yes</b></td>
             <td>None</td>
           </tr>
@@ -416,6 +443,14 @@ public interface ThinletMetadataFactory {
             <td>Method</td>
             <td>Intercepts remotable and transactional method execution and
             execute them locally</td>
+          </tr>
+          <tr>
+            <td>LocalEJBCommandExecutionAspect</td>
+            <td>localEjbCommandExecution</td>
+            <td>Method</td>
+            <td>Intercepts remotable and transactional method execution and
+            transfer the instance for which the method has been called to the
+            EJB instance using its local interface</td>
           </tr>
           <tr>
             <td>ThinletMetadataFactoryAspect</td>
@@ -503,3 +538,6 @@ public interface ThinletMetadataFactory {
     </section>
   </body>
 </document>
+
+
+

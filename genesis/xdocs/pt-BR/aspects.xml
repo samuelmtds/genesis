@@ -110,7 +110,7 @@ public interface TransactionalInjector {
       <p>Utilizando-se aspectos e implementações específicas de
       <code>TransactionalInjector</code> é possível customizar totalmente a
       forma como as transações são executadas e fazer qualquer tipo de injeção
-      de dependências nos componentes de negócio. Dois poderosos modos de
+      de dependências nos componentes de negócio. Três poderosos modos de
       execução são providos juntamente com o genesis e explicados abaixo.</p>
       <subsection name="Execução local">
         <p>A execução local é feita pelo aspecto
@@ -187,6 +187,22 @@ try {
         EJB são todos CMT. O rollback será realizado, quando necessário, por uma
         chamada a <code>setRollbackOnly()</code> na instância de
         <code>SessionContext</code>.</p>
+      </subsection>
+      <subsection name="Execução em EJB com chamada local">
+        <p>A execução com um Stateless Session Bean usando CMT poderá ser melhor
+        em determinados ambientes, como no caso de uma aplicação web, se for
+        utilizada uma interface local. O aspecto
+        <code>LocalEJBCommandExecutionAspect</code> invoca
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code> por sua interface
+        local, e seu funcionamento é basicamente o mesmo do aspecto descrito
+        anteriormente, <code>EJBCommandExecutionAspect</code>, exceto pelos
+        seguintes detalhes:</p>
+        <ul>
+          <li>O nome do pointcut de execução é
+          <code>localEjbCommandExecution</code></li>
+          <li>Apenas o parâmetro <code>jndiName</code> é significativo, já que
+          não existe comunicação remota com o servidor</li>
+        </ul>
       </subsection>
     </section>
     <section name="Executando pesquisas dinâmicas">
@@ -351,6 +367,15 @@ public interface ThinletMetadataFactory {
             <td>Não possui</td>
           </tr>
           <tr>
+            <td>LocalEJBCommandExecutionAspect</td>
+            <td>jndiName</td>
+            <td>String</td>
+            <td>Endereço JNDI em que se pode obter uma instância da classe
+            <code>net.java.dev.genesis.ejb.CommandExecutorLocalHome</code></td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr>
             <td>TimeoutAspect</td>
             <td>timeout</td>
             <td>long</td>
@@ -420,6 +445,14 @@ public interface ThinletMetadataFactory {
             <td>Método</td>
             <td>Intercepta a execução de métodos remotos e transacionais e
             executa-os localmente</td>
+          </tr>
+          <tr>
+            <td>LocalEJBCommandExecutionAspect</td>
+            <td>localEjbCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos remotos e transacionais e
+            transfere a instância sobre a qual o método foi invocado para um
+            EJB usando a interface local do mesmo</td>
           </tr>
           <tr>
             <td>ThinletMetadataFactoryAspect</td>
