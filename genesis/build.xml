@@ -424,6 +424,7 @@
 	</target>
 
 	<target name="genesis:clean" description="Clean generated files">
+		<delete dir="${genesis.dist.dir}" />
 		<delete dir="${genesis.module.aspect}/${build.dir}" />
 		<delete dir="${genesis.module.client}/${build.dir}" />
 		<delete dir="${genesis.module.server}/${build.dir}" />
