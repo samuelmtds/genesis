@@ -22,5 +22,5 @@ import java.lang.reflect.Method;
 
 public interface CommandResolver {
    public boolean isRemotable(Method m);
-   public boolean isTransaction(Method m);
+   public boolean isTransactional(Method m);
 }
