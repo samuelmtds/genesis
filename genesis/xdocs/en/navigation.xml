@@ -54,6 +54,10 @@
               href="/en/generic_scripting.html" />
       </item>
       <item name="FAQ" href="/en/faq.html" />
+      <item name="Roadmap" 
+            href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" />
+      <item name="Wiki" 
+            href="http://wiki.java.net/bin/view/Projects/Genesis" />
     </menu>
     <menu name="java.net" type="footer">
       <item name="genesis.dev.java.net" href="https://genesis.dev.java.net" />
