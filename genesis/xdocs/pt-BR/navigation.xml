@@ -22,28 +22,28 @@
       />
     </links>
     <menu name="genesis">
-      <item name="Visão geral" href="/index.html" />
-      <item name="Screenshots" href="/screenshots.html" />
-      <item name="Notas da versão" href="/release_notes.html" />
+      <item name="Visão geral" href="/pt-BR/index.html" />
+      <item name="Screenshots" href="/pt-BR/screenshots.html" />
+      <item name="Notas da versão" href="/pt-BR/release_notes.html" />
     </menu>
     <menu name="Documentação">
       <item name="Manual do usuário" collapse="true"
-            href="/documentation_intro.html">
+            href="/pt-BR/documentation_intro.html">
         <item name="Introdução"
-              href="/documentation_intro.html" />
+              href="/pt-BR/documentation_intro.html" />
         <item name="Modelo de componentes de interface gráfica" collapse="true"
-              href="/ui_basic_concepts.html">
-          <item name="Conceitos básicos" href="/ui_basic_concepts.html" />
+              href="/pt-BR/ui_basic_concepts.html">
+          <item name="Conceitos básicos" href="/pt-BR/ui_basic_concepts.html" />
           <item name="Funcionalidades adicionais"
-                href="/ui_additional_features.html" />
+                href="/pt-BR/ui_additional_features.html" />
         </item>
         <item name="Modelo de componentes de negócio"
-              href="/business_component_model.html" />
+              href="/pt-BR/business_component_model.html" />
         <item name="Guia de referência rápida de anotações"
-              href="/quick_reference.html" />
+              href="/pt-BR/quick_reference.html" />
       </item>
-      <item name="Aspectos do genesis" href="/aspects.html" />
-      <item name="Entendendo os jars do genesis" href="/jars_explained.html" />
+      <item name="Aspectos do genesis" href="/pt-BR/aspects.html" />
+      <item name="Entendendo os jars do genesis" href="/pt-BR/jars_explained.html" />
     </menu>
   </body>
 </project>
