@@ -32,7 +32,7 @@ import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
 import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
 /**
- * @Aspect deployment-model=perJVM
+ * @Aspect perJVM
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
 

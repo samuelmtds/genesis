@@ -25,7 +25,7 @@ import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
 /**
- * @Aspect deployment-model=perThread
+ * @Aspect perThread
  */
 public class TimeoutAspect {
     private final long timeout;

@@ -31,7 +31,7 @@ import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
 
 /**
- * @Aspect deployment-model=perJVM
+ * @Aspect perJVM
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
 

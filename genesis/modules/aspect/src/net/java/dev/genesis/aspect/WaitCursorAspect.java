@@ -25,7 +25,7 @@ import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
 /**
- * @Aspect deployment-model=perJVM
+ * @Aspect perJVM
  */
 public class WaitCursorAspect {
    

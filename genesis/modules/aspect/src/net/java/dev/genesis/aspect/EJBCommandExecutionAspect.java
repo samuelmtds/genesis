@@ -29,7 +29,7 @@ import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
 import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
 /**
- * @Aspect deployment-model=perJVM
+ * @Aspect perJVM
  */
 public class EJBCommandExecutionAspect extends CommandInvocationAspect {
     public EJBCommandExecutionAspect(CrossCuttingInfo ccInfo) {
