@@ -39,7 +39,7 @@ public class RoleSearchCommand extends AbstractHibernateCommand {
     */
    public Role getRole(String roleCode) throws Exception {
       final Query query = getSession().getNamedQuery("Role.findByCode");
-      query.setParameter("code", roleCode);
+      query.setParameter("code", roleCode.toLowerCase());
       return (Role)query.uniqueResult();
    }
 }

@@ -25,15 +25,15 @@ import net.sf.hibernate.expression.MatchMode;
 
 public class UserSearchCommand extends AbstractHibernateCriteria {
    public void setEmail(String email) {
-      getCriteria().add(Expression.like("email", email, MatchMode.START));
+      getCriteria().add(Expression.ilike("email", email, MatchMode.START));
    }
 
    public void setLogin(String login) {
-      getCriteria().add(Expression.like("login", login, MatchMode.START));
+      getCriteria().add(Expression.ilike("login", login, MatchMode.START));
    }
 
    public void setName(String name) {
-      getCriteria().add(Expression.like("name", name, MatchMode.START));
+      getCriteria().add(Expression.ilike("name", name, MatchMode.START));
    }
    
    /**

@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @hibernate.class
  * 
  * @hibernate.query name="Role.findByCode"
- * 					query="from Role r where r.code = :code"
+ * 					query="from Role r where lower(r.code) = :code"
  */
 public class Role implements Serializable {
    private String code;
