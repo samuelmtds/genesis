@@ -648,7 +648,7 @@ public class ExemploInvokeFormActionForm {
         que determinado campo ou botão só pode estar habilitado quando uma
         determinada condição é verdade. A fim de simplificar estes casos, o
         genesis possui uma anotação chamada <code>@EnabledWhen</code>. Esta
-        anotação pode ser utilizada tantos com atributos como com ações. Um
+        anotação pode ser utilizada tanto com atributos como com ações. Um
         exemplo prático do uso encontra-se abaixo:</p>
 <source>
 /**
@@ -812,9 +812,9 @@ public class ExemploCallWhenForm {
     <section name="Determinando se o campo está vazio">
       <p>A fim de realizar ou não algumas operações, o framework precisa
       determinar se um campo está vazio. Além disso, o fato de um campo estar
-      preenchido ou não costuma ser utilizado é uma informação que costuma ser
-      utilizado pelo desenvolvedor para estabelecer condições para as anotações
-      do genesis. A interface <code>EmptyResolver</code>, definida no pacote
+      preenchido ou não é uma informação que costuma ser utilizada pelo
+      desenvolvedor para estabelecer condições nas anotações do genesis. A
+      interface <code>EmptyResolver</code>, definida no pacote
       <code>net.java.dev.genesis.resolvers</code> é utilizada para isto.</p>
       <p>Esta interface expõe um único método, <code>isEmpty(Object)</code>, que
       retorna um <code>boolean</code>. Para especificar qual implementação de
