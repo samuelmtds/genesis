@@ -68,7 +68,10 @@ public abstract class AbstractHibernateCommand implements HibernateCommand {
       }
 
       hql.setLength(hql.length() - 1);
-      hql.append(" where ").append(where);
+
+      if (where != null && where.length() != 0) {
+         hql.append(" where ").append(where);
+      }
 
       if (orderBy != null && orderBy.trim().length() > 0) {
          hql.append(" order by ").append(orderBy);
