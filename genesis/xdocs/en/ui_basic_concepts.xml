@@ -412,7 +412,7 @@ public class BeforeActionFormExample {
    // ...
 }
 </source>
-        <p>When the button whose<code>name</code> is <code>"delete"</code> is
+        <p>When the button whose <code>name</code> is <code>"delete"</code> is
         pressed, genesis invokes <code>confirmDeletion()</code> in
         <code>BeforeActionViewExample</code> since it is configured with the
         annotation <code>@BeforeAction delete</code>. If the view method name
@@ -468,7 +468,7 @@ public class AfterActionFormExample {
         <p>In the example above, when the button whose <code>name</code> is
         <code>"save"</code> is pressed, the method named <code>save()</code> is
         invoked on the form instance. After its execution, view's method <code>
-        fechaJanela()</code>, which is annotated as
+        closeWindow()</code>, which is annotated as
         <code>@AfterAction save</code> is executed. As it was true for
         <code>@BeforeAction</code>, if the view method name was also
         <code>save()</code> it wouldn't be needed to use it as an argument to
@@ -476,7 +476,7 @@ public class AfterActionFormExample {
       </subsection>
       <subsection name="Using invokeFormAction(String)">
         <p>In some situations it may be necessary to invoke one or more form
-        methods inside a view method under certain specific conditionsand using
+        methods inside a view method under certain specific conditions and using
         <code>@BeforeAction</code> and <code>@AfterAction</code> is not
         possible. Although directly calling a form method is actually possible,
         when it happens genesis is not notified about it, what means several
