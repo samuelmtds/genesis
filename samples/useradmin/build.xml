@@ -25,15 +25,16 @@
    <property name="src.dir" value="src" />
    <property name="webstart.dir" location="webstart" />
 
+   <property name="genesisBasedApplication.name" value="useradmin" />
+   <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
+   <property name="genesisBasedApplication.prettyName" value="User Admin" />
+
    <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.name}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
    <property name="webstart.port" value="8080" />
    
-   <property name="genesisBasedApplication.name" value="useradmin" />
-   <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
-   <property name="genesisBasedApplication.prettyName" value="User Admin" />
 
    <path id="j2ee.path">
       <fileset dir="${j2ee.dist}" includes="*.jar" />
