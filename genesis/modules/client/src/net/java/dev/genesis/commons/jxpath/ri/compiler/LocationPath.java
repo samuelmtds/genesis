@@ -81,6 +81,7 @@ public class LocationPath extends
          case Compiler.AXIS_SELF:
             return new SelfContext(context, nodeTest);
       }
-      return null; // Never happens
+      
+      throw new IllegalArgumentException(axis + " is not a valid value for axis");
    }
 }
