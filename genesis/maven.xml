@@ -67,7 +67,7 @@
    <!-- Makes the distribution -->
    <!-- ====================== -->
    <goal name="genesis:dist" prereqs="genesis:site">
-      <ant:ant dir="${basedir}" antfile="build.xml" target="genesis:dist"/>
+      <ant:ant dir="${basedir}" antfile="build_dist.xml" target="genesis:dist"/>
    </goal>
 
 </project>
