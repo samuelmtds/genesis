@@ -33,6 +33,9 @@
         <li><a href="#Validando os dados">Validando os dados</a></li>
         <li><a href="#Configurando as mensagens">Configurando as mensagens</a>
         </li>
+        <li><a href="#Trabalhando com pesquisas dinâmicas">Trabalhando com
+        pesquisas dinâmicas</a>
+        </li>
       </ul>
       </p>
     </section>
@@ -1700,9 +1703,28 @@ Role.code=Code
       <p>Para mais informações sobre como trabalhar com arquivos de recurso
       consulte o Javadoc da classe <code>java.util.ResourceBundle</code>.</p>
     </section>
-<!--
-Criteria
--->
+    <section name="Trabalhando com pesquisas dinâmicas">
+      <p>O genesis facilita a construção de pesquisas dinâmicas - cujos
+      critérios de seleção mudam em tempo de execução, não os valores passados
+      para estes - integrando essa funcionalidade tanto com os componentes de
+      interface gráfica como com os componentes de negócio.</p>
+      <p>Na parte cliente, para permitir que somente as propriedades prenchidas
+      sejam utilizadas na busca, basta fazer:</p>
+<source>
+CriteriaPropertyHelper.fillCriteria(hibernateCriteria, form);
+</source>
+      <p>A classe <code>CriteriaPropertyHelper</code> encontra-se no pacote
+      <code>net.java.dev.genesis.helpers</code>. <code>hibernateCriteria</code>
+      deve obedecer os
+      <a href="business_component_model.html#Pesquisas dinâmicas com Criteria">
+      requisitos para componentes de negócio para pesquisas dinâmicas</a>
+      enquanto <code>form</code> deve ser um form do genesis válido. Serão
+      copiadas as propriedades que existam em ambos os beans e que estejam
+      preenchidas no form de acordo com as
+      <a href="#Determinando se o campo está vazio">regras para determinar
+      campos vazios</a>. A chamada a <code>fillCriteria(HibernateCriteria,
+      Object)</code> deverá ser feita antes da chamada ao método anotado com
+      <code>@Criteria</code>.</p>
+    </section>
   </body>
 </document>
-
