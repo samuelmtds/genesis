@@ -8,15 +8,15 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
-        <li><a href="#2.1-RC1">2.1-RC1</a></li>
+        <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
-    <section name="2.1-RC1">
+    <section name="2.1">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2861&amp;expandFolder=2861&amp;folderID=0">aqui</a>.</p>
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2913&amp;expandFolder=2913&amp;folderID=0">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
         <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
@@ -51,11 +51,11 @@
           (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=202">Issue
           # 202</a>)</li>
         </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 0.2 e a 2.1-RC1
+        <p>Uma lista completa das alterações ocorridas entre a 0.2 e a 2.1
         pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;target_milestone=2.1">aqui</a>.</p>
         <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/2.1-RC1/maven-site/pt-BR/">aqui</a>.</p>
+        href="https://genesis.dev.java.net/nonav/2.1/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
