@@ -315,7 +315,7 @@
          <fileset dir="${genesis.dist}"
                   includes="genesis-shared-annotated-${genesis.version}.jar" />
       </unjar>
-      <awc verbose="${verbose}">
+      <awc verbose="${verbose}" details="${verbose}">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
@@ -324,7 +324,7 @@
          </classpath>
          <targetpath location="${weaving.remote.dest}"/>
       </awc>
-      <awc verbose="${verbose}">
+      <awc verbose="${verbose}" details="${verbose}">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
