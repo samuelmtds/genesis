@@ -553,9 +553,14 @@ public class FormMetadataFactoryAspect {
       }
 
       private void processMethodsAnnotations(final FormMetadata formMetadata) {
-         Method[] methods = formMetadata.getFormClass().getDeclaredMethods();
+         Method[] methods = formMetadata.getFormClass().getMethods();
          MethodMetadata methodMetadata;
          for (int i = 0; i < methods.length; i++) {
+            // AW bug workaround TODO: put it in AW Jira
+            if (methods[i].getDeclaringClass().getClassLoader() == null) {
+               continue;
+            }
+
             if (Annotations.getAnnotation("Action", methods[i]) != null) {
                methodMetadata = new ActionMetadata(methods[i]);
                formMetadata.addActionMetadata(methods[i],
