@@ -174,7 +174,7 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    // TODO: consider caching components
-   private List findComponents(final String name) {
+   protected List findComponents(final String name) {
       final Object widget = thinlet.find(root, name);
 
       if (widget != null) {
@@ -195,7 +195,7 @@ public class ThinletBinder implements FormControllerListener {
       return groupComponents;
    }
 
-   private void createWidgetGroup(Object component, String name) {
+   protected void createWidgetGroup(Object component, String name) {
       final Collection enabledWidgetGroupCollection = new ArrayList();
       final Collection visibleWidgetGroupCollection = new ArrayList();
 

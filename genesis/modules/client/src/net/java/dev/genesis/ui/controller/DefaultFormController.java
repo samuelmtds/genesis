@@ -175,7 +175,7 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   private void updateChangedMap(Map newData, boolean stringMap) {
+   protected void updateChangedMap(Map newData, boolean stringMap) {
       Object value;
       FieldMetadata fieldMeta;
       Map.Entry entry;
