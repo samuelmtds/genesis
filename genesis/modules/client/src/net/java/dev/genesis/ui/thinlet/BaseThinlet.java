@@ -86,7 +86,7 @@ public abstract class BaseThinlet extends Thinlet {
    protected static final String MESSAGE = "message";
 
    /**
-    * @depracated
+    * @deprecated
     */
    public abstract class ScreenHandler {
       private Object screen;
@@ -95,6 +95,8 @@ public abstract class BaseThinlet extends Thinlet {
       }
 
       protected ScreenHandler(String fileName) throws ScreenNotFoundException {
+         setAllI18n(true);
+         setResourceBundle(UIUtils.getInstance().getBundle());
          parseAndSet(fileName, this);
       }
 
@@ -126,7 +128,7 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    /**
-    * @depracated
+    * @deprecated
     */
    protected Object parseAndSet(String fileName, ScreenHandler handler) 
                                                 throws ScreenNotFoundException {
