@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -440,6 +440,8 @@ public abstract class BaseThinlet extends Thinlet {
             setValue(component, getPropertyValue(properties, propertyName, false));
          } else if (type.equals(PANEL)) {
             displayBean(properties.get(propertyName), component);
+         } else if (type.equals(CHECKBOX)) {
+            setSelected(component, Boolean.TRUE.equals(properties.get(propertyName)));
          } else if (!type.equals(TABLE)){
             setText(component, getPropertyValue(properties, propertyName, false));
          }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -69,8 +69,7 @@ public class ThinletBinder implements FormControllerListener {
    private final Map enabledWidgetGroupMap = new HashMap();
    private final Map visibleWidgetGroupMap = new HashMap();
 
-   public ThinletBinder(final BaseThinlet thinlet, final Object root, 
-            final Object form) {
+   public ThinletBinder(final BaseThinlet thinlet, final Object root, final Object form) {
       this.thinlet = thinlet;
       this.root = root;
       this.form = form;
@@ -160,7 +159,9 @@ public class ThinletBinder implements FormControllerListener {
             if (className.equals(BaseThinlet.CHECKBOX)) {
                thinlet.setMethod(component, "action", "setValue(" + 
                      thinlet.getName(component) + "," + 
-                     thinlet.getName(component) + ".group)", root, this);
+                     thinlet.getName(component) + 
+                     (thinlet.getGroup(component) == null ? ".name" : ".group)"),
+                     root, this);
             } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1) {
                thinlet.setMethod(component, "action", "setValue(" + name + "," +
                      name + ".name)", root, this);
@@ -245,11 +246,15 @@ public class ThinletBinder implements FormControllerListener {
       String value = null;
 
       if (type.equals(BaseThinlet.CHECKBOX)) {
-         if (!thinlet.isSelected(component)) {
-            return;
+         if (thinlet.getGroup(component) != null) {
+            if (!thinlet.isSelected(component)) {
+               return;
+            }
+         
+            value = name;
+         } else {
+            value = String.valueOf(thinlet.isSelected(component));
          }
-
-         value = name;
       } else if (type.equals(BaseThinlet.COMBOBOX) || type.equals(BaseThinlet.LIST)) {
          component = thinlet.getSelectedItem(component);
          
