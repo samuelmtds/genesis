@@ -7,9 +7,9 @@
   <body>
     <section name="Modelo de componentes de negócio">
       <p><b>TODO: configurar todos os exemplos em um sample e atualizar
-      documento com instruções de execução; completar feature list.</b></p>
+      documento com instruções de execução.</b></p>
       <p>O modelo de componentes de negócio do genesis é bastante simples de ser
-      compreendido. Os seguintes conceitos e/ou características dele são
+      compreendido. Os seguintes conceitos e/ou características são
       abordados abaixo:
       <ul>
         <li><a href="#Remotabilidade transparente">Remotabilidade transparente
@@ -19,6 +19,9 @@
         <li><a href="#Integração com o Hibernate">Integração com o Hibernate
         </a></li>
         <li><a href="#Paginação">Paginação
+        </a></li>
+        <li><a href="#Pesquisas dinâmicas com Criteria">Pesquisas dinâmicas com
+        Criteria
         </a></li>
       </ul>
       </p>
@@ -313,5 +316,40 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
 </source>
       </subsection>
     </section>
+    <section name="Pesquisas dinâmicas com Criteria">
+      <p>Embora o Hibernate possua suporte a pesquisas dinâmicas, isto é, com
+      cláusulas "montadas" ou definidas em tempo de execução através da
+      interface <code>Criteria</code>, o uso prático desse suporte básico leva a
+      código bastante repetitivo e difícil de manter. O genesis possui suporte a
+      pesquisas dinâmicas num nível de abstração mais alto, o que facilita a
+      implementação delas. Abordaremos aqui o uso desse suporte com foco na
+      camada de negócios.</p>
+      <p>Existe uma subinterface de <code>HibernateCommand</code> chamada <code>
+      HibernateCriteria</code>. Assim como a <code>Session</code> é injetada
+      para instâncias de <code>HibernateCommand</code>, uma instância de <code>
+      Criteria</code> é atribuída através do método <code>setCriteria(Criteria)
+      </code> para implementações de <code>HibernateCriteria</code> nos momentos
+      apropriados. Da mesma forma que ocorre com a primeira interface, existe
+      uma classe base para facilitar a implementação de <code>HibernateCriteria
+      </code>, <code>AbstractHibernateCriteria</code>. Esta classe auxiliar
+      define o método <code>getCriteria()</code>, além de outros métodos
+      utilitários.</p>
+      <p>O método de negócio que precisa da instância de <code>Criteria</code>
+      para sua execução recebe a anotação <code>@Criteria
+      NomeDaClasseMapeadaNoHibernate</code>. Essa anotação implica
+      que o método também é <code>@Remotable</code>, mantendo assim a
+      remotabilidade transparente. Antes de invocar este método e depois de ter
+      invocado <code>setCriteria(Criteria)</code>, os setters das propriedades
+      "preenchidas" do objeto de negócio que tenham sido copiadas no cliente
+      (ver documentação do modelo de componentes para interface gráfica <b>TODO:
+      linkar assim que existir</b>) serão automaticamente chamados pelo
+      framework de modo que a recém-injetada instância de <code>Criteria</code>
+      possa ser configurada apropriadamente. Finalmente o método de negócios
+      será invocado e seu retorno repassado ao código cliente.</p>
+      <p>Para entender melhor esse conceito, o exemplo abaixo pode ser de ajuda:
+      </p>
+      <p><b>TODO: substituir por exemplo</b></p>
+    </section>
   </body>
 </document>
+
