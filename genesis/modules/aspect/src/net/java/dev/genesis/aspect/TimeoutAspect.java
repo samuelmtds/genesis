@@ -84,7 +84,9 @@ public class TimeoutAspect {
                try {
                   lock.wait();
                } catch (InterruptedException ie) {
-                  log.info(ie);
+                  if (log.isTraceEnabled()) {
+                     log.trace(ie);
+                  }
                }
             }
          } while (!isInterrupted());
@@ -155,6 +157,12 @@ public class TimeoutAspect {
       if (keepThreadInstance) {
          thread.cleanUp();
       } else {
+         try {
+            thread.interrupt();
+         } catch (Throwable t) {
+            log.error(t);
+         }
+
          thread = null;
       }
 
