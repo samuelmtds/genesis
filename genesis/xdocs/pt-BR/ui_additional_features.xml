@@ -194,8 +194,60 @@ public class ExemploVisibleWhenForm {
         estará visível quando o valor da propriedade
         <code>numeroDependentes</code> for maior que zero.</p>
       </subsection>
+      <subsection name="Agrupamento de widgets">
+        <p>Em muitos casos, certas operações necessitam ser executadas para um
+        grupo de controles visuais (widgets). Um exemplo desta situação é tornar
+        invisível ou habilitado um grupo de controles como um todo - vide
+        o código resumido de um Thinlet abaixo:
+        </p>
+<source>
+<![CDATA[
+...
+<label text="Data Corrente:" font="bold"/>
+<panel width="10" height="1" />
+<textfield name="dataCorrente" />
+...
+]]>
+</source>
+        <p>No xml acima, o desenvolvedor tem a intenção de
+        mostrar o campo "Data Corrente" mediante certas condições. Para isso,
+        utiliza-se a anotação <code>@VisibleWhen</code> conforme o
+        código abaixo:</p>
+<source>
+/**
+ * @VisibleWhen certasCondicoes
+ */
+public Date getDataCorrente() {
+   ...
+}
+</source>
+        <p>Porém, neste caso, o que ocorre é que apenas o <code>textfield</code>
+        fica invisível (caso as referidas condições não sejam satisfeitas). 
+        Atente para o fato de que o <code>label</code> e o
+        <code>panel</code> de espaçamento não ficam invisíveis - isto claramente
+        não é o que deve ocorrer nestas situações. O desejável é que esses
+        três controles sigam a mesma regra de visibilidade.</p>
+        <p>Para que isto ocorra, utiliza-se a propriedade 
+        <code>widgetGroup</code> no atributo "property" do 
+        <code>textfield</code> no xml do Thinlet, conforme o exemplo abaixo:</p>
+<source>
+<![CDATA[
+...
+<label name="dataCorrenteLabel" text="Data Corrente:" font="bold"/>
+<panel name="dataCorrenteEspaco" width="10" height="1" />
+<textfield name="dataCorrente"
+      property="widgetGroup=dataCorrenteLabel,dataCorrenteEspaco"/>
+...
+]]>
+</source>
+        <p>Veja que os controles <code>label</code> e 
+        <code>panel</code> agora estão nomeados e referenciados dentro do
+        <code>widgetGroup</code>, separados por vírgula.
+        Desse modo, os três controles irão obedecer
+        à regra de visibilidade anotada no <code>form</code> anteriormente.</p>
+      </subsection>
       <subsection name="Limpando o conteúdo dos campos">
-        <p>Sob diversas condições é necessário limpar o conteúdo de certos
+        <p>Sob diversas condições é necessário limpar o conteúdo de certos        
         campos. O genesis pode fazer isso automaticamente pelo programador
         através do uso da anotação <code>@ClearOn</code>. Embora sua sintaxe
         seja semelhante a de <code>@EnabledWhen</code> e

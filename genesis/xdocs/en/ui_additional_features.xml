@@ -187,6 +187,56 @@ public class VisibleWhenFormExample {
         be visible only when <code>dependantNumber</code> is greater than zero.
         </p>
       </subsection>
+      <subsection name="Widgets Grouping">
+        <p>In many cases, certain operations need to be executed for a group
+        of widgets. An example of this situation is to make a whole group 
+        visible or enabled - see the Thinlet code below:</p>
+<source>
+<![CDATA[
+...
+<label text="Current Date:" font="bold"/>
+<panel width="10" height="1" />
+<textfield name="currentDate" />
+...
+]]>
+</source>
+        <p>In the xml above, the developer intention is to show the field
+        "Current Date" under certain conditions. To make this happen, the
+        <code>@VisibleWhen</code> annotation is used as the following
+        code shows:</p>
+<source>
+/**
+ * @VisibleWhen certainConditions
+ */
+public Date getCurrentDate() {
+   ...
+}
+</source>
+        <p>However, in this case, what happens is that only the 
+        <code>textfield</code> will become invisible (in case those
+        conditions are not satisfied). Note that the <code>label</code>
+        and the <code>panel</code> used for spacing will not become 
+        invisible - this clearly is not what was originally intented. All three
+        controls should follow just the same conditions for visibility.</p>
+        <p>To make this occur, we need to use the <code>widgetGoup</code>
+        property of the <code>textfield</code> thinlet xml attribute - see
+        the following usage:</p>
+<source>
+<![CDATA[
+...
+<label name="currentDateLabel" text="Current Date:" font="bold"/>
+<panel name="currentDateSpace" width="10" height="1" />
+<textfield name="currentDate"
+      property="widgetGroup=currentDateLabel,currentDateSpace"/>
+...
+]]>
+</source>
+        <p>Note that the widgets <code>label</code> and <code>panel</code>
+        are now named and referred inside the <code>widgetGroup</code>,
+        separated by a comma. This way, all three widgets will follow
+        the same visibility rule annoted in the <code>form</code> code 
+        earlier.</p>
+      </subsection>
       <subsection name="Clearing field content">
         <p>Under many conditions it is necessary to clean field content. genesis
         can do that automatically for the programmer through the
