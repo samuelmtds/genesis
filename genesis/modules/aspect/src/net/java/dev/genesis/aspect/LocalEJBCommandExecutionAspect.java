@@ -97,8 +97,7 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
             return commandExecutorLocal.executeQuery(obj, methodName, 
                   classNames, parameterValues);
          } else {
-            throw new IllegalArgumentException("Method " + rtti.getMethod() +
-                  " is neither remotable nor transactional");
+            return jp.proceed();
          }
       } catch (final InvocationTargetException ite) {
          throw ite.getTargetException();

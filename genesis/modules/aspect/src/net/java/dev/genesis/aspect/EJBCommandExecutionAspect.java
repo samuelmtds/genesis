@@ -114,8 +114,7 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
                return commandExecutor.executeQuery(obj, methodName, classNames,
                      parameterValues);
             } else {
-               throw new IllegalArgumentException("Method " + rtti.getMethod() +
-                     " is neither remotable nor transactional");
+               return jp.proceed();
             }
          } catch (final NoSuchObjectException nsoe) {
             log.error("NoSuchObjectException occured", nsoe);
