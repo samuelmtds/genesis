@@ -303,7 +303,7 @@
 			              userTransactionName="UserTransaction"
 			              showSql="true"
                        depends="jboss.jca:service=LocalTxCM,name=DefaultDS"
-                       version="2.1.6" />
+                       version="${genesis.hibernate.version}" />
 			<hibernatecfg dialect="${genesis.unit.test.hibernate.dialect}"
 			              userName="${genesis.unit.test.jdbc.connection.username}"
 			              password="${genesis.unit.test.jdbc.connection.password}"
