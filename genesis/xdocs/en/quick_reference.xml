@@ -664,7 +664,7 @@ public class InsertUpdateForm {
    }
    <b>...</b>
 	</source>
-    <p><a href="business_component_model.html#Remotabilidade_transparente">Mais informações...</a></p>
+    <p><a href="business_component_model.html#Transparent_remoting">More info...</a></p>
       </subsection>
       <subsection name="@Transactional">
 	<p>
