@@ -1,0 +1,10 @@
+#
+# The xdoclet libs directory
+# Override only if necessary
+#genesis.xdoclet.dist=../xdoclet/dist
+
+#
+# The CVS username
+# default maven.username is defined in project.properties
+# Override only if necessary
+#maven.username=guest
