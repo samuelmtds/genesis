@@ -22,6 +22,8 @@
          binding</a></li>
          <li><a href="#Modelo de metadados do form">Modelo de metadados do form
          </a></li>
+         <li><a href="#Manipulando o estado do form">Manipulando o estado do
+         form</a></li>
       </ul>
     </section>
     <section name="Principais elementos do binding">
@@ -197,6 +199,111 @@ public interface FormMetadataFactory {
       referenciada por ela, é possível também customizar qualquer metadado para
       qualquer classe, criando-os com base em uma configuração xml ou estendendo
       uma das classes de metadados para implementar comportamento adicional.</p>
+    </section>
+    <section name="Manipulando o estado do form">
+      <p>O pacote <code>net.java.dev.genesis.ui.controller</code> possui
+      diversas interfaces relacionadas ao estado do form e algumas
+      implementações dessas interfaces. As interfaces são:</p>
+      <ul>
+        <li><b><code>FormState</code></b>: representa o estado do form</li>
+        <li><b><code>FormController</code></b>: manipula o estado do form e
+        dispara eventos relacionados a mudanças de estado</li>
+        <li><b><code>FormControllerListener</code></b>: recebe os eventos de
+        mudança do form</li>
+        <li><b><code>FormControllerFactory</code></b>: cria uma instância de
+        <code>FormController</code></li>
+      </ul>
+      <p>As interfaces descritas acima, bem como algumas de suas implementações,
+      serão descritas nas subseções abaixo.</p>
+      <subsection name="O estado do form">
+        <p>A interface <code>FormState</code> expõe todo o estado de um form
+        como instâncias de <code>java.util.Map</code>. Todas as chaves dos <code
+        >Map</code>s são nomes das propriedades ou métodos do form como
+        <code>String</code>. As propriedades expostas através de getters nesta
+        interface são:</p>
+        <ul>
+           <li><b>valuesMap</b>: contém os valores do form num dado instante</li
+           >
+           <li><b>changedMap</b>: contém os valores que mudaram deste a última
+           iteração do controlador</li>
+           <li><b>enabledMap</b>: mantém valores <code>Boolean</code> indicando
+           se os widgets que representam as propriedades ou métodos estão
+           habilitados ou não. Seus valores nunca são <code>null</code></li>
+           <li><b>visibleMap</b>: mantém valores <code>Boolean</code> indicando
+           se os widgets que representam as propriedades ou métodos estão
+           visíveis ou não. Seus valores nunca são <code>null</code></li>
+           <li><b>dataProvidedMap</b>: contém os últimos valores retornados
+           pelos provedores de dados como instâncias de
+           <code>java.util.List</code></li>
+        </ul>
+        <p><code>FormStateImpl</code> implementa esta interface de forma simples
+        e deve ser suficiente para a maioria dos casos. Esta classe possui um
+        construtor adicional, além do default, que permite criar uma instância
+        que é uma cópia de outro <code>FormState</code>.</p>
+      </subsection>
+      <subsection name="Controlando o estado do form">
+        <p><code>FormController</code> controla todas as mudanças de estado do
+        form, manipulando a instância de <code>FormState</code> e disparando
+        eventos de notificação de mudanças do estado para instâncias de
+        <code>FormControllerListener</code>. Contém os seguintes métodos e
+        constantes:</p>
+        <ul>
+          <li><code>CURRENT_STATE_KEY</code> define o nome da variável
+          JXPath que contém a instância atual de <code>FormState</code></li>
+          <li><code>FORM_METADATA_KEY</code> define o nome da variável
+          JXPath que contém a instância de <code>FormMetadata</code></li>
+          <li><code>getForm()</code>/<code>setForm(Object form)</code> e
+          <code>getFormMetadata()</code>/<code>setFormMetadata(FormMetadata
+          formMetadata)</code> permitem obter e definir as instâncias de form e
+          de <code>FormMetadata</code> a serem usadas pelo controlador. Devem
+          estar definidas antes da chamada a <code>setup()</code></li>
+          <li><code>addFormControllerListener(FormControllerListener
+          listener)</code>,
+          <code>removeFormControllerListener(FormControllerListener
+          listener)</code> e <code>getFormControllerListeners()</code> permitem
+          adicionar, remover e obter instâncias de
+          <code>FormControllerListener</code> que receberão os eventos
+          propagados pelo controlador.</li>
+          <li>o método <code>setup()</code> prepara a instância do controlador
+          para uso e dispara todos os eventos relativos ao estado corrente do
+          form para os listeners. Deve ser chamado somente uma vez. Para
+          verificar se já foi chamado, deve-se utilizar o método
+          <code>isSetup()</code></li>
+          <li><code>fireAllEvents(FormControllerListener listener)</code>
+          dispara todos os eventos declarados em
+          <code>FormControllerListener</code> para a instância informada. É útil
+          quando um listener não estava registrado antes da chamada a
+          <code>setup()</code> e precisa ser notificado de todos os eventos.</li
+          >
+          <li><code>populate(Map properties, Map converters)</code> atualiza o
+          form com os valores contidos em <code>properties</code> e reavalia
+          todas as condições dos métodos e propriedades do form. O segundo
+          <code>Map</code> passado para este método contém pares nome de
+          propriedade / conversor do BeanUtils que podem ser usados para
+          sobrescrever o conversor "natural" contido na instância de
+          <code>FieldMetadata</code> que representa a propriedade</li>
+          <li><code>invokeAction(String actionName, Map stringProperties)</code>
+          chama a ação de nome <code>actionName</code> e reavalia todas as
+          condições dos métodos e propriedades do form.
+          <code>stringProperties</code> somente será usado se o método chamado
+          for um ação que exija validação.</li>
+          <li><code>updateSelection(DataProviderMetadata dataProviderMetadata,
+          int[] selected)</code> muda a seleção em um determinado provedor de
+          dados, atualizando o <code>objectField</code> e/ou
+          <code>indexField</code>, se houverem, e reavalia todas as
+          condições dos métodos e propriedades do form.</li>
+          <li><code>update()</code> reavalia todas as condições dos métodos e
+          propriedades do form e dispara todos os eventos referentes a mudanças
+          do estado do form que ocorreram fora do controlador.</li>
+          <li><code>getFormState()</code> retorna a instância de
+          <code>FormState</code> que representa o estado atual do form. O
+          retorno deste método pode ser usado em testes unitários ou para
+          implementar funcionalidades como "cancelar alterações". Para se
+          restaurar o form a um estado anterior, deve-se chamar o método
+          <code>reset(FormState state)</code>, que atualizará o form e propagará
+          todos os eventos necessários aos listeners.</li>
+        </ul>
+      </subsection>
     </section>
   </body>
 </document>
