@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.ui.ValidationUtils;
@@ -38,10 +40,10 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
-import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
-import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
-import org.apache.commons.beanutils.Converter;
+import net.java.dev.genesis.ui.metadata.ViewMetadata;
+import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
+import org.apache.commons.beanutils.Converter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -57,12 +59,13 @@ public class ThinletBinder implements FormControllerListener {
          BaseThinlet.SPINBOX, BaseThinlet.TEXTAREA, BaseThinlet.TEXTFIELD, 
          BaseThinlet.TOGGLE_BUTTON};
    private static final String[] fieldsChangedByAction = new String[] {
-         BaseThinlet.COMBOBOX, BaseThinlet.LIST, BaseThinlet.SPINBOX, 
-         BaseThinlet.TOGGLE_BUTTON};
+         BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LIST,
+         BaseThinlet.SPINBOX, BaseThinlet.TOGGLE_BUTTON };
 
    private final BaseThinlet thinlet;
    private final Object root;
    private final Object form;
+   private final Object handler;
    private final FormController controller;
 
    private List groupComponents;
@@ -76,41 +79,34 @@ public class ThinletBinder implements FormControllerListener {
    private final Map formatters = new HashMap();
    private final Map converters = new HashMap();
 
-   public ThinletBinder(final BaseThinlet thinlet, final Object root, final Object form) {
+   public ThinletBinder(final BaseThinlet thinlet, final Object root, 
+         final Object form) {
+      this(thinlet, root, form, thinlet);
+   }
+
+   public ThinletBinder(final BaseThinlet thinlet, final Object root, 
+         final Object form, final Object handler) {
       this.thinlet = thinlet;
       this.root = root;
       this.form = form;
+      this.handler = handler;
       this.controller = getFormController(form);
    }
    
-   protected final ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
-      if (!(thinlet instanceof ThinletMetadataFactory)) {
-         throw new IllegalArgumentException(thinlet + " should implement " + 
-               "ThinletMetadataFactory; probably your aop.xml/weaving process" + 
-               " should be properly configured.");
-      }
+   protected ViewMetadata getViewMetadata(final Object handler) {
+      TypeChecker.checkViewMetadataFactory(handler);
 
-      return ((ThinletMetadataFactory)thinlet).getThinletMetadata(thinlet.getClass());
+      return ((ViewMetadataFactory)handler).getViewMetadata(handler.getClass());
    }
 
-   protected final FormController getFormController(final Object form) {
-      if (!(form instanceof FormControllerFactory)) {
-         throw new IllegalArgumentException(form + " should implement " + 
-               "FormControllerFactory; probably it should have been annotated " +
-               "with @Form or your aop.xml/weaving process should be " +
-               "properly configured.");
-      }
+   protected FormController getFormController(final Object form) {
+      TypeChecker.checkFormControllerFactory(form);
 
       return ((FormControllerFactory)form).getFormController(form);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
-      if (!(form instanceof FormMetadataFactory)) {
-         throw new IllegalArgumentException(form + " should implement " + 
-               "FormMetadataFactory; probably it should have been annotated " +
-               "with @Form or your aop.xml/weaving process should be " +
-               "properly configured.");
-      }
+      TypeChecker.checkFormMetadataFactory(form);
 
       return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
    }
@@ -124,6 +120,10 @@ public class ThinletBinder implements FormControllerListener {
       bindActionMetadatas(formMetadata);
       bindDataProviders(dataProviders);
 
+      setupController();
+   }
+
+   protected void setupController() throws Exception {
       if (!controller.isSetup()) {
          controller.addFormControllerListener(this);
          controller.setup();
@@ -178,11 +178,12 @@ public class ThinletBinder implements FormControllerListener {
          for (final Iterator it = components.iterator(); it.hasNext(); ) {
             final Object component = it.next();
 
-            if (className.equals(BaseThinlet.CHECKBOX)) {
+            if (className.equals(BaseThinlet.CHECKBOX) ||
+                  className.equals(BaseThinlet.TOGGLE_BUTTON)) {
                thinlet.setMethod(component, "action", "setValue(" + 
                      thinlet.getName(component) + "," + 
                      thinlet.getName(component) + 
-                     (thinlet.getGroup(component) == null ? ".name" : ".group)"),
+                     (thinlet.getGroup(component) == null ? ".name)" : ".group)"),
                      root, this);
             } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1) {
                thinlet.setMethod(component, "action", "setValue(" + name + "," +
@@ -203,7 +204,8 @@ public class ThinletBinder implements FormControllerListener {
       }
 
       if (groupComponents == null) {
-         groupComponents = thinlet.getAllOfClass(root, BaseThinlet.CHECKBOX);
+         groupComponents = thinlet.getAllOfClass(root, new String[] {
+               BaseThinlet.CHECKBOX, BaseThinlet.TOGGLE_BUTTON });
       }
 
       final List components = new ArrayList();
@@ -269,7 +271,7 @@ public class ThinletBinder implements FormControllerListener {
 
       String value = null;
 
-      if (type.equals(BaseThinlet.CHECKBOX)) {
+      if (type.equals(BaseThinlet.CHECKBOX) || type.equals(BaseThinlet.TOGGLE_BUTTON)) {
          if (thinlet.getGroup(component) != null) {
             if (!thinlet.isSelected(component)) {
                return;
@@ -282,9 +284,9 @@ public class ThinletBinder implements FormControllerListener {
       } else if (type.equals(BaseThinlet.COMBOBOX) || type.equals(BaseThinlet.LIST)) {
          component = thinlet.getSelectedItem(component);
          
-         value = thinlet.getName(component != null ? component : null);
+         value = component != null ? thinlet.getName(component) : null;
       } else if (type.equals(BaseThinlet.PROGRESS_BAR) || type.equals(BaseThinlet.SLIDER)) {
-         value = thinlet.getValue(component);
+         value = String.valueOf(thinlet.getValue(component));
       } else {
          value = thinlet.getText(component);
       }
@@ -401,20 +403,26 @@ public class ThinletBinder implements FormControllerListener {
       Map stringProperties = null;
 
       if (name != null) {
-         final MethodEntry entry = new MethodEntry(name, new String[0]);
-         final MethodMetadata methodMetadata = getFormMetadata(form)
-            .getMethodMetadata(entry);
+         final MethodMetadata methodMetadata = getMethodMetadata(name);
 
          if (methodMetadata != null && 
                methodMetadata.getActionMetadata() != null && 
                methodMetadata.getActionMetadata().isValidateBefore()) {
-            stringProperties = ValidationUtils.getInstance().getPropertiesMap(
-                  form);
+            stringProperties = getStringProperties();
             thinlet.populate(null, root, stringProperties, false);
          }
       }
 
       controller.invokeAction(name, stringProperties);
+   }
+
+   protected MethodMetadata getMethodMetadata(String name) {
+      return getFormMetadata(form).getMethodMetadata(
+            new MethodEntry(name, new String[0]));
+   }
+
+   protected Map getStringProperties() throws Exception {
+      return ValidationUtils.getInstance().getPropertiesMap(form);
    }
 
    public void refresh() throws Exception {
@@ -435,13 +443,13 @@ public class ThinletBinder implements FormControllerListener {
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
          throws Exception {
-      return getThinletMetadata(thinlet).invokeBeforeAction(thinlet, 
+      return getViewMetadata(handler).invokeBeforeAction(handler, 
             methodMetadata.getName());
    }
 
    public void afterInvokingMethod(MethodMetadata methodMetadata) 
          throws Exception {
-      getThinletMetadata(thinlet).invokeAfterAction(thinlet, 
+      getViewMetadata(handler).invokeAfterAction(handler, 
             methodMetadata.getName());
    }
    
@@ -463,7 +471,7 @@ public class ThinletBinder implements FormControllerListener {
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
-         metadata.resetSelectedFields(form);
+         resetSelectedFields(metadata);
          thinlet.populateFromCollection(component, items, formatters);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
@@ -486,6 +494,10 @@ public class ThinletBinder implements FormControllerListener {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
       }
+   }
+
+   protected void resetSelectedFields(DataProviderMetadata meta) throws Exception {
+      meta.resetSelectedFields(form);
    }
 
    public void dataProvidedIndexesChanged(DataProviderMetadata metadata,
@@ -520,14 +532,13 @@ public class ThinletBinder implements FormControllerListener {
       conditionsChanged(updatedVisibleConditions, false);
    }
 
-   public void conditionsChanged(Map updatedConditions, boolean enabled) {
+   protected void conditionsChanged(Map updatedConditions, boolean enabled) {
       for (final Iterator i = updatedConditions.entrySet().iterator();
             i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
 
-         final Collection widgetGroup = enabled ?
-               (Collection) enabledWidgetGroupMap.get(entry.getKey().toString()) :
-               (Collection) visibleWidgetGroupMap.get(entry.getKey().toString());
+         final Collection widgetGroup = getWidgetGroupCollection(
+               entry.getKey().toString(), enabled);
 
          if (widgetGroup == null) {
             log.warn(entry.getKey() + (enabled ? " enabled" : " visible")
@@ -563,5 +574,11 @@ public class ThinletBinder implements FormControllerListener {
             }
          }
       }
+   }
+
+   protected Collection getWidgetGroupCollection(String fieldKey, boolean enabled) {
+      return enabled ?
+            (Collection)enabledWidgetGroupMap.get(fieldKey) :
+            (Collection)visibleWidgetGroupMap.get(fieldKey);
    }
 }

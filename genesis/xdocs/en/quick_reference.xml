@@ -78,6 +78,15 @@
             </td>
           </tr>
           <tr>
+            <td>POJO</td>
+            <td>Class</td>
+            <td>
+              <ul>
+                <li><a href="#@ViewHandler">@ViewHandler</a></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
             <td>Command</td>
             <td>Method</td>
             <td>
@@ -671,6 +680,42 @@ public class FormExample {
    <b>...</b>
   </source>
     <p><a href="ui_basic_concepts.html#using_@AfterAction">More info...</a></p>
+      </subsection>
+      <subsection name="@ViewHandler">
+        <p>Used in POJOs (Plain Old Java Objects) that contain methods
+        annotated with <a href="#@BeforeAction"><code>@BeforeAction</code></a>
+        and/or <a href="#@AfterAction"><code>@AfterAction</code></a>.</p>
+        <table>
+          <tr>
+            <th>Parameters</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+  <p>Usage sample</p>
+  <source>
+/**
+ * <b>@ViewHandler</b>
+ */
+public class ViewHandlerExample {
+   /**
+    * @BeforeAction
+    */
+   public boolean remove() {
+      <b>...</b>
+   }
+<b>...</b>
+}
+  </source>
+    <p><a href="ui_additional_features.html#Using_POJOs_to_handle_events">More
+    info...</a></p>
       </subsection>
       <subsection name="@Remotable">
         <p>It may be used to annotate business class methods. Methods annotated

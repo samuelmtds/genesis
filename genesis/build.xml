@@ -250,7 +250,7 @@
       <annotationc verbose="true"
             srcdir="${genesis.module.aspect}/${src.dir}"
             destdir="${genesis.module.aspect}/${genesis.annotation.dest}"
-            classpath="${genesis.module.aspect}/${build.dest}"
+            classpath="${genesis.module.aspect}/${build.dest}${path.separator}${genesis.module.client}/${build.dest}"
             properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.aspect}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.aspect}/${build.dest}" />
@@ -309,7 +309,7 @@
 			              userTransactionName="UserTransaction"
 			              showSql="true"
                        depends="jboss.jca:service=LocalTxCM,name=DefaultDS"
-                       version="2.1.6" />
+                       version="${genesis.hibernate.version}" />
 			<hibernatecfg dialect="${genesis.unit.test.hibernate.dialect}"
 			              userName="${genesis.unit.test.jdbc.connection.username}"
 			              password="${genesis.unit.test.jdbc.connection.password}"

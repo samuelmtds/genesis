@@ -9,7 +9,7 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="0.3-EA1-dev" />
+      <property name="genesis.version" value="3.0-EA1-dev" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />

@@ -28,6 +28,14 @@ public class Registry {
       return registry.put(clazz, o);
    }
 
+   public void deregister() {
+      registry.clear();
+   }
+
+   public void deregister(Class clazz) {
+      registry.remove(clazz);
+   }
+
    public Object get(Class clazz) {
       return registry.get(clazz);
    }

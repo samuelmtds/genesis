@@ -21,9 +21,7 @@ package net.java.dev.genesis.tests.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.beanutils.converters.IntegerConverter;
-import org.apache.commons.beanutils.converters.StringConverter;
-
+import net.java.dev.genesis.commons.beanutils.converters.DefaultConverter;
 import net.java.dev.genesis.equality.DefaultEqualityComparator;
 import net.java.dev.genesis.equality.StringEqualityComparator;
 import net.java.dev.genesis.reflection.FieldEntry;
@@ -35,6 +33,9 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
+
+import org.apache.commons.beanutils.converters.IntegerConverter;
+import org.apache.commons.beanutils.converters.StringConverter;
 
 public class FormMetadataFactoryTest extends TestCase {
 
@@ -239,14 +240,14 @@ public class FormMetadataFactoryTest extends TestCase {
       assertEquals(nameField.getConverter().getClass(), StringConverter.class);
 
       assertNotNull(objField.getConverter());
-      assertEquals(objField.getConverter().getClass(), StringConverter.class);
+      assertEquals(objField.getConverter().getClass(), DefaultConverter.class);
 
       assertNotNull(numberField.getConverter());
       assertEquals(numberField.getConverter().getClass(),
             IntegerConverter.class);
 
       assertNotNull(fieldField.getConverter());
-      assertEquals(fieldField.getConverter().getClass(), StringConverter.class);
+      assertEquals(fieldField.getConverter().getClass(), DefaultConverter.class);
 
       assertNotNull(descriptionField.getConverter());
       assertEquals(descriptionField.getConverter().getClass(),

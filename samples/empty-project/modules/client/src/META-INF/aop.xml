@@ -12,6 +12,7 @@
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="formControllerFactoryIntroduction" expression="form" />
       <pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+      <pointcut name="viewMetadataFactoryIntroduction" expression="thinletMetadataFactoryIntroduction OR within(@ViewHandler..)" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
          expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
@@ -24,7 +25,11 @@
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="FormControllerFactoryAspect" />
+      <!-- 
+      Deprecated class:
       <aspect class="ThinletMetadataFactoryAspect" />
+      -->
+      <aspect class="ViewMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />

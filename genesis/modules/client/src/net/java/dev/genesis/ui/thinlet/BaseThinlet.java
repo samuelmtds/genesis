@@ -74,6 +74,8 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String ROW = "row";
    public static final String ROWS = "rows";
    public static final String SELECTED = "selected";
+   public static final String SELECTION = "selection";
+   public static final String SINGLE = "single";
    public static final String SLIDER = "slider";
    public static final String SPINBOX = "spinbox";
    public static final String START = "start";
@@ -292,6 +294,14 @@ public abstract class BaseThinlet extends Thinlet {
       return getInteger(component, SELECTED);
    }
 
+   protected String getSelection(Object component) {
+      return getChoice(component, SELECTION);
+   }
+
+   protected void setSelection(Object component, String selection) {
+      setChoice(component, SELECTION, selection);
+   }
+
    protected int getStart(Object component) {
       return getInteger(component, START);
    }
@@ -320,12 +330,12 @@ public abstract class BaseThinlet extends Thinlet {
       setString(component, TOOLTIP, tooltip);
    }
 
-   protected void setValue(Object component, String value) {
-      setString(component, VALUE, value);
+   protected void setValue(Object component, int value) {
+      setInteger(component, VALUE, value);
    }
 
-   protected String getValue(Object component) {
-      return getString(component, VALUE);
+   protected int getValue(Object component) {
+      return getInteger(component, VALUE);
    }
 
    protected boolean isVisible(Object component) {
@@ -412,7 +422,7 @@ public abstract class BaseThinlet extends Thinlet {
 
          type = getClass(component);
 
-         if (type.equals(COMBOBOX) || type.equals(LIST)) {
+         if (type.equals(COMBOBOX) || (type.equals(LIST) && getSelection(component).equals(SINGLE))) {
             Object selectedComponent = getSelectedItem(component);
 
             if (selectedComponent != null && type.equals(LIST)) {
@@ -447,13 +457,13 @@ public abstract class BaseThinlet extends Thinlet {
                }
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
-            setValue(component, getPropertyValue(properties, propertyName, 
-                  false, formatters));
+            setValue(component, Integer.parseInt(getPropertyValue(properties, propertyName, 
+                  false, formatters)));
          } else if (type.equals(PANEL)) {
             displayBean(properties.get(propertyName), component);
          } else if (type.equals(CHECKBOX)) {
             setSelected(component, Boolean.TRUE.equals(properties.get(propertyName)));
-         } else if (!type.equals(TABLE)){
+         } else if (!type.equals(TABLE) && !type.equals(LIST)){
             setText(component, getPropertyValue(properties, propertyName, 
                   false, formatters));
          }
@@ -556,7 +566,7 @@ public abstract class BaseThinlet extends Thinlet {
                properties.put(propertyName, null);
             }
          } else if (type.equals(PROGRESS_BAR) || type.equals(SLIDER)) {
-            properties.put(propertyName, getValue(component));
+            properties.put(propertyName, String.valueOf(getValue(component)));
          } else if (type.equals(TABLE)) {
             // skip it intentionally
          } else {
@@ -786,19 +796,33 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void bind(Object form) throws Exception {
-      bind(getDesktop(), form);
+      bind(getDesktop(), form, this);
    }
 
    protected void bind(Object widget, Object form) throws Exception {
-      prepareBinder(widget, form).bind();
+      bind(widget, form, this);
+   }
+
+   protected void bind(Object widget, Object form, Object handler) 
+         throws Exception {
+      prepareBinder(widget, form, handler).bind();
    }
 
    protected ThinletBinder prepareBinder(Object form) throws Exception {
-      return prepareBinder(getDesktop(), form);
+      return prepareBinder(getDesktop(), form, this);
    }
 
    protected ThinletBinder prepareBinder(Object widget, Object form) 
          throws Exception {
+      return prepareBinder(widget, form, this);
+   }
+
+   protected ThinletBinder prepareBinder(Object widget, Object form, 
+         Object handler) throws Exception {
+      if (widget instanceof Thinlet) {
+         widget = ((Thinlet)widget).getDesktop();
+      }
+
       Map formPerClass = (Map)formPerClassPerComponent.get(widget);
 
       if (formPerClass == null) {
@@ -814,14 +838,15 @@ public abstract class BaseThinlet extends Thinlet {
 
       formPerClass.put(form.getClass(), form);
 
-      final ThinletBinder binder = createBinder(widget, form);
+      final ThinletBinder binder = createBinder(widget, form, handler);
       binderPerForm.put(form, binder);
 
       return binder;
    }
 
-   protected ThinletBinder createBinder(Object widget, Object form){
-      return new ThinletBinder(this, widget, form);
+   protected ThinletBinder createBinder(Object widget, Object form, 
+         Object handler) {
+      return new ThinletBinder(this, widget, form, handler);
    }
 
    public void invokeFormAction(Object component) throws Exception {

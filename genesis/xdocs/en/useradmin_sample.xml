@@ -10,7 +10,7 @@
       <p>Installing the  <code>useradmin</code> sample is a simple task.
       <code>useradmin</code> distribution can be found in the full distribution
       or the full binary distribution genesis packages that can be found
-      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=1756">here</a>.
+      <a href="download.html">here</a>.
       Distributions for all samples
       are already setup to be run in standalone/local mode or with the <a
       href="http://www.jboss.org/">JBoss</a> application server, an open-source
@@ -242,7 +242,9 @@ public class User implements Serializable {
         <code>&lt;JBOSS_DIRECTORY&gt;/bin/run -c useradmin</code></li>
         <li>After JBoss has started, this sample can be executed by accessing
         <a href="http://localhost:8080/useradmin/">
-        http://localhost:8080/useradmin/</a> URL. Through this page, the link
+        http://localhost:8080/useradmin/</a> URL. Through this page, the 
+        "<a href="http://localhost:8080/useradmin/application/remote.jnlp">
+        Run remote User Admin</a>" link
         will activate the application download and run it using Java Web
         Start technology.</li>
         <li>Another option to run this sample is to use an ant task with
@@ -251,8 +253,22 @@ public class User implements Serializable {
         server</li>
         <li>It's also possible to execute this sample with local calls
         configuration only - i.e. the sample will not use the JBoss server in
-        anyway. In order to perfom this, use the following command:
-        <code>ant useradmin:run.local</code></li>
+        anyway. In order to perfom this, there are some options:</li>
+        <ul>
+           <li>Use the "<a href="http://localhost:8080/useradmin/application/local.jnlp">
+           Run local User Admin</a>" link from 
+           <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/
+           </a> URL.</li>
+           <li>Use the following line command: <code>ant useradmin:run.local</code></li>
+           <li>Double click the <code>useradmin-local-weaved.jar</code> file
+           located inside the
+           <code>&lt;GENESIS_DIST&gt;/samples/useradmin/dist/useradmin.war/application</code>
+           directory. In some operating systems this double click should 
+           be equivalent to the following line command:</li>
+<source>
+java -jar useradmin-local-weaved.jar
+</source>
+        </ul>
       </ul>
       <p>This sample goal is to demonstrate how a project might be structured
       and how to use genesis features. It's recommended to start new genesis-

@@ -9,7 +9,7 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="0.3-EA1-dev" />
+      <property name="genesis.version" value="3.0-EA1-dev" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
@@ -161,15 +161,20 @@
          <path refid="run.classpath" />
       </path>
 
-      <path id="run.local.classpath">
-         <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-local-weaved.jar" />
+      <path id="local.dependency.classpath">
          <pathelement path="${jdbc.driver}" />
          <fileset dir="${hibernate.dist}">
             <include name="cglib-full-*.jar"/>
             <include name="ehcache-*.jar"/>
+            <include name="jta*.jar"/>
          </fileset>
          <path refid="j2ee.path"/>
          <path refid="run.classpath" />
+      </path>
+
+      <path id="run.local.classpath">
+         <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-local-weaved.jar" />
+         <path refid="local.dependency.classpath" />
       </path>
 
       <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
@@ -344,11 +349,19 @@
    </target>
 
    <target name="useradmin:jar" depends="init">
+      <pathconvert property="local.classpath" pathsep=" ">
+         <mapper type="flatten"/>
+         <path refid="local.dependency.classpath" />
+      </pathconvert>
       <mkdir dir="${build.dir}" />
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar">
          <fileset dir="${weaving.remote.dest}" />
       </jar>
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar">
+         <manifest>
+            <attribute name="Main-Class" value="net.java.dev.genesis.samples.useradmin.UserAdmin"/>
+            <attribute name="Class-Path" value="${local.classpath}"/>
+         </manifest>
          <fileset dir="${weaving.local.dest}" />
       </jar>
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-shared.jar">
@@ -557,7 +570,7 @@
       </copy>
    </target>
 
-   <target name="useradmin:run.remote" depends="init,useradmin:check.common.properties,useradmin:check.installation.properties">
+   <target name="useradmin:run.remote" depends="init,useradmin:check.common.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true" classpathref="run.remote.classpath">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />

@@ -79,6 +79,15 @@
             </td>
           </tr>
           <tr>
+            <td>POJO</td>
+            <td>Classe</td>
+            <td>
+              <ul>
+                <li><a href="#@ViewHandler">@ViewHandler</a></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
             <td>Command</td>
             <td>Método</td>
             <td>
@@ -677,6 +686,42 @@ public class ExemploForm {
   </source>
     <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...
     </a></p>
+      </subsection>
+      <subsection name="@ViewHandler">
+        <p>Utilizado em POJOs (simples objetos Java) que contém metodos
+        anotados com <a href="#@BeforeAction"><code>@BeforeAction</code></a>
+        e/ou <a href="#@AfterAction"><code>@AfterAction</code></a>.</p>
+        <table>
+          <tr>
+            <th>Parâmetros</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Obrigatório</th>
+          </tr>
+          <tr>
+            <td>Não utiliza</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+  <p>Exemplo de uso</p>
+  <source>
+/**
+ * <b>@ViewHandler</b>
+ */
+public class ExemploViewHandler {
+   /**
+    * @BeforeAction
+    */
+   public boolean excluir() {
+      <b>...</b>
+   }
+<b>...</b>
+}
+  </source>
+    <p><a href="ui_additional_features.html#Utilizando_POJOs_para_tratar_eventos">Mais
+    informações...</a></p>
       </subsection>
       <subsection name="@Remotable">
         <p>Utilizado para anotar métodos de classes de negócio. Os métodos

@@ -18,6 +18,12 @@
  */
 package net.java.dev.genesis.ui.thinlet.metadata;
 
-public interface ThinletMetadataFactory {
+import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
+
+/**
+ * @deprecated Use net.java.dev.genesis.ui.metadata.ViewMetadataFactory instead. 
+ *             This class will be removed in the next major genesis release.
+ */
+public interface ThinletMetadataFactory extends ViewMetadataFactory {
    public ThinletMetadata getThinletMetadata(Class formClass);
 }

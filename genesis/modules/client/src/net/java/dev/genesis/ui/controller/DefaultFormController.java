@@ -138,12 +138,7 @@ public class DefaultFormController implements FormController {
 
    protected void populate(Map properties, boolean stringMap, Map converters) 
          throws Exception {
-
-      final boolean createPreviousState = previousState == null;
-
-      if (createPreviousState) {
-         previousState = createFormState(currentState);
-      }
+      final boolean createPreviousState = createPreviousState();
 
       try {
          if (properties == null) {
@@ -164,13 +159,11 @@ public class DefaultFormController implements FormController {
 
          evaluate(false);
       } catch (Exception e) {
-         reset(previousState);
+         resetPreviousState(createPreviousState);
 
          throw e;
       } finally {
-         if (createPreviousState) {
-            previousState = null;
-         }
+         releasePreviousState(createPreviousState);
       }
    }
 
@@ -687,22 +680,24 @@ public class DefaultFormController implements FormController {
 
    protected void invokeActionWithReset(MethodMetadata metadata, 
          boolean firstCall, boolean conditionally) throws Exception {
-      previousState = createFormState(currentState);
+
+      final boolean createPreviousState = createPreviousState();
 
       try {
          invokeAction(metadata, firstCall, conditionally);
       } catch (Exception e) {
-         reset(previousState);
+         resetPreviousState(createPreviousState);
 
          throw e;
       } finally {
-         previousState = null;
+         releasePreviousState(createPreviousState);
       }
    }
 
    public void updateSelection(DataProviderMetadata dataProviderMetadata, 
          int[] selected) throws Exception {
-      previousState = createFormState(currentState);
+
+      final boolean createPreviousState = createPreviousState();
 
       try {
          final List list = (List)currentState.getDataProvidedMap().get(
@@ -712,10 +707,32 @@ public class DefaultFormController implements FormController {
 
          update();
       } catch (Exception e) {
-         reset(previousState);
+         resetPreviousState(createPreviousState);
 
          throw e;
       } finally {
+         releasePreviousState(createPreviousState);
+      }
+   }
+
+   protected boolean createPreviousState() {
+      final boolean createPreviousState = previousState == null;
+
+      if (createPreviousState) {
+         previousState = createFormState(currentState);
+      }
+
+      return createPreviousState;
+   }
+
+   protected void resetPreviousState(boolean createPreviousState) throws Exception {
+      if (createPreviousState) {
+         reset(previousState);
+      }
+   }
+
+   protected void releasePreviousState(boolean createPreviousState) {
+      if (createPreviousState) {
          previousState = null;
       }
    }

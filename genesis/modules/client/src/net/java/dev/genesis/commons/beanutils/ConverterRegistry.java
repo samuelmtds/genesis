@@ -27,6 +27,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
+import net.java.dev.genesis.commons.beanutils.converters.DefaultConverter;
+import net.java.dev.genesis.registry.Registry;
 import net.java.dev.reusablecomponents.converters.EnumConverter;
 import net.java.dev.reusablecomponents.lang.Enum;
 
@@ -59,58 +61,75 @@ import org.apache.commons.beanutils.converters.StringConverter;
 import org.apache.commons.beanutils.converters.URLConverter;
 
 public final class ConverterRegistry extends ConvertUtilsBean {
+   private Registry registry;
 
    public ConverterRegistry() {
-      register(new BigIntegerConverter(), BigInteger.class);
-      register(new BooleanConverter(Boolean.FALSE), Boolean.TYPE);
-      register(new BooleanConverter(null), Boolean.class);
-      register(new BooleanArrayConverter(new boolean[0]), boolean[].class);
-      register(new ByteConverter(new Byte((byte)0)), Byte.TYPE);
-      register(new ByteConverter(null), Byte.class);
-      register(new ByteArrayConverter(new byte[0]), byte[].class);
-      register(new CharacterConverter(new Character(' ')), Character.TYPE);
-      register(new CharacterConverter(null), Character.class);
-      register(new CharacterArrayConverter(new char[0]), char[].class);
-      register(new ClassConverter(), Class.class);
-      register(new DoubleConverter(new Double(0.0)), Double.TYPE);
-      register(new DoubleConverter(null), Double.class);
-      register(new DoubleArrayConverter(new double[0]), double[].class);
-      register(new FloatConverter(new Float(0.0f)), Float.TYPE);
-      register(new FloatConverter(null), Float.class);
-      register(new FloatArrayConverter(new float[0]), float[].class);
-      register(new IntegerConverter(new Integer(0)), Integer.TYPE);
-      register(new IntegerConverter(null), Integer.class);
-      register(new IntegerArrayConverter(new int[0]), int[].class);
-      register(new LongConverter(new Long(0L)), Long.TYPE);
-      register(new LongConverter(null), Long.class);
-      register(new LongArrayConverter(new long[0]), long[].class);
-      register(new ShortConverter(new Short((short)0)), Short.TYPE);
-      register(new ShortConverter(null), Short.class);
-      register(new ShortArrayConverter(new short[0]), short[].class);
-      register(new StringConverter(), String.class);
-      register(new StringArrayConverter(new String[0]), String[].class);
-      register(new SqlDateConverter(), Date.class);
-      register(new SqlTimeConverter(), Time.class);
-      register(new SqlTimestampConverter(), Timestamp.class);
-      register(new FileConverter(), File.class);
-      register(new URLConverter(), URL.class);
+      getRegistry().register(BigInteger.class, new BigIntegerConverter());
+      registry.register(Boolean.TYPE, new BooleanConverter(Boolean.FALSE));
+      registry.register(Boolean.class, new BooleanConverter(null));
+      registry.register(boolean[].class, new BooleanArrayConverter(
+            new boolean[0]));
+      registry.register(Byte.TYPE, new ByteConverter(new Byte((byte)0)));
+      registry.register(Byte.class, new ByteConverter(null));
+      registry.register(byte[].class, new ByteArrayConverter(new byte[0]));
+      registry.register(Character.TYPE, new CharacterConverter(new Character(
+            ' ')));
+      registry.register(Character.class, new CharacterConverter(null));
+      registry.register(char[].class, new CharacterArrayConverter(new char[0]));
+      registry.register(Class.class, new ClassConverter());
+      registry.register(Double.TYPE, new DoubleConverter(new Double(0.0)));
+      registry.register(Double.class, new DoubleConverter(null));
+      registry
+            .register(double[].class, new DoubleArrayConverter(new double[0]));
+      registry.register(Float.TYPE, new FloatConverter(new Float(0.0f)));
+      registry.register(Float.class, new FloatConverter(null));
+      registry.register(float[].class, new FloatArrayConverter(new float[0]));
+      registry.register(Integer.TYPE, new IntegerConverter(new Integer(0)));
+      registry.register(Integer.class, new IntegerConverter(null));
+      registry.register(int[].class, new IntegerArrayConverter(new int[0]));
+      registry.register(Long.TYPE, new LongConverter(new Long(0L)));
+      registry.register(Long.class, new LongConverter(null));
+      registry.register(long[].class, new LongArrayConverter(new long[0]));
+      registry.register(Short.TYPE, new ShortConverter(new Short((short)0)));
+      registry.register(Short.class, new ShortConverter(null));
+      registry.register(short[].class, new ShortArrayConverter(new short[0]));
+      registry.register(String.class, new StringConverter());
+      registry
+            .register(String[].class, new StringArrayConverter(new String[0]));
+      registry.register(Date.class, new SqlDateConverter());
+      registry.register(Time.class, new SqlTimeConverter());
+      registry.register(Timestamp.class, new SqlTimestampConverter());
+      registry.register(File.class, new FileConverter());
+      registry.register(URL.class, new URLConverter());
 
-      register(new BigDecimalConverter(), BigDecimal.class);
-      register(new EnumConverter(), Enum.class);
-      register(new StringConverter(), Object.class);
+      registry.register(BigDecimal.class, new BigDecimalConverter());
+      registry.register(Enum.class, new EnumConverter());
+      registry.register(Object.class, new DefaultConverter());
+   }
+
+   // To avoid NPE when ConvertUtilsBean constructor calls 
+   // register(converter,class). The registry instance would be null at that 
+   // time due to the initialization order of member variables
+   private Registry getRegistry() {
+      if (registry == null) {
+         registry = new Registry();
+      }
+      return registry;
+   }
+
+   public void register(Converter converter, Class clazz) {
+      getRegistry().register(clazz, converter);
+   }
+
+   public void deregister() {
+      getRegistry().deregister();
+   }
+
+   public void deregister(Class clazz) {
+      getRegistry().deregister(clazz);
    }
 
    public Converter lookup(Class clazz) {
-      Converter c = null;
-
-      //TODO: support full hierarchy support
-      if (clazz.isInterface()) {
-         return super.lookup(Object.class);
-      }
-      while (clazz != null && (c = super.lookup(clazz)) == null
-            && !clazz.equals(Object.class)) {
-         clazz = clazz.getSuperclass();
-      }
-      return c;
+      return (Converter)registry.get(clazz, true);
    }
 }

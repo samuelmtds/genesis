@@ -18,62 +18,18 @@
  */
 package net.java.dev.genesis.ui.thinlet.metadata;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import net.java.dev.genesis.ui.metadata.ViewMetadata;
 
-import net.java.dev.genesis.reflection.ReflectionInvoker;
-
-public class ThinletMetadata {
-   private final Class thinletClass;
-
-   private final Map beforeActions;
-   private final Map afterActions;
-
-   public ThinletMetadata(final Class formClass) {
-      this.thinletClass = formClass;
-      this.beforeActions = new HashMap();
-      this.afterActions = new HashMap();
+/**
+ * @deprecated Use net.java.dev.genesis.ui.metadata.ViewMetadata instead. This
+ *             class will be removed in the next major genesis release.
+ */
+public class ThinletMetadata extends ViewMetadata {
+   public ThinletMetadata(final Class thinletClass) {
+      super(thinletClass);
    }
 
    public Class getThinletClass() {
-      return thinletClass;
-   }
-
-   public void addBeforeAction(final String actionName, final String methodName) {
-      beforeActions.put(actionName, methodName);
-   }
-
-   public void addAfterAction(final String actionName, final String methodName) {
-      afterActions.put(actionName, methodName);
-   }
-
-   public boolean invokeBeforeAction(final Object target, final String actionName)
-         throws NoSuchMethodException, IllegalAccessException,
-         ClassNotFoundException, InvocationTargetException {
-
-      final String methodName = (String)beforeActions.get(actionName);
-
-      if (methodName == null) {
-         return true;
-      }
-
-      final Object result = ReflectionInvoker.getInstance().invoke(target,
-            methodName);
-
-      return !Boolean.FALSE.equals(result);
-   }
-
-   public void invokeAfterAction(final Object target, final String actionName)
-         throws NoSuchMethodException, IllegalAccessException,
-         ClassNotFoundException, InvocationTargetException {
-
-      final String methodName = (String)afterActions.get(actionName);
-
-      if (methodName == null) {
-         return;
-      }
-
-      ReflectionInvoker.getInstance().invoke(target, methodName);
+      return getViewClass();
    }
 }

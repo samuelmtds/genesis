@@ -555,7 +555,7 @@ public class AfterActionFormExample {
         the framework internal value cache as displayed data will be stale,
         causing several anomalies. Methods <code>refreshView()</code>,
         <code>refreshView(Object)</code> and
-        <code>refreshViewFromForm(Object</code> can be used in these scenarios.
+        <code>refreshViewFromForm(Object)</code> can be used in these scenarios.
         </p>
         <p>The first method, <code>refreshView()</code>, should be used when
         just one form instance is bound to a view.

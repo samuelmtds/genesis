@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui;
 
+import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 
@@ -33,12 +34,7 @@ public class ActionInvoker {
 
    private static FormController getFormController(final Object target) 
          throws Exception {
-      if (!(target instanceof FormControllerFactory)) {
-         throw new IllegalArgumentException(target + " should implement " + 
-               "FormControllerFactory; probably it should have been annotated " +
-               "with @Form or your aop.xml/weaving process should be " +
-               "properly configured.");
-      }
+      TypeChecker.checkFormControllerFactory(target);
 
       final FormController controller = ((FormControllerFactory)target)
             .getFormController(target);

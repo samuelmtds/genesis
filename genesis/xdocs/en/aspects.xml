@@ -286,10 +286,9 @@ public interface CriteriaResolver {
     <section name="Instantiating metadata">
       <p>All form to view binding is based on metadata exposed by both sides.
       This metadata model can be found at
-      <code>net.java.dev.genesis.ui.metadata</code> for forms and at
-      <code>net.java.dev.genesis.ui.thinlet.metadata</code> for views. For both
-      packages, there are interfaces - <code>FormMetadataFactory</code> and
-      <code>ThinletMetadataFactory</code> -, that need to be implemented by
+      <code>net.java.dev.genesis.ui.metadata</code> for forms and views. In
+      this package, there are interfaces - <code>FormMetadataFactory</code> and
+      <code>ViewMetadataFactory</code> -, that need to be implemented by
       classes responsible for returning metadata. Below there is a transcription
       of relevant code snippets for both of them:</p>
 <source>
@@ -298,22 +297,26 @@ public interface FormMetadataFactory {
 }
 </source>
 <source>
-public interface ThinletMetadataFactory {
-   public ThinletMetadata getThinletMetadata(Class formClass);
+public interface ViewMetadataFactory {
+   public ViewMetadata getViewMetadata(Class formClass);
 }
 </source>
       <p>Aspects <code>FormMetadataFactoryAspect</code> and
-      <code>ThinletMetadataFactoryAspect</code> define implementations of these
+      <code>ViewMetadataFactoryAspect</code> define implementations of these
       interfaces that use annotation for building metadata. The implementations
       are called <code>AspectFormMetadataFactory</code> and
-      <code>AspectThinletMetadataFactory</code> and they are static inner
+      <code>AspectViewMetadataFactory</code> and they are static inner
       classes of the aspects. Classes that need to have these implementations
       introduced into them are selected by pointcuts named
       <code>formMetadataFactoryIntroduction</code> and
-      <code>thinletMetadataFactoryIntroduction</code>. To override the way
+      <code>viewMetadataFactoryIntroduction</code>. To override the way
       metadata is created - by using an external xml definition, for example -
       one just have to introduce different interface implementations in forms
       and views.</p>
+      <p>The <code>ThinletMetadataFactory</code> class and its related classes
+      have been replaced starting from relase 2.1 by the
+      <code>ViewMetadataFactory</code> class family and they will be removed in
+      a future genesis release.</p>
     </section>
     <section name="Instantiating the form controller">
       <p>Updating the internal state of a form and firing events related to
@@ -504,23 +507,23 @@ public interface FormControllerFactory {
             EJB instance using its local interface</td>
           </tr>
           <tr>
-            <td>ThinletMetadataFactoryAspect</td>
-            <td>thinletMetadataFactoryIntroduction</td>
-            <td>Class</td>
-            <td>Introduces interface
-            <code>
-            net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory
-            </code>
-            having
-            <code>ThinletMetadataFactoryAspect$AspectThinletMetadataFactory
-            </code> as its implementation</td>
-          </tr>
-          <tr>
             <td>TimeoutAspect</td>
             <td>timeout</td>
             <td>Method</td>
             <td>Intercepts a method execution so it completes in a specified
             amount of time or an exception is thrown</td>
+          </tr>
+          <tr>
+            <td>ViewMetadataFactoryAspect</td>
+            <td>viewMetadataFactoryIntroduction</td>
+            <td>Class</td>
+            <td>Introduces interface
+            <code>
+            net.java.dev.genesis.ui.metadata.ViewMetadataFactory
+            </code>
+            having
+            <code>ViewMetadataFactoryAspect$AspectViewMetadataFactory
+            </code> as its implementation</td>
           </tr>
           <tr>
             <td>WaitCursorAspect</td>
@@ -553,6 +556,8 @@ public interface FormControllerFactory {
       <pointcut name="formControllerFactoryIntroduction" expression="form" />
       <pointcut name="thinletMetadataFactoryIntroduction"
          expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+      <pointcut name="viewMetadataFactoryIntroduction"
+         expression="thinletMetadataFactoryIntroduction OR within(@ViewHandler ..)" />
       <pointcut name="criteriaResolverIntroduction"
          expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
@@ -568,7 +573,7 @@ public interface FormControllerFactory {
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="FormControllerFactoryAspect" />
-      <aspect class="ThinletMetadataFactoryAspect" />
+      <aspect class="ViewMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />

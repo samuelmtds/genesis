@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.metadata;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.script.ScriptExpression;
 
@@ -164,7 +166,11 @@ public class DataProviderMetadata {
       Object value = null;
 
       if (objectField.isMultiple()) {
-         final Object[] values = new Object[selectedIndexes.length];
+         final Object[] values = objectField.isArray() ?
+               (Object[])Array.newInstance(
+                     ClassesCache.getClass(objectField.getFieldTypeName()).getComponentType(),
+                     selectedIndexes.length)
+               : new Object[selectedIndexes.length];
 
          for (int i = 0; i < selectedIndexes.length; i++) {
             values[i] = objectList.get(selectedIndexes[i]);
