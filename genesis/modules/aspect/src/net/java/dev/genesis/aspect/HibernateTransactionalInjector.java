@@ -28,7 +28,6 @@ import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
 
 public class HibernateTransactionalInjector implements TransactionalInjector {
-   private boolean transactional;
    private boolean isHibernateCommand;
    private Transaction transaction;
    private HibernateCommand hibernateCommand;
@@ -39,7 +38,6 @@ public class HibernateTransactionalInjector implements TransactionalInjector {
    
    public void beforeInvocation(final Object target, final boolean transactional) 
                                                    throws HibernateException {
-      this.transactional = transactional;
       isHibernateCommand = target instanceof HibernateCommand;
 
       if (!isHibernateCommand) {

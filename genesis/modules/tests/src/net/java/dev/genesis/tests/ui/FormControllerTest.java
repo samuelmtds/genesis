@@ -59,7 +59,6 @@ public class FormControllerTest extends TestCase {
       final Float fieldFloatWrapper = new Float(
             445095043543435421321333.434344324233F);
       final String fieldString = "aisfBCASADr";
-      final BigDecimal fieldBigDecimal = new BigDecimal("234423.423234");
 
       newValues.put("fieldBoolean", Boolean.toString(fieldBoolean));
       newValues.put("fieldChar", Character.toString(fieldChar));
