@@ -21,6 +21,6 @@ package net.java.dev.genesis.command.hibernate;
 import java.util.Map;
 
 public interface CriteriaResolver {
-   public Map getPropertiesMap() throws Throwable;
+   public Map getPropertiesMap();
    public void setPropertiesMap(final Map propertiesMap);
 }

@@ -75,10 +75,9 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
     * @Introduce criteriaResolverIntroduction deployment-model=perInstance
     */
    public static class CriteriaResolverImpl implements CriteriaResolver {
-
       private Map propertiesMap;
 
-      public Map getPropertiesMap() throws Throwable {
+      public Map getPropertiesMap() {
          return propertiesMap;
       }
 

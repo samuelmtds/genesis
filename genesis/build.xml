@@ -200,7 +200,16 @@
 		       classpathref="client.dependency.classpath">
 			<src path="${genesis.module.client}/${src.dir}" />
 		</javac>
+		<antcall target="client:annotation" />
 		<antcall target="client:resources" />
+	</target>
+
+	<target name="client:annotation">
+      <annotationc verbose="true"
+            srcdir="${genesis.module.client}/${src.dir}"
+            destdir="${genesis.module.client}/${build.dest}"
+            classpath="${genesis.module.client}/${build.dest}"
+            properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
 	</target>
 
 	<target name="client:resources">
