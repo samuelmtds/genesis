@@ -65,7 +65,8 @@ public class ThinletBinder implements FormControllerListener {
    private final Collection boundFieldNames = new HashSet();
    private final Map dataProvided = new HashMap();
 
-   private final Map widgetGroupMap = new HashMap();
+   private final Map enabledWidgetGroupMap = new HashMap();
+   private final Map visibleWidgetGroupMap = new HashMap();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, 
             final Object form) {
@@ -194,22 +195,48 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    private void createWidgetGroup(Object component, String name) {
-      final Collection widgetGroupCollection = new ArrayList();
-      widgetGroupCollection.add(name);
+      final Collection enabledWidgetGroupCollection = new ArrayList();
+      final Collection visibleWidgetGroupCollection = new ArrayList();
 
-      final String widgetGroup = (String)thinlet.getProperty(component, 
+      enabledWidgetGroupCollection.add(name);
+      visibleWidgetGroupCollection.add(name);
+
+      final String widgetGroup = (String)thinlet.getProperty(component,
             "widgetGroup");
+      final String enabledWidgetGroup = (String)thinlet.getProperty(component,
+            "enabledWidgetGroup");
+      final String visibleWidgetGroup = (String)thinlet.getProperty(component,
+            "visibleWidgetGroup");
 
       if (widgetGroup != null) {
-         widgetGroupCollection.addAll(Arrays.asList(widgetGroup.split(",")));
+         final List widgets = Arrays.asList(widgetGroup.split(","));
+         enabledWidgetGroupCollection.addAll(widgets);
+         visibleWidgetGroupCollection.addAll(widgets);
 
          if (log.isDebugEnabled()) {
             log.debug("Adding " + widgetGroup + " as a widget group for " +
                   name + " in class " + form.getClass());
          }
       }
+      if (enabledWidgetGroup != null) {
+         enabledWidgetGroupCollection.addAll(Arrays.asList(enabledWidgetGroup.split(",")));
 
-      widgetGroupMap.put(name, widgetGroupCollection);
+         if (log.isDebugEnabled()) {
+            log.debug("Adding " + enabledWidgetGroup + " as a enabled widget group for " +
+                  name + " in class " + form.getClass());
+         }
+      }
+      if (visibleWidgetGroup != null) {
+         visibleWidgetGroupCollection.addAll(Arrays.asList(visibleWidgetGroup.split(",")));
+
+         if (log.isDebugEnabled()) {
+            log.debug("Adding " + visibleWidgetGroup + " as a visible widget group for " +
+                  name + " in class " + form.getClass());
+         }
+      }
+
+      enabledWidgetGroupMap.put(name, enabledWidgetGroupCollection);
+      visibleWidgetGroupMap.put(name, visibleWidgetGroupCollection);
    }
 
    public void setValue(Object component, String name) throws Exception {
@@ -438,74 +465,54 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    public void enabledConditionsChanged(Map updatedEnabledConditions) {
-      for (final Iterator i = updatedEnabledConditions.entrySet().iterator(); 
-            i.hasNext(); ) {
-         final Map.Entry entry = (Map.Entry)i.next();
-
-         final Collection widgetGroup = (Collection)widgetGroupMap.get(
-               entry.getKey().toString());
-
-         if (widgetGroup == null) {
-            log.warn(entry.getKey() + " enabled state should be changed, " +
-                  "but could not be found in the view component for " + 
-                  form.getClass());
-            continue;
-         }
-
-         if (log.isDebugEnabled()) {
-            log.debug("Changing " + entry.getKey() + " enabled state to " + 
-                  entry.getValue());
-         }
-
-         for (Iterator it = widgetGroup.iterator(); it.hasNext(); ) {
-            final Object widget = thinlet.find(root, it.next().toString());
-
-            if (widget == null) {
-               log.warn(entry.getKey() + " enabled state should be changed, " +
-                     "but could not be found in the view component for " + 
-                     form.getClass());
-               continue;
-            }
-
-            thinlet.setEnabled(widget, ((Boolean)entry.getValue())
-                  .booleanValue());
-         }
-      }
+      conditionsChanged(updatedEnabledConditions, true);
    }
 
-   // TODO: merge logic with enabledConditionsChanged
    public void visibleConditionsChanged(Map updatedVisibleConditions) {
-      for (final Iterator i = updatedVisibleConditions.entrySet().iterator();
+      conditionsChanged(updatedVisibleConditions, false);
+   }
+
+   public void conditionsChanged(Map updatedConditions, boolean enabled) {
+      for (final Iterator i = updatedConditions.entrySet().iterator();
             i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
 
-         final Collection widgetGroup = (Collection)widgetGroupMap.get(
-               entry.getKey().toString());
+         final Collection widgetGroup = enabled ?
+               (Collection) enabledWidgetGroupMap.get(entry.getKey().toString()) :
+               (Collection) visibleWidgetGroupMap.get(entry.getKey().toString());
 
          if (widgetGroup == null) {
-            log.warn(entry.getKey() + " visible state should be changed, " +
-                  "but could not be found in the view component for " + 
-                  form.getClass());
+            log.warn(entry.getKey() + (enabled ? " enabled" : " visible")
+                  + " state should be changed, "
+                  + "but could not be found in the view component for "
+                  + form.getClass());
             continue;
          }
 
          if (log.isDebugEnabled()) {
-            log.debug("Changing " + entry.getKey() + " visible state to " + 
-                  entry.getValue());
+            log.debug("Changing " + entry.getKey()
+                  + (enabled ? " enabled" : " visible") + " state to "
+                  + entry.getValue());
          }
 
          for (Iterator it = widgetGroup.iterator(); it.hasNext(); ) {
             final Object widget = thinlet.find(root, it.next().toString());
 
             if (widget == null) {
-               log.warn(entry.getKey() + " visible state should be changed, " +
-                     "but could not be found in the view component for " + 
-                     form.getClass());
+               log.warn(entry.getKey() + (enabled ? " enabled" : " visible")
+                     + " state should be changed, "
+                     + "but could not be found in the view component for "
+                     + form.getClass());
                continue;
             }
 
-            thinlet.setVisible(widget, ((Boolean)entry.getValue())
-                  .booleanValue());
+            if (enabled) {
+               thinlet.setEnabled(widget, ((Boolean)entry.getValue())
+                     .booleanValue());
+            } else {
+               thinlet.setVisible(widget, ((Boolean)entry.getValue())
+                     .booleanValue());
+            }
          }
       }
    }
