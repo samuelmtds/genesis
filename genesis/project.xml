@@ -63,9 +63,9 @@
       </mailingList>
       <mailingList>
          <name>User list</name> 
-         <subscribe>user-subscribe@genesis.dev.java.net</subscribe> 
-         <unsubscribe>user-unsubscribe@genesis.dev.java.net</unsubscribe> 
-         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=user</archive> 
+         <subscribe>users-subscribe@genesis.dev.java.net</subscribe> 
+         <unsubscribe>users-unsubscribe@genesis.dev.java.net</unsubscribe> 
+         <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=users</archive> 
       </mailingList>
       <mailingList>
          <name>Lista dos usuários</name> 
@@ -106,6 +106,33 @@
          </roles>
       </developer>
    </developers>
+   <contributors>
+      <contributor>
+         <name>Bruno Souza</name>
+         <id>brunos</id>
+         <email>brunos@dev.java.net</email>
+         <organization>Summa Technologies do Brasil Ltda.</organization>
+         <roles>
+            <role>English translation</role>
+         </roles>
+      </contributor>
+      <contributor>
+         <name>Liaw Mike</name>
+         <id>lmike</id>
+         <email>lmike@dev.java.net</email>
+         <organization>Summa Technologies do Brasil Ltda.</organization>
+         <roles>
+            <role>English translation</role>
+         </roles>
+      </contributor>
+      <contributor>
+         <name>Richard Nill</name>
+         <organization>Summa Technologies Inc.</organization>
+         <roles>
+            <role>English translation</role>
+         </roles>
+      </contributor>
+   </contributors>
    <licenses>
       <license>
          <name>LGPL</name>
