@@ -9,7 +9,7 @@
     <section name="Guia de referência rápida de anotações">
       <p>Boa parte do uso das funcionalidades do genesis exige apenas a inclusão
       de tags específicas (chamadas anotações) no código. Este guia rápido
-      explica as anotações e contém exemplos de uso extraidos dos arquivos 
+      explica as anotações e contém exemplos de uso extraidos dos arquivos
       da aplicação exemplo <a href="useradmin_sample.html">useradmin</a>.</p>
     </section>
     <section name="Anotações do genesis">
@@ -142,8 +142,8 @@
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
 /**
  * <b>@Form</b>
  * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
@@ -152,7 +152,7 @@
  */
 public class InsertUpdateForm {
 <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_basic_concepts.html#Entendendo_os_forms">Mais informações...</a></p>
       </subsection>
       <subsection name="@Condition">
@@ -176,8 +176,8 @@ public class InsertUpdateForm {
             <td><b>Sim</b></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
 /**
  * @Form
  * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)</b>
@@ -192,7 +192,7 @@ public class InsertUpdateForm {
     */
    public void findRole() throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Declarando_condições">Mais informações...</a></p>
       </subsection>
       <subsection name="@DataProvider">
@@ -237,14 +237,14 @@ public class InsertUpdateForm {
             <td>somente se <code>objectField</code> não for especificado</td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
    /**
     * <b>@DataProvider objectField=country</b>
     */
    public Collection provideCountries() throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Populando_combos_e_tabelas">Mais informações...</a></p>
       </subsection>
       <subsection name="@EnabledWhen">
@@ -266,15 +266,15 @@ public class InsertUpdateForm {
             <td><b>Sim</b></td>
           </tr>
         </table>
-	<p>Exemplo de uso (UsersListForm.java):</p>
-	<source>
+  <p>Exemplo de uso (UsersListForm.java):</p>
+  <source>
    /**
     * @Action
     * <b>@EnabledWhen $usersSelected</b>
     */
    public void remove() throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Habilitando_e_desabilitando_componentes">Mais informações...</a></p>
       </subsection>
       <subsection name="@VisibleWhen">
@@ -296,15 +296,15 @@ public class InsertUpdateForm {
             <td><b>Sim</b></td>
           </tr>
         </table>
-	<p>Exemplo de uso (UsersListForm.java):</p>
-	<source>
+  <p>Exemplo de uso (UsersListForm.java):</p>
+  <source>
    /**
     * @Action
     * <b>@VisibleWhen pageNumber &gt; 0</b>
     */
    public void previousPage() {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Controlando_a_visibilidade">Mais informações...</a></p>
       </subsection>
       <subsection name="@CallWhen">
@@ -327,15 +327,15 @@ public class InsertUpdateForm {
             <td><b>Sim</b></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
    /**
     * @DataProvider objectField=state
     * <b>@CallWhen g:hasChanged(country)</b>
     */
    public Collection provideState() throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Invocando_métodos_automaticamente">Mais informações...</a></p>
       </subsection>
       <subsection name="@ClearOn">
@@ -355,8 +355,8 @@ public class InsertUpdateForm {
             <td><b>Sim</b></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
    <b>...</b>
    /**
     * <b>@ClearOn g:isEmpty(roleCode)</b>
@@ -366,14 +366,14 @@ public class InsertUpdateForm {
    }
 
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais informações...</a></p>
       </subsection>
       <subsection name="@ValidateBefore">
         <p>
-        O suporte de validações do genesis é implementado através de componentes do Jakarta project
-        <a href="http://jakarta.apache.org/commons/validator/" class="externalLink" title="External Link">commons-validator</a>.
-	      </p>
+        O suporte de validações do genesis é implementado através de integração
+        com o <a href="http://jakarta.apache.org/commons/validator/">Commons
+        Validator</a>.</p>
         <p>Força a execução da validação antes de ser executado o método
         definido como<a href="#@Action">@Action</a>. Só pode ser usado nestes
         métodos.</p>
@@ -391,8 +391,8 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
    <b>...</b>
    /**
     * @Action
@@ -400,7 +400,7 @@ public class InsertUpdateForm {
     */
    public void save() throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_additional_features.html#Validando_os_dados">Mais informações...</a></p>
       </subsection>
       <!--subsection name="@DisplayOnly">
@@ -539,8 +539,8 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateForm.java):</p>
+  <source>
    <b>...</b>
    /**
     * <b>@Action</b>
@@ -548,7 +548,7 @@ public class InsertUpdateForm {
     */
    public void save() throws Exception {
    <b>...</b>
-	</source>
+  </source>
         <p>define o método <b>save</b> como alvo do acionamento de um botão
         com nome "save" na interface gráfica.</p>
     <p><a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">Mais informações...</a></p>
@@ -578,15 +578,15 @@ public class InsertUpdateForm {
             método do form</td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateView.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateView.java):</p>
+  <source>
    <b>...</b>
    /**
     * <b>@BeforeAction</b>
     */
    public void chooseRole() throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_basic_concepts.html#Usando_@BeforeAction">Mais informações...</a></p>
       </subsection>
       <subsection name="@AfterAction">
@@ -614,15 +614,15 @@ public class InsertUpdateForm {
             método do form</td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateView.java):</p>
-	<source>
+  <p>Exemplo de uso (InsertUpdateView.java):</p>
+  <source>
    <b>...</b>
    /**
     * @AfterAction
     */
    public void save() {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...</a></p>
       </subsection>
       <subsection name="@Remotable">
@@ -647,8 +647,8 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (RoleSearchCommand.java):</p>
-	<source>
+  <p>Exemplo de uso (RoleSearchCommand.java):</p>
+  <source>
    <b>...</b>
    /**
     * <b>@Remotable</b>
@@ -657,7 +657,7 @@ public class InsertUpdateForm {
       return getSession().createQuery("from Role").list();
    }
    <b>...</b>
-	</source>
+  </source>
     <p><a href="business_component_model.html#Remotabilidade_transparente">Mais informações...</a></p>
       </subsection>
       <subsection name="@Transactional">
@@ -685,15 +685,15 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (RoleRemoveCommand.java):</p>
-	<source>
+  <p>Exemplo de uso (RoleRemoveCommand.java):</p>
+  <source>
    <b>...</b>
    /**
     * <b>@Transactional</b>
     */
    public boolean removeRole(final Role role) throws Exception {
    <b>...</b>
-	</source>
+  </source>
     <p><a href="business_component_model.html#Suporte_a_transações">Mais informações...</a></p>
       </subsection>
       <subsection name="@Criteria">
@@ -718,8 +718,8 @@ public class InsertUpdateForm {
             o Criteria</td>
             <td><b>Sim</b></td>
           </tr>
-	<p>Exemplo de uso (UserSearchCommand.java):</p>
-	<source>
+  <p>Exemplo de uso (UserSearchCommand.java):</p>
+  <source>
    <b>...</b>
 public class UserSearchCommand extends AbstractHibernateCriteria {
    <b>...</b>
@@ -728,7 +728,7 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
     */
    public Page getUsers(final int pageNumber)
    <b>...</b>
-	</source>
+  </source>
         </table>
     <p><a href="business_component_model.html#Pesquisas_dinâmicas_com_Criteria">Mais informações...</a></p>
       </subsection>
