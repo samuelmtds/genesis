@@ -1,0 +1,99 @@
+          <XDtMethod:ifHasMethodTag tagName="hibernate.cache">
+            <cache 
+                usage="<XDtMethod:methodTagValue tagName="hibernate.cache" paramName="usage" values="read-only,read-write,nonstrict-read-write,transactional" />" 
+             />
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.jcs-cache">
+            <jcs-cache 
+                usage="<XDtMethod:methodTagValue tagName="hibernate.jcs-cache" paramName="usage" values="read-only,read-write,nonstrict-read-write,transactional" />" 
+             />
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-cache">
+            <cache 
+                usage="<XDtMethod:methodTagValue tagName="hibernate.collection-cache" paramName="usage" values="read-only,read-write,nonstrict-read-write,transactional" />" 
+             />
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-jcs-cache">
+            <jcs-cache 
+                usage="<XDtMethod:methodTagValue tagName="hibernate.collection-jcs-cache" paramName="usage" values="read-only,read-write,nonstrict-read-write,transactional" />" 
+             />
+          </XDtMethod:ifHasMethodTag>
+
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-key">
+              <key
+              <XDtMethod:ifHasMethodTag tagName="hibernate.collection-key" paramName="column">
+                  column="<XDtMethod:methodTagValue tagName="hibernate.collection-key" paramName="column" />"
+              </XDtMethod:ifHasMethodTag>
+              <XDtMethod:ifHasMethodTag tagName="hibernate.collection-key" paramName="length">
+                  length="<XDtMethod:methodTagValue tagName="hibernate.collection-key" paramName="length" />"
+              </XDtMethod:ifHasMethodTag>
+              >
+              <XDtMethod:forAllMethodTags tagName="hibernate.collection-key-column">
+                  <column name="<XDtMethod:methodTagValue tagName="hibernate.collection-key-column" paramName="name" />" />
+              </XDtMethod:forAllMethodTags>
+              </key>
+          </XDtMethod:ifHasMethodTag>
+
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-index">
+              <index
+                  column="<XDtMethod:methodTagValue tagName="hibernate.collection-index" paramName="column" />"
+              <XDtMethod:ifHasMethodTag tagName="hibernate.collection-index" paramName="type">
+                  type="<XDtMethod:methodTagValue tagName="hibernate.collection-index" paramName="type" />"
+              </XDtMethod:ifHasMethodTag>
+              <XDtMethod:ifHasMethodTag tagName="hibernate.collection-index" paramName="length">
+                  length="<XDtMethod:methodTagValue tagName="hibernate.collection-index" paramName="length" />"
+              </XDtMethod:ifHasMethodTag>
+              />
+          </XDtMethod:ifHasMethodTag>
+	  
+          <XDtMethod:ifHasMethodTag tagName="hibernate.index-many-to-many">
+              <index-many-to-many
+	      	  class="<XDtMethod:methodTagValue tagName="hibernate.index-many-to-many" paramName="class" />"
+              <XDtMethod:ifHasMethodTag tagName="hibernate.index-many-to-many" paramName="column">
+                  column="<XDtMethod:methodTagValue tagName="hibernate.index-many-to-many" paramName="column" />"
+              </XDtMethod:ifHasMethodTag>
+              />
+          </XDtMethod:ifHasMethodTag>
+
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-element">
+              <element
+                  column="<XDtMethod:methodTagValue tagName="hibernate.collection-element" paramName="column" />"
+                  type="<XDtMethod:methodTagValue tagName="hibernate.collection-element" paramName="type" />"
+              <XDtMethod:ifHasMethodTag tagName="hibernate.collection-element" paramName="length">
+                  length="<XDtMethod:methodTagValue tagName="hibernate.collection-element" paramName="length" />"
+              </XDtMethod:ifHasMethodTag>
+                  not-null="<XDtMethod:methodTagValue tagName="hibernate.collection-element" paramName="not-null" default="false" />"
+                  unique="<XDtMethod:methodTagValue tagName="hibernate.collection-element" paramName="unique" default="false" />"
+              />
+          </XDtMethod:ifHasMethodTag>
+
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-composite-element">
+              <composite-element
+                  class="<XDtMethod:methodTagValue tagName="hibernate.collection-composite-element" paramName="class" />"
+              >
+                  <XDtClass:pushClass value="<XDtMethod:methodTagValue tagName='hibernate.collection-composite-element' paramName='class' />">
+                      <XDtMethod:forAllMethods superclasses="true" sort="true">
+                          <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-properties.xdt">
+                          </XDtMerge:merge>
+                      </XDtMethod:forAllMethods>
+
+                  </XDtClass:pushClass>
+              </composite-element>
+          </XDtMethod:ifHasMethodTag>
+
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-many-to-many">
+              <many-to-many
+                  class="<XDtMethod:methodTagValue tagName="hibernate.collection-many-to-many" paramName="class" />"
+		  <XDtMethod:ifHasMethodTag tagName="hibernate.collection-many-to-many" paramName="column">
+                  column="<XDtMethod:methodTagValue tagName="hibernate.collection-many-to-many" paramName="column" />"
+		  </XDtMethod:ifHasMethodTag>
+                  outer-join="<XDtMethod:methodTagValue tagName="hibernate.collection-many-to-many" paramName="outer-join" values="auto,true,false" default="auto" />"
+              />
+          </XDtMethod:ifHasMethodTag>
+
+          <XDtMethod:ifHasMethodTag tagName="hibernate.collection-one-to-many">
+              <one-to-many
+                  class="<XDtMethod:methodTagValue tagName="hibernate.collection-one-to-many" paramName="class" />"
+              />
+          </XDtMethod:ifHasMethodTag>
+          

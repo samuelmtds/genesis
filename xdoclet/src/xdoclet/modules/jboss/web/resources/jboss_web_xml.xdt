@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="<XDtConfig:configParameterValue paramName='Xmlencoding'/>"?>
+<!DOCTYPE jboss-web PUBLIC "<XDtXml:publicId/>" "<XDtXml:systemId/>">
+
+<jboss-web>
+
+  <XDtConfig:ifConfigParamNotEquals paramName="Securitydomain" value="">
+   <security-domain><XDtConfig:configParameterValue paramName="Securitydomain"/></security-domain>
+  </XDtConfig:ifConfigParamNotEquals>
+  <XDtConfig:ifConfigParamNotEquals paramName="Contextroot" value="">
+   <context-root><XDtConfig:configParameterValue paramName="Contextroot"/></context-root>
+  </XDtConfig:ifConfigParamNotEquals>
+  <XDtConfig:ifConfigParamNotEquals paramName="Virtualhost" value="">
+   <virtual-host><XDtConfig:configParameterValue paramName="Virtualhost"/></virtual-host>
+  </XDtConfig:ifConfigParamNotEquals>
+
+   <!-- Resource Environment References -->
+  <XDtConfig:ifConfigParamGreaterOrEquals paramName="version" value="3.0">
+  <XDtJBossWeb:forAllResourceEnvRefs>
+   <resource-env-ref>
+     <resource-env-ref-name><XDtClass:classTagValue tagName="jboss:resource-env-ref" paramName="resource-env-ref-name"/></resource-env-ref-name>
+	 <jndi-name><XDtClass:classTagValue tagName="jboss:resource-env-ref" paramName="jndi-name"/></jndi-name>
+   </resource-env-ref>
+  </XDtJBossWeb:forAllResourceEnvRefs>
+  </XDtConfig:ifConfigParamGreaterOrEquals>
+
+   <!-- Resource references -->
+  <XDtJBossWeb:forAllResourceRefs>
+   <resource-ref>
+      <res-ref-name><XDtClass:classTagValue tagName="jboss:resource-ref" paramName="res-ref-name"/></res-ref-name>
+      <jndi-name><XDtClass:classTagValue tagName="jboss:resource-ref" paramName="jndi-name"/></jndi-name>
+   </resource-ref>
+  </XDtJBossWeb:forAllResourceRefs>
+
+   <!-- EJB References -->
+  <XDtJBossWeb:forAllEjbRefs>
+   <XDtClass:ifHasClassTag tagName="jboss:ejb-ref-jndi" paramName="jndi-name">
+   <ejb-ref>
+      <ejb-ref-name><XDtClass:classTagValue tagName="jboss:ejb-ref-jndi" paramName="ref-name"/></ejb-ref-name>
+      <jndi-name><XDtClass:classTagValue tagName="jboss:ejb-ref-jndi" paramName="jndi-name"/></jndi-name>
+   </ejb-ref>
+   </XDtClass:ifHasClassTag>
+  </XDtJBossWeb:forAllEjbRefs>
+
+   <!-- EJB References -->
+  <XDtJBossWeb:forAllEjbRefs>
+   <XDtClass:ifHasClassTag tagName="jboss:ejb-ref-jndi" paramName="local-jndi-name">
+   <ejb-local-ref>
+      <ejb-ref-name><XDtClass:classTagValue tagName="jboss:ejb-ref-jndi" paramName="ref-name"/></ejb-ref-name>
+      <local-jndi-name><XDtClass:classTagValue tagName="jboss:ejb-ref-jndi" paramName="local-jndi-name"/></local-jndi-name>
+   </ejb-local-ref>
+   </XDtClass:ifHasClassTag>
+  </XDtJBossWeb:forAllEjbRefs>
+</jboss-web>
+
+
+

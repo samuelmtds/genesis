@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="<XDtConfig:configParameterValue paramName='Xmlencoding'/>"?>
+<!DOCTYPE hibernate-configuration PUBLIC "<XDtXml:publicId/>" "<XDtXml:systemId/>">
+
+<!-- <XDtI18n:getString resource="do_not_edit"/> -->
+
+<hibernate-configuration>
+
+	<!-- a SessionFactory instance listed as /jndi/name -->
+	<session-factory<XDtConfig:ifHasConfigParam paramName="jndiName"> name="<XDtHibernate:jndiName/>"</XDtConfig:ifHasConfigParam>>
+
+		<!-- properties -->
+		<XDtConfig:ifHasConfigParam paramName="dataSource">
+		<property name="connection.datasource"><XDtHibernate:dataSource/></property>
+		</XDtConfig:ifHasConfigParam>
+		<property name="dialect"><XDtHibernate:dialect/></property>
+		<property name="show_sql"><XDtConfig:configParameterValue paramName="showSql"/></property>
+		<property name="use_outer_join"><XDtConfig:configParameterValue paramName="useOuterJoin"/></property>
+        <XDtConfig:ifHasConfigParam paramName="transactionManagerLookup">
+		<property name="transaction.manager_lookup_class"><XDtConfig:configParameterValue paramName="transactionManagerLookup"/></property>
+		</XDtConfig:ifHasConfigParam>
+        <XDtConfig:ifHasConfigParam paramName="transactionManagerStrategy">
+		<property name="transaction.factory_class"><XDtConfig:configParameterValue paramName="transactionManagerStrategy"/></property>
+		</XDtConfig:ifHasConfigParam>
+		<XDtConfig:ifHasConfigParam paramName="userTransactionName">
+		<property name="jta.UserTransaction"><XDtConfig:configParameterValue paramName="userTransactionName"/></property>
+		</XDtConfig:ifHasConfigParam>
+        <XDtConfig:ifHasConfigParam paramName="userName">
+			<property name="connection.username"><XDtConfig:configParameterValue paramName="userName"/></property>
+		</XDtConfig:ifHasConfigParam>
+        <XDtConfig:ifHasConfigParam paramName="password">
+			<property name="connection.password"><XDtConfig:configParameterValue paramName="password"/></property>
+		</XDtConfig:ifHasConfigParam>
+        <XDtConfig:ifHasConfigParam paramName="driver">
+			<property name="connection.driver_class"><XDtConfig:configParameterValue paramName="driver"/></property>
+		</XDtConfig:ifHasConfigParam>
+        <XDtConfig:ifHasConfigParam paramName="jdbcUrl">
+			<property name="connection.url"><XDtConfig:configParameterValue paramName="jdbcUrl"/></property>
+		</XDtConfig:ifHasConfigParam>
+        <XDtConfig:ifHasConfigParam paramName="poolSize">
+			<property name="connection.pool_size"><XDtConfig:configParameterValue paramName="poolSize"/></property>
+		</XDtConfig:ifHasConfigParam>
+
+	    <XDtHibernate:forAllJndiProperties>
+		<property name="hibernate.jndi.<XDtHibernate:jndiParameterName/>"><XDtHibernate:jndiParameterValue/></property>
+    	</XDtHibernate:forAllJndiProperties>
+
+		<!-- mapping files -->
+	    <XDtHibernate:forAllPersistentClasses>
+		<mapping resource="<XDtPackage:packageNameAsPath/>/<XDtClass:className/>.hbm.xml"/>
+    	</XDtHibernate:forAllPersistentClasses>
+	</session-factory>
+
+</hibernate-configuration>

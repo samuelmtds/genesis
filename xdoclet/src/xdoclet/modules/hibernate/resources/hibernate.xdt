@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "<XDtXml:publicId/>" 
+    "<XDtXml:systemId/>">
+
+<hibernate-mapping>
+    <XDtHibernate:logMapping/>
+    <class
+      <XDtClass:ifHasClassTag tagName="hibernate.class" superclasses="false">
+        name="<XDtClass:fullClassName />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="table" superclasses="false">
+        table="<XDtClass:classTagValue tagName="hibernate.class" paramName="table" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="schema" superclasses="false">
+        schema="<XDtClass:classTagValue tagName="hibernate.class" paramName="schema" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="proxy" superclasses="false">
+        proxy="<XDtClass:classTagValue tagName="hibernate.class" paramName="proxy" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="polymorphism" superclasses="false">
+        polymorphism="<XDtClass:classTagValue tagName="hibernate.class" paramName="polymorphism" values="explicit,implicit" />"
+      </XDtClass:ifHasClassTag>
+      <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+        dynamic-update="<XDtClass:classTagValue tagName="hibernate.class" paramName="dynamic-update" values="true,false" default="false" />"
+        dynamic-insert="<XDtClass:classTagValue tagName="hibernate.class" paramName="dynamic-insert" values="true,false" default="false" />"
+      </XDtConfig:ifConfigParamEquals>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="mutable" superclasses="false">
+        mutable="<XDtClass:classTagValue tagName="hibernate.class" paramName="mutable" values="true,false" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="discriminator-value" superclasses="false">
+        discriminator-value="<XDtClass:classTagValue tagName="hibernate.class" paramName="discriminator-value" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="where" superclasses="false">
+        where="<XDtClass:classTagValue tagName="hibernate.class" paramName="where" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="persister" superclasses="false">
+        persister="<XDtClass:classTagValue tagName="hibernate.class" paramName="persister" />"
+      </XDtClass:ifHasClassTag>
+      <XDtClass:ifHasClassTag tagName="hibernate.class" paramName="batch-size" superclasses="false">
+        batch-size="<XDtClass:classTagValue tagName="hibernate.class" paramName="batch-size" />"
+      </XDtClass:ifHasClassTag>
+    >
+    
+    <XDtClass:ifHasClassTag tagName="hibernate.cache" superclasses="false">
+        <cache usage="<XDtClass:classTagValue tagName="hibernate.cache" paramName="usage" values="read-write,nonstrict-read-write,read-only,transactional" />" />
+    </XDtClass:ifHasClassTag>
+
+    <XDtClass:ifHasClassTag tagName="hibernate.jcs-cache" superclasses="false">
+        <jcs-cache usage="<XDtClass:classTagValue tagName="hibernate.jcs-cache" paramName="usage" values="read-only,nonstrict-read-write,read-write,transactional" />" />
+    </XDtClass:ifHasClassTag>
+
+    <XDtHibernate:ifHasPrimitiveId>
+        <id
+            name="<XDtMethod:propertyName/>"
+            column="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="column" default="<XDtMethod:propertyName/>" />"
+            type="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="type" default="<XDtMethod:methodType/>" />"
+          <XDtMethod:ifHasMethodTag tagName="hibernate.id" paramName="length">
+            length="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="length" />"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.id" paramName="unsaved-value">
+            unsaved-value="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="unsaved-value" />"
+          </XDtMethod:ifHasMethodTag>
+        >
+            <generator class="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="generator-class" />">
+              <XDtMethod:forAllMethodTags tagName="hibernate.generator-param" >
+                <param<XDtConfig:ifConfigParamEquals paramName="version" value="2.0"> name="<XDtMethod:methodTagValue tagName="hibernate.generator-param" paramName="name" />"</XDtConfig:ifConfigParamEquals>><XDtMethod:methodTagValue tagName="hibernate.generator-param" paramName="value" /></param>
+              </XDtMethod:forAllMethodTags>
+              <XDtMethod:ifHasMethodTag tagName="hibernate.id" paramName="generator-parameter-1">
+                <param><XDtMethod:methodTagValue tagName="hibernate.id" paramName="generator-parameter-1" /></param>
+              </XDtMethod:ifHasMethodTag>
+              <XDtMethod:ifHasMethodTag tagName="hibernate.id" paramName="generator-parameter-2">
+                <param><XDtMethod:methodTagValue tagName="hibernate.id" paramName="generator-parameter-2" /></param>
+              </XDtMethod:ifHasMethodTag>
+              <XDtMethod:ifHasMethodTag tagName="hibernate.id" paramName="generator-parameter-3">
+                <param><XDtMethod:methodTagValue tagName="hibernate.id" paramName="generator-parameter-3" /></param>
+              </XDtMethod:ifHasMethodTag>
+            </generator>
+        </id>
+    </XDtHibernate:ifHasPrimitiveId>
+    <XDtHibernate:ifHasCompositeId>
+        <composite-id
+            name="<XDtMethod:propertyName/>"
+            class="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="class" default="<XDtMethod:methodType/>"/>"
+            <XDtMethod:ifHasMethodTag tagName="hibernate.id" paramName="unsaved-value">
+            unsaved-value="<XDtMethod:methodTagValue tagName="hibernate.id" paramName="unsaved-value" values="any,none"/>"
+            </XDtMethod:ifHasMethodTag>
+        >
+        <XDtClass:pushClass value="<XDtMethod:methodType/>">
+            <XDtMethod:forAllMethods superclasses="true" sort="true">
+                 <XDtMethod:ifHasMethodTag tagName="hibernate.property">
+                     <key-property
+                        name="<XDtMethod:propertyName />"
+                        type="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="type" default="<XDtMethod:methodType/>"/>"
+                        column="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="column" default="<XDtMethod:propertyName/>"/>"
+                       <XDtMethod:ifHasMethodTag tagName="hibernate.property" paramName="length">
+                        length="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="length" />"
+                       </XDtMethod:ifHasMethodTag>
+                />
+                </XDtMethod:ifHasMethodTag>
+
+                <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one">
+                    <key-many-to-one
+                        name="<XDtMethod:propertyName/>"
+                        class="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="class" default="<XDtMethod:methodType/>" />"
+                      <XDtHibernate:setCurrentTag name="hibernate.many-to-one" mappingElement="key-many-to-one">
+                           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-column.xdt">
+                           </XDtMerge:merge>
+                      </XDtHibernate:setCurrentTag>
+                </XDtMethod:ifHasMethodTag>
+            </XDtMethod:forAllMethods>
+        </XDtClass:pushClass>
+        </composite-id>
+    </XDtHibernate:ifHasCompositeId>
+
+
+    <XDtClass:ifHasClassTag tagName="hibernate.discriminator" superclasses="false">
+        <discriminator
+            column="<XDtClass:classTagValue tagName="hibernate.discriminator" paramName="column" />"
+            type="<XDtClass:classTagValue tagName="hibernate.discriminator" paramName="type" default="string"/>"
+          <XDtClass:ifHasClassTag tagName="hibernate.discriminator" paramName="length" superclasses="false">
+            length="<XDtClass:classTagValue tagName="hibernate.discriminator" paramName="length" />"
+          </XDtClass:ifHasClassTag>
+        />
+    </XDtClass:ifHasClassTag>
+
+    <XDtMethod:forAllMethods superclasses="true" sort="true">
+        <XDtMethod:ifHasMethodTag tagName="hibernate.version">
+        <version
+            name="<XDtMethod:propertyName />"
+            type="<XDtMethod:methodTagValue tagName="hibernate.version" paramName="type" default="<XDtMethod:methodType/>" />"
+            column="<XDtMethod:methodTagValue tagName="hibernate.version" paramName="column" default="<XDtMethod:propertyName/>" />"
+        />
+        </XDtMethod:ifHasMethodTag>
+    </XDtMethod:forAllMethods>
+
+    <XDtMethod:forAllMethods superclasses="true" sort="true">
+        <XDtMethod:ifHasMethodTag tagName="hibernate.timestamp">
+        <timestamp
+            name="<XDtMethod:propertyName/>"
+            column="<XDtMethod:methodTagValue tagName="hibernate.timestamp" paramName="column"  default="<XDtMethod:propertyName/>" />"
+        />
+        </XDtMethod:ifHasMethodTag>
+    </XDtMethod:forAllMethods>
+
+    <XDtCollection:create name="backupClass" type="map" />
+    <XDtCollection:put name="backupClass" key="oldClassName" value="<XDtClass:fullClassName />" />
+
+    <XDtMethod:forAllMethods superclasses="true" sort="true">
+        <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-properties.xdt">
+        </XDtMerge:merge>
+    </XDtMethod:forAllMethods>
+
+    <XDtMerge:merge file="hibernate-properties.xml">
+    </XDtMerge:merge>
+
+    <XDtMerge:merge file="hibernate-properties-{0}.xml">
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-<XDtClass:className />.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+    </XDtMerge:merge>
+    
+    <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-subclass.xdt">
+    </XDtMerge:merge>
+    <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-joined-subclass.xdt">
+    </XDtMerge:merge>
+
+    </class>
+    
+    <XDtClass:pushClass value="<XDtCollection:get name='backupClass' key='oldClassName' />">
+        <XDtClass:forAllClassTags tagName="hibernate.query" superclasses="false">
+            <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-query.xdt">
+            </XDtMerge:merge>
+        </XDtClass:forAllClassTags>
+    </XDtClass:pushClass>
+
+    <XDtMerge:merge file="hibernate-queries-{0}.xml">
+        <!--
+            To add non XDoclet query mappings, create a file named
+                hibernate-queries-<XDtClass:className />.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+    </XDtMerge:merge>
+
+    <XDtCollection:destroy name="backupClass" />
+
+</hibernate-mapping>
