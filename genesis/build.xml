@@ -16,6 +16,7 @@
 	<property name="test.reportsDirectory" value="${build.dir}/test-reports" />
 
 	<path id="xdoclet.path">
+      <fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
 		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
 	</path>
 
