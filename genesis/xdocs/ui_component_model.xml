@@ -81,7 +81,76 @@
       </p>
       <p>Quando o modelo explicado neste documento é utilizado, i.e., o binding
       de view e form, somente as três últimas características são de interesse
-      pelo código cliente. Por isso, somente estas serão explicadas abaixo.</p>
+      pelo código cliente. Por isso, somente estas serão exploradas neste
+      documento.</p>
+      <p><code>BaseDialogThinlet</code> é uma especialização de
+      <code>BaseThinlet</code> que facilita a criação de janelas de diálogo.
+      Logo todas as explicações referentes a <code>BaseThinlet</code> aplicam-se
+      a ela também.</p>
+      <subsection name="Configurando e exibindo uma janela">
+        <p>A criação da janela em que a view será exibida é de responsabilidade
+        do programador. Uma maneira de criar a janela principal é utilizando a
+        própria classe <code>FrameLauncher</code> que vem com o Thinlet. Abaixo,
+        um exemplo de uso dessa técnica:</p>
+<source>
+public class ExemploCriacaoFrame extends BaseThinlet {
+   public ExemploCriacaoFrame() throws Exception {
+      add(parse("exemplo_criacao_frame.xml"));
+   }
+
+   public static void main(String[] args) throws Exception {
+      new FrameLauncher("Exemplo de criação de frame",
+            new ExemploCriacaoFrame(), 800, 600);
+   }
+}
+</source>
+        <p>Este exemplo trivial pode ser suficiente para diversas situações, mas
+        em algumas outras é necessário alterar as propriedades do frame antes de
+        exibi-lo. Em casos em que seja necessário fazer as mesmas alterações
+        para todos os frames na aplicação ou mesmo alterar configurações do
+        Thinlet, recomenda-se a criação de uma superclasse intermediária. Esta
+        técnica é utilizada nos exemplos providos com o genesis. A seguinte
+        classe foi extraída do exemplo useradmin:</p>
+<source>
+public abstract class BaseView extends BaseThinlet {
+   public BaseView(String title, String xmlFile, int width, int height,
+         boolean resizable) throws Exception {
+      Frame f = new Frame();
+      f.add(this);
+      Insets is = f.getInsets();
+      width += is.left + is.right;
+      height += is.top + is.bottom;
+      Dimension ss = getToolkit().getScreenSize();
+      width = Math.min(width, ss.width);
+      height = Math.min(height, ss.height);
+      f.setBounds((ss.width - width) / 2, (ss.height - height) / 2, width,
+            height);
+      f.setResizable(resizable);
+      f.setTitle(UIUtils.getInstance().getBundle().getString(title));
+      f.addWindowListener(new WindowAdapter() {
+         public void windowClosing(WindowEvent e) {
+            System.exit(0);
+         }
+      });
+      setAllI18n(true);
+      setResourceBundle(UIUtils.getInstance().getBundle());
+      add(parse(xmlFile));
+   }
+}</source>
+        <p>A classe mostrada acima cria seu próprio frame de modo a centralizá-
+        lo, torná-lo redimensionável ou não, define o título através do
+        <code>ResourceBundle</code>, o que permite internacionalização,
+        configura a janela para encerrar a execução quando esta for fechada e
+        configura a internacionalização da interface gráfica antes de adicionar
+        o xml.</p>
+        <p>A classe <code>BaseDialogThinlet</code> possui construtores capazes
+        de criar a <code>Dialog</code> e outros que recebem uma instância criada
+        externamente.</p>
+      </subsection>
     </section>
   </body>
 </document>
+
+
+
+
