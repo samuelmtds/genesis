@@ -6,8 +6,6 @@
   </properties>
   <body>
     <section name="Modelo de componentes de interface gráfica">
-      <p><b>TODO: configurar todos os exemplos em um sample e atualizar
-      documento com instruções de execução.</b></p>
       <p>O modelo de componentes de interface gráfica do genesis é bastante
       expressivo embora simples e baseia-se em grande parte no uso de <b>
       anotações</b>. Estas anotações não são ainda interpretadas como metadados
@@ -33,6 +31,8 @@
         </li>
         <li><a href="#Formatação">Formatação</a></li>
         <li><a href="#Validando os dados">Validando os dados</a></li>
+        <li><a href="#Configurando as mensagens">Configurando as mensagens</a>
+        </li>
       </ul>
       </p>
     </section>
@@ -292,7 +292,7 @@ public void exibeErro(Throwable t) {
          deles com um <code>\n</code> - utilizado para quebra de linha em Java -
          e os exibe utilizando <code>MessageDialog</code>. O título da janela
          será a String definida para <code>validation.errors.title</code> no
-         arquivo de recursos (<b>TODO: linkar aqui explicação do arquivo</b>).
+         <a href="#Configurando as mensagens">arquivo de recursos</a>.
          </li>
          <li><code>handleUIException(UIException)</code> exibe o erro utilizando
          <code>MessageDialog</code>. O título e a mensagem serão extraídos da
@@ -320,7 +320,8 @@ public void exibeErro(Throwable t) {
       <code>bind(Object)</code>, que liga dinamicamente o form à view.</p>
       <p>Um exemplo muito simples de uma interface gráfica completa pode ser
       observado abaixo. Temos todos os componentes necessários para implementar
-      uma simples tela de login. Primeiramente, vemos o xml da tela:</p>
+      uma simples tela de login. Primeiramente, vemos o xml da tela, contido num
+      arquivo de nome <code>login.xml</code>:</p>
 <source>
 <![CDATA[
  1. <panel gap="5" top="5" left="5" bottom="5" right="5" weightx="1"
@@ -1168,9 +1169,9 @@ public class ExemploDataProviderForm {
       <ul>
         <li><code>EnumFormatter</code> converte instâncias de
         <code>net.java.dev.reusablecomponents.lang.Enum</code> procurando no
-        ResourceBundle (<b>TODO: linkar aqui quando existir</b>) a mensagem
-        configurada para a chave formada pelo nome da classe sem pacote + "." +
-        nome da constante. Se esta não for encontrada, uma mensagem de
+        <a href="#Configurando as mensagens"><code>ResourceBundle</code></a> a
+        mensagem configurada para a chave formada pelo nome da classe sem pacote
+        + "." + nome da constante. Se esta não for encontrada, uma mensagem de
         prioridade INFO será logada e a instância convertida com
         <code>toString()</code>.</li>
         <li><code>DefaultFormatter</code> é registrado para todos os outros
@@ -1607,11 +1608,101 @@ public class InsertUpdateForm {
 ]]>
 </source>
       <p>É utilizado também um arquivo de recursos para configurar as mensagens,
-      descrito abaixo (<b>TODO: linkar quando existir</b>).</p>
+      logo abaixo descrito.</p>
+    </section>
+    <section name="Configurando as mensagens">
+      <p>Diversas mensagens podem ser configuradas externamente ao código
+      utilizando-se um <code>java.util.ResourceBundle</code>. O
+      <code>ResourceBundle</code> permite armazenar um dicionário de
+      propriedades nome/valor - similar a um <code>Properties</code> -,
+      suportando múltiplos <code>java.util.Locale</code>s. De forma
+      simplificada, é possível configurar mensagens diferentes de acordo com o
+      idioma utilizado.</p>
+      <p>O genesis utiliza um <code>ResourceBundle</code> de nome
+      <code>messages</code>, de modo que deve existir um
+      <code>messages.properties</code> no classpath. A classe
+      <code>net.java.dev.genesis.ui.UIUtils</code> mantém a instância deste
+      <code>ResourceBundle</code> durante a execução.</p>
+      <p>São configurados no arquivo de recursos mensagens e texto referentes a:
+      </p>
+      <ul>
+        <li>Validação</li>
+        <li>Valores de display das <code>Enum</code>s (no formato
+        <code>Classe.CONSTANTE=Valor de display</code>)</li>
+        <li>Mensagens das telas padrão providas com o genesis, como a tela
+        utilizada por <code>OptionDialog</code></li>
+        <li>Quaisquer textos definidos pelo usuário que devam ser externalizados
+        do código</li>
+      </ul>
+      <p>Abaixo há um exemplo de configuração do <code>ResourceBundle</code>
+      para o exemplo useradmin:</p>
+<source>
+# 1. Configuração para validação
+errors.byte=The {0} field is not a byte.
+errors.short=The {0} field is not a short.
+errors.int=The {0} field is not an integer.
+errors.long=The {0} field is not a long.
+errors.float=The {0} field is not a float.
+errors.double=The {0} field is not a double.
+errors.bigdecimal=The {0} field is not a big decimal.
+errors.required=The {0} field is required.
+errors.requiredif=The {0} field is required.
+errors.mask=The {0} field is not valid.
+errors.email=The {0} field is not a valid email.
+errors.date=The {0} field is not a valid date.
+errors.minlength=The {0} field can not be less than {1} characters.
+errors.maxlength=The {0} field can not be greater than {1} characters.
+errors.longRange={0} is not in the range {1} through {2}.
+errors.doubleRange={0} is not in the range {1} through {2}.
+errors.bigDecimalRange={0} is not in the range {1} through {2}.
+errors.jxpath=The {0} field is not valid.
+validation.errors.title=Validation errors
+
+# 2. Configuração das mensagens das telas
+MessageDialog.close=Close
+Option.YES=Yes
+Option.NO=No
+Option.CANCEL=Cancel
+ErrorReporterDialog.ok=OK
+ErrorReporterDialog.stackTrace=Stack Trace:
+
+# 3. Configurações personalizadas do usuário
+InsertRoleView.title=Insert Role
+InsertView.title=Insert User
+UpdateView.title=Update User
+RoleListView.title=Role List
+UserListView.title=Users Administration
+
+button.ok=Ok
+button.add=Add
+button.remove=Remove
+button.cancel=Cancel
+button.save=Save
+button.search=Search
+button.reset=Reset
+button.newUser=New User
+button.updateUser=Update User
+button.removeUser=Remove User
+
+User.name=Name
+User.login=Login
+User.password=Password
+User.email=e-mail
+User.birthday=Birthday
+User.address=Address
+User.country=Country
+User.state=State
+User.role=Role
+
+Role.label=Label
+Role.code=Code
+</source>
+      <p>Para mais informações sobre como trabalhar com arquivos de recurso
+      consulte o Javadoc da classe <code>java.util.ResourceBundle</code>.</p>
     </section>
 <!--
-ResourceBundle
 Criteria
 -->
   </body>
 </document>
+
