@@ -136,9 +136,6 @@
           refid="hibernate.path"/>
       <maven:addPath
           id="maven.dependency.classpath"
-          refid="hibernate.path"/>
-      <maven:addPath
-          id="maven.dependency.classpath"
           refid="genesis.weaving.path"/>
       <maven:addPath
           id="maven.dependency.classpath"
@@ -203,6 +200,7 @@
             <path refid="thinlet.path" />
             <path refid="commons.path" />
             <pathelement path="${absolute.module.client}/${relative.build.dest}"/>
+            <pathelement path="${absolute.module.shared}/${relative.build.dest}"/>
          </classpath>
       </java>
    </goal>
