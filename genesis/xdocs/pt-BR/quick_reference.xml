@@ -9,7 +9,8 @@
     <section name="Guia de referência rápida de anotações">
       <p>Boa parte do uso das funcionalidades do genesis exige apenas a inclusão
       de tags específicas (chamadas anotações) no código. Este guia rápido
-      explica as anotações e contém exemplos de uso.</p>
+      explica as anotações e contém exemplos de uso extraidos dos arquivos 
+      da aplicação exemplo <a href="useradmin_sample.html">useradmin</a>.</p>
     </section>
     <section name="Anotações do genesis">
       <p>As anotações estão classificadas pela posição (escopo) onde podem ser
@@ -119,6 +120,7 @@
         <p>Verifica se um campo do form foi alterado ou não. O parâmetro tem que
         ser o nome de um campo do form.</p>
       </subsection>
+    <p><a href="ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">Mais informações...</a></p>
     </section>
     <section name="Referência">
       <subsection name="@Form">
@@ -130,18 +132,28 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>Não utiliza</td>
             <td></td>
-            <td>@Form</td>
             <td></td>
             <td></td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+/**
+ * <b>@Form</b>
+ * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
+ *
+ * @struts.form
+ */
+public class InsertUpdateForm {
+<b>...</b>
+	</source>
+    <p><a href="ui_basic_concepts.html#Entendendo_os_forms">Mais informações...</a></p>
       </subsection>
       <subsection name="@Condition">
         <p>Declara uma variavel de condição que pode ser usada em qualquer
@@ -153,19 +165,34 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>nomeDaVariavel</td>
             <td>texto de uma expressão JXPath condicional válida</td>
-            <td>@Condition usersSelected=g:isNotEmpty(users)</td>
             <td>Ver <a href="#Funções JXPath do genesis">funções JXPath do
             genesis</a></td>
             <td><b>Sim</b></td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+/**
+ * @Form
+ * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)</b>
+ *
+ * @struts.form
+ */
+public class InsertUpdateForm {
+<b>...</b>
+   /**
+    * @Action
+    * @CallWhen <b>$findRoleCondition</b>
+    */
+   public void findRole() throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@DataProvider">
         <p>Usado antes de um método que retorna um array ou uma
@@ -185,14 +212,12 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>objectField</td>
             <td>nomeDoWidget (que também é o nomeDoAtributoDoForm)</td>
-            <td>@DataProvider objectField=users indexField=usersId</td>
             <td>Nome do widget que será atualizado com o resultado
             retornado pelo método e também nome do campo do form que mantém o
             conteúdo selecionados na interface gráfica.</td>
@@ -202,7 +227,6 @@
             <td>indexField</td>
             <td>nomeDoAtributoDoForm (se <code>objectField</code> não for
             especificado, também nomeDoWidget)</td>
-            <td>@DataProvider objectField=users indexField=usersId</td>
             <td>Nome do atributo do form, do tipo <code>Collection</code> de
             <code>Integer</code> ou array de int/<code>Integer</code> que mantém
             o conteúdo dos índices dos dados selecionados no widget. Se
@@ -212,6 +236,14 @@
             <td>somente se <code>objectField</code> não for especificado</td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+   /**
+    * <b>@DataProvider objectField=country</b>
+    */
+   public Collection provideCountries() throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@EnabledWhen">
         <p>Habilita ou desabilita um widget em função do resultado de uma
@@ -222,18 +254,25 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>anônimo</td>
             <td>expressão JXPath condicional</td>
-            <td>@EnabledWhen $usersSelected</td>
             <td>condição para habilitar o widget</td>
             <td><b>Sim</b></td>
           </tr>
         </table>
+	<p>Exemplo de uso (UsersListForm.java):</p>
+	<source>
+   /**
+    * @Action
+    * <b>@EnabledWhen $usersSelected</b>
+    */
+   public void remove() throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@VisibleWhen">
         <p>Apresenta ou não um widget em função do resultado da avaliação de uma
@@ -244,18 +283,25 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>anônimo</td>
             <td>expressão JXPath condicional</td>
-            <td>@VisibleWhen pageNumber > 0</td>
             <td>condição para tornar o widget visível</td>
             <td><b>Sim</b></td>
           </tr>
         </table>
+	<p>Exemplo de uso (UsersListForm.java):</p>
+	<source>
+   /**
+    * @Action
+    * <b>@VisibleWhen pageNumber &gt; 0</b>
+    */
+   public void previousPage() {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@CallWhen">
         <p>Chama o método indicado quando a condição JXPath é satisfeita. Só
@@ -277,6 +323,15 @@
             <td><b>Sim</b></td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+   /**
+    * @DataProvider objectField=state
+    * <b>@CallWhen g:hasChanged(country)</b>
+    */
+   public Collection provideState() throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@ClearOn">
         <p>Limpa o conteúdo do atributo indicado quando a condição JXPath é
@@ -285,18 +340,28 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>anônimo</td>
             <td>expressão JXPath condicional</td>
-            <td>@ClearOn g:equals(field3,'abcd') </td>
             <td>condição para limpar o campo</td>
             <td><b>Sim</b></td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * <b>@ClearOn g:isEmpty(roleCode)</b>
+    */
+   public Role getRole() {
+      return role;
+   }
+
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@ValidateBefore">
         <p>Força a execução da validação antes de ser executado o método
@@ -306,18 +371,26 @@
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>Não utiliza</td>
             <td></td>
-            <td>@ValidateBefore </td>
             <td></td>
             <td></td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * @Action
+    * <b>@ValidateBefore</b>
+    */
+   public void save() throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <!--subsection name="@DisplayOnly">
         <p>Define um atributo como sendo apenas para apresentação impedindo a
@@ -437,34 +510,33 @@
         pode representar um botão e/ou simplesmente um método que é chamado
         quando uma condição é satisfeita. O nome do widget tem que ser igual ao
         nome do método no form para que ocorra uma ligação dinâmica entre eles.
-        Por exemplo:</p>
-<source>
-/**
- * @Action
- * @EnabledWhen $usersSelected
- */
-public void update() throws Exception {
-   // ...
-}
-</source>
-        <p>define o método <b>update</b> como alvo do acionamento de um botão
-        com nome "update" na interface gráfica.</p>
+        </p>
         <table>
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>Não utiliza</td>
             <td></td>
-            <td>@Action</td>
             <td></td>
             <td></td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * <b>@Action</b>
+    * @ValidateBefore
+    */
+   public void save() throws Exception {
+   <b>...</b>
+	</source>
+        <p>define o método <b>save</b> como alvo do acionamento de um botão
+        com nome "save" na interface gráfica.</p>
       </subsection>
       <subsection name="@BeforeAction">
         <p>Aplica-se a métodos de uma view. As views são classes que estendem
@@ -491,6 +563,15 @@ public void update() throws Exception {
             método do form</td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateView.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * <b>@BeforeAction</b>
+    */
+   public void chooseRole() throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@AfterAction">
         <p>Aplica-se a métodos de uma view. As views são classes que estendem
@@ -517,6 +598,15 @@ public void update() throws Exception {
             método do form</td>
           </tr>
         </table>
+	<p>Exemplo de uso (InsertUpdateView.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * @AfterAction
+    */
+   public void save() {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@Remotable">
         <p>Utilizado para anotar métodos de classes de negócio. Os métodos
@@ -530,18 +620,27 @@ public void update() throws Exception {
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>Não utiliza</td>
             <td></td>
-            <td>@Remotable</td>
             <td></td>
             <td></td>
           </tr>
         </table>
+	<p>Exemplo de uso (RoleSearchCommand.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * <b>@Remotable</b>
+    */
+   public List getRoles() throws Exception {
+      return getSession().createQuery("from Role").list();
+   }
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@Transactional">
         <p>Utilizado para anotar métodos de classes de negócio. Os métodos
@@ -558,18 +657,25 @@ public void update() throws Exception {
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>Não utiliza</td>
             <td></td>
-            <td>@Transactional</td>
             <td></td>
             <td></td>
           </tr>
         </table>
+	<p>Exemplo de uso (RoleRemoveCommand.java):</p>
+	<source>
+   <b>...</b>
+   /**
+    * <b>@Transactional</b>
+    */
+   public boolean removeRole(final Role role) throws Exception {
+   <b>...</b>
+	</source>
       </subsection>
       <subsection name="@Criteria">
         <p>Utilizado em métodos que fazem pesquisa dinâmicas. O método de
@@ -583,19 +689,27 @@ public void update() throws Exception {
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>anônimo</td>
             <td>Nome qualificado completo de classe</td>
-            <td>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User
-            </td>
             <td>Nome da classe mapeada no Hibernate para a qual se deseja criar
             o Criteria</td>
             <td><b>Sim</b></td>
           </tr>
+	<p>Exemplo de uso (UserSearchCommand.java):</p>
+	<source>
+   <b>...</b>
+public class UserSearchCommand extends AbstractHibernateCriteria {
+   <b>...</b>
+   /**
+    * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User</b>
+    */
+   public Page getUsers(final int pageNumber)
+   <b>...</b>
+	</source>
         </table>
       </subsection>
     </section>
