@@ -31,7 +31,7 @@ import example.databeans.User;
  * @Form
  */
 public class UserListForm implements Serializable {
-   private static final int RESULTS_PER_PAGE = 2;
+   private static final int RESULTS_PER_PAGE = 10;
    private int pageNumber = 1;
    private boolean lastPage = true;
 

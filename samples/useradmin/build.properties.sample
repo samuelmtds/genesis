@@ -9,4 +9,6 @@ jboss.home=/opt/jboss-3.2.5
 # local setup
 genesis.home=../../genesis
 xdoclet.dist=../../xdoclet/dist
-jboss.provider.url=localhost
+jboss.provider.url=jnp://localhost
+webstart.server=localhost
+webstart.port=8080
