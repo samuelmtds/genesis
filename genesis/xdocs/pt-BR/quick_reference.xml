@@ -206,15 +206,16 @@ public class InsertUpdateForm {
         <p>Usado antes de um método que retorna um array ou uma
         <code>java.util.List</code>. O retorno será utilizado para popular um
         componente da interface gráfica, um widget (combo, lista, table, etc)
-        que deve possuir o nome indicado por objectField ou indexField. O
-        <code>objectField</code> guarda e recebe uma coleção/instância de
-        objetos. <code>O indexField</code> guarda e recebe uma coleção de
-        índices/um índice da a coleção de objetos.</p>
+        que deve possuir o nome indicado por widgetName, objectField ou
+        indexField. O <code>objectField</code> guarda e recebe uma coleção ou
+        instância do(s) objeto(s) selecionado(s). <code>O indexField</code>
+        guarda e recebe uma coleção de índices ou um índice do(s) objeto(s)
+        selecionado(s).</p>
         <p>Tanto <code>objectField</code> quanto <code>indexField</code> são
         também atributos do form, se especificados. Enquanto
-        <code>objectField</code> deve ser uma <code>java.util.Collection</code>
+        <code>objectField</code> deve ser uma <code>java.util.List</code>
         ou do tipo do objeto retornado - <code>Usuario</code>, por exemplo - o
-        <code>indexField</code> deve ser uma <code>java.util.Collection</code>
+        <code>indexField</code> deve ser uma <code>java.util.List</code>
         de <code>Integer</code> ou um array de int/<code>Integer</code>.</p>
         <table>
           <tr>
@@ -228,9 +229,9 @@ public class InsertUpdateForm {
             <td>nomeDoAtributoDoForm (que também é o nomeDoWidget, caso
             <code>widgetName</code> não seja especificado)</td>
             <td>Nome do widget (caso widgetName não seja especificado)
-            que será atualizado com o resultado
-            retornado pelo método e também nome do campo do form que mantém o
-            conteúdo selecionados na interface gráfica.</td>
+            que será atualizado com o resultado retornado pelo método e também
+            nome do campo do form que mantém o conteúdo selecionados na
+            interface gráfica.</td>
             <td>somente se <code>indexField</code> ou <code>widgetName</code>
             não forem especificados</td>
           </tr>
@@ -239,12 +240,12 @@ public class InsertUpdateForm {
             <td>nomeDoAtributoDoForm (se <code>objectField</code> ou
             <code>widgetName</code> não forem especificados,
             também nomeDoWidget)</td>
-            <td>Nome do atributo do form, do tipo <code>Collection</code> de
+            <td>Nome do atributo do form, do tipo <code>List</code> de
             <code>Integer</code> ou array de int/<code>Integer</code> que mantém
             o conteúdo dos índices dos dados selecionados no widget. Se
             <code>objectField</code> não for especificado, também é o nome do
-            widget que será atualizado com o resultado retornado pelo método</td
-            >
+            widget que será atualizado com o resultado retornado pelo
+            método</td>
             <td>somente se <code>objectField</code> ou <code>widgetName</code>
             não forem especificados</td>
           </tr>

@@ -240,18 +240,18 @@ public class FormExample {
       <code>java.util.List</code> or an array. Values returned by the method
       will be used to populate a combo or a list or a table widget.
       <code>objectField</code>, if specified, should receive as a parameter
-      the name of a property that
-      will hold the instance selected on the widget. This property should be of
-      the same type or a superclass of the type returned by the annotated
-      method, an array of this type or a <code>Collection</code>.
+      the name of a property that will hold the instance selected on the
+      widget. This property should be of the same type or a superclass of the
+      type returned by the annotated method, an array of this type or a
+      <code>List</code>.
       <code>indexField</code> is the property that will hold indexes for the
       selected elements on the widget. It must be an <code>int</code> or an
       <code>Integer</code>, an array of one of these types or a
-      <code>Collection</code>. At least one of these two parameters must be
-      informed.
-      </p>
-      <p>The widget <code>name</code> is equal to the value specified for <code>
-      objectField</code> or <code>indexField</code>. When both are specified,
+      <code>List</code>. At least one of these two parameters or
+      <code>widgetName</code> must be informed.</p>
+      <p>The widget <code>name</code> is equal to the value specified for
+      <code>objectField</code> or <code>indexField</code>, if
+      <code>widgetName</code> is not specified. When both are specified,
       <code>objectField</code> value must be equal to the widget
       <code>name</code>.
       </p>
@@ -266,9 +266,9 @@ public class FormExample {
             <td>objectField</td>
             <td>form's property name (which is also a widgetName, if
             <code>widgetName</code> is not specified)</td>
-            <td>Property to be called whenever some content is selected
-            and the widget that will be filled with method's data if
-            <code>widgetName</code> is not specified</td>
+            <td>Property to be set whenever some content is selected
+            and also the name of widget that will be populated with method's
+            return if <code>widgetName</code> is not specified</td>
             <td>just in case there is neither <code>indexField</code>
             nor <code>widgetName</code> specified</td>
           </tr>
@@ -280,7 +280,7 @@ public class FormExample {
             <td>name of a form's property that holds indexes of the selected
             elements on the widget. It must be an <code>int</code> or an
             <code>Integer</code>, an array of one of these types or a
-            <code>Collection</code></td>
+            <code>List</code></td>
             <td>just in case there is neither <code>objectField</code>
             nor <code>widgetName</code> specified</td>
           </tr>
