@@ -44,6 +44,7 @@
 	</target>
 
 	<target name="xdoclet:clean">
+		<delete dir="${classes.dir}" />
 		<delete dir="${dist.dir}" />
 	</target>
 
