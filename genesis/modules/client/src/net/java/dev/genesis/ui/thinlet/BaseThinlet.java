@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String HEADER = "header";
    public static final String LABEL = "label";
    public static final String LIST = "list";
+   public static final String MESSAGE = "message";
    public static final String MNEMONIC = "mnemonic";
    public static final String NAME = "name";
    public static final String PANEL = "panel";
@@ -80,10 +82,9 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String TOOLTIP = "tooltip";
    public static final String VALUE = "value";
    public static final String VISIBLE = "visible";
-   
-   private ThinletBinder binder;
 
-   protected static final String MESSAGE = "message";
+   private final Map formPerClassPerComponent = new IdentityHashMap();
+   private final Map binderPerForm = new IdentityHashMap();
 
    /**
     * @deprecated
@@ -660,9 +661,8 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
-   protected ThinletBinder getBinder(Object widget, Object form){
-      binder = new ThinletBinder(this, widget, form);
-      return binder;
+   protected ThinletBinder createBinder(Object widget, Object form){
+      return new ThinletBinder(this, widget, form);
    }
 
    protected void bind(Object form) throws Exception {
@@ -670,20 +670,83 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void bind(Object widget, Object form) throws Exception {
-      getBinder(widget, form).bind();
+      Map formPerClass = (Map)formPerClassPerComponent.get(widget);
+
+      if (formPerClass == null) {
+         formPerClass = new HashMap();
+         formPerClassPerComponent.put(widget, formPerClass);
+      } else {
+         Object oldForm = formPerClass.get(form.getClass());
+
+         if (oldForm != null) {
+            binderPerForm.remove(oldForm);
+         }
+      }
+
+      formPerClass.put(form.getClass(), form);
+
+      final ThinletBinder binder = createBinder(widget, form);
+      binderPerForm.put(form, binder);
+
+      binder.bind();
    }
-   
-   public void invokeFormAction(String actionName) throws Exception {
-      binder.invokeAction(actionName);
-   }
-   
+
    public void invokeFormAction(Object component) throws Exception {
       if (isEnabled(component) && isVisible(component)) {
          invokeFormAction(getName(component));
       }
    }
 
+   public void invokeFormAction(String actionName) throws Exception {
+      final Map formPerClass = (Map)formPerClassPerComponent.get(getDesktop());
+
+      if (formPerClass == null) {
+         throw new IllegalStateException("No form is currently bound to desktop");
+      }
+
+      final Collection forms = formPerClass.values();
+
+      if (forms.size() > 1) {
+         throw new UnsupportedOperationException("More than one form is " +
+               "bound to desktop");
+      }
+
+      invokeFormAction(forms.iterator().next(), actionName);
+   }
+
+   public void invokeFormAction(Object form, String actionName) throws Exception {
+      final ThinletBinder binder = (ThinletBinder)binderPerForm.get(form);
+
+      if (binder == null) {
+         throw new IllegalArgumentException(form + " is not bound");
+      }
+
+      binder.invokeAction(actionName);
+   }
+
    public void refreshView() throws Exception {
+      refreshView(getDesktop());
+   }
+
+   public void refreshView(Object widget) throws Exception {
+      final Map formPerClass = (Map)formPerClassPerComponent.get(widget);
+
+      if (formPerClass == null) {
+         throw new IllegalStateException("No form is currently bound to widget");
+      }
+
+      for (final Iterator i = formPerClass.values().iterator(); i.hasNext(); ) {
+         refreshViewFromForm(i.next());
+      }
+   }
+
+   public void refreshViewFromForm(Object form) throws Exception {
+      final ThinletBinder binder = (ThinletBinder)binderPerForm.get(form);
+
+      if (binder == null) {
+         throw new IllegalArgumentException(form + " is not bound");
+      }
+
       binder.refresh();
    }
 
