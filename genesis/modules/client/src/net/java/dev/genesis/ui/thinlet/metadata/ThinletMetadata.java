@@ -28,12 +28,12 @@ public class ThinletMetadata {
    private final Class thinletClass;
 
    private final Map preActions;
-   private final Map postActions;
+   private final Map posActions;
 
    public ThinletMetadata(final Class formClass) {
       this.thinletClass = formClass;
       this.preActions = new HashMap();
-      this.postActions = new HashMap();
+      this.posActions = new HashMap();
    }
 
    public Class getThinletClass() {
@@ -44,8 +44,8 @@ public class ThinletMetadata {
       preActions.put(actionName, methodName);
    }
 
-   public void addPostAction(final String actionName, final String methodName) {
-      postActions.put(actionName, methodName);
+   public void addPosAction(final String actionName, final String methodName) {
+      posActions.put(actionName, methodName);
    }
 
    public boolean invokePreAction(final Object target, final String actionName)
@@ -65,7 +65,7 @@ public class ThinletMetadata {
          throws NoSuchMethodException, IllegalAccessException,
          ClassNotFoundException, InvocationTargetException {
 
-      final String methodName = (String)postActions.get(actionName);
+      final String methodName = (String)posActions.get(actionName);
       if (methodName == null) {
          return;
       }

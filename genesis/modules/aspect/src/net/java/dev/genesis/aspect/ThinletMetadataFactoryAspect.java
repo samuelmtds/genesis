@@ -72,15 +72,19 @@ public class ThinletMetadataFactoryAspect {
             if (annon != null) {
                final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
-               thinletMetadata.addPreAction(actionName, methodName);
+               thinletMetadata.addPreAction(
+                     actionName.trim().length() == 0 ? methodName : actionName,
+                     methodName);
             }
 
             annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
-                  "PostAction", methods[i]);
+                  "PosAction", methods[i]);
             if (annon != null) {
                final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
-               thinletMetadata.addPostAction(actionName, methodName);
+               thinletMetadata.addPosAction(
+                     actionName.trim().length() == 0 ? methodName : actionName,
+                     methodName);
             }
          }
       }
