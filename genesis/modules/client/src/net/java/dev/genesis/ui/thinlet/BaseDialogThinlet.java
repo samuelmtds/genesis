@@ -68,10 +68,16 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
       this(new Dialog(frame));
    }
 
+   /**
+    * @deprecated
+    */
    protected ScreenHandler getHandler() {
       return handler;
    }
 
+   /**
+    * @deprecated
+    */
    protected void setHandler(ScreenHandler handler) {
       if (this.handler != null) {
          handler.close();
@@ -111,9 +117,9 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
    }
 
    protected void setDialogBounds(int width, int height) {
-        final Dimension screen = getToolkit().getScreenSize();
-        dialog.setBounds((screen.width - width) / 2, (screen.height - height) / 2,
-                width, height); 
+      final Dimension screen = getToolkit().getScreenSize();
+      dialog.setBounds((screen.width - width) / 2, (screen.height - height) / 2,
+            width, height); 
    }
 
    protected boolean isExitOnClose() {
