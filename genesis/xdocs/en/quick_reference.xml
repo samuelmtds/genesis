@@ -58,6 +58,7 @@
               <ul>
                 <li><a href="#@Action">@Action</a></li>
                 <li><a href="#@CallWhen">@CallWhen</a></li>
+                <li><a href="#@ClearOn">@ClearOn</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
                 <li><a href="#@DataProvider">@DataProvider</a></li>
                 <li><a href="#@EnabledWhen">@EnabledWhen</a></li>
@@ -356,9 +357,9 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Automatically_invoking_methods">More info...</a></p>
       </subsection>
       <subsection name="@ClearOn">
-        <p>Cleans field content upon a true condition (JXPath boolean expression
+        <p>Cleans field content or DataProvider widget upon a true condition (JXPath boolean expression
         or <a href="#@Condition">@Condition</a> variable). This annotation may
-        only be used for attributes and not for actions (since actions do not
+        only be used for attributes or DataProviders, and not for actions (since actions do not
         have content).</p>
         <p>The value used for resetting the field is defined by the <a href="#@EmptyValue">@EmptyValue</a> annotation.</p>
         <table>

@@ -59,6 +59,7 @@
               <ul>
                 <li><a href="#@Action">@Action</a></li>
                 <li><a href="#@CallWhen">@CallWhen</a></li>
+                <li><a href="#@ClearOn">@ClearOn</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
                 <li><a href="#@DataProvider">@DataProvider</a></li>
                 <li><a href="#@EnabledWhen">@EnabledWhen</a></li>
@@ -356,8 +357,11 @@ public class InsertUpdateForm {
     Mais informações...</a></p>
       </subsection>
       <subsection name="@ClearOn">
-        <p>Limpa o conteúdo do atributo indicado quando a condição JXPath é
-        satisfeita. Só pode ser aplicado a atributos do form.</p>
+        <p>Limpa o conteúdo do atributo indicado ou do componente populado pelo
+        DataProvider quando a condição JXPath é
+        satisfeita. Só pode ser aplicado a atributos do form e em <code>DataProvider</code>s.</p>
+        <p>No caso de campos, o valor usado para limpar o campo é definido através da anotação
+        <a href="#@EmptyValue">@EmptyValue</a>.</p>
         <table>
           <tr>
             <th>Parâmetros</th>
@@ -368,7 +372,7 @@ public class InsertUpdateForm {
           <tr>
             <td>anônimo</td>
             <td>expressão JXPath condicional</td>
-            <td>condição para limpar o campo</td>
+            <td>condição para limpar o conteúdo</td>
             <td><b>Sim</b></td>
           </tr>
         </table>

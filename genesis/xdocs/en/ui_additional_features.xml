@@ -286,6 +286,20 @@ public class ClearOnFormExample {
         <p>If <code>@EmptyValue</code> is not specified, a default value is used
         instead - <code>false</code> for booleans, zero for numeric types and
         <code>null</code> otherwise.</p>
+        <p>The annotation <code>@ClearOn</code> can be used together with
+        <code>@DataProvider</code> annotation. The DataProviders widgets will
+        be cleaned and the form properties that store selected values will be
+        automatically reset to <code>null</code> when JXPath condition is satisfied.
+        See the following usage:</p>
+<source>
+   /**
+    * @DataProvider objectField=state
+    * @ClearOn &lt;some jxpath condition&gt;
+    */
+   public List populateStates() {
+      ...
+   }
+</source>
       </subsection>
       <subsection name="Automatically invoking methods">
         <p>Some methods need to be called every time certain conditions are

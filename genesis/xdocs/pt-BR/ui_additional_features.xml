@@ -295,6 +295,20 @@ public class ExemploClearOnForm {
         <p>Caso <code>@EmptyValue</code> não esteja especificado, um valor
         padrão é utilizado - <code>false</code> para campos booleanos, zero para
         numéricos e <code>null</code> para os demais.</p>
+        <p>É possível utilizar <code>@ClearOn</code> juntamente com uma anotação
+        <code>@DataProvider</code>. Nesses casos, os componentes referenciados pelo
+        DataProviders são limpos e as propriedades do form que indicam os itens
+        selecionados são resetados para <code>null</code> quando a condição
+        for satisfeita. Um exemplo de uso é:</p>
+<source>
+   /**
+    * @DataProvider objectField=estado
+    * @ClearOn &lt;alguma condição jxpath&gt;
+    */
+   public List populaEstados() {
+      ...
+   }
+</source>
       </subsection>
       <subsection name="Invocando métodos automaticamente">
         <p>Alguns métodos precisam ser chamados toda vez que certas condições
