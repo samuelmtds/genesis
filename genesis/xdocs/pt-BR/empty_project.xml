@@ -63,7 +63,7 @@ jboss.provider.url=jnp://localhost
 webstart.server=localhost
 webstart.port=8080
 </source>
-      <p>Pelo menos três propriedades necessitam ser definidas:</p>
+      <p>Pelo menos quatro propriedades necessitam ser definidas:</p>
       <ul>
         <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
         servidor JBoss 3.2.x</li>
