@@ -22,6 +22,9 @@
             cascade="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="cascade" values="none,all,save-update,delete" default="none"/>"
             outer-join="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="outer-join" values="true,false,auto" default="auto"/>"
           <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+            <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="property-ref">
+            property-ref="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="property-ref" />"
+            </XDtMethod:ifHasMethodTag>
             update="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="update" values="true,false" default="true"/>"
             insert="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="insert" values="true,false" default="true"/>"
           </XDtConfig:ifConfigParamEquals>
