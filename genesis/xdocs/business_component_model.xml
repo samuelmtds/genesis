@@ -24,7 +24,7 @@
       </p>
     </section>
     <section name="Remotabilidade transparente">
-      <p>Suponhamos que exista um componente chamado <code>ExemploSoma</code>
+      <p>Suponhamos que exista uma classe chamada <code>ExemploSoma</code>
       como abaixo:</p>
       <source>
  1. public class ExemploSoma {
@@ -268,23 +268,50 @@ public class ExemploIntegracaoHibernate extends AbstractHibernateCommand {
       <p>As seguintes propriedades estão expostas em <code>Page</code> através
       de getters e setters:
       <ul>
-         <li><b>results</b>: uma <code>java.util.List</code> contendo os
-         resultados da página atual.</li>
-         <li><b>resultsPerPage</b>: número máximo de resultados por página. <b>
-         Não contém</b> o número de resultados da página atual; para obter essa
-         informação deve-se chamar o método <code>size()</code> em <code>results
-         </code>.</li>
-<!--
-   public int getPageNumber();
-
-   public boolean isFirst();
-
-   public boolean isLast();
- -->
+        <li><b>results</b>: uma <code>java.util.List</code> contendo os
+        resultados da página atual.</li>
+        <li><b>resultsPerPage</b>: número máximo de resultados por página. <b>
+        Não contém</b> o número de resultados da página atual; para obter essa
+        informação deve-se chamar o método <code>size()</code> em <code>results
+        </code>.</li>
+        <li><b>pageNumber</b>: número da página atual, baseado em 0.</li>
+        <li><b>first</b>: indica se esta é a primeira página. O mesmo que <code
+        >getPageNumber() == 0</code>.</li>
+        <li><b>last</b>: indica se esta é a última página. Algumas
+        implementações de <code>Pager</code> podem não retornar essa
+        propriedade como <code>true</code> quando a última página contiver
+        exatamente o número de resultados por página, ou seja, quando
+        <code>getResults().size() == getResultsPerPage()</code>.</li>
       </ul></p>
+      <p>Enquanto há uma implementação básica para <code>Page</code> (<code>
+      PageImpl</code>), não se tem o mesmo para <code>Pager</code>, visto que a
+      funcionalidade de um paginador está bastante ligada à origem dos dados que
+      este está paginando. Aplicações cliente normalmente não usarão <code>
+      PageImpl</code> nem tampouco terão sua própria implementação de <code>Page
+      </code>, mas a implementação provida pelo framework pode ser bastante útil
+      para implementações específicas de <code>Pager</code>.</p>
+      <subsection name="Paginação com Hibernate">
+        <p>Duas implementação de <code>Pager</code> são providas junto com o
+        genesis para integração com Hibernate: <code>CriteriaPager</code> e
+        <code>QueryPager</code>, implementados em <code>
+        net.java.dev.genesis.paging.hibernate</code>. Essas classes podem tanto
+        ser usadas diretamente como de forma mais fácil e indireta em uma classe
+        que estenda <code>AbstractHibernateCommand</code>. Como ilustração,
+        vamos modificar nosso exemplo do Hibernate de modo a executar a consulta
+        retornando uma página:</p>
+        <source>
+public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
+   /**
+    * @Remotable
+    */
+   public Page getTodos(int numeroPagina, int resultadosPorPagina)
+         throws PagingException {
+      return getPage(getSession().createQuery("from ClasseMapeada"),
+            numeroPagina, resultadosPorPagina);
+   }
+}
+</source>
+      </subsection>
     </section>
   </body>
 </document>
-
-
-
