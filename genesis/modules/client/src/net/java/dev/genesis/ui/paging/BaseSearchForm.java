@@ -29,10 +29,7 @@ public abstract class BaseSearchForm {
    private Page page;
 
    protected abstract Page performSearch() throws Exception;
-   
-   /**
-    * @CallWhen runSearch
-    */
+
    public void search() throws Exception {
       if (isResetSearch()) {
          setPageNumber(0);
