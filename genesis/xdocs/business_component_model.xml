@@ -42,14 +42,16 @@
 13.    public static void main(String[] args) {
 14.       System.out.println(new ExemploSoma().soma(2, 2));
 15.    }
-16. }</source>
+16. }
+</source>
       <p>Ao executar esse código, a seguinte saída é impressa no console local:
       </p>
       <source>
 a = 2
 b = 2
 a + b = 4
-4</source>
+4
+</source>
       <p>Pode-se tornar o método <code>soma(int, int)</code> remoto apenas por
       se acrescentar a anotação <code>@Remotable</code>. O código
       modificado ficaria da seguinte forma:</p>
@@ -72,12 +74,14 @@ a + b = 4
 16.    public static void main(String[] args) {
 17.       System.out.println(new ExemploSomaRemota().soma(2, 2));
 18.    }
-19. }</source>
+19. }
+</source>
       <p>Executando-se o novo código com o JBoss iniciado, observa-se uma
       redução na saída no console
       local:</p>
       <source>
-4</source>
+4
+</source>
       <p>Ao observar o console do JBoss, pode-se notar que as mensagens
       anteriores foram impressas no servidor. Por que isso acontece?</p>
       <p>A saída observada no console local equivale ao resultado da execução
@@ -141,17 +145,20 @@ a + b = 4
 27.       lvr.local();
 28.       System.out.println("valor: " + lvr.getValor());
 29.    }
-30. }</source>
+30. }
+</source>
         <p>A saída no console local é:</p>
         <source>
 valor em local(): 1
 valor: 1
 valor: 1
 valor em local(): 2
-valor: 2</source>
+valor: 2
+</source>
         <p>enquanto no console remoto é:</p>
         <source>
-valor em remoto(): 2</source>
+valor em remoto(): 2
+</source>
         <p>Ao se executar a linha 23, a variável <code>valor</code> é modificada
         localmente e seu conteúdo tanto dentro do método <code>local()</code>
         como o impresso na linha 24 são os mesmos. Porém, ao se executar a linha
@@ -209,7 +216,8 @@ valor em remoto(): 2</source>
  */
 public void metodoTransacional() {
    // codigo do metodo
-}</source>
+}
+</source>
       <p>O uso de <code>@Transactional</code> automaticamente implica em tornar
       um método <code>@Remotable</code>, de modo que o uso de apenas uma dessas
       anotações por método é necessário. Além de manter as características de
@@ -247,12 +255,36 @@ public class ExemploIntegracaoHibernate extends AbstractHibernateCommand {
    public Collection getTodos() throws HibernateException {
       return getSession().createQuery("from ClasseMapeada").list();
    }
-}</source>
+}
+</source>
       <p>Como o exemplo acima mostra, utilizar o Hibernate em conjunto com suas
       classes de negócio é bastante simples e direto.</p>
     </section>
     <section name="Paginação">
-      <p></p>
+      <p>O suporte à paginação está implementado no pacote <code>
+      net.java.dev.genesis.paging</code>. As duas classes principais são <code>
+      Page</code>, que representa uma página de resultados e <code>Pager</code>
+      é responsável por gerar as páginas.</p>
+      <p>As seguintes propriedades estão expostas em <code>Page</code> através
+      de getters e setters:
+      <ul>
+         <li><b>results</b>: uma <code>java.util.List</code> contendo os
+         resultados da página atual.</li>
+         <li><b>resultsPerPage</b>: número máximo de resultados por página. <b>
+         Não contém</b> o número de resultados da página atual; para obter essa
+         informação deve-se chamar o método <code>size()</code> em <code>results
+         </code>.</li>
+<!--
+   public int getPageNumber();
+
+   public boolean isFirst();
+
+   public boolean isLast();
+ -->
+      </ul></p>
     </section>
   </body>
 </document>
+
+
+
