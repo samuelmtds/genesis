@@ -87,7 +87,7 @@ public class UserListForm extends BaseCriteriaSearchForm {
 
    /**
     * @Action
-    * @CallWhen runSearch
+    * @CallWhen runSearch=true()
     * @DataProvider objectField=users callOnInit=false
     */
    public List doSearch() throws Exception {
