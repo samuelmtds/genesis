@@ -426,10 +426,10 @@ public class ThinletBinderTest extends GenesisTestCase {
       // Unsupported widgets are not bound
       assertNull(widgetGroup.get("table"));
       
-      // Not writeable fields are not bound
-      assertNull(widgetGroup.get("checkbox_not_writeable"));
+      // Not writeable fields are not bound, but widgetGroup are created
+      assertNotNull(widgetGroup.get("checkbox_not_writeable"));
       
-      // Not found widgets are not bound
+      // Not found widgets are not bound 
       assertNull(widgetGroup.get("no_components"));
       
       // Assert action methods
