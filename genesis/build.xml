@@ -409,7 +409,7 @@
 			             value="org.jnp.interfaces.NamingContextFactory" />
 			<sysproperty key="java.naming.provider.url" value="${genesis.jboss.provider.url}" />
 			<sysproperty key="aspectwerkz.definition.file"
-			             value="${genesis.module.tests}/${src.dir}/aspectwerkz.xml" />
+			             value="${basedir}/${genesis.module.tests}/${src.dir}/aspectwerkz.xml" />
 			<formatter type="xml" />
 			<classpath>
 				<path refid="aspectwerkz.path" />
