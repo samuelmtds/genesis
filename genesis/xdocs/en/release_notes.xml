@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Release notes</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Release notes">
+      <ul>
+        <li><a href="#0.2-beta1">0.2-beta1</a></li>
+        <li><a href="#0.1">0.1</a></li>
+      </ul>
+    </section>
+    <section name="0.2-beta1">
+      <subsection name="Features and changes">
+        <p>Many changes and features are part of this release. Some of the most
+        noticeable are:</p>
+        <ul>
+          <li>Remote and transactional methos are new defined using annotations,
+          replacing the old marker interfaces + method naming convention</li>
+          <li>@Criteria implementation</li>
+          <li>Local execution mode</li>
+          <li>Brand new redesigned UI model, much more expressive and powerful
+          </li>
+        </ul>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked at <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi">
+        https://genesis.dev.java.net/issues/buglist.cgi</a></p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Rossetto</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Clebert Suconic</li>
+            <li>Daniel Amadei</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Handerson Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Marcos Caldeira</li>
+            <li>Pablo Madril</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+            <li>Vivian Fiales</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="0.1">
+      <subsection name="Features and changes">
+        <p>Initial undocumented genesis release.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>None</p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>We thank to the following people who have used, tested and
+        contributed to genesis:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Pablo Madril</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+  </body>
+</document>
