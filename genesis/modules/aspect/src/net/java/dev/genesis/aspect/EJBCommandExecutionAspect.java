@@ -19,6 +19,7 @@
 package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.InvocationTargetException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 
 import javax.naming.InitialContext;
@@ -41,9 +42,15 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
 
    private CommandExecutorHome home;
    private CommandExecutor session;
+   private boolean retryOnNoSuchObject;
 
    public EJBCommandExecutionAspect(CrossCuttingInfo ccInfo) {
       super(ccInfo);
+
+      if (!ccInfo.isPrototype()) {
+         retryOnNoSuchObject = !"false".equals(ccInfo
+               .getParameter("retryOnNoSuchObject"));
+      }
    }
 
    private CommandExecutorHome getHome() throws Exception {
@@ -94,30 +101,50 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
 
       CommandExecutor commandExecutor = null;
 
-      try {
-         commandExecutor = getCommandExecutor();
-         if (obj.isTransaction(rtti.getMethod())) {
-            return commandExecutor.executeTransaction(obj, methodName,
-                  classNames, parameterValues);
-         }
-         return commandExecutor.executeQuery(obj, methodName, classNames,
-               parameterValues);
-      } catch (final RemoteException re) {
-         log.error("RemoteException occured", re);
+      boolean retry = retryOnNoSuchObject;
 
-         if (session != null) {
-            try {
-               session.remove();
-            } catch (Throwable t) {
-               log.error("An error ocurred while removing EJB instance", t);
+      while (true) {
+         try {
+            commandExecutor = getCommandExecutor();
+            if (obj.isTransaction(rtti.getMethod())) {
+               return commandExecutor.executeTransaction(obj, methodName,
+                     classNames, parameterValues);
+            }
+            return commandExecutor.executeQuery(obj, methodName, classNames,
+                  parameterValues);
+         } catch (final NoSuchObjectException nsoe) {
+            log.error("NoSuchObjectException occured", nsoe);
+
+            if (retry) {
+               log.info("Retrying on NoSuchObjectException...");
+               session = null;
+               home = null;
+               retry = false;
+
+               continue;
             }
 
-            session = null;
+            throw nsoe;
+         } catch (final RemoteException re) {
+            log.error("RemoteException occured", re);
+            cleanUp();
+
+            throw re;
+         } catch (final InvocationTargetException ite) {
+            throw ite.getTargetException();
+         }
+      }
+   }
+   
+   private void cleanUp() {
+      if (session != null) {
+         try {
+            session.remove();
+         } catch (Throwable t) {
+            log.error("An error ocurred while removing EJB instance", t);
          }
 
-         throw re;
-      } catch (final InvocationTargetException ite) {
-         throw ite.getTargetException();
+         session = null;
       }
    }
 }
