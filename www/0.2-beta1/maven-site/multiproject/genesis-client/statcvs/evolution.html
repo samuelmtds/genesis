@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis-client - Software Evolution</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="Genesis Client Technology" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 19 November 2004
+                  | Doc for 0.2-beta1</div><div class="xright">
+        
+        <a href="../../../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../../genesis-aspect/index.html">genesis-aspect</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuProjects"><h5>Projects</h5><ul><li class="none"><a href="../../../index.html">genesis</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About Genesis Client Technology</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Software_Evolution"></a><h2>Software Evolution</h2><p>
+        <a href="index.html">Back to Index Page</a>
+      </p></div><div class="section"><a name="Software_Evolution_Matrix"></a><h2>Software Evolution Matrix</h2><map name="evomatrix">
+        <area shape="rect" coords="8, 87, 216, 91" alt="src/error_reporter.xml" title="src/error_reporter.xml" href="#"></area>
+        <area shape="rect" coords="8, 92, 216, 96" alt="src/message.xml" title="src/message.xml" href="#"></area>
+        <area shape="rect" coords="8, 97, 216, 101" alt="src/messages.properties.sample" title="src/messages.properties.sample" href="#"></area>
+        <area shape="rect" coords="8, 102, 216, 106" alt="src/option.xml" title="src/option.xml" href="#"></area>
+        <area shape="rect" coords="8, 107, 216, 111" alt="src/validator-rules.xml" title="src/validator-rules.xml" href="#"></area>
+        <area shape="rect" coords="8, 112, 216, 116" alt="src/validator-rules.xml.sample" title="src/validator-rules.xml.sample" href="#"></area>
+        <area shape="rect" coords="8, 129, 216, 133" alt="src/net/java/dev/genesis/commons/beanutils/ConverterRegistry.java" title="src/net/java/dev/genesis/commons/beanutils/ConverterRegistry.java" href="#"></area>
+        <area shape="rect" coords="8, 146, 216, 150" alt="src/net/java/dev/genesis/commons/beanutils/converters/BigDecimalConverter.java" title="src/net/java/dev/genesis/commons/beanutils/converters/BigDecimalConverter.java" href="#"></area>
+        <area shape="rect" coords="8, 163, 216, 167" alt="src/net/java/dev/genesis/commons/jxpath/GenesisNodeSet.java" title="src/net/java/dev/genesis/commons/jxpath/GenesisNodeSet.java" href="#"></area>
+        <area shape="rect" coords="8, 168, 216, 172" alt="src/net/java/dev/genesis/commons/jxpath/JXPathContextFactory.java" title="src/net/java/dev/genesis/commons/jxpath/JXPathContextFactory.java" href="#"></area>
+        <area shape="rect" coords="8, 173, 216, 177" alt="src/net/java/dev/genesis/commons/jxpath/VariablesImpl.java" title="src/net/java/dev/genesis/commons/jxpath/VariablesImpl.java" href="#"></area>
+        <area shape="rect" coords="8, 190, 216, 194" alt="src/net/java/dev/genesis/commons/jxpath/functions/ExtensionFunctions.java" title="src/net/java/dev/genesis/commons/jxpath/functions/ExtensionFunctions.java" href="#"></area>
+        <area shape="rect" coords="8, 207, 216, 211" alt="src/net/java/dev/genesis/commons/jxpath/ri/JXPathContextImpl.java" title="src/net/java/dev/genesis/commons/jxpath/ri/JXPathContextImpl.java" href="#"></area>
+        <area shape="rect" coords="8, 224, 216, 228" alt="src/net/java/dev/genesis/commons/jxpath/ri/axes/ChildContext.java" title="src/net/java/dev/genesis/commons/jxpath/ri/axes/ChildContext.java" href="#"></area>
+        <area shape="rect" coords="8, 241, 216, 245" alt="src/net/java/dev/genesis/commons/jxpath/ri/compiler/LocationPath.java" title="src/net/java/dev/genesis/commons/jxpath/ri/compiler/LocationPath.java" href="#"></area>
+        <area shape="rect" coords="8, 246, 216, 250" alt="src/net/java/dev/genesis/commons/jxpath/ri/compiler/TreeCompiler.java" title="src/net/java/dev/genesis/commons/jxpath/ri/compiler/TreeCompiler.java" href="#"></area>
+        <area shape="rect" coords="8, 263, 216, 267" alt="src/net/java/dev/genesis/commons/jxpath/util/GenesisTypeConverter.java" title="src/net/java/dev/genesis/commons/jxpath/util/GenesisTypeConverter.java" href="#"></area>
+        <area shape="rect" coords="8, 280, 216, 284" alt="src/net/java/dev/genesis/equality/BigDecimalEqualityComparator.java" title="src/net/java/dev/genesis/equality/BigDecimalEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="8, 285, 216, 289" alt="src/net/java/dev/genesis/equality/DefaultEqualityComparator.java" title="src/net/java/dev/genesis/equality/DefaultEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="8, 290, 216, 294" alt="src/net/java/dev/genesis/equality/EqualityComparator.java" title="src/net/java/dev/genesis/equality/EqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="8, 295, 216, 299" alt="src/net/java/dev/genesis/equality/EqualityComparatorAdapter.java" title="src/net/java/dev/genesis/equality/EqualityComparatorAdapter.java" href="#"></area>
+        <area shape="rect" coords="8, 300, 216, 304" alt="src/net/java/dev/genesis/equality/EqualityComparatorRegistry.java" title="src/net/java/dev/genesis/equality/EqualityComparatorRegistry.java" href="#"></area>
+        <area shape="rect" coords="8, 305, 216, 309" alt="src/net/java/dev/genesis/equality/StringEqualityComparator.java" title="src/net/java/dev/genesis/equality/StringEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="8, 322, 216, 326" alt="src/net/java/dev/genesis/helpers/CriteriaPropertyHelper.java" title="src/net/java/dev/genesis/helpers/CriteriaPropertyHelper.java" href="#"></area>
+        <area shape="rect" coords="8, 339, 216, 343" alt="src/net/java/dev/genesis/registry/DefaultValueRegistry.java" title="src/net/java/dev/genesis/registry/DefaultValueRegistry.java" href="#"></area>
+        <area shape="rect" coords="8, 344, 216, 348" alt="src/net/java/dev/genesis/registry/Registry.java" title="src/net/java/dev/genesis/registry/Registry.java" href="#"></area>
+        <area shape="rect" coords="8, 349, 216, 353" alt="src/net/java/dev/genesis/registry/RegistryFactory.java" title="src/net/java/dev/genesis/registry/RegistryFactory.java" href="#"></area>
+        <area shape="rect" coords="8, 366, 216, 370" alt="src/net/java/dev/genesis/resolvers/CollectionEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/CollectionEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="8, 371, 216, 375" alt="src/net/java/dev/genesis/resolvers/DefaultEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/DefaultEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="8, 376, 216, 380" alt="src/net/java/dev/genesis/resolvers/EmptyResolver.java" title="src/net/java/dev/genesis/resolvers/EmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="8, 381, 216, 385" alt="src/net/java/dev/genesis/resolvers/EmptyResolverRegistry.java" title="src/net/java/dev/genesis/resolvers/EmptyResolverRegistry.java" href="#"></area>
+        <area shape="rect" coords="8, 386, 216, 390" alt="src/net/java/dev/genesis/resolvers/MapEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/MapEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="8, 391, 216, 395" alt="src/net/java/dev/genesis/resolvers/StringEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/StringEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="8, 408, 216, 412" alt="src/net/java/dev/genesis/text/DefaultFormatter.java" title="src/net/java/dev/genesis/text/DefaultFormatter.java" href="#"></area>
+        <area shape="rect" coords="8, 413, 216, 417" alt="src/net/java/dev/genesis/text/EnumFormatter.java" title="src/net/java/dev/genesis/text/EnumFormatter.java" href="#"></area>
+        <area shape="rect" coords="8, 418, 216, 422" alt="src/net/java/dev/genesis/text/FormatAdapter.java" title="src/net/java/dev/genesis/text/FormatAdapter.java" href="#"></area>
+        <area shape="rect" coords="8, 423, 216, 427" alt="src/net/java/dev/genesis/text/Formatter.java" title="src/net/java/dev/genesis/text/Formatter.java" href="#"></area>
+        <area shape="rect" coords="8, 428, 216, 432" alt="src/net/java/dev/genesis/text/FormatterRegistry.java" title="src/net/java/dev/genesis/text/FormatterRegistry.java" href="#"></area>
+        <area shape="rect" coords="8, 445, 216, 449" alt="src/net/java/dev/genesis/ui/BasicValidator.java" title="src/net/java/dev/genesis/ui/BasicValidator.java" href="#"></area>
+        <area shape="rect" coords="8, 450, 216, 454" alt="src/net/java/dev/genesis/ui/Form.java" title="src/net/java/dev/genesis/ui/Form.java" href="#"></area>
+        <area shape="rect" coords="8, 455, 216, 459" alt="src/net/java/dev/genesis/ui/UIException.java" title="src/net/java/dev/genesis/ui/UIException.java" href="#"></area>
+        <area shape="rect" coords="8, 460, 216, 464" alt="src/net/java/dev/genesis/ui/UIUtils.java" title="src/net/java/dev/genesis/ui/UIUtils.java" href="#"></area>
+        <area shape="rect" coords="8, 465, 216, 469" alt="src/net/java/dev/genesis/ui/ValidationException.java" title="src/net/java/dev/genesis/ui/ValidationException.java" href="#"></area>
+        <area shape="rect" coords="8, 470, 216, 474" alt="src/net/java/dev/genesis/ui/ValidationUtils.java" title="src/net/java/dev/genesis/ui/ValidationUtils.java" href="#"></area>
+        <area shape="rect" coords="8, 487, 216, 491" alt="src/net/java/dev/genesis/ui/controller/DefaultFormController.java" title="src/net/java/dev/genesis/ui/controller/DefaultFormController.java" href="#"></area>
+        <area shape="rect" coords="8, 492, 216, 496" alt="src/net/java/dev/genesis/ui/controller/FormController.java" title="src/net/java/dev/genesis/ui/controller/FormController.java" href="#"></area>
+        <area shape="rect" coords="8, 509, 216, 513" alt="src/net/java/dev/genesis/ui/metadata/ActionMetadata.java" title="src/net/java/dev/genesis/ui/metadata/ActionMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 514, 216, 518" alt="src/net/java/dev/genesis/ui/metadata/DataProviderMetadata.java" title="src/net/java/dev/genesis/ui/metadata/DataProviderMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 519, 216, 523" alt="src/net/java/dev/genesis/ui/metadata/FieldMetadata.java" title="src/net/java/dev/genesis/ui/metadata/FieldMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 524, 216, 528" alt="src/net/java/dev/genesis/ui/metadata/FormMetadata.java" title="src/net/java/dev/genesis/ui/metadata/FormMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 529, 216, 533" alt="src/net/java/dev/genesis/ui/metadata/FormMetadataFactory.java" title="src/net/java/dev/genesis/ui/metadata/FormMetadataFactory.java" href="#"></area>
+        <area shape="rect" coords="8, 534, 216, 538" alt="src/net/java/dev/genesis/ui/metadata/MemberMetadata.java" title="src/net/java/dev/genesis/ui/metadata/MemberMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 539, 216, 543" alt="src/net/java/dev/genesis/ui/metadata/MethodMetadata.java" title="src/net/java/dev/genesis/ui/metadata/MethodMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 556, 216, 560" alt="src/net/java/dev/genesis/ui/thinlet/BaseDialogThinlet.java" title="src/net/java/dev/genesis/ui/thinlet/BaseDialogThinlet.java" href="#"></area>
+        <area shape="rect" coords="8, 561, 216, 565" alt="src/net/java/dev/genesis/ui/thinlet/BaseThinlet.java" title="src/net/java/dev/genesis/ui/thinlet/BaseThinlet.java" href="#"></area>
+        <area shape="rect" coords="8, 566, 216, 570" alt="src/net/java/dev/genesis/ui/thinlet/ErrorReporterDialog.java" title="src/net/java/dev/genesis/ui/thinlet/ErrorReporterDialog.java" href="#"></area>
+        <area shape="rect" coords="8, 571, 216, 575" alt="src/net/java/dev/genesis/ui/thinlet/MessageDialog.java" title="src/net/java/dev/genesis/ui/thinlet/MessageDialog.java" href="#"></area>
+        <area shape="rect" coords="8, 576, 216, 580" alt="src/net/java/dev/genesis/ui/thinlet/OptionDialog.java" title="src/net/java/dev/genesis/ui/thinlet/OptionDialog.java" href="#"></area>
+        <area shape="rect" coords="8, 581, 216, 585" alt="src/net/java/dev/genesis/ui/thinlet/PropertyMisconfigurationException.java" title="src/net/java/dev/genesis/ui/thinlet/PropertyMisconfigurationException.java" href="#"></area>
+        <area shape="rect" coords="8, 586, 216, 590" alt="src/net/java/dev/genesis/ui/thinlet/ScreenNotFoundException.java" title="src/net/java/dev/genesis/ui/thinlet/ScreenNotFoundException.java" href="#"></area>
+        <area shape="rect" coords="8, 591, 216, 595" alt="src/net/java/dev/genesis/ui/thinlet/ThinletBinder.java" title="src/net/java/dev/genesis/ui/thinlet/ThinletBinder.java" href="#"></area>
+        <area shape="rect" coords="8, 608, 216, 612" alt="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadata.java" title="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadata.java" href="#"></area>
+        <area shape="rect" coords="8, 613, 216, 617" alt="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadataFactory.java" title="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadataFactory.java" href="#"></area>
+        <area shape="rect" coords="216, 87, 424, 91" alt="src/error_reporter.xml" title="src/error_reporter.xml" href="#"></area>
+        <area shape="rect" coords="216, 92, 424, 96" alt="src/message.xml" title="src/message.xml" href="#"></area>
+        <area shape="rect" coords="216, 97, 424, 101" alt="src/messages.properties.sample" title="src/messages.properties.sample" href="#"></area>
+        <area shape="rect" coords="216, 102, 424, 106" alt="src/option.xml" title="src/option.xml" href="#"></area>
+        <area shape="rect" coords="216, 107, 424, 111" alt="src/validator-rules.xml" title="src/validator-rules.xml" href="#"></area>
+        <area shape="rect" coords="216, 112, 424, 116" alt="src/validator-rules.xml.sample" title="src/validator-rules.xml.sample" href="#"></area>
+        <area shape="rect" coords="216, 129, 424, 133" alt="src/net/java/dev/genesis/commons/beanutils/ConverterRegistry.java" title="src/net/java/dev/genesis/commons/beanutils/ConverterRegistry.java" href="#"></area>
+        <area shape="rect" coords="216, 146, 424, 150" alt="src/net/java/dev/genesis/commons/beanutils/converters/BigDecimalConverter.java" title="src/net/java/dev/genesis/commons/beanutils/converters/BigDecimalConverter.java" href="#"></area>
+        <area shape="rect" coords="216, 163, 424, 167" alt="src/net/java/dev/genesis/commons/jxpath/GenesisNodeSet.java" title="src/net/java/dev/genesis/commons/jxpath/GenesisNodeSet.java" href="#"></area>
+        <area shape="rect" coords="216, 168, 424, 172" alt="src/net/java/dev/genesis/commons/jxpath/JXPathContextFactory.java" title="src/net/java/dev/genesis/commons/jxpath/JXPathContextFactory.java" href="#"></area>
+        <area shape="rect" coords="216, 173, 424, 177" alt="src/net/java/dev/genesis/commons/jxpath/VariablesImpl.java" title="src/net/java/dev/genesis/commons/jxpath/VariablesImpl.java" href="#"></area>
+        <area shape="rect" coords="216, 190, 424, 194" alt="src/net/java/dev/genesis/commons/jxpath/functions/ExtensionFunctions.java" title="src/net/java/dev/genesis/commons/jxpath/functions/ExtensionFunctions.java" href="#"></area>
+        <area shape="rect" coords="216, 207, 424, 211" alt="src/net/java/dev/genesis/commons/jxpath/ri/JXPathContextImpl.java" title="src/net/java/dev/genesis/commons/jxpath/ri/JXPathContextImpl.java" href="#"></area>
+        <area shape="rect" coords="216, 224, 424, 228" alt="src/net/java/dev/genesis/commons/jxpath/ri/axes/ChildContext.java" title="src/net/java/dev/genesis/commons/jxpath/ri/axes/ChildContext.java" href="#"></area>
+        <area shape="rect" coords="216, 241, 424, 245" alt="src/net/java/dev/genesis/commons/jxpath/ri/compiler/LocationPath.java" title="src/net/java/dev/genesis/commons/jxpath/ri/compiler/LocationPath.java" href="#"></area>
+        <area shape="rect" coords="216, 246, 424, 250" alt="src/net/java/dev/genesis/commons/jxpath/ri/compiler/TreeCompiler.java" title="src/net/java/dev/genesis/commons/jxpath/ri/compiler/TreeCompiler.java" href="#"></area>
+        <area shape="rect" coords="216, 263, 424, 267" alt="src/net/java/dev/genesis/commons/jxpath/util/GenesisTypeConverter.java" title="src/net/java/dev/genesis/commons/jxpath/util/GenesisTypeConverter.java" href="#"></area>
+        <area shape="rect" coords="216, 280, 424, 284" alt="src/net/java/dev/genesis/equality/BigDecimalEqualityComparator.java" title="src/net/java/dev/genesis/equality/BigDecimalEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="216, 285, 424, 289" alt="src/net/java/dev/genesis/equality/DefaultEqualityComparator.java" title="src/net/java/dev/genesis/equality/DefaultEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="216, 290, 424, 294" alt="src/net/java/dev/genesis/equality/EqualityComparator.java" title="src/net/java/dev/genesis/equality/EqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="216, 295, 424, 299" alt="src/net/java/dev/genesis/equality/EqualityComparatorAdapter.java" title="src/net/java/dev/genesis/equality/EqualityComparatorAdapter.java" href="#"></area>
+        <area shape="rect" coords="216, 300, 424, 304" alt="src/net/java/dev/genesis/equality/EqualityComparatorRegistry.java" title="src/net/java/dev/genesis/equality/EqualityComparatorRegistry.java" href="#"></area>
+        <area shape="rect" coords="216, 305, 424, 309" alt="src/net/java/dev/genesis/equality/StringEqualityComparator.java" title="src/net/java/dev/genesis/equality/StringEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="216, 322, 424, 326" alt="src/net/java/dev/genesis/helpers/CriteriaPropertyHelper.java" title="src/net/java/dev/genesis/helpers/CriteriaPropertyHelper.java" href="#"></area>
+        <area shape="rect" coords="216, 339, 424, 343" alt="src/net/java/dev/genesis/registry/DefaultValueRegistry.java" title="src/net/java/dev/genesis/registry/DefaultValueRegistry.java" href="#"></area>
+        <area shape="rect" coords="216, 344, 424, 348" alt="src/net/java/dev/genesis/registry/Registry.java" title="src/net/java/dev/genesis/registry/Registry.java" href="#"></area>
+        <area shape="rect" coords="216, 349, 424, 353" alt="src/net/java/dev/genesis/registry/RegistryFactory.java" title="src/net/java/dev/genesis/registry/RegistryFactory.java" href="#"></area>
+        <area shape="rect" coords="216, 366, 424, 370" alt="src/net/java/dev/genesis/resolvers/CollectionEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/CollectionEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="216, 371, 424, 375" alt="src/net/java/dev/genesis/resolvers/DefaultEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/DefaultEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="216, 376, 424, 380" alt="src/net/java/dev/genesis/resolvers/EmptyResolver.java" title="src/net/java/dev/genesis/resolvers/EmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="216, 381, 424, 385" alt="src/net/java/dev/genesis/resolvers/EmptyResolverRegistry.java" title="src/net/java/dev/genesis/resolvers/EmptyResolverRegistry.java" href="#"></area>
+        <area shape="rect" coords="216, 386, 424, 390" alt="src/net/java/dev/genesis/resolvers/MapEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/MapEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="216, 391, 424, 395" alt="src/net/java/dev/genesis/resolvers/StringEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/StringEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="216, 408, 424, 412" alt="src/net/java/dev/genesis/text/DefaultFormatter.java" title="src/net/java/dev/genesis/text/DefaultFormatter.java" href="#"></area>
+        <area shape="rect" coords="216, 413, 424, 417" alt="src/net/java/dev/genesis/text/EnumFormatter.java" title="src/net/java/dev/genesis/text/EnumFormatter.java" href="#"></area>
+        <area shape="rect" coords="216, 418, 424, 422" alt="src/net/java/dev/genesis/text/FormatAdapter.java" title="src/net/java/dev/genesis/text/FormatAdapter.java" href="#"></area>
+        <area shape="rect" coords="216, 423, 424, 427" alt="src/net/java/dev/genesis/text/Formatter.java" title="src/net/java/dev/genesis/text/Formatter.java" href="#"></area>
+        <area shape="rect" coords="216, 428, 424, 432" alt="src/net/java/dev/genesis/text/FormatterRegistry.java" title="src/net/java/dev/genesis/text/FormatterRegistry.java" href="#"></area>
+        <area shape="rect" coords="216, 445, 424, 449" alt="src/net/java/dev/genesis/ui/BasicValidator.java" title="src/net/java/dev/genesis/ui/BasicValidator.java" href="#"></area>
+        <area shape="rect" coords="216, 450, 424, 454" alt="src/net/java/dev/genesis/ui/Form.java" title="src/net/java/dev/genesis/ui/Form.java" href="#"></area>
+        <area shape="rect" coords="216, 455, 424, 459" alt="src/net/java/dev/genesis/ui/UIException.java" title="src/net/java/dev/genesis/ui/UIException.java" href="#"></area>
+        <area shape="rect" coords="216, 460, 424, 464" alt="src/net/java/dev/genesis/ui/UIUtils.java" title="src/net/java/dev/genesis/ui/UIUtils.java" href="#"></area>
+        <area shape="rect" coords="216, 465, 424, 469" alt="src/net/java/dev/genesis/ui/ValidationException.java" title="src/net/java/dev/genesis/ui/ValidationException.java" href="#"></area>
+        <area shape="rect" coords="216, 470, 424, 474" alt="src/net/java/dev/genesis/ui/ValidationUtils.java" title="src/net/java/dev/genesis/ui/ValidationUtils.java" href="#"></area>
+        <area shape="rect" coords="216, 487, 424, 491" alt="src/net/java/dev/genesis/ui/controller/DefaultFormController.java" title="src/net/java/dev/genesis/ui/controller/DefaultFormController.java" href="#"></area>
+        <area shape="rect" coords="216, 492, 424, 496" alt="src/net/java/dev/genesis/ui/controller/FormController.java" title="src/net/java/dev/genesis/ui/controller/FormController.java" href="#"></area>
+        <area shape="rect" coords="216, 509, 424, 513" alt="src/net/java/dev/genesis/ui/metadata/ActionMetadata.java" title="src/net/java/dev/genesis/ui/metadata/ActionMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 514, 424, 518" alt="src/net/java/dev/genesis/ui/metadata/DataProviderMetadata.java" title="src/net/java/dev/genesis/ui/metadata/DataProviderMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 519, 424, 523" alt="src/net/java/dev/genesis/ui/metadata/FieldMetadata.java" title="src/net/java/dev/genesis/ui/metadata/FieldMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 524, 424, 528" alt="src/net/java/dev/genesis/ui/metadata/FormMetadata.java" title="src/net/java/dev/genesis/ui/metadata/FormMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 529, 424, 533" alt="src/net/java/dev/genesis/ui/metadata/FormMetadataFactory.java" title="src/net/java/dev/genesis/ui/metadata/FormMetadataFactory.java" href="#"></area>
+        <area shape="rect" coords="216, 534, 424, 538" alt="src/net/java/dev/genesis/ui/metadata/MemberMetadata.java" title="src/net/java/dev/genesis/ui/metadata/MemberMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 539, 424, 543" alt="src/net/java/dev/genesis/ui/metadata/MethodMetadata.java" title="src/net/java/dev/genesis/ui/metadata/MethodMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 556, 424, 560" alt="src/net/java/dev/genesis/ui/thinlet/BaseDialogThinlet.java" title="src/net/java/dev/genesis/ui/thinlet/BaseDialogThinlet.java" href="#"></area>
+        <area shape="rect" coords="216, 561, 424, 565" alt="src/net/java/dev/genesis/ui/thinlet/BaseThinlet.java" title="src/net/java/dev/genesis/ui/thinlet/BaseThinlet.java" href="#"></area>
+        <area shape="rect" coords="216, 566, 424, 570" alt="src/net/java/dev/genesis/ui/thinlet/ErrorReporterDialog.java" title="src/net/java/dev/genesis/ui/thinlet/ErrorReporterDialog.java" href="#"></area>
+        <area shape="rect" coords="216, 571, 424, 575" alt="src/net/java/dev/genesis/ui/thinlet/MessageDialog.java" title="src/net/java/dev/genesis/ui/thinlet/MessageDialog.java" href="#"></area>
+        <area shape="rect" coords="216, 576, 424, 580" alt="src/net/java/dev/genesis/ui/thinlet/OptionDialog.java" title="src/net/java/dev/genesis/ui/thinlet/OptionDialog.java" href="#"></area>
+        <area shape="rect" coords="216, 581, 424, 585" alt="src/net/java/dev/genesis/ui/thinlet/PropertyMisconfigurationException.java" title="src/net/java/dev/genesis/ui/thinlet/PropertyMisconfigurationException.java" href="#"></area>
+        <area shape="rect" coords="216, 586, 424, 590" alt="src/net/java/dev/genesis/ui/thinlet/ScreenNotFoundException.java" title="src/net/java/dev/genesis/ui/thinlet/ScreenNotFoundException.java" href="#"></area>
+        <area shape="rect" coords="216, 591, 424, 595" alt="src/net/java/dev/genesis/ui/thinlet/ThinletBinder.java" title="src/net/java/dev/genesis/ui/thinlet/ThinletBinder.java" href="#"></area>
+        <area shape="rect" coords="216, 608, 424, 612" alt="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadata.java" title="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadata.java" href="#"></area>
+        <area shape="rect" coords="216, 613, 424, 617" alt="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadataFactory.java" title="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadataFactory.java" href="#"></area>
+        <area shape="rect" coords="424, 87, 632, 91" alt="src/error_reporter.xml" title="src/error_reporter.xml" href="#"></area>
+        <area shape="rect" coords="424, 92, 632, 96" alt="src/message.xml" title="src/message.xml" href="#"></area>
+        <area shape="rect" coords="424, 97, 632, 101" alt="src/messages.properties.sample" title="src/messages.properties.sample" href="#"></area>
+        <area shape="rect" coords="424, 102, 632, 106" alt="src/option.xml" title="src/option.xml" href="#"></area>
+        <area shape="rect" coords="424, 107, 632, 111" alt="src/validator-rules.xml" title="src/validator-rules.xml" href="#"></area>
+        <area shape="rect" coords="424, 112, 632, 116" alt="src/validator-rules.xml.sample" title="src/validator-rules.xml.sample" href="#"></area>
+        <area shape="rect" coords="424, 129, 632, 133" alt="src/net/java/dev/genesis/commons/beanutils/ConverterRegistry.java" title="src/net/java/dev/genesis/commons/beanutils/ConverterRegistry.java" href="#"></area>
+        <area shape="rect" coords="424, 146, 632, 150" alt="src/net/java/dev/genesis/commons/beanutils/converters/BigDecimalConverter.java" title="src/net/java/dev/genesis/commons/beanutils/converters/BigDecimalConverter.java" href="#"></area>
+        <area shape="rect" coords="424, 163, 632, 167" alt="src/net/java/dev/genesis/commons/jxpath/GenesisNodeSet.java" title="src/net/java/dev/genesis/commons/jxpath/GenesisNodeSet.java" href="#"></area>
+        <area shape="rect" coords="424, 168, 632, 172" alt="src/net/java/dev/genesis/commons/jxpath/JXPathContextFactory.java" title="src/net/java/dev/genesis/commons/jxpath/JXPathContextFactory.java" href="#"></area>
+        <area shape="rect" coords="424, 173, 632, 177" alt="src/net/java/dev/genesis/commons/jxpath/VariablesImpl.java" title="src/net/java/dev/genesis/commons/jxpath/VariablesImpl.java" href="#"></area>
+        <area shape="rect" coords="424, 190, 632, 194" alt="src/net/java/dev/genesis/commons/jxpath/functions/ExtensionFunctions.java" title="src/net/java/dev/genesis/commons/jxpath/functions/ExtensionFunctions.java" href="#"></area>
+        <area shape="rect" coords="424, 207, 632, 211" alt="src/net/java/dev/genesis/commons/jxpath/ri/JXPathContextImpl.java" title="src/net/java/dev/genesis/commons/jxpath/ri/JXPathContextImpl.java" href="#"></area>
+        <area shape="rect" coords="424, 224, 632, 228" alt="src/net/java/dev/genesis/commons/jxpath/ri/axes/ChildContext.java" title="src/net/java/dev/genesis/commons/jxpath/ri/axes/ChildContext.java" href="#"></area>
+        <area shape="rect" coords="424, 241, 632, 245" alt="src/net/java/dev/genesis/commons/jxpath/ri/compiler/LocationPath.java" title="src/net/java/dev/genesis/commons/jxpath/ri/compiler/LocationPath.java" href="#"></area>
+        <area shape="rect" coords="424, 246, 632, 250" alt="src/net/java/dev/genesis/commons/jxpath/ri/compiler/TreeCompiler.java" title="src/net/java/dev/genesis/commons/jxpath/ri/compiler/TreeCompiler.java" href="#"></area>
+        <area shape="rect" coords="424, 263, 632, 267" alt="src/net/java/dev/genesis/commons/jxpath/util/GenesisTypeConverter.java" title="src/net/java/dev/genesis/commons/jxpath/util/GenesisTypeConverter.java" href="#"></area>
+        <area shape="rect" coords="424, 280, 632, 284" alt="src/net/java/dev/genesis/equality/BigDecimalEqualityComparator.java" title="src/net/java/dev/genesis/equality/BigDecimalEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="424, 285, 632, 289" alt="src/net/java/dev/genesis/equality/DefaultEqualityComparator.java" title="src/net/java/dev/genesis/equality/DefaultEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="424, 290, 632, 294" alt="src/net/java/dev/genesis/equality/EqualityComparator.java" title="src/net/java/dev/genesis/equality/EqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="424, 295, 632, 299" alt="src/net/java/dev/genesis/equality/EqualityComparatorAdapter.java" title="src/net/java/dev/genesis/equality/EqualityComparatorAdapter.java" href="#"></area>
+        <area shape="rect" coords="424, 300, 632, 304" alt="src/net/java/dev/genesis/equality/EqualityComparatorRegistry.java" title="src/net/java/dev/genesis/equality/EqualityComparatorRegistry.java" href="#"></area>
+        <area shape="rect" coords="424, 305, 632, 309" alt="src/net/java/dev/genesis/equality/StringEqualityComparator.java" title="src/net/java/dev/genesis/equality/StringEqualityComparator.java" href="#"></area>
+        <area shape="rect" coords="424, 322, 632, 326" alt="src/net/java/dev/genesis/helpers/CriteriaPropertyHelper.java" title="src/net/java/dev/genesis/helpers/CriteriaPropertyHelper.java" href="#"></area>
+        <area shape="rect" coords="424, 339, 632, 343" alt="src/net/java/dev/genesis/registry/DefaultValueRegistry.java" title="src/net/java/dev/genesis/registry/DefaultValueRegistry.java" href="#"></area>
+        <area shape="rect" coords="424, 344, 632, 348" alt="src/net/java/dev/genesis/registry/Registry.java" title="src/net/java/dev/genesis/registry/Registry.java" href="#"></area>
+        <area shape="rect" coords="424, 349, 632, 353" alt="src/net/java/dev/genesis/registry/RegistryFactory.java" title="src/net/java/dev/genesis/registry/RegistryFactory.java" href="#"></area>
+        <area shape="rect" coords="424, 366, 632, 370" alt="src/net/java/dev/genesis/resolvers/CollectionEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/CollectionEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="424, 371, 632, 375" alt="src/net/java/dev/genesis/resolvers/DefaultEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/DefaultEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="424, 376, 632, 380" alt="src/net/java/dev/genesis/resolvers/EmptyResolver.java" title="src/net/java/dev/genesis/resolvers/EmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="424, 381, 632, 385" alt="src/net/java/dev/genesis/resolvers/EmptyResolverRegistry.java" title="src/net/java/dev/genesis/resolvers/EmptyResolverRegistry.java" href="#"></area>
+        <area shape="rect" coords="424, 386, 632, 390" alt="src/net/java/dev/genesis/resolvers/MapEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/MapEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="424, 391, 632, 395" alt="src/net/java/dev/genesis/resolvers/StringEmptyResolver.java" title="src/net/java/dev/genesis/resolvers/StringEmptyResolver.java" href="#"></area>
+        <area shape="rect" coords="424, 408, 632, 412" alt="src/net/java/dev/genesis/text/DefaultFormatter.java" title="src/net/java/dev/genesis/text/DefaultFormatter.java" href="#"></area>
+        <area shape="rect" coords="424, 413, 632, 417" alt="src/net/java/dev/genesis/text/EnumFormatter.java" title="src/net/java/dev/genesis/text/EnumFormatter.java" href="#"></area>
+        <area shape="rect" coords="424, 418, 632, 422" alt="src/net/java/dev/genesis/text/FormatAdapter.java" title="src/net/java/dev/genesis/text/FormatAdapter.java" href="#"></area>
+        <area shape="rect" coords="424, 423, 632, 427" alt="src/net/java/dev/genesis/text/Formatter.java" title="src/net/java/dev/genesis/text/Formatter.java" href="#"></area>
+        <area shape="rect" coords="424, 428, 632, 432" alt="src/net/java/dev/genesis/text/FormatterRegistry.java" title="src/net/java/dev/genesis/text/FormatterRegistry.java" href="#"></area>
+        <area shape="rect" coords="424, 445, 632, 449" alt="src/net/java/dev/genesis/ui/BasicValidator.java" title="src/net/java/dev/genesis/ui/BasicValidator.java" href="#"></area>
+        <area shape="rect" coords="424, 450, 632, 454" alt="src/net/java/dev/genesis/ui/Form.java" title="src/net/java/dev/genesis/ui/Form.java" href="#"></area>
+        <area shape="rect" coords="424, 455, 632, 459" alt="src/net/java/dev/genesis/ui/UIException.java" title="src/net/java/dev/genesis/ui/UIException.java" href="#"></area>
+        <area shape="rect" coords="424, 460, 632, 464" alt="src/net/java/dev/genesis/ui/UIUtils.java" title="src/net/java/dev/genesis/ui/UIUtils.java" href="#"></area>
+        <area shape="rect" coords="424, 465, 632, 469" alt="src/net/java/dev/genesis/ui/ValidationException.java" title="src/net/java/dev/genesis/ui/ValidationException.java" href="#"></area>
+        <area shape="rect" coords="424, 470, 632, 474" alt="src/net/java/dev/genesis/ui/ValidationUtils.java" title="src/net/java/dev/genesis/ui/ValidationUtils.java" href="#"></area>
+        <area shape="rect" coords="424, 487, 632, 491" alt="src/net/java/dev/genesis/ui/controller/DefaultFormController.java" title="src/net/java/dev/genesis/ui/controller/DefaultFormController.java" href="#"></area>
+        <area shape="rect" coords="424, 492, 632, 496" alt="src/net/java/dev/genesis/ui/controller/FormController.java" title="src/net/java/dev/genesis/ui/controller/FormController.java" href="#"></area>
+        <area shape="rect" coords="424, 509, 632, 513" alt="src/net/java/dev/genesis/ui/metadata/ActionMetadata.java" title="src/net/java/dev/genesis/ui/metadata/ActionMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 514, 632, 518" alt="src/net/java/dev/genesis/ui/metadata/DataProviderMetadata.java" title="src/net/java/dev/genesis/ui/metadata/DataProviderMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 519, 632, 523" alt="src/net/java/dev/genesis/ui/metadata/FieldMetadata.java" title="src/net/java/dev/genesis/ui/metadata/FieldMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 524, 632, 528" alt="src/net/java/dev/genesis/ui/metadata/FormMetadata.java" title="src/net/java/dev/genesis/ui/metadata/FormMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 529, 632, 533" alt="src/net/java/dev/genesis/ui/metadata/FormMetadataFactory.java" title="src/net/java/dev/genesis/ui/metadata/FormMetadataFactory.java" href="#"></area>
+        <area shape="rect" coords="424, 534, 632, 538" alt="src/net/java/dev/genesis/ui/metadata/MemberMetadata.java" title="src/net/java/dev/genesis/ui/metadata/MemberMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 539, 632, 543" alt="src/net/java/dev/genesis/ui/metadata/MethodMetadata.java" title="src/net/java/dev/genesis/ui/metadata/MethodMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 556, 632, 560" alt="src/net/java/dev/genesis/ui/thinlet/BaseDialogThinlet.java" title="src/net/java/dev/genesis/ui/thinlet/BaseDialogThinlet.java" href="#"></area>
+        <area shape="rect" coords="424, 561, 632, 565" alt="src/net/java/dev/genesis/ui/thinlet/BaseThinlet.java" title="src/net/java/dev/genesis/ui/thinlet/BaseThinlet.java" href="#"></area>
+        <area shape="rect" coords="424, 566, 632, 570" alt="src/net/java/dev/genesis/ui/thinlet/ErrorReporterDialog.java" title="src/net/java/dev/genesis/ui/thinlet/ErrorReporterDialog.java" href="#"></area>
+        <area shape="rect" coords="424, 571, 632, 575" alt="src/net/java/dev/genesis/ui/thinlet/MessageDialog.java" title="src/net/java/dev/genesis/ui/thinlet/MessageDialog.java" href="#"></area>
+        <area shape="rect" coords="424, 576, 632, 580" alt="src/net/java/dev/genesis/ui/thinlet/OptionDialog.java" title="src/net/java/dev/genesis/ui/thinlet/OptionDialog.java" href="#"></area>
+        <area shape="rect" coords="424, 581, 632, 585" alt="src/net/java/dev/genesis/ui/thinlet/PropertyMisconfigurationException.java" title="src/net/java/dev/genesis/ui/thinlet/PropertyMisconfigurationException.java" href="#"></area>
+        <area shape="rect" coords="424, 586, 632, 590" alt="src/net/java/dev/genesis/ui/thinlet/ScreenNotFoundException.java" title="src/net/java/dev/genesis/ui/thinlet/ScreenNotFoundException.java" href="#"></area>
+        <area shape="rect" coords="424, 591, 632, 595" alt="src/net/java/dev/genesis/ui/thinlet/ThinletBinder.java" title="src/net/java/dev/genesis/ui/thinlet/ThinletBinder.java" href="#"></area>
+        <area shape="rect" coords="424, 608, 632, 612" alt="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadata.java" title="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadata.java" href="#"></area>
+        <area shape="rect" coords="424, 613, 632, 617" alt="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadataFactory.java" title="src/net/java/dev/genesis/ui/thinlet/metadata/ThinletMetadataFactory.java" href="#"></area>
+      </map><p align="center">
+        <img border="0" src="evolution.png" usemap="#evomatrix" alt=""></img>
+      </p></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
