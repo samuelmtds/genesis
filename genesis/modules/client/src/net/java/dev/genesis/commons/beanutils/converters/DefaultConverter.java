@@ -18,13 +18,45 @@
  */
 package net.java.dev.genesis.commons.beanutils.converters;
 
+import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
 
 public class DefaultConverter implements Converter {
+   private final boolean returnDefaultValue;
+   private final Object defaultValue;
+   
+   public DefaultConverter() {
+      this(true, null);
+   }
+
+   public DefaultConverter(final Object defaultValue) {
+      this(true, defaultValue);
+   }
+
+   public DefaultConverter(final boolean returnDefaultValue) {
+      this(false, null);
+   }
+
+   public DefaultConverter(final boolean returnDefaultValue, 
+         final Object defaultValue) {
+      this.returnDefaultValue = returnDefaultValue;
+      this.defaultValue = defaultValue;
+   }
+
    public Object convert(Class clazz, Object obj) {
+      if (obj == null) {
+         return null;
+      }
+
       if (clazz.isAssignableFrom(obj.getClass())) {
          return obj;
       }
-      return null;
+
+      if (returnDefaultValue) {
+         return defaultValue;
+      } else {
+         throw new ConversionException(obj + " cannot be converted to " + 
+               clazz.getName() + "; its type is " + obj.getClass().getName());
+      }
    }   
 }
