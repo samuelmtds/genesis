@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>User interface component model</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Basic concepts about UI components">
+      <p>genesis' UI component model is quite expressive yet simple and is
+      mostly based on <b>annotation</b> usage. These annotations are not
+      interpreted as Tiger medatata, as defined by JSR-175, but are used in a
+      way similar to XDoclet tags. Examples provided below will make their use
+      clear.</p>
+      <p>The following features and/or concepts are explained below:
+      <ul>
+        <li><a href="#UI component types">UI component types</a></li>
+        <li><a href="#Understanding views">Understanding views</a></li>
+        <li><a href="#Using auxiliary UI classes">Using auxiliary UI classes</a>
+        </li>
+        <li><a href="#Understanding forms">Understanding forms</a></li>
+        <li><a href="#Implementing actions in forms and views">Implementing
+        actions in forms and views</a></li>
+      </ul>
+      </p>
+    </section>
+    <section name="UI component types">
+      <p>In order to make client code simple and testable, two types of
+      components are combined to produce the user interface (UI): a <b>View</b>
+      and a <b>Form</b>. A view is a class that performs operations that are
+      specific to a graphical API, while a form is a simple JavaBean that
+      contains interface logic and is not coupled to a graphical API and might
+      even be reused with a different API.</p>
+      <p>It is important to notice that the fact a form is not coupled to a
+      graphical API and is just a JavaBean has several useful consequences to a
+      developer, such as:</p>
+        <ul>
+          <li>It's possible to write unit tests for business logic.</li>
+          <li>A form may extend any class and inheritance may be used to share
+          common characteristics.</li>
+          <li>Clear separation of concerns motivates developers to program in a
+          clear, understandable way.</li>
+          <li>The same unmodified form might be used together with a Swing UI as
+          soon as genesis supports it.</li>
+        </ul>
+      <p>This proposed architecture, as cited on the last item, allows the same
+      form model to be used in several views. Currently genesis supports Thinlet
+      as its sole view implementation model, but future version will provide
+      support to Swing and even Thinlet for PersonalJava-compatible PDAs.</p>
+    </section>
+    <section name="Understanding views">
+      <p>Views are tightly coupled to the graphical API being used. Thinlet
+      support is implemented in genesis in two classes that are part of
+      <code>net.java.dev.genesis.ui.thinlet</code>: <code>BaseThinlet</code> and
+      its subclass <code>BaseDialogThinlet</code>.</p>
+      <p><code>BaseThinlet</code> extends <code>Thinlet</code> in the following
+      ways:
+        <ul>
+          <li>Exposes constants for Thinlet's widget names that are used in
+          several points of the API and also internally.</li>
+          <li>Provides several
+          <code>set&lt;Property&gt;(Object,&lt;type&gt;)</code> and
+          <code>&lt;type&gt; get&lt;Property&gt;(Object)</code> methods so that
+          widget properties may be accessed in a strongly typed way.</li>
+          <li>Implements some <code>create&lt;Widget&gt;(..)</code> methods that
+          make it easy to dinamically generate graphical components.</li>
+          <li>Has methods to display a bean on screen
+          (<code>displayBean(..)</code> and <code>populateFrom..(..)</code>) as
+          well as to capture displayed values in a bean
+          (<code>populate(Object)</code>).</li>
+          <li>Makes it possible to handle errors through
+          <code>handleException(Throwable)</code> and more specialized methods
+          such as <code>handleUIException(UIException),
+          handleCustomException(Throwable),</code> and
+          <code>handleUnknownException(Throwable)</code>.</li>
+          <li>Integrates validation and implements specific error handling for
+          it.</li>
+          <li>Implements form binding to view through methods
+          <code>bind(..)</code> and <code>invokeFormAction(..)</code>.</li>
+        </ul>
+      </p>
+      <p>When the model explained in this document is used, i.e., form binding,
+      only the last three characteristics are needed by client code. Therefore,
+      just these ones will be explored in this document.</p>
+      <p><code>BaseDialogThinlet</code> is a specialization of
+      <code>BaseThinlet</code> that makes it simpler to create dialogs. As a
+      consequence, all explanations regarding <code>BaseThinlet</code> also
+      apply to it.</p>
+      <subsection name="Setting up and displaying a window">
+        <p>The programmer is responsible for creating the window where a view
+        will be displayed inside. A way to create the main window is by using
+        <code>FrameLauncher</code>, a class that comes with Thinlet
+        distribution. An example of this technique is shown below:</p>
+<source>
+public class FrameCreationExample extends BaseThinlet {
+   public FrameCreationExample() throws Exception {
+      add(parse("frame_creation_example.xml"));
+   }
+
+   public static void main(String[] args) throws Exception {
+      new FrameLauncher("Frame creation example",
+            new FrameCreationExample(), 800, 600);
+   }
+}
+</source>
+        <p>This trivial example may be sufficient for several situations, but in
+        a few others it might be necessary to change frame's properties before
+        displaying it. If all frames in an application need the same changes,
+        it's recommended to create an intermediate base class. This technique is
+        used in examples provided with genesis. The following class was
+        extracted from the useradmin sample:</p>
+<source>
+public abstract class BaseView extends BaseThinlet {
+   public BaseView(String title, String xmlFile, int width, int height,
+         boolean resizable) throws Exception {
+      Frame f = new Frame();
+      f.add(this);
+      Insets is = f.getInsets();
+      width += is.left + is.right;
+      height += is.top + is.bottom;
+      Dimension ss = getToolkit().getScreenSize();
+      width = Math.min(width, ss.width);
+      height = Math.min(height, ss.height);
+      f.setBounds((ss.width - width) / 2, (ss.height - height) / 2, width,
+            height);
+      f.setResizable(resizable);
+      f.setTitle(UIUtils.getInstance().getBundle().getString(title));
+      f.addWindowListener(new WindowAdapter() {
+         public void windowClosing(WindowEvent e) {
+            System.exit(0);
+         }
+      });
+      setAllI18n(true);
+      setResourceBundle(UIUtils.getInstance().getBundle());
+      add(parse(xmlFile));
+   }
+}
+</source>
+        <p>The class shown above creates its own frame so it can be centered,
+        makes it resizable or not, defines its title using a
+        <code>ResourceBundle</code>, what makes internationalization possible,
+        configures the window to stop execution when it is closed and configures
+        UI internationalization before adding the xml file.</p>
+        <p><code>BaseDialogThinlet</code> has constructors capable of
+        instantiating a <code>Dialog</code> - using an existent
+        <code>Frame</code> or a <code>BaseThinlet</code> instance or creating a
+        new <code>Frame</code> - and others that receive an externally created
+        instance. Generally it won't be necessary to externally configure a
+        <code>Dialog</code> instance. By default a listener that calls the non-
+        final method <code>onClose()</code> when the window is closed is a
+        added. It is possible to customize the behaviour in response to the
+        window closing event by overriding <code>onClose()</code>.</p>
+        <p>It's also recommended to create an intermediate, project-specific
+        super class for <code>BaseDialogThinlet</code>. An example, also
+        extracted from the useradmin sample, can be seen below:</p>
+<source>
+public abstract class BaseDialogView extends BaseDialogThinlet {
+   public BaseDialogView(Frame frame, String title, String xmlFile,
+         boolean resizable, boolean modal) throws Exception {
+      super(frame);
+      getDialog().setModal(modal);
+      getDialog().setResizable(resizable);
+      getDialog().setTitle(UIUtils.getInstance().getBundle().getString(title));
+      setAllI18n(true);
+      setResourceBundle(UIUtils.getInstance().getBundle());
+      add(parse(xmlFile));
+   }
+}
+</source>
+        <p>The code is very similar to the one before. It just configures the
+        <code>Dialog</code> instance - that can be obtained using
+        <code>getDialog()</code>, as showed above - to be modal or not and
+        resizable or not.</p>
+      </subsection>
+    </section>
+    <section name="Using auxiliary UI classes">
+      <p>Some auxiliary classes are provided together with genesis-client to
+      accelerate UI development process. They implement common tasks, such as
+      displaying messages, asking for user confirmation and displaying
+      exceptions. All these classes belong to the package <code>
+      net.java.dev.genesis.ui.thinlet</code>.</p>
+      <p>The first of these auxiliary classes is <code>MessageDialog</code>,
+      that display a message to an user in a <code>Dialog</code> that also
+      contains a "Close" button. Two static methods <code>show(..)</code> are
+      provided in order to make using this class even more practical. Both
+      accept the window title as their second argument and the message to
+      display as the third, whereas the first parameter might be an instance of
+      <code>Frame</code> or <code>BaseThinlet</code>. The second version makes
+      it even easier to use inside a class that extends <code>BaseThinlet</code>
+      as the code below demonstrates:</p>
+<source>
+public void displayMessage() {
+   MessageDialog.show(this, "Title", "Message to be displayed");
+}
+</source>
+      <p>To display a choice the class <code>OptionDialog</code> might be used.
+      Similarly to <code>MessageDialog</code>, two versions of a
+      <code>display(..)</code> method are provided, accepting either an instance
+      of <code>BaseThinlet</code> or <code>Frame</code>, the window title and
+      the question to be displayed. When one of these methods is used, a dialog
+      window is shown with three buttons (Yes/No/Cancel). There is a
+      <code>displayYesNo(BaseThinlet,String,String)</code> method for the
+      occasions when just these options would be appropriate. All the three
+      methods return a value from the enumeration <code>Option</code>, so it's
+      possible to know which option the user has selected.
+      <code>OptionDialog</code> may be used in a class that extends
+      <code>BaseThinlet</code> as shown below:</p>
+<source>
+public void performOperation() {
+   Option option = OptionDialog.displayYesNo(this, "Title", "Do you really " +
+         "want to do that?");
+
+   if (option == Option.YES) {
+      // perform the operation
+   }
+}
+</source>
+      <p>To end up with, <code>ErrorReporterDialog</code> allows one to display
+      an except to the user with a descriptive message besides all stack trace.
+      As it is true for <code>MessageDialog</code>, there are also two versions
+      of <code>show(..)</code>: one for a <code>BaseThinlet</code> instance and
+      another one for a <code>Frame</code>. The example below shows how to use
+      this class in a <code>BaseThinlet</code> subclass:</p>
+<source>
+public void displayError(Throwable t) {
+   ErrorReporterDialog.show(this, "Error", t.getMessage(), t);
+}
+</source>
+      <p>Directly usage of <code>ErrorReporterDialog</code> in client code will
+      probably be unnecessary, since the default error handling implemented in
+      <code>BaseThinlet</code> already uses this class as explained after.</p>
+    </section>
+    <section name="Understanding forms">
+      <p>Forms contain UI logic and are not coupled to the graphical API used to
+      display screens. A form is just a JavaBean that has annotations that
+      indicate how its properties and methods should be handled by UI.</p>
+      <p>Since the form is not directly bound to a graphical API, this binding
+      must be made. A <b>binding</b> is a concept supported by genesis and each
+      genesis-client specialization will have a specific way to do that. Using
+      the only currently available implementation, Thinlet, this can be done by
+      calling <code>bind(Object)</code>, that bounds a form to a view.</p>
+      <p>A very simple yet complete UI example can be seen below. We have all
+      components required to implement a simple login interface. First, let's
+      see the UI xml, which is in a file named <code>login.xml</code>:</p>
+<source>
+<![CDATA[
+ 1. <panel gap="5" top="5" left="5" bottom="5" right="5" weightx="1"
+ 2.        weighty="1">
+ 3.    <panel gap="5" columns="2" weightx="1">
+ 4.       <label text="User" font="bold" />
+ 5.       <textfield name="user" columns="10" />
+ 6.       <label text="Password" font="bold" />
+ 7.       <passwordfield name="password" columns="10" />
+ 8.    </panel>
+ 9.    <panel gap="5" halign="center" weightx="1">
+10.       <button name="login" text="Login" />
+11.       <button name="reset" text="Reset" />
+12.    </panel>
+13. </panel>
+]]>
+</source>
+      <p>After that, we have view's code:</p>
+<source>
+public class LoginView extends BaseDialogThinlet {
+   public LoginView() throws Exception {
+      getDialog().setTitle("Login");
+
+      add(parse("login.xml"));
+      bind(new LoginForm());
+   }
+
+   public static void main(String[] args) throws Exception {
+      new LoginView().display();
+   }
+}
+</source>
+      <p>We can notice in the code above the method <code>bind(Object)</code>
+      being used, having the form instance as an argument. Below, we have the
+      code for the form used in this example:</p>
+<source>
+ 1. /**
+ 2.  * @Form
+ 3.  */
+ 4. public class LoginForm {
+ 5.    private String user;
+ 6.    private String password;
+ 7.
+ 8.    public String getUser() {
+ 9.       return user;
+10.    }
+11.
+12.    public void setUser(String user) {
+13.       this.user = user;
+14.    }
+15.
+16.    public String getPassword() {
+17.       return password;
+18.    }
+19.
+20.    public void setPassword(String password) {
+21.       this.password = password;
+22.    }
+23.
+24.    /**
+25.     * @Action
+26.     */
+27.    public void login() {
+28.       System.out.println(user);
+29.       System.out.println(password);
+30.    }
+31.
+32.    /**
+33.     * @Action
+34.     */
+35.    public void reset() {
+36.       setUser(null);
+37.       setPassword(null);
+38.    }
+39. }
+</source>
+      <p>By analyzing this example we can learn a few important things about
+      defining a form. A form is annotated with a <code>@Form</code> tag in the
+      class level, as shown in lines 1-3. This annotation is what tells genesis
+      that the class should be treated as a form, a fact that requires special
+      treatment internally through a genesis-aspect component.</p>
+      <p>Properties exposed through getters and setters - for this example,
+      <code>user</code> (lines 8-14) and <code>password</code> (lines 16-22) -
+      may be dinamically bound to a variety of UI widgets, such as texfields,
+      passwordfields, labels and others. To make that possible, widget
+      <code>name</code>s in xml (lines 5 and 7) have to be equals to property
+      names. Both the property value in the form and its displayed value will be
+      in synch whenever the widget representing the property loses focus. In the
+      example given, this happens when the user press the TAB key or clicks in a
+      different point of the window when the focus is on textfields
+      <code>user</code> or <code>password</code>.</p>
+      <p>Methods may also be bound to buttons on the screen. In order for that
+      to happen, they have to be annotated as <code>@Action</code> (lines 24-26
+      and 32-34) and there must exist buttons with a <code>name</code> value
+      equals to them in the UI (lines 10-11 in the xml file). So, when the
+      button is pressed, the method whose name is equal to it is invoked on the
+      form instance. In the example above, when the Login button is clicked, the
+      values for widgets User and Password are printed on the standard output
+      while activating button Reset will clean up fields' content both on the
+      screen and the form.</p>
+    </section>
+    <section name="Implementing actions in forms and views">
+      <p>Although genesis makes it possible to bind form actions to widgets,
+      nothing stops one from taking advantage of Thinlet's built-in feature of
+      invoking methods by configuring them in the UI xml definition. As a
+      consequence, a recurring question is when to use <code>@Action</code> and
+      when to use <code>action="method()"</code> directly in the view's code.
+      Some basic principles might be helpful in order to decide which one to
+      use.</p>
+      <p>If an action changes the form or isn't bound to the graphical API, it
+      should be implemented on the form class using <code>@Action</code>. If the
+      response to a certain event is simply to display a new window, dialog or
+      some API-specific task, it should be implemented on the view and triggered
+      by an <code>action="metodo()"</code> construction. However, there are
+      occasions that are not so simple and when it's necessary to manipulate
+      both the form and the view. These cases are considered below.</p>
+      <subsection name="Using @BeforeAction">
+        <p>Let's consider the following example: an use case about deleting some
+        information must be implemented. But before deleting it, the user is
+        supposed to confirm the operation. This confirmation could be
+        implemented by displaying an <code>OptionDialog</code> to the user and
+        continuing the operation only if s/he agreed. However, deleting some
+        information is not a graphical API specific operation and, therefore,
+        should be implemented on the form class. How can it be done?</p>
+        <p>In order to execute an UI-related method before invoking a form
+        method - and even not calling the form method at all -, the
+        <code>@BeforeAction</code> annotation is used. This annotation should be
+        put in the view method that should be executed before a form method and
+        can either return a <code>boolean</code> or <code>void</code>. When
+        <code>false</code> is returned, the form method is not invoked.</p>
+        <p>If the view method name is the same as the form method name, it's not
+        necessary to specify any additional parameter for the annotation. In
+        some situations, however, a view method name cannot be the same used for
+        naming a form method. In order to indicate which form method should be
+        executed only after a view method is invoked, the form method name is
+        passed as an annotation argument. A full example is shown below. First,
+        the view:</p>
+<source>
+public class BeforeActionViewExample extends BaseThinlet {
+   public BeforeActionViewExample() {
+      // initialization logic
+      bind(new BeforeActionFormExample());
+   }
+
+   /**
+    * @BeforeAction delete
+    */
+   public boolean confirmDeletion() {
+      return OptionDialog.displayYesNo(this, "Deleting record...",
+            "Do you really want to delete this record?") == Option.YES;
+   }
+
+   // ...
+}
+</source>
+        <p>Now, the form:</p>
+<source>
+/**
+ * @Form
+ */
+public class BeforeActionFormExample {
+   /**
+    * @Action
+    */
+   public void delete() {
+      // here goes business logic for this operation.
+   }
+
+   // ...
+}
+</source>
+        <p>When the button whose<code>name</code> is <code>"delete"</code> is
+        pressed, genesis invokes <code>confirmDeletion()</code> in
+        <code>BeforeActionViewExample</code> since it is configured with the
+        annotation <code>@BeforeAction delete</code>. If the view method name
+        was <code>delete</code> it wouldn't be necessary to specify the method's
+        name as an annotation parameter.</p>
+        <p>Since <code>confirmDeletion()</code> returns a <code>boolean</code>,
+        the form method will be invoked only when the return value is
+        <code>true</code>. For this specific example, this only happens when the
+        user chooses "Yes" in the displayed dialog. When this confirmation
+        occurs, <code>delete()</code> is invoked by genesis and this event
+        handling is considered done.</p>
+      </subsection>
+      <subsection name="Using @AfterAction">
+        <p>After executing a form method it might be needed to use graphical
+        API-specific resources, such as, for example, close the currently
+        displayed window. In order to make it possible genesis supports the
+        <code>@AfterAction</code> annotation, that should be tag the view method
+        to be invoked. Its syntax is very similar to
+        <code>@BeforeAction</code>'s one, except that a method annotated with it
+        should always return <code>void</code>. A usage example is:</p>
+<source>
+public class AfterActionViewExample extends BaseDialogThinlet {
+   public AfterActionViewExample() {
+      // initialization logic
+      bind(new AfterActionFormExample());
+   }
+
+   /**
+    * @AfterAction save
+    */
+   public void closeWindow() {
+      getDialog().dispose();
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class AfterActionFormExample {
+   /**
+    * @Action
+    */
+   public void save() {
+      // here goes business logic for this operation.
+   }
+
+   // ...
+}
+</source>
+        <p>In the example above, when the button whose <code>name</code> is
+        <code>"save"</code> is pressed, the method named <code>save()</code> is
+        invoked on the form instance. After its execution, view's method <code>
+        fechaJanela()</code>, which is annotated as
+        <code>@AfterAction save</code> is executed. As it was true for
+        <code>@BeforeAction</code>, if the view method name was also
+        <code>save()</code> it wouldn't be needed to use it as an argument to
+        the annotation.</p>
+      </subsection>
+      <subsection name="Using invokeFormAction(String)">
+        <p>In some situations it may be necessary to invoke one or more form
+        methods inside a view method under certain specific conditionsand using
+        <code>@BeforeAction</code> and <code>@AfterAction</code> is not
+        possible. Although directly calling a form method is actually possible,
+        when it happens genesis is not notified about it, what means several
+        consequences might be perceived, such as a stale UI, for example.</p>
+        <p>In order to invoke a form method and still keep the automatic
+        synchronization between view and form, the method
+        <code>invokeFormAction(String)</code> should be used. Its parameter is
+        the name of the form method to be invoked. An example is shown below:</p
+        >
+<source>
+public class InvokeFormActionViewExample extends BaseThinlet {
+   private InvokeFormActionFormExample form;
+
+   public InvokeFormActionViewExample() {
+      // initialization logic
+      bind(form = new InvokeFormActionFormExample());
+   }
+
+   public void selectFinantialIndexes() {
+      BigDecimal index = //... index is acquired from another window,
+                         // for example
+      form.setIndex(index);
+      invokeFormAction("recalculateTotals");
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class InvokeFormActionFormExample {
+   private BigDecimal index;
+   // ...
+
+   public BigDecimal getIndex() {
+      return index;
+   }
+
+   public void setIndex(BigDecimal index) {
+      this.index = index;
+   }
+
+   /**
+    * @Action
+    */
+   public void recalculateTotals() {
+      // business logic to manipulate several other properties
+   }
+}
+</source>
+      </subsection>
+    </section>
+  </body>
+</document>
