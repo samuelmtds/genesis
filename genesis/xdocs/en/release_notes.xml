@@ -16,7 +16,7 @@
         <p>Many changes and features are part of this release. Some of the most
         noticeable are:</p>
         <ul>
-          <li>Remote and transactional methos are new defined using annotations,
+          <li>Remote and transactional methods are now defined using annotations,
           replacing the old marker interfaces + method naming convention</li>
           <li>@Criteria implementation</li>
           <li>Local execution mode</li>
