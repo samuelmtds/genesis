@@ -612,6 +612,8 @@ public abstract class BaseThinlet extends Thinlet {
       String propertyName;
       Object row;
       Object bean;
+      int indexOfDot;
+      boolean skip;
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          bean = i.next();
@@ -619,6 +621,26 @@ public abstract class BaseThinlet extends Thinlet {
 
          for (final Iterator it = propertyNames.iterator(); it.hasNext(); ) {
             propertyName = it.next().toString();
+
+            indexOfDot = 0;
+            skip = false;
+
+            while ((indexOfDot = propertyName.indexOf('.', indexOfDot)) != -1) {
+               if (PropertyUtils.getProperty(bean, 
+                     propertyName.substring(0, indexOfDot)) == null) {
+                  add(row, createCell(propertyName, 
+                        FormatterRegistry.getInstance().format(null)));
+                  skip = true;
+                  break;
+               }
+
+               indexOfDot += 1;
+            }
+
+            if (skip) {
+               continue;
+            }
+
             add(row, createCell(propertyName, 
                     FormatterRegistry.getInstance().format(
                            PropertyUtils.getProperty(bean, propertyName))));
