@@ -309,7 +309,7 @@ public void exibeErro(Throwable t) {
       </subsection>
     </section>
     <section name="Entendendo os forms">
-      <p>Os forms contém a lógica da interface gráfica e são desacoplados da API
+      <p>Os forms contêm a lógica da interface gráfica e são desacoplados da API
       gráfica utilizada para exibir as telas. Um form é apenas um JavaBean que
       possui anotações que indicam como suas propriedades e métodos devem ser
       tratados pela interface gráfica.</p>
@@ -440,8 +440,8 @@ public class LoginView extends BaseDialogThinlet {
       a determinado controle é simplesmente exibir uma nova tela, janela de
       diálogo ou alguma tarefa específica da API gráfica sendo utilizada, deve-
       se implementá-la na view e acioná-la com <code>action="metodo()"</code>.
-      Porém, existem situações que não tão simples e em que a manipulação do
-      form e da view se misturam. Estes casos são considerados abaixo.</p>
+      Porém, existem situações não tão simples e outras nas quais a manipulação
+      do form e da view se misturam. Estes casos são considerados abaixo.</p>
       <subsection name="Usando @BeforeAction">
         <p>Consideremos o seguinte exemplo: deve-se implementar a exclusão de um
         dado. Mas antes de exclui-lo o usuário deve confirmar a operação. Essa
@@ -569,11 +569,11 @@ public class ExemploAfterActionForm {
         as informações exibidas ficam fora de sincronia, causando uma série de
         problemas. Os métodos <code>refreshView()</code>,
         <code>refreshView(Object)</code> e
-        <code>refreshViewFromForm(Object</code> podem ser utilizados nestes
+        <code>refreshViewFromForm(Object)</code> podem ser utilizados nestes
         cenários.</p>
         <p>O primeiro método, <code>refreshView()</code>, deve ser utilizado
         quando somente um form está associado a view.
-        <code>refreshView(Object)</code> recebe como o parâmetro o widget ao
+        <code>refreshView(Object)</code> recebe como parâmetro o widget ao
         qual um ou vários forms estão ligados e processa quaisquer atualizações
         encontradas neles. <code>refreshViewFromForm(Object)</code> atualiza o
         widget ligado ao form passado como parâmetro. Um exemplo de uso do
@@ -621,7 +621,7 @@ public class ExemploRefreshViewForm {
 </source>
       </subsection>
       <subsection name="Usando invokeFormAction(..)">
-        <p>Em algumas ocasiões pode ser necessário invocar um ou mais ações do
+        <p>Em algumas ocasiões pode ser necessário invocar uma ou mais ações do
         form de dentro de um método da view sob determinadas condições
         específicas e o uso de <code>@BeforeAction</code> e
         <code>@AfterAction</code> não é possível. Embora a execução direta de um
