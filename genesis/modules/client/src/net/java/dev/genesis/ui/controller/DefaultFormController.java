@@ -79,6 +79,9 @@ public class DefaultFormController implements FormController {
       return formMetadata;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected JXPathContext createJXPathContext() {
       final JXPathContext ctx = JXPathContext.newContext(form);
       ctx.setFunctions(getFunctions());
@@ -86,18 +89,30 @@ public class DefaultFormController implements FormController {
       return ctx;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected Functions getFunctions() {
       return new ClassFunctions(ExtensionFunctions.class, "g");
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected Variables getVariables() {
       return new VariablesImpl();
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected Map getVariablesMap() {
       return ((VariablesImpl) ctx.getVariables()).getVariablesMap();
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected final JXPathContext getContext() {
       return ctx;
    }
@@ -589,10 +604,16 @@ public class DefaultFormController implements FormController {
       }
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected boolean isConditionSatisfied(CompiledExpression compiledEx) {
       return Boolean.TRUE.equals(compiledEx.getValue(ctx));
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    protected Boolean isSatisfied(CompiledExpression compiledEx) {
       return Boolean.valueOf(isConditionSatisfied(compiledEx));
    }

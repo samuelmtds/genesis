@@ -24,18 +24,30 @@ public abstract class MemberMetadata {
    private CompiledExpression enabledCondition;
    private CompiledExpression visibleCondition;
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public CompiledExpression getEnabledCondition() {
       return enabledCondition;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public void setEnabledCondition(CompiledExpression enabledCondition) {
       this.enabledCondition = enabledCondition;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public CompiledExpression getVisibleCondition() {
       return visibleCondition;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public void setVisibleCondition(CompiledExpression visibleCondition) {
       this.visibleCondition = visibleCondition;
    }

@@ -49,10 +49,16 @@ public final class MethodMetadata {
       return methodEntry;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public CompiledExpression getCallCondition() {
       return callCondition;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public void setCallCondition(CompiledExpression callWhen) {
       this.callCondition = callWhen;
    }

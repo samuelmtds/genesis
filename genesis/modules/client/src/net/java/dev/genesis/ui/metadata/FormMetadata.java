@@ -113,6 +113,9 @@ public class FormMetadata {
       }
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public CompiledExpression getNamedCondition(final String namedConditionName) {
       return (CompiledExpression) namedConditions.get(namedConditionName);
    }
@@ -133,6 +136,9 @@ public class FormMetadata {
       return (DataProviderMetadata) dataProviderIndexes.get(fieldName);
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public void addNamedCondition(final String key, final CompiledExpression value) {
       namedConditions.put(key, value);
    }

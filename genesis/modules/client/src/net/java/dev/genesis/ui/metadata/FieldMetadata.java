@@ -59,10 +59,16 @@ public class FieldMetadata extends MemberMetadata {
       return writeable;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public CompiledExpression getClearOnCondition() {
       return clearOnCondition;
    }
 
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
    public void setClearOnCondition(CompiledExpression clearOnCondition) {
       this.clearOnCondition = clearOnCondition;
    }
