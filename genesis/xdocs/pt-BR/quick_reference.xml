@@ -370,6 +370,10 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais informações...</a></p>
       </subsection>
       <subsection name="@ValidateBefore">
+        <p>
+        O suporte de validações do genesis é implementado através de componentes do Jakarta project
+        <a href="http://jakarta.apache.org/commons/validator/" class="externalLink" title="External Link">commons-validator</a>.
+	      </p>
         <p>Força a execução da validação antes de ser executado o método
         definido como<a href="#@Action">@Action</a>. Só pode ser usado nestes
         métodos.</p>
