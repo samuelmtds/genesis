@@ -43,6 +43,8 @@ public interface FormController {
    public void populate(Map properties) throws Exception;
    public void invokeAction(String actionName, Map stringProperties) 
          throws Exception;
+   public void updateSelection(String dataProviderName, int[] selected) 
+         throws Exception;
    public void update() throws Exception;
    public FormState getFormState() throws Exception;
    public void reset(FormState state) throws Exception;

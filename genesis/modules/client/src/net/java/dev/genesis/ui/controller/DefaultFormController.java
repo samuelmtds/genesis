@@ -310,7 +310,8 @@ public class DefaultFormController implements FormController {
             }
          }
          
-         for (Iterator i = dataProviderMetadatas.entrySet().iterator(); i.hasNext();) {
+         for (Iterator i = dataProviderMetadatas.entrySet().iterator(); 
+               i.hasNext();) {
             entry = (Map.Entry) i.next();
             dataProviderMeta = (DataProviderMetadata) entry.getValue();
             
@@ -321,12 +322,14 @@ public class DefaultFormController implements FormController {
 
             if (isConditionSatisfied(dataProviderMeta.getClearOnCondition())) {
                if (log.isDebugEnabled()) {
-                  log.debug("ClearOn Condition for data provider '" + entry.getKey()
-                        + "' satisfied. Clearing data provider list.");
+                  log.debug("ClearOn Condition for data provider '" + 
+                        entry.getKey() + "' satisfied. Clearing data " +
+                        "provider list.");
                }
-               
+
                changed = true;
-               currentState.getDataProvidedMap().put(dataProviderMeta, items = new ArrayList());
+               currentState.getDataProvidedMap().put(dataProviderMeta, 
+                     items = new ArrayList());
                fireDataProvidedListMetadataChanged(dataProviderMeta, items);
                i.remove();
             }
@@ -478,7 +481,8 @@ public class DefaultFormController implements FormController {
             continue;
          }
 
-         currentState.getChangedMap().put(dataMeta.getObjectField().getFieldName(), objectFieldValue);
+         currentState.getChangedMap().put(dataMeta.getObjectField()
+               .getFieldName(), objectFieldValue);
       }
 
       return changed;
@@ -599,7 +603,22 @@ public class DefaultFormController implements FormController {
 
       final Map currentValues = PropertyUtils.describe(form);
 
-      //TODO: reset index fields as well
+      for (final Iterator i = formMetadata.getDataProviderIndexes().values()
+            .iterator(); i.hasNext(); ) {
+         DataProviderMetadata dataMeta = (DataProviderMetadata) i.next();
+         String fieldName = dataMeta.getIndexField().getFieldName();
+         Object indexes = currentValues.get(fieldName);
+
+         if (getFormMetadata().getFieldMetadata(fieldName)
+               .getEqualityComparator().equals(indexes, state.getValuesMap()
+               .get(fieldName))) {
+            continue;
+         }
+
+         fireDataProvidedIndexesChanged(dataMeta, 
+               dataMeta.getSelectedIndexes(indexes));
+      }
+
 
       for (final Iterator i = currentValues.entrySet().iterator(); 
             i.hasNext();) {
@@ -680,6 +699,31 @@ public class DefaultFormController implements FormController {
       }
    }
 
+   public void updateSelection(String dataProviderName, int[] selected) 
+         throws Exception {
+      previousState = createFormState(currentState);
+
+      try {
+         final MethodEntry entry = new MethodEntry(dataProviderName, 
+               new String[0]);
+         final MethodMetadata methodMetadata = getFormMetadata()
+               .getMethodMetadata(entry);
+         final DataProviderMetadata dataMetadata = methodMetadata
+               .getDataProviderMetadata();
+         final List list = (List)currentState.getDataProvidedMap().get(
+               dataMetadata);
+
+         dataMetadata.populateSelectedFields(form, list, selected);
+
+         update();
+      } catch (Exception e) {
+         reset(previousState);
+         previousState = null;
+
+         throw e;
+      }
+   }
+
    public void fireAllEvents(FormControllerListener listener) throws Exception {
       listener.enabledConditionsChanged(currentState.getEnabledMap());
       listener.visibleConditionsChanged(currentState.getVisibleMap());
@@ -693,7 +737,14 @@ public class DefaultFormController implements FormController {
 
       final Map currentValues = PropertyUtils.describe(form);
 
-      //TODO: fire index fields changed event
+      for (final Iterator i = formMetadata.getDataProviderIndexes().values()
+            .iterator(); i.hasNext(); ) {
+         DataProviderMetadata dataMetadata = (DataProviderMetadata) i.next();
+
+         listener.dataProvidedIndexesChanged(dataMetadata,
+               dataMetadata.getSelectedIndexes(currentValues.get(dataMetadata.
+               getIndexField().getFieldName())));
+      }
 
       for (final Iterator i = currentValues.entrySet().iterator(); 
             i.hasNext();) {
