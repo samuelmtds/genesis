@@ -107,7 +107,9 @@ public final class ConverterRegistry extends ConvertUtilsBean {
       registry.register(Object.class, new DefaultConverter());
    }
 
-   // To avoid NPE when ConvertUtilsBean constructor calls register(converter,class)
+   // To avoid NPE when ConvertUtilsBean constructor calls 
+   // register(converter,class). The registry instance would be null at that 
+   // time due to the initialization order of member variables
    private Registry getRegistry() {
       if (registry == null) {
          registry = new Registry();
