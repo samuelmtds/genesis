@@ -2,18 +2,20 @@
         <property
             name="<XDtMethod:propertyName />"
             type="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="type" default="<XDtMethod:methodType/>"/>"
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
-            <XDtMethod:ifHasMethodTag tagName="hibernate.property" paramName="formula">
+          <XDtConfig:ifConfigParamGreaterOrEquals paramName="version" value="2.0">
+           <XDtMethod:ifHasMethodTag tagName="hibernate.property" paramName="formula">
             formula="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="formula" default=""/>"
             update="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="update" values="true,false" default="false"/>"
             insert="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="insert" values="true,false" default="false"/>"
-            </XDtMethod:ifHasMethodTag>
-            <XDtMethod:ifDoesntHaveMethodTag tagName="hibernate.property" paramName="formula">
+           </XDtMethod:ifHasMethodTag>
+           <XDtMethod:ifDoesntHaveMethodTag tagName="hibernate.property" paramName="formula">
             update="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="update" values="true,false" default="true"/>"
             insert="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="insert" values="true,false" default="true"/>"
-            </XDtMethod:ifDoesntHaveMethodTag>
-            access="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="access" values="field,property,Class" default="property"/>"
-          </XDtConfig:ifConfigParamEquals>
+           </XDtMethod:ifDoesntHaveMethodTag>
+           <XDtMethod:ifHasMethodTag tagName="hibernate.property" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="access" default="property"/>"
+           </XDtMethod:ifHasMethodTag>
+          </XDtConfig:ifConfigParamGreaterOrEquals>
           <XDtHibernate:setCurrentTag name="hibernate.property" mappingElement="property">
               <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-column.xdt">
               </XDtMerge:merge>
@@ -26,17 +28,22 @@
             class="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="class" default="<XDtMethod:methodType/>" />"
             cascade="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="cascade" values="none,all,save-update,delete" default="none"/>"
             outer-join="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="outer-join" values="true,false,auto" default="auto"/>"
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+          <XDtConfig:ifConfigParamGreaterOrEquals paramName="version" value="2.0">
             update="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="update" values="true,false" default="true"/>"
             insert="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="insert" values="true,false" default="true"/>"
-            access="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="access" values="field,property,Class" default="property"/>"
+           <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="access" default="property"/>"
+           </XDtMethod:ifHasMethodTag>
            <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="foreign-key">
             foreign-key="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="foreign-key"/>"
            </XDtMethod:ifHasMethodTag>
             <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="property-ref">
-            property-ref="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="property-ref" />"
+            property-ref="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="property-ref"/>"
             </XDtMethod:ifHasMethodTag>
-          </XDtConfig:ifConfigParamEquals>
+           <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="unique">
+            unique="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="unique" values="true,false"/>"
+           </XDtMethod:ifHasMethodTag>
+          </XDtConfig:ifConfigParamGreaterOrEquals>
           <XDtHibernate:setCurrentTag name="hibernate.many-to-one" mappingElement="many-to-one">
                <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-column.xdt">
                </XDtMerge:merge>
@@ -53,9 +60,12 @@
            <XDtMethod:ifHasMethodTag tagName="hibernate.one-to-one" paramName="foreign-key">
             foreign-key="<XDtMethod:methodTagValue tagName="hibernate.one-to-one" paramName="foreign-key"/>"
            </XDtMethod:ifHasMethodTag>
-            <XDtMethod:ifHasMethodTag tagName="hibernate.one-to-one" paramName="property-ref">
-              property-ref="<XDtMethod:methodTagValue tagName="hibernate.one-to-one" paramName="property-ref"/>"
-            </XDtMethod:ifHasMethodTag>   
+           <XDtMethod:ifHasMethodTag tagName="hibernate.one-to-one" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.one-to-one" paramName="access" default="property"/>"
+           </XDtMethod:ifHasMethodTag>
+           <XDtMethod:ifHasMethodTag tagName="hibernate.one-to-one" paramName="property-ref">
+            property-ref="<XDtMethod:methodTagValue tagName="hibernate.one-to-one" paramName="property-ref"/>"
+           </XDtMethod:ifHasMethodTag>
         />
      </XDtMethod:ifHasMethodTag>
 
@@ -64,10 +74,10 @@
             name="<XDtMethod:propertyName />"
             class="<XDtMethod:methodTagValue tagName="hibernate.component" paramName="class" default="<XDtMethod:methodType/>"/>"
         >
-          <XDtHibernate:setColumnPrefix 
-          	prefix="<XDtMethod:methodTagValue 
-          	tagName='hibernate.component' 
-          	paramName='prefix' default=''/>"> 
+          <XDtHibernate:setColumnPrefix
+            prefix="<XDtMethod:methodTagValue
+            tagName='hibernate.component'
+            paramName='prefix' default=''/>">
             <XDtClass:pushClass value="<XDtMethod:methodTagValue tagName='hibernate.component' paramName='class' default='<XDtMethod:methodType/>' />">
                 <XDtMethod:forAllMethods superclasses="true" sort="true">
                     <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-properties.xdt">
@@ -104,9 +114,9 @@
           <XDtConfig:ifConfigParamEquals paramName="version" value="1.1">
             readonly="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="readonly"  values="true,false" default="false"/>"
           </XDtConfig:ifConfigParamEquals>
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+          <XDtMethod:ifHasMethodTag tagName="hibernate.set" paramName="inverse">
             inverse="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="inverse"  values="true,false" default="false"/>"
-          </XDtConfig:ifConfigParamEquals>
+          </XDtMethod:ifHasMethodTag>
             cascade="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="cascade" values="none,all,save-update,delete,all-delete-orphan,delete-orphan" default="none"/>"
             sort="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="sort" default="unsorted"/>"
           <XDtMethod:ifHasMethodTag tagName="hibernate.set" paramName="order-by">
@@ -114,6 +124,15 @@
           </XDtMethod:ifHasMethodTag>
           <XDtMethod:ifHasMethodTag tagName="hibernate.set" paramName="where">
             where="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="where" />"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.set" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="access" default="property"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.set" paramName="outer-join">
+            outer-join="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="outer-join" values="true,false,auto" default="auto"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.set" paramName="batch-size">
+            batch-size="<XDtMethod:methodTagValue tagName="hibernate.set" paramName="batch-size" default="1"/>"
           </XDtMethod:ifHasMethodTag>
         >
           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-collections.xdt">
@@ -134,9 +153,9 @@
           <XDtConfig:ifConfigParamEquals paramName="version" value="1.1">
             readonly="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="readonly" values="true,false" default="false"/>"
           </XDtConfig:ifConfigParamEquals>
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+          <XDtMethod:ifHasMethodTag tagName="hibernate.bag" paramName="inverse">
             inverse="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="inverse"  values="true,false" default="false"/>"
-          </XDtConfig:ifConfigParamEquals>
+          </XDtMethod:ifHasMethodTag>
             cascade="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="cascade" values="none,all,save-update,delete,all-delete-orphan,delete-orphan" default="none"/>"
           <XDtMethod:ifHasMethodTag tagName="hibernate.bag" paramName="order-by">
             order-by="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="order-by" />"
@@ -144,11 +163,20 @@
           <XDtMethod:ifHasMethodTag tagName="hibernate.bag" paramName="where">
             where="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="where" />"
           </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.bag" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="access" default="property"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.bag" paramName="outer-join">
+            outer-join="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="outer-join" values="true,false,auto" default="auto"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.bag" paramName="batch-size">
+            batch-size="<XDtMethod:methodTagValue tagName="hibernate.bag" paramName="batch-size" default="1"/>"
+          </XDtMethod:ifHasMethodTag>
         >
           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-collections.xdt">
           </XDtMerge:merge>
-        </bag>
-        </XDtMethod:ifHasMethodTag>
+      </bag>
+      </XDtMethod:ifHasMethodTag>
 
     <XDtMethod:ifHasMethodTag tagName="hibernate.list">
         <list
@@ -160,12 +188,21 @@
             schema="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="schema" />"
           </XDtMethod:ifHasMethodTag>
             lazy="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="lazy" values="true,false" default="false"/>"
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+          <XDtMethod:ifHasMethodTag tagName="hibernate.list" paramName="inverse">
             inverse="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="inverse"  values="true,false" default="false"/>"
-          </XDtConfig:ifConfigParamEquals>
+          </XDtMethod:ifHasMethodTag>
             cascade="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="cascade" values="none,all,save-update,delete,all-delete-orphan,delete-orphan" default="none"/>"
           <XDtMethod:ifHasMethodTag tagName="hibernate.list" paramName="where">
             where="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="where" />"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.list" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="access" default="property"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.list" paramName="outer-join">
+            outer-join="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="outer-join" values="true,false,auto" default="auto"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.list" paramName="batch-size">
+            batch-size="<XDtMethod:methodTagValue tagName="hibernate.list" paramName="batch-size" default="1"/>"
           </XDtMethod:ifHasMethodTag>
         >
           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-collections.xdt">
@@ -184,15 +221,24 @@
           </XDtMethod:ifHasMethodTag>
             lazy="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="lazy"  values="true,false" default="false"/>"
             sort="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="sort" default="unsorted"/>"
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+          <XDtMethod:ifHasMethodTag tagName="hibernate.map" paramName="inverse">
             inverse="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="inverse"  values="true,false" default="false"/>"
-          </XDtConfig:ifConfigParamEquals>
+          </XDtMethod:ifHasMethodTag>
             cascade="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="cascade" values="none,all,save-update,delete,all-delete-orphan,delete-orphan" default="none"/>"
           <XDtMethod:ifHasMethodTag tagName="hibernate.map" paramName="order-by">
             order-by="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="order-by" />"
           </XDtMethod:ifHasMethodTag>
           <XDtMethod:ifHasMethodTag tagName="hibernate.map" paramName="where">
             where="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="where" />"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.map" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="access" default="property"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.map" paramName="outer-join">
+            outer-join="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="outer-join" values="true,false,auto" default="auto"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.map" paramName="batch-size">
+            batch-size="<XDtMethod:methodTagValue tagName="hibernate.map" paramName="batch-size" default="1"/>"
           </XDtMethod:ifHasMethodTag>
         >
           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-collections.xdt">
@@ -212,12 +258,21 @@
           <XDtMethod:ifHasMethodTag tagName="hibernate.array" paramName="element-class">
             element-class="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="element-class" />"
           </XDtMethod:ifHasMethodTag>
-          <XDtConfig:ifConfigParamEquals paramName="version" value="2.0">
+          <XDtMethod:ifHasMethodTag tagName="hibernate.array" paramName="inverse">
             inverse="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="inverse"  values="true,false" default="false"/>"
-          </XDtConfig:ifConfigParamEquals>
+          </XDtMethod:ifHasMethodTag>
             cascade="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="cascade" values="none,all,save-update,delete" default="none"/>"
           <XDtMethod:ifHasMethodTag tagName="hibernate.array" paramName="where">
             where="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="where" />"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.array" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="access" default="property"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.array" paramName="outer-join">
+            outer-join="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="outer-join" values="true,false,auto" default="auto"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.array" paramName="batch-size">
+            batch-size="<XDtMethod:methodTagValue tagName="hibernate.array" paramName="batch-size" default="1"/>"
           </XDtMethod:ifHasMethodTag>
         >
           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-collections.xdt">
@@ -237,6 +292,15 @@
           <XDtMethod:ifHasMethodTag tagName="hibernate.primitive-array" paramName="where">
             where="<XDtMethod:methodTagValue tagName="hibernate.primitive-array" paramName="where" />"
           </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.primitive-array" paramName="access">
+            access="<XDtMethod:methodTagValue tagName="hibernate.primitive-array" paramName="access" default="property"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.primitive-array" paramName="outer-join">
+            outer-join="<XDtMethod:methodTagValue tagName="hibernate.primitive-array" paramName="outer-join" values="true,false,auto" default="auto"/>"
+          </XDtMethod:ifHasMethodTag>
+          <XDtMethod:ifHasMethodTag tagName="hibernate.primitive-array" paramName="batch-size">
+            batch-size="<XDtMethod:methodTagValue tagName="hibernate.primitive-array" paramName="batch-size" default="1"/>"
+          </XDtMethod:ifHasMethodTag>
         >
           <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-collections.xdt">
           </XDtMerge:merge>
@@ -249,10 +313,11 @@
                   id-type="<XDtMethod:methodTagValue tagName="hibernate.any" paramName="id-type"/>"
                   meta-type="<XDtMethod:methodTagValue tagName="hibernate.any" paramName="meta-type" default="net.sf.hibernate.type.ClassType"/>"
                   cascade="<XDtMethod:methodTagValue tagName="hibernate.any" paramName="cascade" values="none,all,save-update" default="none"/>"
+                  access="<XDtMethod:methodTagValue tagName="hibernate.property" paramName="access" default="property"/>"
               >
               <XDtMethod:forAllMethodTags tagName="hibernate.any-column">
                 <column
-                    name="<XDtHibernate:computeColumnName base='<XDtMethod:methodTagValue tagName="hibernate.any-column" paramName="name"/>'/>" 
+                    name="<XDtHibernate:computeColumnName base='<XDtMethod:methodTagValue tagName="hibernate.any-column" paramName="name"/>'/>"
                   <XDtMethod:ifHasMethodTag tagName="hibernate.any-column" paramName="length">
                     length="<XDtMethod:methodTagValue tagName="hibernate.any-column" paramName="length" />"
                   </XDtMethod:ifHasMethodTag>
