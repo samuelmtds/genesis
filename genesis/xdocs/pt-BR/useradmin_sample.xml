@@ -29,15 +29,15 @@
         que é uma cópia idêntica de
         <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code></li>
         <li>Execute os scripts ant de deploy distribuídos juntamente com 
-        o exemplo - <a href="#Execução do exemplo useradmin">
-        conforme instruções abaixo</a>.</li>
-        <li>Inicie o servidor JBoss - <a href="#Execução do exemplo useradmin">
-        conforme instruções abaixo</a>.</li>
+        o exemplo <a href="#Execução do exemplo useradmin">
+        (conforme instruções abaixo)</a>.</li>
+        <li>Inicie o servidor JBoss <a href="#Execução do exemplo useradmin">
+        (conforme instruções abaixo)</a>.</li>
       </ol>
       <p>Após a instalação do JBoss e execução dos scripts de deploy, pode-se
       utilizar um link Java Web start ou os scripts de execução ant para rodar 
-      a aplicação exemplo - <a href="#Execução do exemplo useradmin">
-        conforme instruções abaixo</a>.</p>
+      a aplicação exemplo <a href="#Execução do exemplo useradmin">
+        (conforme instruções abaixo)</a>.</p>
     </section>
     <section name="Propósito do exemplo useradmin">
       <p>O exemplo useradmin tem como propósito mostrar ao usuário a maioria das
