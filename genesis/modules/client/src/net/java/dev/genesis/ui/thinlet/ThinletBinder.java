@@ -49,10 +49,12 @@ import thinlet.Thinlet;
 //TODO: call reset() in appropriate points
 public class ThinletBinder {
    private static final Log log = LogFactory.getLog(ThinletBinder.class);
+   /* these are not alphabetically ordered by accident or mere readability;
+     it's needed so that binary searching works with me */
    private static final String[] supportedFieldWidgets = new String[] {
          BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LABEL, BaseThinlet.LIST,
          BaseThinlet.PASSWORD_FIELD, BaseThinlet.SLIDER, BaseThinlet.SPINBOX, 
-         BaseThinlet.TEXTFIELD, BaseThinlet.TEXTAREA, BaseThinlet.TOGGLE_BUTTON};
+         BaseThinlet.TEXTAREA, BaseThinlet.TEXTFIELD, BaseThinlet.TOGGLE_BUTTON};
    private static final String[] fieldsChangedByAction = new String[] {
          BaseThinlet.COMBOBOX, BaseThinlet.LIST, BaseThinlet.TOGGLE_BUTTON};
 
