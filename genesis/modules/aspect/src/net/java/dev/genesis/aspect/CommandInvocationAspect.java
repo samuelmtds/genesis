@@ -19,7 +19,6 @@
 package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.Method;
-import net.java.dev.genesis.command.Command;
 import net.java.dev.genesis.command.Query;
 import net.java.dev.genesis.command.Transaction;
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
@@ -35,10 +34,10 @@ public class CommandInvocationAspect {
    /**
     * @Introduce commandResolverIntroduction deployment-model=perJVM
     */
-   public static class CommandResolverImpl implements CommandResolver, Command {
+   public static class CommandResolverImpl implements CommandResolver {
       public boolean isRemotable(Method m) {
-         return Query.class.isAssignableFrom(m.getDeclaringClass())
-               || Annotations.getAnnotation("Remotable", m) != null
+         return Annotations.getAnnotation("Remotable", m) != null
+               || Query.class.isAssignableFrom(m.getDeclaringClass())
                || isTransaction(m);
       }
 
@@ -56,8 +55,8 @@ public class CommandInvocationAspect {
        *            The proxy method
        */
       public boolean isTransaction(Method m) {
-         return Transaction.class.isAssignableFrom(m.getDeclaringClass())
-               || Annotations.getAnnotation("Transactional", m) != null;
+         return Annotations.getAnnotation("Transactional", m) != null
+               || Transaction.class.isAssignableFrom(m.getDeclaringClass());
       }
    }
 }
