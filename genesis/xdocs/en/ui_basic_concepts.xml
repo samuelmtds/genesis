@@ -403,6 +403,8 @@ public class LoginView extends BaseDialogThinlet {
       property loses focus. In the example given, this happens when the user
       press the TAB key or clicks in a different point of the window when the
       focus is on textfields <code>user</code> or <code>password</code>.</p>
+      <p>If a property should neither be updated nor displayed by genesis,
+      its getter method should be annotated as <code>@NotBound</code>.</p>
       <p>Methods may also be bound to buttons on the screen. In order for that
       to happen, they must be annotated as <code>@Action</code> (lines 24-26
       and 32-34) and there must exist buttons with a <code>name</code> value

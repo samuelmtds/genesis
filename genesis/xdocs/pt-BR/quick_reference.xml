@@ -44,11 +44,11 @@
               <ul>
                 <li><a href="#@ClearOn">@ClearOn</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
-                <!--li><a href="#@DisplayOnly">@DisplayOnly</a></li-->
                 <li><a href="#@EmptyResolver">@EmptyResolver</a></li>
                 <li><a href="#@EmptyValue">@EmptyValue</a></li>
                 <li><a href="#@EnabledWhen">@EnabledWhen</a></li>
                 <li><a href="#@EqualityComparator">@EqualityComparator</a></li>
+                <li><a href="#@NotBound">@NotBound</a></li>
                 <li><a href="#@VisibleWhen">@VisibleWhen</a></li>
               </ul>
             </td>
@@ -205,7 +205,7 @@ public class InsertUpdateForm {
       <subsection name="@DataProvider">
         <p>Usado antes de um método que retorna um array ou uma
         <code>java.util.List</code>. O retorno será utilizado para popular um
-        componente da interface gráfica, um widget (combo, lista, table, etc) 
+        componente da interface gráfica, um widget (combo, lista, table, etc)
         que deve possuir o nome indicado por objectField ou indexField. O
         <code>objectField</code> guarda e recebe uma coleção/instância de
         objetos. <code>O indexField</code> guarda e recebe uma coleção de
@@ -225,19 +225,19 @@ public class InsertUpdateForm {
           </tr>
           <tr>
             <td>objectField</td>
-            <td>nomeDoAtributoDoForm (que também é o nomeDoWidget, caso 
+            <td>nomeDoAtributoDoForm (que também é o nomeDoWidget, caso
             <code>widgetName</code> não seja especificado)</td>
-            <td>Nome do widget (caso widgetName não seja especificado) 
+            <td>Nome do widget (caso widgetName não seja especificado)
             que será atualizado com o resultado
             retornado pelo método e também nome do campo do form que mantém o
             conteúdo selecionados na interface gráfica.</td>
-            <td>somente se <code>indexField</code> ou <code>widgetName</code> 
+            <td>somente se <code>indexField</code> ou <code>widgetName</code>
             não forem especificados</td>
           </tr>
           <tr>
             <td>indexField</td>
-            <td>nomeDoAtributoDoForm (se <code>objectField</code> ou 
-            <code>widgetName</code> não forem especificados, 
+            <td>nomeDoAtributoDoForm (se <code>objectField</code> ou
+            <code>widgetName</code> não forem especificados,
             também nomeDoWidget)</td>
             <td>Nome do atributo do form, do tipo <code>Collection</code> de
             <code>Integer</code> ou array de int/<code>Integer</code> que mantém
@@ -245,15 +245,15 @@ public class InsertUpdateForm {
             <code>objectField</code> não for especificado, também é o nome do
             widget que será atualizado com o resultado retornado pelo método</td
             >
-            <td>somente se <code>objectField</code> ou <code>widgetName</code> 
+            <td>somente se <code>objectField</code> ou <code>widgetName</code>
             não forem especificados</td>
           </tr>
           <tr>
             <td>widgetName</td>
             <td>nome do widget propriamente dito</td>
-            <td>Nome do widget que será atualizado com o resultado 
+            <td>Nome do widget que será atualizado com o resultado
             retornado pelo método</td>
-            <td>somente se <code>objectField</code> ou <code>indexField</code> 
+            <td>somente se <code>objectField</code> ou <code>indexField</code>
             não forem especificados</td>
           </tr>
           <tr>
@@ -273,6 +273,37 @@ public class InsertUpdateForm {
   </source>
     <p><a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">
     Mais informações...</a></p>
+      </subsection>
+      <subsection name="@NotBound">
+        <p>Determina que certa propriedade não deve ser modificada nem sequer
+        exibida pelo genesis. Pode ser usada em getters de propriedades.</p>
+        <table>
+          <tr>
+            <th>Parâmetros</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Obrigatório</th>
+          </tr>
+          <tr>
+            <td>Não utiliza</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+  <p>Exemplo de uso:</p>
+  <source>
+/**
+ * @Form
+ */
+public class ExemploForm {
+<b>...</b>
+   /**
+    * <b>@NotBound</b>
+    */
+   public String getPropriedade() {
+   <b>...</b>
+  </source>
       </subsection>
       <subsection name="@EnabledWhen">
         <p>Habilita ou desabilita um widget em função do resultado de uma
@@ -439,27 +470,6 @@ public class InsertUpdateForm {
     <p><a href="ui_additional_features.html#Validando_os_dados">Mais
     informações...</a></p>
       </subsection>
-      <!--subsection name="@DisplayOnly">
-        <p>Define um atributo como sendo apenas para apresentação impedindo a
-        edição. No Thinlet equivale a definir um campo com editable="false". Só
-        pode ser utilizado com atributos.</p>
-        <table>
-          <tr>
-            <th>Parâmetros</th>
-            <th>Tipo</th>
-            <th>Uso</th>
-            <th>Descrição</th>
-            <th>Obrigatório</th>
-          </tr>
-          <tr>
-            <td>Não utiliza</td>
-            <td></td>
-            <td>@DisplayOnly </td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
-      </subsection-->
       <subsection name="@EqualityComparator">
         <p>Anotação colocada antes de getter de atributos do form. Identifica a
         classe que sabe comparar elementos do tipo do atributo. Tem como

@@ -43,11 +43,11 @@
               <ul>
                 <li><a href="#@ClearOn">@ClearOn</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
-                <!--li><a href="#@DisplayOnly">@DisplayOnly</a></li-->
                 <li><a href="#@EmptyResolver">@EmptyResolver</a></li>
                 <li><a href="#@EmptyValue">@EmptyValue</a></li>
                 <li><a href="#@EnabledWhen">@EnabledWhen</a></li>
                 <li><a href="#@EqualityComparator">@EqualityComparator</a></li>
+                <li><a href="#@NotBound">@NotBound</a></li>
                 <li><a href="#@VisibleWhen">@VisibleWhen</a></li>
               </ul>
             </td>
@@ -204,11 +204,42 @@ public class InsertUpdateForm {
   </source>
     <p><a href="ui_additional_features.html#Declaring_conditions">More info...</a></p>
       </subsection>
+      <subsection name="@NotBound">
+        <p>Makes a property unmodifiable and undisplayable by genesis. It may
+        be used in property getter methods.</p>
+        <table>
+          <tr>
+            <th>Parameters</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+  <p>Example:</p>
+  <source>
+/**
+ * @Form
+ */
+public class FormExample {
+<b>...</b>
+   /**
+    * <b>@NotBound</b>
+    */
+   public String getProperty() {
+   <b>...</b>
+  </source>
+      </subsection>
       <subsection name="@DataProvider">
       <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array. Values returned by the method
-      will be used to populate a combo or a list or a table widget. 
-      <code>objectField</code>, if specified, should receive as a parameter 
+      will be used to populate a combo or a list or a table widget.
+      <code>objectField</code>, if specified, should receive as a parameter
       the name of a property that
       will hold the instance selected on the widget. This property should be of
       the same type or a superclass of the type returned by the annotated
@@ -233,31 +264,31 @@ public class InsertUpdateForm {
           </tr>
           <tr>
             <td>objectField</td>
-            <td>form's property name (which is also a widgetName, if 
+            <td>form's property name (which is also a widgetName, if
             <code>widgetName</code> is not specified)</td>
             <td>Property to be called whenever some content is selected
-            and the widget that will be filled with method's data if 
+            and the widget that will be filled with method's data if
             <code>widgetName</code> is not specified</td>
-            <td>just in case there is neither <code>indexField</code> 
+            <td>just in case there is neither <code>indexField</code>
             nor <code>widgetName</code> specified</td>
           </tr>
           <tr>
             <td>indexField</td>
             <td>name of a form's property.
-             (also widget's name if neither <code>objectField</code> nor 
+             (also widget's name if neither <code>objectField</code> nor
              <code>widgetName</code> are specified)</td>
             <td>name of a form's property that holds indexes of the selected
             elements on the widget. It must be an <code>int</code> or an
             <code>Integer</code>, an array of one of these types or a
             <code>Collection</code></td>
-            <td>just in case there is neither <code>objectField</code> 
+            <td>just in case there is neither <code>objectField</code>
             nor <code>widgetName</code> specified</td>
           </tr>
           <tr>
             <td>widgetName</td>
             <td>simply widgetName</td>
             <td>Widget that will be filled with method's data</td>
-            <td>just in case there is neither <code>objectField</code> 
+            <td>just in case there is neither <code>objectField</code>
             nor <code>indexField</code> specified</td>
           </tr>
           <tr>

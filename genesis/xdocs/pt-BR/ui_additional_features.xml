@@ -15,9 +15,8 @@
         <li><a href="#Determinando se o campo está vazio">Determinando se o
         campo está vazio</a></li>
         <li><a href="#Comparando valores">Comparando valores</a></li>
-        <li><a href="#Populando combos, listas e tabelas">Populando combos, 
-        listas e tabelas</a>
-        </li>
+        <li><a href="#Populando combos, listas e tabelas">Populando combos,
+        listas e tabelas</a></li>
         <li><a href="#Formatação">Formatação</a></li>
         <li><a href="#Validando os dados">Validando os dados</a></li>
         <li><a href="#Configurando as mensagens">Configurando as mensagens</a>
@@ -249,7 +248,7 @@ public Date getDataCorrente() {
         <p>Além do agrupamento genérico <code>widgetGroup</code>, pode-se
         utilizar as propriedades mais específicas <code>enabledWidgetGroup</code>
         e <code>visibleWidgetGroup</code> que definem um grupo de widgets que
-        seguem respectivamente as regras de habilitação/desabilitação e 
+        seguem respectivamente as regras de habilitação/desabilitação e
         visibilidade/invisibilidade de forma separada.
         Essas propriedades são disponibilizadas, pois em muitos casos, o
         agrupamento de widgets é diferente em cada caso. Exemplo:</p>
@@ -614,7 +613,7 @@ public void calculaMontanteCorrigido() {
               &lt;callOnInit=valorBooleano&gt;
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
-      <code>java.util.List</code> ou uma array de Objetos. 
+      <code>java.util.List</code> ou uma array de Objetos.
       O retorno dos métodos será
       utilizado para popular a combo ou tabela. <code>objectField</code> deve
       receber o nome da propriedade, se houver, que guardará a instância
@@ -624,17 +623,17 @@ public void calculaMontanteCorrigido() {
       guardará os índices dos elementos selecionados no widget. Deve ser um
       <code>int</code> ou um <code>Integer</code>, uma array de um desses tipos
       ou uma <code>Collection</code>. No caso de <code>widgetName</code>,
-      se utilizado, deve receber o nome do widget, definido no Thinlet XML, 
+      se utilizado, deve receber o nome do widget, definido no Thinlet XML,
       que irá receber as informações retornadas pelo método anotado.
-      <b>Atenção:</b> Pelo menos uma dessas três propriedades deve ser 
+      <b>Atenção:</b> Pelo menos uma dessas três propriedades deve ser
       informado.</p>
       <p>O <code>name</code> do widget na tela é igual ao nome da propriedade
-      informada como <code>widgetName</code> ou <code>objectField</code> 
+      informada como <code>widgetName</code> ou <code>objectField</code>
       ou <code>indexField</code>, sendo esta a ordem de prioridade para
       determinação do nome.</p>
-      <p>Como mencionado acima, <code>objectField</code> e 
+      <p>Como mencionado acima, <code>objectField</code> e
       <code>indexField</code> recebem um nome de propriedade que pode retornar
-      um Bean ou uma array ou uma <code>Collection</code>. Vejamos cada 
+      um Bean ou uma array ou uma <code>Collection</code>. Vejamos cada
       caso:
       <table>
         <tr>
@@ -643,7 +642,7 @@ public void calculaMontanteCorrigido() {
           <th>indexField</th>
         </tr>
         <tr>
-          <td>Bean: usado sempre para comboboxes e 
+          <td>Bean: usado sempre para comboboxes e
           listas/tabelas que permitem apenas seleção única</td>
           <td>Qualquer classe (não pode ser tipo primitivo)</td>
           <td>Apenas Integer ou tipo primitivo int</td>
@@ -772,8 +771,8 @@ public class ExemploDataProviderForm {
    // ...
 </source>
       <p>Desta forma, na inicialização da janela, os widgets
-      <code>combobox</code> ou <code>list</code> ou <code>table</code> 
-      estarão vazios. O preenchimento dos mesmos poderá ser acionado mediante 
+      <code>combobox</code> ou <code>list</code> ou <code>table</code>
+      estarão vazios. O preenchimento dos mesmos poderá ser acionado mediante
       a anotação
       <code>@CallWhen</code>. Isto é, a anotação <code>@CallWhen</code> pode ser
       usada em conjunto com <code>@DataProvider</code> para
@@ -782,17 +781,17 @@ public class ExemploDataProviderForm {
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
       <code>@VisibleWhen</code> também será possível.</p>
-      <subsection name="Invocando os métodos de @DataProvider de dentro de um 
+      <subsection name="Invocando os métodos de @DataProvider de dentro de um
       Form">
         <p>Para que os dados retornados de um <code>@DataProvider</code> possam
         ser populados no <code>Form</code>, o genesis necessita ter ciência
-        da execução do mesmo. Isso ocorre com a execução de 
-        <code>invokeFormAction(...)</code> como visto 
+        da execução do mesmo. Isso ocorre com a execução de
+        <code>invokeFormAction(...)</code> como visto
         <a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
         aqui</a>.</p>
         <p>Uma segunda opção para realizar este objetivo a partir do
-        <code>form</code> (sem a utilização da <code>view</code>) é através 
-        da utilização das classes <code>ActionInvoker</code> e 
+        <code>form</code> (sem a utilização da <code>view</code>) é através
+        da utilização das classes <code>ActionInvoker</code> e
         <code>BaseForm</code>.</p>
         <p>A classe <code>ActionInvoker</code> possui dois métodos estáticos:
         <ul>
@@ -817,7 +816,7 @@ public class ExemploDataProviderForm {
         </p>
         <p>Embora a utilização dessas classes torna um <code>Form</code> mais
         auto-contido, elas aumentam o acoplamento deste com o genesis.</p>
-        <p>Mantendo a mesma lógica do exemplo de 
+        <p>Mantendo a mesma lógica do exemplo de
         <a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
         <code>invokeFormAction(...)</code></a> e reescrevendo o mesmo, teremos:
         </p>
