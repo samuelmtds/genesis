@@ -40,12 +40,12 @@ public class TimeoutTest extends TestCase {
         assertNull(e);
     }
 
-    public void testWaitForEver() throws Exception {
+    public void testWaitALot() throws Exception {
         TimeoutCommand command = new TimeoutCommand();
         Exception e = null;
 
         try{
-            command.waitForEver();
+            command.takesALot();
         }
         catch(Exception ex){
             e = ex;
@@ -60,9 +60,9 @@ public class TimeoutTest extends TestCase {
         /**
          * @Remotable
          */
-        public void waitForEver() throws InterruptedException {
-            System.out.println("wait for ever");
-            Thread.sleep(Long.MAX_VALUE);
+        public void takesALot() throws InterruptedException {
+            System.out.println("takes a loooong time");
+            Thread.sleep(20000);
         }
 
         /**
