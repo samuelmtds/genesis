@@ -250,15 +250,31 @@ public class User implements Serializable {
         <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c useradmin</code></li>
         <li>Após a completa inicialização do JBoss, o exemplo poderá ser
         executado através da URL <a href="http://localhost:8080/useradmin/">
-        http://localhost:8080/useradmin/</a>. Através deste link, a aplicação
-        exemplo será baixada, instalada e executada no computador do
+        http://localhost:8080/useradmin/</a>. Através desta URL, o link
+        "<a href="http://localhost:8080/useradmin/application/remote.jnlp">
+        Run remote User Admin</a>" fará com que a aplicação
+        exemplo seja baixada, instalada e executada no computador do
         usuário, utilizando-se tecnologia Java Web start</li>
         <li>Outra opção de execução do exemplo é através de uma task do ant:
         <code>ant useradmin:run.remote</code> .Este comando irá iniciar
         o exemplo com a utilização de chamadas remotas ao JBoss</li>
         <li>Também é possível executar o exemplo apenas com chamadas locais,
-        retirando-se a dependência do JBoss - para isso, basta utilizar
-        o seguinte comando: <code>ant useradmin:run.local</code></li>
+        retirando-se a dependência do JBoss - para fazer isso, basta:</li>
+        <ul>
+           <li>Utilizar o link "<a href="http://localhost:8080/useradmin/application/local.jnlp">
+           Run local User Admin</a>" da URL 
+           <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/
+           </a>.</li>
+           <li>Utilizar o seguinte comando: <code>ant useradmin:run.local</code></li>
+           <li>Fazer um duplo-clique no arquivo 
+           <code>useradmin-local-weaved.jar</code> localizado dentro do diretório
+           <code>&lt;DISTRIBUIÇÃO_DO_GENESIS&gt;/samples/useradmin/dist/useradmin.war/application</code>.
+           Em alguns sistemas operacionais, esse duplo clique é equivalente ao 
+           comando:</li>
+<source>
+java -jar useradmin-local-weaved.jar
+</source>
+        </ul>
       </ul>
       <p>Através desse exemplo, mostramos como um projeto é estruturado e como
       usar as funcionalidades do genesis. É recomendado utilizar o <a href=
