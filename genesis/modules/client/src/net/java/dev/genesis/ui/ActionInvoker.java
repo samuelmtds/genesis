@@ -41,7 +41,7 @@ public class ActionInvoker {
       }
 
       final FormController controller = ((FormControllerFactory)target)
-            .retrieveFormController(target);
+            .getFormController(target);
 
       if (!controller.isSetup()) {
          controller.setup();

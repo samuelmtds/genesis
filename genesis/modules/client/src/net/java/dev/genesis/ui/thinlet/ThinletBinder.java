@@ -94,7 +94,7 @@ public class ThinletBinder implements FormControllerListener {
                "properly configured.");
       }
 
-      return ((FormControllerFactory)form).retrieveFormController(form);
+      return ((FormControllerFactory)form).getFormController(form);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
