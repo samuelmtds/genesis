@@ -30,7 +30,7 @@
         <dependency>
             <groupId>aspectwerkz</groupId>
             <artifactId>aspectwerkz</artifactId>
-            <version>1.0-RC1</version>
+            <version>1.0.RC1</version>
             <type>jar</type>
             <url>http://aspectwerkz.codehaus.org/</url>
             <properties/>
@@ -106,6 +106,7 @@
     <reports>
         <report>maven-pmd-plugin</report>
         <report>maven-simian-plugin</report>
+        <report>maven-checkstyle-plugin</report>
         <report>maven-jdepend-plugin</report>
         <report>maven-changelog-plugin</report>
         <report>maven-statcvs-plugin</report>
