@@ -664,19 +664,27 @@ public class InsertUpdateForm {
    }
    <b>...</b>
 	</source>
-    <p><a href="business_component_model.html#Transparent_remoting">More info...</a></p>
+    <p><a href="business_component_model.html#Remotabilidade_transparente">Mais informações...</a></p>
       </subsection>
-      <!--subsection name="@Transactional">
-        <p>Utilizado para anotar métodos de classes de negócio. Os métodos
-        anotados com @Transactional são interceptados através de um aspecto
-        que transfere a instância em que o método foi invocado para o servidor,
-        executando-o ali e transferindo o resultado de volta para o cliente.
-        A execução é efetuada dentro do contexto de uma transação JTA, com
-        rollback automático caso seja lançada alguma exceção. Todo método
-        anotado como @Transactional se comporta também como <a href=
-        "#@Remotable">@Remotable</a>.</p>
-        <p>Apenas métodos concretos, não-estáticos, não-nativos e públicos podem
-        receber esta anotação.</p>
+      <subsection name="@Transactional">
+	<p>
+	The use of <code>@Transactional</code> automatically applies a
+      <code>@Remotable</code> annotation to the method. This way the use of only
+      one of these annotation above in a given method is needed. Besides
+      maintaining transparent remoting characteristics,
+      <code>@Transactional</code> forces the method to be executed inside a JTA
+      transaction.
+      </p>
+      <p>
+	Any other JTA resources accessed inside its execution will be
+      automatically included in the same transaction. The transaction context
+      will be propagated to any other method or component invoked by the first
+      one <code>@Transactional</code> annotation, without the need of any
+      additional coding.</p><p>If the method execution runs as expected, the transaction will be
+      committed at the end of the method. In case a exception is launched a
+      rollback command will be given and the exception will be forwarded to the
+      client-side's code.
+      </p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -691,7 +699,7 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (RoleRemoveCommand.java):</p>
+	<p>Example (RoleRemoveCommand.java):</p>
 	<source>
    <b>...</b>
    /**
@@ -700,8 +708,8 @@ public class InsertUpdateForm {
    public boolean removeRole(final Role role) throws Exception {
    <b>...</b>
 	</source>
-    <p><a href="business_component_model.html#Suporte_a_transações">Mais informações...</a></p>
-      </subsection -->
+    <p><a href="business_component_model.html#Transaction_support">More info...</a></p>
+      </subsection>
       <subsection name="@Criteria">
         <p>
 	genesis support for Hibernate dynamic searches. This annotation implies the business method 
