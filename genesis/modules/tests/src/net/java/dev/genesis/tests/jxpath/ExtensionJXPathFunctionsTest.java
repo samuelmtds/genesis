@@ -35,7 +35,6 @@ import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
-import net.java.dev.reusablecomponents.lang.Enum;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.ClassFunctions;
@@ -1283,12 +1282,4 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       }
    }
 
-   public static final class RegularEnum extends Enum {
-      private final RegularEnum ENUM_1 = new RegularEnum("enum1");
-      private final RegularEnum ENUM_2 = new RegularEnum("enum2");
-
-      public RegularEnum(String name) {
-         super(name);
-      }
-   }
 }
