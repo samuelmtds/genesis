@@ -24,6 +24,7 @@
    <property name="src.dir" value="src" />
 
    <property name="jboss.app" value="${jboss.home}/server/useradmin" />
+   <property name="jboss.provider.url" value="localhost" />
 
    <path id="j2ee.path">
       <fileset dir="${j2ee.dist}" includes="*.jar" />
