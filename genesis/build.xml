@@ -487,7 +487,6 @@
       <patternset id="genesis.full-bin-plus-docs.pattern">
          <patternset refid="genesis.full-bin.pattern" />
          <include name="samples/*/dist/**"/>
-         <exclude name="samples/empty-project/**"/>
       </patternset>
       
       <patternset id="genesis.src-with-lib.pattern">
