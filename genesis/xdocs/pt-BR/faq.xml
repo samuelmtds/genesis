@@ -31,7 +31,7 @@
         <p>Para criar uma aplicação web basta construir um projeto que
         utilize os componentes de negócio do genesis. Existem planos para que o
         genesis possua seu próprio framework web, mas isto ainda não é verdade
-        no momento</p>
+        no momento.</p>
       </subsection>
       <subsection name="Como o genesis se compara ao Spring?">
         <p>Os projetos tem dois objetivos bem diferentes. Enquanto o genesis
@@ -72,7 +72,7 @@
         <ul>
           <li>A classe que depende da injeção da <code>Session</code> está no
           ponto errado da árvore de arquivos fontes (no módulo client, por
-          exemplon). Deste modo, o processo de weaving não a afeta como
+          exemplo). Deste modo, o processo de weaving não a afeta como
           desejado e a sessão do Hibernate não é injetada.</li>
           <li>Houve um encadeamento de chamadas entre os objetos de
           negócio. Neste caso, a <code>Session</code> do Hibernate não
@@ -86,7 +86,7 @@
         </p>
       </subsection>
       <subsection name="Como obtenho suporte técnico?">
-        <p>Suporte básico e gratuito pode ser obtido através da <a
+        <p>Suporte básico e gratuito pode ser obtido através das <a
         href="../mail-lists.html">listas de discussão</a> do projeto.</p>
         <p>Caso seja necessário suporte para definição da arquitetura,
         melhorias de performance, treinamento no genesis ou nas tecnologias que

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>FAQ</title>
+    <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="FAQ">
+      <p>Frequent questions:
+      <ul>
+        <li><a href="#Is it possible to create a web application using genesis?">
+        Is it possible to create a web application using genesis?</a></li>
+        <li><a href="#How does genesis compare with Spring?">
+        How does genesis compare with Spring?</a></li>
+        <li><a href="#When will genesis support swing api?">
+        When will genesis support swing api?</a></li>
+        <li><a href="#How can I use genesis within J2ME applications?">
+        How can I use genesis within J2ME applications?</a></li>
+        <li><a href="#Why am I getting a NullPointerException in a getSession()
+        call?">Why am I getting a <code>NullPointerException</code> in a 
+        <code>getSession()</code> call??
+        </a></li>
+        <li><a href="#Where is technical support?">Where is technical support?
+        </a></li>
+      </ul>
+      </p>
+      <subsection name="Is it possible to create a web application using genesis?">
+        <p>genesis current version can already be used with any web framework,
+        such as Struts or WebWork.</p>
+        <p>In order to create a web application, it's just necessary to create
+        a project that uses genesis business components. Besides that, genesis
+        will have its own web framework, but right now, it is not true.</p>
+      </subsection>
+      <subsection name="How does genesis compare with Spring?">
+        <p>These two projects have different goals. While genesis focus in 
+        resolving the problem of providing an easier way to develop  graphical 
+        interface and business code, Spring framework focus in getting J2EE
+        development easier and in promoting the use of certains practices, like
+        reducing the cost of programming to interfaces programming. 
+        Although both frameworks support Hibernate, Spring has a more generic 
+        dependency injection and genesis has also a generic one but not 
+        so complete as the Spring one. However, some 
+        genesis functionalities are not provided by Spring, such as <a href=
+        "ui_additional_features.html#Working_with_dynamic_searches">Working 
+        with dynamic searches</a>.</p>
+        <p>Generic support to dynamic searches should be added to genesis
+        release 0.3</p>
+      </subsection>
+      <subsection name="When will genesis support swing api?">
+        <p>Swing will be supported in nexts genesis releases. There is no
+        certain date for this to happen, but mostly it will be done till mid
+        year.</p>
+      </subsection>
+      <subsection name="How can I use genesis within J2ME applications?">
+        <p>It is recommended to only use a sub-set of the functionalities
+        provided in the package UI, like the direct use of <code>
+        net.java.dev.genesis.ui.thinlet.BaseThinlet</code> for example.
+        Advanced functionalities like binding will mostly not work within
+        those environments.</p>
+        <p>To support all major genesis functionalities within J2ME is part
+        of the genesis development team, but there is no certain date for this
+        to happen.</p>
+      </subsection>
+      <subsection name="Why am I getting a NullPointerException in a getSession()
+        call?">
+        <p>There are several situations where this problem might occur. 
+        Basicaly they are:
+        <ul>
+          <li>The class that depends on the injection of the <code>
+          Session</code> is in the wrong place within the source code hierarchy
+          (in the client module, for example). This way, the weaving process
+          will not affect that class as intended and the Hibernate session
+          will not be injected.</li>
+          <li>There has been a method call chain using business objects.
+          In this case, a Hibernate <code>Session</code> is not injected
+          in secondary calls. To fix this code, one just needs to use
+          the <code>setSession(Session)</code> method of the callee object
+          using the caller <code>Session</code> as parameter.</li>
+          <li>In the case it is first time one is trying to build a new 
+          project, build process may not be working properly.</li>
+        </ul>
+        </p>
+      </subsection>
+      <subsection name="Where is technical support?">
+        <p>Regular and free support can be found through project <a
+        href="../mail-lists.html">discussion lists</a>.</p>
+        <p>In case further support is required like architecture definition,
+        perfomance improvement, genesis training or related technologies
+        training, Summa Technologies may be contacted as bellow:</p>
+        <ul>
+          <li>Summa Technologies:
+            <ul>
+              <li>Address: US Steel Tower, 53rd Floor - 600 Grant Street -
+              Pittsburgh, PA 15219</li>
+              <li>phone: +01.412.258.3300</li>
+              <li>Fax: +01.412.258.3299</li>
+              <li><a href="mailto:info@summa-tech.com">info@summa-tech.com</a></li>
+            </ul>
+          </li>
+          <li>Summa Technologies do Brasil:
+            <ul>
+              <li>Address: Rua Funchal, 411 - 11o. andar, CJ. 112 - São
+              Paulo - 04551-060</li>
+              <li>Phone: +55.11.3846.1622</li>
+              <li>Fax: +55.11.3845.3514</li>
+              <li><a href="mailto:brazil@summa-tech.com">brazil@summa-tech.com</a></li>
+            </ul>
+          </li>
+        </ul>
+      </subsection>
+    </section>
+  </body>
+</document>
