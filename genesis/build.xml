@@ -355,7 +355,23 @@
 		</copy>
 	</target>
 
+   <target name="test:create.jboss.app.dir" unless="app.dir.exists">
+      <mkdir dir="${genesis.jboss.app}" />
+      <copy todir="${genesis.jboss.app}">
+         <fileset dir="${jboss.home}/server/default">
+            <include name="deploy/hsqldb-ds.xml" />
+            <include name="deploy/jboss-jca.sar" />
+            <include name="deploy/jboss-local-jdbc.rar" />
+            <include name="deploy/transaction-service.xml" />
+            <include name="conf/**" />
+            <include name="lib/**" />
+         </fileset>
+      </copy>    
+   </target>  
+
 	<target name="test:deploy">
+      <available type="dir" file="${jboss.app}" property="app.dir.exists" />
+      <antcall target="test:create.jboss.app.dir"/>
 		<mkdir dir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF" />
 		<mkdir dir="${genesis.jboss.app}/deploy/genesis-server.jar" />
 		<copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF">

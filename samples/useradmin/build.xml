@@ -359,9 +359,26 @@
             <include name="*.jar"/>
          </fileset>
       </signjar>
-   </target>   
-   
+   </target>
+
+	<target name="useradmin:create.jboss.app.dir" unless="app.dir.exists">
+      <mkdir dir="${jboss.app}" />
+      <copy todir="${jboss.app}">
+         <fileset dir="${jboss.home}/server/default">
+            <include name="deploy/hsqldb-ds.xml" />
+            <include name="deploy/jboss-jca.sar" />
+            <include name="deploy/jboss-local-jdbc.rar" />
+            <include name="deploy/transaction-service.xml" />
+            <include name="deploy/jbossweb-tomcat*.sar/**" />
+            <include name="conf/**" />
+            <include name="lib/**" />
+         </fileset>
+      </copy>    
+	</target>
+
    <target name="useradmin:deploy" depends="useradmin:sar">
+      <available type="dir" file="${jboss.app}" property="app.dir.exists" />
+      <antcall target="useradmin:create.jboss.app.dir"/>
       <copy todir="${jboss.app}/deploy">
          <fileset dir="${genesis.dist}">
             <include name="genesis-server-${genesis.version}.jar"/>
