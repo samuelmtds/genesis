@@ -21,18 +21,18 @@
       </p>
     </section>
     <section name="Use of business classes at client-side">
-      <p>The use of genesis' business classes doesn't have any restriction. That
+      <p>The use of genesis' business classes doesn't have any restriction. This
       means:
         <ul>
-          <li>There is no need to create a interface for a business class. Other
+          <li>There is no need to create an interface for a business class. Other
           object-oriented best practices could lead to this - but the framework
           doesn't force anyone to do so.</li>
-          <li>In order to build a object instance, one can only use
-          <code>new</code> or any other Java resource (a Factory for instance or
-          reflection APIs).</li>
+          <li>In order to build an object instance, one can use
+          the <code>new</code> operator or any other Java resource 
+          (e.g. a Factory or the reflection API).</li>
           <li>There is no need to tell the framework that some instance should
           be managed by it. Currently the only required configuration is the
-          aspects configuration which is done in <code>aop.xml</code>. This
+          aspects configuration that is done in <code>aop.xml</code>. This
           configuration can be copied from the samples and if some changes are
           required, they will be done only once.</li>
         </ul>
@@ -98,18 +98,18 @@ a + b = 4
       <p>By watching the JBoss console, one will notice that some messages
       were printed at the server-side. Why is that?</p>
       <p>The output seen at the local console is due to the execution of 17th
-      line. However, others <code>System.out.println</code> codes from 6th, 7th
-      and 11th lines took place inside a annotated method with
+      line. However, other <code>System.out.println</code> calls from the 6th, 7th
+      and 11th lines took place inside an annotated method with
       <code>@Remotable</code> and that's why they were executed in a different
       way. Actually the whole <code>sum(int,int)</code> method was executed
       at the server-side. How?</p>
       <p>Annotated methods with the <code>@Remotable</code> tag will be
-      intercepted by a aspect (genesis-aspect) that will send the instance in
+      intercepted by an aspect (genesis-aspect) that will send the instance in
       which the method was called to the server-side, and then this method will
       be executed there. The result will be sent back to the client-side.
       This characteristic is called <b>transparent remoting</b>.</p>
       <subsection name="Restrictions and limitations">
-        <p>There are some restrictions before a method could be remotable
+        <p>There are some restrictions on the methods that can be remotable
         in genesis:
           <ul>
             <li>It cannot be abstract</li>
@@ -119,13 +119,13 @@ a + b = 4
             <code>public</code> class</li>
           </ul>
         </p>
-        <p>The first one exists because an abstract method can not be called
-        (however it might be abstract in a superclass). The method can not be
-        static because static values differs between different JVMs. The last
+        <p>The first restriction exists because an abstract method cannot be called
+        (however it might be abstract in a superclass). The method cannot be
+        static because static values differ between different JVMs. The last
         two restrictions are for EJB specification compliance.</p>
-        <p>A last side effect to be noted is that instances variables affected
-        by remote methods does not change the local values. We can see an
-        example of this:</p>
+        <p>A last side effect to be noted is that 
+        remote methods do not change the value of local instances variables. 
+        We can see an example of this:</p>
 <source>
  1. public class LocalVersusRemote {
  2.    private int value;
@@ -214,8 +214,8 @@ value in remote(): 2
       </subsection>
     </section>
     <section name="Transaction support">
-      <p>To run a method inside a transaction, one can simply use the
-      <code>@Transactional</code> annotation in a quite similar way as in the
+      <p>To run a method inside a transaction, one need simply use the
+      <code>@Transactional</code> annotation in quite a similar way as in the
       use of <code>@Remotable</code>. See below:</p>
 <source>
 /**
@@ -233,24 +233,24 @@ public void transactionalMethod() {
       transaction. Any other JTA resources accessed inside its execution will be
       automatically included in the same transaction. The transaction context
       will be propagated to any other method or component invoked by the first
-      one <code>@Transactional</code> annotation, without the need of any
+      method with a <code>@Transactional</code> annotation, without the need of any
       additional coding.</p>
       <p>If the method execution runs as expected, the transaction will be
-      committed at the end of the method. In case a exception is launched a
-      rollback command will be given and the exception will be forwarded to the
+      committed at the end of the method. In the case an exception, a
+      rollback command will be issued and the exception will be forwarded to the
       client-side's code.</p>
     </section>
     <section name="Hibernate integration">
-      <p>The genesis provide a great integration with Hibernate framework.
-      Currently, in order to take advantage from it, classes must implement the
+      <p>genesis provides a great integration with Hibernate framework.
+      Currently, in order to take advantage of it, classes must implement the
       <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code>
-      interface by definition or by introduction. In the future this won't be
-      necessary anymore - probably from 0.3 genesis version.</p>
+      interface by definition or by AOP introduction. In the future this won't be
+      necessary anymore - most likely beginning with the 0.3 genesis version.</p>
       <p>This interface exposes the <code>setSession(Session)</code> method
-      which is called by the genesis (in the server-side) before the execution
-      of each remote method. genesis injects a valid session and at the end
-      <code>null</code> value in order to free the session reference. To make
-      this easier, another class is provided:
+      which is called by genesis (on the server-side) before the execution
+      of each remote method. genesis injects a valid Hibernate session before the
+      method call and sets the session reference to <code>null</code> at the 
+      end of the call. To make this easier, another class is provided:
       <code>net.java.dev.genesis.command.hibernate.AbstractHibernateCommand
       </code>. This class implements the above interface and has useful methods
       like <code>getSession()</code>.</p>
@@ -267,7 +267,7 @@ public class HibernateIntegrationExample extends AbstractHibernateCommand {
 }
 </source>
       <p>As shown the use of Hibernate API within the business classes is quite
-      simple and straight.</p>
+      simple.</p>
     </section>
     <section name="Paging">
       <p>Data paging support is implemented in the
@@ -296,7 +296,7 @@ public class HibernateIntegrationExample extends AbstractHibernateCommand {
       <p>While there is a basic implementation for <code>Page</code>
       (<code>PageImpl</code>), there is none available for <code>Pager</code>,
       because the actual functionality of a pager is quite linked to the data
-      source which is being paged. User applications will not normally use
+      source that is being paged. User applications will not normally use
       <code>PageImpl</code> direclty nor will have their own <code>Page</code>
       implementation. Nevertheless the genesis implementation should prove quite
       useful for specifics <code>Pager</code> implementations.</p>
@@ -323,8 +323,8 @@ public class HibernatePagingExample extends AbstractHibernateCommand {
 </source>
         <p>In order to get the <code>MappedClass</code> instances from the
         returned page, all we have to do is to call the <code>getResults()</code
-        > method from the <code>Page</code> object returned. This
-        <code>List</code> - <code>getResults()</code> returns a <code>List</code
+        > method on the returned <code>Page</code> object returned. This
+        <code>getResults()</code> method returns a <code>List</code
         >, as explained in the <code>Page</code> properties in the section above
         - will hold a list of objects with the same type as if they were
         returned from a <code>query.list()</code> or <code>criteria.list()</code
@@ -333,19 +333,20 @@ public class HibernatePagingExample extends AbstractHibernateCommand {
     </section>
     <section name="Dynamic criteria searching">
       <p>Although Hibernate provides support for dynamic searches, i.e., with
-      "built" clauses or runtime defined through the <code>Criteria</code>
+      "built" clauses or defined at runtime through the <code>Criteria</code>
       interface, the use of this feature leads to a hard to maintain code
       because it tends to be very repetitive. The genesis framework has a
-      support for dynamic searches at a higher abstract level - this will make
-      those searches implementations much easier. We will focus on the use of
+      support for dynamic searches at a higher level of abstraction - this will make
+      those search implementations much easier. We will focus on the use of
       this feature from the business tier point of view.</p>
       <p>There is a sub interface from <code>HibernateCommand</code> called
-      <code>HibernateCriteria</code>. As the same as the <code>Session</code> is
-      injected into <code>HibernateCommand</code> instances, a instance of
+      <code>HibernateCriteria</code>. Similar to the manner in which the Hibernate
+       <code>Session</code> is
+      injected into <code>HibernateCommand</code> instances, an instance of
       <code>Criteria</code> is attributed through the
       <code>setCriteria(Criteria)</code> method to <code>HibernateCriteria</code
-      > implementations in appropriate moments. In the same way the
-      <code>HibernateCommand</code> interface provides a easier way to the
+      > implementations at appropriate times. In the same way the
+      <code>HibernateCommand</code> interface provides an easier way to the
       developer, there is also a criteria class,
       <code>AbstractHibernateCriteria</code>. This helper class defines the
       <code>getCriteria()</code> method, besides other ones.</p>
@@ -360,7 +361,7 @@ public class HibernatePagingExample extends AbstractHibernateCommand {
       framework so the recent injected <code>Criteria</code> instance will be
       properly configured. Finally the business method will be executed and its
       return forwarded to client-side code.</p>
-      <p>To better understand this concept, a example is provided. Assume there
+      <p>To better understand this concept, an example is provided. Assume there
       is a <code>Person</code> class mapped with Hibernate. This class has,
       among others, the following attributes: <code>name</code> and
       <code>lastName</code>. These attributes will be use as parameters for a
@@ -404,7 +405,7 @@ public class PersonSearch extends AbstractHibernateCriteria {
           <code>PersonSearch</code> class has the ability to restrict the
           <code>Criteria</code> to only use the search fields, without the
           concern of a filled field or not. The genesis framework assures the
-          setters has been called - so they are filled.</li>
+          setters have been called - so they are filled.</li>
           <li>At last, the <code>getPeople(int)</code> is executed and the
           results are returned to the client-side in a transparent way.</li>
         </ul>
