@@ -76,14 +76,20 @@ public class HibernateTransactionalInjector implements TransactionalInjector {
    }
    
    public void onFinally() throws HibernateException {
-      hibernateCommand.setSession(null);
-      transaction = null;
-      hibernateCommand = null;
 
-      try {
-         session.close();
-      } finally {
-         session = null;
+      if(hibernateCommand != null){
+         hibernateCommand.setSession(null);
+         hibernateCommand = null;
+      }
+
+      transaction = null;
+
+      if(session != null){
+	     try {
+	        session.close();
+	      } finally {
+	        session = null;
+	     }
       }
    }
 }
