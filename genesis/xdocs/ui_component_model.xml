@@ -18,6 +18,9 @@
         <li><a href="#Tipos de componentes de interface gráfica">Tipos de
         componentes de interface gráfica</a></li>
         <li><a href="#Entendendo as views">Entendendo as views</a></li>
+        <li><a href="#Utilizando as classes auxiliares de interface gráfica">
+        Utilizando as classes auxiliares de interface gráfica</a></li>
+        <li><a href="#Tratando erros">Tratando erros</a></li>
       </ul>
       </p>
     </section>
@@ -136,7 +139,8 @@ public abstract class BaseView extends BaseThinlet {
       setResourceBundle(UIUtils.getInstance().getBundle());
       add(parse(xmlFile));
    }
-}</source>
+}
+</source>
         <p>A classe mostrada acima cria seu próprio frame de modo a centralizá-
         lo, torná-lo redimensionável ou não, define o título através do
         <code>ResourceBundle</code>, o que permite internacionalização,
@@ -144,13 +148,152 @@ public abstract class BaseView extends BaseThinlet {
         configura a internacionalização da interface gráfica antes de adicionar
         o xml.</p>
         <p>A classe <code>BaseDialogThinlet</code> possui construtores capazes
-        de criar a <code>Dialog</code> e outros que recebem uma instância criada
-        externamente.</p>
+        de criar a <code>Dialog</code> - a partir de um <code>Frame</code> ou
+        instância de <code>BaseThinlet</code> existentes ou criando um novo
+        <code>Frame</code> - e outros que recebem uma instância criada
+        externamente. Normalmente não será necessário configurar a instância de
+        <code>Dialog</code> externamente. Por padrão é adicionado um listener
+        que chama o método não-final <code>onClose()</code> quando a janela é
+        fechada, permitindo que o comportamento em resposta a este evento possa
+        ser customizado pelo desenvolvedor.</p>
+        <p>Assim como no caso do <code>BaseThinlet</code>, recomenda-se a
+        criação de uma superclasse intermediária para o projeto. Um exemplo
+        disso encontra-se na classe abaixo, também extraída do exemplo
+        useradmin:</p>
+<source>
+public abstract class BaseDialogView extends BaseDialogThinlet {
+   public BaseDialogView(Frame frame, String title, String xmlFile,
+         boolean resizable, boolean modal) throws Exception {
+      super(frame);
+      getDialog().setModal(modal);
+      getDialog().setResizable(resizable);
+      getDialog().setTitle(UIUtils.getInstance().getBundle().getString(title));
+      setAllI18n(true);
+      setResourceBundle(UIUtils.getInstance().getBundle());
+      add(parse(xmlFile));
+   }
+}
+</source>
+        <p>O código é bastante semelhante ao anterior, apenas configurando a
+        instância de <code>Dialog</code> - que pode ser obtida através do método
+        <code>getDialog()</code>, como mostrado acima - para ser modal (bloquear
+        o acesso a outras janelas) ou não e redimensionável ou não.</p>
       </subsection>
+    </section>
+    <section name="Utilizando as classes auxiliares de interface gráfica">
+      <p>Algumas classes auxiliares são providas juntamente com o genesis-client
+      para acelerar o processo desenvolvimento da interface gráfica. Elas
+      implementam tarefas comuns, como a exibição de mensagens, confirmações por
+      parte do usuário e exibição de exceções. Todas essas classes encontram-se
+      no pacote <code>net.java.dev.genesis.ui.thinlet</code>.</p>
+      <p>A primeira dessas classes auxiliares é <code>MessageDialog</code>, que
+      exibe uma mensagem para o usuário em uma <code>Dialog</code> com um botão
+      "Fechar". Dois métodos estáticos <code>show(..)</code> são providos com o
+      objetivo de tornar o uso desta classe ainda mais prático. Ambos aceitam o
+      título da janela como segundo parâmetro e a mensagem como terceiro, sendo
+      que o primeiro argumento pode ser uma instância de <code>Frame</code> ou
+      de <code>BaseThinlet</code>. A segunda versão torna seu uso bastante
+      prático dentro de uma classe que estenda <code>BaseThinlet</code> como
+      mostra o código abaixo:</p>
+<source>
+public void exibirMensagem() {
+   MessageDialog.show(this, "Título", "Mensagem a ser exibida");
+}
+</source>
+      <p>Para se exibir uma escolha para o usuário pode-se utilizar a classe
+      <code>OptionDialog</code>. São providas, de forma semelhante a
+      <code>MessageDialog</code>, duas versões do método
+      <code>display(..)</code>, aceitando uma instância de
+      <code>BaseThinlet</code> ou de <code>Frame</code>, o título da janela e a
+      pergunta a ser exibida. Ao utilizar algum desses métodos é exibida a
+      janela de diálogo com três botões (Sim/Não/Cancelar). Existe um método
+      <code>displayYesNo(BaseThinlet,String,String)</code> para casos em que
+      haja somente duas opções. Todos os três métodos retornam um dos valores da
+      enumeração <code>Option</code>, de modo que pode-se saber que opção o
+      usuário escolheu. O uso de <code>OptionDialog</code> em
+      uma classe que estenda <code>BaseThinlet</code> é mostrado abaixo:</p>
+<source>
+public void fazOperacao() {
+   Option option = OptionDialog.displayYesNo(this, "Título", "Deseja " +
+         "realmente fazer isso?");
+
+   if (option == Option.YES) {
+      // faz a operacao
+   }
+}
+</source>
+      <p>Por fim, a classe <code>ErrorReporterDialog</code> permite exibir uma
+      exceção para o usuário com uma mensagem descritiva além de todo o stack
+      trace. Assim como no caso de <code>MessageDialog</code> existem também
+      duas versões do método <code>show(..)</code>: uma para
+      <code>BaseThinlet</code> e outra para <code>Frame</code>. O exemplo abaixo
+      mostra como utilizar esta classe em uma subclasse de
+      <code>BaseThinlet</code>:</p>
+<source>
+public void exibeErro(Throwable t) {
+   ErrorReporterDialog.show(this, "Erro", t.getMessage(), t);
+}
+</source>
+      <p>O uso direto de <code>ErrorReporterDialog</code> diretamente no código
+      das views provavelmente será desnecessário, visto que o tratamento de
+      erros padrão implementado em <code>BaseThinlet</code> já utiliza esta
+      classe, conforme explicado abaixo.</p>
+    </section>
+    <section name="Tratando erros">
+      <p>O Thinlet já possui um método para tratamento de erros,
+      <code>handleException(Throwable)</code>, de modo que
+      <code>BaseThinlet</code> sobrescreve este método para tratar os erros de
+      forma customizada. Tomou-se cuidado no desenvolvimento do genesis para que
+      qualquer erro que aconteça durante a execução da interface gráfica seja
+      redirecionado para este único ponto, centralizando assim o seu tratamento.
+      </p>
+      <p>A implementação padrão trata os erros de forma diferenciada, conforme
+      descrito abaixo:</p>
+      <ul>
+        <li>Caso o erro seja uma <code>ScreenNotFoundException</code> (que
+        ocorre quando um dos arquivos xml da interface gráfica não é
+        encontrado), o erro é tratado através de
+        <code>handleException(String, Throwable)</code>.</li>
+        <li>Se o erro for uma <code>ValidationException</code>, este é
+        redirecionado para
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>Quando o erro é uma <code>UIException</code>, este é repassado para
+        <code>handleUIException(UIException)</code>.</li>
+        <li>Se todas as checagens anteriores falharem, o erro é passado para
+        <code>handleCustomException(Throwable)</code> que retorna um
+        <code>boolean</code> indicando se o erro foi tratado ou não.</li>
+        <li>Quando o erro não é tratado, o método
+        <code>handleUnknownException(Throwable)</code> é invocado, terminando a
+        cadeia de tratamento de erros.</li>
+      </ul>
+      <p>Para a maioria dos usuários, basta saber como cada erro será tratado
+      pelo framework. No entanto, qualquer um dos métodos descrito acima pode
+      ser sobrescrito se for necessário customizar o tratamento de erros. O
+      comportamento padrão de cada um deles é descrito abaixo:</p>
+      <ul>
+         <li><code>handleException(String, Throwable)</code> utiliza
+         <code>ErrorReporterDialog</code> para exibir o erro. O título da janela
+         é a mensagem retornada por <code>getErrorMessage()</code>, que por
+         padrão é a constante "Error".</li>
+         <li><code>showValidationErrors(ValidationException)</code> extrai os
+         erros de <code>ValidationException</code>, formata-os separando cada um
+         deles com um <code>\n</code> - utilizado para quebra de linha em Java -
+         e os exibe utilizando <code>MessageDialog</code>. O título da janela
+         será a String definida para <code>validation.errors.title</code> no
+         arquivo de recursos (<b>TODO: linkar aqui explicação do arquivo</b>).
+         </li>
+         <li><code>handleUIException(UIException)</code> exibe o erro utilizando
+         <code>MessageDialog</code>. O título e a mensagem serão extraídos da
+         própria exceção.</li>
+         <li><code>handleCustomException(Throwable)</code> verifica se o erro
+         lançado possui alguma outra exceção como causa invocando nele o método
+         <code>getCause()</code>. Se possuir, esta causa será repassada para
+         <code>handleException(Throwable)</code>. Caso contrário, será retornado
+         <code>false</code> indicando que o erro não pôde ser tratado.</li>
+         <li><code>handleUnknownException(Throwable)</code> simplesmente repassa
+         o erro para <code>handleException(String, Throwable)</code> utilizando
+         como mensagem a constante "Unexpected error occurred".</li>
+      </ul>
     </section>
   </body>
 </document>
-
-
-
-
