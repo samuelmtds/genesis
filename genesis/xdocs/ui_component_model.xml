@@ -277,7 +277,7 @@ public void exibeErro(Throwable t) {
         cadeia de tratamento de erros.</li>
       </ul>
       <p>Para a maioria dos usuários, basta saber como cada erro será tratado
-      pelo framework. No entanto, qualquer um dos métodos descrito acima pode
+      pelo framework. No entanto, qualquer um dos métodos descritos acima pode
       ser sobrescrito se for necessário customizar o tratamento de erros. O
       comportamento padrão de cada um deles é descrito abaixo:</p>
       <ul>
