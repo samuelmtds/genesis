@@ -156,7 +156,7 @@ public class ThinletBinder {
                thinlet.setMethod(component, "action", "setValue(" + 
                      thinlet.getName(component) + "," + 
                      thinlet.getName(component) + ".group)", root, this);
-            } else if (Arrays.binarySearch(fieldsChangedByAction, className) > 0) {
+            } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1) {
                thinlet.setMethod(component, "action", "setValue(" + name + "," +
                      name + ".name)", root, this);
             } else {
