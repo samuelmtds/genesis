@@ -111,7 +111,7 @@
 
 	<target name="shared:annotation">
 		<mkdir dir="${genesis.module.shared}/${genesis.annotation.dest}" />
-		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true">
+		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true" failonerror="true">
 			<arg value="-verbose" />
 			<arg value="-src" />
 			<arg value="${genesis.module.shared}/${src.dir}" />
@@ -238,7 +238,7 @@
 
 	<target name="aspect:annotation">
 		<mkdir dir="${genesis.module.aspect}/${genesis.annotation.dest}" />
-		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true">
+		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true" failonerror="true">
 			<arg value="-verbose" />
 			<arg value="-src" />
 			<arg value="${genesis.module.aspect}/${src.dir}" />
@@ -271,6 +271,9 @@
 		<jar destfile="${genesis.dist.dir}/genesis-aspect-annotated-${version}.jar">
 			<fileset dir="${genesis.module.aspect}/${genesis.annotation.dest}" />
 		</jar>
+      <copy todir="${genesis.dist.dir}">
+         <fileset dir="${genesis.module.aspect}/${src.dir}" includes="annotation.properties" />
+      </copy>    
 	</target>
 
 	<target name="test:compile" depends="test:hibernatedoclet,test:webdoclet">
@@ -331,7 +334,7 @@
 
 	<target name="test:annotation">
 		<mkdir dir="${genesis.module.tests}/${genesis.annotation.dest}" />
-		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true">
+		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true" failonerror="true">
 			<arg value="-verbose" />
 			<arg value="-src" />
 			<arg value="${genesis.module.tests}/${src.dir}" />
@@ -365,7 +368,7 @@
 			<fileset dir="${genesis.module.shared}/${genesis.annotation.dest}" />
 			<fileset dir="${genesis.module.tests}/${genesis.annotation.dest}" />
 		</copy>
-		<java classname="org.codehaus.aspectwerkz.compiler.AspectWerkzC" fork="true">
+		<java classname="org.codehaus.aspectwerkz.compiler.AspectWerkzC" fork="true" failonerror="true">
 			<arg value="-cp" />
 			<arg value="${normalized.path}" />
 			<arg value="-verbose" />
