@@ -70,6 +70,7 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
          } catch (final Exception e) {
             home = null;
             log.error(e.getMessage(), e);
+
             throw new RuntimeException(e);
          }
       }
