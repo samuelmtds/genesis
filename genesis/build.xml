@@ -462,6 +462,16 @@
          <exclude name="samples/empty-project/build.properties" />
       </patternset>
       
+      <patternset id="samples.pattern">
+         <include name="samples/*/*"/>
+         <include name="samples/*/modules/**"/>
+         <include name="samples/*/webstart/**"/>
+         <include name="samples/*/dist/**"/>
+         <exclude name="samples/*/.*"/>
+         <exclude name="samples/**/${build.dir}/**/*"/>
+         <exclude name="samples/**/build.properties"/>
+      </patternset>
+      
       <patternset id="genesis.bin.pattern">
          <include name="genesis/${genesis.dist.dir}/**" />
          <include name="genesis/LICENSE.txt" />
@@ -476,11 +486,11 @@
       
       <patternset id="genesis.full-bin-plus-docs.pattern">
          <patternset refid="genesis.full-bin.pattern" />
-         <include name="samples/*/dist"/>
+         <include name="samples/*/dist/**"/>
          <exclude name="samples/empty-project/**"/>
       </patternset>
       
-      <patternset id="genesis.src.pattern">
+      <patternset id="genesis.src-with-lib.pattern">
          <include name="genesis/*" />
          <include name="genesis/${genesis.modules.dir}/**" />
          <include name="genesis/${genesis.dist.dir}/**"/>
@@ -488,20 +498,18 @@
          <exclude name="genesis/.*"/>
          <exclude name="genesis/**/${build.dir}/**/*"/>
          <exclude name="genesis/**/build.properties"/>
+         <patternset refid="samples.pattern" />
+         <patternset refid="empty-project.pattern" />
+      </patternset>
+      
+      <patternset id="genesis.src.pattern">
+         <patternset refid="genesis.src-with-lib.pattern"/>
          <exclude name="genesis/${genesis.lib.dir}/**"/>
-         <include name="samples/*/*"/>
-         <include name="samples/*/modules/**"/>
-         <include name="samples/*/webstart/**"/>
-         <exclude name="samples/*/.*"/>
-         <exclude name="samples/**/${build.dir}/**/*"/>
-         <exclude name="samples/**/build.properties"/>
-         <patternset refid="empty-project.pattern"/>
       </patternset>
       
       <patternset id="genesis.src-plus-docs.pattern">
-         <patternset refid="genesis.src.pattern" />
-         <include name="samples/*/dist/**"/>
-         <include name="genesis/${genesis.lib.dir}/**" />
+         <patternset refid="genesis.src-with-lib.pattern" />
+         <patternset refid="genesis.full-bin-plus-docs.pattern" />
       </patternset>
       
       <!-- Genesis bin distribution -->
@@ -567,6 +575,15 @@
          </tarfileset>
          <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
       </tar>
+
+      <!-- Genesis docs distribution -->
+      <zip destfile="${build.dir}/genesis-docs-${genesis.version}.zip">
+         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-docs-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
+      </tar>
+      
    </target>
 
 	<target name="genesis" description="Makes genesis jars" depends="genesis:jar" />
