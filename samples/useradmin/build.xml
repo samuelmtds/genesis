@@ -40,6 +40,7 @@
 
       <!-- jboss and server properties -->
       <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
+      <property name="jboss.app.lib" location="${jboss.app}/lib" />
       <property name="jboss.provider.url" value="jnp://localhost" />
       <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
       <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
@@ -48,7 +49,7 @@
       <property name="webstart.port" value="8080" />
 
       <!-- jdbc properties -->
-      <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
+      <property name="jdbc.driver" value="${jboss.app.lib}/hsqldb.jar" />
       <property name="jdbc.driver.class" value="org.hsqldb.jdbcDriver" />
       <property name="jdbc.username" value="sa" />
       <property name="jdbc.password" value="" />
@@ -74,16 +75,9 @@
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
             <include name="ant*.jar" />
-            <!--exclude name="asm*.jar" />
-            <include name="concurrent*.jar" /-->
             <include name="dom4j*.jar" />
-            <!--include name="javassist*.jar" />
-            <include name="jrexx*.jar" />
-            <include name="junit*.jar" />
-            <include name="managementapi*.jar" /-->
             <include name="piccolo*.jar" />
             <include name="qdox*.jar" />
-            <!--include name="trove*.jar" /-->
          </fileset>
       </path>
 
@@ -126,13 +120,16 @@
          </fileset>
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
+            <exclude name="aspectwerkz-extensions-*.jar" />
+            <exclude name="aspectwerkz-jdk5-*.jar" />
             <include name="dom4j-*.jar" />
-            <include name="jrexx-*.jar" />
+         	<include name="jrexx-*.jar" />
             <include name="trove-*.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}">
             <include name="hibernate2.jar" />
             <include name="commons-collections-*.jar" />
+            <include name="odmg-*.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils-*.jar" />            
@@ -350,7 +347,13 @@
 
    <target name="useradmin:jar" depends="init">
       <pathconvert property="local.classpath" pathsep=" ">
-         <mapper type="flatten"/>
+         <map from="${genesis.dist}" to="." />
+         <map from="${hibernate.dist}" to="." />
+         <map from="${commons.dist}" to="." />
+         <map from="${aspectwerkz.dist}" to="." />
+         <map from="${j2ee.dist}" to="." />
+         <map from="${script.dist}" to="." />
+         <map from="${jboss.app.lib}" to="." />
          <path refid="local.dependency.classpath" />
       </pathconvert>
       <mkdir dir="${build.dir}" />
@@ -363,7 +366,6 @@
             <attribute name="Class-Path" value="${local.classpath}"/>
          </manifest>
          <fileset dir="${weaving.local.dest}" />
-         <fileset dir="${module.shared}/${build.src}" includes="**/*.xml" />
       </jar>
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-shared.jar">
          <fileset dir="${module.shared}/${build.dest}"
@@ -418,6 +420,7 @@
             <include name="ehcache*.jar" />
             <include name="hibernate*.jar" />
             <include name="jta.jar" />
+            <include name="odmg-*.jar" />
          </fileset>
          <fileset dir="${genesis.dist}">
             <include name="genesis-client-${genesis.version}.jar"/>
@@ -434,9 +437,11 @@
          </fileset>
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
-            <include name="dom4j*.jar" />
+            <exclude name="aspectwerkz-extensions-*.jar" />
+            <exclude name="aspectwerkz-jdk5-*.jar" />
+            <include name="dom4j-*.jar" />
             <include name="jrexx-*.jar" />
-            <include name="trove*.jar" />
+            <include name="trove-*.jar" />
          </fileset>
          <fileset dir="${jboss.app}/lib">
             <include name="hsqldb.jar" />
