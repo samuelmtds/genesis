@@ -103,7 +103,8 @@ public class DataProviderMetadata {
       }
 
       if (!indexField.isMultiple()) {
-         return new int[] {((Integer)indexes).intValue()};
+         final int index = ((Integer)indexes).intValue();
+         return index < 0 ? new int[0] : new int[] {index};
       }
 
       if (indexField.isPrimitiveArray()) {
@@ -171,7 +172,7 @@ public class DataProviderMetadata {
 
          value = objectField.isArray() ? (Object)values : Arrays.asList(values);
       } else {
-         value = selectedIndexes.length == 0 || selectedIndexes[0] == -1 ? 
+         value = selectedIndexes.length == 0 || selectedIndexes[0] < 0 ?
                null : objectList.get(selectedIndexes[0]);      
       }
 

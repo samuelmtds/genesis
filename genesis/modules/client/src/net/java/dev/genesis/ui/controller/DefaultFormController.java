@@ -265,7 +265,7 @@ public class DefaultFormController implements FormController {
          evaluateNamedConditions();
       }
 
-      if (evaluateDataProvidedIndexes()) {
+      if (evaluateDataProvidedIndexes(firstCall)) {
          evaluateNamedConditions();
       }
 
@@ -461,17 +461,18 @@ public class DefaultFormController implements FormController {
       return changed;
    }
 
-   protected boolean evaluateDataProvidedIndexes() throws Exception {
+   protected boolean evaluateDataProvidedIndexes(boolean firstCall) throws Exception {
       boolean changed = false;
       DataProviderMetadata dataMeta;
       Object indexes;
       int[] selectedIndexes;
       Object objectFieldValue;
+      Map currentMap = firstCall ? PropertyUtils.describe(form) : currentState.getChangedMap();
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
          dataMeta = (DataProviderMetadata) i.next();
-         indexes = currentState.getChangedMap().get(dataMeta.getIndexField().getFieldName());
+         indexes = currentMap.get(dataMeta.getIndexField().getFieldName());
 
          if (indexes == null) {
             if (log.isDebugEnabled()) {
