@@ -193,20 +193,22 @@ public class BasicValidator {
 
    public static boolean validateLongRange(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
-
-      return validateLong(bean, field) && 
-             GenericValidator.isInRange(Long.parseLong(value),
-                                        Long.parseLong(field.getVarValue("min")),
-                                        Long.parseLong(field.getVarValue("max")));
+ 
+      return GenericValidator.isBlankOrNull(value)
+            || (GenericValidator.isLong(value) && GenericValidator.isInRange(
+                  Long.parseLong(value), Long.parseLong(field
+                        .getVarValue("min")), Long.parseLong(field
+                        .getVarValue("max"))));
    }
 
    public static boolean validateDoubleRange(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
 
-      return validateDouble(bean, field) && 
-             GenericValidator.isInRange(Double.parseDouble(value),
-                                    Double.parseDouble(field.getVarValue("min")),
-                                    Double.parseDouble(field.getVarValue("max")));
+      return GenericValidator.isBlankOrNull(value)
+            || (GenericValidator.isDouble(value) && GenericValidator.isInRange(
+                  Double.parseDouble(value), Double.parseDouble(field
+                        .getVarValue("min")), Double.parseDouble(field
+                        .getVarValue("max"))));
    }
 
    public static boolean validateJXPath(Object bean, Field field) {
