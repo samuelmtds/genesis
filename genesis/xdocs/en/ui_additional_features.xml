@@ -764,42 +764,41 @@ public class DataProviderFormExample {
       these methods if they need to be triggered by a button (such as Search,
       for example) and, when that is true, using <code>@EnabledWhen</code> and
       <code>@VisibleWhen</code> is also allowed.</p>
-      <subsection name="Invoking @DataProvider methods within a Fom">
+      <subsection name="Invoking actions within a form">
         <p>In order to have a form re-populated with the data returned by
-        a <code>@DataProvider</code> annotated method, genesis must know it has
-        been executed. This will happen whenever
-        <code>invokeFormAction(...)</code> is called from a view as seen
+        a <code>@DataProvider</code> annotated method, genesis must be aware of
+        its execution. This can be done by calling
+        <code>invokeFormAction(...)</code> as described
         <a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">
-        here</a>.
-        </p>
+        here</a>.</p>
         <p>Another way to do this within the form (without the use of a view)
-        is to use <code>ActionInvoker</code> and <code>BaseForm</code> classes.
-        </p>
+        is to use the <code>ActionInvoker</code> and <code>BaseForm</code>
+        classes.</p>
         <p>The <code>ActionInvoker</code> class has two static methods:
         <ul>
-          <li><code>invoke(form, actionName)</code>: which executes an action
-          from the given parameter <code>form</code>.</li>
-          <li><code>refresh(form)</code>: which updates the given
-          <code>Form</code> data.</li>
+          <li><code>invoke(form, actionName)</code>: executes an action
+          from the given form.</li>
+          <li><code>refresh(form)</code>: updates the information being
+          displayed by the given form instance.</li>
         </ul>
         </p>
-        <p>The <code>BaseForm</code> class might be use as a parent class of the
-        <code>forms</code> and by doing this, we'll have two similiar methods:
+        <p>The <code>BaseForm</code> class might be used as a parent class of
+        forms. It defines two similar methods:
         <ul>
-          <li><code>invoke(actionName)</code>: which executes an action located
-          at the current <code>form</code> instance.</li>
-          <li><code>refresh()</code>: which updates the current
-          <code>form</code> instance.</li>
+          <li><code>invoke(actionName)</code>: executes an action in the
+          current form instance.</li>
+          <li><code>refresh()</code>: updates the information being
+          displayed by the current form instance.</li>
         </ul>
-        To be more specific, these methods are shotcuts to que given methods in
-        <code>ActionInvoker</code>. Besides that, <code>BaseForm</code> will
-        limit the inheritance tree of the <code>Form</code>.</p>
-        <p>Although using these classes makes the <code>Form</code> code more
-        self-contained, they will make it more strongly coupled to genesis.</p>
+        To be more specific, these methods are shortcuts to the methods defined
+        in <code>ActionInvoker</code>. However, extending <code>BaseForm</code>
+        limits form inheritance possibilities and may not be suitable.</p>
+        <p>Although using these classes makes the form more self-contained,
+        it will make code more strongly coupled to genesis.</p>
         <p>Reusing the same logic from
         <a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">
-        <code>invokeFormAction(...)</code> example</a> and rewriting it to use
-        these classes, we'll have:</p>
+        <code>invokeFormAction(...)</code></a> example and rewriting it to use
+        <code>ActionInvoker</code>, we'll have:</p>
 <source>
 /**
  * @Form
@@ -814,7 +813,7 @@ public class InvokeFormActionFormExample {
 
    public void setIndex(BigDecimal index) {
       this.index = index;
-      ActionInvoker.invoke(this, "recalculaTotais");
+      ActionInvoker.invoke(this, "recalculateTotals");
    }
 
    /**
@@ -839,7 +838,7 @@ public class InvokeFormActionFormExample extends BaseForm {
 
    public void setIndex(BigDecimal index) {
       this.index = index;
-      invoke("recalculaTotais");
+      invoke("recalculateTotals");
    }
 
    /**

@@ -27,6 +27,8 @@
         Trocando o cursor do mouse durante o tratamento de eventos</a></li>
         <li><a href="#Instanciando os metadados">Instanciando os metadados</a>
         </li>
+        <li><a href="#Instanciando o controlador do form">Instanciando o
+        controlador do form</a></li>
         <li><a href="#Referência de configuração">Referência de configuração</a>
         </li>
       </ul>
@@ -318,6 +320,28 @@ public interface ThinletMetadataFactory {
       introduzir uma implementação diferente dessas interfaces nos forms e nas
       views.</p>
     </section>
+    <section name="Instanciando o controlador do form">
+      <p>O processo de atualização do estado interno do form e propagação de
+      eventos é feito através de uma implementação de
+      <code>net.java.dev.genesis.ui.controller.FormController</code>. A
+      implementação de <code>FormController</code> utilizada é obtida através
+      da interface
+      <code>net.java.dev.genesis.ui.controller.FormControllerFactory</code>.
+      Abaixo, temos a definição desta última interface:</p>
+<source>
+public interface FormControllerFactory {
+   public FormController getFormController(Object form);
+}
+</source>
+      <p>O aspecto <code>FormControllerFactoryAspect</code> define uma
+      implementação desta interface como classe estática interna,
+      <code>AspectFormControllerFactory</code>, que retorna sempre uma
+      instância de
+      <code>net.java.dev.genesis.ui.controller.DefaultFormController</code>.
+      As classes que precisam receber uma implementação de
+      <code>FormControllerFactory</code> como introdução são selecionadas
+      pelo pointcut de nome <code>formControllerFactoryIntroduction</code>.</p>
+    </section>
     <section name="Referência de configuração">
       <p>Abaixo encontram-se algumas tabelas úteis para o desenvolvedor
       avançado, além de uma configuração padrão suficiente para a maioria dos
@@ -451,6 +475,16 @@ public interface ThinletMetadataFactory {
             servidor</td>
           </tr>
           <tr>
+            <td>FormControllerFactoryAspect</td>
+            <td>formControllerFactoryIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.ui.controller.FormControllerFactory</code>
+            com a implementação
+            <code>FormControllerFactoryAspect$AspectFormControllerFactory</code></td
+            >
+          </tr>
+          <tr>
             <td>FormMetadataFactoryAspect</td>
             <td>formMetadataFactoryIntroduction</td>
             <td>Classe</td>
@@ -521,25 +555,26 @@ public interface ThinletMetadataFactory {
                      execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
-      <!-- Genesis pointcuts -->
+      <!-- genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
+      <pointcut name="formControllerFactoryIntroduction" expression="form" />
       <pointcut name="thinletMetadataFactoryIntroduction"
-                expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+         expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
       <pointcut name="criteriaResolverIntroduction"
-                expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
+         expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
-                expression="hasmethod(@Remotable * ...*(..)) OR
-                            hasmethod(@Transactional * ...*(..))" />
+         expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
       <pointcut name="timeout" expression="executeCommand" />
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution"
-                expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
+         expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution"
-                expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
+         expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
 
-      <!-- Genesis Aspects -->
+      <!-- genesis aspects -->
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="FormControllerFactoryAspect" />
       <aspect class="ThinletMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />

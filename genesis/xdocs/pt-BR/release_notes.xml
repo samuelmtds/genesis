@@ -16,7 +16,7 @@
     <section name="0.2-RC1">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2644&amp;expandFolder=2644&amp;folderID=2644">aqui</a>.</p>
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=1756&amp;expandFolder=1756&amp;folderID=2644">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
         <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
@@ -45,6 +45,9 @@
           <li>Suporte a utilização de
           <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">listas</a>
           com <code>@DataProvider</code></li>
+          <li>Pode-se invocar ações de dentro do form com as novas classes <a href=
+          "ui_additional_features.html#Invocando_ações_de_dentro_de_um_form"><code>ActionInvoker</code> e <code>BaseForm</code></a>
+          </li>
           <li>É possível definir <a href=
           "ui_additional_features.html#Formatação">formatadores específicos</a>
           para determinados campos</li>
