@@ -515,6 +515,7 @@ public class DefaultFormController implements FormController {
                .getKey(), (List)entry.getValue());
       }
 
+      //TODO: reset actual values in form
       fireValuesChanged(state.getValuesMap());
    }
 
