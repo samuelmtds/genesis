@@ -60,12 +60,14 @@ public class ThinletMetadataFactoryAspect {
 
       private void processMethodsAnnotations(
             final ThinletMetadata thinletMetadata) {
-
-         Method[] methods = thinletMetadata.getThinletClass()
-               .getDeclaredMethods();
+         final Method[] methods = thinletMetadata.getThinletClass().getMethods();
          UntypedAnnotationProxy annon;
 
          for (int i = 0; i < methods.length; i++) {
+            // Workaround for bug in AW
+            if (methods[i].getDeclaringClass().getClassLoader() == null) {
+               continue;
+            }
 
             annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
                   "BeforeAction", methods[i]);
