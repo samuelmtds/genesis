@@ -18,8 +18,8 @@
       <j2se version="1.4+" initial-heap-size="32m" />
 
       <jar href="@webstart.context@-local-weaved.jar" download="eager" main="true" />
-      <jar href="genesis-aspect-annotated-0.2-beta2.jar" download="eager" />
-      <jar href="genesis-client-0.2-beta2.jar" download="eager" />
+      <jar href="genesis-aspect-annotated-0.2-RC1-dev.jar" download="eager" />
+      <jar href="genesis-client-0.2-RC1-dev.jar" download="eager" />
       <jar href="aspectwerkz-1.1.jar" download="eager" />
       <jar href="aspectwerkz-core-1.1.jar" download="eager" />
       <jar href="cglib-full-2.0.2.jar" download="eager" />
