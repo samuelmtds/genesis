@@ -106,7 +106,7 @@ a + b = 4
         (ele pode ser abstrato na superclasse, no entanto). O método não pode
         ser estático pela simples razão que valores estáticos divergem entre
         JVMs, enquanto a instância pode ser transferida para o servidor durante
-        cada execução. As duas últimas restrições existem apenas para manter
+        cada execução. As duas últimas restrições existem para manter
         compatibilidade com a especificação EJB.</p>
         <p>Um último efeito colateral a ser notado é que variáveis de instância
         atualizadas em métodos remotos não afetam seus valores locais. Abaixo
@@ -162,8 +162,41 @@ valor em remoto(): 2</source>
         (console local).</p>
         <p>De modo que valores locais são transferidos para o servidor, mas não
         ao contrário. O mesmo se aplica a objetos passados como parâmetros. Se
-        quiser obter a cópia modificada do servidor retorne diretamente a partir
-        do método anotado como <code>@Remotable</code>.</p>
+        quiser obter a cópia modificada do servidor retorne-a diretamente a
+        partir do método anotado como <code>@Remotable</code>.</p>
+        <p>Para corrigir o problema no método anterior, basta alterá-lo para
+        retornar o novo valor:</p>
+        <source>
+    /**
+     * @Remotable
+     */
+    public int remoto() {
+       valor++;
+       System.out.println("valor em remoto(): " + valor);
+       return valor;
+    }
+
+    public void setValor(int valor) {
+       this.valor = valor;
+
+    }
+
+    public static void main(String[] args) {
+       LocalVersusRemoto lvr = new LocalVersusRemoto();
+       // ...
+       lvr.setValor(lvr.remoto());
+       // ...
+    }
+</source>
+        <p>Isso pode parecer assustador para alguns à primeira vista, mas é
+        exatamente como funciona um Stateless Session Bean (SSB), por exemplo,
+        ou o comportamento de parâmetros não-remotos passados a uma chamada RMI.
+        Um modelo de componentes com estado (stateful) deve ser implementado
+        futuramente, provavelmente na release 0.3, embora a experiência nos
+        tenha mostrado que isto não é necessário para clientes desktop e web,
+        bastando lidar com o problema da mesma forma que se lida com o ele
+        usando-se SSBs ou componentes RMI: retornando os dados alterados no
+        método.</p>
       </subsection>
     </section>
     <section name="Suporte a transações">
