@@ -97,14 +97,14 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         Obs: instale a distribuição 1.2 do
         XDoclet e copie as bibliotecas modificadas para o diretório <code>&lt;
         DIRETÓRIO_DO_XDOCLET&gt;/lib</code> sobrescrevendo as originais.</li>
-        <li><code><b>jboss.datasource_config.xml</b></code>: Indica o arquivo de configuração
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
-        <li><code><b>hibernate.dialect</b></code>: Indica o dialeto que o hibernate
+        <li><code><b>hibernate.dialect</b></code>: Indica o dialeto que o Hibernate
         deve utilizar para gerar os comandos SQL para o banco. Se você for utilizar outro banco
         que não for o HSQLDB você deve fornecer o dialeto correto. Para informações sobre qual
         dialeto você deve utilizar, consulte a documentação do
-        <a href="http://www.hibernate.org/">hibernate</a>.</li>
+        <a href="http://www.hibernate.org/">Hibernate</a>.</li>
       </ul>
       <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
       de um novo projeto utilizando o genesis.</p>

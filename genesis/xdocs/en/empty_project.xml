@@ -93,11 +93,12 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         Note: install the 1.2
         XDoclet dist and copy the modified libraries to
         <code>&lt;XDOCLET_DIR&gt;/lib</code> overriding the original ones.</li>
-        <li><code><b>jboss.datasource_config.xml</b></code>: Indicates the datasource JBoss config file.
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indicates the JBoss datasource config file location.
         You can supply another config file that matches your database configuration.</li>
-        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect hibernate will use.
+        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect Hibernate will use.
         If you're going to use other database than HSQLDB, you must supply the correct dialect.
-        You can find futher information about dialect <a href="http://www.hibernate.org/">hibernate site</a>.
+        You can find further information about how to configure a dialects at the
+        <a href="http://www.hibernate.org/">Hibernate site</a>.
         </li>
       </ul>
       <p>To make understanding easier, let's imagine a cenario for a new genesis
