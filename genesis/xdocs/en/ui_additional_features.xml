@@ -8,6 +8,8 @@
     <section name="UI components additional features">
       <p>The following features and/or concepts are explained below:
       <ul>
+        <li><a href="#Using POJOs to handle events">Using POJOs to handle
+        events</a></li>
         <li><a href="#Handling errors">Handling errors</a></li>
         <li><a href="#Conditionally controlling a form and a UI"
         >Conditionally controlling a form and a UI</a></li>
@@ -25,6 +27,72 @@
         searches</a></li>
       </ul>
       </p>
+    </section>
+    <section name="Using POJOs to handle events">
+      <p>The Thinlet API allows arbritary objects (POJOs) to be used to handle
+      events produced by the graphical interface, by using the
+      <code>parse(.., Object handler)</code> method. Since this is a native
+      Thinlet method, nothing is needed to take advantage of this feature in
+      genesis.</p>
+      <p>However, in some architectures it would be nice to use these objects
+      not only for handling Thinlet events, but also to implement methods
+      annotated as <code>@BeforeAction</code> and/or
+      <code>@AfterAction</code>. To allow that, a new annotation,
+      <code>@ViewHandler</code>, has been introduced since release 2.1 and
+      should be used in the class containing these methods. New overloaded
+      versions of the <code>bind(..)</code> and <code>prepareBinder(..)</code>
+      have been created, receiving as an additional parameter the object that
+      will be used to handle events.</p>
+      <p>This feature may be used as shown below:</p>
+<source>
+public class ViewHandlerExampleView extends BaseDialogThinlet {
+   public ViewHandlerExampleView(Frame frame) throws Exception {
+      super(frame);
+
+      // code for view setup
+
+      Object handler = new ViewHandlerExample(this);
+      add(parse("view.xml", handler));
+
+      bind(this, new ViewHandlerExampleForm(), handler);
+   }
+}
+</source>
+
+<source>
+/**
+ * @Form
+ */
+public class ViewHandlerExampleForm {
+   /**
+    * @Action
+    */
+   public void remove() {
+      // removal logic
+   }
+}
+</source>
+
+<source>
+/**
+ * @ViewHandler
+ */
+public class ViewHandlerExample {
+   private final ViewHandlerExampleView view;
+
+   public ViewHandlerExample(ViewHandlerExampleView view) {
+      this.view = view;
+   }
+
+   /**
+    * @BeforeAction
+    */
+    public boolean remove() {
+       return OptionDialog.displayYesNo(view, "Confirmation",
+             "Are you sure you want to remove it?") == OptionDialog.Option.YES;
+    }
+}
+</source>
     </section>
     <section name="Handling errors">
       <p>Thinlet has got a method for handling errors, <code>
