@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,28 +21,47 @@ package net.java.dev.genesis.aspect;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
-
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import net.java.dev.genesis.ui.metadata.FormMetadata;
+import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 
 public class FormControllerFactoryAspect {
-   protected final CrossCuttingInfo ccInfo;
-
-   public FormControllerFactoryAspect(final CrossCuttingInfo ccInfo) {
-      this.ccInfo = ccInfo;
-   }
-   
    /**
     * @Introduce formControllerFactoryIntroduction deploymentModel=perInstance
     */
    public static class AspectFormControllerFactory implements FormControllerFactory {
       private FormController controller;
+      private Object form;
 
-      public FormController retrieveFormController() {
+      public FormController retrieveFormController(Object form) {
+         if (this.form != null && this.form != form) {
+            throw new IllegalArgumentException("Different form instances " +
+                  "being used: this implementation works for a single form " +
+                  "instance; first invoked with " + this.form + " and now " +
+                  "with " + form);
+         }
+
          if (controller == null) {
-            controller = new DefaultFormController();
+            controller = createFormController(form);
+            controller.setForm(form);
+            controller.setFormMetadata(getFormMetadata(form));
          }
 
          return controller;
+      }
+
+      protected FormController createFormController(Object form) {
+         return new DefaultFormController();
+      }
+
+      protected FormMetadata getFormMetadata(final Object form) {
+         if (!(form instanceof FormMetadataFactory)) {
+            throw new IllegalArgumentException(form + " should implement " + 
+                  "FormMetadataFactory; probably it should have been " +
+                  "annotated with @Form or your aop.xml/weaving process should " +
+                  "be properly configured.");
+         }
+
+         return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
       }
    }
 }

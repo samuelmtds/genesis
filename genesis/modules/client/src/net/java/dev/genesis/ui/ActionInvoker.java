@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,35 @@
  */
 package net.java.dev.genesis.ui;
 
+import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 
 public class ActionInvoker {
    public static void invoke(final Object target, final String actionName)
          throws Exception {
-      ((FormControllerFactory)target).retrieveFormController()
-            .invokeAction(actionName, null);
+      getFormController(target).invokeAction(actionName, null);
    }
 
    public static void refresh(final Object target) throws Exception {
-      ((FormControllerFactory)target).retrieveFormController().update();
+      getFormController(target).update();
+   }
+
+   private static FormController getFormController(final Object target) 
+         throws Exception {
+      if (!(target instanceof FormControllerFactory)) {
+         throw new IllegalArgumentException(target + " should implement " + 
+               "FormControllerFactory; probably it should have been annotated " +
+               "with @Form or your aop.xml/weaving process should be " +
+               "properly configured.");
+      }
+
+      final FormController controller = ((FormControllerFactory)target)
+            .retrieveFormController(target);
+
+      if (!controller.isSetup()) {
+         controller.setup();
+      }
+
+      return controller;
    }
 }

@@ -19,5 +19,5 @@
 package net.java.dev.genesis.ui.controller;
 
 public interface FormControllerFactory {
-   public FormController retrieveFormController();
+   public FormController retrieveFormController(Object form);
 }

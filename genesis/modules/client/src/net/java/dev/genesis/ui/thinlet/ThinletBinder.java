@@ -73,7 +73,7 @@ public class ThinletBinder implements FormControllerListener {
       this.thinlet = thinlet;
       this.root = root;
       this.form = form;
-      this.controller = getController(form);
+      this.controller = getFormController(form);
    }
    
    protected final ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
@@ -86,7 +86,7 @@ public class ThinletBinder implements FormControllerListener {
       return ((ThinletMetadataFactory)thinlet).getThinletMetadata(thinlet.getClass());
    }
 
-   protected final FormController getController(final Object form) {
+   protected final FormController getFormController(final Object form) {
       if (!(form instanceof FormControllerFactory)) {
          throw new IllegalArgumentException(form + " should implement " + 
                "FormControllerFactory; probably it should have been annotated " +
@@ -94,7 +94,7 @@ public class ThinletBinder implements FormControllerListener {
                "properly configured.");
       }
 
-      return ((FormControllerFactory)form).retrieveFormController();
+      return ((FormControllerFactory)form).retrieveFormController(form);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
@@ -110,10 +110,6 @@ public class ThinletBinder implements FormControllerListener {
 
    public void bind() throws Exception {
       final FormMetadata formMetadata = getFormMetadata(form);
-      controller.setForm(form);
-      controller.setFormMetadata(formMetadata);
-      controller.addFormControllerListener(this);
-
       final Collection dataProviders = new ArrayList(formMetadata
             .getDataProviderMetadatas().values());
 
@@ -121,7 +117,13 @@ public class ThinletBinder implements FormControllerListener {
       bindActionMetadatas(formMetadata);
       bindDataProviders(dataProviders);
 
-      controller.setup();
+      if (!controller.isSetup()) {
+         controller.addFormControllerListener(this);
+         controller.setup();
+      } else {
+         controller.fireAllEvents(this);
+         controller.addFormControllerListener(this);
+      }
    }
 
    protected void bindFieldMetadatas(final FormMetadata formMetadata) {

@@ -35,6 +35,7 @@ public interface FormController {
    public void addFormControllerListener(FormControllerListener listener);
    public boolean removeFormControllerListener(FormControllerListener listener);
    public Collection getFormControllerListeners();
+   public void fireAllEvents(FormControllerListener listener) throws Exception;
 
    public void setup() throws Exception;
    public boolean isSetup();

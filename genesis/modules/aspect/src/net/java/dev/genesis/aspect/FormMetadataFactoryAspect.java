@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,19 +42,12 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.JXPathContext;
-import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.annotation.Annotation;
 import org.codehaus.aspectwerkz.annotation.AnnotationInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
 import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 public class FormMetadataFactoryAspect {
-   protected final CrossCuttingInfo ccInfo;
-
-   public FormMetadataFactoryAspect(final CrossCuttingInfo ccInfo) {
-      this.ccInfo = ccInfo;
-   }
-
    /**
     * @Introduce formMetadataFactoryIntroduction deploymentModel=perJVM
     */
@@ -109,7 +102,7 @@ public class FormMetadataFactoryAspect {
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               processMemberAnnotation(formMetadata, fieldMetadata, annotation);
+               processMemberAnnotation(fieldMetadata, annotation);
             }
 
             public void processMethodAnnotation(
@@ -121,12 +114,11 @@ public class FormMetadataFactoryAspect {
                         "EnabledWhen must be a field or action annotation");
                }
                
-               processMemberAnnotation(formMetadata, methodMetadata
-                     .getActionMetadata(), annotation);
+               processMemberAnnotation(methodMetadata.getActionMetadata(), 
+                     annotation);
             }
 
             private void processMemberAnnotation(
-                  final FormMetadata formMetadata,
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
                memberMetadata
@@ -146,7 +138,7 @@ public class FormMetadataFactoryAspect {
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               processMemberAnnotation(formMetadata, fieldMetadata, annotation);
+               processMemberAnnotation(fieldMetadata, annotation);
             }
 
             public void processMethodAnnotation(
@@ -158,12 +150,11 @@ public class FormMetadataFactoryAspect {
                         "VisibleWhen must be a field or action annotation");
                }
 
-               processMemberAnnotation(formMetadata, methodMetadata
-                     .getActionMetadata(), annotation);
+               processMemberAnnotation(methodMetadata.getActionMetadata(), 
+                     annotation);
             }
 
             private void processMemberAnnotation(
-                  final FormMetadata formMetadata,
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
                memberMetadata

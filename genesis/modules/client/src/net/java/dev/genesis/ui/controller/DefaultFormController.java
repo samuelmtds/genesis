@@ -110,6 +110,12 @@ public class DefaultFormController implements FormController {
    }
 
    public void setup() throws Exception {
+      if (setup) {
+         throw new IllegalStateException("setup() has already been called");
+      }
+
+      setup = true;
+
       ctx = createJXPathContext();
       ctx.getVariables().declareVariable(FORM_METADATA_KEY, formMetadata);
 
@@ -123,8 +129,6 @@ public class DefaultFormController implements FormController {
       }
 
       evaluate(true);
-
-      setup = true;
    }
    
    public boolean isSetup() {
@@ -454,10 +458,10 @@ public class DefaultFormController implements FormController {
 
          if (indexes == null) {
             if (log.isDebugEnabled()) {
-               log.debug("Indexes field "
-                     + dataMeta.getIndexField().getFieldName()
-                     + " didn't change.");
+               log.debug("Index field " + dataMeta.getIndexField()
+                     .getFieldName() + " haven't been changed.");
             }
+
             continue;
          }
 
@@ -595,6 +599,8 @@ public class DefaultFormController implements FormController {
 
       final Map currentValues = PropertyUtils.describe(form);
 
+      //TODO: reset index fields as well
+
       for (final Iterator i = currentValues.entrySet().iterator(); 
             i.hasNext();) {
          Map.Entry entry = (Map.Entry)i.next();
@@ -672,5 +678,36 @@ public class DefaultFormController implements FormController {
 
          throw e;
       }
+   }
+
+   public void fireAllEvents(FormControllerListener listener) throws Exception {
+      listener.enabledConditionsChanged(currentState.getEnabledMap());
+      listener.visibleConditionsChanged(currentState.getVisibleMap());
+
+      for (final Iterator i = currentState.getDataProvidedMap().entrySet()
+            .iterator(); i.hasNext();) {
+         final Map.Entry entry = (Map.Entry)i.next();
+         listener.dataProvidedListChanged((DataProviderMetadata)entry.getKey(), 
+               (List)entry.getValue());
+      }
+
+      final Map currentValues = PropertyUtils.describe(form);
+
+      //TODO: fire index fields changed event
+
+      for (final Iterator i = currentValues.entrySet().iterator(); 
+            i.hasNext();) {
+         Map.Entry entry = (Map.Entry)i.next();
+         FieldMetadata fieldMeta = formMetadata.getFieldMetadata(entry.getKey()
+               .toString());
+
+         if (fieldMeta == null) {
+            i.remove();
+
+            continue;
+         }
+      }
+
+      listener.valuesChanged(currentValues);
    }
 }
