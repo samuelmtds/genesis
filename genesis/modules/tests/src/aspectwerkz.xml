@@ -30,9 +30,11 @@
          <param name="timeout" value="2500" />
       </aspect>
       <aspect class="EJBCommandExecutionAspect">
-         <param name="jndiName" value="ejb/HibernateCommandExecutor"/>
+         <param name="jndiName" value="ejb/CommandExecutor"/>
       </aspect>
-      <aspect class="LocalCommandExecutionAspect"/>
+      <aspect class="LocalCommandExecutionAspect">
+         <param name="transactionalInjector" value="net.java.dev.genesis.aspect.HibernateTransactionalInjector"/>
+      </aspect>
       <aspect class="CriteriaCommandExecutionAspect"/>
       <aspect class="WaitCursorAspect"/>
    </system>

@@ -18,13 +18,7 @@
  */
 package net.java.dev.genesis.aspect;
 
-import net.java.dev.genesis.command.hibernate.HibernateCommand;
-import net.sf.hibernate.FlushMode;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.cfg.Configuration;
+import net.java.dev.genesis.command.TransactionalInjector;
 
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
@@ -34,83 +28,37 @@ import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
  * @Aspect perJVM
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
+   private final TransactionalInjector injector;
 
-    public LocalCommandExecutionAspect(CrossCuttingInfo ccInfo) {
-        super(ccInfo);
-    }
+   public LocalCommandExecutionAspect(final CrossCuttingInfo ccInfo) 
+                                                            throws Exception {
+      super(ccInfo);
+
+      injector = (ccInfo.isPrototype()) ? null : (TransactionalInjector)
+            Class.forName(ccInfo.getParameter("transactionalInjector"), true, 
+            Thread.currentThread().getContextClassLoader()).newInstance();
+   }
     
-    /**
-     * @Around localCommandExecution
-     */
-    public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
-        
-        final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        final CommandResolver obj = (CommandResolver)joinPoint.getTarget();
-        if(!(obj instanceof HibernateCommand)){
-            return joinPoint.proceed();
-        }
+   /**
+    * @Around localCommandExecution
+    */
+   public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
+      final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+      final CommandResolver obj = (CommandResolver)joinPoint.getTarget();
+      final boolean transactional = obj.isTransaction(methodSignature.getMethod());
 
-        final HibernateCommand hibernateCommand = (HibernateCommand) obj;
-        final Session session = HibernateHelper.getInstance().createSession();
-        final boolean transactional = obj.isTransaction(methodSignature.getMethod());
+      try {
+         injector.beforeInvocation(obj, transactional);
+         final Object ret = joinPoint.proceed();
+         injector.afterInvocation();
 
-        Transaction transaction = null;
-        Object ret;
+         return ret;
+      } catch (final Exception e) {
+         injector.onException(e);
 
-        try{
-            hibernateCommand.setSession(session);
-
-            if(transactional){
-                transaction = session.beginTransaction();
-                session.setFlushMode(FlushMode.COMMIT);
-            }
-
-            ret = joinPoint.proceed();
-
-            if(transactional){
-                transaction.commit();
-            }
-
-            return ret;
-        }
-        catch(Throwable t){
-            if(transaction != null){
-                try{
-                    transaction.rollback();
-                } catch(Throwable th){
-                    th.printStackTrace();
-                }
-            }
-
-            throw t;
-        } finally{
-            hibernateCommand.setSession(null);
-
-            try{
-                session.close();
-            } catch(Throwable t){
-                t.printStackTrace();
-            }
-        }
-    }
-}
-
-final class HibernateHelper {
-    private static final HibernateHelper instance = new HibernateHelper();
-    private SessionFactory factory;
-
-    private HibernateHelper() {
-    }
-
-    public static HibernateHelper getInstance() {
-        return instance;
-    }
-
-    public Session createSession() throws HibernateException {
-        if (factory == null) {
-            factory = new Configuration().configure().buildSessionFactory();
-        }
-
-        return factory.openSession();
-    }
+         throw e;
+      } finally{
+         injector.onFinally();
+      }
+   }
 }
