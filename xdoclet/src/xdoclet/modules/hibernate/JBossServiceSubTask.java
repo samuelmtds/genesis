@@ -16,7 +16,7 @@ import xdoclet.util.Translator;
  *
  * @author               Konstantin Pribluda (kpribluda@j-tec-team.de)
  * @created              December 11, 2002
- * @version              $Revision: 1.1 $
+ * @version              $Revision: 1.2 $
  * @ant.element          name="jbossservice" display-name="JBoss service configuration"
  *      parent="xdoclet.modules.hibernate.HibernateDocletTask"
  * @xdoclet.merge-file   file="jboss-service-custom.xdt" relates-to="jboss-service.xml" description="An XML unparsed
@@ -46,9 +46,17 @@ public class JBossServiceSubTask
     private String  _password = null;
     private String  _userTransactionName = null;
     private String  _transactionStrategy = null;
+    private String  _cacheProvider = null;
     private String  _depends = null;
 
     private String  _transactionManagerStrategy = null;
+    private String  _maxFetchDepth = null;
+    private String  _jdbcFetchSize = null;
+    private String  _useQueryCache = null;
+    private String  _querySubstitutions = null;
+    private String  _defaultSchema = null;
+    private String  _autoCreate = null;
+    private String  _version = "2.1";
 
     /**
      * Constructor for the HibernateSubTask object
@@ -74,6 +82,11 @@ public class JBossServiceSubTask
     public String getTransactionStrategy()
     {
         return _transactionStrategy;
+    }
+
+    public String getCacheProvider()
+    {
+        return _cacheProvider;
     }
 
     public String getDepends()
@@ -126,6 +139,11 @@ public class JBossServiceSubTask
         return _dialect;
     }
 
+    public String getAutoCreate()
+    {
+        return _autoCreate;
+    }
+
     public String getDriver()
     {
         throw new UnsupportedOperationException("JBossServiceSubTask does not have a Driver attribute.");
@@ -144,6 +162,73 @@ public class JBossServiceSubTask
     public Collection getJndiProperties()
     {
         throw new UnsupportedOperationException("JBossServiceSubTask does not have a jndiProperties attribute.");
+    }
+
+    public Collection getOtherProperties()
+    {
+        throw new UnsupportedOperationException("JBossServiceSubTask does not have an otherProperties attribute.");
+    }
+
+    public Collection getOtherMappings()
+    {
+        throw new UnsupportedOperationException("JBossServiceSubTask does not have an otherMappings attribute.");
+    }
+
+    /**
+     * @return
+     */
+    public String getDefaultSchema()
+    {
+        return _defaultSchema;
+    }
+
+    /**
+     * @return
+     */
+    public String getJdbcFetchSize()
+    {
+        return _jdbcFetchSize;
+    }
+
+    /**
+     * @return
+     */
+    public String getMaxFetchDepth()
+    {
+        return _maxFetchDepth;
+    }
+
+    /**
+     * @return
+     */
+    public String getQuerySubstitutions()
+    {
+        return _querySubstitutions;
+    }
+
+    /**
+     * @return
+     */
+    public String getUseQueryCache()
+    {
+        return _useQueryCache;
+    }
+
+    public String getVersion()
+    {
+        return _version;
+    }
+
+    /**
+     * Parameter for <tt>hibernate.hbm2ddl.auto</tt> property. Available since hibernate 2.1.6. Allowed values are
+     * 'create', 'create-drop' and 'update'.
+     *
+     * @param autoCreate
+     * @ant.not-required
+     */
+    public void setAutoCreate(String autoCreate)
+    {
+        _autoCreate = autoCreate;
     }
 
     /**
@@ -177,6 +262,17 @@ public class JBossServiceSubTask
     public void setTransactionStrategy(String transactionStrategy)
     {
         _transactionStrategy = transactionStrategy;
+    }
+
+    /**
+     * The fully qualified class name of the Hibernate <tt>CacheProvider</tt> implementation. For Hibernate 2.1+ only.
+     *
+     * @param cacheProvider
+     * @ant.not-required
+     */
+    public void setCacheProvider(String cacheProvider)
+    {
+        _cacheProvider = cacheProvider;
     }
 
     /**
@@ -276,6 +372,74 @@ public class JBossServiceSubTask
     {
         _dialect = dialect;
     }
+
+    /**
+     * Only for Hibernate 2.1+
+     *
+     * @param string
+     * @ant.not-required
+     */
+    public void setDefaultSchema(String string)
+    {
+        _defaultSchema = string;
+    }
+
+    /**
+     * Only for Hibernate 2.1+
+     *
+     * @param string
+     * @ant.not-required
+     */
+    public void setJdbcFetchSize(String string)
+    {
+        _jdbcFetchSize = string;
+    }
+
+    /**
+     * Only for Hibernate 2.1+
+     *
+     * @param string
+     * @ant.not-required
+     */
+    public void setMaxFetchDepth(String string)
+    {
+        _maxFetchDepth = string;
+    }
+
+    /**
+     * Only for Hibernate 2.1+
+     *
+     * @param string
+     * @ant.not-required
+     */
+    public void setQuerySubstitutions(String string)
+    {
+        _querySubstitutions = string;
+    }
+
+    /**
+     * Only for Hibernate 2.1+
+     *
+     * @param string
+     * @ant.not-required
+     */
+    public void setUseQueryCache(String string)
+    {
+        _useQueryCache = string;
+    }
+
+    /**
+     * Set the Hibernate version that the jboss service should be generated for. Values are "1.1", "2.0" and "2.1". This
+     * value normally corresponds to the setting of the <tt>hibernate</tt> subtask.
+     * Default is "2.1" !
+     * @param version
+     * @ant.not-required
+     */
+    public void setVersion(String version)
+    {
+        _version = version;
+    }
+
 
     public void validateOptions() throws XDocletException
     {
