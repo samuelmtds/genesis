@@ -34,12 +34,9 @@
               href="/ui_component_model.html" />
         <item name="Modelo de componentes de negócio"
               href="/business_component_model.html" />
-        <item name="Guia de referência rápida de tags"
+        <item name="Guia de referência rápida de anotações"
               href="/quick_reference.html" />
       </item>
-      <!--item name="Arquitetura" collapse="true" href="/index.html">
-        <item name="Arquitetura do Genesis - Server" href="/server_arch.html" />
-      </item-->
       <item name="Entendendo os jars do genesis" href="/jars_explained.html" />
     </menu>
   </body>
