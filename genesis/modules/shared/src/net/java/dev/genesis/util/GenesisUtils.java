@@ -18,14 +18,36 @@
  */
 package net.java.dev.genesis.util;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public final class GenesisUtils {
-	
-    public static Map normalizeMap(final Map map){
-        map.remove("class");
-        map.remove("context");
-        return map;
-    }
-    
+
+   public static Map normalizeMap(final Map map) {
+      map.remove("class");
+      map.remove("context");
+      return map;
+   }
+
+   /**
+    * Reads a string line containing <code>key1=value1 key2=value2</code>
+    * and makes a Map.
+    * 
+    * @param attributesLine
+    * @return
+    */
+   public static Map getAttributesMap(final String attributesLine) {
+      final StringTokenizer spaceSeparator = new StringTokenizer(attributesLine);
+      final Map attributesMap = new HashMap();
+      while (spaceSeparator.hasMoreTokens()) {
+         final StringTokenizer equalSeparator = new StringTokenizer(
+               spaceSeparator.nextToken(), "=");
+         if (equalSeparator.countTokens() == 2) {
+            attributesMap.put(equalSeparator.nextToken(), equalSeparator
+                  .nextToken());
+         }
+      }
+      return attributesMap;
+   }
 }

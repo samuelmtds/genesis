@@ -18,28 +18,30 @@
  */
 package net.java.dev.genesis.ui.metadata;
 
-
 import net.java.dev.genesis.equality.EqualityComparator;
+import net.java.dev.genesis.equality.EqualityComparatorRegistry;
+import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
+import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
 
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.jxpath.CompiledExpression;
 
-public class FieldMetadata {
+public class FieldMetadata extends MemberMetadata {
    private final String fieldName;
    private final Class fieldClass;
-   
-   private Converter converter;
 
-   private CompiledExpression enabledCondition;
+   private Converter converter;
    private CompiledExpression clearOnCondition;
-   private CompiledExpression visibleCondition;
    private boolean displayOnly;
    private EqualityComparator equalityComparator;
    private EmptyResolver emptyResolver;
    private Object emptyValue;
-   
-   public FieldMetadata(String fieldName, Class fieldClass){
+
+   private boolean processed = false;
+
+   public FieldMetadata(String fieldName, Class fieldClass) {
       this.fieldName = fieldName;
       this.fieldClass = fieldClass;
    }
@@ -65,6 +67,9 @@ public class FieldMetadata {
    }
 
    public EmptyResolver getEmptyResolver() {
+      if (!processed) {
+         internalProcess();
+      }
       return emptyResolver;
    }
 
@@ -72,22 +77,10 @@ public class FieldMetadata {
       this.emptyResolver = emptyResolver;
    }
 
-   public CompiledExpression getEnabledCondition() {
-      return enabledCondition;
-   }
-
-   public void setEnabledCondition(CompiledExpression enabledCondition) {
-      this.enabledCondition = enabledCondition;
-   }
-
-   public CompiledExpression getVisibleCondition() {
-      return visibleCondition;
-   }
-
-   public void setVisibleCondition(CompiledExpression visibleCondition) {
-      this.visibleCondition = visibleCondition;
-   }
    public EqualityComparator getEqualityComparator() {
+      if (!processed) {
+         internalProcess();
+      }
       return equalityComparator;
    }
 
@@ -96,6 +89,9 @@ public class FieldMetadata {
    }
 
    public Converter getConverter() {
+      if (!processed) {
+         internalProcess();
+      }
       return converter;
    }
 
@@ -106,13 +102,33 @@ public class FieldMetadata {
    public Class getFieldClass() {
       return fieldClass;
    }
-   
+
    public Object getEmptyValue() {
+      if (!processed) {
+         internalProcess();
+      }
       return emptyValue;
    }
 
    public void setEmptyValue(Object emptyValue) {
       this.emptyValue = emptyValue;
+   }
+
+   private void internalProcess() {
+      if (equalityComparator == null) {
+         equalityComparator = EqualityComparatorRegistry.getInstance()
+               .getDefaultEqualityComparatorFor(getFieldClass());
+      }
+      if (emptyResolver == null) {
+         emptyResolver = EmptyResolverRegistry.getInstance()
+               .getDefaultEmptyResolverFor(getFieldClass());
+      }
+      if (converter == null) {
+         converter = ConvertUtils.lookup(getFieldClass());
+         emptyValue = DefaultValueRegistry.getInstance().get(getFieldClass(),
+               true);
+      }
+      processed = true;
    }
 
    public String toString() {
@@ -121,7 +137,9 @@ public class FieldMetadata {
       buffer.append(".");
       buffer.append(fieldName);
       buffer.append(" = {\n\t\tenabledCondition = ");
-      buffer.append(enabledCondition);
+      buffer.append(getEnabledCondition());
+      buffer.append(" = {\n\t\tvisibleCondition = ");
+      buffer.append(getVisibleCondition());
       buffer.append("\n\t\tclearOnCondition = ");
       buffer.append(clearOnCondition);
       buffer.append("\n\t\tdisplayOnly = ");

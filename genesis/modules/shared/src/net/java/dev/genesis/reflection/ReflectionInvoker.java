@@ -20,7 +20,6 @@ package net.java.dev.genesis.reflection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,27 +61,5 @@ public final class ReflectionInvoker {
       }
 
       return method.invoke(obj, args);
-   }
-
-   public final static class MethodEntry {
-      private final String methodName;
-      private final String[] argsClassesNames;
-
-      public MethodEntry(final String methodName,
-            final String[] argsClassesNames) {
-         this.methodName = methodName;
-         this.argsClassesNames = argsClassesNames;
-      }
-
-      public boolean equals(Object o) {
-         MethodEntry that = (MethodEntry) o;
-
-         return that.methodName.equals(this.methodName)
-               && Arrays.equals(that.argsClassesNames, this.argsClassesNames);
-      }
-
-      public int hashCode() {
-         return methodName.hashCode();
-      }
    }
 }

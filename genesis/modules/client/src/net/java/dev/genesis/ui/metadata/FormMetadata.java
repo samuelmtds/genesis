@@ -18,27 +18,27 @@
  */
 package net.java.dev.genesis.ui.metadata;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import net.java.dev.genesis.reflection.MethodEntry;
 
 import org.apache.commons.jxpath.CompiledExpression;
 
 public class FormMetadata {
    private final Class formClass;
 
-   private Map namedConditions;
-   private Map fieldMetadatas;
+   private final Map namedConditions;
+   private final Map fieldMetadatas;
+   private final Map actionMetadatas;
 
    public FormMetadata(final Class formClass) {
-      this(formClass, new HashMap(), new HashMap());
-   }
-
-   public FormMetadata(final Class formClass, final Map namedConditions,
-         final Map fieldMetadatas) {
       this.formClass = formClass;
-      this.namedConditions = namedConditions;
-      this.fieldMetadatas = fieldMetadatas;
+      this.namedConditions = new HashMap();
+      this.fieldMetadatas = new HashMap();
+      this.actionMetadatas = new HashMap();
    }
 
    public Class getFormClass() {
@@ -49,33 +49,33 @@ public class FormMetadata {
       return fieldMetadatas;
    }
 
-   public void setFieldMetadatas(Map fieldMetadatas) {
-      this.fieldMetadatas = fieldMetadatas;
-   }
-
    public Map getNamedConditions() {
       return namedConditions;
    }
 
-   public void setNamedConditions(Map namedConditions) {
-      this.namedConditions = namedConditions;
-   }
-
-   public CompiledExpression getNamedCondition(String namedConditionName) {
+   public CompiledExpression getNamedCondition(final String namedConditionName) {
       return (CompiledExpression) namedConditions.get(namedConditionName);
    }
 
-   public FieldMetadata getFieldMetadata(String fieldName) {
+   public FieldMetadata getFieldMetadata(final String fieldName) {
       return (FieldMetadata) fieldMetadatas.get(fieldName);
    }
+   
+   public ActionMetadata getActionMetadata(final Method method) {
+      return (ActionMetadata) actionMetadatas.get(new MethodEntry(method));
+   }
 
-   public void addNamedCondition(final Object key, final Object value) {
+   public void addNamedCondition(final String key, final CompiledExpression value) {
       namedConditions.put(key, value);
    }
 
-   public void addFieldMetadata(String fieldName,
+   public void addFieldMetadata(final String fieldName,
          final FieldMetadata fieldMetadata) {
       fieldMetadatas.put(fieldName, fieldMetadata);
+   }
+   
+   public void addActionMetadata(final Method method, final ActionMetadata actionMetadata) {
+      actionMetadatas.put(new MethodEntry(method), actionMetadata);
    }
 
    public String toString() {
@@ -94,6 +94,12 @@ public class FormMetadata {
       }
 
       for (Iterator iter = fieldMetadatas.values().iterator(); iter.hasNext();) {
+         buffer.append("\t");
+         buffer.append(iter.next());
+         buffer.append("\n");
+      }
+      
+      for (Iterator iter = actionMetadatas.values().iterator(); iter.hasNext();) {
          buffer.append("\t");
          buffer.append(iter.next());
          buffer.append("\n");

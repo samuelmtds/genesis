@@ -23,14 +23,13 @@ import net.java.dev.genesis.equality.StringEqualityComparator;
 import net.java.dev.genesis.resolvers.DefaultEmptyResolver;
 import net.java.dev.genesis.resolvers.StringEmptyResolver;
 import net.java.dev.genesis.tests.TestCase;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.beanutils.converters.StringConverter;
-
-
 
 public class FormMetadataFactoryTest extends TestCase {
 
@@ -40,6 +39,9 @@ public class FormMetadataFactoryTest extends TestCase {
    FieldMetadata numberField;
    FieldMetadata fieldField;
    FieldMetadata descriptionField;
+   ActionMetadata saveMethod;
+   ActionMetadata resetMethod;
+   ActionMetadata cancelMethod;
 
    static {
       ConvertUtils.register(ConvertUtils.lookup(String.class), Object.class);
@@ -55,12 +57,16 @@ public class FormMetadataFactoryTest extends TestCase {
       numberField = formMetadata.getFieldMetadata("number");
       fieldField = formMetadata.getFieldMetadata("field");
       descriptionField = formMetadata.getFieldMetadata("description");
-
+      saveMethod = formMetadata.getActionMetadata(FooForm.class
+            .getDeclaredMethod("save", new Class[] {}));
+      resetMethod = formMetadata.getActionMetadata(FooForm.class
+            .getDeclaredMethod("reset", new Class[] {}));
+      cancelMethod = formMetadata.getActionMetadata(FooForm.class
+            .getDeclaredMethod("cancel", new Class[] {}));
    }
 
    public void testParseFormMetadata() {
       final FormMetadata formMetadata = getFormMetadata(new FooForm());
-      System.out.println(formMetadata);
    }
 
    public void testConditions() {
@@ -102,16 +108,31 @@ public class FormMetadataFactoryTest extends TestCase {
       assertNull(fieldField.getEnabledCondition());
 
       assertNull(descriptionField.getEnabledCondition());
+      
+      assertNull(saveMethod.getEnabledCondition());
+      assertNull(resetMethod.getEnabledCondition());
+      assertEquals("string-length(normalize-space(description)) != 2", cancelMethod
+            .getEnabledCondition().toString());
    }
-   
+
    public void testVisibleCondition() {
       assertNull(codeField.getVisibleCondition());
       assertNull(nameField.getVisibleCondition());
       assertNull(objField.getVisibleCondition());
       assertNull(numberField.getVisibleCondition());
-      assertEquals("string-length(normalize-space(description)) != 0", fieldField
-            .getVisibleCondition().toString());
+      assertEquals("string-length(normalize-space(description)) != 0",
+            fieldField.getVisibleCondition().toString());
+      assertNull(saveMethod.getVisibleCondition());
+      assertEquals("string-length(normalize-space(description)) != 1",
+            resetMethod.getVisibleCondition().toString());
+      assertNull(cancelMethod.getVisibleCondition());
       assertNull(descriptionField.getVisibleCondition());
+   }
+   
+   public void testValidateBefore() {
+      assertTrue(saveMethod.isValidateBefore());
+      assertFalse(resetMethod.isValidateBefore());
+      assertFalse(cancelMethod.isValidateBefore());
    }
 
    public void testDisplayOn() {
@@ -304,6 +325,30 @@ public class FormMetadataFactoryTest extends TestCase {
 
       public void setField(Object field) {
          this.field = field;
+      }
+
+      /**
+       * @Action
+       * @ValidateBefore
+       */
+      public void save() {
+      }
+
+      /**
+       * @Action
+       * @VisibleWhen
+       * 		string-length(normalize-space(description)) != 1
+       */
+      public void reset() {
+      }
+
+      /**
+       * @Action
+       * @EnabledWhen
+       * 		string-length(normalize-space(description)) != 2
+       */
+      public void cancel() {
+
       }
 
    }
