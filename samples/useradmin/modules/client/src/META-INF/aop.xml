@@ -1,0 +1,37 @@
+<!DOCTYPE aspectwerkz PUBLIC
+      "-//AspectWerkz//DTD 1.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
+<aspectwerkz>
+   <system id="tests" base-package="net.java.dev.genesis">
+      <!-- helpers pointcuts -->
+      <pointcut name="executeCommand"
+         expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
+      <pointcut name="form" expression="within(@Form ..)" />
+
+      <!-- Genesis pointcuts -->
+      <pointcut name="formMetadataFactoryIntroduction" expression="form" />
+      <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
+      <pointcut name="commandResolverIntroduction"
+         expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
+      <pointcut name="timeout" expression="executeCommand" />
+      <pointcut name="ejbCommandExecution" expression="executeCommand" />
+      <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
+      <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
+      
+      <!-- Genesis Aspects -->
+      <aspect class="aspect.CommandInvocationAspect" />
+      <aspect class="aspect.FormMetadataFactoryAspect">
+         <!--introduce name="ui.controller.FormController"
+               class="ui.controller.DefaultFormController"
+               bind-to="form" deployment-model="perInstance" /-->
+      </aspect>
+      <aspect class="aspect.TimeoutAspect">
+         <param name="timeout" value="2500" />
+      </aspect>
+      <aspect class="aspect.EJBCommandExecutionAspect">
+         <param name="jndiName" value="ejb/CommandExecutor"/>
+      </aspect>
+      <aspect class="aspect.CriteriaCommandExecutionAspect"/>
+      <aspect class="aspect.WaitCursorAspect"/>
+   </system>
+</aspectwerkz>

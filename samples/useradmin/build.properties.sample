@@ -1,0 +1,6 @@
+## Build properties sample
+
+genesis.home=../../genesis
+xdoclet.dist=../../xdoclet/dist
+jboss.home=/opt/jboss-3.2.5
+jboss.provider.url=localhost
