@@ -5,7 +5,7 @@ To build genesis xdoclet module, you need:
 
 Copy genesis module to xdoclet modules dir (<XDOCLET_HOME>/modules/genesis)
 
-Go to <XDOCLET_HOME>/modules and type:
+Go to <XDOCLET_HOME> and type:
 
    ant modules
    
