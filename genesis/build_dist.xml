@@ -36,10 +36,6 @@
          <arg line="-f ${basedir}/../samples/useradmin/build.xml useradmin:dist"/>
       </exec>
 
-      <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
-         <arg line="-f ${basedir}/../samples/simplecalculator/build.xml simplecalc:dist"/>
-      </exec>
-
       <patternset id="empty-project.pattern">
          <include name="samples/empty-project/*" />
          <include name="samples/empty-project/modules/**"/>
@@ -92,6 +88,12 @@
          <exclude name="genesis/${genesis.lib.dir}/**"/>
       </patternset>
       
+      <patternset id="genesis.src.only.pattern">
+	       <include name="genesis/**/src/**" />
+	       <include name="samples/useradmin/**/src/**" />
+          <exclude name="**/target/**" />
+      </patternset>
+
       <patternset id="genesis.useradmin.pattern">
          <include name="samples/useradmin/*"/>
 	      <include name="samples/useradmin/modules/**"/>
@@ -143,6 +145,18 @@
             <patternset refid="genesis.full-bin-plus-docs.pattern" />
          </tarfileset>
          <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
+      </tar>
+
+      <!-- Genesis src-only distribution -->
+      <zip destfile="${build.dir}/genesis-src-only-${genesis.version}.zip">
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.src.only.pattern" />
+         </zipfileset>
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-only-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="genesis.src.only.pattern" />
+         </tarfileset>
       </tar>
 
       <!-- Genesis src distribution -->
