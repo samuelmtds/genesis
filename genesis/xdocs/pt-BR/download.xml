@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Downloads do genesis</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Downloads do genesis">
+      <p>Para fazer o download do genesis, há vários empacotamentos. 
+      São eles:</p>
+      <ul>
+        <li><b>genesis-docs-{versão}.tar.gz</b> e
+        <b>genesis-docs-{versão}.zip</b>: contém apenas a documentação
+        do genesis.</li>
+        <li><b>genesis-bin-{versão}.tar.gz</b> e
+        <b>genesis-bin-{versão}.zip</b>: contém a distribuição binária
+        do genesis. Este empacotamento contém os seguintes grupos de arquivos: 
+        os jars do genesis propriamente ditos e um projeto vazio para iniciar o
+        desenvolvimento de uma aplicação com o genesis. Ou seja: este
+        empacotamento não possui nenhum arquivo jar de dependência a frameworks
+        externos, tais como hibernate.
+        </li>
+        <li><b>genesis-full-bin-{versão}.tar.gz</b> e
+        <b>genesis-full-bin-{versão}.zip</b>: contém a distribuição
+        binária completa do genesis. 
+        Este empacotamento contém os seguintes grupos de arquivos: todos os
+        arquivos do empacotamento anterior e as bibliotecas referentes a 
+        AspectWerkz, ao Hibernate, ao Apache Commons e ao Thinlet. 
+        Também é fornecido um projeto vazio para iniciar o desenvolvimento de 
+        uma aplicação com o genesis.
+        </li>
+        <li><b>genesis-full-bin-plus-docs-{versão}.tar.gz</b> e
+        <b>genesis-full-bin-plus-docs-{versão}.zip</b>: contém a
+        distribuição binária completa do genesis juntamente com a
+        documentação. Em termos de pacotes, é fornecido os seguintes
+        grupos de arquivos: todos os jars do empacotamento anterior. 
+        Além disso, também é fornecido um projeto
+        vazio para iniciar o desenvolvimento de uma aplicação com o genesis.
+        Esse empacotamento também fornece outros exemplos de utilização do
+        genesis: uma simples calculadora (SimpleCalculator) e um aplicativo de 
+        administração de usuários (Useradmin)
+        </li>
+        <li><b>genesis-src-{versão}.tar.gz</b> e
+        <b>genesis-src-{versão}.zip</b>: contém o código fonte do
+        genesis.</li>
+        <li><b>genesis-src-plus-docs-{versão}.tar.gz</b> e
+        <b>genesis-src-plus-docs-{versão}.zip</b>: contém o código
+        fonte do genesis juntamente com a documentação.</li>
+        <li><b>modified-xdoclet-1.2.zip</b>: contém o
+        aplicativo xdoclet modificado para executar tarefas adicionais.</li>
+      </ul>
+      <p>Os arquivos de download acima podem ser encontrados 
+      <a href="">aqui</a>.</p>
+    </section>
+  </body>
+</document>
