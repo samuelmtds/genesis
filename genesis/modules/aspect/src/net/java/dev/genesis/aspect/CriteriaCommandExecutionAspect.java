@@ -48,9 +48,11 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
     * @Around("criteriaCommandExecution")
     */
    public Object commandExecution(JoinPoint jp) throws Throwable {
+      final MethodRtti rtti = (MethodRtti)jp.getRtti();
+
       if (preventStackOverflow) {
          Method m = (Method)threadLocal.get();
-         if (m != null && m.equals(((MethodRtti)jp.getRtti()).getMethod())) {
+         if (m != null && m.equals(rtti.getMethod())) {
             Object value = jp.proceed();
             threadLocal.set(null);
             return value;
@@ -58,7 +60,6 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       }
 
       final CriteriaResolver obj = (CriteriaResolver)jp.getTarget();
-      final MethodRtti rtti = (MethodRtti) jp.getRtti();
       final Class[] classes = rtti.getParameterTypes();
       final String[] classNames = new String[classes.length];
 
@@ -74,7 +75,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.value().toString());
       
       if (preventStackOverflow) {
-         threadLocal.set(((MethodRtti)jp.getRtti()).getMethod());
+         threadLocal.set(rtti.getMethod());
       }
 
       try {
