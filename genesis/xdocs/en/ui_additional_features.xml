@@ -102,7 +102,7 @@
 <source>
 @Condition conditionName=jxpathExpression
 </source>
-        <p>The variable named <code>nomeCondicao</code> is exported in order to
+        <p>The variable named <code>conditionName</code> is exported in order to
         represent the expression <code>jxpathExpression</code> in other points
         in the code. As every other JXPath variable, when it's used on a
         expression its name should be preceeded by <code>$</code>. In the
