@@ -20,37 +20,32 @@ package net.java.dev.genesis.helpers;
 
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
-import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory;
 
 public class TypeChecker {
-   public static void checkThinletMetadataFactory(final BaseThinlet thinlet) {
-      if (!(thinlet instanceof ThinletMetadataFactory)) {
-         throw new IllegalArgumentException(
-               thinlet
-                     + " should implement "
-                     + "ThinletMetadataFactory; probably your aop.xml/weaving process"
-                     + " should be properly configured.");
+   public static void checkThinletMetadataFactory(final Object view) {
+      if (!(view instanceof ThinletMetadataFactory)) {
+         throw new IllegalArgumentException(view + " should implement " +
+               "ThinletMetadataFactory; probably your aop.xml/weaving process " +
+               "is not properly configured.");
       }
    }
 
    public static void checkFormControllerFactory(final Object form) {
       if (!(form instanceof FormControllerFactory)) {
-         throw new IllegalArgumentException(
-               form
-                     + " should implement "
-                     + "FormControllerFactory; probably it should have been annotated "
-                     + "with @Form or your aop.xml/weaving process should be "
-                     + "properly configured.");
+         throw new IllegalArgumentException(form + " should implement " +
+               "FormControllerFactory; probably it should have been " +
+               "annotated with @Form or your aop.xml/weaving process is not " +
+               "properly configured.");
       }
    }
 
    public static void checkFormMetadataFactory(final Object form) {
       if (!(form instanceof FormMetadataFactory)) {
-         throw new IllegalArgumentException(form + " should implement "
-               + "FormMetadataFactory; probably it should have been "
-               + "annotated with @Form or your aop.xml/weaving process should "
-               + "be properly configured.");
+         throw new IllegalArgumentException(form + " should implement " +
+               "FormMetadataFactory; probably it should have been " +
+               "annotated with @Form or your aop.xml/weaving process is not " +
+               "properly configured.");
       }
    }
 }
