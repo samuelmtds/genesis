@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.thinlet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,8 +83,12 @@ public class ThinletBinder {
       bindFieldMetadatas(formMetadata);
       bindActionMetadatas(formMetadata);
       bindDataProviders(formMetadata);
-
-      updateAndSave(formMetadata.getDataProviderMetadatas().values(), true);
+      
+      final Collection dataProviders = new ArrayList(formMetadata.getDataProviderMetadatas().values());
+      // Some actions could be data providers
+      dataProviders.addAll(formMetadata.getActionMetadatas().values());
+      
+      updateAndSave(dataProviders, true);
    }
 
    protected void updateAndSave(Collection dataProviders, boolean displayAll) 
@@ -270,8 +275,8 @@ public class ThinletBinder {
             throw new ValidationException(validationErrors);
          }
       }
-
-      actionMetadata.invoke(form);
+      
+      invokeDataProviderMethod(actionMetadata);
       controller.update();
       updateAndSave(controller.getDataProviderActions(), false);
    }
@@ -320,57 +325,69 @@ public class ThinletBinder {
             i.hasNext(); ) {
          final DataProviderMetadata dataProviderMetadata = 
                (DataProviderMetadata)i.next();
-         final String name = dataProviderMetadata.getObjectField().getFieldName();
-         final Object component = thinlet.find(root, name);
-
-         if (component == null) {
-            log.warn(name + " could not be found while populating using " + 
-                  form.getClass());
-            continue;
-         }
-
-         if (log.isDebugEnabled()) {
-            log.debug("Populating " + name + " with " + dataProviderMetadata
-                  .getMethodEntry().getMethodName());
-         }
-
-         final Object ret = dataProviderMetadata.invoke(form);
-         final Collection items = (dataProviderMetadata.getObjectField()
-               .isArray()) ? Arrays.asList((Object[])ret) : (List)ret;
-         final String className = Thinlet.getClass(component);
          
-         if (className.equals(BaseThinlet.TABLE)) {
-            thinlet.populateFromCollection(component, items);
-         } else if (className.equals(BaseThinlet.COMBOBOX)) {
-            final String key = (String)thinlet.getProperty(component, "key");
+         invokeDataProviderMethod(dataProviderMetadata);
+      }
+   }
+   
+   protected void invokeDataProviderMethod(
+         final DataProviderMetadata dataProviderMetadata) throws Exception {
+      
+      if(!dataProviderMetadata.isProvider()){
+         return;
+      }
 
-            if (key == null) {
-               throw new PropertyMisconfigurationException("Property 'key' " +
-                     "must be configured for the widget named " + name);
-            }
+      final String name = dataProviderMetadata.getObjectField().getFieldName();
+      final Object component = thinlet.find(root, name);
 
-            final String value = (String)thinlet.getProperty(component, "value");
-            final Object blankObject = thinlet.getProperty(component, "blank");
-            boolean blank;
+      if (component == null) {
+         log.warn(name + " could not be found while populating using "
+               + form.getClass());
+         return;
+      }
 
-            if (blankObject == null) {
-               blank = false;
-            } else if (blankObject instanceof String) {
-               blank = Boolean.valueOf(blankObject.toString()).booleanValue();
-            } else if (blankObject instanceof Boolean) {
-               blank = ((Boolean)blankObject).booleanValue();
-            } else {
-               throw new PropertyMisconfigurationException("Property 'blank' " +
-                     "for the widget named " + name + " must either be left " + 
-                     "empty or contain a boolean value");
-            }
+      if (log.isDebugEnabled()) {
+         log.debug("Populating " + name + " with "
+               + dataProviderMetadata.getMethodEntry().getMethodName());
+      }
 
-            thinlet.populateFromCollection(component, items, key, value, blank);
-         } else {
-            // TODO: only table and combobox are implemented
-            throw new UnsupportedOperationException(className + " is not " +
-                  "supported for data providing");
+      final Object ret = dataProviderMetadata.invoke(form);
+      final Collection items = (dataProviderMetadata.getObjectField().isArray()) ? Arrays
+            .asList((Object[]) ret)
+            : (List) ret;
+      final String className = Thinlet.getClass(component);
+
+      if (className.equals(BaseThinlet.TABLE)) {
+         thinlet.populateFromCollection(component, items);
+      } else if (className.equals(BaseThinlet.COMBOBOX)) {
+         final String key = (String) thinlet.getProperty(component, "key");
+
+         if (key == null) {
+            throw new PropertyMisconfigurationException("Property 'key' "
+                  + "must be configured for the widget named " + name);
          }
+
+         final String value = (String) thinlet.getProperty(component, "value");
+         final Object blankObject = thinlet.getProperty(component, "blank");
+         boolean blank;
+
+         if (blankObject == null) {
+            blank = false;
+         } else if (blankObject instanceof String) {
+            blank = Boolean.valueOf(blankObject.toString()).booleanValue();
+         } else if (blankObject instanceof Boolean) {
+            blank = ((Boolean) blankObject).booleanValue();
+         } else {
+            throw new PropertyMisconfigurationException("Property 'blank' "
+                  + "for the widget named " + name + " must either be left "
+                  + "empty or contain a boolean value");
+         }
+
+         thinlet.populateFromCollection(component, items, key, value, blank);
+      } else {
+         // TODO: only table and combobox are implemented
+         throw new UnsupportedOperationException(className + " is not "
+               + "supported for data providing");
       }
    }
 
@@ -383,8 +400,9 @@ public class ThinletBinder {
             log.debug("Calling " + actionMetadata.getMethodEntry().getMethodName() +
                   " automatically");
          }
-
-         actionMetadata.invoke(form);
+         
+         // TODO: validate before ?
+         invokeDataProviderMethod(actionMetadata);
       }
    }
 

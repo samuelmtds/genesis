@@ -20,7 +20,7 @@ package net.java.dev.genesis.ui.metadata;
 
 import java.lang.reflect.Method;
 
-public class ActionMetadata extends MethodMetadata {
+public class ActionMetadata extends DataProviderMetadata {
    private boolean validateBefore;
 
    public ActionMetadata(Method method) {

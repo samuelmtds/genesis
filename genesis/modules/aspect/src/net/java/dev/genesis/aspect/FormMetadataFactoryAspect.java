@@ -231,10 +231,6 @@ public class FormMetadataFactoryAspect {
                   final FormMetadata formMetadata,
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               if (!(methodMetadata instanceof DataProviderMetadata)) {
-                  throw new UnsupportedOperationException(
-                        "DataProvider cannot be an action annotation");
-               }
 
                final Map attributesMap = GenesisUtils.getAttributesMap(
                      ((UntypedAnnotationProxy) annotation).getValue());

@@ -45,4 +45,8 @@ public class DataProviderMetadata extends MethodMetadata {
    public void setIndexField(FieldEntry indexField) {
       this.indexField = indexField;
    }
+   
+   public boolean isProvider(){
+      return getObjectField() != null || getIndexField() != null;
+   }
 }
