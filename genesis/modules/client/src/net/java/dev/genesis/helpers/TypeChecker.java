@@ -22,7 +22,10 @@ import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
-public class TypeChecker {
+public final class TypeChecker {
+   private TypeChecker() {
+   }
+
    public static void checkViewMetadataFactory(final Object view) {
       if (!(view instanceof ViewMetadataFactory)) {
          throw new IllegalArgumentException(view + " should implement " +
