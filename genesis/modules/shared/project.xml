@@ -50,8 +50,8 @@
     <reports>
         <report>maven-pmd-plugin</report>
         <report>maven-simian-plugin</report>
-        <report>maven-checkstyle-plugin</report>
-        <report>maven-jdepend-plugin</report>
+        <!--report>maven-checkstyle-plugin</report-->
+        <!--report>maven-jdepend-plugin</report-->
         <report>maven-statcvs-plugin</report>
         <report>maven-file-activity-plugin</report>
         <report>maven-developer-activity-plugin</report>

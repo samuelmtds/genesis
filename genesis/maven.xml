@@ -16,7 +16,7 @@
    <!-- ====================== -->
    <!-- Makes the Genesis Site -->
    <!-- ====================== -->
-   <goal name="genesis:site" prereqs="genesis:clean">
+   <goal name="genesis:site" prereqs="genesis:clean,genesis:compile">
       <attainGoal name="changelog:create-cvspass" />
       <attainGoal name="multiproject:site"/>
    </goal>
