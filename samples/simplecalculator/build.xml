@@ -457,7 +457,6 @@
    <target name="simplecalc:check.installation.properties">
       <condition property="sample.not.installed">
          <and>
-            <available type="dir" file="${jboss.app}/deploy/${genesisBasedApplication.name}.war" />
             <available type="file" file="${jboss.app}/deploy/${genesisBasedApplication.name}.sar" />
             <available type="file" file="${jboss.app}/deploy/genesis-server-${genesis.version}.jar" />
          </and>

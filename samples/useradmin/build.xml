@@ -177,7 +177,7 @@
    </target>
 
    <target name="shared:hibernatedoclet" depends="init">
-      <basename property="jboss.ds.name" file="${jboss.data.source.jndi.name}"/>
+      <basename property="jboss.ds.name" file="${jboss.datasource.jndi.name}"/>
       <mkdir dir="${module.shared}/${build.src}" />
       <hibernatedoclet destdir="${module.shared}/${build.src}" verbose="${verbose}">
          <fileset dir="${module.shared}/${src.dir}">
@@ -189,7 +189,7 @@
          <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
                        serviceName="${hibernate.jboss.service.name}"
                        dialect="${hibernate.dialect}"
-                       dataSource="${jboss.data.source.jndi.name}"
+                       dataSource="${jboss.datasource.jndi.name}"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
                        transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
                        userTransactionName="UserTransaction"
@@ -485,7 +485,6 @@
    <target name="useradmin:check.installation.properties" depends="init">
       <condition property="sample.not.installed">
          <and>
-            <available type="dir" file="${jboss.app}/deploy/${genesisBasedApplication.name}.war" />
             <available type="file" file="${jboss.app}/deploy/${genesisBasedApplication.name}.sar" />
             <available type="file" file="${jboss.app}/deploy/genesis-server-${genesis.version}.jar" />
          </and>
