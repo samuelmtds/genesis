@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- 
+<!--
 /*
  * #foreach ($reactorProject in $multiprojects)
-      <item name="$reactorProject.name" href="/${aggregateDir}${reactorProject.artifactId}/index.html"/>
+      <item name="$reactorProject.name"
+      href="/${aggregateDir}${reactorProject.artifactId}/index.html"/>
    #end
  */
  -->
@@ -11,31 +12,32 @@
   <body>
     <links>
       <item name="The Genesis Project" href="/index.html"/>
-      <item name="Genesis Server" href="/multiproject/genesis-server/index.html"/>
-      <item name="Genesis Client" href="/multiproject/genesis-client/index.html"/>
-      <item name="Genesis Shared" href="/multiproject/genesis-shared/index.html"/>
-      <item name="Genesis Aspect" href="/multiproject/genesis-aspect/index.html"/>
+      <item name="Genesis Server" href="/multiproject/genesis-server/index.html"
+      />
+      <item name="Genesis Client" href="/multiproject/genesis-client/index.html"
+      />
+      <item name="Genesis Shared" href="/multiproject/genesis-shared/index.html"
+      />
+      <item name="Genesis Aspect" href="/multiproject/genesis-aspect/index.html"
+      />
     </links>
     <menu name="Genesis">
-      <item name="Overview" href="/index.html" />
-      <!-- item name="Novidades" href="/news.html" /-->
+      <item name="Visão geral" href="/index.html" />
     </menu>
     <menu name="Documentação">
-      <!--item name="Screenshots" href="/screenshots.html" /-->
-      <item name="Guia do usuário" collapse="true" href="/index.html">
-        <item name="Modelo de componentes de negócio" 
+      <item name="Manual do usuário" collapse="true"
+            href="/documentation_intro.html">
+        <item name="Introdução"
+              href="/documentation_intro.html" />
+        <item name="Modelo de componentes de negócio"
               href="/business_component_model.html" />
+        <item name="Guia de referência rápida de tags"
+              href="/quick_reference.html" />
       </item>
-      <item name="Arquitetura" collapse="true" href="/index.html">
+      <!--item name="Arquitetura" collapse="true" href="/index.html">
         <item name="Arquitetura do Genesis - Server" href="/server_arch.html" />
-        <!--item name="Arquitetura do Genesis - Client" href="/client_arch.html" /-->
-      </item>
-      <item name="Referência Rápida" href="/quick_reference.html" />
+      </item-->
       <item name="Distribuição do Genesis" href="/jars_explained.html" />
-      <!--item name="Guia de Instalação Detalhado" href="/server_installguide.html" /-->
-      <!--item name="Tutorial Detalhado" href="/tutorial.html" /-->
-      <!--item name="Guia de Referência" href="/referenceguide.html" /-->
-      <!--item name="FAQs e Howtos" href="/faq_howto.html" /-->
     </menu>
   </body>
 </project>

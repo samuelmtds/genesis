@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Introdução</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Introdução">
+      <p>Esta documentação tem como objetivo apresentar as principais
+      características e conceitos do genesis com o intuito de que estes possam
+      ser aplicados ao desenvolvimento. Não é intenção destes documentos
+      explicar a implementação interna nem a arquitetura destas funcionalidades,
+      nem capacitar usuários a estendê-las.
+      </p>
+      <p>Além de documentação específica de cada área do genesis, existe um guia
+      de referência das anotações do framework para auxiliar o desenvolvedor com
+      a sintaxe das mesmas. A leitura do restante da documentação continua sendo
+      necessária para a compreensão das funcionalidades.
+      </p>
+      <p>É importante salientar que, embora os exemplos do framework estejam
+      configurados para pronta execução com o JBoss e que a documentação às
+      vezes se refira a este servidor de aplicações, todas as funcionalidades do
+      framework não são dependentes de nenhum produto específico e são
+      compatíveis com o padrão J2EE.</p>
+    </section>
+  </body>
+</document>
