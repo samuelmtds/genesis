@@ -33,17 +33,18 @@ import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.Form;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
-import net.java.dev.genesis.ui.metadata.FormMetadata;
-import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.reusablecomponents.lang.Enum;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.ValidatorException;
+
 import thinlet.Thinlet;
 
 public abstract class BaseThinlet extends Thinlet {
    public static final String ACTION = "action";
+   public static final String ALIGNMENT = "alignment";
    public static final String BUTTON = "button";
    public static final String CHECKBOX = "checkbox";
    public static final String CELL = "cell";
@@ -68,6 +69,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String SLIDER = "slider";
    public static final String SPINBOX = "spinbox";
    public static final String START = "start";
+   public static final String TABLE = "table";
    public static final String TEXT = "text";
    public static final String TEXTAREA = "textarea";
    public static final String TEXTFIELD = "textfield";
@@ -159,7 +161,7 @@ public abstract class BaseThinlet extends Thinlet {
    
    protected Object createCell(String name, String text, String alignment) {
       final Object cell = createCell(name, text);
-      setChoice(cell, "alignment", alignment);
+      setChoice(cell, ALIGNMENT, alignment);
       
       return cell;
    }
@@ -261,7 +263,7 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    public Object[] getTableColumns(Object table) {
-      return getItems(getWidget(table, "header"));
+      return getItems(getWidget(table, HEADER));
    }
 
    protected String getText(Object component) {
@@ -501,12 +503,12 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void populateFromEnum(Object component, Class clazz, boolean blank) {
-      if (!getClass(component).equals("combobox")) {
+      if (!getClass(component).equals(COMBOBOX)) {
          throw new UnsupportedOperationException();
       }
 
       String key;
-      Object enum;
+      Object en;
 
       removeAll(component);
 
@@ -515,9 +517,9 @@ public abstract class BaseThinlet extends Thinlet {
       }
 
       for (final Iterator i = Enum.getInstances(clazz).iterator(); i.hasNext(); ) {
-         enum = i.next();
-         key = enum.toString();
-         add(component, createChoice(key, FormatterRegistry.getInstance().format(enum)));
+         en = i.next();
+         key = en.toString();
+         add(component, createChoice(key, FormatterRegistry.getInstance().format(en)));
       }
    }
 
@@ -539,7 +541,7 @@ public abstract class BaseThinlet extends Thinlet {
                         String keyProperty, String valueProperty, boolean blank) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
-      if (!getClass(component).equals("combobox")) {
+      if (!getClass(component).equals(COMBOBOX)) {
          throw new UnsupportedOperationException();
       }
 
@@ -575,7 +577,7 @@ public abstract class BaseThinlet extends Thinlet {
    protected void populateFromCollection(Object component, Collection c)
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
-      if (!getClass(component).equals("table")) {
+      if (!getClass(component).equals(TABLE)) {
          throw new UnsupportedOperationException();
       }
 
