@@ -361,14 +361,14 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       método <code>getCriteria()</code>, além de outros métodos utilitários.</p>
       <p>O método de negócio que precisa da instância de <code>Criteria</code>
       para sua execução recebe a anotação <code>@Criteria
-      &lt;NomeDaClasseMapeadaNoHibernate&gt; order-by=&lt;propriedades&gt;</code>.
-      Essa anotação implica
-      que o método também é <code>@Remotable</code>, mantendo assim a
-      remotabilidade transparente. Antes de invocar este método e depois de ter
-      invocado <code>setCriteria(Criteria)</code>, os setters das propriedades
-      "preenchidas" do objeto de negócio que tenham sido copiadas no cliente
-      (ver documentação do <a href="ui_additional_features.html">modelo de
-      componentes para interface gráfica</a>) serão automaticamente chamados
+      &lt;NomeDaClasseMapeadaNoHibernate&gt; &lt;order-by=propriedades&gt;</code>.
+      Essa anotação implica que o método também é <code>@Remotable</code>,
+      mantendo assim a remotabilidade transparente. Antes de invocar este
+      método e depois de ter invocado <code>setCriteria(Criteria)</code>, os
+      setters das propriedades "preenchidas" do objeto de negócio que tenham
+      sido copiadas no cliente (ver documentação do
+      <a href="ui_additional_features.html">modelo de componentes para interface
+      gráfica</a>) serão automaticamente chamados
       pelo framework de modo que a recém-injetada instância de
       <code>Criteria</code> possa ser configurada apropriadamente. Finalmente o
       método de negócios será invocado e seu retorno repassado ao código

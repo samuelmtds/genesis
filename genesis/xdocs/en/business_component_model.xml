@@ -354,12 +354,12 @@ public class HibernatePagingExample extends AbstractHibernateCommand {
       <code>getCriteria()</code> method, besides other ones.</p>
       <p>The business method that needs a <code>Criteria</code> instance in
       order to be executed receives a
-      <code>@Criteria &lt;HibernateMappedClassName&gt; order-by=&lt;properties&gt;</code>
-      annotation. This
-      annotation implies the method is also <code>@Remotable</code>, keeping the
-      transparent remoting. Before calling this method and right after
-      <code>setCriteria(Criteria)</code> execution, the properties' setters
-      (see <a href="ui_additional_features.html">Model of User Interface
+      <code>@Criteria &lt;HibernateMappedClassName&gt; &lt;order-by=properties&gt;</code>
+      annotation. This annotation implies the method is also
+      <code>@Remotable</code>, keeping the transparent remoting. Before calling
+      this method and right after <code>setCriteria(Criteria)</code> execution,
+      the properties' setters (see
+      <a href="ui_additional_features.html">Model of User Interface
       Components</a>) from the business component will be called by the genesis
       framework so the recent injected <code>Criteria</code> instance will be
       properly configured. Finally the business method will be executed and its

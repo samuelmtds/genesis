@@ -702,11 +702,12 @@ public class InsertUpdateForm {
     <p><a href="business_component_model.html#Transaction_support">More info...</a></p>
       </subsection>
       <subsection name="@Criteria">
-        <p>Used in methods that perform dynamic searches. This annotation
-        implies the business method needs a <code>Criteria</code> instance in
-        order to be executed, is also <a href="#@Remotable">@Remotable</a>,
-        keeping the transparent remoting. Apply to public, concrete, non-static
-        and non-native methods only.</p>
+        <p>Used in methods that perform dynamic searches, which usually need a
+        <code>Criteria</code> instance in order to perform their work. This
+        annotation implies that the method is also
+        <a href="#@Remotable">@Remotable</a>, keeping transparent remoting
+        characteristics. It may only be applied to public, concrete, non-static
+        and non-native methods.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -718,12 +719,13 @@ public class InsertUpdateForm {
             <td>anonymous</td>
             <td>Fully qualified class name</td>
             <td>Hibernate mapped class name</td>
-            <td>Required if order-by properties are defined</td>
+            <td>Required if order-by properties are supplied</td>
           </tr>
           <tr>
             <td>order-by properties</td>
-            <td>Comma separated names of the order-by properties</td>
-            <td>@Criteria mypackage.MyClass order-by=firstProperty, secondProperty DESC, thirdProperty ASC</td>
+            <td>Comma separated list of order-by properties</td>
+            <td>@Criteria mypackage.MyClass order-by=firstProperty,
+            secondProperty DESC, thirdProperty ASC</td>
             <td>No</td>
           </tr>
         </table>
@@ -734,7 +736,7 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    <b>...</b>
    /**
     * <b>@Criteria net.java.dev.genesis.samples.useradmin.databeans.User
-                      order-by=name asc, birthday desc</b>
+                      order-by=name</b>
     */
    public Page getUsers(final int pageNumber)
    <b>...</b>
