@@ -214,7 +214,7 @@ public Date getCurrentDate() {
 </source>
         <p>However, in this case, what happens is that only the 
         <code>textfield</code> will become invisible (in case those
-        conditions are not satisfied). Note that the <code>label</code>
+        conditions are not satisfied). Notice that the <code>label</code>
         and the <code>panel</code> used for spacing will not become 
         invisible - this clearly is not what was originally intented. All three
         controls should follow just the same conditions for visibility.</p>
@@ -231,7 +231,7 @@ public Date getCurrentDate() {
 ...
 ]]>
 </source>
-        <p>Note that the widgets <code>label</code> and <code>panel</code>
+        <p>Notice that the widgets <code>label</code> and <code>panel</code>
         are now named and referred inside the <code>widgetGroup</code>,
         separated by a comma. This way, all three widgets will follow
         the same visibility rule annoted in the <code>form</code> code 
