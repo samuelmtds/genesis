@@ -319,7 +319,17 @@ public class ThinletBinder implements FormControllerListener {
 
    //TODO: move more of this logic to controller
    public void updateSelection(String name, Object widget) throws Exception {
-      final int[] selected = thinlet.getSelectedIndexes(widget);
+      int[] selected = thinlet.getSelectedIndexes(widget);
+
+      if (selected.length == 1 && BaseThinlet.COMBOBOX.equals(BaseThinlet
+            .getClass(widget)) && isBlank(widget, name)) {
+         if (selected[0] > 0) {
+            selected[0] = selected[0] - 1;
+         } else {
+            selected = new int[0];
+         }
+      }
+
       final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvided
             .get(name);
       final List list = (List)controller.getFormState().getDataProvidedMap()
@@ -384,20 +394,7 @@ public class ThinletBinder implements FormControllerListener {
          }
 
          final String value = (String) thinlet.getProperty(component, "value");
-         final Object blankObject = thinlet.getProperty(component, "blank");
-         boolean blank;
-
-         if (blankObject == null) {
-            blank = false;
-         } else if (blankObject instanceof String) {
-            blank = Boolean.valueOf(blankObject.toString()).booleanValue();
-         } else if (blankObject instanceof Boolean) {
-            blank = ((Boolean) blankObject).booleanValue();
-         } else {
-            throw new PropertyMisconfigurationException("Property 'blank' "
-                  + "for the widget named " + name + " must either be left "
-                  + "empty or contain a boolean value");
-         }
+         final boolean blank = isBlank(component, name);
 
          thinlet.populateFromCollection(component, items, key, value, blank);
       } else {
@@ -406,7 +403,26 @@ public class ThinletBinder implements FormControllerListener {
                + "supported for data providing");
       }
    }
-   
+
+   private boolean isBlank(Object component, String name) {
+      final Object blankObject = thinlet.getProperty(component, "blank");
+      boolean blank;
+
+      if (blankObject == null) {
+         blank = false;
+      } else if (blankObject instanceof String) {
+         blank = Boolean.valueOf(blankObject.toString()).booleanValue();
+      } else if (blankObject instanceof Boolean) {
+         blank = ((Boolean) blankObject).booleanValue();
+      } else {
+         throw new PropertyMisconfigurationException("Property 'blank' "
+               + "for the widget named " + name + " must either be left "
+               + "empty or contain a boolean value");
+      }
+
+      return blank;
+   }
+
    public void enabledConditionsChanged(Map updatedEnabledConditions) {
       for (final Iterator i = updatedEnabledConditions.entrySet().iterator(); 
             i.hasNext(); ) {
