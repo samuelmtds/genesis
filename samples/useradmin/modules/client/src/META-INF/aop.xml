@@ -24,7 +24,7 @@
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="ThinletMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
-         <param name="timeout" value="10000" />
+         <param name="timeout" value="60000" />
       </aspect>
       <aspect class="EJBCommandExecutionAspect">
          <param name="jndiName" value="ejb/CommandExecutor"/>
