@@ -23,6 +23,35 @@
       framework não são dependentes de nenhum produto específico e são
       compatíveis com o padrão J2EE.</p>
     </section>
-    <!-- TODO: links úteis -->
+    <section name="Referências úteis">
+      <p>A documentação contida neste manual não é suficiente para que se tire
+      pleno proveito das funcionalidades dos frameworks e bibliotecas utilizados
+      pelo genesis. Para que se possa aprender mais sobre eles, recomendamos a
+      consulta ao site dos projetos:</p>
+      <ul>
+        <li><b>AspectWerkz</b>: <a href=
+        "http://aspectwerkz.codehaus.org/">http://aspectwerkz.codehaus.org/</a>
+        </li>
+        <li><b>Commons BeanUtils</b>: <a href=
+        "http://jakarta.apache.org/commons/beanutils/">
+        http://jakarta.apache.org/commons/beanutils/</a></li>
+        <li><b>Commons JXPath</b>: <a href=
+        "http://jakarta.apache.org/commons/jxpath/">
+        http://jakarta.apache.org/commons/jxpath/</a></li>
+        <li><b>Commons Logging</b>: <a href=
+        "http://jakarta.apache.org/commons/logging/">
+        http://jakarta.apache.org/commons/jxpath/</a></li>
+        <li><b>Commons Validator</b>: <a href=
+        "http://jakarta.apache.org/commons/validator/">
+        http://jakarta.apache.org/commons/validator/</a></li>
+        <li><b>Hibernate</b>: <a href=
+        "http://www.hibernate.org/">http://www.hibernate.org/</a></li>
+        <li><b>reusable-components</b>: <a href=
+        "https://reusable-components.dev.java.net/">
+        https://reusable-components.dev.java.net/</a></li>
+        <li><b>Thinlet</b>: <a href=
+        "http://www.thinlet.com/">http://www.thinlet.com/</a></li>
+      </ul>
+    </section>
   </body>
 </document>

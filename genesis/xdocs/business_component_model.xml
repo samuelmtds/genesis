@@ -14,15 +14,12 @@
         negócio no cliente</a></li>
         <li><a href="#Remotabilidade transparente">Remotabilidade transparente
         </a></li>
-        <li><a href="#Suporte a transações">Suporte a transações
-        </a></li>
-        <li><a href="#Integração com o Hibernate">Integração com o Hibernate
-        </a></li>
-        <li><a href="#Paginação">Paginação
-        </a></li>
+        <li><a href="#Suporte a transações">Suporte a transações</a></li>
+        <li><a href="#Integração com o Hibernate">Integração com o Hibernate</a>
+        </li>
+        <li><a href="#Paginação">Paginação</a></li>
         <li><a href="#Pesquisas dinâmicas com Criteria">Pesquisas dinâmicas com
-        Criteria
-        </a></li>
+        Criteria</a></li>
       </ul>
       </p>
     </section>
@@ -369,7 +366,7 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       remotabilidade transparente. Antes de invocar este método e depois de ter
       invocado <code>setCriteria(Criteria)</code>, os setters das propriedades
       "preenchidas" do objeto de negócio que tenham sido copiadas no cliente
-      (ver documentação do <a href="ui_component_model.html">modelo de
+      (ver documentação do <a href="ui_additional_features.html">modelo de
       componentes para interface gráfica</a>) serão automaticamente chamados
       pelo framework de modo que a recém-injetada instância de
       <code>Criteria</code> possa ser configurada apropriadamente. Finalmente o
@@ -401,9 +398,8 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
 </source>
       <p>Uma vez tendo copiado as propriedades do formulário para o objeto de
       negócios (conforme explicado na documentação do <a href=
-      "ui_component_model.html">modelo cliente</a>), a seguinte seqüência de
-      eventos ocorre
-      quando o método <code>getPessoas(int)</code> é invocado:
+      "ui_additional_features.html">modelo cliente</a>), a seguinte seqüência de
+      eventos ocorre quando o método <code>getPessoas(int)</code> é invocado:
       <ul>
         <li>A instância é transferida pelo servidor através da remotabilidade
         transparente.</li>
@@ -429,3 +425,4 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
     </section>
   </body>
 </document>
+

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Aspectos do genesis</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Aspectos do genesis">
+      <p>Uma parte significativa das funcionalidades do genesis é implementada
+      via aspectos. Através da AOP é possível estender de forma significativa
+      tais funcionalidades sem que o código de negócio e de interface gráfica
+      tenha de ser reescrito. Esta seção da documentação tem como objetivo
+      descrever os aspectos para que usuários mais avançados possam customizar
+      seu funcionamento. É necessário conhecer bem AOP, AspectWerkz, EJB e
+      Thinlet para total compreensão.</p>
+      <ul>
+        <li><a href="#Determinando métodos remotos e transacionais">Determinando
+        métodos remotos e transacionais</a></li>
+        <li><a href="#Executando métodos remotos e transacionais">Executando
+        métodos remotos e transacionais</a></li>
+        <li><a href="#Executando pesquisas dinâmicas">Executando pesquisas
+        dinâmicas</a></li>
+      </ul>
+    </section>
+    <section name="Determinando métodos remotos e transacionais">
+      <p>A interface <code>CommandResolver</code>, definida no pacote
+      <code>net.java.dev.genesis.aspect</code>, é utilizada para determinar se
+      um método é remoto ou transacional. Abaixo, vemos a parte relevante da
+      definição desta interface:</p>
+<source>
+public interface CommandResolver {
+   public boolean isRemotable(Method m);
+   public boolean isTransaction(Method m);
+}
+</source>
+      <p>O aspecto <code>CommandInvocationAspect</code>, do mesmo pacote, provê
+      uma implementação dessa interface como classe interna,
+      <code>CommandResolverImpl</code>, que baseia-se na presença das anotações
+      <code>@Remotable</code> e <code>@Transactional</code> - ou no fato das
+      classes que contém os métodos implementarem <code>Query</code> e
+      <code>Transaction</code>, interfaces legadas do genesis 0.1 que não devem
+      ser mais utilizadas - para determinar se um método é remoto ou
+      transacional. Essa implementação é introduzida nas classes selecionadas
+      pelo pointcut de nome <code>commandResolverIntroduction</code>.</p>
+      <p>Caso seja necessário determinar se um método é remoto ou transacional
+      de outra forma - utilizando-se uma definição xml externa ao invés de
+      anotações, por exemplo -, basta prover uma nova implementação de
+      <code>CommandResolver</code> com o critério desejado e introduzi-la nas
+      classes de negócio.</p>
+    </section>
+    <section name="Executando métodos remotos e transacionais">
+      <p>Os métodos remotos e transacionais têm sua execução interceptada por
+      aspectos, de modo que as instâncias possam ser transferidas (ou não, como
+      veremos) para o servidor e que um contexto transacional apropriado possa
+      ser utilizado. Além disso, é feita também a injeção de dependências antes
+      da execução.</p>
+      <p>Dois componentes são utilizados para isso: um aspecto e uma
+      implementação de
+      <code>net.java.dev.genesis.command.TransactionalInjector</code>. A
+      interface <code>TransactionalInjector</code> é definida como:</p>
+<source>
+public interface TransactionalInjector {
+   public void init(Object context);
+   public void beforeInvocation(Object target, boolean transactional)
+                                                          throws Exception;
+   public void afterInvocation() throws Exception;
+   public void onException(Exception e);
+   public void onFinally() throws Exception;
+}
+</source>
+      <p>A implementação da interface é utilizada pelos aspectos de forma bem
+      definida, como segue:</p>
+      <ol>
+        <li>Logo após a instanciação, o método <code>init(Object)</code> é
+        chamado passando-se um objeto de contexto, específico por modo de
+        execução - local, em EJB etc. - que permite a instância recém-criada ler
+        configurações do usuário.</li>
+        <li>O método <code>beforeInvocation(Object,boolean)</code> é invocado
+        antes de cada execução de um método remoto e transacional, passando-se o
+        objeto no qual o método será chamado e o estado transacional da chamada.
+        É neste momento que eventuais dependências deverão ser injetadas e que a
+        transação deverá ser iniciada se necessário.</li>
+        <li><code>afterInvocation()</code> só é chamado quando a execução do
+        método transcorre normalmente, i.e., sem que seja lançada uma exceção. É
+        o momento em que a transação deve ser comitada.</li>
+        <li>Chama-se <code>onException(Exception)</code> caso seja lançada uma
+        exceção em <code>beforeInvocaction(Object,boolean)</code> ou durante a
+        execução do método remoto/transacional. É o momento para fazer rollback
+        da transação.</li>
+        <li>O método <code>onFinally()</code> sempre é chamado e deve liberar
+        quaisquer recursos alocados durante a execução.</li>
+      </ol>
+      <p>Cada instância de <code>TransactionalInjector</code> será utilizada por
+      somente uma Thread.</p>
+      <p>Utilizando-se aspectos e implementações específicas de
+      <code>TransactionalInjector</code> é possível customizar totalmente a
+      forma como as transações são executadas e fazer qualquer tipo de injeção
+      de dependências nos componentes de negócio. Dois poderosos modos de
+      execução são providos juntamente com o genesis e explicados abaixo.</p>
+      <subsection name="Execução local">
+        <p>A execução local é feita pelo aspecto
+        <code>LocalCommandExecutionAspect</code>. Basicamente, este aspecto
+        delega a maior parte das responsabilidades para a implementação de <code
+        >TransactionalInjector</code>, como mostra o texto de código a seguir:
+        </p>
+<source>
+try {
+   injector.beforeInvocation(obj, transactional);
+   final Object ret = joinPoint.proceed();
+   injector.afterInvocation();
+
+   return ret;
+} catch (final Exception e) {
+   injector.onException(e);
+
+   throw e;
+} finally{
+   injector.onFinally();
+}
+</source>
+        <p>O pointcut <code>localCommandExecution</code> é utilizado para
+        definir a execução de quais métodos deve ser interceptada pelo advice
+        <code>commandExecution(JoinPoint)</code>. A implementação de
+        <code>TransactionalInjector</code> pode ser configurada com o parâmetro
+        do aspecto de nome <code>transactionalInjector</code>. O objeto de
+        contexto passado para o método <code>init(Object)</code> da
+        implementação será a instância de <code>CrossCuttingInfo</code>
+        recebida.</p>
+        <p>A classe <code>HibernateTransactionalInjector</code>, que, assim como
+        o aspecto, está definida em <code>net.java.dev.genesis.aspect</code> é
+        uma implementação de <code>TransactionalInjector</code> apropriada para
+        este cenário. Ela introduz uma sessão do Hibernate nas classes que
+        implementam
+        <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code> e
+        controla a transação utilizando os recursos da própria sessão.</p>
+      </subsection>
+      <subsection name="Execução em EJB com chamada remota">
+        <p>Outra possibilidade de execução provida diretamente com o genesis é
+        por se executar a chamada dentro de um Stateless Session Bean,
+        utilizando-se transações gerenciadas pelo container (CMT, container
+        managed transactions). O aspecto <code>EJBCommandExecutionAspect</code>
+        faz isto pro invocar os métodos
+        <code>executeTransaction(Object,String,String[],Object[])</code> e
+        <code>executeQuery(Object,String,String[],Object[])</code> no EJB cuja
+        interface remota é
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code>. Os parâmetros
+        passados para ambos os métodos são, respectivamente, a instância em que
+        o método será executado, o nome do método, os nomes das classes da
+        assinatura do método e os valores passados para a invocação.</p>
+        <p>O advice <code>commandExecution(JoinPoint)</code> é que fará a
+        chamada remota ao Session Bean. O pointcut de nome
+        <code>ejbCommandExecution</code> é utilizado para selecionar a execução
+        de quais métodos deverá ser realizada desta forma. O parâmetro do
+        aspecto de nome <code>jndiName</code> contém o endereço JNDI da home do
+        EJB, enquanto que o parâmetro booleano <code>retryOnNoSuchObject</code>
+        indica se a execução deverá ser feita novamente, somente mais uma vez,
+        ao receber uma <code>java.rmi.NoSuchObjectException</code> (que ocorre
+        quando o servidor de aplicações é reiniciado).</p>
+        <p>Visto que a execução do método ocorre dentro do Session Bean, é no
+        servidor que estará a implementação de <code>TransactionalInjector</code
+        >, que pode ser especificada pela env-entry de mesmo nome,
+        <code>TransactionalInjector</code>. Para o método <code>init(Object)
+        </code>, o objeto de contexto passado é a instância de <code>
+        SessionContext</code> do Session Bean.</p>
+        <p>A implementação <code>
+        net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector
+        </code> contida no genesis é própria para uso nesta configuração. No seu
+        método <code>init(Object)</code> localiza-se a implementação da
+        <code>SessionFactory</code> do Hibernate no endereço JNDI especificado
+        como valor para a env-entry <code>HibernateFactoryAddress</code>. O
+        mecanismo de transação utilizado é JTA, já que os métodos expostos do
+        EJB são todos CMT. O rollback será realizado, quando necessário, por uma
+        chamada a <code>setRollbackOnly()</code> na instância de
+        <code>SessionContext</code>.</p>
+      </subsection>
+    </section>
+    <section name="Executando pesquisas dinâmicas">
+      <p>As pesquisas dinâmicas, ou seja, classes que recebem injeção de uma
+      instância de <code>Criteria</code> e possuem os setters correspondentes
+      aos critérios de pesquisa não-vazios invocados antes da pesquisa
+      propriamente dita, são executados através do aspecto
+      <code>net.java.dev.genesis.aspect.CriteriaCommandExecutionAspect</code>.
+      </p>
+      <p>Toda classe interceptada por este aspecto precisa implementar
+      <code>net.java.dev.genesis.command.hibernate.CriteriaResolver</code>,
+      abaixo transcrita:</p>
+<source>
+public interface CriteriaResolver {
+   public Map getPropertiesMap() throws Throwable;
+   public void setPropertiesMap(final Map propertiesMap);
+}
+</source>
+      <p>O método <code>setPropertiesMap(Map)</code> será chamado na parte
+      cliente passando somente os dados que deverão ser utilizados para
+      pesquisa. Normalmente este método será chamado indiretamente pelo cliente
+      através do método utilitário
+      <code>fillCriteria(HibernateCriteria,Object)</code> da classe
+      <code>net.java.dev.genesis.helpers.CriteriaPropertyHelper</code>.</p>
+      <p>O pointcut de nome <code>criteriaResolverIntroduction</code> define que
+      classes deverão receber como introdução a implementação da interface de
+      nome <code>CriteriaResolverImpl</code>, que é uma classe estática interna
+      do aspecto. Esta implementação utiliza uma variável membro do tipo
+      <code>java.util.Map</code> para guardar e expor a informação.</p>
+      <p>O pointcut de nome <code>criteriaCommandExecution</code> define os
+      métodos que serão interceptados pelo advice
+      <code>commandExecution(JoinPoint)</code>. Este método lê através do método
+      <code>getPropertiesMap()</code> de <code>CriteriaResolver</code> quais as
+      propriedades utilizadas no método de pesquisa e faz uso desta informação,
+      assim como também a assinatura e os parâmetros da chamada do método para
+      instanciar
+      <code>net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor</code
+      >. Na nova instância será chamado o método <code>execute()</code>, que
+      possui uma anotação <code>@Remotable</code> e será interceptado para <a
+      href="#Execução em EJB com chamada remota">execução remota</a>. Este
+      método inicializa o <code>Criteria</code>, injeta-o na instância, invocar
+      os setters dos critérios de pesquisa e chama o método de pesquisa.</p>
+    </section>
+  </body>
+</document>
