@@ -1,16 +1,18 @@
 To build hacked-xdoclet, you need:
 
 - Ant (http://ant.apache.org/)
-- Create the file genesis/xdoclet/build.properties
+- To create a file named genesis/xdoclet/build.properties
 
-In genesis/xdoclet/build.properties you must define the XDoclet Home (XDoclet 1.2)
+In genesis/xdoclet/build.properties you must define a XDoclet Home pointing to a
+XDoclet 1.2.0 installation:
 
    xdoclet.home=<XDOCLET_HOME>
 
 e.g.
    xdoclet.home=/usr/xdoclet
    
-You can download XDoclet 1.2 distribution at http://xdoclet.sourceforge.net/
+You can download a binary XDoclet 1.2.0 distribution from 
+http://xdoclet.sourceforge.net/
 
 
 Run ant to build the hacked xdoclet distribution.
