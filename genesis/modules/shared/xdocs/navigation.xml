@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
-<project name="Genesis">
-  <title>The Genesis Project</title>
+<project name="genesis">
+  <title>genesis-shared</title>
   <body>
     <links>
-      <item name="The Genesis Project" href="../../index.html"/>
-      <item name="Genesis Server" href="../genesis-server/index.html"/>
-      <item name="Genesis Client" href="../genesis-client/index.html"/>
-      <item name="Genesis Shared" href="../genesis-shared/index.html"/>
-      <item name="Genesis Aspect" href="../genesis-aspect/index.html"/>
+      <item name="genesis" href="/index.html"/>
+      <item name="genesis-server" href="/multiproject/genesis-server/index.html"
+      />
+      <item name="genesis-client" href="/multiproject/genesis-client/index.html"
+      />
+      <item name="genesis-shared" href="/multiproject/genesis-shared/index.html"
+      />
+      <item name="genesis-aspect" href="/multiproject/genesis-aspect/index.html"
+      />
     </links>
     <menu name="Projects">
-      <item name="The Genesis Project" href="../../index.html" />
+      <item name="genesis" href="../../index.html" />
     </menu>
   </body>
 </project>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Notas de versão</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Notas de versão">
+      <ul>
+        <li><a href="#0.2-beta1">0.2-beta1</a></li>
+        <li><a href="#0.1">0.1</a></li>
+      </ul>
+    </section>
+    <section name="0.2-beta1">
+      <subsection name="Funcionalidades e mudanças">
+        <p>Diversas mudanças e funcionalidades novas fazem parte desta versão,
+        entre outras podendo-se destacar:</p>
+        <ul>
+          <li>Métodos remotos e transacionais são definidos através de anotações
+          e não mais com marker interfaces + convenção de nomes para métodos</li
+          >
+          <li>Implementação de @Criteria</li>
+          <li>Modo de execução local</li>
+          <li>Modelo de interface gráfica totalmente reformulado e muito mais
+          expressivo e poderoso</li>
+        </ul>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto, em <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi">
+        https://genesis.dev.java.net/issues/buglist.cgi</a></p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Rossetto</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Mirando</li>
+            <li>Clebert Suconic</li>
+            <li>Daniel Amadei</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Handerson Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Marcos Caldeira</li>
+            <li>Pablo Madril</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+            <li>Vivian Fiales</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="0.1">
+      <subsection name="Funcionalidades e mudanças">
+        <p>Versão inicial do genesis, não-documentada.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Nenhum</p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>Agradecimentos especiais às seguintes pessoas envolvidas no uso e
+        testes do framework:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Pablo Madril</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+  </body>
+</document>
+
+
+
