@@ -85,21 +85,28 @@
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <unitTest/>
+        <unitTestSourceDirectory>test-src</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <resources/>
+        </unitTest>
         <resources>
-			<resource>
-    	    	<directory>${pom.build.sourceDirectory}</directory>
-        		<includes>
-		          <include>**/*.xml</include>
-		          <include>**/*.properties</include>
-		          <include>**/*.sample</include>
-        		</includes>
-			</resource>
-    	</resources>
+            <resource>
+                <directory>${pom.build.sourceDirectory}</directory>
+                    <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.sample</include>
+                </includes>
+			      </resource>
+        </resources>
     </build>
     <reports>
         <!--report>maven-pmd-plugin</report-->
         <report>maven-simian-plugin</report>
+        <report>maven-jcoverage-plugin</report>
         <!--report>maven-checkstyle-plugin</report>
         <report>maven-jdepend-plugin</report-->
         <report>maven-statcvs-plugin</report>
