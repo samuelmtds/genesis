@@ -10,9 +10,9 @@
       via aspectos. Através da AOP é possível estender de forma significativa
       tais funcionalidades sem que o código de negócio e de interface gráfica
       tenha de ser reescrito. Esta seção da documentação tem como objetivo
-      descrever os aspectos para que usuários mais avançados possam customizar
-      seu funcionamento. É necessário conhecer bem AOP, AspectWerkz, EJB e
-      Thinlet para total compreensão.</p>
+      descrever os aspectos para que usuários mais avançados possam entender e
+      customizar seu funcionamento. É necessário conhecer bem AOP, AspectWerkz,
+      EJB e Thinlet para total compreensão.</p>
       <ul>
         <li><a href="#Determinando métodos remotos e transacionais">Determinando
         métodos remotos e transacionais</a></li>
@@ -20,6 +20,15 @@
         métodos remotos e transacionais</a></li>
         <li><a href="#Executando pesquisas dinâmicas">Executando pesquisas
         dinâmicas</a></li>
+        <li><a href="#Limitando o tempo de execução de um método">Limitando o
+        tempo de execução de um método</a></li>
+        <li>
+        <a href="#Trocando o cursor do mouse durante o tratamento de eventos">
+        Trocando o cursor do mouse durante o tratamento de eventos</a></li>
+        <li><a href="#Instanciando os metadados">Instanciando os metadados</a>
+        </li>
+        <li><a href="#Referência de configuração">Referência de configuração</a>
+        </li>
       </ul>
     </section>
     <section name="Determinando métodos remotos e transacionais">
@@ -214,6 +223,258 @@ public interface CriteriaResolver {
       href="#Execução em EJB com chamada remota">execução remota</a>. Este
       método inicializa o <code>Criteria</code>, injeta-o na instância, invocar
       os setters dos critérios de pesquisa e chama o método de pesquisa.</p>
+    </section>
+    <section name="Limitando o tempo de execução de um método">
+      <p>O aspecto <code>TimeoutAspect</code> permite controlar o tempo limite
+      para execução de um método; caso este seja ultrapassado, uma
+      <code>net.java.dev.genesis.exception.TimeoutException</code> será lançada.
+      </p>
+      <p>O tempo limite é configurado através pelo parâmetro do aspecto de nome
+      <code>timeout</code>. O pointcut de nome <code>timeout</code> seleciona os
+      métodos cuja execução será interceptada pelo advice
+      <code>timeoutAdvice(JoinPoint)</code>. O advice executa o método
+      interceptado numa outra thread e aguarda seu término por
+      <code>timeout</code> segundos. Qualquer exceção que seria normalmente
+      lançada pelo método interceptado é repassada para quem o chamou.</p>
+    </section>
+    <section name="Trocando o cursor do mouse durante o tratamento de eventos">
+      <p>Com o intuito de que o usuário perceba que uma operação longa está
+      sendo executada, o <code>WaitCursorAspect</code> permite trocar o cursor
+      do mouse para o cursor de espera durante um método de tratamento de evento
+      da interface gráfica.</p>
+      <p>O pointcut <code>waitCursorExecution</code> especifica quais métodos
+      implementam o tratamento de eventos e devem ser interceptados pelo advice
+      de mesmo nome - <code>waitCursorExecution(JoinPoint)</code>. Este advice
+      salva o cursor atual, troca-o para o cursor de espera e restaura o cursor
+      original quando o tratamento de eventos termina.</p>
+    </section>
+    <section name="Instanciando os metadados do form">
+      <p>Todo o binding de uma form com a view baseia-se em metadados das duas
+      partes. Este modelo de metadados encontra-se no pacote
+      <code>net.java.dev.genesis.ui.metadata</code> para o form e no pacote
+      <code>net.java.dev.genesis.ui.thinlet.metadata</code> para a view. Em
+      ambos os pacotes, existem interfaces - <code>FormMetadataFactory</code> e
+      <code>ThinletMetadataFactory</code>, respectivamente -, que devem ser
+      implementadas pelas classes responsáveis por retornar estes metadados.
+      Abaixo, segue uma transcrição dos trechos relevantes de ambas:</p>
+<source>
+public interface FormMetadataFactory {
+    public FormMetadata getFormMetadata(Class formClass);
+}
+</source>
+<source>
+public interface ThinletMetadataFactory {
+   public ThinletMetadata getThinletMetadata(Class formClass);
+}
+</source>
+      <p>Os aspectos <code>FormMetadataFactoryAspect</code> e
+      <code>ThinletMetadataFactoryAspect</code> definem implementações destas
+      interfaces com bases em anotações. As implementações chamam-se
+      <code>AspectFormMetadataFactory</code> e
+      <code>AspectThinletMetadataFactory</code> e são classes estáticas internas
+      de seus respectivos aspectos. As classes que precisam receber tais
+      introduções são selecionadas pelos pointcuts de nome
+      <code>formMetadataFactoryIntroduction</code> e
+      <code>thinletMetadataFactoryIntroduction</code>. Para sobrescrever a forma
+      com que os metadados são criados - usando-se xml, por exemplo - basta
+      introduzir uma implementação diferente dessas interfaces nos forms e nas
+      views.</p>
+    </section>
+    <section name="Referência de configuração">
+      <p>Abaixo encontram-se algumas tabelas úteis para o desenvolvedor
+      avançado, além de uma configuração padrão suficiente para a maioria dos
+      casos.</p>
+      <subsection name="Parâmetros">
+        <table>
+          <tr>
+            <th>Aspecto</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Obrigatório</th>
+            <th>Valor padrão</th>
+          </tr>
+          <tr>
+            <td rowspan="2">EJBCommandExecutionAspect</td>
+            <td>jndiName</td>
+            <td>String</td>
+            <td>Endereço JNDI em que se pode obter uma instância da classe
+            <code>net.java.dev.genesis.ejb.CommandExecutorHome</code></td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr>
+            <td>retryOnNoSuchObject</td>
+            <td>boolean</td>
+            <td>Indica se o método deve ser executado novamente se uma
+            <code>java.rmi.NoSuchObjectException</code> occorer</td>
+            <td>Não</td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>LocalCommandExecutionAspect</td>
+            <td>transactionalInjector</td>
+            <td>Nome qualificado completo de classe</td>
+            <td>Nome de uma classe que implemente
+            <code>net.java.dev.genesis.command.TransactionalInjector</code></td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr>
+            <td>TimeoutAspect</td>
+            <td>timeout</td>
+            <td>long</td>
+            <td>Número máximo de milisegundos em que o método pode ser executado
+            </td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+        </table>
+      </subsection>
+      <subsection name="Pointcuts nomeados">
+        <p>Os pointcuts nomeados só estarão disponíveis quando o jar anotado for
+        utilizado e, nessas condições, atribuir-lhes um valor será obrigatório
+        caso o aspecto que os define for utilizado.</p>
+        <table>
+          <tr>
+            <th>Aspecto</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+          </tr>
+          <tr>
+            <td>CommandInvocationAspect</td>
+            <td>commandResolverIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.aspect.CommandResolver</code> com a
+            implementação
+            <code>CommandInvocationAspect$CommandResolverImpl</code></td>
+          </tr>
+          <tr>
+            <td rowspan="2">CriteriaCommandExecutionAspect</td>
+            <td>criteriaCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos de pesquisa dinâmica</td>
+          </tr>
+          <tr>
+            <td>criteriaResolverIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.command.hibernate.CriteriaResolver</code>
+            com a implementação
+            <code>CriteriaCommandExecutionAspect$CriteriaResolverImpl</code></td
+            >
+          </tr>
+          <tr>
+            <td>EJBCommandExecutionAspect</td>
+            <td>ejbCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos remotos e transacionais e
+            transfere a instância sobre a qual o método foi invocado para o
+            servidor</td>
+          </tr>
+          <tr>
+            <td>FormMetadataFactoryAspect</td>
+            <td>formMetadataFactoryIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.ui.metadata.FormMetadataFactory</code>
+            com a implementação
+            <code>FormMetadataFactoryAspect$AspectFormMetadataFactory</code></td
+            >
+          </tr>
+          <tr>
+            <td>LocalCommandExecutionAspect</td>
+            <td>localCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos remotos e transacionais e
+            executa-os localmente</td>
+          </tr>
+          <tr>
+            <td>ThinletMetadataFactoryAspect</td>
+            <td>thinletMetadataFactoryIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>
+            net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadataFactory
+            </code>
+            com a implementação
+            <code>ThinletMetadataFactoryAspect$AspectThinletMetadataFactory
+            </code></td>
+          </tr>
+          <tr>
+            <td>TimeoutAspect</td>
+            <td>timeout</td>
+            <td>Método</td>
+            <td>Intercepta a execução de um método de modo que este execute em
+            um tempo limite ou seja lançada uma exceção</td>
+          </tr>
+          <tr>
+            <td>WaitCursorAspect</td>
+            <td>waitCursorExecution</td>
+            <td>Método</td>
+            <td>Muda o cursor do mouse para o cursor de espera enquanto a
+            execução do método interceptado não for finalizada</td>
+          </tr>
+        </table>
+      </subsection>
+      <subsection name="Configuração exemplo de aop.xml">
+        <p>A configuração do exemplo useradmin é mostrada abaixo. Pode ser
+        necessário ajustá-la de acordo com as necessidades do projeto, mas
+        acreditamos que essa configuração será suficiente na maior parte dos
+        casos.</p>
+<source>
+<![CDATA[
+<!DOCTYPE aspectwerkz PUBLIC
+      "-//AspectWerkz//DTD 1.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
+<aspectwerkz>
+   <system id="useradmin" base-package="net.java.dev.genesis.aspect">
+      <!-- helpers pointcuts -->
+      <pointcut name="executeCommand"
+                expression="execution(@Remotable * ...*(..)) OR
+                execution(@Transactional * ...*(..))" />
+      <pointcut name="form" expression="within(@Form ..)" />
+
+      <!-- Genesis pointcuts -->
+      <pointcut name="formMetadataFactoryIntroduction" expression="form" />
+      <pointcut name="thinletMetadataFactoryIntroduction"
+                expression=
+                "within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+      <pointcut name="criteriaResolverIntroduction"
+                expression=
+                "within(net.java.dev.genesis.command.hibernate.HibernateCriteria
+                +)" />
+      <pointcut name="commandResolverIntroduction"
+                expression="hasmethod(@Remotable * ...*(..)) OR
+                hasmethod(@Transactional * ...*(..))" />
+      <pointcut name="timeout" expression="executeCommand" />
+      <pointcut name="ejbCommandExecution" expression="executeCommand" />
+      <pointcut name="criteriaCommandExecution"
+                expression="execution(@Criteria *
+                net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))
+                " />
+      <pointcut name="waitCursorExecution"
+                expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
+
+      <!-- Genesis Aspects -->
+      <aspect class="CommandInvocationAspect" />
+      <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="ThinletMetadataFactoryAspect" />
+      <aspect class="TimeoutAspect">
+         <param name="timeout" value="60000" />
+      </aspect>
+      <aspect class="EJBCommandExecutionAspect">
+         <param name="jndiName" value="ejb/CommandExecutor"/>
+      </aspect>
+      <aspect class="CriteriaCommandExecutionAspect"/>
+      <aspect class="WaitCursorAspect"/>
+   </system>
+</aspectwerkz>
+]]>
+</source>
+      </subsection>
     </section>
   </body>
 </document>

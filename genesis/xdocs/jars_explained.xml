@@ -1,194 +1,252 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
    <properties>
-     <title>Distribuição do Genesis</title>
-     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+     <title>Distribuição do genesis</title>
+     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
+     </author>
    </properties>
    <body>
-      <section name="Porque tantos arquivos JARs na distribuição do Genesis ?">
+      <section name="Porque tantos arquivos JARs na distribuição do genesis ?">
          <p>
-            O Genesis é composto basicamente de 4 módulos: <b>genesis-aspect</b>, <b>genesis-client</b>, <b>genesis-shared</b>
+            O genesis é composto basicamente de 4 módulos:
+            <b>genesis-aspect</b>, <b>genesis-client</b>, <b>genesis-shared</b>
             e <b>genesis-server</b>.<br/>
             O conceito é:
          </p>
          <ul>
-            <li>Um dos módulos do genesis só é necessário e tem sentido no lado servidor (genesis-server)</li>
-            <li>Outro módulo do genesis só é necessário no lado cliente 'desktop' (genesis-client)</li>
-            <li>Outro módulo do genesis necessário tanto no servidor quanto no lado cliente 'desktop' (genesis-shared)</li>
+            <li>Um dos módulos do genesis só é necessário e tem sentido no lado
+            servidor (genesis-server)</li>
+            <li>Outro módulo do genesis só é necessário no lado cliente
+            'desktop' (genesis-client)</li>
+            <li>Outro módulo do genesis necessário tanto no servidor quanto no
+            lado cliente 'desktop' (genesis-shared)</li>
          </ul>
-         <p>Para completar os 4 módulos do genesis temos um módulo adicional para o lado cliente 'desktop', o genesis-aspect.</p>
+         <p>Para completar os 4 módulos do genesis temos um módulo adicional
+         para o lado cliente 'desktop', o genesis-aspect.</p>
          <p>
-            Portanto, uma aplicação que utiliza o genesis como seu framework possuirá no servidor de aplicações os arquivos JARs
-            dos módulos genesis-server e o módulo genesis-shared como dependências. Consequentemente, o lado cliente dessa aplicação
-            possuirá os arquivos JARs dos módulos genesis-client, genesis-shared e genesis-aspect como dependências.
+            Portanto, uma aplicação que utiliza o genesis como seu framework
+            possuirá no servidor de aplicações os arquivos JARs
+            dos módulos genesis-server e o módulo genesis-shared como
+            dependências. Consequentemente, o lado cliente dessa aplicação
+            possuirá os arquivos JARs dos módulos genesis-client, genesis-shared
+            e genesis-aspect como dependências.
          </p>
          <p>
             A explicação mais detalhada sobre cada módulo encontra-se a seguir:
          </p>
          <ul>
-            <li><a href="#Genesis Server">Genesis Server</a></li>
-            <li><a href="#Genesis Client">Genesis Client</a></li>
-            <li><a href="#Genesis Shared">Genesis Shared</a></li>
-            <li><a href="#Genesis Aspect">Genesis Aspect</a></li>
+            <li><a href="#genesis-server">genesis-server</a></li>
+            <li><a href="#genesis-client">genesis-client</a></li>
+            <li><a href="#genesis-shared">genesis-shared</a></li>
+            <li><a href="#genesis-aspect">genesis-aspect</a></li>
          </ul>
       </section>
-      <section name="Genesis Server">
+      <section name="genesis-server">
         <p>
-            O módulo <b>genesis-server</b> é o menor módulo de todo genesis e possui apenas 1 arquivo na distribuição do genesis:
+            O módulo <b>genesis-server</b> é o menor módulo de todo genesis e
+            possui apenas 1 arquivo na distribuição do genesis:
             <source>genesis-server-&lt;versao&gt;.jar</source>
         </p>
         <p>
-            Nesse módulo temos a implementação de um único Stateless Session Bean chamado <code>CommandExecutorEJB</code>.
-            Esse é o Session Bean responsável por todas as execuções de métodos remotos em sua aplicação. Os objetos que possuem
-            os métodos remotos são passados para esse Stateless Session Bean e o método remoto é executado dentro do Session Bean
-            por Reflection.
+            Nesse módulo temos a implementação de um único Stateless Session
+            Bean chamado <code>CommandExecutorEJB</code>.
+            Esse é o Session Bean responsável por todas as execuções de métodos
+            remotos em sua aplicação. Os objetos que possuem
+            os métodos remotos são passados para esse Stateless Session Bean e o
+            método remoto é executado dentro do Session Bean por reflection.
         </p>
         <p>
-            O Stateless Session Bean possui apenas 2 métodos principais para execução dos chamados métodos remotos de sua aplicação.
+            O Stateless Session Bean possui apenas 2 métodos principais para
+            execução dos chamados métodos remotos de sua aplicação.
             São eles os métodos:
-<source>public Object executeTransaction(Object o, String methodName, String[] classNames, Object[] args)
-public Object executeQuery(Object o, String methodName, String[] classNames, Object[] args)</source>
-            onde a única diferença entre eles é que o primeiro método requer que uma transação esteja aberta,
-            enquanto o outro não.
+<source>
+public Object executeTransaction(Object o, String methodName,
+                                 String[] classNames, Object[] args);
+public Object executeQuery(Object o, String methodName,
+                           String[] classNames, Object[] args);
+</source>
+            onde a única diferença entre eles é que o primeiro método requer que
+            uma transação esteja aberta, enquanto o outro não.
         </p>
         <p>
-            Existe ainda uma outra classe chamada <code>net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector</code> que implementa
-            a interface <code>net.java.dev.genesis.command.TransactionalInjector</code>. O genesis já está preparado para atuar
-            junto com o <a href="http://www.hibernate.org/">Hibernate</a> na camada de persistência. Por esse motivo já disponibilizamos uma
-            implementação padrão de <code>TransactionalInjector</code> responsável pela injeção da session do hibernate e controle de transações,
-            fazendo automaticamente o commit da transação se for um método transacional e sua execução terminou com sucesso, ou então
+            Existe ainda uma outra classe chamada <code>
+            net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector
+            </code> que implementa
+            a interface <code>net.java.dev.genesis.command.TransactionalInjector
+            </code>. O genesis já está preparado para atuar
+            junto com o <a href="http://www.hibernate.org/">Hibernate</a> na
+            camada de persistência. Por esse motivo já disponibilizamos uma
+            implementação padrão de <code>TransactionalInjector</code>
+            responsável pela injeção da session do hibernate e controle de
+            transações,
+            fazendo automaticamente o commit da transação se for um método
+            transacional e sua execução terminou com sucesso, ou então
             fazendo o rollback caso alguma exceção tenha acontecido.
         </p>
         <p>
-            O módulo <b>genesis-server</b> é transparente a quem desenvolve e não é necessário conhecê-lo, salvo o caso em que for necessário
-            utilizar outra forma de persistência que não correponda ao Hibernate. Nesse caso basta prover uma outra implementação da interface
+            O módulo <b>genesis-server</b> é transparente a quem desenvolve e
+            não é necessário conhecê-lo, salvo o caso em que for necessário
+            utilizar outra forma de persistência que não correponda ao
+            Hibernate. Nesse caso basta prover uma outra implementação da
+            interface
             <code>TransactionalInjector</code> citada anteriormente.
         </p>
       </section>
-      <section name="Genesis Client">
+      <section name="genesis-client">
         <p>
-            O módulo <b>genesis-client</b> é o maior módulo de todo genesis e possui apenas 1 arquivo na distribuição do genesis:
+            O módulo <b>genesis-client</b> é o maior módulo de todo genesis e
+            possui apenas 1 arquivo na distribuição do genesis:
             <source>genesis-client-&lt;versao&gt;.jar</source>
         </p>
         <p>
-            Nesse módulo temos a implementação de toda estrutura para implementação da parte visual da aplicação. Na versão atual do
-            genesis, estamos provendo toda base para o desenvolvimento da aplicação utilizando como interface o
+            Nesse módulo temos a implementação de toda estrutura para
+            implementação da parte visual da aplicação. Na versão atual do
+            genesis, estamos provendo toda base para o desenvolvimento da
+            aplicação utilizando como interface o
             <a href="http://thinlet.sourceforge.net/">Thinlet</a>.
         </p>
         <p>
-            O módulo apresenta classes para formatação de dados na tela, conversores de dados vindos da tela entre outras
+            O módulo apresenta classes para formatação de dados na tela,
+            conversores de dados vindos da tela entre outras
             que auxiliam a camada de visualização da aplicação.
         </p>
       </section>
-      <section name="Genesis Shared">
+      <section name="genesis-shared">
         <p>
-            O módulo <b>genesis-shared</b> é o módulo que convive tanto no lado cliente da aplicação como no lado servidor.
+            O módulo <b>genesis-shared</b> é o módulo que convive tanto no lado
+            cliente da aplicação como no lado servidor.
             Ele é composto por 2 arquivos:
 <source>genesis-shared-&lt;versao&gt;.jar
 genesis-shared-annotated-&lt;versao&gt;.jar</source>
-            Esses dois arquivos da distribuição possuem as <b>mesmas</b> classes e a única diferença entre eles é que
-            o arquivo <code>genesis-shared-annotated-&lt;versao&gt;.jar</code> não foi só compilado, mas também foi
-            anotado. Isso quer dizer que suas classes foram compiladas normalmente como qualquer classe Java, mas após
-            a compilação dessas classes, um processo de pós compilação foi utilizado para inserir nas classes as
-            informações de suas anotações (por exemplo: <code>@Remotable, @Transactional, @Criteria</code>).
+            Esses dois arquivos da distribuição possuem as <b>mesmas</b> classes
+            e a única diferença entre eles é que
+            o arquivo <code>genesis-shared-annotated-&lt;versao&gt;.jar</code>
+            não foi só compilado, mas também foi
+            anotado. Isso quer dizer que suas classes foram compiladas
+            normalmente como qualquer classe Java, mas após
+            a compilação dessas classes, um processo de pós compilação foi
+            utilizado para inserir nas classes as
+            informações de suas anotações (por exemplo: <code>@Remotable,
+            @Transactional, @Criteria</code>).
         </p>
         <p>
-            A diferença para quem desenvolve é que o arquivo <code>genesis-shared-&lt;versao&gt;.jar</code> é o
-            arquivo que deverá estar no lado servidor, enquanto o arquivo <code>genesis-shared-annotated-&lt;versao&gt;.jar</code>
+            A diferença para quem desenvolve é que o arquivo <code>genesis-
+            shared-&lt;versao&gt;.jar</code> é o
+            arquivo que deverá estar no lado servidor, enquanto o arquivo <code>
+            genesis-shared-annotated-&lt;versao&gt;.jar</code>
             será utilizado no lado cliente da aplicação.
         </p>
       </section>
-      <section name="Genesis Aspect">
+      <section name="genesis-aspect">
         <p>
-            O módulo <b>genesis-aspect</b> é o módulo dito ortogonal a aplicação. Nenhum outro módulo
-            depende desse módulo (não existem imports de suas classes presentes em outros módulos).
+            O módulo <b>genesis-aspect</b> é o módulo dito ortogonal a
+            aplicação. Nenhum outro módulo
+            depende desse módulo (não existem imports de suas classes presentes
+            em outros módulos).
             Ele é composto por 2 arquivos:
 <source>genesis-aspect-&lt;versao&gt;.jar
 genesis-aspect-annotated-&lt;versao&gt;.jar</source>
-            Como acontece no módulo genesis-shared, esses dois arquivos da distribuição possuem as <b>mesmas</b>
-            classes e a única diferença entre eles é que o arquivo <code>genesis-aspect-annotated-&lt;versao&gt;.jar</code>
+            Como acontece no módulo genesis-shared, esses dois arquivos da
+            distribuição possuem as <b>mesmas</b>
+            classes e a única diferença entre eles é que o arquivo <code>
+            genesis-aspect-annotated-&lt;versao&gt;.jar</code>
             além de compilado, foi anotado.
         </p>
         <p>
-            O módulo genesis-aspect possui todos os aspectos responsáveis pela <b>mágica</b> do genesis.
-            Existem aspectos responsáveis por interceptar chamadas de métodos anotados como métodos remotos e
-            executá-los remotamente. Temos aspectos para tratamento de metadados da interface gráfica da aplicação
+            O módulo genesis-aspect possui todos os aspectos responsáveis pela
+            <b>mágica</b> do genesis.
+            Existem aspectos responsáveis por interceptar chamadas de métodos
+            anotados como métodos remotos e
+            executá-los remotamente. Temos aspectos para tratamento de metadados
+            da interface gráfica da aplicação
             entre outros aspectos.
         </p>
         <p>
-            Geralmente, utilizamos apenas o arquivo <code>genesis-aspect-annotated-&lt;versao&gt;.jar</code> da
-            distribuição do genesis, pois esse arquivo possui todos seus aspectos previamente anotados, não
-            necessitando uma configuração posterior definindo o comportamento de cada aspecto. Como já dito anteriormente
-            esse módulo do genesis só deve estar presente no lado cliente da aplicação.
+            Geralmente, utilizamos apenas o arquivo <code>genesis-aspect-
+            annotated-&lt;versao&gt;.jar</code> da
+            distribuição do genesis, pois esse arquivo possui todos seus
+            aspectos previamente anotados, não
+            necessitando uma configuração posterior definindo o comportamento de
+            cada aspecto. Como já dito anteriormente
+            esse módulo do genesis só deve estar presente no lado cliente da
+            aplicação.
         </p>
       </section>
       <section name="Observações Gerais">
         <p>
-            Algo importante que deve ser ressaltado é que todas as classes presentes no lado servidor são
-            classes Java compiladas normalmente como qualquer outra classe Java, sem ter nenhuma manipulação
-            de seu bytecode. Porém no lado cliente podemos ter classes pós compiladas, onde seus bytecodes
-            foram alterados para introduzir anotações e/ou manipuladas e recompiladas pelos aspectos
+            Algo importante que deve ser ressaltado é que todas as classes
+            presentes no lado servidor são
+            classes Java compiladas normalmente como qualquer outra classe Java,
+            sem ter nenhuma manipulação
+            de seu bytecode. Porém no lado cliente podemos ter classes pós
+            compiladas, onde seus bytecodes
+            foram alterados para introduzir anotações e/ou manipuladas e
+            recompiladas pelos aspectos
             do genesis.
         </p>
         <p>
-            Abaixo temos uma tabela que mapeia todos arquivos da distribuição do genesis e suas características:
+            Abaixo temos uma tabela que mapeia todos arquivos da distribuição do
+            genesis e suas características:
         </p>
         <table>
             <tr>
                 <th>Arquivo JAR</th>
-                <th>Módulo do Genesis</th>
-                <th>Lado Cliente</th>
-                <th>Lado Servidor</th>
-                <th>Manipulação de Bytecode</th>
+                <th>Módulo do genesis</th>
+                <th>Lado cliente</th>
+                <th>Lado servidor</th>
+                <th>Manipulação de bytecode</th>
             </tr>
             <tr>
                 <td>genesis-server-&lt;version&gt;.jar</td>
-    			<td>genesis-server</td>
-        		<td>Não</td>
-            	<td>Sim</td>
+          <td>genesis-server</td>
+            <td>Não</td>
+              <td>Sim</td>
                 <td>Não</td>
-    		</tr>
+        </tr>
             <tr>
                 <td>genesis-client-&lt;version&gt;.jar</td>
-    			<td>genesis-client</td>
-        		<td>Sim</td>
-            	<td>Não</td>
+          <td>genesis-client</td>
+            <td>Sim</td>
+              <td>Não</td>
                 <td>Não</td>
-    		</tr>
+        </tr>
             <tr>
                 <td>genesis-shared-&lt;version&gt;.jar</td>
-    			<td>genesis-shared</td>
-        		<td>Não</td>
-            	<td>Sim</td>
+          <td>genesis-shared</td>
+            <td>Não</td>
+              <td>Sim</td>
                 <td>Não</td>
-    		</tr>
+        </tr>
             <tr>
                 <td>genesis-shared-annotated-&lt;version&gt;.jar</td>
-    			<td>genesis-shared</td>
-        		<td>Sim</td>
-            	<td>Não</td>
+          <td>genesis-shared</td>
+            <td>Sim</td>
+              <td>Não</td>
                 <td>Sim</td>
-    		</tr>
+        </tr>
             <tr>
                 <td>genesis-aspect-&lt;version&gt;.jar</td>
-    			<td>genesis-aspect</td>
-        		<td>Sim</td>
-            	<td>Não</td>
+          <td>genesis-aspect</td>
+            <td>Sim</td>
+              <td>Não</td>
                 <td>Não</td>
-    		</tr>
+        </tr>
             <tr>
                 <td>genesis-aspect-annotated-&lt;version&gt;.jar</td>
-    			<td>genesis-aspect</td>
-        		<td>Sim</td>
-            	<td>Não</td>
+          <td>genesis-aspect</td>
+            <td>Sim</td>
+              <td>Não</td>
                 <td>Sim</td>
-    		</tr>
+        </tr>
         </table>
         <p>
-            Na distribuição do genesis ainda temos um arquivo chamado <code>annotation.properties</code> que é
-            utilizado pelo compilador de anotações para identificar quais anotações presentes no código fonte
+            Na distribuição do genesis ainda temos um arquivo chamado <code>
+            annotation.properties</code> que é
+            utilizado pelo compilador de anotações para identificar quais
+            anotações presentes no código fonte
             devem ser inseridas no bytecode das classes.
         </p>
       </section>
    </body>
 </document>
+
