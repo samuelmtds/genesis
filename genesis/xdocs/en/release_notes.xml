@@ -7,12 +7,47 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#0.2">0.2</a></li>
         <li><a href="#0.2-RC2">0.2-RC2</a></li>
         <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>This release contains very few enhancements to samples and
+        documentation.</p>
+        <p>The full change log for 0.2 can be found  <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?target_milestone=0.2">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgments">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+          </ul>
+      </subsection>
     </section>
     <section name="0.2-RC2">
       <subsection name="Downloads">
@@ -39,9 +74,9 @@
           <code>@DataProvider</code> method is bound to a table
           (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173">Issue
           # 173</a>)</li>
-          <li>The <code>indexField</code> property first value is ignored 
+          <li>The <code>indexField</code> property first value is ignored
           at binding time and if an <code>objectField</code> whose type is an
-          array or a <code>Collection</code> is used together with it, a 
+          array or a <code>Collection</code> is used together with it, a
           <code>-1</code> value in the <code>indexField</code> causes an
           <code>ArrayIndexOutOfBoundsException</code> to be thrown
           (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=181">Issue

@@ -303,6 +303,18 @@ public interface FormMetadataFactory {
           <code>reset(FormState state)</code>, que atualizará o form e propagará
           todos os eventos necessários aos listeners.</li>
         </ul>
+        <p><code>DefaultFormController</code> é a implementação desta interface
+        provida pelo genesis, que pode ser usada também como base de uma
+        implementação customizada de <code>FormController</code>. Possui alguns
+        métodos <code>protected</code> adicionais e uma semântica mais bem
+        definida para alguns dos métodos acima:</p>
+        <ul>
+          <li><code>createJXPathContext()</code>, <code>getFunctions()</code> e
+          <code>getVariables()</code> inicializam o contexto JXPath utilizado na
+          avaliação de todas as expressões usadas no genesis.
+          <code>createJXPathContext()</code> cria um simples contexto usando a
+          instância do form e registra </li>
+        </ul>
       </subsection>
     </section>
   </body>

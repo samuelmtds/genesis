@@ -8,12 +8,49 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#0.2">0.2</a></li>
         <li><a href="#0.2-RC2">0.2-RC2</a></li>
         <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Esta versão contém apenas pequenas melhorias nos exemplos e na
+        documentação da versão 0.2-RC2.</p>
+        <p>Uma lista completa das alterações ocorridas entre a versão 0.2 e a
+        0.2-RC2 pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?target_milestone=0.2">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+          </ul>
+      </subsection>
     </section>
     <section name="0.2-RC2">
       <subsection name="Downloads">
