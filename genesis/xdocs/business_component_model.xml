@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Modelo de componentes de negócio</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Modelo de componentes de negócio">
+      <p><b>TODO: configurar todos os exemplos em um sample e atualizar
+      documento com instruções de execução.</b></p>
+      <p>O modelo de componentes de negócio do genesis é bastante simples de ser
+      compreendido.</p>
+      <p>Suponhamos que exista um componente chamado <code>ExemploSoma</code>
+      como abaixo:</p>
+      <source>
+public class ExemploSoma {
+   public int soma(int a, int b) {
+      System.out.println("a = " + a);
+      System.out.println("b = " + b);
+
+      int soma = a + b;
+
+      System.out.println("a + b = " + soma);
+
+      return soma;
+   }
+
+   public static void main(String[] args) {
+      System.out.println(new ExemploSoma().soma(2, 2));
+   }
+}
+      </source>
+      <p>Ao executar esse código, a seguinte saída é impressa no console local:
+      </p>
+      <source>
+a = 2
+b = 2
+a + b = 4
+4
+      </source>
+      <p>Pode-se tornar o método <code>soma(int, int)</code> remoto apenas por
+      se acrescentar a anotação <code>@Remotable</code>. O código
+      modificado ficaria da seguinte forma:</p>
+      <source>
+public class ExemploSomaRemota {
+   /**
+    * @Remotable
+    */
+   public int soma(int a, int b) {
+      System.out.println("a = " + a);
+      System.out.println("b = " + b);
+
+      int soma = a + b;
+
+      System.out.println("a + b = " + soma);
+
+      return soma;
+   }
+
+   public static void main(String[] args) {
+      System.out.println(new ExemploSomaRemota().soma(2, 2));
+   }
+}
+      </source>
+      <p>Executando-se o novo código com o JBoss iniciado, observa-se uma
+      redução na saída no console
+      local:</p>
+      <source>
+4
+      </source>
+      <p>Ao observar o console do JBoss, pode-se notar que as mensagens
+      anteriores foram impressas no servidor. Por que isso acontece? Métodos
+      anotados com <code>@Remotable</code> são interceptados através de um
+      aspecto do genesis-aspect que transfere a instância em que o método foi
+      invocado para o servidor, executando-o ali e transferindo o resultado de
+      volta para o cliente. Essa característica é chamada de <b>remotabilidade
+      transparente</b>.</p>
+    </section>
+  </body>
+</document>
