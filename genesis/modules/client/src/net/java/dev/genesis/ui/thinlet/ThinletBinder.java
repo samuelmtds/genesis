@@ -63,6 +63,8 @@ public class ThinletBinder implements FormControllerListener {
    private final Object form;
    private final FormController controller;
 
+   private List groupComponents;
+
    private final Collection boundFieldNames = new HashSet();
    private final Map dataProvided = new HashMap();
 
@@ -77,7 +79,7 @@ public class ThinletBinder implements FormControllerListener {
    }
    
    protected final ThinletMetadata getThinletMetadata(final BaseThinlet thinlet) {
-      if (!(form instanceof ThinletMetadataFactory)) {
+      if (!(thinlet instanceof ThinletMetadataFactory)) {
          throw new IllegalArgumentException(thinlet + " should implement " + 
                "ThinletMetadataFactory; probably your aop.xml/weaving process" + 
                " should be properly configured.");
@@ -188,7 +190,6 @@ public class ThinletBinder implements FormControllerListener {
       }
    }
 
-   // TODO: consider caching components
    protected List findComponents(final String name) {
       final Object widget = thinlet.find(root, name);
 
@@ -196,18 +197,21 @@ public class ThinletBinder implements FormControllerListener {
          return Collections.singletonList(widget);
       }
 
-      final List groupComponents = thinlet.getAllOfClass(root, 
-            BaseThinlet.CHECKBOX);
+      if (groupComponents == null) {
+         groupComponents = thinlet.getAllOfClass(root, BaseThinlet.CHECKBOX);
+      }
+
+      final List components = new ArrayList();
 
       for (final Iterator  i = groupComponents.iterator(); i.hasNext(); ) {
          final Object component = i.next();
 
-         if (!name.equals(thinlet.getGroup(component))) {
-            i.remove();
+         if (name.equals(thinlet.getGroup(component))) {
+            components.add(component);
          }
       }
 
-      return groupComponents;
+      return components;
    }
 
    protected void createWidgetGroup(Object component, String name) {
@@ -354,7 +358,6 @@ public class ThinletBinder implements FormControllerListener {
       }
    }
 
-   //TODO: move more of this logic to controller
    public void updateSelection(String name, Object widget) throws Exception {
       int[] selected = thinlet.getSelectedIndexes(widget);
       
@@ -383,21 +386,26 @@ public class ThinletBinder implements FormControllerListener {
          }
       }
 
-      final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvided
-            .get(name);
-      final List list = (List)controller.getFormState().getDataProvidedMap()
-            .get(dataMeta);
-
-      dataMeta.populateSelectedFields(form, list, selected);
-      controller.update();
+      controller.updateSelection(name, selected);
    }
 
-   //TODO: consider optimizing this by only loading stringProperties when the
-   //action requires validation; this may require duplicating some logic in
-   //DefaultFormController (checking for null name, non-valid action etc.)
    public void invokeAction(String name) throws Exception {
-      Map stringProperties = ValidationUtils.getInstance().getPropertiesMap(form);
-      thinlet.populate(null, root, stringProperties, false);
+      Map stringProperties = null;
+
+      if (name != null) {
+         final MethodEntry entry = new MethodEntry(name, new String[0]);
+         final MethodMetadata methodMetadata = getFormMetadata(form)
+            .getMethodMetadata(entry);
+
+         if (methodMetadata != null && 
+               methodMetadata.getActionMetadata() != null && 
+               methodMetadata.getActionMetadata().isValidateBefore()) {
+            stringProperties = ValidationUtils.getInstance().getPropertiesMap(
+                  form);
+            thinlet.populate(null, root, stringProperties, false);
+         }
+      }
+
       controller.invokeAction(name, stringProperties);
    }
 
