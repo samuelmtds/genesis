@@ -286,18 +286,35 @@ public class ThinletBinder {
          if (Thinlet.getClass(component).equals(BaseThinlet.TABLE)) {
             thinlet.populateFromCollection(component, items);
          } else if (Thinlet.getClass(component).equals(BaseThinlet.COMBOBOX)) {
-            thinlet.populateFromCollection(component, items, thinlet
-                  .getProperty(component, "key").toString(), thinlet
-                  .getProperty(component, "value").toString(), Boolean.valueOf(
-                  thinlet.getProperty(component, "blank").toString())
-                  .booleanValue());
-         }
+            final String key = (String)thinlet.getProperty(component, "key");
 
+            if (key == null) {
+               throw new PropertyMisconfigurationException("Property 'key' " +
+                     "must be configured for the widget named " + name);
+            }
+
+            final String value = (String)thinlet.getProperty(component, "value");
+            final Object blankObject = thinlet.getProperty(component, "blank");
+            boolean blank;
+
+            if (blankObject == null) {
+               blank = false;
+            } else if (blankObject instanceof String) {
+               blank = Boolean.valueOf(blankObject.toString()).booleanValue();
+            } else if (blankObject instanceof Boolean) {
+               blank = ((Boolean)blankObject).booleanValue();
+            } else {
+               throw new PropertyMisconfigurationException("Property 'blank' " +
+                     "for the widget named " + name + " must either be left " + 
+                     "empty or contain a boolean value");
+            }
+
+            thinlet.populateFromCollection(component, items, key, value, blank);
+         }
       }
    }
 
-   protected void invokeCallWhenActions() 
-         throws Exception {
+   protected void invokeCallWhenActions() throws Exception {
       for (final Iterator i = controller.getCallActions().iterator(); 
             i.hasNext(); ) {
          final ActionMetadata actionMetadata = (ActionMetadata)i.next();
