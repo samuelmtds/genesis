@@ -235,16 +235,47 @@ public class FormMetadataFactoryAspect {
                   throw new UnsupportedOperationException(
                         "DataProvider cannot be an action annotation");
                }
-               final String fieldName = ((UntypedAnnotationProxy) annotation)
-                     .getValue();
-               try {
-                  ((DataProviderMetadata) methodMetadata)
-                        .setDataProvider(new FieldEntry(formMetadata
-                              .getFormClass().getDeclaredField(fieldName)));
-               } catch (NoSuchFieldException nsfe) {
-                  throw new RuntimeException("The object "
-                        + formMetadata.getFormClass()
-                        + " doesn´t have the field called " + fieldName, nsfe);
+
+               final Map attributesMap = GenesisUtils.getAttributesMap(
+                     ((UntypedAnnotationProxy) annotation).getValue());
+               final String objectFieldName = (String)attributesMap
+                     .get("objectField");
+               final String indexFieldName = (String)attributesMap
+                     .get("indexField");
+
+               final DataProviderMetadata dataProviderMetadata = 
+                     ((DataProviderMetadata) methodMetadata);
+
+               if (objectFieldName == null && indexFieldName == null) {
+                  throw new RuntimeException("At least one of objectField or " + 
+                        "indexField must be specified for @DataProvider in " +
+                        methodMetadata.getMethodEntry().getMethodName());
+               }
+
+               if (objectFieldName != null) {
+                  try {
+                     dataProviderMetadata.setObjectField(new FieldEntry(
+                           formMetadata.getFormClass().getDeclaredField(
+                           objectFieldName)));
+                  } catch (NoSuchFieldException nsfe) {
+                     throw new RuntimeException("The object "
+                           + formMetadata.getFormClass()
+                           + " doesn´t have the field called " + objectFieldName,
+                           nsfe);
+                  }
+               }
+
+               if (indexFieldName != null) {
+                  try {
+                     dataProviderMetadata.setIndexField(new FieldEntry(
+                           formMetadata.getFormClass().getDeclaredField(
+                           indexFieldName)));
+                  } catch (NoSuchFieldException nsfe) {
+                     throw new RuntimeException("The object "
+                           + formMetadata.getFormClass()
+                           + " doesn´t have the field called " + indexFieldName,
+                           nsfe);
+                  }
                }
             }
          }

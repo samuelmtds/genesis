@@ -144,7 +144,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       }
       
       /**
-       * @DataProvider field2
+       * @DataProvider objectField=field2
        * @CallWhen g:equals(field3,'abcd')
        */
       public List provideSomeList(){

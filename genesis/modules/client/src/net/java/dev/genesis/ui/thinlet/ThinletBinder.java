@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.ui.ValidationException;
+import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
@@ -57,6 +59,7 @@ public class ThinletBinder {
    private final Map enabledStateMap = new HashMap();
    private final FormController controller;
    private final Collection boundFieldNames = new HashSet();
+   private final Map dataProvidedListByFieldName = new HashMap();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, 
             final Object form) {
@@ -78,6 +81,7 @@ public class ThinletBinder {
 
       bindFieldMetadatas(formMetadata);
       bindActionMetadatas(formMetadata);
+      bindDataProviders(formMetadata);
 
       updateAndSave(formMetadata.getDataProviderMetadatas().values(), true);
    }
@@ -247,15 +251,67 @@ public class ThinletBinder {
    }
 
    public void invokeAction(String name) throws Exception {
-      //TODO: handle validation
       if (log.isDebugEnabled()) {
          log.debug("Invoking action: " + name);
       }
 
-      ((ActionMetadata)controller.getFormMetadata().getActionMetadatas().get(
-            new MethodEntry(name, new String[0]))).invoke(form);
+      final ActionMetadata actionMetadata = ((ActionMetadata)controller
+            .getFormMetadata().getActionMetadatas().get(new MethodEntry(name, 
+            new String[0])));
+
+      if (actionMetadata.isValidateBefore()) {
+         final String formName = form.getClass().getName();
+
+         final Map validationErrors = ValidationUtils.getInstance().getMessages(
+                  ValidationUtils.getInstance().validate(form, formName), 
+                  formName);
+
+         if (!validationErrors.isEmpty()) {
+            throw new ValidationException(validationErrors);
+         }
+      }
+
+      actionMetadata.invoke(form);
       controller.update();
       updateAndSave(controller.getDataProviderActions(), false);
+   }
+
+   protected void bindDataProviders(final FormMetadata formMetadata) {
+      for (final Iterator i = formMetadata.getDataProviderMetadatas().values()
+            .iterator(); i.hasNext(); ) {
+         final DataProviderMetadata dataProviderMetadata = 
+               (DataProviderMetadata)i.next();
+         final String name = getFieldName(dataProviderMetadata);
+         final Object component = thinlet.find(root, name);
+
+         if (component == null) {
+            log.warn(name + " could not be found while binding data provider in " + 
+                  form.getClass());
+            continue;
+         }
+
+         final String className = Thinlet.getClass(component);
+
+         if (!className.equals(BaseThinlet.TABLE)) {
+            continue;
+         }
+
+         if (log.isDebugEnabled()) {
+            log.debug("Binding an action method for " + name);
+         }
+
+         thinlet.setMethod(component, "action", "updateSelection(" + 
+               name + ".name," + name + ")", root, this);
+      }
+   }
+
+   protected String getFieldName(final DataProviderMetadata dataProviderMetadata) {
+      return dataProviderMetadata.getObjectField() != null ? 
+            dataProviderMetadata.getObjectField().getFieldName() : 
+            dataProviderMetadata.getIndexField().getFieldName();
+   }
+
+   public void updateSelection(String name, Object table) {
    }
 
    protected void populateDataProviders(final FormMetadata formMetadata, 
@@ -264,7 +320,7 @@ public class ThinletBinder {
             i.hasNext(); ) {
          final DataProviderMetadata dataProviderMetadata = 
                (DataProviderMetadata)i.next();
-         final String name = dataProviderMetadata.getDataProvider().getFieldName();
+         final String name = dataProviderMetadata.getObjectField().getFieldName();
          final Object component = thinlet.find(root, name);
 
          if (component == null) {
@@ -279,13 +335,13 @@ public class ThinletBinder {
          }
 
          final Object ret = dataProviderMetadata.invoke(form);
-         final Collection items = (dataProviderMetadata.getDataProvider()
+         final Collection items = (dataProviderMetadata.getObjectField()
                .isArray()) ? Arrays.asList((Object[])ret) : (List)ret;
+         final String className = Thinlet.getClass(component);
          
-         // TODO: only table and combobox are implemented
-         if (Thinlet.getClass(component).equals(BaseThinlet.TABLE)) {
+         if (className.equals(BaseThinlet.TABLE)) {
             thinlet.populateFromCollection(component, items);
-         } else if (Thinlet.getClass(component).equals(BaseThinlet.COMBOBOX)) {
+         } else if (className.equals(BaseThinlet.COMBOBOX)) {
             final String key = (String)thinlet.getProperty(component, "key");
 
             if (key == null) {
@@ -310,6 +366,10 @@ public class ThinletBinder {
             }
 
             thinlet.populateFromCollection(component, items, key, value, blank);
+         } else {
+            // TODO: only table and combobox are implemented
+            throw new UnsupportedOperationException(className + " is not " +
+                  "supported for data providing");
          }
       }
    }

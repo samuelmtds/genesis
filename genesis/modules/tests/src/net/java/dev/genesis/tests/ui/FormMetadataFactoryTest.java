@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.converters.StringConverter;
 
 import net.java.dev.genesis.equality.DefaultEqualityComparator;
 import net.java.dev.genesis.equality.StringEqualityComparator;
+import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.resolvers.DefaultEmptyResolver;
 import net.java.dev.genesis.resolvers.StringEmptyResolver;
 import net.java.dev.genesis.tests.TestCase;
@@ -154,29 +155,26 @@ public class FormMetadataFactoryTest extends TestCase {
    }
    
    public void testDataProvider(){
-      assertEquals("name",
-            provideSomeListMethod.getDataProvider().getFieldName());
-      assertEquals(String.class.getName(),
-            provideSomeListMethod.getDataProvider().getFieldTypeName());
-      assertFalse(provideSomeListMethod.getDataProvider().isArray());
-      assertFalse(provideSomeListMethod.getDataProvider().isCollection());
-      assertFalse(provideSomeListMethod.getDataProvider().isMultiple());
-      
-      assertEquals("ids",
-            provideAnotherListMethod.getDataProvider().getFieldName());
-      assertEquals(Long[].class.getName(),
-            provideAnotherListMethod.getDataProvider().getFieldTypeName());
-      assertTrue(provideAnotherListMethod.getDataProvider().isArray());
-      assertFalse(provideAnotherListMethod.getDataProvider().isCollection());
-      assertTrue(provideAnotherListMethod.getDataProvider().isMultiple());
-      
-      assertEquals("codes",
-            provideCodesListMethod.getDataProvider().getFieldName());
-      assertEquals(List.class.getName(),
-            provideCodesListMethod.getDataProvider().getFieldTypeName());
-      assertFalse(provideCodesListMethod.getDataProvider().isArray());
-      assertTrue(provideCodesListMethod.getDataProvider().isCollection());
-      assertTrue(provideCodesListMethod.getDataProvider().isMultiple());
+      FieldEntry objectField = provideSomeListMethod.getObjectField();
+      assertEquals("name", objectField.getFieldName());
+      assertEquals(String.class.getName(), objectField.getFieldTypeName());
+      assertFalse(objectField.isArray());
+      assertFalse(objectField.isCollection());
+      assertFalse(objectField.isMultiple());
+
+      objectField = provideAnotherListMethod.getObjectField();
+      assertEquals("ids", objectField.getFieldName());
+      assertEquals(Long[].class.getName(), objectField.getFieldTypeName());
+      assertTrue(objectField.isArray());
+      assertFalse(objectField.isCollection());
+      assertTrue(objectField.isMultiple());
+
+      objectField = provideCodesListMethod.getObjectField();
+      assertEquals("codes", objectField.getFieldName());
+      assertEquals(List.class.getName(), objectField.getFieldTypeName());
+      assertFalse(objectField.isArray());
+      assertTrue(objectField.isCollection());
+      assertTrue(objectField.isMultiple());
    }
 
 
@@ -407,7 +405,7 @@ public class FormMetadataFactoryTest extends TestCase {
       }
       
       /**
-       * @DataProvider name
+       * @DataProvider objectField=name
        * @CallWhen
        * 		string-length(normalize-space(description)) != 4
        */
@@ -416,14 +414,14 @@ public class FormMetadataFactoryTest extends TestCase {
       }
       
       /**
-       * @DataProvider ids
+       * @DataProvider objectField=ids
        */
       public List provideAnotherList() {
          return new ArrayList();
       }
       
       /**
-       * @DataProvider codes
+       * @DataProvider objectField=codes
        */
       public List provideCodesList() {
          return new ArrayList();

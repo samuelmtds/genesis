@@ -82,7 +82,7 @@ public class UserListForm implements Serializable {
    }
 
    /**
-    * @DataProvider users
+    * @DataProvider objectField=users
     */
    public List search() throws Exception {
       final UserSearchCommand command = new UserSearchCommand();

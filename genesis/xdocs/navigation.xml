@@ -16,8 +16,21 @@
       <item name="Genesis Shared" href="/multiproject/genesis-shared/index.html"/>
       <item name="Genesis Aspect" href="/multiproject/genesis-aspect/index.html"/>
     </links>
-    <menu name="Projects">
-      <item name="The Genesis Project" href="/index.html" />
+    <menu name="Genesis">
+      <item name="Overview" href="/index.html" />
+      <item name="Novidades" href="/news.html" />
+    </menu>
+    <menu name="Documentação">
+      <item name="Screenshots" href="/screenshots.html" />
+      <item name="Arquitetura" collapse="true">
+      <item name="Arquitetura do Genesis - Server" href="/server_arch.html" />
+      <item name="Arquitetura do Genesis - Client" href="/client_arch.html" />
+      </item>
+      <item name="Quick Guide" href="/quickguide.html" />
+      <item name="Guia de Instalação Detalhado" href="/server_installguide.html" />
+      <item name="Tutorial Detalhado" href="/tutorial.html" />
+      <item name="Guia de Referência" href="/referenceguide.html" />
+      <item name="FAQs e Howtos" href="/faq_howto.html" />
     </menu>
   </body>
 </project>

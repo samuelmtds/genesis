@@ -23,17 +23,26 @@ import java.lang.reflect.Method;
 import net.java.dev.genesis.reflection.FieldEntry;
 
 public class DataProviderMetadata extends MethodMetadata {
-   private FieldEntry dataProvider;
+   private FieldEntry objectField;
+   private FieldEntry indexField;
 
    public DataProviderMetadata(final Method method) {
       super(method);
    }
 
-   public FieldEntry getDataProvider() {
-      return dataProvider;
+   public FieldEntry getObjectField() {
+      return objectField;
    }
 
-   public void setDataProvider(FieldEntry dataProvider) {
-      this.dataProvider = dataProvider;
+   public void setObjectField(FieldEntry objectField) {
+      this.objectField = objectField;
+   }
+
+   public FieldEntry getIndexField() {
+      return indexField;
+   }
+
+   public void setIndexField(FieldEntry indexField) {
+      this.indexField = indexField;
    }
 }

@@ -132,14 +132,14 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @DataProvider country
+    * @DataProvider objectField=country
     */
    public Collection provideCountries() throws Exception {
       return Enum.getInstances(Country.class);
    }
 
    /**
-    * @DataProvider state
+    * @DataProvider objectField=state
     * @CallWhen g:hasChanged(country)
     */
    public Collection provideState() throws Exception {
