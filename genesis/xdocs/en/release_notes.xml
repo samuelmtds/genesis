@@ -7,11 +7,53 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#0.2-RC2">0.2-RC2</a></li>
         <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2-RC2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2654&expandFolder=2654&folderID=1756">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>This release contains very few enhancements to <a
+        href="#0.2-RC1">0.2-RC1</a>:</p>
+        <ul>
+          <li>It is possible to put more than one <code>@AfterAction</code>
+          and/or <code>@BeforeAction</code> annotation in a method</li>
+          <li>The useradmin sample has been updated in order to demonstrate
+          genesis 0.2-RC1 features</li>
+          <li><code>empty-project</code>'s <code>build.xml</code> now supports
+          <a href="#TODO: insert link">new properties</a> for defining database
+          access configuration</li>
+        </ul>
+        <p>The following bug has been fixed in this release:</p>
+        <ul>
+          <li>The <code>objectField</code> property value is set to
+          <code>null</code> instead of an empty collection
+          when the property type is <code>Collection</code> and the
+          <code>@DataProvider</code> method is bound to a table
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173">Issue
+          # 173</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-RC1 and 0.2-RC2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgments">
+        <p>Special thanks to Bruno Borges for finding the bug that has been
+        fixed in this release and for proposing the enhancement regarding
+        multiple <code>@[After|Before]Action</code> annotations in a
+        method.</p>
+      </subsection>
     </section>
     <section name="0.2-RC1">
       <subsection name="Downloads">

@@ -2,16 +2,60 @@
 <document>
   <properties>
     <title>Notas de Versão</title>
+    <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#0.2-RC2">0.2-RC2</a></li>
         <li><a href="#0.2-RC1">0.2-RC1</a></li>
         <li><a href="#0.2-beta2">0.2-beta2</a></li>
         <li><a href="#0.2-beta1">0.2-beta1</a></li>
         <li><a href="#0.1">0.1</a></li>
       </ul>
+    </section>
+    <section name="0.2-RC2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2654&expandFolder=2654&folderID=1756">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Esta versão contém somente poucas melhorias em relação a <a
+        href="#0.2-RC1">0.2-RC1</a>:</p>
+        <ul>
+          <li>É possível colocar mais de uma anotação <code>@AfterAction</code>
+          e/ou <code>@BeforeAction</code> no mesmo método</li>
+          <li>O exemplo useradmin foi atualizado para utilizar novas
+          funcionalidades do genesis 0.2-RC1</li>
+          <li>O <code>build.xml</code> do <code>empty-project</code> suporta
+          <a href="#TODO: insert link">novas propriedades</a> para definição
+          dos parâmetros de acesso ao banco de dados</li>
+        </ul>
+        <p>O seguinte bug foi corrigido nessa versão:</p>
+        <ul>
+          <li>A propriedade <code>objectField</code> é setada para
+          <code>null</code> ao invés de uma coleção vazia
+          quando a propriedade é uma <code>Collection</code> e o
+          <code>@DataProvider</code> está ligado a uma tabela
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173">Issue
+          # 173</a>)</li>
+        </ul>
+        <p>A lista completa das alterações ocorridas entre o 0.2-RC1 e
+        0.2-RC2 pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>Agradecemos especialmente a Bruno Borges por ter achado o bug
+        corrigido nesta versão e ter proposto a melhoria de múltiplas
+        anotações <code>@[After|Before]Action</code> por método.</p>
+      </subsection>
     </section>
     <section name="0.2-RC1">
       <subsection name="Downloads">
