@@ -334,7 +334,7 @@ public class ThinletBinder {
    }
 
    public void updateSelection(String name, Object table) throws Exception {
-      final int[] selected = thinlet.getSelectedIndices(table);
+      final int[] selected = thinlet.getSelectedIndexes(table);
       final List list = (List)dataProvided.get(name);
       final DataProviderMetadata dataMeta = (DataProviderMetadata)dataProvidedListByFieldName
             .get(name);
@@ -436,7 +436,6 @@ public class ThinletBinder {
                   " automatically");
          }
          
-         // TODO: validate before ?
          invokeDataProviderMethod(actionMetadata, true);
       }
    }

@@ -634,26 +634,26 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
-   protected int[] getSelectedIndices(String name){
-       return getSelectedIndices(find(name));
+   protected int[] getSelectedIndexes(String name){
+       return getSelectedIndexes(find(name));
    }
    
-   protected int[] getSelectedIndices(Object component){
+   protected int[] getSelectedIndexes(Object component){
        final int selectedCount = getSelectedItems(component).length;
 
        final Object[] items = getItems(component);
-       final int[] indices = new int[selectedCount];
+       final int[] indexes = new int[selectedCount];
 
        int j = 0;
 
        for (int i = 0; i < items.length; i++) {
            if (isSelected(items[i])) {
-               indices[j] = i;
+               indexes[j] = i;
                j++;
            }
        }
 
-       return indices;
+       return indexes;
    }
 
    private void handleException(String message, Throwable throwable) {
