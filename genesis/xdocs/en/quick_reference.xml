@@ -427,10 +427,14 @@ public class InsertUpdateForm {
 	</source>
     <p><a href="ui_additional_features.html#Validating_data">More info...</a></p>
       </subsection>
-      <!--subsection name="@DisplayOnly">
-        <p>Define um atributo como sendo apenas para apresentação impedindo a
-        edição. No Thinlet equivale a definir um campo com editable="false". Só
-        pode ser utilizado com atributos.</p>
+      <subsection name="@EqualityComparator">
+        <p>Annotation may be used before form property getters. It identifies
+        a class that knows how to compare form element of the same type.
+        Its main parameter is the fully qualified class name (package.class)
+        that implements the interface
+        <code>net.java.dev.genesis.equality.EqualityComparator</code>. 
+        That class is internally used by <code>g:equals(any,any)</code>
+        and <code>g:notEquals(any,any)</code> functions .</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -440,59 +444,34 @@ public class InsertUpdateForm {
             <th>Required</th>
           </tr>
           <tr>
-            <td>None</td>
-            <td></td>
-            <td>@DisplayOnly </td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
-      </subsection-->
-      <!-- subsection name="@EqualityComparator">
-        <p>Anotação colocada antes de getter de atributos do form. Identifica a
-        classe que sabe comparar elementos do tipo do atributo. Tem como
-        parâmetro principal o nome qualificado completo da classe
-        (pacote.Classe) que implementa a interface
-        <code>net.java.dev.genesis.equality.EqualityComparator</code>. Tal
-        classe é usada internamente pelas funções <code>g:equals(any,any)</code>
-        e <code>g:notEquals(any,any)</code>.</p>
-        <table>
-          <tr>
-            <th>Parameters</th>
-            <th>Type</th>
-            <th>Use</th>
-            <th>Description</th>
-            <th>Required</th>
-          </tr>
-          <tr>
-            <td>anônimo</td>
-            <td>Nome qualificado completo de classe</td>
-            <td>@EqualityComparator pacote.MeuEqualityComparator</td>
-            <td>Nome classe que implementa a interface
+            <td>anonymous</td>
+            <td>Fully qualified class name</td>
+            <td>@EqualityComparator package.MyEqualityComparator</td>
+            <td>Class name that implements the interface
             <code>EqualityComparator</code>.</td>
-            <td><b>Sim, a menos que existam propriedades</b></td>
+            <td><b>Yes, except when properties exist</b></td>
           </tr>
           <tr>
-            <td>nomeDePropriedade</td>
-            <td>Nome de uma propriedade da classe especificada</td>
-            <td>@EqualityComparator pacote.MeuEqualityComparator
-                                    nullsComoZero=true</td>
-            <td>Nome de um atributo da classe que implementa a interface
-            <code>EqualityComparator</code>. Podem haver vários desses
-            parâmetros.</td>
-            <td><b>Não</b></td>
+            <td>PropertyName</td>
+            <td>A property name of the specified class</td>
+            <td>@EqualityComparator package.MyEqualityComparator
+                                    nullsAsZero=true</td>
+            <td>Attribute name of the class that implements the
+            <code>EqualityComparator</code> interface. Might have many 
+            parameters of this type.</td>
+            <td><b>No</b></td>
           </tr>
         </table>
-    <p><a href="ui_additional_features.html#Comparando_valores">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Comparing_values">More info...</a></p>
       </subsection>
       <subsection name="@EmptyResolver">
-        <p>Anotação colocada antes de getter de atributos do form. Identifica a
-        classe que sabe comparar elementos do tipo do atributo. Tem como
-        parâmetro principal o nome qualificado completo da classe
-        (pacote.Classe) que implementa a interface
-        <code>net.java.dev.genesis.resolvers.EmptyResolver</code>. Tal classe é
-        usada internamente pelas funções <code>g:isEmpty(any)</code> e
-        <code>g:isNotEmpty(any)</code>.</p>
+        <p>Annotation may be used before form property getters. It identifies a
+        class that knows how to compare elements of the same type. Its main
+        parameter is the fully qualified class name (package.class) that 
+        implements the interface 
+        <code>net.java.dev.genesis.resolvers.EmptyResolver</code>. 
+        That class is used internally by <code>g:isEmpty(any)</code> and
+        <code>g:isNotEmpty(any)</code> functions.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -502,29 +481,28 @@ public class InsertUpdateForm {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anônimo</td>
-            <td>Nome qualificado completo de classe</td>
-            <td>@EmptyResolver pacote.MeuEmptyResolver</td>
-            <td>Nome classe que implementa a interface
-            <code>EmptyResolver</code>.</td>
-            <td><b>Sim, a menos que existam propriedades</b></td>
+            <td>anonymous</td>
+            <td>Fully qualified class name</td>
+            <td>@EmptyResolver package.MyEmptyResolver</td>
+            <td>Class name that implements the 
+            <code>EmptyResolver</code> interface.</td>
+            <td><b>Yes, except when properties exist</b></td>
           </tr>
           <tr>
-            <td>nomeDePropriedade</td>
-            <td>Nome de uma propriedade da classe especificada</td>
-            <td>@EmptyResolver pacote.MeuEmptyResolver
-                               zerosComoVazios=true</td>
-            <td>Nome de um atributo da classe que implementa a interface
-            <code>EmptyResolver</code>. Podem haver vários desses
-            parâmetros.</td>
-            <td><b>Não</b></td>
+            <td>PropertyName</td>
+            <td>Property name of the specified class</td>
+            <td>@EmptyResolver package.MyEmptyResolver
+                               zerosAsEmpty=true</td>
+            <td>Property name of the class that implements 
+            <code>EmptyResolver</code> interface. Might have many parameters.</td>
+            <td><b>No</b></td>
           </tr>
         </table>
-    <p><a href="ui_additional_features.html#Determinando_se_o_campo_está_vazio">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Determining_if_a_field_is_empty">More info...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
-        <p>Especifica o valor vazio de um campo. Utilizado em conjunto com <a
-        href="#@ClearOn">@ClearOn</a>.</p>
+        <p>It specifies the empty value of a field. It's used together with the <a
+        href="#@ClearOn">@ClearOn</a> annotation.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -534,21 +512,20 @@ public class InsertUpdateForm {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anônimo</td>
-            <td>valor literal</td>
+            <td>anonymous</td>
+            <td>Literal value</td>
             <td>@EmptyValue -1</td>
-            <td>O valor do campo quando vazio</td>
-            <td><b>Sim</b></td>
+            <td>The value for an empty field</td>
+            <td><b>Yes</b></td>
           </tr>
         </table>
-    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais informações...</a></p>
+    <p><a href="ui_additional_features.html#Clearing_field_content">More info...</a></p>
       </subsection>
       <subsection name="@Action">
-        <p>Define um método como alvo de binding com a interface gráfica. A ação
-        pode representar um botão e/ou simplesmente um método que é chamado
-        quando uma condição é satisfeita. O nome do widget tem que ser igual ao
-        nome do método no form para que ocorra uma ligação dinâmica entre eles.
-        </p>
+        <p>It defines a method as a target of the graphical interface binding.
+        The action may represent a button and/or simply a method that is called
+        whenever a condition is satisfied. The widget name has to be the same
+        as the form method name in order to occur the dynamic binding.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -563,7 +540,7 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateForm.java):</p>
+	<p>Usage example (InsertUpdateForm.java):</p>
 	<source>
    <b>...</b>
    /**
@@ -573,17 +550,19 @@ public class InsertUpdateForm {
    public void save() throws Exception {
    <b>...</b>
 	</source>
-        <p>define o método <b>save</b> como alvo do acionamento de um botão
-        com nome "save" na interface gráfica.</p>
-    <p><a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">Mais informações...</a></p>
+        <p>defines the <b>save</b> method as the target of a button action that has
+        a "save" as the its name in the graphical interface.</p>
+    <p><a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">More info...</a></p>
       </subsection>
       <subsection name="@BeforeAction">
-        <p>Aplica-se a métodos de uma view. As views são classes que estendem
-        uma das classes de interface gráfica suportadas. Atualmente, uma view é
-        uma classe que herda da classe BaseThinlet (ou BaseDialogThinlet). A
-        anotação @BeforeAction se aplica ao método da view que deve ser
-        executado <b>antes</b> da execução da @Action. O método deve possuir o
-        mesmo nome da @Action ou indicá-lo como parâmetro anônimo.</p>
+        <p>It may be applied to a view method. Views are classes that extend
+        one of the supported graphical interface classes. Currently, a view
+        is a class that inherits the <code>BaseThinlet</code> class
+        (or <code>BaseDialogThinlet</code> class). 
+        The <code>@BeforeAction</code> annotation applies to a view method that
+        needs to be executed <b>before</b> the <code>@Action</code> annotated method.
+        The method name must match the @Action name or this name must be indicated
+        by an anonymous parameter.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -593,16 +572,16 @@ public class InsertUpdateForm {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anônimo</td>
+            <td>anonymous</td>
             <td>String</td>
-            <td>@BeforeAction atualizar</td>
-            <td>Nome do método do form para o qual o método anotado deve ser
-            executado antes</td>
-            <td>Somente quando o nome do método da view não coincidir com o
-            método do form</td>
+            <td>@BeforeAction update</td>
+            <td>Name of the form method whose execution will be preceeded
+            by this method execution</td>
+            <td>Only when the name of the view method does not match
+            the form method name</td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateView.java):</p>
+	<p>Usage example (InsertUpdateView.java):</p>
 	<source>
    <b>...</b>
    /**
@@ -611,15 +590,18 @@ public class InsertUpdateForm {
    public void chooseRole() throws Exception {
    <b>...</b>
 	</source>
-    <p><a href="ui_basic_concepts.html#Usando_@BeforeAction">Mais informações...</a></p>
+    <p><a href="ui_basic_concepts.html#Using_@BeforeAction">More info...</a></p>
       </subsection>
       <subsection name="@AfterAction">
-        <p>Aplica-se a métodos de uma view. As views são classes que estendem
-        uma das classes de interface gráfica suportadas. Atualmente, uma view é
-        uma classe que herda da classe BaseThinlet (ou BaseDialogThinlet). A
-        anotação @AfterAction se aplica ao método da view que deve ser
-        executado logo <b>após</b> a execução da @Action. O método deve possuir
-        o mesmo nome da @Action ou indicá-lo como parâmetro anônimo.</p>
+        <p>It may be applied to a view method. Views are classes that extend
+        one of the supported graphical interface classes. Currently, a view
+        is a class that inherits the <code>BaseThinlet</code> class
+        (or <code>BaseDialogThinlet</code> class). 
+        The <code>@AfterAction</code> annotation applies to a view method that
+        needs to be executed <b>after</b> the <code>@Action</code> annotated method.
+        The method name must match the @Action name or this name must be indicated
+        by an anonymous parameter.</p>
+
         <table>
           <tr>
             <th>Parameters</th>
@@ -629,16 +611,16 @@ public class InsertUpdateForm {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anônimo</td>
+            <td>anonymous</td>
             <td>String</td>
-            <td>@AfterAction atualizar</td>
-            <td>Nome do método do form para o qual o método anotado deve ser
-            executado depois</td>
-            <td>Somente quando o nome do método da view não coincidir com o
-            método do form</td>
+            <td>@AfterAction update</td>
+            <td>Name of the form method whose execution will be followed
+            by this method execution</td>
+            <td>Only when the name of the view method does not match
+            the form method name</td>
           </tr>
         </table>
-	<p>Exemplo de uso (InsertUpdateView.java):</p>
+	<p>Usage example (InsertUpdateView.java):</p>
 	<source>
    <b>...</b>
    /**
@@ -647,16 +629,16 @@ public class InsertUpdateForm {
    public void save() {
    <b>...</b>
 	</source>
-    <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...</a></p>
+    <p><a href="ui_basic_concepts.html#using_@AfterAction">More info...</a></p>
       </subsection>
       <subsection name="@Remotable">
-        <p>Utilizado para anotar métodos de classes de negócio. Os métodos
-        anotados com @Remotable são interceptados através de um aspecto que
-        transfere a instância em que o método foi invocado para o servidor,
-        executando-o ali e transferindo o resultado de volta para o cliente.
-        Essa característica é chamada de <b>remotabilidade transparente</b>.</p>
-        <p>Apenas métodos concretos, não-estáticos, não-nativos e públicos podem
-        receber esta anotação.</p>
+        <p>It may be used to annotate business class methods. Methods annotated
+        as <code>@Remotable</code> are intercepted by an aspect that transfers the
+        instance in which the method has been invoked to the server, executing it
+        there and returning the result back to the client.
+        This feature is called <b>transparent remoting</b>.</p>
+        <p>Only concrete, non-static, non-native public methods can be annotated
+        as <code>@Remotable</code>.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -671,7 +653,7 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-	<p>Exemplo de uso (RoleSearchCommand.java):</p>
+	<p>Usage example (RoleSearchCommand.java):</p>
 	<source>
    <b>...</b>
    /**
@@ -682,9 +664,9 @@ public class InsertUpdateForm {
    }
    <b>...</b>
 	</source>
-    <p><a href="business_component_model.html#Remotabilidade_transparente">Mais informações...</a></p>
+    <p><a href="business_component_model.html#Transparent_remoting">More info...</a></p>
       </subsection>
-      <subsection name="@Transactional">
+      <!--subsection name="@Transactional">
         <p>Utilizado para anotar métodos de classes de negócio. Os métodos
         anotados com @Transactional são interceptados através de um aspecto
         que transfere a instância em que o método foi invocado para o servidor,

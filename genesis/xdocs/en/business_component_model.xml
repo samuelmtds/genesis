@@ -21,7 +21,7 @@
       </p>
     </section>
     <section name="Use of business classes at client-side">
-      <p>The use of genesis' business classes doesn't have any restriction. This
+      <p>The use of genesis' business classes doesn't have any restrictions. This
       means:
         <ul>
           <li>There is no need to create an interface for a business class. Other
