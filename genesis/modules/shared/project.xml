@@ -14,7 +14,7 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/commons/</url>
             <properties/>
