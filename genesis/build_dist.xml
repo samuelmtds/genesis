@@ -4,6 +4,7 @@
    <property file="project.properties" />
    <property name="build.dir" value="${genesis.build.dir}" />
    <property name="build.docs" value="${build.dir}/docs" />
+   <property name="xdoclet.dist" value="xdoclet/dist" />
 
    <condition property="executableSuffix" value="">
       <not>
@@ -12,8 +13,8 @@
    </condition>
 
    <condition property="executableSuffix" value=".bat">
-       <os family="dos" />
-    </condition>
+      <os family="dos" />
+   </condition>
 
    <!-- Call using maven or build site before -->
    <target name="genesis:dist" description="Generate genesis distribution">
@@ -21,190 +22,124 @@
 
       <!-- Problems with <ant ...>, <antcall ...> or <subant...>. TODO: See what's happening -->
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
-         <arg line="-f ${basedir}/build.xml genesis:jar"/>
+         <arg line="-f ${basedir}/build.xml genesis:jar" />
       </exec>
 
-      <mkdir dir="${build.dir}"/>
+      <mkdir dir="${build.dir}" />
       <delete>
-          <fileset dir="${build.dir}">
-            <include name="*.zip"/>
-            <include name="*.tar.gz"/>
+         <fileset dir="${build.dir}">
+            <include name="*.zip" />
+            <include name="*.tar.gz" />
          </fileset>
       </delete>
 
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
-         <arg line="-f ${basedir}/../samples/useradmin/build.xml useradmin:dist"/>
+         <arg line="-f ${basedir}/../samples/useradmin/build.xml useradmin:dist" />
       </exec>
 
-      <patternset id="empty-project.pattern">
+      <patternset id="genesis-license.pattern">
+         <include name="genesis/LICENSE.txt" />
+         <include name="genesis/lgpl.txt" />
+      </patternset>
+
+      <patternset id="genesis-dist.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="genesis/${genesis.dist.dir}/**" />
+      </patternset>
+
+      <patternset id="genesis-dependencies.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="genesis/${genesis.lib.dir}/**" />
+      </patternset>
+
+      <patternset id="genesis-empty-project.pattern">
+         <patternset refid="genesis-license.pattern" />
          <include name="samples/empty-project/*" />
-         <include name="samples/empty-project/modules/**"/>
-         <include name="samples/empty-project/webstart/**"/>
+         <include name="samples/empty-project/modules/**" />
+         <include name="samples/empty-project/webstart/**" />
          <exclude name="samples/empty-project/.*" />
          <exclude name="samples/empty-project/build.properties" />
       </patternset>
 
-      <patternset id="samples.pattern">
-         <include name="samples/*/*"/>
-         <include name="samples/*/modules/**"/>
-         <include name="samples/*/webstart/**"/>
-         <include name="samples/*/dist/**"/>
-         <exclude name="samples/*/.*"/>
-         <exclude name="samples/**/${build.dir}/**/*"/>
-         <exclude name="samples/**/build.properties"/>
+      <patternset id="genesis-useradmin-sample.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="samples/useradmin/*" />
+         <include name="samples/useradmin/modules/**" />
+         <include name="samples/useradmin/webstart/**" />
+         <include name="samples/useradmin/dist/**" />
+         <exclude name="samples/useradmin/.*" />
+         <exclude name="samples/useradmin/**/${build.dir}/**/*" />
+         <exclude name="samples/useradmin/**/build.properties" />
       </patternset>
 
-      <patternset id="genesis.bin.pattern">
-         <include name="genesis/${genesis.dist.dir}/**" />
-         <include name="genesis/LICENSE.txt" />
-         <include name="genesis/lgpl.txt" />
-         <patternset refid="empty-project.pattern" />
+      <patternset id="genesis-src.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="genesis/**/src/**" />
+         <include name="samples/useradmin/**/src/**" />
+         <exclude name="**/${build.dir}/**" />
       </patternset>
 
-      <patternset id="genesis.full-bin.pattern">
-         <patternset refid="genesis.bin.pattern" />
-         <include name="genesis/${genesis.lib.dir}/**" />
+      <patternset id="genesis-docs.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="${build.docs}/**" />
       </patternset>
 
-      <patternset id="genesis.full-bin-plus-docs.pattern">
-         <patternset refid="genesis.full-bin.pattern" />
-         <include name="samples/*/dist/**"/>
+      <patternset id="genesis-xdoclet-extensions.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="${xdoclet.dist}/xdoclet-jboss-module-1.2.jar" />
+         <include name="${xdoclet.dist}/xdoclet-hibernate-module-1.2.jar" />
+         <include name="${xdoclet.dist}/xdoclet-apache-module-1.2.jar" />
       </patternset>
 
-      <patternset id="genesis.src-with-lib.pattern">
-         <include name="genesis/*" />
-         <include name="genesis/${genesis.modules.dir}/**" />
-         <include name="genesis/${genesis.dist.dir}/**"/>
-         <include name="genesis/${genesis.xdoc.dir}/**" />
-         <exclude name="genesis/.*"/>
-         <exclude name="genesis/**/${build.dir}/**/*"/>
-         <exclude name="genesis/**/build.properties"/>
-         <patternset refid="samples.pattern" />
-         <patternset refid="empty-project.pattern" />
+      <patternset id="genesis-all.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <patternset refid="genesis-dist.pattern" />
+         <patternset refid="genesis-dependencies.pattern" />
+         <patternset refid="genesis-empty-project.pattern" />
+         <patternset refid="genesis-useradmin-sample.pattern" />
+         <patternset refid="genesis-src.pattern" />
+         <patternset refid="genesis-docs.pattern" />
+         <patternset refid="genesis-xdoclet-extensions.pattern" />
       </patternset>
 
-      <patternset id="genesis.src.pattern">
-         <patternset refid="genesis.src-with-lib.pattern"/>
-         <exclude name="genesis/${genesis.lib.dir}/**"/>
-      </patternset>
-      
-      <patternset id="genesis.src.only.pattern">
-	       <include name="genesis/**/src/**" />
-	       <include name="samples/useradmin/**/src/**" />
-          <exclude name="**/target/**" />
-      </patternset>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-dist" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-dependencies" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-empty-project" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-useradmin-sample" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-src" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-docs" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-xdoclet-extensions" />
+      </antcall>
+      <antcall target="generate.dist">
+         <param name="dist.type" value="genesis-all" />
+      </antcall>
+   </target>
 
-      <patternset id="genesis.useradmin.pattern">
-         <include name="samples/useradmin/*"/>
-	      <include name="samples/useradmin/modules/**"/>
-	      <include name="samples/useradmin/webstart/**"/>
-	      <include name="samples/useradmin/dist/**"/>
-	      <exclude name="samples/useradmin/.*"/>
-	      <exclude name="samples/useradmin/**/${build.dir}/**/*"/>
-	      <exclude name="samples/useradmin/**/build.properties"/>
-      </patternset>
-
-      <patternset id="genesis.src-plus-docs.pattern">
-         <patternset refid="genesis.src-with-lib.pattern" />
-         <patternset refid="genesis.full-bin-plus-docs.pattern" />
-      </patternset>
-
-      <!-- Genesis bin distribution -->
-      <zip destfile="${build.dir}/genesis-bin-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}" >
-            <patternset refid="genesis.bin.pattern" />
-         </zipfileset>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-bin-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.bin.pattern" />
-         </tarfileset>
-      </tar>
-
-      <!-- Genesis full-bin distribution -->
-      <zip destfile="${build.dir}/genesis-full-bin-${genesis.version}.zip">
+   <target name="generate.dist">
+      <echo>Generating ${dist.type}...</echo>
+      <zip destfile="${build.dir}/${dist.type}-${genesis.version}.zip">
          <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.full-bin.pattern" />
+            <patternset refid="${dist.type}.pattern" />
          </zipfileset>
       </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-${genesis.version}.tar.gz" compression="gzip">
+      <tar longfile="gnu" tarfile="${build.dir}/${dist.type}-${genesis.version}.tar.gz" compression="gzip">
          <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.full-bin.pattern" />
+            <patternset refid="${dist.type}.pattern" />
          </tarfileset>
       </tar>
-
-      <!-- Genesis full-bin-plus-docs distribution -->
-      <zip destfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.full-bin-plus-docs.pattern" />
-         </zipfileset>
-         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-full-bin-plus-docs-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.full-bin-plus-docs.pattern" />
-         </tarfileset>
-         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
-      </tar>
-
-      <!-- Genesis src-only distribution -->
-      <zip destfile="${build.dir}/genesis-src-only-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.src.only.pattern" />
-         </zipfileset>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-only-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.src.only.pattern" />
-         </tarfileset>
-      </tar>
-
-      <!-- Genesis src distribution -->
-      <zip destfile="${build.dir}/genesis-src-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.src.pattern" />
-         </zipfileset>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.src.pattern" />
-         </tarfileset>
-      </tar>
-
-      <!-- Genesis useradmin distribution -->
-      <zip destfile="${build.dir}/genesis-useradmin-sample-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.useradmin.pattern" />
-         </zipfileset>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-useradmin-sample-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.useradmin.pattern" />
-         </tarfileset>
-      </tar>
-
-      <!-- Genesis src-plus-docs distribution -->
-      <zip destfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.src-plus-docs.pattern" />
-         </zipfileset>
-         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-src-plus-docs-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="genesis.src-plus-docs.pattern" />
-         </tarfileset>
-         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
-      </tar>
-
-      <!-- Genesis docs distribution -->
-      <zip destfile="${build.dir}/genesis-docs-${genesis.version}.zip">
-         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/genesis-docs-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs"/>
-      </tar>
-
    </target>
 
 </project>
