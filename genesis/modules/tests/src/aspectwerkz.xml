@@ -19,7 +19,7 @@
          expression="within(net.java.dev.genesis.command.Command+)
             OR hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
       <pointcut name="timeout" expression="execution(* net.java.dev.genesis.tests....TimeoutTest$*.*(..))" />
-      <pointcut name="ejbCommandExecution" expression="executeCommand AND NOT localExecution" />
+      <pointcut name="ejbCommandExecution" expression="executeCommand AND !localExecution" />
       <pointcut name="localCommandExecution" expression="executeCommand AND localExecution" />
       <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />

@@ -22,13 +22,10 @@
 	</path>
 
 	<path id="aspectwerkz.path">
-      <fileset dir="${genesis.aspectwerkz.dist}">
-         <!-- AspectWerkz jars must be before ASM jars in classpath -->
-         <include name="aspectwerkz*.jar"/>
-      </fileset>
 		<fileset dir="${genesis.aspectwerkz.dist}">
+         <include name="aspectwerkz*.jar"/>
          <include name="ant*.jar"/>
-         <include name="asm*.jar"/>
+         <exclude name="asm*.jar"/>
          <include name="concurrent*.jar"/>
          <include name="dom4j*.jar"/>
          <include name="javassist*.jar"/>
@@ -114,21 +111,23 @@
 
 	<target name="shared:annotation">
 		<mkdir dir="${genesis.module.shared}/${genesis.annotation.dest}" />
-		<copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="true">
-			<fileset dir="${genesis.module.shared}/${build.dest}" />
-		</copy>
 		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true">
 			<arg value="-verbose" />
 			<arg value="-src" />
 			<arg value="${genesis.module.shared}/${src.dir}" />
 			<arg value="-classes" />
-			<arg value="${genesis.module.shared}/${genesis.annotation.dest}" />
+			<arg value="${genesis.module.shared}/${build.dest}" />
+         <arg value="-dest" />
+         <arg value="${genesis.module.shared}/${genesis.annotation.dest}" />      
 			<arg value="-custom" />
 			<arg value="${genesis.module.aspect}/${src.dir}/annotation.properties" />
 			<classpath>
 				<path refid="aspectwerkz.path" />
 			</classpath>
 		</java>
+      <copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="false">
+         <fileset dir="${genesis.module.shared}/${build.dest}" />
+      </copy>    
 	</target>
 
 	<target name="shared:jar">
@@ -239,19 +238,21 @@
 
 	<target name="aspect:annotation">
 		<mkdir dir="${genesis.module.aspect}/${genesis.annotation.dest}" />
-		<copy todir="${genesis.module.aspect}/${genesis.annotation.dest}" overwrite="true">
-			<fileset dir="${genesis.module.aspect}/${build.dest}" />
-		</copy>
 		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true">
 			<arg value="-verbose" />
 			<arg value="-src" />
 			<arg value="${genesis.module.aspect}/${src.dir}" />
 			<arg value="-classes" />
-			<arg value="${genesis.module.aspect}/${genesis.annotation.dest}" />
-			<classpath>
+			<arg value="${genesis.module.aspect}/${build.dest}" />
+         <arg value="-dest" />
+         <arg value="${genesis.module.aspect}/${genesis.annotation.dest}" />
+         <classpath>
 				<path refid="aspectwerkz.path" />
 			</classpath>
 		</java>
+      <copy todir="${genesis.module.aspect}/${genesis.annotation.dest}" overwrite="false">
+         <fileset dir="${genesis.module.aspect}/${build.dest}" />
+      </copy>
 	</target>
 
 	<target name="aspect:resources">
@@ -330,21 +331,23 @@
 
 	<target name="test:annotation">
 		<mkdir dir="${genesis.module.tests}/${genesis.annotation.dest}" />
-		<copy todir="${genesis.module.tests}/${genesis.annotation.dest}" overwrite="true">
-			<fileset dir="${genesis.module.tests}/${test.dest}" />
-		</copy>
 		<java classname="org.codehaus.aspectwerkz.annotation.AnnotationC" fork="true">
 			<arg value="-verbose" />
 			<arg value="-src" />
 			<arg value="${genesis.module.tests}/${src.dir}" />
 			<arg value="-classes" />
-			<arg value="${genesis.module.tests}/${genesis.annotation.dest}" />
+			<arg value="${genesis.module.tests}/${test.dest}" />
+         <arg value="-dest" />
+         <arg value="${genesis.module.tests}/${genesis.annotation.dest}" />
 			<arg value="-custom" />
 			<arg value="${genesis.module.aspect}/${src.dir}/annotation.properties" />
 			<classpath>
 				<path refid="aspectwerkz.path" />
 			</classpath>
 		</java>
+      <copy todir="${genesis.module.tests}/${genesis.annotation.dest}" overwrite="false">
+         <fileset dir="${genesis.module.tests}/${test.dest}" />
+      </copy>
 	</target>
 
 	<target name="test:weaving">
