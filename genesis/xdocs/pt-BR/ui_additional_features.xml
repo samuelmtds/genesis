@@ -485,7 +485,7 @@ public void recalculaValores() {
 }
 </source>
 <source>
-public BigDecimal valorDevido() {
+public BigDecimal getValorDevido() {
    return valorDevido;
 }
 
@@ -493,7 +493,7 @@ public void setValorDevido(BigDecimal valorDevido) {
    this.valorDevido = valorDevido;
 }
 
-public BigDecimal valorPago() {
+public BigDecimal getValorPago() {
    return valorPago;
 }
 
