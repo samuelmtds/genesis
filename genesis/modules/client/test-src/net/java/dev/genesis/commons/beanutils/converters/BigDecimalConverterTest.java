@@ -28,6 +28,17 @@ public class BigDecimalConverterTest extends GenesisTestCase {
 
       final BigDecimalConverter converter = new BigDecimalConverter();
 
+      // Using a BigDecimal instance
+      assertSame(converter.convert(BigDecimal.class, bigDecimal), bigDecimal);
+
+      // Using null and unassignable class
+      assertNull(converter.convert(BigDecimal.class, null));
+      assertNull(converter.convert(BigDecimal.class, new Object()));
+
+      // Testing with an empty String
+      assertNull(converter.convert(BigDecimal.class, ""));
+
+      // Testing with "regular" values
       assertTrue(new BigDecimal("0.0").compareTo((BigDecimal) converter
             .convert(BigDecimal.class, "0,0")) == 0);
       assertEquals(new BigDecimal("2.23"), converter.convert(BigDecimal.class,
