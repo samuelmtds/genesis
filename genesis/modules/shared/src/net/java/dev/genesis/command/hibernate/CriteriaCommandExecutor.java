@@ -54,6 +54,8 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
       if (persisterClassName != null && persisterClassName.trim().length() != 0) {
          hibCriteria.setCriteria(getSession().createCriteria(
                ClassesCache.getClass(persisterClassName)));
+      } else {
+         hibCriteria.setCriteria(null);
       }
 
       PropertyUtils.copyProperties(hibCriteria, propertiesMap);
