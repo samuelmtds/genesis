@@ -129,7 +129,7 @@ public class ThinletBinder implements FormControllerListener {
          final FieldMetadata fieldMetadata = (FieldMetadata)entry.getValue();
 
          if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
-            if (!fieldMetadata.isDisplayOnly()) {
+            if (fieldMetadata.isWriteable()) {
                log.warn(name + " is not represented by an editable widget (" + 
                      className + ")");
             }
@@ -137,7 +137,7 @@ public class ThinletBinder implements FormControllerListener {
             continue;
          }
 
-         if (fieldMetadata.isDisplayOnly()) {
+         if (!fieldMetadata.isWriteable()) {
             if (log.isDebugEnabled()) {
                log.debug(name + " is a display only field, skipping...");
             }

@@ -177,17 +177,6 @@ public class FormMetadataFactoryTest extends TestCase {
       assertTrue(objectField.isMultiple());
    }
 
-
-   public void testDisplayOn() {
-
-      assertTrue(codeField.isDisplayOnly());
-      assertFalse(nameField.isDisplayOnly());
-      assertFalse(objField.isDisplayOnly());
-      assertFalse(numberField.isDisplayOnly());
-      assertFalse(fieldField.isDisplayOnly());
-      assertFalse(descriptionField.isDisplayOnly());
-   }
-
    public void testEmptyResolver() {
 
       assertEquals(codeField.getEmptyResolver().getClass(),

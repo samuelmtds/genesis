@@ -31,19 +31,20 @@ import org.apache.commons.jxpath.CompiledExpression;
 public class FieldMetadata extends MemberMetadata {
    private final String fieldName;
    private final Class fieldClass;
+   private final boolean writeable;
 
    private Converter converter;
    private CompiledExpression clearOnCondition;
-   private boolean displayOnly;
    private EqualityComparator equalityComparator;
    private EmptyResolver emptyResolver;
    private Object emptyValue;
 
    private boolean processed = false;
 
-   public FieldMetadata(String fieldName, Class fieldClass) {
+   public FieldMetadata(String fieldName, Class fieldClass, boolean writeable) {
       this.fieldName = fieldName;
       this.fieldClass = fieldClass;
+      this.writeable = writeable;
    }
 
    public String getFieldName() {
@@ -53,21 +54,17 @@ public class FieldMetadata extends MemberMetadata {
    public String getName() {
       return getFieldName();
    }
-   
+
+   public boolean isWriteable() {
+      return writeable;
+   }
+
    public CompiledExpression getClearOnCondition() {
       return clearOnCondition;
    }
 
    public void setClearOnCondition(CompiledExpression clearOnCondition) {
       this.clearOnCondition = clearOnCondition;
-   }
-
-   public boolean isDisplayOnly() {
-      return displayOnly;
-   }
-
-   public void setDisplayOnly(boolean displayOnly) {
-      this.displayOnly = displayOnly;
    }
 
    public EmptyResolver getEmptyResolver() {
@@ -146,8 +143,6 @@ public class FieldMetadata extends MemberMetadata {
       buffer.append(getVisibleCondition());
       buffer.append("\n\t\tclearOnCondition = ");
       buffer.append(clearOnCondition);
-      buffer.append("\n\t\tdisplayOnly = ");
-      buffer.append(displayOnly);
       buffer.append("\n\t\tequalityComparator = ");
       buffer.append(equalityComparator);
       buffer.append("\n\t\temptyResolver = ");

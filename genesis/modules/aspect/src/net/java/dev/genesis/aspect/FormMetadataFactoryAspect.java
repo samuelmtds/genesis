@@ -317,28 +317,6 @@ public class FormMetadataFactoryAspect {
             }
          }
 
-         public static class DisplayOnlyAnnotationHandler implements
-               AnnotationHandler {
-            public void processFormAnnotation(final FormMetadata formMetadata,
-                  final Annotation annotation) {
-               throw new UnsupportedOperationException(
-                     "DisplayOnly cannot be a form annotation");
-            }
-
-            public void processFieldAnnotation(final FormMetadata formMetadata,
-                  final FieldMetadata fieldMetadata, final Annotation annotation) {
-               fieldMetadata.setDisplayOnly(annotation != null);
-            }
-
-            public void processMethodAnnotation(
-                  final FormMetadata formMetadata,
-                  final MethodMetadata methodMetadata,
-                  final Annotation annotation) {
-               throw new UnsupportedOperationException(
-                     "DisplayOnly cannot be a method annotation");
-            }
-         }
-
          public static class EqualityComparatorAnnotationHandler implements
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
@@ -458,8 +436,6 @@ public class FormMetadataFactoryAspect {
                "CallWhen", new CallWhenAnnotationHandler());
          public static final MetadataAttribute CLEAR_ON = new MetadataAttribute(
                "ClearOn", new ClearOnAnnotationHandler());
-         public static final MetadataAttribute DISPLAY_ONLY = new MetadataAttribute(
-               "DisplayOnly", new DisplayOnlyAnnotationHandler());
          public static final MetadataAttribute EQUALITY_COMPARATOR = new MetadataAttribute(
                "EqualityComparator", new EqualityComparatorAnnotationHandler());
          public static final MetadataAttribute EMPTY_RESOLVER = new MetadataAttribute(
@@ -529,7 +505,7 @@ public class FormMetadataFactoryAspect {
             if (!propDesc.getName().equals("class") && 
                   propDesc.getReadMethod() != null) {
                fieldMetadata = new FieldMetadata(propDesc.getName(), propDesc
-                     .getPropertyType());
+                     .getPropertyType(), propDesc.getWriteMethod() != null);
                formMetadata.addFieldMetadata(propDesc.getName(), fieldMetadata);
                processFieldAnnotations(formMetadata, fieldMetadata, 
                      getReadMethod(clazz, propDesc));
