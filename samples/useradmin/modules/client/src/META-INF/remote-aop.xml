@@ -8,7 +8,7 @@
          expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
-      <!-- Genesis pointcuts -->
+      <!-- genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="formControllerFactoryIntroduction" expression="form" />
       <pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
@@ -20,7 +20,7 @@
       <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
-      <!-- Genesis Aspects -->
+      <!-- genesis aspects -->
       <aspect class="CommandInvocationAspect" />
       <aspect class="FormMetadataFactoryAspect" />
       <aspect class="FormControllerFactoryAspect" />
