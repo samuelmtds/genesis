@@ -20,31 +20,19 @@ package net.java.dev.genesis.samples.useradmin.ui;
 
 import java.awt.Frame;
 
-public class InsertRoleView extends BaseDialogView {
-   private final InsertRoleForm form;
-   private boolean hasChanged;
-   
-   public InsertRoleView(final Frame frame) throws Exception {
-      super(frame, "InsertRoleView.title", "insert-role.xml", false, true);
-      bind(form = new InsertRoleForm());
-   }
-   
-   public boolean showView() throws Exception {
-      display();
-      return hasChanged;
-   }
+import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
 
-   public void cancel() {
-      getDialog().dispose();
-   }
-   
-   /**
-    * @PosAction
-    */
-   public void save() {
-      getDialog().dispose();
-      hasChanged = true;
-   }
+public abstract class BaseDialogView extends BaseDialogThinlet {
 
+   public BaseDialogView(Frame frame, String title, String xmlFile, boolean resizable,
+         boolean modal) throws Exception {
+      super(frame);
+      getDialog().setModal(modal);
+      getDialog().setResizable(resizable);
+      getDialog().setTitle(UIUtils.getInstance().getBundle().getString(title));
+      setAllI18n(true);
+      setResourceBundle(UIUtils.getInstance().getBundle());
+      add(parse(xmlFile));
+   }
 }
-

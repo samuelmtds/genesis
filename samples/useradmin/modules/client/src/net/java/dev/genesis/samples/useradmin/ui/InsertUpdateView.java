@@ -21,40 +21,32 @@ package net.java.dev.genesis.samples.useradmin.ui;
 import java.awt.Frame;
 
 import net.java.dev.genesis.samples.useradmin.databeans.User;
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-
-public class InsertUpdateView extends BaseDialogThinlet {
+public class InsertUpdateView extends BaseDialogView {
    private final InsertUpdateForm form;
    private boolean hasChanged;
-   
+
    public InsertUpdateView(final Frame frame) throws Exception {
-      this(frame, (User) null);
+      this(frame, (User)null);
    }
 
    public InsertUpdateView(final Frame frame, final User user) throws Exception {
-      super(frame);
-      getDialog().setModal(true);
-      getDialog().setResizable(false);
-      getDialog().setTitle(user == null ? "Insert User" : "Update User");
-      setAllI18n(true);
-      setResourceBundle(UIUtils.getInstance().getBundle());
-      add(parse("insert-update.xml"));
+      super(frame, user == null ? "InsertView.title" : "UpdateView.title",
+            "insert-update.xml", false, true);
       form = new InsertUpdateForm();
       if (user != null) {
          PropertyUtils.copyProperties(form, user);
       }
       bind(form);
    }
-   
+
    public boolean showView() throws Exception {
       display();
       return hasChanged;
    }
-   
+
    /**
     * @PreAction
     */
@@ -63,7 +55,7 @@ public class InsertUpdateView extends BaseDialogThinlet {
       view.display();
       form.setRole(view.getRole());
    }
-   
+
    /**
     * @PosAction
     */
@@ -72,7 +64,9 @@ public class InsertUpdateView extends BaseDialogThinlet {
       this.hasChanged = true;
    }
 
-   public void cancel(){
+   public void cancel() {
       getDialog().dispose();
    }
+
 }
+

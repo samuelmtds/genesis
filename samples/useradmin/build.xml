@@ -66,16 +66,20 @@
 
    <path id="client.dependency.classpath">
       <path location="${module.shared}/${build.dest}" />
-      <fileset dir="${genesis.dist}"
-               includes="genesis-shared-${genesis.version}.jar" />
-      <fileset dir="${genesis.dist}"
-               includes="genesis-client-${genesis.version}.jar" />
-      <fileset dir="${commons.dist}" includes="commons-beanutils*.jar" />
-      <fileset dir="${commons.dist}" includes="commons-jxpath*.jar" />
-      <fileset dir="${commons.dist}" includes="commons-logging*.jar" />
-      <fileset dir="${commons.dist}" includes="commons-validator*.jar" />
-      <fileset dir="${commons.dist}" includes="reusable-components*.jar" />
-      <fileset dir="${thinlet.dist}" includes="**/*.jar" />
+      <fileset dir="${genesis.dist}">
+         <include name="genesis-shared-${genesis.version}.jar" />
+         <include name="genesis-client-${genesis.version}.jar" />
+      </fileset>
+      <fileset dir="${commons.dist}">
+         <include name="commons-beanutils*.jar" />
+         <include name="commons-digester*.jar" />
+         <include name="commons-jxpath*.jar" />
+         <include name="commons-logging*.jar" />
+         <include name="commons-validator*.jar" />
+         <include name="jakarta-oro-*.jar" />
+         <include name="reusable-components*.jar" />
+      </fileset>
+      <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
    </path>
 
    <path id="run.classpath">
@@ -185,6 +189,7 @@
       <copy todir="${module.client}/${build.dest}" overwrite="false">
          <fileset dir="${module.client}/${src.dir}" excludes="**/*.java" />
       </copy>
+      <antcall target="client:validation" />
       <antcall target="client:annotation" />
    </target>
 
@@ -209,6 +214,16 @@
       <copy todir="${module.client}/${annotation.dest}" overwrite="false">
          <fileset dir="${module.client}/${build.dest}" />
       </copy>
+   </target>
+
+   <target name="client:validation">
+      <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask">
+         <classpath refid="xdoclet.path" />
+      </taskdef>
+      <webdoclet destdir="${module.client}/${build.dest}" verbose="true">
+         <fileset dir="${module.client}/${src.dir}" includes="**/*Form.java" />
+         <strutsvalidationxml xmlencoding="ISO-8859-1" />
+      </webdoclet>
    </target>
 
    <target name="useradmin:weaving">
@@ -326,7 +341,9 @@
             <include name="commons-beanutils*.jar"/>
             <include name="commons-jxpath*.jar"/>
             <include name="commons-logging*.jar"/>
+            <include name="commons-digester*.jar"/>
             <include name="commons-validator*.jar"/>
+            <include name="jakarta-oro-*.jar" />
             <include name="reusable-components*.jar"/>
          </fileset>
          <fileset dir="${genesis.home}/lib/aspectwerkz">

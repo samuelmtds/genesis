@@ -116,9 +116,6 @@ public class UserListForm implements Serializable {
 
    /**
     * @Action
-    * @EnabledWhen g:isNotEmpty(email)
-    * 					or g:isNotEmpty(login)
-    * 					or g:isNotEmpty(name)
     */
    public void reset() {
       setName(null);

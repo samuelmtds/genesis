@@ -36,6 +36,8 @@ import net.java.dev.reusablecomponents.lang.Enum;
 /**
  * @Form
  * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
+ * 
+ * @struts.form
  */
 public class InsertUpdateForm {
    private Long id;
@@ -55,6 +57,13 @@ public class InsertUpdateForm {
       return birthday;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.birthday"
+    * 
+    * @struts.validator type="date"
+    * @struts.validator-var name="pattern" value="MM/dd/yyyy"
+    */
    public void setBirthday(Date birthday) {
       this.birthday = birthday;
    }
@@ -63,6 +72,10 @@ public class InsertUpdateForm {
       return country;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.country"
+    */
    public void setCountry(Country country) {
       this.country = country;
    }
@@ -71,6 +84,13 @@ public class InsertUpdateForm {
       return email;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.email"
+    * 
+    * @struts.validator type="email"
+    * @struts.validator-args arg0resource="User.email"
+    */
    public void setEmail(String email) {
       this.email = email;
    }
@@ -82,6 +102,10 @@ public class InsertUpdateForm {
       return role;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.role"
+    */
    public void setRole(Role role) {
       this.role = role;
       setRoleCode(role == null ? null : role.getCode());
@@ -114,6 +138,13 @@ public class InsertUpdateForm {
       return login;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.login"
+    * 
+    * @struts.validator type="minlength" arg1value="${var:minlength}"
+    * @struts.validator-var name="minlength" value="4"
+    */
    public void setLogin(String login) {
       this.login = login;
    }
@@ -122,6 +153,10 @@ public class InsertUpdateForm {
       return name;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.name"
+    */
    public void setName(String name) {
       this.name = name;
    }
@@ -130,6 +165,16 @@ public class InsertUpdateForm {
       return password;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.password"
+    * 
+    * @struts.validator type="minlength" arg1value="${var:minlength}"
+    * @struts.validator-var name="minlength" value="6"
+    * 
+    * @struts.validator type="maxlength" arg1value="${var:maxlength}"
+    * @struts.validator-var name="maxlength" value="8"
+    */
    public void setPassword(String password) {
       this.password = password;
    }
@@ -138,6 +183,10 @@ public class InsertUpdateForm {
       return address;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.address"
+    */
    public void setAddress(String address) {
       this.address = address;
    }
@@ -146,6 +195,10 @@ public class InsertUpdateForm {
       return state;
    }
 
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.state"
+    */
    public void setState(State state) {
       this.state = state;
    }
@@ -167,15 +220,7 @@ public class InsertUpdateForm {
 
    /**
     * @Action
-    * @EnabledWhen g:isNotEmpty(name) and
-    * 					g:isNotEmpty(login) and
-    * 					g:isNotEmpty(password) and
-    * 					g:isNotEmpty(email) and
-    * 					g:isNotEmpty(birthday) and
-    * 					g:isNotEmpty(address) and
-    * 					g:isNotEmpty(role) and
-    * 					g:isNotEmpty(country) and
-    * 					g:isNotEmpty(state)
+    * @ValidateBefore
     */
    public void save() throws Exception {
       final User user = new User();
@@ -194,10 +239,10 @@ public class InsertUpdateForm {
    public void findRole() throws Exception {
       setRole(new RoleSearchCommand().getRole(roleCode));
    }
-
+   
    /**
     * @Action
     */
-   public void chooseRole() throws Exception {
+   public void chooseRole() {
    }
 }

@@ -18,42 +18,12 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Insets;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.thinlet.BaseThinlet;
-
-public class UserListView extends BaseThinlet {
+public class UserListView extends BaseView {
    private final UserListForm form;
 
    public UserListView() throws Exception {
-      int width = 800;
-      int height = 350;
-      Frame f = new Frame();
-      f.add(this);
-      Insets is = f.getInsets();
-      width += is.left + is.right;
-      height += is.top + is.bottom;
-      Dimension ss = getToolkit().getScreenSize();
-      width = Math.min(width, ss.width);
-      height = Math.min(height, ss.height);
-      f.setBounds((ss.width - width) / 2, (ss.height - height) / 2, width,
-            height);
-      f.setResizable(false);
-      f.setTitle("Users");
-      f.addWindowListener(new WindowAdapter() {
-         public void windowClosing(WindowEvent e) {
-            System.exit(0);
-         }
-      });
-      setAllI18n(true);
-      setResourceBundle(UIUtils.getInstance().getBundle());
-      add(parse("user-list.xml"));
-
+      super("UserListView.title", "user-list.xml", 800, 360, false);
       bind(form = new UserListForm());
    }
    

@@ -22,9 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import net.java.dev.genesis.command.NoopCommand;
 import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
 import net.java.dev.genesis.text.FormatAdapter;
 import net.java.dev.genesis.text.FormatterRegistry;
+import net.java.dev.genesis.ui.ValidationUtils;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -50,6 +52,22 @@ public class UIUtils {
    public void initialize() {
       setupConverters();
       setupFormatters();
+      final Thread t1 = new Thread() {
+         public void run() {
+            new NoopCommand().remotable();
+            log.info("Noop command executed");
+         }
+      };
+
+      final Thread t2 = new Thread() {
+         public void run() {
+            ValidationUtils.getInstance();
+            log.info("Validation rules loaded");
+         }
+      };
+
+      t1.start();
+      t2.start();
       log.info("Initialization started");
    }
 

@@ -22,20 +22,12 @@ import java.awt.Dimension;
 import java.awt.Frame;
 
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
 
-public class RoleListView extends BaseDialogThinlet {
+public class RoleListView extends BaseDialogView {
    private final RoleListForm form;
 
    public RoleListView(final Frame frame) throws Exception {
-      super(frame);
-      getDialog().setModal(true);
-      getDialog().setResizable(false);
-      getDialog().setTitle("Role List");
-      setAllI18n(true);
-      setResourceBundle(UIUtils.getInstance().getBundle());
-      add(parse("role-list.xml"));
+      super(frame,"RoleListView.title","role-list.xml", false, true);
       bind(form = new RoleListForm());
    }
 
