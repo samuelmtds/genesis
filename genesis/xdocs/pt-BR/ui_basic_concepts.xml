@@ -495,19 +495,81 @@ public class ExemploAfterActionForm {
         <code>@BeforeAction</code>, caso o nome do método na view também fosse
         <code>salvar()</code> não seria necessário passá-lo na anotação.</p>
       </subsection>
-      <subsection name="Usando invokeFormAction(String)">
-        <p>Em algumas ocasiões pode ser necessário invocar um ou mais métodos do
+      <subsection name="Usando refreshView(..) e refreshViewFromForm(Object)">
+        <p>Algumas vezes os valores de um form podem ser atualizados
+        externamente ou diretamente pela view - para coordenar a iteração de
+        diversos forms, por exemplo. Contudo, visto que estas alterações não
+        foram gerenciadas pelo genesis, tanto o cache interno do framework como
+        as informações exibidas ficam fora de sincronia, causando uma série de
+        problemas. Os métodos <code>refreshView()</code>,
+        <code>refreshView(Object)</code> e
+        <code>refreshViewFromForm(Object</code> podem ser utilizados nestes
+        cenários.</p>
+        <p>O primeiro método, <code>refreshView()</code>, deve ser utilizado
+        quando somente um form está associado a view.
+        <code>refreshView(Object)</code> recebe como o parâmetro o widget ao
+        qual um ou vários forms estão ligados e processa quaisquer atualizações
+        encontradas neles. <code>refreshViewFromForm(Object)</code> atualiza o
+        widget ligado ao form passado como parâmetro. Um exemplo de uso do
+        primeiro método pode ser visto abaixo:</p>
+<source>
+public class ExemploRefreshViewView extends BaseThinlet {
+   private ExemploRefreshViewForm form;
+
+   public ExemploRefreshViewView() {
+      // lógica de inicializacao
+      bind(form = new ExemploRefreshViewForm());
+   }
+
+   public void selecionaEntidadeRelacionada() {
+      // exibe uma tela auxiliar de selecao de entidade e retorna
+      Entidade entidade = new ConsultaEntidadeView().getEntidade();
+
+      if (entidade != null) {
+         form.setEntidade(entidade);
+         refreshView();
+      }
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploRefreshViewForm {
+   private Entidade entidade;
+   // ...
+
+   public Entidade getEntidade() {
+      return entidade;
+   }
+
+   public void setEntidade(Entidade entidade) {
+      this.entidade = entidade;
+   }
+
+   // ...
+}
+</source>
+      </subsection>
+      <subsection name="Usando invokeFormAction(..)">
+        <p>Em algumas ocasiões pode ser necessário invocar um ou mais ações do
         form de dentro de um método da view sob determinadas condições
-        específicas e o uso de <code>@BeforeAction</code> e <code>@AfterAction
-        </code>
-        não é possível. Embora a execução direta de um método do form seja
-        possível, ela ocorrerá sem que o framework seja notificado disso, o que
-        terá diversas conseqüências como a não atualização da interface gráfica,
-        por exemplo.</p>
+        específicas e o uso de <code>@BeforeAction</code> e
+        <code>@AfterAction</code> não é possível. Embora a execução direta de um
+        método do form seja possível, ela ocorrerá sem que o framework seja
+        notificado disso, o que terá diversas conseqüências como a não
+        atualização da interface gráfica, por exemplo.</p>
         <p>Para chamar um método do form e manter o sincronismo automático deve-
-        se utilizar o método <code>invokeFormAction(String)</code>. O parâmetro
-        que este recebe é o nome do método do form a ser invocado. Um exemplo
-        encontra-se abaixo:</p>
+        se utilizar os métodos <code>invokeFormAction(String)</code> ou
+        <code>invokeFormAction(Object,String)</code>. O parâmetro
+        <code>String</code> que ambos recebem é o nome do método do form a ser
+        invocado. A segunda versão do método aceita a instância do form em que o
+        método deve ser invocado e é útil quando vários forms estão ligados a
+        view. Um exemplo de uso da primeira versão do método encontra-se abaixo:
+        </p>
 <source>
 public class ExemploInvokeFormActionView extends BaseThinlet {
    private ExemploInvokeFormActionForm form;
@@ -544,10 +606,10 @@ public class ExemploInvokeFormActionForm {
    }
 
    /**
-    * @Action
+    * @DataProvider objectField=totais
     */
-   public void recalculaTotais() {
-      // logica que altera diversas outras propriedades
+   public List recalculaTotais() {
+      // logica de recálculo
    }
 }
 </source>

@@ -485,18 +485,80 @@ public class AfterActionFormExample {
         <code>save()</code> it wouldn't be necessary to use it as an argument to
         the annotation.</p>
       </subsection>
+      <subsection name="Using refreshView(..) and refreshViewFromForm(Object)">
+        <p>Sometimes form values may be updated by an external source or
+        directly by the view - to coordinate multiple form iteraction, for
+        example. However, since these changes are not managed by genesis, both
+        the framework internal value cache as displayed data will be stale,
+        causing several anomalies. Methods <code>refreshView()</code>,
+        <code>refreshView(Object)</code> and
+        <code>refreshViewFromForm(Object</code> can be used in these scenarios.
+        </p>
+        <p>The first method, <code>refreshView()</code>, should be used when
+        just one form instance is bound to a view.
+        <code>refreshView(Object)</code> takes as its parameter the widget to
+        which one or several forms are bound and process any changes to their
+        values. <code>refreshViewFromForm(Object)</code> updates the widget
+        bound to the form instance informed as its parameter. An example of how
+        to use the first method is shown below:</p>
+<source>
+public class RefreshViewViewExample extends BaseThinlet {
+   private RefreshViewFormExample form;
+
+   public RefreshViewViewExample() {
+      // initialization logic
+      bind(form = new RefreshViewFormExample());
+   }
+
+   public void selectRelatedEntity() {
+      // display a helper view for selecting the entity and returns
+      Entity entity = new EntityLookupView().getEntity();
+
+      if (entity != null) {
+         form.setEntity(entity);
+         refreshView();
+      }
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class RefreshViewExampleForm {
+   private Entity entity;
+   // ...
+
+   public Entity getEntity() {
+      return entity;
+   }
+
+   public void setEntity(Entity entity) {
+      this.entity = entity;
+   }
+
+   // ...
+}
+</source>
+      </subsection>
       <subsection name="Using invokeFormAction(String)">
         <p>In some situations it may be necessary to invoke one or more form
         methods inside a view method under certain specific conditions where
         using <code>@BeforeAction</code> and <code>@AfterAction</code> is not
         enough. Although calling a form method directly is possible, genesis is
-        not notified of the method invocation. This has several consequences ,
+        not notified of the method invocation. This has several consequences,
         such as a stale UI, for example.</p>
         <p>In order to invoke a form method and still keep the automatic
-        synchronization between view and form, the method
-        <code>invokeFormAction(String)</code> should be used. Its parameter is
-        the name of the form method to be invoked. An example is shown below:</p
-        >
+        synchronization between view and form, either the method
+        <code>invokeFormAction(String)</code> or the method
+        <code>invokeFormAction(Object,String)</code>should be used. The
+        <code>String</code> parameter both take is the name of the form method
+        to be invoked. The second method accepts the form instance in which the
+        method should be invoked and is useful when several forms are bound to
+        the same view. An example of how to use the first method is shown below:
+        </p>
 <source>
 public class InvokeFormActionViewExample extends BaseThinlet {
    private InvokeFormActionFormExample form;
@@ -533,7 +595,7 @@ public class InvokeFormActionFormExample {
    }
 
    /**
-    * @Action
+    * @DataProvider objectField=totals
     */
    public void recalculateTotals() {
       // business logic to manipulate several other properties
