@@ -595,6 +595,7 @@ public void calculateRemainingAmount() {
 <source>
 @DataProvider &lt;objectField=nameObjectField&gt;
               &lt;indexField=nameIndexField&gt;
+              &lt;widgetName=nameObjectField&gt;
               &lt;callOnInit=booleanValue&gt;
 </source>
       <p>This annotation may be used in methods returning either a
@@ -607,7 +608,11 @@ public void calculateRemainingAmount() {
       <code>indexField</code> is the property that will hold indexes for the
       selected elements on the widget. It must be an <code>int</code> or an
       <code>Integer</code>, an array of one of these types or a
-      <code>Collection</code>. At least one of these two parameters must be
+      <code>Collection</code>. 
+      In case <code>widgetName</code> is used it must receive the widget
+      name defined in Thinlet XML. This widget will be the one to receive
+      the data provided by the annotated method.
+      <b>Attention:</b> At least one of these three parameters must be
       informed.</p>
       <p>The widget <code>name</code> is equal to the value specified for <code>
       objectField</code> or <code>indexField</code>. When both are specified,

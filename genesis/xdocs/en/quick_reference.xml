@@ -233,19 +233,32 @@ public class InsertUpdateForm {
           </tr>
           <tr>
             <td>objectField</td>
-            <td>widgetName (which is also a form's property name)</td>
-            <td>WIdget that will be filled with method's data</td>
-            <td>just in case there is no <code>indexField</code> specified</td>
+            <td>form's property name (which is also a widgetName, if 
+            <code>widgetName</code> is not specified)</td>
+            <td>Property to be called whenever some content is selected
+            and the widget that will be filled with method's data if 
+            <code>widgetName</code> is not specified</td>
+            <td>just in case there is neither <code>indexField</code> 
+            nor <code>widgetName</code> specified</td>
           </tr>
           <tr>
             <td>indexField</td>
             <td>name of a form's property.
-    (also widget's name if no <code>objectField</code> specified)</td>
+             (also widget's name if neither <code>objectField</code> nor 
+             <code>widgetName</code> are specified)</td>
             <td>name of a form's property that holds indexes of the selected
             elements on the widget. It must be an <code>int</code> or an
             <code>Integer</code>, an array of one of these types or a
             <code>Collection</code></td>
-            <td>just in case there is no <code>objectField</code> defined</td>
+            <td>just in case there is neither <code>objectField</code> 
+            nor <code>widgetName</code> specified</td>
+          </tr>
+          <tr>
+            <td>widgetName</td>
+            <td>simply widgetName</td>
+            <td>Widget that will be filled with method's data</td>
+            <td>just in case there is neither <code>objectField</code> 
+            nor <code>indexField</code> specified</td>
           </tr>
           <tr>
             <td>callOnInit</td>

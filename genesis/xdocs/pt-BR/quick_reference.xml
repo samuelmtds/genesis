@@ -225,23 +225,36 @@ public class InsertUpdateForm {
           </tr>
           <tr>
             <td>objectField</td>
-            <td>nomeDoWidget (que também é o nomeDoAtributoDoForm)</td>
-            <td>Nome do widget que será atualizado com o resultado
+            <td>nomeDoAtributoDoForm (que também é o nomeDoWidget, caso 
+            <code>widgetName</code> não seja especificado)</td>
+            <td>Nome do widget (caso widgetName não seja especificado) 
+            que será atualizado com o resultado
             retornado pelo método e também nome do campo do form que mantém o
             conteúdo selecionados na interface gráfica.</td>
-            <td>somente se <code>indexField</code> não for especificado</td>
+            <td>somente se <code>indexField</code> ou <code>widgetName</code> 
+            não forem especificados</td>
           </tr>
           <tr>
             <td>indexField</td>
-            <td>nomeDoAtributoDoForm (se <code>objectField</code> não for
-            especificado, também nomeDoWidget)</td>
+            <td>nomeDoAtributoDoForm (se <code>objectField</code> ou 
+            <code>widgetName</code> não forem especificados, 
+            também nomeDoWidget)</td>
             <td>Nome do atributo do form, do tipo <code>Collection</code> de
             <code>Integer</code> ou array de int/<code>Integer</code> que mantém
             o conteúdo dos índices dos dados selecionados no widget. Se
             <code>objectField</code> não for especificado, também é o nome do
             widget que será atualizado com o resultado retornado pelo método</td
             >
-            <td>somente se <code>objectField</code> não for especificado</td>
+            <td>somente se <code>objectField</code> ou <code>widgetName</code> 
+            não forem especificados</td>
+          </tr>
+          <tr>
+            <td>widgetName</td>
+            <td>nome do widget propriamente dito</td>
+            <td>Nome do widget que será atualizado com o resultado 
+            retornado pelo método</td>
+            <td>somente se <code>objectField</code> ou <code>indexField</code> 
+            não forem especificados</td>
           </tr>
           <tr>
             <td>callOnInit</td>

@@ -610,6 +610,7 @@ public void calculaMontanteCorrigido() {
 <source>
 @DataProvider &lt;objectField=nomeCampoObjeto&gt;
               &lt;indexField=nomeCampoIndice&gt;
+              &lt;widgetName=nomeCampo&gt;
               &lt;callOnInit=valorBooleano&gt;
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
@@ -621,7 +622,10 @@ public void calculaMontanteCorrigido() {
       <code>Collection</code>. <code>indexField</code> é a propriedade que
       guardará os índices dos elementos selecionados no widget. Deve ser um
       <code>int</code> ou um <code>Integer</code>, uma array de um desses tipos
-      ou uma <code>Collection</code>. Pelo menos um dos dois parâmetros deve ser
+      ou uma <code>Collection</code>. No caso de <code>widgetName</code>,
+      se utilizado, deve receber o nome do widget, definido no Thinlet XML, 
+      que irá receber as informações retornadas pelo método anotado.
+      <b>Atenção:</b> Pelo menos uma dessas três propriedades deve ser 
       informado.</p>
       <p>O <code>name</code> do widget na tela é igual ao nome da propriedade
       informada como <code>objectField</code> ou <code>indexField</code>, sendo
