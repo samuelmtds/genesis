@@ -38,6 +38,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import thinlet.Thinlet;
+
 //TODO: call reset() in appropriate points
 public class ThinletBinder {
    private static final Log log = LogFactory.getLog(ThinletBinder.class);
@@ -120,7 +122,7 @@ public class ThinletBinder {
             continue;
          }
 
-         final String className = thinlet.getClass(components.get(0));
+         final String className = Thinlet.getClass(components.get(0));
          final FieldMetadata fieldMetadata = (FieldMetadata)entry.getValue();
 
          if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
@@ -187,7 +189,7 @@ public class ThinletBinder {
    }
 
    public void setValue(Object component, String name) throws Exception {
-      final String type = thinlet.getClass(component);
+      final String type = Thinlet.getClass(component);
 
       String value = null;
 
@@ -199,7 +201,7 @@ public class ThinletBinder {
          value = name;
       } else if (type.equals(BaseThinlet.COMBOBOX) || type.equals(BaseThinlet.LIST)) {
          component = thinlet.getSelectedItem(component);
-
+         
          value = thinlet.getName(component != null ? component : null);
       } else if (type.equals(BaseThinlet.PROGRESS_BAR) || type.equals(BaseThinlet.SLIDER)) {
          value = thinlet.getValue(component);
@@ -226,7 +228,7 @@ public class ThinletBinder {
             continue;
          }
 
-         final String className = thinlet.getClass(component);
+         final String className = Thinlet.getClass(component);
 
          if (!BaseThinlet.BUTTON.equals(className)) {
             log.warn(name + " is not represented by a button; it is a " + 
@@ -279,12 +281,18 @@ public class ThinletBinder {
          final Object ret = dataProviderMetadata.invoke(form);
          final Collection items = (dataProviderMetadata.getDataProvider()
                .isArray()) ? Arrays.asList((Object[])ret) : (List)ret;
+         
+         // TODO: only table and combobox are implemented
+         if (Thinlet.getClass(component).equals(BaseThinlet.TABLE)) {
+            thinlet.populateFromCollection(component, items);
+         } else if (Thinlet.getClass(component).equals(BaseThinlet.COMBOBOX)) {
+            thinlet.populateFromCollection(component, items, thinlet
+                  .getProperty(component, "key").toString(), thinlet
+                  .getProperty(component, "value").toString(), Boolean.valueOf(
+                  thinlet.getProperty(component, "blank").toString())
+                  .booleanValue());
+         }
 
-         thinlet.populateFromCollection(component, items, 
-               thinlet.getProperty(component, "key").toString(), 
-               thinlet.getProperty(component, "value").toString(), 
-               Boolean.valueOf(thinlet.getProperty(component, "blank")
-               .toString()).booleanValue());
       }
    }
 
