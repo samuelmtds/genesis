@@ -834,6 +834,32 @@ public abstract class BaseThinlet extends Thinlet {
       return indexes;
    }
 
+   protected void setSelectedIndexes(String name, int[] indexes){
+      setSelectedIndexes(find(name), indexes);
+   }
+
+   protected void setSelectedIndexes(Object component, int[] indexes) {
+      if (COMBOBOX.equals(getClass(component))) {
+         setSelected(component, indexes.length > 0 ? indexes[0] : -1);
+         return;
+      }
+
+      final Object[] items = getItems(component);
+      int j = 0;
+
+      for (int i = 0; i < items.length; i++) {
+         if (indexes.length - j < 1 || indexes[j] != i) {
+            setSelected(items[i], false);
+            continue;
+         }
+
+         setSelected(items[i], true);
+         j++;
+      }
+      // Thinlet bug... component needs to be repainted
+      repaint(component);
+   }
+
    protected void handleException(String message, Throwable throwable) {
       try {
          ErrorReporterDialog.show(this, getErrorMessage(), message, throwable);

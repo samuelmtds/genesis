@@ -24,13 +24,17 @@ import java.util.Collection;
 public class FieldEntry implements Serializable {
    private final String fieldName;
    private final String fieldTypeName;
+   private final boolean isPrimitive;
    private final boolean isArray;
+   private final boolean isPrimitiveArray;
    private final boolean isCollection;
 
    public FieldEntry(final String fieldName, final Class fieldType) {
       this.fieldName = fieldName;
       this.fieldTypeName = fieldType.getName();
+      this.isPrimitive = fieldType.isPrimitive();
       this.isArray = fieldType.isArray();
+      this.isPrimitiveArray = isArray && fieldType.getComponentType().isPrimitive();
       this.isCollection = Collection.class.isAssignableFrom(fieldType);
    }
 
@@ -42,14 +46,22 @@ public class FieldEntry implements Serializable {
       return fieldName;
    }
 
+   public boolean isPrimitive() {
+      return isPrimitive;
+   }
+
    public boolean isArray() {
       return isArray;
+   }
+
+   public boolean isPrimitiveArray() {
+      return isPrimitiveArray;
    }
 
    public boolean isCollection() {
       return isCollection;
    }
-   
+
    public boolean isMultiple(){
       return isArray() || isCollection();
    }
@@ -59,7 +71,9 @@ public class FieldEntry implements Serializable {
       return that.fieldName.equals(this.fieldName)
             && that.fieldTypeName.equals(this.fieldTypeName)
             && that.isArray == this.isArray
-            && that.isCollection == this.isCollection;
+            && that.isCollection == this.isCollection
+            && that.isPrimitive == this.isPrimitive
+            && that.isPrimitiveArray == this.isPrimitiveArray;
    }
 
    public int hashCode() {

@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.ValidationUtils;
-import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
@@ -82,8 +82,7 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    protected FormController getController(final Object form) {
-      //TODO: use introduction as well; there must be a single controller per form instance
-      return new DefaultFormController();
+      return ((FormControllerFactory)form).retrieveFormController();
    }
 
    public void bind() throws Exception {
@@ -304,7 +303,7 @@ public class ThinletBinder implements FormControllerListener {
          final DataProviderMetadata dataProviderMetadata = 
                (DataProviderMetadata)i.next();
 
-         final String name = getFieldName(dataProviderMetadata);
+         final String name = dataProviderMetadata.getWidgetName();
          final Object component = thinlet.find(root, name);
 
          if (component == null) {
@@ -333,12 +332,6 @@ public class ThinletBinder implements FormControllerListener {
                + ".name," + name + ")", root, this);
          dataProvided.put(name, dataProviderMetadata);
       }
-   }
-
-   protected String getFieldName(final DataProviderMetadata dataProviderMetadata) {
-      return dataProviderMetadata.getObjectField() != null ? 
-            dataProviderMetadata.getObjectField().getFieldName() : 
-            dataProviderMetadata.getIndexField().getFieldName();
    }
 
    //TODO: move more of this logic to controller
@@ -410,7 +403,7 @@ public class ThinletBinder implements FormControllerListener {
    
    public void dataProvidedListChanged(DataProviderMetadata metadata, List items)
          throws Exception {
-      final String name = getFieldName(metadata);
+      final String name = metadata.getWidgetName();
       final Object component = thinlet.find(root, name);
 
       if (component == null) {
@@ -449,6 +442,11 @@ public class ThinletBinder implements FormControllerListener {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
       }
+   }
+
+   public void dataProvidedIndexesChanged(DataProviderMetadata metadata,
+         int[] selectedIndexes) {
+      thinlet.setSelectedIndexes(metadata.getWidgetName(), selectedIndexes);
    }
 
    private boolean isBlank(Object component, String name) {

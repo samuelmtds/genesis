@@ -20,6 +20,7 @@ package net.java.dev.genesis.aspect;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -246,6 +247,8 @@ public class FormMetadataFactoryAspect {
 
                final Map attributesMap = GenesisUtils.getAttributesMap(
                      ((UntypedAnnotationProxy) annotation).getValue());
+               final String widgetName = (String)attributesMap
+                     .get("widgetName");
                final String objectFieldName = (String)attributesMap
                      .get("objectField");
                final String indexFieldName = (String)attributesMap
@@ -256,8 +259,8 @@ public class FormMetadataFactoryAspect {
                final DataProviderMetadata dataProviderMetadata = methodMetadata
                      .getDataProviderMetadata();
 
-               if (objectFieldName == null && indexFieldName == null) {
-                  throw new RuntimeException("At least one of objectField or " + 
+               if (widgetName == null && objectFieldName == null && indexFieldName == null) {
+                  throw new RuntimeException("At least one of widgetName, objectField or " + 
                         "indexField must be specified for @DataProvider in " +
                         methodMetadata.getMethodEntry().getMethodName());
                }
@@ -277,11 +280,21 @@ public class FormMetadataFactoryAspect {
                if (objectFieldName != null) {
                   PropertyDescriptor descriptor = (PropertyDescriptor)
                         descriptorsPerPropertyName.get(objectFieldName);
-                  
+
                   if (descriptor == null) {
                      throw new RuntimeException("The object "
                            + formMetadata.getFormClass()
                            + " doesn´t have a field called " + objectFieldName);
+                  }
+
+                  final Class fieldType = descriptor.getPropertyType();
+
+                  if (fieldType.isPrimitive()
+                        || (fieldType.isArray() &&
+                              fieldType.getComponentType().isPrimitive())) {
+                     throw new RuntimeException("The object " + objectFieldName
+                           + " has an object field called " + objectFieldName
+                           + " that cannot be primitive or array of primitives");
                   }
 
                   dataProviderMetadata.setObjectField(new FieldEntry(
@@ -291,16 +304,37 @@ public class FormMetadataFactoryAspect {
                if (indexFieldName != null) {
                   PropertyDescriptor descriptor = (PropertyDescriptor)
                         descriptorsPerPropertyName.get(indexFieldName);
-                  
+
                   if (descriptor == null) {
                      throw new RuntimeException("The object "
                            + formMetadata.getFormClass()
                            + " doesn´t have a field called " + indexFieldName);
                   }
 
-                  dataProviderMetadata.setIndexField(new FieldEntry(
-                        descriptor.getName(), descriptor.getPropertyType()));
+                  final Class fieldType = descriptor.getPropertyType()
+                        .isArray() ? descriptor.getPropertyType()
+                        .getComponentType() : descriptor.getPropertyType();
+
+                  if (!Collection.class.isAssignableFrom(descriptor
+                        .getPropertyType())
+                        && !Integer.TYPE.isAssignableFrom(fieldType)
+                        && !Integer.class.isAssignableFrom(fieldType)) {
+                     throw new RuntimeException(
+                           "The object "
+                                 + objectFieldName
+                                 + " has an index field called "
+                                 + indexFieldName
+                                 + " that's not an Integer, int, Collection of them, or array of them.");
+                  }
+
+                  dataProviderMetadata.setIndexField(new FieldEntry(descriptor
+                        .getName(), descriptor.getPropertyType()));
                }
+
+               dataProviderMetadata
+                     .setWidgetName(widgetName != null ? widgetName
+                           : objectFieldName != null ? objectFieldName
+                                 : indexFieldName);
             }
          }
 

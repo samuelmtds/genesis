@@ -35,6 +35,7 @@ public class FormMetadata {
    private final Map methodMetadatas;
    private Map actionMetadatas;
    private Map dataProviderMetadatas;
+   private Map dataProviderIndexes;
 
    public FormMetadata(final Class formClass) {
       this.formClass = formClass;
@@ -74,17 +75,42 @@ public class FormMetadata {
    }
 
    public Map getDataProviderMetadatas() {
-      if (dataProviderMetadatas == null) {
-         dataProviderMetadatas = new HashMap();
-         for (Iterator iter = methodMetadatas.values().iterator(); iter.hasNext();) {
-            MethodMetadata methodMeta = (MethodMetadata) iter.next();
-            if (methodMeta.getDataProviderMetadata() == null) {
-               continue;
-            }
-            dataProviderMetadatas.put(methodMeta.getMethodEntry(), methodMeta.getDataProviderMetadata());
-         }
+      if (dataProviderMetadatas == null || dataProviderIndexes == null) {
+         initializeDataProviders();
       }
       return new HashMap(dataProviderMetadatas);
+   }
+
+   public Map getDataProviderIndexes() {
+      if (dataProviderMetadatas == null || dataProviderIndexes == null) {
+         initializeDataProviders();
+      }
+      return new HashMap(dataProviderIndexes);
+   }
+
+   private void initializeDataProviders() {
+      dataProviderMetadatas = new HashMap();
+      dataProviderIndexes = new HashMap();
+
+      MethodMetadata methodMeta;
+      DataProviderMetadata dataMeta;
+
+      for (Iterator iter = methodMetadatas.values().iterator(); iter.hasNext();) {
+         methodMeta = (MethodMetadata) iter.next();
+         dataMeta = methodMeta.getDataProviderMetadata();
+
+         if (dataMeta == null) {
+            continue;
+         }
+
+         dataProviderMetadatas.put(methodMeta.getMethodEntry(), dataMeta);
+
+         if (dataMeta.getIndexField() == null) {
+            continue;
+         }
+
+         dataProviderIndexes.put(dataMeta.getIndexField().getFieldName(), dataMeta);
+      }
    }
 
    public CompiledExpression getNamedCondition(final String namedConditionName) {
@@ -101,6 +127,10 @@ public class FormMetadata {
    
    public MethodMetadata getMethodMetadata(final String methodName) {
       return (MethodMetadata) methodMetadatas.get(new MethodEntry(methodName, new String[0]));
+   }
+
+   public DataProviderMetadata getDataProviderForIndex(final String fieldName) {
+      return (DataProviderMetadata) dataProviderIndexes.get(fieldName);
    }
 
    public void addNamedCondition(final String key, final CompiledExpression value) {

@@ -193,6 +193,10 @@ public class DefaultFormController implements FormController {
          entry = (Map.Entry) i.next();
          fieldMeta = formMetadata.getFieldMetadata(entry.getKey().toString());
 
+         if (fieldMeta == null) {
+            continue;
+         }
+
          value = (stringMap) ? fieldMeta.getConverter().convert(
                fieldMeta.getFieldClass(), entry.getValue()) : entry.getValue();
 
@@ -232,6 +236,10 @@ public class DefaultFormController implements FormController {
       }
 
       if (evaluateCallWhenConditions(firstCall)) {
+         evaluateNamedConditions();
+      }
+
+      if (evaluateDataProvidedIndexes()) {
          evaluateNamedConditions();
       }
 
@@ -346,11 +354,20 @@ public class DefaultFormController implements FormController {
    }
 
    protected void evaluateEnabledWhenConditions() {
+      evaluateConditions(true);
+   }
+
+   protected void evaluateVisibleWhenConditions() {
+      evaluateConditions(false);
+   }
+
+   protected void evaluateConditions(boolean enabled) {
       Map.Entry entry;
       MemberMetadata memberMetadata;
       Boolean newValue;
+      Map conditionMap;
 
-      final Map updatedEnabledConditions = new HashMap();
+      final Map updatedConditions = new HashMap();
       final Map toEvaluate = new HashMap(formMetadata.getFieldMetadatas());
       toEvaluate.putAll(formMetadata.getActionMetadatas());
 
@@ -358,27 +375,36 @@ public class DefaultFormController implements FormController {
          entry = (Map.Entry) i.next();
          memberMetadata = (MemberMetadata) entry.getValue();
 
-         if (memberMetadata.getEnabledCondition() == null) {
+         if ((enabled && memberMetadata.getEnabledCondition() == null)
+               || (!enabled && memberMetadata.getVisibleCondition() == null)) {
             continue;
          }
 
-         newValue = isSatisfied(memberMetadata.getEnabledCondition());
+         newValue = isSatisfied(enabled ? memberMetadata.getEnabledCondition()
+               : memberMetadata.getVisibleCondition());
+         
+         conditionMap = enabled ?
+               currentState.getEnabledMap() : currentState.getVisibleMap();
 
-         if (!newValue.equals(currentState.getEnabledMap().get(memberMetadata
+         if (!newValue.equals(conditionMap.get(memberMetadata
                .getName()))) {
-            currentState.getEnabledMap().put(memberMetadata.getName(), newValue);
-            updatedEnabledConditions.put(memberMetadata.getName(), newValue);
+            conditionMap.put(memberMetadata.getName(), newValue);
+            updatedConditions.put(memberMetadata.getName(), newValue);
          }
 
          if (log.isDebugEnabled()) {
-            log.debug("EnabledWhen Condition for member '"
-                  + memberMetadata.getName() + "' evaluated as '"
-                  + currentState.getEnabledMap().get(memberMetadata.getName()) +
-                  "'");
+            log.debug((enabled ? "EnabledWhen" : "VisibleWhen")
+                  + " Condition for member '" + memberMetadata.getName()
+                  + "' evaluated as '"
+                  + conditionMap.get(memberMetadata.getName()) + "'");
          }
       }
 
-      fireEnabledConditionChanged(updatedEnabledConditions);
+      if (enabled) {
+         fireEnabledConditionChanged(updatedConditions);
+      } else {
+         fireVisibleConditionChanged(updatedConditions);
+      }
    }
 
    protected void fireEnabledConditionChanged(Map updatedEnabledConditions) {
@@ -386,43 +412,6 @@ public class DefaultFormController implements FormController {
          ((FormControllerListener)i.next()).enabledConditionsChanged(
                updatedEnabledConditions);
       }
-   }
-
-   //TODO: merge this logic with evaluateEnabledWhenConditions()
-   protected void evaluateVisibleWhenConditions() {
-      Map.Entry entry;
-      MemberMetadata memberMetadata;
-      Boolean newValue;
-
-      final Map updatedVisibleConditions = new HashMap();
-      final Map toEvaluate = new HashMap(formMetadata.getFieldMetadatas());
-      toEvaluate.putAll(formMetadata.getActionMetadatas());
-
-      for (final Iterator i = toEvaluate.entrySet().iterator(); i.hasNext();) {
-         entry = (Map.Entry) i.next();
-         memberMetadata = (MemberMetadata) entry.getValue();
-
-         if (memberMetadata.getVisibleCondition() == null) {
-            continue;
-         }
-
-         newValue = isSatisfied(memberMetadata.getVisibleCondition());
-
-         if (!newValue.equals(currentState.getVisibleMap().get(memberMetadata
-               .getName()))) {
-            currentState.getVisibleMap().put(memberMetadata.getName(), newValue);
-            updatedVisibleConditions.put(memberMetadata.getName(), newValue);
-         }
-
-         if (log.isDebugEnabled()) {
-            log.debug("VisibleWhen Condition for member '"
-                  + memberMetadata.getName() + "' evaluated as '"
-                  + currentState.getVisibleMap().get(memberMetadata.getName()) + 
-                  "'");
-         }
-      }
-
-      fireVisibleConditionChanged(updatedVisibleConditions);
    }
 
    protected void fireVisibleConditionChanged(Map updatedVisibleConditions) {
@@ -438,6 +427,46 @@ public class DefaultFormController implements FormController {
       for (final Iterator i = formMetadata.getMethodMetadatas().values()
             .iterator(); i.hasNext(); ) {
          changed |= invokeAction((MethodMetadata)i.next(), firstCall, true);
+      }
+
+      return changed;
+   }
+
+   protected boolean evaluateDataProvidedIndexes() throws Exception {
+      boolean changed = false;
+      DataProviderMetadata dataMeta;
+      Object indexes;
+      int[] selectedIndexes;
+      Object objectFieldValue;
+
+      for (final Iterator i = formMetadata.getDataProviderIndexes().values()
+            .iterator(); i.hasNext(); ) {
+         dataMeta = (DataProviderMetadata) i.next();
+         indexes = currentState.getChangedMap().get(dataMeta.getIndexField().getFieldName());
+
+         if (indexes == null) {
+            if (log.isDebugEnabled()) {
+               log.debug("Indexes field "
+                     + dataMeta.getIndexField().getFieldName()
+                     + " didn't change.");
+            }
+            continue;
+         }
+
+         changed = true;
+
+         selectedIndexes = dataMeta.getSelectedIndexes(indexes);
+
+         objectFieldValue = dataMeta.populateSelectedFields(form,
+               (List)currentState.getDataProvidedMap().get(dataMeta),
+               selectedIndexes);
+         fireDataProvidedIndexesChanged(dataMeta, selectedIndexes);
+
+         if (dataMeta.getObjectField() == null) {
+            continue;
+         }
+
+         currentState.getChangedMap().put(dataMeta.getObjectField().getFieldName(), objectFieldValue);
       }
 
       return changed;
@@ -519,6 +548,14 @@ public class DefaultFormController implements FormController {
       for (final Iterator i = listeners.iterator(); i.hasNext(); ) {
          ((FormControllerListener)i.next()).dataProvidedListChanged(metadata, 
                items);
+      }
+   }
+
+   protected void fireDataProvidedIndexesChanged(DataProviderMetadata metadata,
+         int[] selectedIndexes) throws Exception {
+      for (final Iterator i = listeners.iterator(); i.hasNext();) {
+         ((FormControllerListener)i.next()).dataProvidedIndexesChanged(
+               metadata, selectedIndexes);
       }
    }
 

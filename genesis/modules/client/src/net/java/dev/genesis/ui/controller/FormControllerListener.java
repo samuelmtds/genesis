@@ -32,5 +32,7 @@ public interface FormControllerListener {
          throws Exception;
    public void dataProvidedListChanged(DataProviderMetadata metadata, 
          List items) throws Exception;
+   public void dataProvidedIndexesChanged(DataProviderMetadata metadata,
+         int[] selectedIndexes);
    public void valuesChanged(Map updatedValues) throws Exception;
 }
