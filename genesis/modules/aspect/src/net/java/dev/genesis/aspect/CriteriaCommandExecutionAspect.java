@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.aspect;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
@@ -34,18 +35,28 @@ import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    private static final String CRITERIA_ATTRIBUTE = "Criteria";
+   private ThreadLocal threadLocal = new InheritableThreadLocal();
    
-   private boolean useOriginalMethod;
+   private boolean preventStackOverflow;
 
    public CriteriaCommandExecutionAspect(final AspectContext ctx) {
       super(ctx);
-      useOriginalMethod = "true".equals(ctx.getParameter("useOriginalMethod"));
+      preventStackOverflow = "true".equals(ctx.getParameter("preventStackOverflow"));
    }
 
    /**
     * @Around("criteriaCommandExecution")
     */
    public Object commandExecution(JoinPoint jp) throws Throwable {
+      if (preventStackOverflow) {
+         Method m = (Method)threadLocal.get();
+         if (m != null && m.equals(((MethodRtti)jp.getRtti()).getMethod())) {
+            Object value = jp.proceed();
+            threadLocal.set(null);
+            return value;
+         }
+      }
+
       final CriteriaResolver obj = (CriteriaResolver)jp.getTarget();
       final MethodRtti rtti = (MethodRtti) jp.getRtti();
       final Class[] classes = rtti.getParameterTypes();
@@ -55,14 +66,17 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          classNames[i] = classes[i].getName();
       }
 
-      final String methodName = useOriginalMethod ? rtti.getName() : 
-            rtti.getMethod().getName();
+      final String methodName = rtti.getMethod().getName();
       final Object[] parameterValues = rtti.getParameterValues();
 
       final UntypedAnnotation annon = (UntypedAnnotation)Annotations
             .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
       final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.value().toString());
       
+      if (preventStackOverflow) {
+         threadLocal.set(((MethodRtti)jp.getRtti()).getMethod());
+      }
+
       return new CriteriaCommandExecutor(obj, methodName, classNames,
             parameterValues, parser.getPersisterClassName(), parser
                   .getOrderBy(), parser.isAsc(), obj.getPropertiesMap())

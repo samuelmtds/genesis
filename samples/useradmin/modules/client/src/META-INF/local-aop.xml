@@ -22,10 +22,8 @@
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
       <!-- Genesis Aspects -->
-      <mixin class="CommandInvocationAspect$CommandResolverImpl" 
-             factory="net.java.dev.genesis.aspect.ParameterizedMixinFactory" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" 
-             factory="net.java.dev.genesis.aspect.ParameterizedMixinFactory" />
+      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
+      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
       <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
       <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
       <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
@@ -39,7 +37,7 @@
              value="net.java.dev.genesis.aspect.HibernateTransactionalInjector"/>
       </aspect>
       <aspect class="CriteriaCommandExecutionAspect">
-         <param name="useOriginalMethod" value="true" />
+         <param name="preventStackOverflow" value="true" />
       </aspect>
       <aspect class="WaitCursorAspect"/>
    </system>

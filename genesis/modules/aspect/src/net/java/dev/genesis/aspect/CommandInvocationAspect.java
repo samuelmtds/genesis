@@ -26,7 +26,7 @@ import net.java.dev.genesis.command.Transaction;
 
 import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.definition.MixinDefinition;
+import org.codehaus.aspectwerkz.aspect.management.Mixins;
 
 public class CommandInvocationAspect {
    protected final AspectContext ctx;
@@ -41,9 +41,9 @@ public class CommandInvocationAspect {
    public static class CommandResolverImpl implements CommandResolver, Serializable {
       private final boolean useFastMode;
 
-      public CommandResolverImpl(MixinDefinition definition) {
-         useFastMode = !"false".equals(definition.getParameters().get(
-               "useFastMode"));
+      public CommandResolverImpl() {
+         useFastMode = !"false".equals(Mixins.getParameters(getClass(),
+               getClass().getClassLoader()).get("useFastMode"));
       }
 
       public boolean isRemotable(Method m) {
