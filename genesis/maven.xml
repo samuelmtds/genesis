@@ -30,6 +30,7 @@
    <!-- Makes the Genesis Site -->
    <!-- ====================== -->
    <goal name="genesis:site" prereqs="genesis:clean">
+      <attainGoal name="changelog:create-cvspass" />
       <attainGoal name="multiproject:site"/>
    </goal>
    
