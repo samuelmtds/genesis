@@ -9,10 +9,14 @@
       <p><b>TODO: configurar todos os exemplos em um sample e atualizar
       documento com instruções de execução; completar feature list.</b></p>
       <p>O modelo de componentes de negócio do genesis é bastante simples de ser
-      compreendido. Os seguintes conceitos e/ou características dele são 
+      compreendido. Os seguintes conceitos e/ou características dele são
       abordados abaixo:
       <ul>
         <li><a href="#Remotabilidade transparente">Remotabilidade transparente
+        </a></li>
+        <li><a href="#Suporte a transações">Suporte a transações
+        </a></li>
+        <li><a href="#Integração com o Hibernate">Integração com o Hibernate
         </a></li>
       </ul>
       </p>
@@ -77,30 +81,30 @@ a + b = 4
       <p>A saída observada no console local equivale ao resultado da execução
       da linha 17. Porém, as outras instruções de <code>System.out.println</code
       > das linhas 6, 7 e 11 encontram-se dentro de um método anotado como <code
-      >@Remotable</code> e por isso são executadas de forma diferente. Na 
-      verdade, todo o método <code>soma(int,int)</code> passou a ser executado 
+      >@Remotable</code> e por isso são executadas de forma diferente. Na
+      verdade, todo o método <code>soma(int,int)</code> passou a ser executado
       no servidor. Como?</p>
-      <p>Métodos anotados com <code>@Remotable</code> são interceptados através 
-      de um aspecto (genesis-aspect) que transfere a instância em que o método 
-      foi invocado para o servidor, executando-o ali e transferindo o resultado 
-      de volta para o cliente. Essa característica é chamada de 
+      <p>Métodos anotados com <code>@Remotable</code> são interceptados através
+      de um aspecto (genesis-aspect) que transfere a instância em que o método
+      foi invocado para o servidor, executando-o ali e transferindo o resultado
+      de volta para o cliente. Essa característica é chamada de
       <b>remotabilidade transparente</b>.</p>
       <subsection name="Restrições e limitações">
-        <p>Existem algumas restrições básicas para que um método possa ser 
+        <p>Existem algumas restrições básicas para que um método possa ser
         remoto no genesis:
         <ul>
           <li>Não pode ser abstrato</li>
           <li>Não pode ser estático nem manipular membros estáticos</li>
           <li>Não pode ser nativo</li>
-          <li>Deve ser <code>public</code> e estar em uma classe 
+          <li>Deve ser <code>public</code> e estar em uma classe
           <code>public</code></li>
         </ul>
         </p>
-        <p>A primeira existe porque um método abstrato não pode ser invocado 
-        (ele pode ser abstrato na superclasse, no entanto). O método não pode 
-        ser estático pela simples razão que valores estáticos divergem entre 
-        JVMs, enquanto a instância pode ser transferida para o servidor durante 
-        cada execução. As duas últimas restrições existem apenas para manter 
+        <p>A primeira existe porque um método abstrato não pode ser invocado
+        (ele pode ser abstrato na superclasse, no entanto). O método não pode
+        ser estático pela simples razão que valores estáticos divergem entre
+        JVMs, enquanto a instância pode ser transferida para o servidor durante
+        cada execução. As duas últimas restrições existem apenas para manter
         compatibilidade com a especificação EJB.</p>
         <p>Um último efeito colateral a ser notado é que variáveis de instância
         atualizadas em métodos remotos não afetam seus valores locais. Abaixo
@@ -129,11 +133,11 @@ a + b = 4
 21.    public static void main(String[] args) {
 22.       LocalVersusRemoto lvr = new LocalVersusRemoto();
 23.       lvr.local();
-24.       System.out.println("valor: " + lvr.getValor();
+24.       System.out.println("valor: " + lvr.getValor());
 25.       lvr.remoto();
-26.       System.out.println("valor: " + lvr.getValor();
+26.       System.out.println("valor: " + lvr.getValor());
 27.       lvr.local();
-28.       System.out.println("valor: " + lvr.getValor();
+28.       System.out.println("valor: " + lvr.getValor());
 29.    }
 30. }</source>
         <p>A saída no console local é:</p>
@@ -146,12 +150,12 @@ valor: 2</source>
         <p>enquanto no console remoto é:</p>
         <source>
 valor em remoto(): 2</source>
-        <p>Ao se executar a linha 23, a variável <code>valor</code> é modificada 
-        localmente e seu conteúdo tanto dentro do método <code>local()</code> 
+        <p>Ao se executar a linha 23, a variável <code>valor</code> é modificada
+        localmente e seu conteúdo tanto dentro do método <code>local()</code>
         como o impresso na linha 24 são os mesmos. Porém, ao se executar a linha
-        25 a instância <code>lvr</code> é transferida para o servidor e o método 
-        <code>remoto()</code> é executado nela, alterando a cópia remota de 
-        <code>valor</code> de 1 para 2, conforme exibido no console remoto, 
+        25 a instância <code>lvr</code> é transferida para o servidor e o método
+        <code>remoto()</code> é executado nela, alterando a cópia remota de
+        <code>valor</code> de 1 para 2, conforme exibido no console remoto,
         mantendo, no entanto, sua cópia local intacta como notamos na linha 26
         (console local).</p>
         <p>De modo que valores locais são transferidos para o servidor, mas não
@@ -159,6 +163,32 @@ valor em remoto(): 2</source>
         quiser obter a cópia modificada do servidor retorne diretamente a partir
         do método anotado como <code>@Remotable</code>.</p>
       </subsection>
+    </section>
+    <section name="Suporte a transações">
+      <p>Para executar um método dentro de uma transação, basta usar a anotação
+      <code>@Transactional</code> de forma similar ao uso de <code>@Remotable
+      </code>, como abaixo:</p>
+      <source>
+/**
+ * @Transactional
+ */
+public void metodoTransacional() {
+   // codigo do metodo
+}
+      </source>
+      <p>O uso de <code>@Transactional</code> automaticamente implica em tornar
+      um método <code>@Remotable</code>, de modo que o uso de apenas uma dessas
+      anotações por método é necessário. Além de manter as características de
+      remotabilidade transparente, <code>@Transactional</code> faz com que o
+      método seja executado dentro de uma transação JTA. Quaisquer recursos
+      transacionais que sejam acessados durante sua execução e tenham suporte a
+      JTA serão automaticamente incluídos na transação.</p>
+      <p>Se a execução do método transcorrer normalmente, a transação será
+      automaticamente comitada ao final. Caso seja lançada qualquer exceção
+      haverá rollback automático das alterações e a exceção será propagada
+      diretamente ao código cliente.</p>
+    </section>
+    <section name="Integração com o Hibernate">
     </section>
   </body>
 </document>
