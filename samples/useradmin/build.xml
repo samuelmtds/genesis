@@ -26,6 +26,7 @@
 
    <property name="jboss.app" location="${jboss.home}/server/useradmin" />
    <property name="jboss.provider.url" value="jnp://localhost" />
+   <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
    <property name="webstart.port" value="8080" />
 
@@ -365,6 +366,7 @@
       <copy todir="${build.dir}/server/useradmin.war">
          <filterset>
             <filter token="jboss.provider.url" value="${jboss.provider.url}"/>
+            <filter token="jboss.factory.initial" value="${jboss.factory.initial}" />
             <filter token="jboss.provider.port" value="${jboss.provider.port}"/>
             <filter token="webstart.server" value="${webstart.server}"/>
             <filter token="webstart.port" value="${webstart.port}"/>
@@ -416,7 +418,7 @@
    <target name="useradmin:run">
       <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
-                      value="org.jnp.interfaces.NamingContextFactory" />
+                      value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
          <sysproperty key="aspectwerkz.transform.verbose"
@@ -436,7 +438,7 @@
    <target name="useradmin:run-with-debug">
       <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
-                      value="org.jnp.interfaces.NamingContextFactory" />
+                      value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
          <sysproperty key="aspectwerkz.transform.verbose"
@@ -453,7 +455,7 @@
    <target name="useradmin:run-with-logging-on">
       <java classname="net.java.dev.genesis.samples.useradmin.Sample" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
-                      value="org.jnp.interfaces.NamingContextFactory" />
+                      value="${jboss.factory.initial}" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
          <sysproperty key="aspectwerkz.transform.verbose"
