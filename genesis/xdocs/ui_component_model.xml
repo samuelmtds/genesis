@@ -29,6 +29,8 @@
         <li><a href="#Determinando se o campo está vazio">Determinando se o
         campo está vazio</a></li>
         <li><a href="#Comparando valores">Comparando valores</a></li>
+        <li><a href="#Populando combos e tabelas">Populando combos e tabelas</a>
+        </li>
       </ul>
       </p>
     </section>
@@ -1034,9 +1036,122 @@ public void calculaMontanteCorrigido() {
 </source>
       </subsection>
     </section>
+    <section name="Populando combos e tabelas">
+      <p>As opções disponíveis em um combo box podem variar de acordo com os
+      dados preenchidos pelo usuário ou outras regras de negócio. O conteúdo de
+      uma tabela pode precisar ser preenchido dinamicamente em resposta a um
+      critério de filtro especificado pelo usuário, por exemplo. Para lidar com
+      tais situações, existe uma anotação chamada <code>@DataProvider</code>,
+      cuja sintaxe é:</p>
+<source>
+@DataProvider &lt;objectField=nomeCampoObjeto&gt;
+              &lt;indexField=nomeCampoIndice&gt;
+</source>
+      <p>Esta anotação deve ser colocada em métodos que retornam uma
+      <code>java.util.List</code> ou uma array. O retorno dos métodos será
+      utilizado para popular a combo ou tabela. <code>objectField</code> deve
+      receber o nome da propriedade, se houver, que guardará a instância
+      selecionada no widget. Deve ser do mesmo tipo ou uma superclasse do tipo
+      retornado no método anotado, uma array do tipo ou uma
+      <code>Collection</code>. <code>indexField</code> é a propriedade que
+      guardará os índices dos elementos selecionados no widget. Deve ser um
+      <code>int</code> ou um <code>Integer</code>, uma array de um desses tipos
+      ou uma <code>Collection</code>. Pelo menos um dos dois parâmetros deve ser
+      informado.</p>
+      <p>O <code>name</code> do widget na tela é igual ao nome da propriedade
+      informada como <code>objectField</code> ou <code>indexField</code>, sendo
+      que a primeira tem prioridade quando ambas forem informadas. Um exemplo de
+      uso desta anotação é ilustrado abaixo:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <label text="Estado:" />
+   <combobox name="estado" property="key=sigla;value=descricao" />
+</panel>
+]]>
+</source>
+<source>
+public class Estado {
+   private String sigla;
+   private String descricao;
+
+   // getters e setters para as propriedades
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploDataProviderForm {
+   private Estado estado;
+
+   public Estado getEstado() {
+      return estado;
+   }
+
+   public void setEstado(Estado estado) {
+      this.estado = estado;
+   }
+
+   /**
+    * @DataProvider objectField=estado
+    */
+   public Collection populaEstados() {
+      // retorna uma Collection contendo instâncias de Estado
+   }
+
+   // ...
+}
+</source>
+      <p>No primeiro bloco vemos o xml da tela que exibe um <code>label</code> e
+      um combobox que conterá os estados em tempo de execução. A propriedade
+      <code>name</code> possui o mesmo valor que o atributo
+      <code>objectField</code> da anotação <code>@DataProvider</code> do
+      terceiro bloco. Pode-se notar alguns valores configurados no atributo
+      <code>property</code>. Os seguintes valores são utilizados no caso de
+      comboboxes:</p>
+      <ul>
+        <li><b>key</b>: nome da propriedade do bean que será utilizado para
+        popular o componente cujo valor é único por instância. É sempre
+        requerido.</li>
+        <li><b>value</b>: nome da propriedade utilizada para exibir o bean. É
+        requerida quando o bean não for uma subclasse de
+        <code>net.java.dev.reusablecomponents.lang.Enum</code>.</li>
+        <li><b>blank</b>: inclui uma linha em branco como primeira opção da
+        combobox. Não é requerida e tem como valor padrão <code>false</code>.
+        </li>
+      </ul>
+      <p>Conforme indicado pelo valor do atributo <code>objectField</code>, a
+      propriedade <code>estado</code> conterá a instância de <code>Estado</code>
+      correspondente à opção da combo escolhida pelo usuário.</p>
+      <p>Os requerimentos para popular uma table são um pouco diferentes. Para
+      exibir numa tabela os estados do exemplo anterior, o xml da interface
+      poderia ser assim:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="estado">
+      <header>
+         <column name="sigla" text="Sigla" />
+         <column name="descricao" text="Descrição" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+      <p>Com base no exemplo acima, podemos observar que o valor de <code>name
+      </code> na tabela precisa ser igual ao valor do atributo
+      <code>objectField</code>. Cada linha representará uma instância e cada
+      coluna será preenchida com a propriedade do bean cujo nome é o valor de
+      <code>name</code> em cada uma delas.</p>
+      <p>A anotação <code>@CallWhen</code> pode ser usada em conjunto com
+      <code>@DataProvider</code> para indicar sob que condição a tabela/combo
+      será repopulada. <code>@Action</code> pode ser usado no mesmo método caso
+      este também possa ser acionado por um botão (como Pesquisar, por exemplo)
+      e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
+      <code>@VisibleWhen</code> também será possível.</p>
+    </section>
 <!--
-DataProvider=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
-DisplayOnly=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
 ValidateBefore=org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy
 ResourceBundle
 Criteria
