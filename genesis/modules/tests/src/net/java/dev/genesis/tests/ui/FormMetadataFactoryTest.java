@@ -103,6 +103,16 @@ public class FormMetadataFactoryTest extends TestCase {
 
       assertNull(descriptionField.getEnabledCondition());
    }
+   
+   public void testVisibleCondition() {
+      assertNull(codeField.getVisibleCondition());
+      assertNull(nameField.getVisibleCondition());
+      assertNull(objField.getVisibleCondition());
+      assertNull(numberField.getVisibleCondition());
+      assertEquals("string-length(normalize-space(description)) != 0", fieldField
+            .getVisibleCondition().toString());
+      assertNull(descriptionField.getVisibleCondition());
+   }
 
    public void testDisplayOn() {
 
@@ -285,6 +295,8 @@ public class FormMetadataFactoryTest extends TestCase {
 
       /**
        * @EmptyResolver
+       * @VisibleWhen
+       * 		string-length(normalize-space(description)) != 0
        */
       public Object getField() {
          return field;

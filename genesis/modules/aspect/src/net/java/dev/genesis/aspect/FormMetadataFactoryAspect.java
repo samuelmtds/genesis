@@ -71,6 +71,8 @@ public class FormMetadataFactoryAspect {
                "EmptyResolver");
          public static final MetadataAttribute EMPTY_VALUE = new MetadataAttribute(
                "EmptyValue");
+         public static final MetadataAttribute VISIBLE_WHEN = new MetadataAttribute(
+               "VisibleWhen");
 
          public MetadataAttribute(String name) {
             super(name);
@@ -147,6 +149,9 @@ public class FormMetadataFactoryAspect {
                      MetadataAttribute.CLEAR_ON.getName(), readMethod));
          processDisplayOnlyAnnotation(fieldMetadata, Annotations.getAnnotation(
                MetadataAttribute.DISPLAY_ONLY.getName(), readMethod));
+         processVisibleWhenAnnotation(fieldMetadata,
+               (UntypedAnnotationProxy) Annotations.getAnnotation(
+                     MetadataAttribute.VISIBLE_WHEN.getName(), readMethod));
          processEmptyValueAnnotation(fieldMetadata,
                (UntypedAnnotationProxy) Annotations.getAnnotation(
                      MetadataAttribute.EMPTY_VALUE.getName(), readMethod));
@@ -195,6 +200,15 @@ public class FormMetadataFactoryAspect {
       private void processDisplayOnlyAnnotation(
             final FieldMetadata fieldMetadata, final Annotation annotation) {
          fieldMetadata.setDisplayOnly(annotation != null);
+      }
+
+      private void processVisibleWhenAnnotation(
+            final FieldMetadata fieldMetadata,
+            final UntypedAnnotationProxy annotation) {
+         if (annotation != null) {
+            fieldMetadata.setVisibleCondition(JXPathContext.compile(annotation
+                  .getValue()));
+         }
       }
 
       private void processEmptyValueAnnotation(

@@ -68,36 +68,35 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       final FormController controller = getController(form);
 
       controller.populate(BeanUtils.describe(form));
-      final Map enabledMap = controller.getEnabledMap();
-      assertEquals(enabledMap.get("integer2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.TRUE);
       controller.save();
 
       final Map newValues = new HashMap();
       newValues.put("integer1", "0");
       newValues.put("string1", null);
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer2"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.FALSE);
 
       controller.reset();
-      assertEquals(enabledMap.get("integer2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.TRUE);
 
       newValues.put("integer1", null);
       newValues.put("string1", "");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.TRUE);
 
       newValues.put("integer1", null);
       newValues.put("string1", "        ");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.TRUE);
 
       newValues.put("integer1", null);
       newValues.put("string1", " abc ");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer2"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.FALSE);
 
       controller.reset();
-      assertEquals(enabledMap.get("integer2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer2"), Boolean.TRUE);
    }
 
    public void testIsEqualFunction() throws Exception {
@@ -106,51 +105,50 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       final FormController controller = getController(form);
 
       controller.populate(BeanUtils.describe(form));
-      final Map enabledMap = controller.getEnabledMap();
-      assertEquals(enabledMap.get("integer1"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.TRUE);
       controller.save();
 
       final Map newValues = new HashMap();
       newValues.put("string1", null);
       newValues.put("string2", "");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer1"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.TRUE);
 
       newValues.put("string1", "             ");
       newValues.put("string2", "    ");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer1"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.TRUE);
 
       newValues.put("string1", "             ");
       newValues.put("string2", "  a  ");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer1"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.FALSE);
 
       controller.reset();
-      assertEquals(enabledMap.get("integer1"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.TRUE);
 
       newValues.put("string1", "             ");
       newValues.put("string2", "  a  ");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer1"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.FALSE);
 
       newValues.put("string1", "            a ");
       newValues.put("string2", "  a  ");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("integer1"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("integer1"), Boolean.TRUE);
 
       newValues.put("string1", "a b cc");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("string2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("string2"), Boolean.TRUE);
       
       newValues.put("string1", "2");
       controller.populate(newValues);
-      assertEquals(enabledMap.get("string2"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("string2"), Boolean.FALSE);
 
       controller.reset();
-      assertEquals(enabledMap.get("string2"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("string2"), Boolean.FALSE);
       
-      assertEquals(enabledMap.get("string1"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("string1"), Boolean.TRUE);
       
    }
    

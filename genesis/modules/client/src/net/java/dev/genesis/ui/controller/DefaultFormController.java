@@ -48,6 +48,7 @@ public class DefaultFormController implements FormController {
    private final Map last = new HashMap();
    private final Map lastSaved = new HashMap();
    private final Map enabledMap = new HashMap();
+   private final Map visibleMap = new HashMap();
 
    public void setForm(Object form) {
       this.form = form;
@@ -155,10 +156,8 @@ public class DefaultFormController implements FormController {
       evaluateClearOnConditions();
       evaluateNamedConditions();
       evaluateEnabledWhenConditions();
+      evaluateVisibleWhenConditions();
    }
-
-   
-   	    
 
    protected void evaluateClearOnConditions() throws Exception {
       final Map fieldMetadatas = new HashMap(formMetadata.getFieldMetadatas());
@@ -249,6 +248,29 @@ public class DefaultFormController implements FormController {
       }
    }
 
+   protected void evaluateVisibleWhenConditions() {
+      Map.Entry entry;
+      FieldMetadata fieldMetadata;
+
+      for (final Iterator i = formMetadata.getFieldMetadatas().entrySet()
+            .iterator(); i.hasNext();) {
+         entry = (Map.Entry) i.next();
+         fieldMetadata = (FieldMetadata) entry.getValue();
+
+         if (fieldMetadata.getVisibleCondition() == null) {
+            continue;
+         }
+
+         visibleMap.put(entry.getKey(), isSatisfied(fieldMetadata
+               .getVisibleCondition()));
+
+         if (log.isDebugEnabled()) {
+            log.debug("VisibleWhen Condition for field '" + entry.getKey()
+                  + "' evaluated as '" + visibleMap.get(entry.getKey()) + "'");
+         }
+      }
+   }
+
    protected boolean isConditionSatisfied(CompiledExpression compiledEx) {
       return Boolean.TRUE.equals(compiledEx.getValue(ctx));
    }
@@ -258,7 +280,11 @@ public class DefaultFormController implements FormController {
    }
 
    public Map getEnabledMap() {
-      return enabledMap;
+      return new HashMap(enabledMap);
+   }
+   
+   public Map getVisibleMap() {
+      return new HashMap(visibleMap);
    }
 
    public void reset() throws Exception {

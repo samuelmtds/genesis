@@ -66,7 +66,6 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
    public void testEvaluateClearOnEnabledWhenConditions() throws Exception {
       final FooForm form = new FooForm();
       final FormController controller = getController(form);
-      final Map enabledMap = controller.getEnabledMap();
 
       final Map someValues = BeanUtils.describe(form);
       someValues.put("field2", "12");
@@ -75,7 +74,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
-      assertEquals(enabledMap.get("field2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
       controller.save();
 
       someValues.put("field2", "12");
@@ -84,12 +83,14 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       controller.populate(someValues);
 
       assertEquals(form.getField3(), "abcd");
-      assertEquals(enabledMap.get("field2"), Boolean.FALSE);
+      assertEquals(controller.getEnabledMap().get("field2"), Boolean.FALSE);
+      assertEquals(controller.getVisibleMap().get("field4"), Boolean.TRUE);
 
       controller.reset();
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
-      assertEquals(enabledMap.get("field2"), Boolean.TRUE);
+      assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
+      assertEquals(controller.getVisibleMap().get("field4"), Boolean.FALSE);
    }
 
    /**
@@ -138,7 +139,10 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       public void setField3(String field3) {
          this.field3 = field3;
       }
-
+      
+      /**
+       * @VisibleWhen g:isEqual(field3,'abcd')
+       */
       public String getField4() {
          return field4;
       }

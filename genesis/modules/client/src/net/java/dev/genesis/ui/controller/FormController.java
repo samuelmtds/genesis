@@ -28,6 +28,7 @@ public interface FormController {
    public void setup() throws Exception;
    public void populate(Map properties) throws Exception;
    public Map getEnabledMap();
+   public Map getVisibleMap();
    public void reset() throws Exception;
    public void save() throws Exception;
 }

@@ -33,6 +33,7 @@ public class FieldMetadata {
 
    private CompiledExpression enabledCondition;
    private CompiledExpression clearOnCondition;
+   private CompiledExpression visibleCondition;
    private boolean displayOnly;
    private EqualityComparator equalityComparator;
    private EmptyResolver emptyResolver;
@@ -79,6 +80,13 @@ public class FieldMetadata {
       this.enabledCondition = enabledCondition;
    }
 
+   public CompiledExpression getVisibleCondition() {
+      return visibleCondition;
+   }
+
+   public void setVisibleCondition(CompiledExpression visibleCondition) {
+      this.visibleCondition = visibleCondition;
+   }
    public EqualityComparator getEqualityComparator() {
       return equalityComparator;
    }
