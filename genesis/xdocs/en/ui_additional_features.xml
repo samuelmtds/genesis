@@ -9,8 +9,8 @@
       <p>The following features and/or concepts are explained below:
       <ul>
         <li><a href="#Handling errors">Handling errors</a></li>
-        <li><a href="#Conditionally controlling a form and a UI"
-        >Conditionally controlling a form and a UI</a></li>
+        <li><a href="#Conditionally controlling a form and an UI"
+        >Conditionally controlling a form and an UI</a></li>
         <li><a href="#Determining if a field is empty">Determining if a field is
         empty</a></li>
         <li><a href="#Comparing values">Comparing values</a></li>
@@ -79,7 +79,7 @@
          constant "Unexpected error occurred" as the error message.</li>
       </ul>
     </section>
-    <section name="Conditionally controlling a form and a UI">
+    <section name="Conditionally controlling a form and an UI">
       <p>A powerful concept in genesis is support for conditions. This supprt
       allows implementation of a variety of features, such as controlling the
       enabled state of a widget, its visibility, automatically clearing fields

@@ -7,9 +7,9 @@
   <body>
     <section name="Introduction">
       <p>This documentation explains genesis' main concepts and features so
-      those can be applied to development. It is not expected that users
-      will understand details about genesis' internal implementation/architecture,
-      nor be capable of extending genesis features.</p>
+      those can be applied to development. It is not expect that users
+      understand details about genesis' internal implementation/architecture,
+      nor to make them capable of extending genesis features.</p>
       <p>Besides specific documentation for each genesis module, there's an
       annotations reference guide to help developers with their syntax. Reading
       the other docs is still needed to understand how features actually work.

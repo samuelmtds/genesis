@@ -6,7 +6,7 @@
   </properties>
   <body>
     <section name="genesis aspects">
-      <p>A number of genesis features are implemented using aspects. AOP usage
+      <p>A number of genesis features is implemented using aspects. AOP usage
       makes it possible to extend these features in a significant way with no
       need to change business or UI code. This documentation section aim is to
       describe these aspects so that advanced users can understand and customize

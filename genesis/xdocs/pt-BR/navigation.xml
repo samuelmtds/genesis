@@ -53,9 +53,5 @@
                href="/pt-BR/useradmin_sample.html" />
       </item>
     </menu>
-    <menu name="java.net" type="footer">
-      <item name="genesis.dev.java.net" href="https://genesis.dev.java.net" />
-      <item name="java.net member" img="/java_dot_net_member.bmp" href="http://java.net" />
-    </menu>
   </body>
 </project>
