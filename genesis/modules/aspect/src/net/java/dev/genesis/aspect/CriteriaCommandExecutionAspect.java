@@ -19,11 +19,10 @@
 package net.java.dev.genesis.aspect;
 
 import java.util.Map;
-
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
-
 import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import org.codehaus.aspectwerkz.MethodTuple;
 import org.codehaus.aspectwerkz.annotation.Annotations;
 import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
@@ -35,9 +34,13 @@ import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    private static final String CRITERIA_ATTRIBUTE = "Criteria";
+   
+   private boolean useOriginalMethod;
 
    public CriteriaCommandExecutionAspect(CrossCuttingInfo ccInfo) {
       super(ccInfo);
+      
+      useOriginalMethod = "true".equals(ccInfo.getParameter("useOriginalMethod"));
    }
 
    /**
@@ -53,14 +56,17 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          classNames[i] = classes[i].getName();
       }
 
-      final String methodName = ((MethodRttiImpl) rtti).getMethodTuple()
-            .getWrapperMethod().getName();
+      final MethodTuple methodTuple = ((MethodRttiImpl) rtti).getMethodTuple();
+      final String methodName = useOriginalMethod ? methodTuple
+            .getOriginalMethod().getName() : methodTuple.getWrapperMethod()
+            .getName();
+            System.out.println(useOriginalMethod + ": " + methodName);
       final Object[] parameterValues = rtti.getParameterValues();
 
       final UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
             .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
       final String persisterClassName = annon.getValue();
-
+      
       return new CriteriaCommandExecutor(obj, methodName, classNames,
             parameterValues, persisterClassName, obj.getPropertiesMap())
             .execute();
