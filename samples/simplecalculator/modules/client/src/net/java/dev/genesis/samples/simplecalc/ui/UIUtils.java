@@ -64,15 +64,7 @@ public class UIUtils {
          }
       };
 
-      final Thread t2 = new Thread() {
-         public void run() {
-            ValidationUtils.getInstance();
-            log.info("Validation rules loaded");
-         }
-      };
-
       t1.start();
-      t2.start();
       log.info("Initialization started");
    }
 
