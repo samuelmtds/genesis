@@ -32,7 +32,7 @@
         <li>Para compilar e instalar a aplicação recomendamos <a href=
         "http://ant.apache.org/">Apache Ant</a> e <a href=
         "http://xdoclet.sourceforge.net/">XDoclet</a> versão 1.2 com algumas
-        bibliotecas disponíveis <a href="https://genesis.dev.java.net/files/documents/2063/9021/modified-xdoclet-1.2.zip">aqui</a>.</li>
+        bibliotecas disponíveis <a href="https://genesis.dev.java.net/files/documents/2063/10130/modified-xdoclet-1.2.zip">aqui</a>.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
