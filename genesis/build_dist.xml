@@ -74,9 +74,12 @@
 
       <patternset id="genesis-src.pattern">
          <patternset refid="genesis-license.pattern" />
-         <include name="genesis/**/src/**" />
-         <include name="samples/useradmin/**/src/**" />
-         <exclude name="**/${build.dir}/**" />
+         <include name="genesis/${genesis.modules.dir}/**" />
+         <include name="genesis/${genesis.xdoc.dir}/**" />
+         <include name="genesis/*" />
+         <exclude name="genesis/.*"/>
+         <exclude name="genesis/**/${build.dir}/**/*"/>
+         <exclude name="genesis/**/build.properties"/>
       </patternset>
 
       <patternset id="genesis-docs.pattern">
@@ -117,13 +120,13 @@
       <antcall target="generate.dist">
          <param name="dist.type" value="genesis-src" />
       </antcall>
-      <antcall target="generate.dist">
+      <antcall target="generate.dist.with.docs">
          <param name="dist.type" value="genesis-docs" />
       </antcall>
       <antcall target="generate.dist">
          <param name="dist.type" value="genesis-xdoclet-extensions" />
       </antcall>
-      <antcall target="generate.dist">
+      <antcall target="generate.dist.with.docs">
          <param name="dist.type" value="genesis-all" />
       </antcall>
    </target>
@@ -139,6 +142,22 @@
          <tarfileset dir="../" prefix="genesis-${genesis.version}">
             <patternset refid="${dist.type}.pattern" />
          </tarfileset>
+      </tar>
+   </target>
+
+   <target name="generate.dist.with.docs">
+      <echo>Generating ${dist.type}...</echo>
+      <zip destfile="${build.dir}/${dist.type}-${genesis.version}.zip">
+         <zipfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="${dist.type}.pattern" />
+         </zipfileset>
+         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
+      </zip>
+      <tar longfile="gnu" tarfile="${build.dir}/${dist.type}-${genesis.version}.tar.gz" compression="gzip">
+         <tarfileset dir="../" prefix="genesis-${genesis.version}">
+            <patternset refid="${dist.type}.pattern" />
+         </tarfileset>
+         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
       </tar>
    </target>
 
