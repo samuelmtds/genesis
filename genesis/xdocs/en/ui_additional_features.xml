@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>User interface component model</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="UI components additional features">
+      <p>The following features and/or concepts are explained below:
+      <ul>
+        <li><a href="#Handling errors">Handling errors</a></li>
+        <li><a href="#Conditionally controlling a form and an UI"
+        >Conditionally controlling a form and an UI</a></li>
+        <li><a href="#Determining if a field is empty">Determining if a field is
+        empty</a></li>
+        <li><a href="#Comparing values">Comparing values</a></li>
+        <li><a href="#Populating comboboxes and tables">Populating comboboxes
+        and tables</a>
+        </li>
+        <li><a href="#Formatting">Formatting</a></li>
+        <li><a href="#Validating data">Validating data</a></li>
+        <li><a href="#Configuring messages">Configuring messages</a>
+        </li>
+        <li><a href="#Working with dynamic searches">Working with dynamic
+        searches</a></li>
+      </ul>
+      </p>
+    </section>
+    <section name="Handling errors">
+      <p>Thinlet has got a method for handling errors, <code>
+      handleException(Throwable)</code>, so <code>BaseThinlet</code> overrides
+      this method in order to implement custom error handling. We've been
+      careful while developing genesis so that any error that happens get
+      redirected to this single point, centralizing error handling.</p>
+      <p>The default error handling implementation in genesis works in a case-
+      by-case basis, as explained below:</p>
+      <ul>
+        <li>If the error is an instance of <code>ScreenNotFoundException</code>
+        (that is thrown when a UI xml file is not found), the error is handled
+        using <code>handleException(String, Throwable)</code>.</li>
+        <li>If a <code>ValidationException</code> has happened, it is handled by
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>When the error is a <code>UIException</code>, it's handled by <code>
+        handleUIException(UIException)</code>.</li>
+        <li>If all previous checks fail, the exception is passed to
+        <code>handleCustomException(Throwable)</code> that returns a
+        <code>boolean</code> indicating whether the error has been handled or
+        not.</li>
+        <li>When an error hasn't been handled,
+        <code>handleUnknownException(Throwable)</code> gets invoked, ending the
+        error handling chain.</li>
+      </ul>
+      <p>For most users, it's enough to know how each error will be handled by
+      the framework. However, any of the above described methods can be
+      overridden if there is a need to customize error handling. Each method's
+      default behaviour is described below:</p>
+      <ul>
+         <li><code>handleException(String, Throwable)</code> uses
+         <code>ErrorReporterDialog</code> to display the error. The message
+         returned by <code>getErrorMessage()</code> is used as the window title,
+         whose default is the constant "Error".</li>
+         <li><code>showValidationErrors(ValidationException)</code> extracts
+         errors from <code>ValidationException</code>, formats them by putting a
+         <code>\n</code> - used for breaking lines - between them and finally
+         displays them with a <code>MessageDialog</code>. The window title will
+         be the String value for <code>validation.errors.title</code> in the
+         <a href="#Configuring messages">resource file</a>.</li>
+         <li><code>handleUIException(UIException)</code> displays the error
+         using a <code>MessageDialog</code>. Title and message will be extracted
+         from the exception itself.</li>
+         <li><code>handleCustomException(Throwable)</code> checks if the error
+         has another exception as its cause by invoking <code>getCause()</code>
+         in the exception instance. If it has got a cause, this cause will be
+         forwarded to <code>handleException(Throwable)</code>. Otherwise,
+         <code>false</code> will be returned to indicate the error cannot be
+         handled.</li>
+         <li><code>handleUnknownException(Throwable)</code> simply forwards the
+         error to <code>handleException(String, Throwable)</code> using the
+         constant "Unexpected error occurred" as the error message.</li>
+      </ul>
+    </section>
+    <section name="Conditionally controlling a form and an UI">
+      <p>A powerful concept in genesis is support for conditions. This supprt
+      allows implementation of a variety of features, such as controlling the
+      enabled state of a widget, its visibility, automatically clearing fields
+      and automatically calling a method. All these things are done
+      declaratively on the form, with no need to deal with the graphical API
+      used for views.</p>
+      <p>Conditional expressions are interpreted using <a href=
+      "http://jakarta.apache.org/commons/jxpath">JXPath</a>. Support for other
+      script languages is expected for release 0.3. For now, subsections below
+      explain how to use these expression and to explore genesis features
+      related to them.</p>
+      <subsection name="Declaring conditions">
+        <p>Although all anotations that have JXPath conditions as arguments are
+        capable of handling any type of expression, certain conditions may be
+        used repeatedly in the code or as part of another expression. Due to
+        that, genesis makes it possible to declare these conditions and export
+        them as variables that may be referenced in other points of the code.
+        The annotation <code>@Condition</code> is used to declare a condition,
+        whose syntax is:</p>
+<source>
+@Condition conditionName=jxpathExpression
+</source>
+        <p>The variable named <code>nomeCondicao</code> is exported in order to
+        represent the expression <code>jxpathExpression</code> in other points
+        in the code. As every other JXPath variable, when it's used on a
+        expression its name should be preceeded by <code>$</code>. In the
+        example above, the variable should be referenced in a conditional
+        expression as <code>$conditionName</code>.</p>
+        <p>This annotation may be used at class level, in an attribute getter or
+        in a method annotated as <code>@Action</code>. Its scope will always be
+        class-wide, no matter where it's declared. Obviously, this annotation is
+        useful only when used together with another conditional annotation that
+        references the exported variable, as the ones mentioned below.</p>
+      </subsection>
+      <subsection name="Enabling and disabling components">
+        <p>It's fairly common in UI development situations when a certain field
+        or button can only be enabled when a certain condition is true. In order
+        to simplify these cases, genesis has an annotation called
+        <code>@EnabledWhen</code>. This annotation may be used in attributes and
+        actions. A practical usage example is shown below:</p>
+<source>
+/**
+ * @Form
+ */
+public class EnabledWhenFormExample {
+   private boolean married;
+   private String spouseName;
+
+   public boolean isMarried() {
+      return married;
+   }
+
+   public void setMarried(boolean married) {
+      this.married = married;
+   }
+
+   /**
+    * @EnabledWhen married=true()
+    */
+   public String getSpouseName() {
+      return spouseName;
+   }
+
+   public void setSpouseName(String spouseName) {
+      this.spouseName = spouseName;
+   }
+}
+</source>
+        <p>In the example above, only when the widget representing property
+        <code>married</code> has a value of <code>true</code> it will be
+        possible to enter the spouse's name.</p>
+      </subsection>
+      <subsection name="Controlling visibility">
+        <p>It's possible to hide or show widgets conditionally using the
+        <code>@VisibleWhen</code> annotation . Its syntax is similar to the one
+        for <code>@EnabledWhen</code> and it also may be used to annotate
+        attributes and actions. A usage example in an action is shown below:</p>
+<source>
+/**
+ * @Form
+ */
+public class VisibleWhenFormExample {
+   private int dependantNumber;
+
+   public int getDependantNumber() {
+      return dependantNumber;
+   }
+
+   public void setDependantNumber(int dependantNumber) {
+      this.dependantNumber = dependantNumber;
+   }
+
+   /**
+    * @Action
+    * @VisibleWhen dependantNumber > 0
+    */
+   public void calculateAdditionalTaxes() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+        <p>The button representing <code>calculateAdditionalTaxes()</code> will
+        be visible only when <code>dependantNumber</code> is greater than zero.
+        </p>
+      </subsection>
+      <subsection name="Clearing field content">
+        <p>Under many conditions it is necessary to clean field content. genesis
+        can do that automatically for the programmer through the
+        <code>@ClearOn</code> annotation. Although its syntax is similar to
+        <code>@EnabledWhen</code> and <code>@VisibleWhen</code> one's, this
+        annotation may only be used for attributes and not for actions (since
+        actions do not have content). A previous example may be modified to be
+        more accurate:</p>
+<source>
+/**
+ * @Form
+ */
+public class ClearOnFormExample {
+   private boolean married;
+   private String spouseName;
+
+   public boolean isMarried() {
+      return married;
+   }
+
+   public void setMarried(boolean married) {
+      this.married = married;
+   }
+
+   /**
+    * @EnabledWhen married=true()
+    * @ClearOn married=false()
+    */
+   public String getSpouseName() {
+      return spouseName;
+   }
+
+   public void setSpouseName(String spouseName) {
+      this.spouseName = spouseName;
+   }
+}
+</source>
+        <p>When property <code>married</code> is <code>false</code>,
+        <code>spouseName</code> will be automatically reset to
+        <code>null</code>.</p>
+        <p>The value used for resetting is defined by <code>@EmptyValue</code>.
+        This annotation should be used for the attribute whose empty value is
+        being specified. Its syntax is:</p>
+<source>
+@EmptyValue valueAsString
+</source>
+        <p>If <code>@EmptyValue</code> is not specified, a default value is used
+        instead - <code>false</code> for booleans, zero for numeric types and
+        <code>null</code> otherwise.</p>
+      </subsection>
+      <subsection name="Automatically invoking methods">
+        <p>Some methods need to be called every time certain conditions are
+        true. Instead of forcing programmers to do that manually - what can lead
+        to the so-called "spaghetti" code -, genesis defines the
+        <code>@CallWhen</code> annotation. With a syntax similar to previous
+        annotations, this one may be only used for actions and not for
+        attributes.</p>
+        <p>A previous example can be modified to show how to use this annotation
+        in practice:</p>
+<source>
+/**
+ * @Form
+ */
+public class CallWhenFormExample {
+   private int dependantNumber;
+
+   public int getDependantNumber() {
+      return dependantNumber;
+   }
+
+   public void setDependantNumber(int dependantNumber) {
+      this.dependantNumber = dependantNumber;
+   }
+
+   /**
+    * @Action
+    * @CallWhen dependantNumber > 0
+    */
+   public void calculateAdditionalTaxes() {
+      // ...
+   }
+}
+</source>
+        <p>Differently from the original <code>@VisibleWhen</code> example,
+        <code>calculateAdditionalTaxes()</code> will be invoked automatically by
+        genesis whenever <code>dependantNumber</code> is greater than zero.</p>
+      </subsection>
+    </section>
+    <section name="Determining if a field is empty">
+      <p>In order to perform or not to perform some operations, genesis needs to
+      determine whether a field is empty. Besides that, the fact a field is
+      filled or not is usually as a way to define a condition for some genesis'
+      annotations. Interface <code>EmptyResolver</code>, defined on
+      <code>net.java.dev.genesis.resolvers</code> is used for that.</p>
+      <p>This interface exposes a single method <code>isEmpty(Object)</code>,
+      that returns a <code>boolean</code>. To specify which
+      <code>EmptyResolver</code> to use for a certain attribute,
+      annotation <code>@EmptyResolver</code> can be used. Its syntax is:</p>
+<source>
+@EmptyResolver &lt;fullQualifiedNameForClassImplementingEmptyResolver&gt;
+               &lt;attributes&gt;
+</source>
+      <p>It is not necessary to actually insert a line break when defining the
+      annotation; it's ok to separate class name from attributes with a space.
+      </p>
+      <p>In order to avoid being required to specify which
+      <code>EmptyResolver</code> implementation should be used for every
+      attribute in each form in an application, genesis has a mechanism for
+      determining which implementation to use based on the type of an attribute.
+      Class <code>EmptyResolverRegistry</code> keeps a registry of default
+      <code>EmptyResolver</code> implementations per class. The following
+      implementations are initially set up:</p>
+      <ul>
+        <li><code>MapEmptyResolver</code> is registered for
+        <code>java.util.Map</code> instances. It considers as empty null
+        instances or the ones that return <code>true</code> for
+        <code>isEmpty()</code>.</li>
+        <li><code>CollectionEmptyResolver</code> is the default implementation
+        for <code>java.util.Collection</code>. It uses the same principle that
+        <code>MapEmptyResolver</code> does in order to determine whether an
+        instance is empty or not.</li>
+        <li>The default implementation for <code>String</code> is
+        <code>StringEmptyResolver</code>. Instances considered empty are the
+        ones that are null or that have a zero length after spaces are removed,
+        i.e., <code>s == null || s.trim().length() == 0</code>.</li>
+        <li>For remaining cases, a <code>DefaultEmptyResolver</code> instance is
+        registered. This implementation considers as empty null instances or
+        zero-element arrays.</li>
+      </ul>
+      <p>These default implementations should be satisfactory for most cases. As
+      an example of how customization might be done, let's consider how to use
+      the annotation in a form attribute for which empty spaces are actually
+      relevant:</p>
+<source>
+/**
+ * @EmptyResolver trim=false
+ */
+public String getAttribute() {
+   return attribute;
+}
+</source>
+      <p>Since <code>String</code> already has a registered default
+      <code>EmptyResolver</code> instance, <code>StringEmptyResolver</code>, and
+      this implementation exposes an attribute that allows one to configure
+      whether spaces should be removed or not, it's not necessary to specify the
+      name of the interface implementation class and it's enough to define
+      property <code>trim</code> as <code>false</code>. If it wasn't possible to
+      configure the default instance, another implementation could be used
+      instead as following:</p>
+<source>
+/**
+ * @EmptyResolver com.company.package.EmptyResolverImplementation
+ */
+public String getAttribute() {
+   return attribute;
+}
+</source>
+      <subsection name="Verifying if a field is empty in conditional
+      expressions">
+        <p>As already mentioned, it's very common to determine conditions that
+        are based on the fact a field is empty or not. genesis exposes JXPath
+        auxiliary functions that may be used in conditions in order to make this
+        task easier: <code>g:isEmpty(any)</code> and
+        <code>g:isNotEmpty(any)</code>.</p>
+        <p>When the argument is a form property, the <code>EmptyResolver</code>
+        instance configured for it - determined as explained above - is used to
+        determine the return value. If the argument is a variable or a constant,
+        a default <code>EmptyResolver</code> instance for the expression type is
+        obtained from <code>EmptyResolverRegistry</code> and used for
+        evaluation. These functions may be used as shown below:</p>
+<source>
+public String getAttribute() {
+   return attribute;
+}
+
+public void setAttribute(String attribute) {
+   this.attribute = attribute;
+}
+
+/**
+ * @EnabledWhen g:isNotEmpty(attribute)
+ */
+public String getDependantAttribute() {
+   return dependantAttribute;
+}
+
+public void setDependantAttribute(String dependantAttribute) {
+   this.dependantAttribute = dependantAttribute;
+}
+</source>
+      </subsection>
+    </section>
+    <section name="Comparing values">
+      <p>Both the framework and developers need smetimes to check if a field
+      value has been changed or if its value is equal to some constant or
+      another field value. Interface <code>EqualityComparator</code> contained
+      in <code>net.java.dev.genesis.equality</code> is implemented by classes
+      that are capable of making this decision.</p>
+      <p>This interface defines <code>equals(Object,Object)</code> that returns
+      a <code>boolean</code> indicating whether compared instances are equals or
+      not. The annotation with the same name, <code>@EqualityComparator</code>
+      may be used to explicitly define the implementation used for a certain
+      attribute. Its syntax is similar to <code>@EmptyResolver</code>'s one:</p>
+<source>
+@EqualityComparator &lt;fullQualifiedNameForClassImplementingEmptyResolver&gt;
+                    &lt;attributes&gt;
+</source>
+      <p>Usually it won't be necessary to use this annotation since genesis also
+      has a default mechanism for determining which interface implementation
+      should be used for a given attribute. The class / implementation map is
+      kept by <code>EqualityComparatorRegistry</code>. Default registered
+      implementations are:</p>
+      <ul>
+        <li><code>BigDecimalEqualityComparator</code> considers two
+        <code>java.math.BigDecimal</code> instances equals if both are null or
+        if <code>compareTo(BigDecimal)</code>'s return for one of them is zero.
+        </li>
+        <li><code>StringEqualityComparator</code> considers null or zero-length
+        trimmed<code>String</code>s equals. They'll also be considered equals if
+        <code>s1.trim().equals(s2.trim())</code>.</li>
+        <li>Remaining cases are handled by <code>DefaultEqualityComparator</code
+        >, that considers two instances to be equals if both are null or if
+        <code>o1.equals(o2)</code> returns true.</li>
+      </ul>
+      <subsection name="Verifying field value changes and doing comparisson in
+          conditional expressions">
+        <p>Four JXPath functions are exported by genesis in order to help
+        developers in common tasks:</p>
+        <ul>
+          <li><code>g:hasChanged(property)</code> and
+          <code>g:hasNotChanged(property)</code> verify whether a field value
+          has changed or not.</li>
+          <li><code>g:equals(any,any)</code> and
+          <code>g:notEquals(any,any)</code> compare two values - that may be
+          constants, form properties or variables - and return the comparisson
+          result.</li>
+        </ul>
+        <p>genesis internally keeps control of fields that have their value
+        changed in the current iteraction. This list is checked by functions
+        <code>g:hasChanged(propriedade)</code> and
+        <code>g:hasNotChanged(propriedade)</code>. To determine whether a value
+        has been changed or not and to populate this internal list, the
+        framework uses the <code>EqualityComparator</code> instance configured
+        for the property.</p>
+        <p>Functions <code>g:equals(any,any)</code> and
+        <code>g:notEquals(any,any)</code> also make use of
+        <code>EqualityComparator</code> instances to determine their output.
+        However, the actual process used for that is a bit more complicated, as
+        explained below:</p>
+        <ul>
+          <li>An instance of <code>EqualityComparator</code> for each parameter
+          is determined. If the parameter is a form property, its configured
+          implementation will be used. Otherwise, the default implementation
+          registered in <code>EqualityComparatorRegistry</code> will be picked
+          up.</li>
+          <li>If comparators for both parameters are the same, the first one of
+          them will be used to do the comparisson.</li>
+          <li>If the first parameter type is an instance of the second parameter
+          type, its <code>EqualityComparator</code> instance will be used for
+          performing the comparisson.</li>
+          <li>If the second parameter type is an instance of the second
+          parameter type, its <code>EqualityComparator</code> instance will be
+          used for performing the comparisson.</li>
+          <li>If none of the above conditions is true, <code>false</code> will
+          be returned.</li>
+        </ul>
+        <p>There are examples of how to use each function pair below:</p>
+<source>
+public BigDecimal getTax() {
+   return tax;
+}
+
+public void setTax(BigDecimal tax) {
+   this.taxa = tax;
+}
+
+/**
+ * @Action
+ * @CallWhen g:hasChanged(tax)
+ */
+public void recalculateValues() {
+   // logic for recalculating
+}
+</source>
+<source>
+public BigDecimal getDebt() {
+   return debt;
+}
+
+public void setDebt(BigDecimal debt) {
+   this.debt = debt;
+}
+
+public BigDecimal getPaidAmount() {
+   return paidAmount;
+}
+
+public void setPaidAmount(BigDecimal paidAmount) {
+   this.paidAmount = paidAmount;
+}
+
+/**
+ * @Action
+ * @CallWhen g:notEquals(debt,paidAmount)
+ */
+public void calculateRemainingAmount() {
+   // logic for calculating amount
+}
+</source>
+      </subsection>
+    </section>
+    <!--section name="Populando combos e tabelas">
+      <p>As opções disponíveis em um combo box podem variar de acordo com os
+      dados preenchidos pelo usuário ou outras regras de negócio. O conteúdo de
+      uma tabela pode precisar ser preenchido dinamicamente em resposta a um
+      critério de filtro especificado pelo usuário, por exemplo. Para lidar com
+      tais situações, existe uma anotação chamada <code>@DataProvider</code>,
+      cuja sintaxe é:</p>
+<source>
+@DataProvider &lt;objectField=nomeCampoObjeto&gt;
+              &lt;indexField=nomeCampoIndice&gt;
+</source>
+      <p>Esta anotação deve ser colocada em métodos que retornam uma
+      <code>java.util.List</code> ou uma array. O retorno dos métodos será
+      utilizado para popular a combo ou tabela. <code>objectField</code> deve
+      receber o nome da propriedade, se houver, que guardará a instância
+      selecionada no widget. Deve ser do mesmo tipo ou uma superclasse do tipo
+      retornado no método anotado, uma array do tipo ou uma
+      <code>Collection</code>. <code>indexField</code> é a propriedade que
+      guardará os índices dos elementos selecionados no widget. Deve ser um
+      <code>int</code> ou um <code>Integer</code>, uma array de um desses tipos
+      ou uma <code>Collection</code>. Pelo menos um dos dois parâmetros deve ser
+      informado.</p>
+      <p>O <code>name</code> do widget na tela é igual ao nome da propriedade
+      informada como <code>objectField</code> ou <code>indexField</code>, sendo
+      que a primeira tem prioridade quando ambas forem informadas. Um exemplo de
+      uso desta anotação é ilustrado abaixo:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <label text="Estado:" />
+   <combobox name="estado" property="key=sigla;value=descricao" />
+</panel>
+]]>
+</source>
+<source>
+public class Estado {
+   private String sigla;
+   private String descricao;
+
+   // getters e setters para as propriedades
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploDataProviderForm {
+   private Estado estado;
+
+   public Estado getEstado() {
+      return estado;
+   }
+
+   public void setEstado(Estado estado) {
+      this.estado = estado;
+   }
+
+   /**
+    * @DataProvider objectField=estado
+    */
+   public Collection populaEstados() {
+      // retorna uma Collection contendo instâncias de Estado
+   }
+
+   // ...
+}
+</source>
+      <p>No primeiro bloco vemos o xml da tela que exibe um <code>label</code> e
+      um combobox que conterá os estados em tempo de execução. A propriedade
+      <code>name</code> possui o mesmo valor que o atributo
+      <code>objectField</code> da anotação <code>@DataProvider</code> do
+      terceiro bloco. Pode-se notar alguns valores configurados no atributo
+      <code>property</code>. Os seguintes valores são utilizados no caso de
+      comboboxes:</p>
+      <ul>
+        <li><b>key</b>: nome da propriedade do bean que será utilizado para
+        popular o componente cujo valor é único por instância. É sempre
+        requerido.</li>
+        <li><b>value</b>: nome da propriedade utilizada para exibir o bean. É
+        requerida quando o bean não for uma subclasse de
+        <code>net.java.dev.reusablecomponents.lang.Enum</code>.</li>
+        <li><b>blank</b>: inclui uma linha em branco como primeira opção da
+        combobox. Não é requerida e tem como valor padrão <code>false</code>.
+        </li>
+      </ul>
+      <p>Conforme indicado pelo valor do atributo <code>objectField</code>, a
+      propriedade <code>estado</code> conterá a instância de <code>Estado</code>
+      correspondente à opção da combo escolhida pelo usuário.</p>
+      <p>Os requerimentos para popular uma table são um pouco diferentes. Para
+      exibir numa tabela os estados do exemplo anterior, o xml da interface
+      poderia ser assim:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="estado">
+      <header>
+         <column name="sigla" text="Sigla" />
+         <column name="descricao" text="Descrição" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+      <p>Com base no exemplo acima, podemos observar que o valor de <code>name
+      </code> na tabela precisa ser igual ao valor do atributo
+      <code>objectField</code>. Cada linha representará uma instância e cada
+      coluna será preenchida com a propriedade do bean cujo nome é o valor de
+      <code>name</code> em cada uma delas.</p>
+      <p>A anotação <code>@CallWhen</code> pode ser usada em conjunto com
+      <code>@DataProvider</code> para indicar sob que condição a tabela/combo
+      será repopulada. <code>@Action</code> pode ser usado no mesmo método caso
+      este também possa ser acionado por um botão (como Pesquisar, por exemplo)
+      e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
+      <code>@VisibleWhen</code> também será possível.</p>
+    </section>
+    <section name="Formatação">
+      <p>Visto que formatar as informações para que sejam exibidas na tela é uma
+      parte importante de qualquer aplicação com interface gráfica, espera-se
+      que isto seja fácil de fazer e configurável. A API que é utilizada para
+      este propósito no genesis encontra-se implementada no pacote
+      <code>net.java.dev.genesis.text</code>.</p>
+      <p>Encontra-se neste pacote a interface <code>Formatter</code>, que define
+      o método <code>format(Object)</code>. Este método converte o objeto
+      passado em uma String formatada. Da mesma forma como outros componentes
+      comuns do framework, existe um registro padrão de implementações da
+      interface, a classe <code>FormatterRegistry</code>. As seguintes
+      implementações estão registradas por padrão nessa classe:</p>
+      <ul>
+        <li><code>EnumFormatter</code> converte instâncias de
+        <code>net.java.dev.reusablecomponents.lang.Enum</code> procurando no
+        <a href="#Configurando as mensagens"><code>ResourceBundle</code></a> a
+        mensagem configurada para a chave formada pelo nome da classe sem pacote
+        + "." + nome da constante. Se esta não for encontrada, uma mensagem de
+        prioridade INFO será logada e a instância convertida com
+        <code>toString()</code>.</li>
+        <li><code>DefaultFormatter</code> é registrado para todos os outros
+        tipos e converte as instâncias utilizando <code>toString()</code> -
+        exceto se forem <code>null</code>, quando retorna uma String com tamanho
+        zero.</li>
+      </ul>
+      <p>Para registrar um novo formatador para uma classe basta utilizar o
+      método <code>register(Class,Formatter)</code> em
+      <code>FormatterRegistry</code>.</p>
+    </section>
+    <section name="Validando os dados">
+      <p>A validação de dados é crítica para a integridade de um sistema,
+      especialmente quando esses dados são entrados pelo usuário, como no caso
+      de uma interface gráfica. O suporte a validação no genesis é implementado
+      utilizando-se de um dos componentes do projeto Jakarta, o <a href=
+      "http://jakarta.apache.org/commons/validator/">commons-validator</a>.
+      Diversos outros softwares open-source utilizam o commons-validator como
+      componente de validação, incluindo o Struts, o que aumenta as chances de
+      já se estar familiarizado com ele. Caso contrário, recomendamos a leitura
+      da documentação no próprio site do projeto.</p>
+      <p>A anotação <code>@ValidateBefore</code> pode ser colocada em ações que
+      só podem ser executadas quando a validação for bem-sucedida. Caso ocorra
+      algum erro de validação será lançada uma
+      <code>net.java.dev.genesis.ui.ValidationException</code>, que já é <a
+      href="#Tratando erros">tratada por padrão</a> pelo framework de modo a
+      exibir os erros formatados para o usuário.</p>
+      <p>Diversos validadores padrão encontram-se implementados em
+      <code>BasicValidator</code>, do pacote <code>net.java.dev.genesis.ui</code
+      >. Estes validadores são, em grande parte, semelhantes aos providos com o
+      Struts, o que facilita sua compreensão. São eles:</p>
+      <ul>
+        <li><code><b>byte</b>, <b>short</b>, <b>int</b>, <b>long</b>,
+        <b>float</b> e <b>double</b></code>: verificam se o dado pode ser
+        convertido para um desses tipos sem estouro de faixa.</li>
+        <li><code><b>bigDecimal</b></code>: verifica se o tipo pode ser
+        convertido para <code>java.math.BigDecimal</code> utilizando o conversor
+        padrão do <a href="http://jakarta.apache.org/commons/beanutils">
+        BeanUtils</a> registrado para ele. O genesis provê uma implementação
+        personalizada deste conversor, <code>BigDecimalConverter</code> em
+        <code>net.java.dev.genesis.commons.beanutils.converters</code>, visto
+        que as implementações que acompanham com o BeanUtils não funcionam da
+        maneira esperada para o Locale pt-BR.</li>
+        <li><code><b>date</b></code>: implementação validação de datas. Pode
+        utilizar a variável <code>pattern</code> como padrão de data válido.
+        Este padrão é compatível com os especificados para a classe
+        <code>java.text.DateFormat</code>.</li>
+        <li><code><b>email</b></code>: somente aceita conteúdo que possa ser
+        considerado um email sintaticamente válido.</li>
+        <li><code><b>required</b></code>: assegura que o campo não esteja vazio.
+        </li>
+        <li><code><b>requiredif</b></code>: compatível com a versão que
+        acompanha o Struts, implementa um tipo de validação relativamente fraco.
+        Seu uso não é recomendado e é provido somente para facilitar a migração
+        de usuários do Struts. Utilize <code><b>jxpath</b></code> ao invés
+        deste.</li>
+        <li><code><b>mask</b></code>: implementa validação com base numa
+        expressão regular de máscara. Requer a definição da variável
+        <code>mask</code> contendo a expressão regular.</li>
+        <li><code><b>minlength</b> e <b>maxlength</b></code>: garantem que o
+        dado informado possui um número não inferior e não superior,
+        respectivamente, ao número máximo de caracteres definido através da
+        variável <code>minlength</code> e <code>maxlength</code>.</li>
+        <li><code><b>longRange</b>, <b>doubleRange</b> e <b>bigDecimalRange</b>
+        </code>: verificam se o número informado encontra-se dentro da faixa
+        esperada, definida através das variáveis <code>min</code> e
+        <code>max</code>.</li>
+        <li><code><b>jxpath</b></code>: o mais flexível validador provido com o
+        genesis. Considera o dado válido se a análise da expressão JXPath
+        definida pela variável <code>jxpath</code> retornar um dado diferente de
+        <code>java.lang.Boolean.FALSE</code>.</li>
+      </ul>
+      <p>Assim como os validadores do Struts, todos os providos com o genesis,
+      exceto pelo <code>jxpath</code> só são acionados se o campo estiver
+      preenchido. Isso significa que <b>mesmo que você configure seu validador
+      corretamente, ele só será invocado quando o usuário preencher algo no
+      campo</b>. Se sua intenção é que o validador seja sempre executado,
+      <code>required</code> também deverá estar configurado para o campo.</p>
+      <p>Os dados a serem validados são passados ainda em formato String para os
+      validadores. É importante lembrar-se disso ao escrever expressões JXPath
+      ou quando se utiliza um validador customizado.</p>
+      <p>A classe que integra o commons-validator ao genesis,
+      <code>net.java.dev.genesis.ui.ValidationUtils</code>, espera que dois
+      arquivos de configuração estejam disponíveis no classpath:
+      <code>validation-rules.xml</code> e <code>validation.xml</code>. Estes
+      arquivos devem estar de acordo com o DTD para o commons-validator 1.1. Uma
+      configuração padrão para <code>validation-rules.xml</code> é provida no
+      jar do genesis-client, como abaixo:</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC
+   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration
+   1.1//EN'
+   'http://jakarta.apache.org/commons/dtds/validator_1_1.dtd'>
+<form-validation>
+    <global>
+        <validator name="byte"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateByte"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.byte"/>
+        <validator name="short"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateShort"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.short"/>
+        <validator name="int"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateInt"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.int"/>
+        <validator name="long"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateLong"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.long"/>
+        <validator name="float"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateFloat"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.float"/>
+        <validator name="double"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateDouble"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.double"/>
+        <validator name="bigDecimal"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateBigDecimal"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.bigdecimal"/>
+        <validator name="required"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateRequired"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.required"/>
+        <validator name="requiredif"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateRequiredIf"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field,org.apache.
+                commons.validator.Validator"
+                msg="errors.requiredif"/>
+        <validator name="mask"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateMask"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.mask"/>
+        <validator name="email"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateEmail"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.email"/>
+        <validator name="date"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateDate"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.date"/>
+        <validator name="minlength"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateMinLength"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.minlength"/>
+        <validator name="maxlength"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateMaxLength"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.maxlength"/>
+        <validator name="longRange"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateLongRange"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.longRange"/>
+        <validator name="doubleRange"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateDoubleRange"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.doubleRange"/>
+        <validator name="bigDecimalRange"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateBigDecimalRange"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.bigDecimalRange"/>
+        <validator name="jxpath"
+                classname="net.java.dev.genesis.ui.BasicValidator"
+                method="validateJXPath"
+                methodParams=
+                "java.lang.Object,org.apache.commons.validator.Field"
+                msg="errors.jxpath"/>
+    </global>
+</form-validation>
+]]>
+</source>
+      <p>Na maioria dos casos, uma forma prática de se configurar a validação
+      por form é utilizar o <a href="http://xdoclet.sf.net">XDoclet</a>. Um
+      exemplo de configuração de validação do exemplo useradmin é a classe
+      <code>InsertUpdateForm</code>, do pacote
+      <code>net.java.dev.genesis.samples.useradmin.ui</code>, parcialmente
+      transcrito abaixo:</p>
+<source>
+/**
+ * @Form
+ * @struts.form
+ */
+public class InsertUpdateForm {
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.birthday"
+    *
+    * @struts.validator type="date"
+    * @struts.validator-var name="pattern" value="MM/dd/yyyy"
+    */
+   public void setBirthday(Date birthday) {
+      this.birthday = birthday;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.country"
+    */
+   public void setCountry(Country country) {
+      this.country = country;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.email"
+    *
+    * @struts.validator type="email"
+    * @struts.validator-args arg0resource="User.email"
+    */
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.role"
+    */
+   public void setRole(Role role) {
+      this.role = role;
+      setRoleCode(role == null ? null : role.getCode());
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.login"
+    *
+    * @struts.validator type="minlength" arg1value="${var:minlength}"
+    * @struts.validator-var name="minlength" value="4"
+    */
+   public void setLogin(String login) {
+      this.login = login;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.name"
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.password"
+    *
+    * @struts.validator type="minlength" arg1value="${var:minlength}"
+    * @struts.validator-var name="minlength" value="6"
+    *
+    * @struts.validator type="maxlength" arg1value="${var:maxlength}"
+    * @struts.validator-var name="maxlength" value="8"
+    */
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.address"
+    */
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   /**
+    * @struts.validator type="required"
+    * @struts.validator-args arg0resource="User.state"
+    */
+   public void setState(State state) {
+      this.state = state;
+   }
+
+   /**
+    * @Action
+    * @ValidateBefore
+    */
+   public void save() throws Exception {
+      final User user = new User();
+      PropertyUtils.copyProperties(user, this);
+      if (getId() == null) {
+         new UserCreateCommand().createUser(user);
+      } else {
+         new UserUpdateCommand().updateUser(user);
+      }
+   }
+
+   // ...
+}
+</source>
+      <p>Antes da chamada a <code>save()</code> ser executada, a validação é
+      realizada de acordo com as regras do arquivo gerado e eventuais erros
+      impedem a execução do método. Para aqueles que não estão familiarizados
+      com o XDoclet, encontra-se abaixo o arquivo <code>validation.xml</code>
+      gerado automaticamente durante a execução do build:</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE form-validation PUBLIC
+   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration
+   1.1//EN'
+   'http://jakarta.apache.org/commons/dtds/validator_1_1.dtd'>
+<form-validation>
+  <!
+    Define global validation config in validation-global.xml
+  >
+  <formset>
+      <form name="net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm">
+              <field property="birthday"
+                     depends="required,date">
+                  <arg position="0"
+                       key="User.birthday"
+                  />
+                  <var>
+                    <var-name>pattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                  </var>
+              </field>
+              <field property="country"
+                     depends="required">
+                  <arg position="0"
+                       key="User.country"
+                  />
+              </field>
+              <field property="email"
+                     depends="required,email">
+                  <arg position="0"
+                       key="User.email"
+                  />
+              </field>
+              <field property="role"
+                     depends="required">
+                  <arg position="0"
+                       key="User.role"
+                  />
+              </field>
+              <field property="login"
+                     depends="required,minlength">
+                  <arg position="0"
+                       key="User.login"
+                  />
+                  <arg position="1"
+                       name="minlength"
+                       key="${var:minlength}"
+                       resource="false"
+                  />
+                  <var>
+                    <var-name>minlength</var-name>
+                    <var-value>4</var-value>
+                  </var>
+              </field>
+              <field property="name"
+                     depends="required">
+                  <arg position="0"
+                       key="User.name"
+                  />
+              </field>
+              <field property="password"
+                     depends="required,minlength,maxlength">
+                  <arg position="0"
+                       key="User.password"
+                  />
+                  <arg position="1"
+                       name="minlength"
+                       key="${var:minlength}"
+                       resource="false"
+                  />
+                  <arg position="1"
+                       name="maxlength"
+                       key="${var:maxlength}"
+                       resource="false"
+                  />
+                  <var>
+                    <var-name>minlength</var-name>
+                    <var-value>6</var-value>
+                  </var>
+                  <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>8</var-value>
+                  </var>
+              </field>
+              <field property="address"
+                     depends="required">
+                  <arg position="0"
+                       key="User.address"
+                  />
+              </field>
+              <field property="state"
+                     depends="required">
+                  <arg position="0"
+                       key="User.state"
+                  />
+              </field>
+      </form>
+  </formset>
+</form-validation>
+]]>
+</source>
+      <p>É utilizado também um arquivo de recursos para configurar as mensagens,
+      logo abaixo descrito.</p>
+    </section>
+    <section name="Configurando as mensagens">
+      <p>Diversas mensagens podem ser configuradas externamente ao código
+      utilizando-se um <code>java.util.ResourceBundle</code>. O
+      <code>ResourceBundle</code> permite armazenar um dicionário de
+      propriedades nome/valor - similar a um <code>Properties</code> -,
+      suportando múltiplos <code>java.util.Locale</code>s. De forma
+      simplificada, é possível configurar mensagens diferentes de acordo com o
+      idioma utilizado.</p>
+      <p>O genesis utiliza um <code>ResourceBundle</code> de nome
+      <code>messages</code>, de modo que deve existir um
+      <code>messages.properties</code> no classpath. A classe
+      <code>net.java.dev.genesis.ui.UIUtils</code> mantém a instância deste
+      <code>ResourceBundle</code> durante a execução.</p>
+      <p>São configurados no arquivo de recursos mensagens e texto referentes a:
+      </p>
+      <ul>
+        <li>Validação</li>
+        <li>Valores de display das <code>Enum</code>s (no formato
+        <code>Classe.CONSTANTE=Valor de display</code>)</li>
+        <li>Mensagens das telas padrão providas com o genesis, como a tela
+        utilizada por <code>OptionDialog</code></li>
+        <li>Quaisquer textos definidos pelo usuário que devam ser externalizados
+        do código</li>
+      </ul>
+      <p>Abaixo há um exemplo de configuração do <code>ResourceBundle</code>
+      para o exemplo useradmin:</p>
+<source>
+# 1. Configuração para validação
+errors.byte=The {0} field is not a byte.
+errors.short=The {0} field is not a short.
+errors.int=The {0} field is not an integer.
+errors.long=The {0} field is not a long.
+errors.float=The {0} field is not a float.
+errors.double=The {0} field is not a double.
+errors.bigdecimal=The {0} field is not a big decimal.
+errors.required=The {0} field is required.
+errors.requiredif=The {0} field is required.
+errors.mask=The {0} field is not valid.
+errors.email=The {0} field is not a valid email.
+errors.date=The {0} field is not a valid date.
+errors.minlength=The {0} field can not be less than {1} characters.
+errors.maxlength=The {0} field can not be greater than {1} characters.
+errors.longRange={0} is not in the range {1} through {2}.
+errors.doubleRange={0} is not in the range {1} through {2}.
+errors.bigDecimalRange={0} is not in the range {1} through {2}.
+errors.jxpath=The {0} field is not valid.
+validation.errors.title=Validation errors
+
+# 2. Configuração das mensagens das telas
+MessageDialog.close=Close
+Option.YES=Yes
+Option.NO=No
+Option.CANCEL=Cancel
+ErrorReporterDialog.ok=OK
+ErrorReporterDialog.stackTrace=Stack Trace:
+
+# 3. Configurações personalizadas do usuário
+InsertRoleView.title=Insert Role
+InsertView.title=Insert User
+UpdateView.title=Update User
+RoleListView.title=Role List
+UserListView.title=Users Administration
+
+button.ok=Ok
+button.add=Add
+button.remove=Remove
+button.cancel=Cancel
+button.save=Save
+button.search=Search
+button.reset=Reset
+button.newUser=New User
+button.updateUser=Update User
+button.removeUser=Remove User
+
+User.name=Name
+User.login=Login
+User.password=Password
+User.email=e-mail
+User.birthday=Birthday
+User.address=Address
+User.country=Country
+User.state=State
+User.role=Role
+
+Role.label=Label
+Role.code=Code
+</source>
+      <p>Para mais informações sobre como trabalhar com arquivos de recurso
+      consulte o Javadoc da classe <code>java.util.ResourceBundle</code>.</p>
+    </section>
+    <section name="Trabalhando com pesquisas dinâmicas">
+      <p>O genesis facilita a construção de pesquisas dinâmicas - cujos
+      critérios de seleção mudam em tempo de execução, não os valores passados
+      para estes - integrando essa funcionalidade tanto com os componentes de
+      interface gráfica como com os componentes de negócio.</p>
+      <p>Na parte cliente, para permitir que somente as propriedades prenchidas
+      sejam utilizadas na busca, basta fazer:</p>
+<source>
+CriteriaPropertyHelper.fillCriteria(hibernateCriteria, form);
+</source>
+      <p>A classe <code>CriteriaPropertyHelper</code> encontra-se no pacote
+      <code>net.java.dev.genesis.helpers</code>. <code>hibernateCriteria</code>
+      deve obedecer os
+      <a href="business_component_model.html#Pesquisas dinâmicas com Criteria">
+      requisitos para componentes de negócio para pesquisas dinâmicas</a>
+      enquanto <code>form</code> deve ser um form do genesis válido. Serão
+      copiadas as propriedades que existam em ambos os beans e que estejam
+      preenchidas no form de acordo com as
+      <a href="#Determinando se o campo está vazio">regras para determinar
+      campos vazios</a>. A chamada a <code>fillCriteria(HibernateCriteria,
+      Object)</code> deverá ser feita antes da chamada ao método anotado com
+      <code>@Criteria</code>.</p>
+    </section-->
+  </body>
+</document>
+
+
+
+
+
+
+
+
+
