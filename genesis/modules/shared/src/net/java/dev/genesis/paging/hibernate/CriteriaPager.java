@@ -50,8 +50,8 @@ public class CriteriaPager implements Pager {
          if (pageNumber > 1 && results.isEmpty()) {
             return getPage(pageNumber - 1, resultsPerPage, true);
          }
-         return new PageImpl(results, pageNumber, resultsPerPage, last ? true
-               : results.size() < resultsPerPage);
+         return new PageImpl(results, pageNumber, resultsPerPage, last || 
+               results.size() < resultsPerPage);
       } catch (HibernateException e) {
          throw new PagingException(e);
       }
