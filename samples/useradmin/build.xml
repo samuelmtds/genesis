@@ -354,7 +354,12 @@
          	<include name="trove*.jar" />
          </fileset>
       	 <fileset dir="${jboss.home}/client">
-      	    <include name="jbossall-client.jar" />
+             <include name="jboss-client.jar" />
+             <include name="jboss-common-client.jar" />
+             <include name="jboss-j2ee.jar" />
+             <include name="jboss-transaction-client.jar" />
+             <include name="jbosssx-client.jar" />
+             <include name="jnp-client.jar" />
       	 </fileset>
       </copy>
       <copy todir="${build.dir}/server/useradmin.war">
@@ -418,7 +423,12 @@
                       value="true" />
          <classpath>
             <path refid="run.classpath" />
-            <pathelement path="${jboss.home}/client/jbossall-client.jar" />
+            <pathelement path="${jboss.home}/client/jboss-client.jar" />
+            <pathelement path="${jboss.home}/client/jboss-common-client.jar" />
+            <pathelement path="${jboss.home}/client/jboss-j2ee.jar" />
+            <pathelement path="${jboss.home}/client/jboss-transaction-client.jar" />
+            <pathelement path="${jboss.home}/client/jbosssx-client.jar" />
+            <pathelement path="${jboss.home}/client/jnp-client.jar" />
          </classpath>
       </java>
    </target>

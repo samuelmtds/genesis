@@ -32,7 +32,12 @@
 		<jar href="dom4j-1.4.jar" download="eager" />
 		<jar href="hibernate2.jar" download="eager"/>
 		<jar href="jakarta-oro-2.0.8.jar" download="eager"/>
-		<jar href="jbossall-client.jar" download="eager"/>
+		<jar href="jboss-client.jar" download="eager"/>
+        <jar href="jboss-common-client.jar" download="eager"/>
+        <jar href="jboss-j2ee.jar" download="eager"/>
+		<jar href="jboss-transaction-client.jar" download="eager"/>
+		<jar href="jbosssx-client.jar" download="eager"/>
+		<jar href="jnp-client.jar" download="eager"/>
 		<jar href="jrexx-1.1.1.jar" download="eager" />
 		<jar href="reusable-components-20040406.jar" download="eager"/>
 		<jar href="thinlet-20040817.jar" download="eager"/>
