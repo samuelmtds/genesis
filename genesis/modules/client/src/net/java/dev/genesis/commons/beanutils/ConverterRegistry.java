@@ -102,6 +102,8 @@ public final class ConverterRegistry extends ConvertUtilsBean {
 
    public Converter lookup(Class clazz) {
       Converter c = null;
+
+      //TODO: support full hierarchy support
       if (clazz.isInterface()) {
          return super.lookup(Object.class);
       }
