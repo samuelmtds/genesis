@@ -389,7 +389,7 @@
            depends="useradmin:compile,useradmin:jar,useradmin:deploy" />
 	
    <target name="useradmin:all.with.webstart"
-	       depends="useradmin:compile,useradmin:jar,useradmin:deploy.webstart" />
+	       depends="useradmin:all,useradmin:deploy.webstart" />
 
    <target name="useradmin:run">
       <java classname="example.Sample" fork="true" failonerror="true">
