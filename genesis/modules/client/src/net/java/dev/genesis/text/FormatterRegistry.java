@@ -46,6 +46,10 @@ public final class FormatterRegistry {
 	public Formatter get(Object o) {
 		return (Formatter) registry.get(o);
 	}
+	
+	public Formatter register(Class clazz, Formatter f) {
+      return (Formatter) registry.register(clazz, f);
+   }
 
 	public String format(Object o) {
 		return get(o).format(o);
