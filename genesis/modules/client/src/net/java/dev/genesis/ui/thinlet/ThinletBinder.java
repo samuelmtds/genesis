@@ -318,27 +318,50 @@ public class ThinletBinder {
    }
 
    public void invokeAction(String name) throws Exception {
+      if (name == null) {
+         throw new IllegalArgumentException("Cannot invoke null action");
+      }
+
       if (log.isDebugEnabled()) {
          log.debug("Invoking action: " + name);
       }
 
+      final MethodEntry entry = new MethodEntry(name, new String[0]);
+
       final ActionMetadata actionMetadata = ((ActionMetadata)controller
-            .getFormMetadata().getActionMetadatas().get(new MethodEntry(name, 
-            new String[0])));
+            .getFormMetadata().getActionMetadatas().get(entry));
 
-      if (actionMetadata.isValidateBefore()) {
-         final String formName = form.getClass().getName();
+      if (actionMetadata != null) {
+         if (actionMetadata.isValidateBefore()) {
+            final String formName = form.getClass().getName();
 
-         final Map validationErrors = ValidationUtils.getInstance().getMessages(
-                  ValidationUtils.getInstance().validate(form, formName), 
-                  formName);
+            final Map validationErrors = ValidationUtils.getInstance().getMessages(
+                     ValidationUtils.getInstance().validate(form, formName), 
+                     formName);
 
-         if (!validationErrors.isEmpty()) {
-            throw new ValidationException(validationErrors);
+            if (!validationErrors.isEmpty()) {
+               throw new ValidationException(validationErrors);
+            }
          }
+
+         invokeDataProviderMethod(actionMetadata, true, false);
+      } else {
+         if (log.isDebugEnabled()) {
+            log.debug("Action " + name + " not found, looking for DataProvider");
+         }
+
+         final DataProviderMetadata dataProviderMetadata = 
+            ((DataProviderMetadata)controller.getFormMetadata()
+            .getDataProviderMetadatas().get(entry));
+
+         if (dataProviderMetadata == null) {
+            throw new IllegalArgumentException("Couldn't find action named " + 
+                  name);
+         }
+
+         invokeDataProviderMethod(dataProviderMetadata, false, false);
       }
-      
-      invokeDataProviderMethod(actionMetadata, true, false);
+
       controller.update();
       updateAndSave(controller.getDataProviderActions(), false, false);
    }
