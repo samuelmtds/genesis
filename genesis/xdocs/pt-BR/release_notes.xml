@@ -29,7 +29,8 @@
           <li>O exemplo useradmin foi atualizado para utilizar novas
           funcionalidades do genesis 0.2-RC1</li>
           <li>O <code>build.xml</code> do <code>empty-project</code> suporta
-          <a href="#TODO: insert link">novas propriedades</a> para definição
+          <a href="empty_project.html#Configurando_um_novo_projeto">novas propriedades</a>
+          para definição
           dos parâmetros de acesso ao banco de dados</li>
         </ul>
         <p>Os seguintes bug foram corrigidos nessa versão:</p>

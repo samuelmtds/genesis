@@ -28,8 +28,8 @@
           <li>The useradmin sample has been updated in order to demonstrate
           genesis 0.2-RC1 features</li>
           <li><code>empty-project</code>'s <code>build.xml</code> now supports
-          <a href="#TODO: insert link">new properties</a> for defining database
-          access configuration</li>
+          <a href="empty_project.html#Configuring_a_new_project">new properties</a>
+          for defining database access configuration</li>
         </ul>
         <p>The following bugs have been fixed in this release:</p>
         <ul>
