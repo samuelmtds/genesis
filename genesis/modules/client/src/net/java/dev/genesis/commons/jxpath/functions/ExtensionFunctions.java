@@ -19,6 +19,7 @@
 package net.java.dev.genesis.commons.jxpath.functions;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import net.java.dev.genesis.equality.EqualityComparator;
@@ -57,6 +58,15 @@ public class ExtensionFunctions {
       }
       return buffer.toString();
    }
+   
+   public static boolean hasChanged(final ExpressionContext context,
+         final Object obj) {
+      final NodeSet nodeSet = (NodeSet) obj;
+      final Map changedMap = (Map) context.getJXPathContext()
+            .getVariables().getVariable("genesis:changedMap");
+      final Pointer pointer = getArg(nodeSet);
+      return changedMap.containsKey(getFieldName(pointer));
+   }
 
    public static boolean isEmpty(final ExpressionContext context,
          final Object obj) {
@@ -66,7 +76,7 @@ public class ExtensionFunctions {
       }
       final NodeSet nodeSet = (NodeSet) obj;
       final FormMetadata formMeta = (FormMetadata) context.getJXPathContext()
-            .getVariables().getVariable("formMetadata");
+            .getVariables().getVariable("genesis:formMetadata");
       final Pointer pointer = getArg(nodeSet);
 
       return formMeta.getFieldMetadata(getFieldName(pointer))
@@ -91,7 +101,7 @@ public class ExtensionFunctions {
             : null;
 
       final FormMetadata formMeta = (FormMetadata) context.getJXPathContext()
-            .getVariables().getVariable("formMetadata");
+            .getVariables().getVariable("genesis:formMetadata");
 
       if (comp1 == comp2) {
          if (comp1 == null) {

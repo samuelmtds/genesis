@@ -18,12 +18,16 @@
  */
 package net.java.dev.genesis.tests.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.java.dev.genesis.equality.DefaultEqualityComparator;
 import net.java.dev.genesis.equality.StringEqualityComparator;
 import net.java.dev.genesis.resolvers.DefaultEmptyResolver;
 import net.java.dev.genesis.resolvers.StringEmptyResolver;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
@@ -43,6 +47,9 @@ public class FormMetadataFactoryTest extends TestCase {
    ActionMetadata resetMethod;
    ActionMetadata cancelMethod;
    ActionMetadata calculateMethod;
+   DataProviderMetadata provideSomeListMethod;
+   DataProviderMetadata provideAnotherListMethod;
+   DataProviderMetadata provideCodesListMethod;
 
    static {
       ConvertUtils.register(ConvertUtils.lookup(String.class), Object.class);
@@ -66,6 +73,12 @@ public class FormMetadataFactoryTest extends TestCase {
             .getDeclaredMethod("cancel", new Class[] {}));
       calculateMethod = formMetadata.getActionMetadata(FooForm.class
             .getDeclaredMethod("calculate", new Class[] {}));
+      provideSomeListMethod = formMetadata.getDataProviderMetadata(FooForm.class
+            .getDeclaredMethod("provideSomeList", new Class[] {}));
+      provideAnotherListMethod = formMetadata.getDataProviderMetadata(FooForm.class
+            .getDeclaredMethod("provideAnotherList", new Class[] {}));
+      provideCodesListMethod = formMetadata.getDataProviderMetadata(FooForm.class
+            .getDeclaredMethod("provideCodesList", new Class[] {}));
    }
 
    public void testParseFormMetadata() {
@@ -141,7 +154,36 @@ public class FormMetadataFactoryTest extends TestCase {
    public void testCallWhen(){
       assertEquals("string-length(normalize-space(description)) != 3",
             calculateMethod.getCallCondition().toString());
+      assertEquals("string-length(normalize-space(description)) != 4",
+            provideSomeListMethod.getCallCondition().toString());
    }
+   
+   public void testDataProvider(){
+      assertEquals("name",
+            provideSomeListMethod.getDataProvider().getFieldName());
+      assertEquals(String.class.getName(),
+            provideSomeListMethod.getDataProvider().getFieldTypeName());
+      assertFalse(provideSomeListMethod.getDataProvider().isArray());
+      assertFalse(provideSomeListMethod.getDataProvider().isCollection());
+      assertFalse(provideSomeListMethod.getDataProvider().isMultiple());
+      
+      assertEquals("ids",
+            provideAnotherListMethod.getDataProvider().getFieldName());
+      assertEquals(Long[].class.getName(),
+            provideAnotherListMethod.getDataProvider().getFieldTypeName());
+      assertTrue(provideAnotherListMethod.getDataProvider().isArray());
+      assertFalse(provideAnotherListMethod.getDataProvider().isCollection());
+      assertTrue(provideAnotherListMethod.getDataProvider().isMultiple());
+      
+      assertEquals("codes",
+            provideCodesListMethod.getDataProvider().getFieldName());
+      assertEquals(List.class.getName(),
+            provideCodesListMethod.getDataProvider().getFieldTypeName());
+      assertFalse(provideCodesListMethod.getDataProvider().isArray());
+      assertTrue(provideCodesListMethod.getDataProvider().isCollection());
+      assertTrue(provideCodesListMethod.getDataProvider().isMultiple());
+   }
+
 
    public void testDisplayOn() {
 
@@ -247,6 +289,8 @@ public class FormMetadataFactoryTest extends TestCase {
       private int number;
       private Object field;
       private String description;
+      private Long[] ids;
+      private List codes;
 
       /**
        * @Condition
@@ -365,6 +409,29 @@ public class FormMetadataFactoryTest extends TestCase {
        * 		string-length(normalize-space(description)) != 3
        */
       public void calculate() {
+      }
+      
+      /**
+       * @DataProvider name
+       * @CallWhen
+       * 		string-length(normalize-space(description)) != 4
+       */
+      public List provideSomeList() {
+         return new ArrayList();
+      }
+      
+      /**
+       * @DataProvider ids
+       */
+      public List provideAnotherList() {
+         return new ArrayList();
+      }
+      
+      /**
+       * @DataProvider codes
+       */
+      public List provideCodesList() {
+         return new ArrayList();
       }
 
    }

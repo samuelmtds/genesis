@@ -20,18 +20,20 @@ package net.java.dev.genesis.ui.metadata;
 
 import java.lang.reflect.Method;
 
-public class ActionMetadata extends MethodMetadata {
-   private boolean validateBefore;
+import net.java.dev.genesis.reflection.FieldEntry;
 
-   public ActionMetadata(Method method) {
+public class DataProviderMetadata extends MethodMetadata {
+   private FieldEntry dataProvider;
+
+   public DataProviderMetadata(final Method method) {
       super(method);
    }
 
-   public boolean isValidateBefore() {
-      return validateBefore;
+   public FieldEntry getDataProvider() {
+      return dataProvider;
    }
 
-   public void setValidateBefore(boolean validateBefore) {
-      this.validateBefore = validateBefore;
+   public void setDataProvider(FieldEntry dataProvider) {
+      this.dataProvider = dataProvider;
    }
 }

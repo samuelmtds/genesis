@@ -30,6 +30,7 @@ public interface FormController {
    public Map getEnabledMap();
    public Map getVisibleMap();
    public Map getCallMap();
+   public Map getDataProviderTriggerMap();
    public void reset() throws Exception;
    public void save() throws Exception;
 }

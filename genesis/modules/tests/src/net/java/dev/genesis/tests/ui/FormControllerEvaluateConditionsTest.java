@@ -19,6 +19,8 @@
 package net.java.dev.genesis.tests.ui;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
@@ -84,10 +86,11 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       controller.populate(someValues);
 
       final MethodEntry calculateEntry = new MethodEntry("calculate", new String[]{});
+      final MethodEntry providerEntry = new MethodEntry("provideSomeList", new String[]{});
       assertEquals(form.getField3(), "abcd");
       assertEquals(controller.getEnabledMap().get("field2"), Boolean.FALSE);
       assertEquals(controller.getVisibleMap().get("field4"), Boolean.TRUE);
-      assertEquals(controller.getCallMap().get(calculateEntry), Boolean.TRUE);
+      assertEquals(controller.getDataProviderTriggerMap().get(providerEntry), Boolean.TRUE);
 
       controller.reset();
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
@@ -95,6 +98,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
       assertEquals(controller.getVisibleMap().get("field4"), Boolean.FALSE);
       assertEquals(controller.getCallMap().get(calculateEntry), Boolean.FALSE);
+      assertEquals(controller.getDataProviderTriggerMap().get(providerEntry), Boolean.FALSE);
    }
 
    /**
@@ -160,6 +164,14 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
        * @CallWhen g:equals(field3,'abcd')
        */
       public void calculate(){
+      }
+      
+      /**
+       * @DataProvider field2
+       * @CallWhen g:equals(field3,'abcd')
+       */
+      public List provideSomeList(){
+         return new ArrayList();
       }
    }
 

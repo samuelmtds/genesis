@@ -26,13 +26,16 @@ import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
+import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -63,8 +66,8 @@ public class FormMetadataFactoryAspect {
          public void processFieldAnnotation(final FormMetadata formMetadata,
                final FieldMetadata fieldMetadata, final Annotation annotation);
 
-         public void processActionAnnotation(final FormMetadata formMetadata,
-               final ActionMetadata actionMetadata, final Annotation annotation);
+         public void processMethodAnnotation(final FormMetadata formMetadata,
+               final MethodMetadata methodMetadata, final Annotation annotation);
       }
 
       public static class MetadataAttribute extends Enum {
@@ -77,9 +80,9 @@ public class FormMetadataFactoryAspect {
                      .getValue();
                final int equalIndex = value.indexOf('=');
                if (equalIndex > 0) {
-                  formMetadata.addNamedCondition(
-                        value.substring(0, equalIndex), JXPathContext
-                              .compile(value.substring(equalIndex + 1)));
+                  formMetadata.addNamedCondition(value.substring(0, equalIndex)
+                        .trim(), JXPathContext.compile(value
+                        .substring(equalIndex + 1)));
                }
             }
 
@@ -88,9 +91,9 @@ public class FormMetadataFactoryAspect {
                processFormAnnotation(formMetadata, annotation);
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                processFormAnnotation(formMetadata, annotation);
             }
@@ -109,11 +112,11 @@ public class FormMetadataFactoryAspect {
                processMemberAnnotation(formMetadata, fieldMetadata, annotation);
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               processMemberAnnotation(formMetadata, actionMetadata, annotation);
+               processMemberAnnotation(formMetadata, methodMetadata, annotation);
             }
 
             private void processMemberAnnotation(
@@ -140,11 +143,11 @@ public class FormMetadataFactoryAspect {
                processMemberAnnotation(formMetadata, fieldMetadata, annotation);
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               processMemberAnnotation(formMetadata, actionMetadata, annotation);
+               processMemberAnnotation(formMetadata, methodMetadata, annotation);
             }
 
             private void processMemberAnnotation(
@@ -172,11 +175,16 @@ public class FormMetadataFactoryAspect {
                      "ValidateBefore cannot be a field annotation");
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               actionMetadata.setValidateBefore(annotation != null);
+               if (!(methodMetadata instanceof ActionMetadata)) {
+                  throw new UnsupportedOperationException(
+                        "ValidateBefore must be an action annotation");
+               }
+               ((ActionMetadata) methodMetadata)
+                     .setValidateBefore(annotation != null);
             }
          }
 
@@ -194,14 +202,50 @@ public class FormMetadataFactoryAspect {
                      "CallWhen cannot be a field annotation");
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               actionMetadata
+               methodMetadata
                      .setCallCondition(JXPathContext
                            .compile(((UntypedAnnotationProxy) annotation)
                                  .getValue()));
+            }
+         }
+
+         public static class DataProviderAnnotationHandler implements
+               AnnotationHandler {
+            public void processFormAnnotation(final FormMetadata formMetadata,
+                  final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "DataProvider cannot be a form annotation");
+            }
+
+            public void processFieldAnnotation(final FormMetadata formMetadata,
+                  final FieldMetadata fieldMetadata, final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "DataProvider cannot be a field annotation");
+            }
+
+            public void processMethodAnnotation(
+                  final FormMetadata formMetadata,
+                  final MethodMetadata methodMetadata,
+                  final Annotation annotation) {
+               if (!(methodMetadata instanceof DataProviderMetadata)) {
+                  throw new UnsupportedOperationException(
+                        "DataProvider cannot be an action annotation");
+               }
+               final String fieldName = ((UntypedAnnotationProxy) annotation)
+                     .getValue();
+               try {
+                  ((DataProviderMetadata) methodMetadata)
+                        .setDataProvider(new FieldEntry(formMetadata
+                              .getFormClass().getDeclaredField(fieldName)));
+               } catch (NoSuchFieldException nsfe) {
+                  throw new RuntimeException("The object "
+                        + formMetadata.getFormClass()
+                        + " doesn´t have the field called " + fieldName, nsfe);
+               }
             }
          }
 
@@ -221,12 +265,12 @@ public class FormMetadataFactoryAspect {
                                  .getValue()));
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                throw new UnsupportedOperationException(
-                     "ClearOn cannot be an action annotation");
+                     "ClearOn cannot be a method annotation");
             }
          }
 
@@ -243,12 +287,12 @@ public class FormMetadataFactoryAspect {
                fieldMetadata.setDisplayOnly(annotation != null);
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                throw new UnsupportedOperationException(
-                     "DisplayOnly cannot be an action annotation");
+                     "DisplayOnly cannot be a method annotation");
             }
          }
 
@@ -267,12 +311,12 @@ public class FormMetadataFactoryAspect {
                            .getValue()));
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                throw new UnsupportedOperationException(
-                     "EqualityComparator cannot be an action annotation");
+                     "EqualityComparator cannot be a method annotation");
             }
 
             private EqualityComparator getEqualityComparator(
@@ -305,12 +349,12 @@ public class FormMetadataFactoryAspect {
                      ((UntypedAnnotationProxy) annotation).getValue()));
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                throw new UnsupportedOperationException(
-                     "EmptyResolver cannot be an action annotation");
+                     "EmptyResolver cannot be a method annotation");
             }
 
             private EmptyResolver getEmptyResolver(
@@ -347,12 +391,12 @@ public class FormMetadataFactoryAspect {
                      .getValue()));
             }
 
-            public void processActionAnnotation(
+            public void processMethodAnnotation(
                   final FormMetadata formMetadata,
-                  final ActionMetadata actionMetadata,
+                  final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                throw new UnsupportedOperationException(
-                     "EmptyValue cannot be an action annotation");
+                     "EmptyValue cannot be a method annotation");
             }
 
          }
@@ -365,6 +409,8 @@ public class FormMetadataFactoryAspect {
                "VisibleWhen", new VisibleWhenAnnotationHandler());
          public static final MetadataAttribute VALIDATE_BEFORE = new MetadataAttribute(
                "ValidateBefore", new ValidateBeforeAnnotationHandler());
+         public static final MetadataAttribute DATA_PROVIDER = new MetadataAttribute(
+               "DataProvider", new DataProviderAnnotationHandler());
          public static final MetadataAttribute CALL_WHEN = new MetadataAttribute(
                "CallWhen", new CallWhenAnnotationHandler());
          public static final MetadataAttribute CLEAR_ON = new MetadataAttribute(
@@ -409,7 +455,7 @@ public class FormMetadataFactoryAspect {
       private void processAnnotations(final FormMetadata formMetadata) {
          processFormAnnotations(formMetadata);
          processFieldsAnnotations(formMetadata);
-         processActionsAnnotations(formMetadata);
+         processMethodsAnnotations(formMetadata);
       }
 
       private void processFormAnnotations(final FormMetadata formMetadata) {
@@ -463,15 +509,22 @@ public class FormMetadataFactoryAspect {
          }
       }
 
-      private void processActionsAnnotations(final FormMetadata formMetadata) {
+      private void processMethodsAnnotations(final FormMetadata formMetadata) {
          Method[] methods = formMetadata.getFormClass().getDeclaredMethods();
-         ActionMetadata actionMetadata;
+         MethodMetadata methodMetadata;
          for (int i = 0; i < methods.length; i++) {
             if (Annotations.getAnnotation("Action", methods[i]) != null) {
-               actionMetadata = new ActionMetadata(methods[i]);
-               formMetadata.addActionMetadata(methods[i], actionMetadata);
-               processActionAnnotations(formMetadata, actionMetadata,
-                     methods[i]);
+               methodMetadata = new ActionMetadata(methods[i]);
+               formMetadata.addActionMetadata(methods[i],
+                     (ActionMetadata) methodMetadata);
+               processActionAnnotations(formMetadata,
+                     (ActionMetadata) methodMetadata, methods[i]);
+            } else if (Annotations.getAnnotation("DataProvider", methods[i]) != null) {
+               methodMetadata = new DataProviderMetadata(methods[i]);
+               formMetadata.addDataProviderMetadata(methods[i],
+                     (DataProviderMetadata) methodMetadata);
+               processDataProviderAnnotations(formMetadata,
+                     (DataProviderMetadata) methodMetadata, methods[i]);
             }
          }
       }
@@ -485,8 +538,25 @@ public class FormMetadataFactoryAspect {
             info = (AnnotationInfo) iter.next();
             attr = MetadataAttribute.get(info.getName());
             if (attr != null) {
-               attr.getHandler().processActionAnnotation(formMetadata,
+               attr.getHandler().processMethodAnnotation(formMetadata,
                      actionMetadata, info.getAnnotation());
+            }
+         }
+      }
+
+      private void processDataProviderAnnotations(
+            final FormMetadata formMetadata,
+            final DataProviderMetadata dataProviderMetadata,
+            final Method actionMethod) {
+         final List annotations = Annotations.getAnnotationInfos(actionMethod);
+         AnnotationInfo info;
+         MetadataAttribute attr;
+         for (Iterator iter = annotations.iterator(); iter.hasNext();) {
+            info = (AnnotationInfo) iter.next();
+            attr = MetadataAttribute.get(info.getName());
+            if (attr != null) {
+               attr.getHandler().processMethodAnnotation(formMetadata,
+                     dataProviderMetadata, info.getAnnotation());
             }
          }
       }

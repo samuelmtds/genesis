@@ -25,6 +25,7 @@ import java.util.Map;
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
@@ -51,6 +52,8 @@ public class DefaultFormController implements FormController {
    private final Map enabledMap = new HashMap();
    private final Map visibleMap = new HashMap();
    private final Map callMap = new HashMap();
+   private final Map dataProviderTriggerMap = new HashMap();
+   private final Map changedMap = new HashMap();
 
    public void setForm(Object form) {
       this.form = form;
@@ -93,8 +96,11 @@ public class DefaultFormController implements FormController {
 
    public void setup() throws Exception {
       ctx = createJXPathContext();
-      ctx.getVariables().declareVariable("formMetadata", formMetadata);
-      if (PropertyUtils.isWriteable(form, "context")) {
+      ctx.getVariables().declareVariable("genesis:formMetadata", formMetadata);
+      ctx.getVariables().declareVariable("genesis:changedMap", changedMap);
+      if (PropertyUtils.isWriteable(form, "context")
+            && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(form,
+                  "context"))) {
          PropertyUtils.setProperty(form, "context", getVariablesMap());
       }
       evaluate();
@@ -103,8 +109,8 @@ public class DefaultFormController implements FormController {
       lastSaved.clear();
       lastSaved.putAll(last);
 
-      ctx.getVariables().declareVariable("last", last);
-      ctx.getVariables().declareVariable("lastSaved", lastSaved);
+      ctx.getVariables().declareVariable("genesis:last", last);
+      ctx.getVariables().declareVariable("genesis:lastSaved", lastSaved);
    }
 
    public void populate(Map properties) throws Exception {
@@ -115,9 +121,10 @@ public class DefaultFormController implements FormController {
       Map.Entry entry;
       Object value;
       FieldMetadata fieldMeta;
-      final Map toCopy = GenesisUtils.normalizeMap(new HashMap(properties));
+      changedMap.clear();
+      changedMap.putAll(GenesisUtils.normalizeMap(properties));
 
-      for (final Iterator i = toCopy.entrySet().iterator(); i.hasNext();) {
+      for (final Iterator i = changedMap.entrySet().iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
          fieldMeta = formMetadata.getFieldMetadata(entry.getKey().toString());
 
@@ -143,12 +150,12 @@ public class DefaultFormController implements FormController {
          entry.setValue(value);
       }
 
-      if (toCopy.isEmpty()) {
+      if (changedMap.isEmpty()) {
          log.debug("Nothing changed.");
          return;
       }
 
-      PropertyUtils.copyProperties(form, toCopy);
+      PropertyUtils.copyProperties(form, changedMap);
       evaluate();
       last.clear();
       last.putAll(PropertyUtils.describe(form));
@@ -160,20 +167,21 @@ public class DefaultFormController implements FormController {
       evaluateEnabledWhenConditions();
       evaluateVisibleWhenConditions();
       evaluateCallWhenConditions();
+      evaluateDataProviderTriggers();
    }
 
    protected void evaluateClearOnConditions() throws Exception {
-      final Map fieldMetadatas = new HashMap(formMetadata.getFieldMetadatas());
+      final Map fieldMetadatas = formMetadata.getFieldMetadatas();
       final Map toCopy = new HashMap();
 
       boolean changed;
       FieldMetadata fieldMetadata;
       Map.Entry entry;
-      Map properties;
+      final Map properties = PropertyUtils.describe(form);
 
       do {
          changed = false;
-         properties = PropertyUtils.describe(form);
+         properties.putAll(toCopy);
 
          for (final Iterator i = fieldMetadatas.entrySet().iterator(); i
                .hasNext();) {
@@ -205,9 +213,10 @@ public class DefaultFormController implements FormController {
          if (log.isDebugEnabled()) {
             log.debug("Nothing changed in ClearOn conditions.");
          }
+      } else {
+         PropertyUtils.copyProperties(form, toCopy);
+         changedMap.putAll(toCopy);
       }
-
-      PropertyUtils.copyProperties(form, toCopy);
    }
 
    protected void evaluateNamedConditions() {
@@ -296,6 +305,30 @@ public class DefaultFormController implements FormController {
          }
       }
    }
+   
+   protected void evaluateDataProviderTriggers() {
+      Map.Entry entry;
+      DataProviderMetadata dataProviderMetadata;
+
+      for (final Iterator i = formMetadata.getDataProviderMetadatas().entrySet()
+            .iterator(); i.hasNext();) {
+         entry = (Map.Entry) i.next();
+         dataProviderMetadata = (DataProviderMetadata) entry.getValue();
+
+         if (dataProviderMetadata.getCallCondition() == null) {
+            continue;
+         }
+
+         dataProviderTriggerMap.put(entry.getKey(), isSatisfied(dataProviderMetadata
+               .getCallCondition()));
+
+         if (log.isDebugEnabled()) {
+            log.debug("CallWhen Condition for method '" + entry.getKey()
+                  + "' evaluated as '"
+                  + dataProviderTriggerMap.get(entry.getKey()) + "'");
+         }
+      }
+   }
 
    protected boolean isConditionSatisfied(CompiledExpression compiledEx) {
       return Boolean.TRUE.equals(compiledEx.getValue(ctx));
@@ -315,6 +348,10 @@ public class DefaultFormController implements FormController {
    
    public Map getCallMap(){
       return new HashMap(callMap);
+   }
+   
+   public Map getDataProviderTriggerMap(){
+      return new HashMap(dataProviderTriggerMap);
    }
 
    public void reset() throws Exception {

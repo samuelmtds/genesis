@@ -33,12 +33,14 @@ public class FormMetadata {
    private final Map namedConditions;
    private final Map fieldMetadatas;
    private final Map actionMetadatas;
+   private final Map dataProviderMetadatas;
 
    public FormMetadata(final Class formClass) {
       this.formClass = formClass;
       this.namedConditions = new HashMap();
       this.fieldMetadatas = new HashMap();
       this.actionMetadatas = new HashMap();
+      this.dataProviderMetadatas = new HashMap();
    }
 
    public Class getFormClass() {
@@ -56,6 +58,10 @@ public class FormMetadata {
    public Map getActionMetadatas(){
       return new HashMap(actionMetadatas);
    }
+   
+   public Map getDataProviderMetadatas(){
+      return new HashMap(dataProviderMetadatas);
+   }
 
    public CompiledExpression getNamedCondition(final String namedConditionName) {
       return (CompiledExpression) namedConditions.get(namedConditionName);
@@ -67,6 +73,10 @@ public class FormMetadata {
    
    public ActionMetadata getActionMetadata(final Method method) {
       return (ActionMetadata) actionMetadatas.get(new MethodEntry(method));
+   }
+   
+   public DataProviderMetadata getDataProviderMetadata(final Method method) {
+      return (DataProviderMetadata) dataProviderMetadatas.get(new MethodEntry(method));
    }
 
    public void addNamedCondition(final String key, final CompiledExpression value) {
@@ -80,6 +90,10 @@ public class FormMetadata {
    
    public void addActionMetadata(final Method method, final ActionMetadata actionMetadata) {
       actionMetadatas.put(new MethodEntry(method), actionMetadata);
+   }
+   
+   public void addDataProviderMetadata(final Method method, final DataProviderMetadata dataProviderMetadata) {
+      dataProviderMetadatas.put(new MethodEntry(method), dataProviderMetadata);
    }
 
    public String toString() {

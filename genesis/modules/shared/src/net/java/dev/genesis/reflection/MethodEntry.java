@@ -41,6 +41,14 @@ public class MethodEntry {
       this.argsClassesNames = classNames;
    }
 
+   public String[] getArgsClassesNames() {
+      return argsClassesNames;
+   }
+
+   public String getMethodName() {
+      return methodName;
+   }
+
    public boolean equals(Object o) {
       MethodEntry that = (MethodEntry) o;
 
