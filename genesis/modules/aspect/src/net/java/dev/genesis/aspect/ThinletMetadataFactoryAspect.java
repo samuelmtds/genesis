@@ -64,11 +64,6 @@ public class ThinletMetadataFactoryAspect {
          UntypedAnnotationProxy annon;
 
          for (int i = 0; i < methods.length; i++) {
-            // Workaround for bug in AW
-            if (methods[i].getDeclaringClass().getClassLoader() == null) {
-               continue;
-            }
-
             annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
                   "BeforeAction", methods[i]);
             if (annon != null) {
