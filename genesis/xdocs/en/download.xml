@@ -32,11 +32,15 @@
         <li><b>genesis-useradmin-sample-{version}.tar.gz</b> and
         <b>genesis-useradmin-sample-{version}.zip</b>: contain both source code
         as well as binary files for the UserAdmin sample.</li>
+        <li><b>genesis-src-only-{version}.tar.gz</b> and
+        <b>genesis-src-only-{version}.zip</b>: genesis source code only, with
+        no jars.</li>
         <li><b>genesis-src-{version}.tar.gz</b> and
-        <b>genesis-src-{version}.zip</b>: genesis source code.</li>
+        <b>genesis-src-{version}.zip</b>: the same as
+        <code>genesis-src-only</code> plus <code>genesis-full-bin</code>.</li>
         <li><b>genesis-src-plus-docs-{version}.tar.gz</b> e
-        <b>genesis-src-plus-docs-{version}.zip</b>: genesis source
-        code and genesis complete documentation.</li>
+        <b>genesis-src-plus-docs-{version}.zip</b>: the same as
+        <code>genesis-src</code> plus genesis complete documentation.</li>
         <li><b>modified-xdoclet-1.2.zip</b>: modified xdoclet 1.2 distribution
         files with additional tasks.</li>
       </ul>
