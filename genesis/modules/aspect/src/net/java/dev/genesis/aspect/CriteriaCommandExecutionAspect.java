@@ -77,10 +77,16 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          threadLocal.set(((MethodRtti)jp.getRtti()).getMethod());
       }
 
-      return new CriteriaCommandExecutor(obj, methodName, classNames,
-            parameterValues, parser.getPersisterClassName(), parser
-                  .getOrderBy(), parser.isAsc(), obj.getPropertiesMap())
-            .execute();
+      try {
+         return new CriteriaCommandExecutor(obj, methodName, classNames,
+               parameterValues, parser.getPersisterClassName(), parser
+                     .getOrderBy(), parser.isAsc(), obj.getPropertiesMap())
+               .execute();
+      } finally {
+         if (preventStackOverflow) {
+            threadLocal.set(null);
+         }
+      }
    }
 
    public static class CriteriaAnnotationParser {
