@@ -186,6 +186,14 @@
             <include name="jbosssx-client.jar" />
             <include name="jnp-client.jar" />
          </fileset>
+         <!-- If you need additional scripting jars at runtime, add them here as follows:
+         <fileset dir="additional_scripting_jars_directory">
+            <include name="js.jar" />
+            <include name="groovy.jar" />
+            ...
+            <include name="jython.jar" />
+         </fileset>
+         -->
          <fileset dir="${script.dist}">
             <include name="*.jar" />
          </fileset>
