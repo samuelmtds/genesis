@@ -819,6 +819,10 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected ThinletBinder prepareBinder(Object widget, Object form, 
          Object handler) throws Exception {
+      if (widget instanceof Thinlet) {
+         widget = ((Thinlet)widget).getDesktop();
+      }
+
       Map formPerClass = (Map)formPerClassPerComponent.get(widget);
 
       if (formPerClass == null) {
