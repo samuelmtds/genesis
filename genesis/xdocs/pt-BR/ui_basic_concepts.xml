@@ -186,32 +186,35 @@ public abstract class BaseDialogView extends BaseDialogThinlet {
       implementam tarefas comuns, como a exibição de mensagens, confirmações por
       parte do usuário e exibição de exceções. Todas essas classes encontram-se
       no pacote <code>net.java.dev.genesis.ui.thinlet</code>.</p>
-      <p>A primeira dessas classes auxiliares é <code>MessageDialog</code>, que
-      exibe uma mensagem para o usuário em uma <code>Dialog</code> com um botão
-      "Fechar". Dois métodos estáticos <code>show(..)</code> são providos com o
-      objetivo de tornar o uso desta classe ainda mais prático. Ambos aceitam o
-      título da janela como segundo parâmetro e a mensagem como terceiro, sendo
-      que o primeiro argumento pode ser uma instância de <code>Frame</code> ou
-      de <code>BaseThinlet</code>. A segunda versão torna seu uso bastante
-      prático dentro de uma classe que estenda <code>BaseThinlet</code> como
-      mostra o código abaixo:</p>
+      <subsection name="MessageDialog">
+        <p>A primeira dessas classes auxiliares é <code>MessageDialog</code>,
+        que exibe uma mensagem para o usuário em uma <code>Dialog</code> com um
+        botão "Fechar". Dois métodos estáticos <code>show(..)</code> são
+        providos com o objetivo de tornar o uso desta classe ainda mais prático.
+        Ambos aceitam o título da janela como segundo parâmetro e a mensagem
+        como terceiro, sendo que o primeiro argumento pode ser uma instância de
+        <code>Frame</code> ou de <code>BaseThinlet</code>. A segunda versão
+        torna seu uso bastante prático dentro de uma classe que estenda <code>
+        BaseThinlet</code> como mostra o código abaixo:</p>
 <source>
 public void exibirMensagem() {
    MessageDialog.show(this, "Título", "Mensagem a ser exibida");
 }
 </source>
-      <p>Para se exibir uma escolha para o usuário pode-se utilizar a classe
-      <code>OptionDialog</code>. São providas, de forma semelhante a
-      <code>MessageDialog</code>, duas versões do método
-      <code>display(..)</code>, aceitando uma instância de
-      <code>BaseThinlet</code> ou de <code>Frame</code>, o título da janela e a
-      pergunta a ser exibida. Ao utilizar algum desses métodos é exibida a
-      janela de diálogo com três botões (Sim/Não/Cancelar). Existe um método
-      <code>displayYesNo(BaseThinlet,String,String)</code> para casos em que
-      haja somente duas opções. Todos os três métodos retornam um dos valores da
-      enumeração <code>Option</code>, de modo que pode-se saber que opção o
-      usuário escolheu. O uso de <code>OptionDialog</code> em
-      uma classe que estenda <code>BaseThinlet</code> é mostrado abaixo:</p>
+      </subsection>
+      <subsection name="OptionDialog">
+        <p>Para se exibir uma escolha para o usuário pode-se utilizar a classe
+        <code>OptionDialog</code>. São providas, de forma semelhante a
+        <code>MessageDialog</code>, duas versões do método
+        <code>display(..)</code>, aceitando uma instância de
+        <code>BaseThinlet</code> ou de <code>Frame</code>, o título da janela e
+        a pergunta a ser exibida. Ao utilizar algum desses métodos é exibida a
+        janela de diálogo com três botões (Sim/Não/Cancelar). Existe um método
+        <code>displayYesNo(BaseThinlet,String,String)</code> para casos em que
+        haja somente duas opções. Todos os três métodos retornam um dos valores
+        da enumeração <code>Option</code>, de modo que pode-se saber que opção o
+        usuário escolheu. O uso de <code>OptionDialog</code> em uma classe que
+        estenda <code>BaseThinlet</code> é mostrado abaixo:</p>
 <source>
 public void fazOperacao() {
    Option option = OptionDialog.displayYesNo(this, "Título", "Deseja " +
@@ -222,22 +225,25 @@ public void fazOperacao() {
    }
 }
 </source>
-      <p>Por fim, a classe <code>ErrorReporterDialog</code> permite exibir uma
-      exceção para o usuário com uma mensagem descritiva além de todo o stack
-      trace. Assim como no caso de <code>MessageDialog</code> existem também
-      duas versões do método <code>show(..)</code>: uma para
-      <code>BaseThinlet</code> e outra para <code>Frame</code>. O exemplo abaixo
-      mostra como utilizar esta classe em uma subclasse de
-      <code>BaseThinlet</code>:</p>
+      </subsection>
+      <subsection name="ErrorReporterDialog">
+        <p>A classe <code>ErrorReporterDialog</code> permite exibir uma exceção
+        para o usuário com uma mensagem descritiva além de todo o stack trace.
+        Assim como no caso de <code>MessageDialog</code> existem também duas
+        versões do método <code>show(..)</code>: uma para
+        <code>BaseThinlet</code> e outra para <code>Frame</code>. O exemplo
+        abaixo mostra como utilizar esta classe em uma subclasse de
+        <code>BaseThinlet</code>:</p>
 <source>
 public void exibeErro(Throwable t) {
    ErrorReporterDialog.show(this, "Erro", t.getMessage(), t);
 }
 </source>
-      <p>O uso direto de <code>ErrorReporterDialog</code> diretamente no código
-      das views provavelmente será desnecessário, visto que o tratamento de
-      erros padrão implementado em <code>BaseThinlet</code> já utiliza esta
-      classe, conforme explicado posteriormente.</p>
+        <p>O uso direto de <code>ErrorReporterDialog</code> diretamente no
+        código das views provavelmente será desnecessário, visto que o
+        tratamento de erros padrão implementado em <code>BaseThinlet</code> já
+        utiliza esta classe, conforme explicado posteriormente.</p>
+      </subsection>
     </section>
     <section name="Entendendo os forms">
       <p>Os forms contém a lógica da interface gráfica e são desacoplados da API
@@ -338,7 +344,7 @@ public class LoginView extends BaseDialogThinlet {
       <p>As propriedades expostas através de setters e getters - neste caso,
       <code>usuario</code> (linhas 8-14) e <code>senha</code> (linhas 16-22) -
       podem ser "ligadas" dinamicamente a diversos widgets da interface
-      gráfica, como texfields, passwordfields, labels e outros. Para que isto
+      gráfica, como textfields, passwordfields, labels e outros. Para que isto
       aconteça o <code>name</code> dos widgets no xml (linhas 5 e 7 do xml) tem
       de ser iguais aos nomes das propriedades. Tanto o valor da propriedade no
       form quanto sua exibição na tela estarão sincronizados quando o componente
