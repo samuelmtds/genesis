@@ -30,7 +30,7 @@
         <li>To compile and install the application we recommend <a href=
         "http://ant.apache.org/">Apache Ant</a> and <a href=
         "http://xdoclet.sourceforge.net/">XDoclet</a> release 1.2 with some
-        modified libraries available <a href="https://genesis.dev.java.net/files/documents/2063/10130/modified-xdoclet-1.2.zip">here</a>.</li>
+        modified libraries available <a href="https://genesis.dev.java.net/files/documents/2063/10580/modified-xdoclet-1.2.zip">here</a>.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
@@ -56,9 +56,17 @@ genesisBasedApplication.prettyName=Empty Project
 # local setup
 genesis.home=../../genesis
 xdoclet.dist=../../xdoclet/dist
+generate.validation=true
 jboss.provider.url=jnp://localhost
+jboss.data_source.jndiname=java:/DefaultDS
+jboss.datasource_config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
 webstart.server=localhost
 webstart.port=8080
+hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+hibernate.version=2.1.6
+hibernate.show.sql=true
+hibernate.session_factory.jndiname=jboss:/hibernate/SessionFactory
+hibernate.jbossservice.name=HibernateFactory,name=HibernateFactory
 </source>
       <p>At least four properties must be defined:</p>
       <ul>
@@ -81,10 +89,16 @@ webstart.port=8080
         <li><code><b>xdoclet.dist</b></code>: Indicates the distribution dir for
         XDoclet. The distribution used by the build process and therefore
         recommended is the 1.2 release together with some modified libraries
-        available <a href="https://genesis.dev.java.net/files/documents/2063/9021/modified-xdoclet-1.2.zip">here</a>.
+        available <a href="https://genesis.dev.java.net/files/documents/2063/10580/modified-xdoclet-1.2.zip">here</a>.
         Note: install the 1.2
         XDoclet dist and copy the modified libraries to
         <code>&lt;XDOCLET_DIR&gt;/lib</code> overriding the original ones.</li>
+        <li><code><b>jboss.datasource_config.xml</b></code>: Indicates the datasource JBoss config file.
+        You can supply another config file that matches your database configuration.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect hibernate will use.
+        If you're going to use other database than HSQLDB, you must supply the correct dialect.
+        You can find futher information about dialect <a href="http://www.hibernate.org/">hibernate site</a>.
+        </li>
       </ul>
       <p>To make understanding easier, let's imagine a cenario for a new genesis
       based project creation:</p>

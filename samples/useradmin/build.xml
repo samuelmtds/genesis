@@ -1,135 +1,156 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project basedir="." default="useradmin:all.with.webstart" name="genesis useradmin sample">
-   <property file="build.properties" />
 
-   <property name="genesis.home" location="../../genesis" />
-   <property name="genesis.dist" location="${genesis.home}/dist" />
-   <property name="genesis.version" value="0.2-RC2-dev" />
-   <property name="xdoclet.dist" location="../../xdoclet/dist" />
-   <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
-   <property name="commons.dist" location="${genesis.home}/lib/commons" />
-   <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
-   <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
-   <property name="annotation.properties"
-             location="${genesis.dist}/annotation.properties" />
+   <target name="init">
+	   <property file="build.properties" />
+	
+	   <property name="genesis.home" location="../../genesis" />
+	   <property name="genesis.dist" location="${genesis.home}/dist" />
+	   <property name="genesis.version" value="0.2-RC2-dev" />
+	   <property name="xdoclet.dist" location="../../xdoclet/dist" />
+	   <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
+	   <property name="commons.dist" location="${genesis.home}/lib/commons" />
+	   <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
+	   <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
+	   <property name="annotation.properties"
+	             location="${genesis.dist}/annotation.properties" />
+	
+	   <property name="module.shared" location="./modules/shared" />
+	   <property name="module.client" location="./modules/client" />
+	   <property name="build.dir" value="target" />
+	   <property name="lib.dir" value="lib" />
+	   <property name="dist.dir" value="dist" />
+	   <property name="build.dest" value="${build.dir}/classes" />
+	   <property name="build.src" value="${build.dir}/src" />
+	   <property name="annotation.dest" value="${build.dir}/annotation" />
+	   <property name="weaving.remote.dest" value="${build.dir}/remote-weaving" />
+	   <property name="weaving.local.dest" value="${build.dir}/local-weaving" />
+	   <property name="src.dir" value="src" />
+	   <property name="webstart.dir" location="webstart" />
+	   <property name="generate.client.validation" value="true" />
+      <property name="verbose" value="true" />
+	
+	   <property name="genesisBasedApplication.name" value="useradmin" />
+	   <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
+	   <property name="genesisBasedApplication.prettyName" value="User Admin" />
+	   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />
+	
+	   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
+	   <property name="jboss.provider.url" value="jnp://localhost" />
+	   <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
+	   <property name="jboss.data_source.jndiname" value="java:/DefaultDS" />
+	   <property name="jboss.datasource_config.xml" location="${jboss.home}/server/default/deploy/hsqldb-ds.xml" />
+	   <property name="webstart.server" value="localhost" />
+	   <property name="webstart.port" value="8080" />
+	
+	   <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
+	   <property name="jdbc.driver.class" value="org.hsqldb.jdbcDriver" />
+	   <property name="jdbc.username" value="sa" />
+	   <property name="jdbc.password" value="" />
+	   <property name="hibernate.dialect" value="net.sf.hibernate.dialect.HSQLDialect"/>
+	   <property name="hibernate.version" value="2.1.6" />
+	   <property name="hibernate.show.sql" value="true" />
+	   <property name="hibernate.session_factory.jndiname" value="jboss:/hibernate/SessionFactory" />
+	   <property name="hibernate.jbossservice.name" value="HibernateFactory,name=HibernateFactory" />
+	   <property name="hibernate.connection_url" value="jdbc:hsqldb:genesis/useradmin" />
+	
+	   <path id="j2ee.path">
+	      <fileset dir="${j2ee.dist}" includes="*.jar" />
+	   </path>
+	
+	   <path id="xdoclet.path">
+	      <path refid="j2ee.path" />
+	      <fileset dir="${xdoclet.dist}" includes="*.jar" />
+	   </path>
+	
+	   <path id="aspectwerkz.path">
+	      <fileset dir="${genesis.home}/lib/aspectwerkz">
+	         <include name="aspectwerkz-*.jar" />
+	         <include name="ant*.jar" />
+	         <exclude name="asm*.jar" />
+	         <include name="concurrent*.jar" />
+	         <include name="dom4j*.jar" />
+	         <include name="javassist*.jar" />
+	         <include name="jrexx*.jar" />
+	         <include name="junit*.jar" />
+	         <include name="managementapi*.jar" />
+	         <include name="piccolo*.jar" />
+	         <include name="qdox*.jar" />
+	         <include name="trove*.jar" />
+	      </fileset>
+	   </path>
+	
+	   <path id="shared.dependency.classpath">
+	      <fileset dir="${genesis.dist}"
+	               includes="genesis-shared-${genesis.version}.jar" />
+	      <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
+	      <fileset dir="${commons.dist}">
+	         <include name="commons-beanutils*.jar" />
+	         <include name="commons-logging*.jar" />
+	         <include name="reusable-components*.jar" />
+	      </fileset>
+	   </path>
+	
+	   <path id="client.dependency.classpath">
+	      <path location="${module.shared}/${build.dest}" />
+	      <fileset dir="${genesis.dist}">
+	         <include name="genesis-shared-${genesis.version}.jar" />
+	         <include name="genesis-client-${genesis.version}.jar" />
+	      </fileset>
+	      <fileset dir="${commons.dist}">
+	         <include name="commons-beanutils*.jar" />
+	         <include name="commons-digester*.jar" />
+	         <include name="commons-jxpath*.jar" />
+	         <include name="commons-logging*.jar" />
+	         <include name="commons-validator*.jar" />
+	         <include name="jakarta-oro-*.jar" />
+	         <include name="reusable-components*.jar" />
+	      </fileset>
+	      <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+	   </path>
+	
+	   <path id="run.classpath">
+	      <fileset dir="${hibernate.dist}" includes="commons-collection*.jar" />
+	      <fileset dir="${genesis.dist}"
+	               includes="genesis-aspect-annotated-${genesis.version}.jar" />
+	      <fileset dir="${genesis.dist}"
+	               includes="genesis-client-${genesis.version}.jar" />
+	      <path refid="j2ee.path" />
+	      <path refid="client.dependency.classpath" />
+	      <path refid="shared.dependency.classpath" />
+	      <path refid="aspectwerkz.path" />
+	   </path>
+	
+	   <path id="run.remote.classpath">
+	      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-remote-weaved.jar" />
+	      <path refid="run.classpath" />
+	   </path>
+	
+	   <path id="run.local.classpath">
+	      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-local-weaved.jar" />
+	      <pathelement path="${jdbc.driver}" />
+	      <fileset dir="${hibernate.dist}">
+	         <include name="cglib-full-*.jar"/>
+	         <include name="ehcache-*.jar"/>
+	      </fileset>
+	      <path refid="run.classpath" />
+	   </path>
+	
+	   <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
+	   <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
+	   <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
+	   <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
 
-   <property name="module.shared" location="./modules/shared" />
-   <property name="module.client" location="./modules/client" />
-   <property name="build.dir" value="target" />
-   <property name="lib.dir" value="lib" />
-   <property name="dist.dir" value="dist" />
-   <property name="build.dest" value="${build.dir}/classes" />
-   <property name="build.src" value="${build.dir}/src" />
-   <property name="annotation.dest" value="${build.dir}/annotation" />
-   <property name="weaving.remote.dest" value="${build.dir}/remote-weaving" />
-   <property name="weaving.local.dest" value="${build.dir}/local-weaving" />
-   <property name="src.dir" value="src" />
-   <property name="webstart.dir" location="webstart" />
+      <condition property="generate.validation">
+         <istrue value="${generate.client.validation}" />
+      </condition>
+   </target>
 
-   <property name="genesisBasedApplication.name" value="useradmin" />
-   <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
-   <property name="genesisBasedApplication.prettyName" value="User Admin" />
-   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />
-
-   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
-   <property name="jboss.provider.url" value="jnp://localhost" />
-   <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
-   <property name="webstart.server" value="localhost" />
-   <property name="webstart.port" value="8080" />
-   <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
-
-   <path id="j2ee.path">
-      <fileset dir="${j2ee.dist}" includes="*.jar" />
-   </path>
-
-   <path id="xdoclet.path">
-      <path refid="j2ee.path" />
-      <fileset dir="${xdoclet.dist}" includes="*.jar" />
-   </path>
-
-   <path id="aspectwerkz.path">
-      <fileset dir="${genesis.home}/lib/aspectwerkz">
-         <include name="aspectwerkz-*.jar" />
-         <include name="ant*.jar" />
-         <exclude name="asm*.jar" />
-         <include name="concurrent*.jar" />
-         <include name="dom4j*.jar" />
-         <include name="javassist*.jar" />
-         <include name="jrexx*.jar" />
-         <include name="junit*.jar" />
-         <include name="managementapi*.jar" />
-         <include name="piccolo*.jar" />
-         <include name="qdox*.jar" />
-         <include name="trove*.jar" />
-      </fileset>
-   </path>
-
-   <path id="shared.dependency.classpath">
-      <fileset dir="${genesis.dist}"
-               includes="genesis-shared-${genesis.version}.jar" />
-      <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
-      <fileset dir="${commons.dist}">
-         <include name="commons-beanutils*.jar" />
-         <include name="commons-logging*.jar" />
-         <include name="reusable-components*.jar" />
-      </fileset>
-   </path>
-
-   <path id="client.dependency.classpath">
-      <path location="${module.shared}/${build.dest}" />
-      <fileset dir="${genesis.dist}">
-         <include name="genesis-shared-${genesis.version}.jar" />
-         <include name="genesis-client-${genesis.version}.jar" />
-      </fileset>
-      <fileset dir="${commons.dist}">
-         <include name="commons-beanutils*.jar" />
-         <include name="commons-digester*.jar" />
-         <include name="commons-jxpath*.jar" />
-         <include name="commons-logging*.jar" />
-         <include name="commons-validator*.jar" />
-         <include name="jakarta-oro-*.jar" />
-         <include name="reusable-components*.jar" />
-      </fileset>
-      <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
-   </path>
-
-   <path id="run.classpath">
-      <fileset dir="${hibernate.dist}" includes="commons-collection*.jar" />
-      <fileset dir="${genesis.dist}"
-               includes="genesis-aspect-annotated-${genesis.version}.jar" />
-      <fileset dir="${genesis.dist}"
-               includes="genesis-client-${genesis.version}.jar" />
-      <path refid="j2ee.path" />
-      <path refid="client.dependency.classpath" />
-      <path refid="shared.dependency.classpath" />
-      <path refid="aspectwerkz.path" />
-   </path>
-
-   <path id="run.remote.classpath">
-      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-remote-weaved.jar" />
-      <path refid="run.classpath" />
-   </path>
-
-   <path id="run.local.classpath">
-      <fileset dir="${build.dir}" includes="${genesisBasedApplication.name}-local-weaved.jar" />
-      <pathelement path="${jdbc.driver}" />
-      <fileset dir="${hibernate.dist}">
-         <include name="cglib-full-*.jar"/>
-         <include name="ehcache-*.jar"/>
-      </fileset>
-      <path refid="run.classpath" />
-   </path>
-
-   <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
-   <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
-   <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
-   <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
-
-   <target name="shared:clean">
+   <target name="shared:clean" depends="init">
       <delete dir="${module.shared}/${build.dir}" />
    </target>
 
-   <target name="shared:compile">
+   <target name="shared:compile" depends="init">
       <mkdir dir="${module.shared}/${build.dest}" />
       <javac destdir="${module.shared}/${build.dest}"
              debug="true"
@@ -144,8 +165,8 @@
       <antcall target="shared:annotation" />
    </target>
 
-   <target name="shared:annotation">
-      <annotationc verbose="true"
+   <target name="shared:annotation" depends="init">
+      <annotationc verbose="${verbose}"
             srcdir="${module.shared}/${src.dir}"
             destdir="${module.shared}/${annotation.dest}"
             classpath="${module.shared}/${build.dest}"
@@ -155,43 +176,44 @@
       </copy>
    </target>
 
-   <target name="shared:hibernatedoclet">
+   <target name="shared:hibernatedoclet" depends="init">
+      <basename property="jboss.ds.name" file="${jboss.data_source.jndiname}"/>
       <mkdir dir="${module.shared}/${build.src}" />
-      <hibernatedoclet destdir="${module.shared}/${build.src}" verbose="true">
+      <hibernatedoclet destdir="${module.shared}/${build.src}" verbose="${verbose}">
          <fileset dir="${module.shared}/${src.dir}">
             <include name="**/*.java" />
          </fileset>
          <hibernate version="2.0"
                     xmlencoding="ISO-8859-1"
                     validateXML="false" />
-         <jbossservice jndiName="jboss:/hibernate/SessionFactory"
-                       serviceName="HibernateFactory,name=HibernateFactory"
-                       dialect="net.sf.hibernate.dialect.HSQLDialect"
-                       dataSource="java:/DefaultDS"
+         <jbossservice jndiName="${hibernate.session_factory.jndiname}"
+                       serviceName="${hibernate.jbossservice.name}"
+                       dialect="${hibernate.dialect}"
+                       dataSource="${jboss.data_source.jndiname}"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
                        transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
                        userTransactionName="UserTransaction"
-                       showSql="true"
-                       depends="jboss.jca:service=LocalTxCM,name=DefaultDS"
-                       version="2.1.6" />
-         <hibernatecfg dialect="net.sf.hibernate.dialect.HSQLDialect"
-                       userName="sa"
-                       password=""
-                       driver="org.hsqldb.jdbcDriver"
-                       jdbcUrl="jdbc:hsqldb:genesis/useradmin"
+                       showSql="${hibernate.show.sql}"
+                       depends="jboss.jca:service=LocalTxCM,name=${jboss.ds.name}"
+                       version="${hibernate.version}" />
+         <hibernatecfg dialect="${hibernate.dialect}"
+                       userName="${jdbc.username}"
+                       password="${jdbc.password}"
+                       driver="${jdbc.driver.class}"
+                       jdbcUrl="${hibernate.connection_url}"
                        transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
-                       showSql="true" />
+                       showSql="${hibernate.show.sql}" />
       </hibernatedoclet>
       <copy todir="${module.shared}/${build.dest}">
          <fileset dir="${module.shared}/${build.src}" />
       </copy>
    </target>
 
-   <target name="client:clean">
+   <target name="client:clean" depends="init">
       <delete dir="${module.client}/${build.dir}" />
    </target>
 
-   <target name="client:compile">
+   <target name="client:compile" depends="init">
       <mkdir dir="${module.client}/${build.dest}" />
       <javac destdir="${module.client}/${build.dest}"
              debug="true"
@@ -206,8 +228,8 @@
       <antcall target="client:annotation" />
    </target>
 
-   <target name="client:annotation">
-      <annotationc verbose="true"
+   <target name="client:annotation" depends="init">
+      <annotationc verbose="${verbose}"
             srcdir="${module.client}/${src.dir}"
             destdir="${module.client}/${annotation.dest}"
             classpath="${module.client}/${build.dest}"
@@ -217,14 +239,14 @@
       </copy>
    </target>
 
-   <target name="client:validation">
-      <webdoclet destdir="${module.client}/${build.dest}" verbose="true">
+   <target name="client:validation" if="generate.validation" depends="init">
+      <webdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
          <fileset dir="${module.client}/${src.dir}" includes="**/*Form.java" />
          <strutsvalidationxml xmlencoding="ISO-8859-1" />
       </webdoclet>
    </target>
 
-   <target name="useradmin:weaving">
+   <target name="useradmin:weaving" depends="init">
       <mkdir dir="${weaving.remote.dest}" />
       <mkdir dir="${weaving.local.dest}" />
       <copy todir="${weaving.remote.dest}" overwrite="true">
@@ -251,7 +273,7 @@
          <fileset dir="${genesis.dist}"
                   includes="genesis-shared-annotated-${genesis.version}.jar" />
       </unjar>
-      <awc verbose="true">
+      <awc verbose="${verbose}">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
@@ -260,7 +282,7 @@
          </classpath>
          <targetpath location="${weaving.remote.dest}"/>
       </awc>
-      <awc verbose="true">
+      <awc verbose="${verbose}">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
@@ -271,16 +293,16 @@
       </awc>
    </target>
 
-   <target name="useradmin:clean" depends="shared:clean,client:clean">
+   <target name="useradmin:clean" depends="init,shared:clean,client:clean">
       <delete dir="${build.dir}" />
       <delete dir="${dist.dir}" />
    </target>
 
    <target name="useradmin:compile"
-           depends="useradmin:clean,shared:compile,client:compile,useradmin:weaving">
+           depends="init,useradmin:clean,shared:compile,client:compile,useradmin:weaving">
    </target>
 
-   <target name="useradmin:jar">
+   <target name="useradmin:jar" depends="init">
       <mkdir dir="${build.dir}" />
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar">
          <fileset dir="${weaving.remote.dest}" />
@@ -294,7 +316,7 @@
       </jar>
    </target>
 
-   <target name="useradmin:sar">
+   <target name="useradmin:sar" depends="init">
       <mkdir dir="${dist.dir}"/>
       <zip destfile="${dist.dir}/${genesisBasedApplication.name}.sar">
          <fileset dir="${module.shared}/${build.src}">
@@ -329,7 +351,7 @@
       </zip>
    </target>
 
-   <target name="useradmin:war">
+   <target name="useradmin:war" depends="init">
       <mkdir dir="${dist.dir}/${genesisBasedApplication.name}.war/application"/>
       <copy todir="${dist.dir}/${genesisBasedApplication.name}.war/application">
          <fileset dir="${build.dir}">
@@ -403,7 +425,7 @@
       </signjar>
    </target>
 
-   <target name="useradmin:create.jboss.app.dir" unless="app.dir.exists">
+   <target name="useradmin:create.jboss.app.dir" unless="app.dir.exists" depends="init">
       <condition property="jboss.home.not.found">
          <available type="dir" file="${jboss.home}" />
       </condition>
@@ -413,21 +435,23 @@
       <mkdir dir="${jboss.app}" />
       <copy todir="${jboss.app}">
          <fileset dir="${jboss.home}/server/default">
-            <include name="deploy/hsqldb-ds.xml" />
             <include name="deploy/jboss-jca.sar" />
             <include name="deploy/jboss-local-jdbc.rar" />
             <include name="deploy/transaction-service.xml" />
             <include name="deploy/jbossweb-tomcat*.sar/**" />
             <include name="conf/**" />
             <include name="lib/**" />
+            <exclude name="lib/hibernate2.jar" />
          </fileset>
       </copy>
    </target>
 
-   <target name="useradmin:deploy" depends="useradmin:sar">
+   <target name="useradmin:deploy" depends="init,useradmin:sar">
       <available type="dir" file="${jboss.app}" property="app.dir.exists" />
       <antcall target="useradmin:create.jboss.app.dir"/>
+      <delete dir="${jboss.app}/deploy" includes="*-ds.xml" />
       <copy todir="${jboss.app}/deploy">
+         <fileset file="${jboss.datasource_config.xml}" />
          <fileset dir="${genesis.dist}">
             <include name="genesis-server-${genesis.version}.jar"/>
          </fileset>
@@ -437,7 +461,7 @@
       </copy>
    </target>
 
-   <target name="useradmin:deploy.webstart" depends="useradmin:war">
+   <target name="useradmin:deploy.webstart" depends="init,useradmin:war">
       <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
       <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
         <fileset dir="${dist.dir}/${genesisBasedApplication.name}.war">
@@ -446,15 +470,15 @@
        </copy>
    </target>
 
-   <target name="useradmin:dist" depends="useradmin:compile,useradmin:jar,useradmin:sar,useradmin:war" />
+   <target name="useradmin:dist" depends="init,useradmin:compile,useradmin:jar,useradmin:sar,useradmin:war" />
 
    <target name="useradmin:all"
-           depends="useradmin:compile,useradmin:jar,useradmin:deploy" />
+           depends="init,useradmin:compile,useradmin:jar,useradmin:deploy" />
 
    <target name="useradmin:all.with.webstart"
-          depends="useradmin:all,useradmin:deploy.webstart" />
+          depends="init,useradmin:all,useradmin:deploy.webstart" />
 
-   <target name="useradmin:check.installation.properties">
+   <target name="useradmin:check.installation.properties" depends="init">
       <condition property="sample.not.installed">
          <and>
             <available type="dir" file="${jboss.app}/deploy/${genesisBasedApplication.name}.war" />
@@ -466,7 +490,7 @@
 
    </target>
 
-   <target name="useradmin:check.common.properties">
+   <target name="useradmin:check.common.properties" depends="init">
       <condition property="jdbc.driver.not.found">
          <available type="file" file="${jdbc.driver}" />
       </condition>
@@ -477,7 +501,7 @@
       <fail unless="dist.not.found" message="Sample distribution not found. Set 'build.dir' properly in build.properties file. See build.properties.sample for details." />
    </target>
 
-   <target name="useradmin:install" depends="useradmin:create.jboss.app.dir">
+   <target name="useradmin:install" depends="init,useradmin:create.jboss.app.dir">
       <copy todir="${jboss.app}/deploy">
          <fileset dir="${dist.dir}">
            <include name="**/*" />
@@ -488,7 +512,7 @@
       </copy>
    </target>
 
-   <target name="useradmin:run.remote" depends="useradmin:check.common.properties,useradmin:check.installation.properties">
+   <target name="useradmin:run.remote" depends="init,useradmin:check.common.properties,useradmin:check.installation.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
@@ -506,7 +530,7 @@
       </java>
    </target>
 
-   <target name="useradmin:run.local" depends="useradmin:check.common.properties">
+   <target name="useradmin:run.local" depends="init,useradmin:check.common.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <classpath>
             <path refid="run.local.classpath" />

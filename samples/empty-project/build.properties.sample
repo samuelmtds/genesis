@@ -12,6 +12,14 @@ genesisBasedApplication.prettyName=Empty Project
 # local setup
 genesis.home=../../genesis
 xdoclet.dist=../../xdoclet/dist
+generate.validation=true
 jboss.provider.url=jnp://localhost
+jboss.data_source.jndiname=DefaultDS
+jboss.datasource_config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
 webstart.server=localhost
 webstart.port=8080
+hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+hibernate.version=2.1.6
+hibernate.show.sql=true
+hibernate.session_factory.jndiname=jboss:/hibernate/SessionFactory
+hibernate.jbossservice.name=HibernateFactory,name=HibernateFactory

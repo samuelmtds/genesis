@@ -32,7 +32,7 @@
         <li>Para compilar e instalar a aplicação recomendamos <a href=
         "http://ant.apache.org/">Apache Ant</a> e <a href=
         "http://xdoclet.sourceforge.net/">XDoclet</a> versão 1.2 com algumas
-        bibliotecas disponíveis <a href="https://genesis.dev.java.net/files/documents/2063/10130/modified-xdoclet-1.2.zip">aqui</a>.</li>
+        bibliotecas disponíveis <a href="https://genesis.dev.java.net/files/documents/2063/10580/modified-xdoclet-1.2.zip">aqui</a>.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
@@ -59,9 +59,17 @@ genesisBasedApplication.prettyName=Empty Project
 # local setup
 genesis.home=../../genesis
 xdoclet.dist=../../xdoclet/dist
+generate.validation=true
 jboss.provider.url=jnp://localhost
+jboss.data_source.jndiname=java:/DefaultDS
+jboss.datasource_config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
 webstart.server=localhost
 webstart.port=8080
+hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+hibernate.version=2.1.6
+hibernate.show.sql=true
+hibernate.session_factory.jndiname=jboss:/hibernate/SessionFactory
+hibernate.jbossservice.name=HibernateFactory,name=HibernateFactory
 </source>
       <p>Pelo menos quatro propriedades necessitam ser definidas:</p>
       <ul>
@@ -85,10 +93,18 @@ webstart.port=8080
         <li><code><b>xdoclet.dist</b></code>: Indica o diretório de distribuição
         do XDoclet. A distribuição utilizada e recomendada é a distribuição 1.2
         do XDoclet juntamente com as bibliotecas alteradas e disponíveis
-        <a href="https://genesis.dev.java.net/files/documents/2063/9021/modified-xdoclet-1.2.zip">aqui</a>.
+        <a href="https://genesis.dev.java.net/files/documents/2063/10580/modified-xdoclet-1.2.zip">aqui</a>.
         Obs: instale a distribuição 1.2 do
         XDoclet e copie as bibliotecas modificadas para o diretório <code>&lt;
         DIRETÓRIO_DO_XDOCLET&gt;/lib</code> sobrescrevendo as originais.</li>
+        <li><code><b>jboss.datasource_config.xml</b></code>: Indica o arquivo de configuração
+        do pool de conexões do JBoss. Você pode fornecer outro arquivo
+        que contenha as configurações personalizadas de seu próprio banco de dados.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indica o dialeto que o hibernate
+        deve utilizar para gerar os comandos SQL para o banco. Se você for utilizar outro banco
+        que não for o HSQLDB você deve fornecer o dialeto correto. Para informações sobre qual
+        dialeto você deve utilizar, consulte a documentação do
+        <a href="http://www.hibernate.org/">hibernate</a>.</li>
       </ul>
       <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
       de um novo projeto utilizando o genesis.</p>
