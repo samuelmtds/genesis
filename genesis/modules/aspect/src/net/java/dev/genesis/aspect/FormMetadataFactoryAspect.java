@@ -523,7 +523,9 @@ public class FormMetadataFactoryAspect {
 
             // Ignoring java.lang.Object.getClass()
             if (propDesc.getName().equals("class")
-                  || propDesc.getReadMethod() == null) {
+                  || propDesc.getReadMethod() == null
+                  || Annotations.getAnnotation("NotBound", propDesc
+                        .getReadMethod()) != null) {
                continue;
             }
 
