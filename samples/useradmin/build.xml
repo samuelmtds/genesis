@@ -29,8 +29,9 @@
    <property name="genesisBasedApplication.name" value="useradmin" />
    <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
    <property name="genesisBasedApplication.prettyName" value="User Admin" />
+   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />
 
-   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.name}" />
+   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
@@ -232,7 +233,7 @@
          <fileset dir="${module.shared}/${annotation.dest}" />
       </copy>
       <copy todir="${weaving.local.dest}" overwrite="true">
-         <fileset dir="${module.client}/${annotation.dest}" 
+         <fileset dir="${module.client}/${annotation.dest}"
             excludes="META-INF/remote-aop.xml" />
          <fileset dir="${module.shared}/${annotation.dest}" />
       </copy>
@@ -284,15 +285,15 @@
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar">
          <fileset dir="${weaving.remote.dest}" />
       </jar>
-   	<jar destfile="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar">
+      <jar destfile="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar">
          <fileset dir="${weaving.local.dest}" />
-      </jar>  
+      </jar>
       <jar destfile="${build.dir}/${genesisBasedApplication.name}-shared.jar">
          <fileset dir="${module.shared}/${build.dest}"
                   excludes="jboss-service.xml" />
       </jar>
    </target>
-   
+
    <target name="useradmin:sar">
       <mkdir dir="${dist.dir}"/>
       <zip destfile="${dist.dir}/${genesisBasedApplication.name}.sar">
@@ -338,7 +339,7 @@
             <include name="cglib-full*.jar" />
             <include name="commons-collection*.jar" />
             <include name="ehcache*.jar" />
-         	<include name="hibernate*.jar" />
+            <include name="hibernate*.jar" />
             <include name="jta.jar" />
          </fileset>
          <fileset dir="${genesis.dist}">
@@ -402,7 +403,13 @@
       </signjar>
    </target>
 
-	<target name="useradmin:create.jboss.app.dir" unless="app.dir.exists">
+   <target name="useradmin:create.jboss.app.dir" unless="app.dir.exists">
+      <condition property="jboss.home.not.found">
+         <available type="dir" file="${jboss.home}" />
+      </condition>
+      <fail unless="jboss.home.not.found">
+         JBoss Home not found. Set 'jboss.home' properly in buid.properties file. See build.properties.sample for details.
+      </fail>
       <mkdir dir="${jboss.app}" />
       <copy todir="${jboss.app}">
          <fileset dir="${jboss.home}/server/default">
@@ -414,8 +421,8 @@
             <include name="conf/**" />
             <include name="lib/**" />
          </fileset>
-      </copy>    
-	</target>
+      </copy>
+   </target>
 
    <target name="useradmin:deploy" depends="useradmin:sar">
       <available type="dir" file="${jboss.app}" property="app.dir.exists" />
@@ -429,7 +436,7 @@
          </fileset>
       </copy>
    </target>
-   
+
    <target name="useradmin:deploy.webstart" depends="useradmin:war">
       <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
       <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
@@ -438,16 +445,50 @@
          </fileset>
        </copy>
    </target>
-   
+
    <target name="useradmin:dist" depends="useradmin:compile,useradmin:jar,useradmin:sar,useradmin:war" />
 
    <target name="useradmin:all"
            depends="useradmin:compile,useradmin:jar,useradmin:deploy" />
-   
+
    <target name="useradmin:all.with.webstart"
           depends="useradmin:all,useradmin:deploy.webstart" />
 
-   <target name="useradmin:run.remote">
+   <target name="useradmin:check.installation.properties">
+      <condition property="sample.not.installed">
+         <and>
+            <available type="dir" file="${jboss.app}/deploy/${genesisBasedApplication.name}.war" />
+            <available type="file" file="${jboss.app}/deploy/${genesisBasedApplication.name}.sar" />
+            <available type="file" file="${jboss.app}/deploy/genesis-server-${genesis.version}.jar" />
+         </and>
+      </condition>
+      <fail unless="sample.not.installed" message="Sample not installed. Run 'ant useradmin:install'" />
+      
+   </target>
+
+   <target name="useradmin:check.common.properties">
+      <condition property="jdbc.driver.not.found">
+         <available type="file" file="${jdbc.driver}" />
+      </condition>
+      <condition property="dist.not.found">
+         <available type="dir" file="${build.dir}" />
+      </condition>
+      <fail unless="jdbc.driver.not.found" message="JDBC driver not found. Set 'jdbc.driver' properly in build.properties file. See build.properties.sample for details." />
+      <fail unless="dist.not.found" message="Sample distribution not found. Set 'build.dir' properly in build.properties file. See build.properties.sample for details." />
+   </target>
+
+   <target name="useradmin:install" depends="useradmin:create.jboss.app.dir">
+      <copy todir="${jboss.app}/deploy">
+         <fileset dir="${dist.dir}">
+           <include name="**/*" />
+         </fileset>
+         <fileset dir="${genesis.dist}">
+            <include name="genesis-server-${genesis.version}.jar"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <target name="useradmin:run.remote" depends="useradmin:check.common.properties,useradmin:check.installation.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
@@ -465,7 +506,7 @@
       </java>
    </target>
 
-   <target name="useradmin:run.local">
+   <target name="useradmin:run.local" depends="useradmin:check.common.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <classpath>
             <path refid="run.local.classpath" />

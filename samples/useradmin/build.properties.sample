@@ -12,3 +12,5 @@ xdoclet.dist=../../xdoclet/dist
 jboss.provider.url=jnp://localhost
 webstart.server=localhost
 webstart.port=8080
+build.dir=dist/useradmin.war/application
+jdbc.driver=dist/useradmin.war/application/hsqldb.jar

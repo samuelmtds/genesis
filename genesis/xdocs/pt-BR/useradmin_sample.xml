@@ -17,18 +17,12 @@
       servidor gratuito e open-source. Isso não significa que o genesis só
       rode nesse servidor; o genesis foi desenvolvido totalmente compatível
       com as especificações J2EE.</p>
-      <p>Existem 4 passos simples para fazer a instalação do exemplo useradmin
+      <p>Existem 3 passos simples para fazer a instalação do exemplo useradmin
       no servidor de aplicações:</p>
       <ol>
         <li>Baixe e instale o servidor de aplicações <a href=
         "http://www.jboss.org/">JBoss</a>. Recomendamos utilizar a última das
         versões 3.2.x do JBoss.</li>
-        <li>No diretório <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server</code>, faça
-        uma cópia do diretório <code>default</code> para um novo diretório
-        chamado <code>useradmin</code>. Dessa forma, teremos um diretório
-        localizado em  <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/useradmin</code>
-        que é uma cópia idêntica de
-        <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code></li>
         <li>Execute os scripts ant de deploy distribuídos juntamente com
         o exemplo <a href="#Execução do exemplo useradmin">
         (conforme instruções abaixo)</a>.</li>
@@ -247,10 +241,10 @@ public class User implements Serializable {
         modificando ou comentado os valores das propriedades de acordo com o
         ambiente de execução</li>
         <li>Na linha de comando, execute o script ant com o seguinte comando:
-        ant (a task default, <code>useradmin:all.with.webstart</code>,
-        será executada). Esse comando irá iniciar o processo de instalação
-        do exemplo no JBoss. Esse processo será efetuado no diretório
-        "useradmin" criado na etapa de instalação do JBoss anteriormente.</li>
+        ant useradmin:install. Esse comando irá iniciar o processo de instalação
+        do exemplo no JBoss. Esse processo criará um diretório chamado
+        "useradmin" na pasta <code>servers</code> do JBoss contendo a aplicação
+        do exemplo e todas as suas dependências e configurações.</li>
         <li>Uma vez finalizado o processo de instalação, o JBoss poderá ser
         iniciado através do comando:
         <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c useradmin</code></li>

@@ -29,8 +29,9 @@
    <property name="genesisBasedApplication.name" value="simplecalc" />
    <property name="genesisBasedApplication.mainClass" value="net.java.dev.genesis.samples.simplecalc.SimpleCalc" />
    <property name="genesisBasedApplication.prettyName" value="User Admin" />
+   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />  
 
-   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.name}" />
+   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
@@ -232,7 +233,7 @@
          <fileset dir="${module.shared}/${annotation.dest}" />
       </copy>
       <copy todir="${weaving.local.dest}" overwrite="true">
-         <fileset dir="${module.client}/${annotation.dest}" 
+         <fileset dir="${module.client}/${annotation.dest}"
             excludes="META-INF/remote-aop.xml" />
          <fileset dir="${module.shared}/${annotation.dest}" />
       </copy>
@@ -292,7 +293,7 @@
                   excludes="jboss-service.xml" />
       </jar>
    </target>
-   
+
    <target name="simplecalc:sar">
       <mkdir dir="${dist.dir}"/>
       <zip destfile="${dist.dir}/${genesisBasedApplication.name}.sar">
@@ -403,6 +404,12 @@
    </target>
 
    <target name="simplecalc:create.jboss.app.dir" unless="app.dir.exists">
+      <condition property="jboss.home.not.found">
+         <available type="dir" file="${jboss.home}" />
+      </condition>
+      <fail unless="jboss.home.not.found">
+         JBoss Home not found. Set 'jboss.home' properly in buid.properties file. See build.properties.sample for details.
+      </fail>
       <mkdir dir="${jboss.app}" />
       <copy todir="${jboss.app}">
          <fileset dir="${jboss.home}/server/default">
@@ -414,7 +421,7 @@
             <include name="conf/**" />
             <include name="lib/**" />
          </fileset>
-      </copy>    
+      </copy>
    </target>
 
    <target name="simplecalc:deploy" depends="simplecalc:sar">
@@ -429,7 +436,7 @@
          </fileset>
       </copy>
    </target>
-   
+
    <target name="simplecalc:deploy.webstart" depends="simplecalc:war">
       <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
       <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
@@ -438,16 +445,50 @@
          </fileset>
        </copy>
    </target>
-   
+
    <target name="simplecalc:dist" depends="simplecalc:compile,simplecalc:jar,simplecalc:sar,simplecalc:war" />
 
    <target name="simplecalc:all"
            depends="simplecalc:compile,simplecalc:jar,simplecalc:deploy" />
-   
+
    <target name="simplecalc:all.with.webstart"
           depends="simplecalc:all,simplecalc:deploy.webstart" />
 
-   <target name="simplecalc:run.remote">
+   <target name="simplecalc:check.installation.properties">
+      <condition property="sample.not.installed">
+         <and>
+            <available type="dir" file="${jboss.app}/deploy/${genesisBasedApplication.name}.war" />
+            <available type="file" file="${jboss.app}/deploy/${genesisBasedApplication.name}.sar" />
+            <available type="file" file="${jboss.app}/deploy/genesis-server-${genesis.version}.jar" />
+         </and>
+      </condition>
+      <fail unless="sample.not.installed" message="Sample not installed. Run 'ant useradmin:install'" />
+      
+   </target>
+
+   <target name="simplecalc:check.common.properties">
+      <condition property="jdbc.driver.not.found">
+         <available type="file" file="${jdbc.driver}" />
+      </condition>
+      <condition property="dist.not.found">
+         <available type="dir" file="${build.dir}" />
+      </condition>
+      <fail unless="jdbc.driver.not.found" message="JDBC driver not found. Set 'jdbc.driver' properly in build.properties file. See build.properties.sample for details." />
+      <fail unless="dist.not.found" message="Sample distribution not found. Set 'build.dir' properly in build.properties file. See build.properties.sample for details." />
+   </target>
+
+   <target name="simplecalc:install" depends="simplecalc:create.jboss.app.dir">
+      <copy todir="${jboss.app}/deploy">
+         <fileset dir="${dist.dir}">
+           <include name="**/*" />
+         </fileset>
+         <fileset dir="${genesis.dist}">
+            <include name="genesis-server-${genesis.version}.jar"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <target name="simplecalc:run.remote" depends="simplecalc:check.common.properties,simplecalc:check.installation.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <sysproperty key="java.naming.factory.initial"
                       value="${jboss.factory.initial}" />
@@ -465,7 +506,7 @@
       </java>
    </target>
 
-   <target name="simplecalc:run.local">
+   <target name="simplecalc:run.local" depends="simplecalc:check.common.properties">
       <java classname="${genesisBasedApplication.mainClass}" fork="true" failonerror="true">
          <classpath>
             <path refid="run.local.classpath" />

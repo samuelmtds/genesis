@@ -25,7 +25,9 @@
    <property name="src.dir" value="src" />
    <property name="webstart.dir" location="webstart" />
 
-   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.name}" />
+   <property name="genesisBasedApplication.serverName" value="${genesisBasedApplication.name}" />  
+
+   <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
    <property name="jboss.provider.url" value="jnp://localhost" />
    <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
    <property name="webstart.server" value="localhost" />
@@ -99,7 +101,7 @@
       <path refid="shared.dependency.classpath" />
       <path refid="aspectwerkz.path" />
    </path>
-   
+
    <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
    <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
    <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
@@ -245,7 +247,7 @@
                   excludes="jboss-service.xml" />
       </jar>
    </target>
-   
+
    <target name="genesis.app:sar">
       <mkdir dir="${dist.dir}"/>
       <zip destfile="${dist.dir}/${genesisBasedApplication.name}.sar">
@@ -377,7 +379,7 @@
          </fileset>
       </copy>
    </target>
-   
+
    <target name="genesis.app:deploy.webstart" depends="genesis.app:war">
       <mkdir dir="${jboss.app}/deploy/${genesisBasedApplication.name}.war"/>
       <copy todir="${jboss.app}/deploy/${genesisBasedApplication.name}.war">
@@ -386,7 +388,7 @@
          </fileset>
        </copy>
    </target>
-   
+
    <target name="genesis.app:dist" depends="genesis.app:compile,genesis.app:jar,genesis.app:sar,genesis.app:war" />
 
    <target name="genesis.app:all"

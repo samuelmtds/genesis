@@ -16,17 +16,12 @@
       href="http://www.jboss.org/">JBoss</a> application server, an open-source
       free server. This does not mean genesis only runs on this server; genesis
       was developed in a J2EE compatible way.</p>
-      <p>There are 4 simple steps necessary to install the useradmin sample in
+      <p>There are 3 simple steps necessary to install the useradmin sample in
       the application server:</p>
       <ol>
         <li>Download and install <a href=
         "http://www.jboss.org/">JBoss</a> application server. It is recommended
         to use its latest 3.2.x release.</li>
-        <li>In dir <code>&lt;JBOSS_DIR&gt;/server</code>, copy the <code>default
-        </code> dir to a new dir called <code>useradmin</code>. In practice,
-        there'll be a <code>&lt;JBOSS_DIR&gt;/server/useradmin</code> directory
-        that will be identical to the
-        <code>&lt;JBOSS_DIR&gt;/server/default</code> dir.</li>
         <li>Run the ant scripts to deploy the example
         <a href="#Running the useradmin sample">(as instructed later in
         this document)</a>. These scripts are distributed together with
@@ -239,11 +234,9 @@ public class User implements Serializable {
         <li>Edit the new <code>build.properties</code> file in order to modify
         or comment the properties according to your execution environment.</li>
         <li>Within command line, run the ant script by just typing: <code>
-        ant</code> (the default ant task <code>useradmin:all.with.webstart
-        </code> will be executed). This command will initiate the compiling
-        and deploying process which will install this sample application inside
-        "useradmin" directory create by the JBoss instalation process
-        ealier.</li>
+        ant useradmin:install</code>. This command will initiate the deploy
+        process which will install this sample application inside
+        "useradmin" directory at JBoss servers folder.</li>
         <li>Once the instalation process has finished, JBoss server can be
         started by the following command:
         <code>&lt;JBOSS_DIRECTORY&gt;/bin/run -c useradmin</code></li>
