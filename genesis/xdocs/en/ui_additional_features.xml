@@ -14,7 +14,7 @@
         <li><a href="#Determining if a field is empty">Determining if a field is
         empty</a></li>
         <li><a href="#Comparing values">Comparing values</a></li>
-        <li><a href="#Populating comboboxes, lists and tables">Populating 
+        <li><a href="#Populating comboboxes, lists and tables">Populating
         comboboxes, lists and tables</a>
         </li>
         <li><a href="#Formatting">Formatting</a></li>
@@ -256,7 +256,7 @@ public Date getCurrentDate() {
 ...
 ]]>
 </source>
-        <p>This way, enabling/disabling rule will only affect 
+        <p>This way, enabling/disabling rule will only affect
         <code>clientCode</code> and <code>clientName</code> widgets only.
         On another hand, visibility rule will affect the whole group, including
         the label and all panels for spacing.</p>
@@ -599,8 +599,8 @@ public void calculateRemainingAmount() {
               &lt;callOnInit=booleanValue&gt;
 </source>
       <p>This annotation may be used in methods returning either a
-      <code>java.util.List</code> or an array of Objects. Values returned by 
-      the method will be used to populate the combo or the table. 
+      <code>java.util.List</code> or an array of Objects. Values returned by
+      the method will be used to populate the combo or the table.
       <code>objectField</code>,
       if specified, should receive as a parameter the name of a property that
       will hold the instance selected on the widget. This property should be of
@@ -609,18 +609,18 @@ public void calculateRemainingAmount() {
       <code>indexField</code> is the property that will hold indexes for the
       selected elements on the widget. It must be an <code>int</code> or an
       <code>Integer</code>, an array of one of these types or a
-      <code>Collection</code>. 
+      <code>Collection</code>.
       In case <code>widgetName</code> is used it must receive the widget
       name defined in Thinlet XML. This widget will be the one to receive
       the data provided by the annotated method.
       <b>Attention:</b> At least one of these three parameters must be
       informed.</p>
-      <p>The widget <code>name</code> is equal to the value specified for 
-      <code>widgetName</code> or <code>objectField</code> 
+      <p>The widget <code>name</code> is equal to the value specified for
+      <code>widgetName</code> or <code>objectField</code>
       or <code>indexField</code> in that order of specification priority.</p>
-      <p>As mentioned earlier, both <code>objectField</code> and 
+      <p>As mentioned earlier, both <code>objectField</code> and
       <code>indexField</code> receive as parameter the name of a property that
-      might return a Bean or an array or a <code>Collection</code>. Let's 
+      might return a Bean or an array or a <code>Collection</code>. Let's
       examine each case:
       <table>
         <tr>
@@ -709,7 +709,7 @@ public class DataProviderFormExample {
       <p>As indicated by <code>objectField</code> value, property
       <code>state</code> will contain the selected <code>State</code> instance
       that corresponds to the combox option choosen by the user.</p>
-      <p>Working with <code>lists</code> is quite similar to 
+      <p>Working with <code>lists</code> is quite similar to
       <code>comboboxes</code>, as shown in the below example:</p>
 <source>
 <![CDATA[
@@ -756,7 +756,7 @@ public class DataProviderFormExample {
 
    // ...
 </source>
-      <p>This way, at dialog startup, the <code>combobox</code> 
+      <p>This way, at dialog startup, the <code>combobox</code>
       or <code>list</code> or
       <code>table</code> widgets will be empty. In order to populate them
       a <code>@CallWhen</code> annotation can be added and used together.
@@ -769,8 +769,8 @@ public class DataProviderFormExample {
       <subsection name="Invoking @DataProvider methods within a Fom">
         <p>In order to have a form re-populated with the data returned by
         a <code>@DataProvider</code> annotated method, genesis must know it has
-        been executed. This will happen whenever 
-        <code>invokeFormAction(...)</code> is called from a view as seen 
+        been executed. This will happen whenever
+        <code>invokeFormAction(...)</code> is called from a view as seen
         <a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">
         here</a>.
         </p>
@@ -790,7 +790,7 @@ public class DataProviderFormExample {
         <ul>
           <li><code>invoke(actionName)</code>: which executes an action located
           at the current <code>form</code> instance.</li>
-          <li><code>refresh()</code>: which updates the current 
+          <li><code>refresh()</code>: which updates the current
           <code>form</code> instance.</li>
         </ul>
         To be more specific, these methods are shotcuts to que given methods in
@@ -798,7 +798,7 @@ public class DataProviderFormExample {
         limit the inheritance tree of the <code>Form</code>.</p>
         <p>Although using these classes makes the <code>Form</code> code more
         self-contained, they will make it more strongly coupled to genesis.</p>
-        <p>Reusing the same logic from 
+        <p>Reusing the same logic from
         <a href="ui_basic_concepts.html#Implementing_actions_in_forms_and_views">
         <code>invokeFormAction(...)</code> example</a> and rewriting it to use
         these classes, we'll have:</p>
@@ -880,6 +880,48 @@ public class InvokeFormActionFormExample extends BaseForm {
       <p>To register a new formatter for a class the method
       <code>register(Class,Formatter)</code> from <code>FormatterRegistry</code>
       may be used.</p>
+      <p>However, the ability of registering a formatter instance per class
+      may not be enough for some situations. For example, when a
+      <code>boolean</code> property is displayed as text, it may be necessary
+      to display a custom text instead of the <code>true</code> and
+      <code>false</code> constants. genesis has an API that allows a specific
+      formatter instance to be used to display a field. Some steps are required
+      to use this feature:</p>
+      <ol>
+        <li>Instead of calling some version of the <code>bind(..)</code>
+        method, a <code>ThinletBinder</code> instance should be prepared by
+        calling either <code>prepareBinder(form)</code> or
+        <code>prepareBinder(widget,form)</code>, both methods defined in
+        <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
+        <li>The formatter instance can be registered using the
+        <code>registerFormatter(String,Formatter)</code> method specified by
+        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code>. The
+        <code>String</code> argument value should be the name of the property
+        whose formatter will be overridden.</li>
+        <li>Optionally, if the property whose formatter has been overridden
+        needs to be converted by genesis to its original type and the custom
+        generated format is not supported by the default converter, the
+        converter must be overriden by calling the
+        <code>registerConverter(String,Converter)</code> method.
+        <code>org.apache.commons.beanutils.Converter</code> is part of
+        Jakarta Commons BeanUtils. Please refer to this framework documentation
+        if this interface must be overridden.</li>
+        <li>Finally, the binding should be manually performed by calling the
+        <code>bind()</code> method.</li>
+      </ol>
+      <p>A short example of these steps can be seen below:</p>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("property", new Formatter() {
+   public String format(Object o) {
+      return "Custom format";
+   }
+});
+binder.bind();
+</source>
+      <p>The value of <code>property</code> to be displayed on the screen
+      will be the <code>Custom format</code> constant, no matter what its
+      value on the form is.</p>
     </section>
     <section name="Validating data">
       <p>Data validation is critical for system integrity, especially when data

@@ -900,6 +900,48 @@ public class ExemploInvokeFormActionForm extends BaseForm {
       <p>Para registrar um novo formatador para uma classe basta utilizar o
       método <code>register(Class,Formatter)</code> em
       <code>FormatterRegistry</code>.</p>
+      <p>No entanto, o registro de um formatador por classe pode não ser
+      suficiente em algumas situações. Por exemplo, ao se exibir uma propriedade
+      booleana como texto, pode-se querer exibir determinado texto no lugar
+      das constantes <code>true</code> e <code>false</code>. O genesis possui
+      uma API que permite definir explicitamente o formatador de determinado
+      campo utilizado na tela. Alguns passos são necessários para isso:</p>
+      <ol>
+        <li>Ao invés de utilizar alguma versão do método <code>bind(..)</code>,
+        deve-se preparar uma instância de <code>ThinletBinder</code> para ser
+        ligada a view e a um widget utilizando-se os métodos
+        <code>prepareBinder(form)</code> ou
+        <code>prepareBinder(widget, form)</code> de
+        <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
+        <li>O formatador deve ser registrado utilizando-se o método
+        <code>registerFormatter(String,Formatter)</code> em
+        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code>. O valor da
+        <code>String</code> deverá ser o nome da propriedade cujo formatador
+        será sobrescrito.</li>
+        <li>Opcionalmente, caso a propriedade cujo formatador foi alterado
+        precise ser convertida pelo genesis para seu tipo original e o formato
+        gerado não for suportado pelo conversor, deve-se sobrescrever o
+        conversor através do método
+        <code>registerConverter(String,Converter)</code>.
+        <code>org.apache.commons.beanutils.Converter</code> faz parte do
+        Jakarta Commons BeanUtils e deve-se consultar a documentação deste
+        framework caso seja necessário implementar esta interface.</li>
+        <li>Finalmente, deve-se efetuar o binding manualmente chamando-se o
+        método <code>bind()</code>.</li>
+      </ol>
+      <p>Um exemplo destes passos pode ser visto abaixo:</p>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("propriedade", new Formatter() {
+   public String format(Object o) {
+      return "Formato alterado";
+   }
+});
+binder.bind();
+</source>
+      <p>O valor de <code>propriedade</code> exibido na tela será sempre a
+      constante <code>Formato alterado</code>, independentemente do seu
+      valor no form.</p>
     </section>
     <section name="Validando os dados">
       <p>A validação de dados é crítica para a integridade de um sistema,
