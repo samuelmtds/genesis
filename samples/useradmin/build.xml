@@ -321,7 +321,8 @@
                       value="org.jnp.interfaces.NamingContextFactory" />
          <sysproperty key="java.naming.provider.url"
                       value="${jboss.provider.url}" />
-         <jvmarg value="-Daspectwerkz.transform.verbose=true" />
+         <sysproperty key="aspectwerkz.transform.verbose"
+                      value="true" />
          <classpath>
             <path refid="run.classpath" />
             <pathelement path="${jboss.home}/client/jbossall-client.jar" />
@@ -329,4 +330,20 @@
       </java>
    </target>
 
+   <target name="useradmin:run-with-logging-on">
+      <java classname="example.Sample" fork="true" failonerror="true">
+         <sysproperty key="java.naming.factory.initial"
+                      value="org.jnp.interfaces.NamingContextFactory" />
+         <sysproperty key="java.naming.provider.url"
+                      value="${jboss.provider.url}" />
+         <sysproperty key="aspectwerkz.transform.verbose"
+                      value="true" />
+         <sysproperty key="java.util.logging.config.file"
+                      value="${module.client}/conf/logging.properties" />
+         <classpath>
+            <path refid="run.classpath" />
+            <pathelement path="${jboss.home}/client/jbossall-client.jar" />
+         </classpath>
+      </java>
+   </target>
 </project>
