@@ -31,7 +31,8 @@ import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
 
 public class ViewMetadataFactoryAspect {
    /**
-    * @Mixin(pointcut="viewMetadataFactoryIntroduction", isTransient=true, deploymentModel="perClass")
+    * @Mixin(pointcut="viewMetadataFactoryIntroduction", isTransient=true, 
+    *        deploymentModel="perJVM")
     */
    public static class AspectViewMetadataFactory implements
          ViewMetadataFactory {

@@ -26,7 +26,7 @@ import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
 /**
- * @Aspect("perThread")
+ * @Aspect("perJVM")
  */
 public class TimeoutAspect {
    private static final Log log = LogFactory.getLog(TimeoutAspect.class);
@@ -125,20 +125,31 @@ public class TimeoutAspect {
 
    private final long timeout;
    private final boolean keepThreadInstance;
-   private WorkerThread thread;
+   private final ThreadLocal threadLocal = new ThreadLocal();
    
    public TimeoutAspect(final AspectContext ctx) {
       this.timeout = Long.parseLong(ctx.getParameter("timeout"));
       this.keepThreadInstance = "true".equals(
             ctx.getParameter("keepThreadInstance"));
    }
-   
+
+   private WorkerThread getWorkerThread() {
+      return (WorkerThread)threadLocal.get();
+   }
+
+   private void setWorkerThread(WorkerThread workerThread) {
+      threadLocal.set(workerThread);
+   }
+
    /**
     * @Around("timeout")
     */
    public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
+      WorkerThread thread = getWorkerThread();
+
       if (thread == null) {
          thread = new WorkerThread();
+         setWorkerThread(thread);
 
          if (keepThreadInstance && log.isDebugEnabled()) {
             log.debug("New thread created: " + thread);
@@ -158,7 +169,7 @@ public class TimeoutAspect {
             log.error(t);
          }
 
-         thread = null;
+         setWorkerThread(null);
 
          throw new TimeoutException("Execution took more than " + timeout + 
                " ms");
@@ -176,7 +187,7 @@ public class TimeoutAspect {
             log.error(t);
          }
 
-         thread = null;
+         setWorkerThread(null);
       }
 
       if (throwable != null) {

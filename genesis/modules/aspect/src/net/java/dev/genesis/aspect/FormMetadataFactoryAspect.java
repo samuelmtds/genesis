@@ -54,6 +54,7 @@ import org.codehaus.aspectwerkz.annotation.Annotation;
 import org.codehaus.aspectwerkz.annotation.AnnotationInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
 import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
+import org.codehaus.aspectwerkz.definition.MixinDefinition;
 
 public class FormMetadataFactoryAspect {
    /**
@@ -71,9 +72,12 @@ public class FormMetadataFactoryAspect {
       private ScriptFactory scriptFactory;
       private Script script;
       
-      public AspectFormMetadataFactory() throws Exception {
-         String factoryName = ParameterizedMixinFactory.getParameter(this, "scriptFactory");
-         String scriptFactoryProps = ParameterizedMixinFactory.getParameter(this, "scriptFactoryProps");
+      public AspectFormMetadataFactory(MixinDefinition definition) 
+            throws Exception {
+         String factoryName = (String)definition.getParameters().get(
+               "scriptFactory");
+         String scriptFactoryProps = (String)definition.getParameters().get(
+               "scriptFactoryProps");
 
          if (factoryName == null) {
             factoryName = "jxpath";

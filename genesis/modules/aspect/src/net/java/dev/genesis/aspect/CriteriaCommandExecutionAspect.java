@@ -127,7 +127,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    /**
-    * @Mixin(pointcut="criteriaResolverIntroduction", isTransient=false, deploymentModel="perInstance")
+    * @Mixin(pointcut="criteriaResolverIntroduction", isTransient=true, deploymentModel="perInstance")
     */
    public static class CriteriaResolverImpl implements CriteriaResolver {
       private Map propertiesMap;

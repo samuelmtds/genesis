@@ -22,8 +22,10 @@
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
       <!-- genesis aspects -->
-      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
+      <mixin class="CommandInvocationAspect$CommandResolverImpl" 
+             factory="net.java.dev.genesis.aspect.ParameterizedMixinFactory" />
+      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" 
+             factory="net.java.dev.genesis.aspect.ParameterizedMixinFactory" />
       <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
       <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
       <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
