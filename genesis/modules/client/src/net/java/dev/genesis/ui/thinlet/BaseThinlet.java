@@ -85,6 +85,9 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected static final String MESSAGE = "message";
 
+   /**
+    * @depracated
+    */
    public abstract class ScreenHandler {
       private Object screen;
 
@@ -122,6 +125,9 @@ public abstract class BaseThinlet extends Thinlet {
       return cl.getResourceAsStream(name);
    }
 
+   /**
+    * @depracated
+    */
    protected Object parseAndSet(String fileName, ScreenHandler handler) 
                                                 throws ScreenNotFoundException {
       try {
