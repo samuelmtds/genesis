@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.metadata;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.CompiledExpression;
 
 public class DataProviderMetadata {
+   private static final List EMPTY_LIST = new ArrayList(0);
+   private static final int[] EMPTY_INT_ARRAY = new int[0];
+
    private final String name;
    private String widgetName;
    private FieldEntry objectField;
@@ -136,18 +140,11 @@ public class DataProviderMetadata {
    }
 
    public void resetSelectedFields(final Object target) throws Exception {
-      if (objectField != null) {
-         PropertyUtils.setProperty(target, objectField.getFieldName(), null);
-      }
-
-      if (indexField != null) {
-         final Object value = indexField.isPrimitive() ? (Object)new Integer(0)
-               : (indexField.isPrimitiveArray() ? new int[0] : null);
-         PropertyUtils.setProperty(target, indexField.getFieldName(), value);
-      }
+      populateSelectedFields(target, EMPTY_LIST, EMPTY_INT_ARRAY);
    }
 
-   public Object populateSelectedFields(final Object target, final List objectList, final int[] selectedIndexes) throws Exception {
+   public Object populateSelectedFields(final Object target, 
+         final List objectList, final int[] selectedIndexes) throws Exception {
       Object value = null;
 
       if (objectField != null) {
@@ -161,7 +158,8 @@ public class DataProviderMetadata {
       return value;
    }
 
-   private Object populateObjectField(final Object target, final List objectList, final int[] selectedIndexes) throws Exception {
+   private Object populateObjectField(final Object target, 
+         final List objectList, final int[] selectedIndexes) throws Exception {
       Object value = null;
 
       if (objectField.isMultiple()) {
@@ -182,10 +180,11 @@ public class DataProviderMetadata {
       return value;
    }
 
-   private void populateIndexField(final Object target, final int[] selectedIndexes) throws Exception {
-      if(indexField.isPrimitiveArray()) {
-         PropertyUtils.setProperty(target, indexField.getFieldName(), selectedIndexes);
-
+   private void populateIndexField(final Object target, 
+         final int[] selectedIndexes) throws Exception {
+      if (indexField.isPrimitiveArray()) {
+         PropertyUtils.setProperty(target, indexField.getFieldName(), 
+               selectedIndexes);
       } else if (indexField.isMultiple()) {
          final Integer[] integerArray = new Integer[selectedIndexes.length];
 
@@ -193,13 +192,13 @@ public class DataProviderMetadata {
             integerArray[i] = new Integer(selectedIndexes[i]);
          }
 
-         final Object value = indexField.isArray() ? (Object)integerArray : Arrays.asList(integerArray);
+         final Object value = indexField.isArray() ? (Object)integerArray : 
+               Arrays.asList(integerArray);
          PropertyUtils.setProperty(target, indexField.getFieldName(), value);
-
       } else {
          PropertyUtils.setProperty(target, indexField.getFieldName(),
                selectedIndexes.length == 0 ?
-                     (indexField.isPrimitive() ? new Integer(0) : null) :
+                     (indexField.isPrimitive() ? new Integer(-1) : null) :
                      new Integer(selectedIndexes[0]));
       }
    }
