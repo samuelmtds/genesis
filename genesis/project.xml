@@ -16,7 +16,7 @@
       applications...</shortDescription>
    <url>https://genesis.dev.java.net/</url>
    <issueTrackingUrl>https://genesis.dev.java.net/servlets/ProjectIssues/</issueTrackingUrl>
-   <siteAddress>https://genesis.dev.java.net/nonav/</siteAddress>
+   <siteAddress>https://genesis.dev.java.net/</siteAddress>
    <repository>
       <connection>
          scm:cvs:pserver:${maven.guest.username}@cvs.dev.java.net:/cvs:genesis</connection>

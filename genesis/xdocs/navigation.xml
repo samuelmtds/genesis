@@ -25,5 +25,9 @@
       <item name="English version" href="/en/index.html" />
       <item name="Versão em português" href="/pt-BR/index.html" />
     </menu>
+    <menu name="java.net" type="footer">
+      <item name="genesis.dev.java.net" href="https://genesis.dev.java.net" />
+      <item name="java.net member" img="java_dot_net_member.bmp" href="http://java.net" />
+    </menu>
   </body>
 </project>
