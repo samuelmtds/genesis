@@ -389,9 +389,41 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
             MatchMode.START));
    }
 
+   /**
+    * @Criteria Pessoa
+    */
+   public Page getPessoas(int numeroPagina) throws PagingException {
+      return getPage(getCriteria(), numeroPagina);
+   }
 }
 </source>
-      <p><b>TODO:completar exemplo e explicacao</b></p>
+      <p>Uma vez tendo copiado as propriedades do formulário para o objeto de
+      negócios (conforme explicado na documentação do modelo cliente <b>TODO:
+      linkar assim que existir</b>), a seguinte seqüência de eventos ocorre
+      quando o método <code>getPessoas(int)</code> é invocado:
+      <ul>
+        <li>A instância é transferida pelo servidor através da remotabilidade
+        transparente.</li>
+        <li>É injetada a sessão do Hibernate através da chamada a <code>
+        setSession(Session)</code>, definida em <code>HibernateCommand</code>.
+        </li>
+        <li>É criado um <code>Criteria</code> tendo como base a entidade
+        persistente <code>Pessoa</code>, conforme informado na anotação <code>
+        @Criteria</code>.</li>
+        <li>A instância de <code>Criteria</code> é injetada através de chamada a
+        <code>setCriteria(Criteria)</code>, definido em <code>HibernateCriteria
+        </code>.</li>
+        <li>Os setters das propriedades que estavam preenchidas no form no
+        momento da cópia são chamados. A classe <code>PesquisaPessoa</code> tem
+        então a chance de restringir o <code>Criteria</code> somente para os
+        campos de busca, sem ter de se preocupar se o campo foi preenchido ou
+        não, já que o genesis garante que se o setter foi chamado, o campo foi
+        preenchido.</li>
+        <li>Finalmente, o método <code>getPessoas(int)</code> é chamado e o
+        resultado retornado para o cliente de forma transparente.</li>
+      </ul>
+      </p>
     </section>
   </body>
 </document>
+
