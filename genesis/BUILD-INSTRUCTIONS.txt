@@ -1,9 +1,8 @@
 To build genesis, you need:
 
-- Maven 1.0 - Download at http://maven.apache.org/start/download.html
+- Ant (http://ant.apache.org/) or Maven (http://maven.apache.org/)
 - Create the file genesis/genesis/build.properties
 - Create the file genesis/genesis/modules/tests/build.properties (to run the unit tests)
-
 
 In genesis/genesis/build.properties you must define the xdoclet libs location and
 your cvs user.
@@ -30,20 +29,25 @@ To run genesis, go to <JBOSS_HOME>/bin and type
 
    run -c genesis
 
+To run the unit tests with ant, you need to copy junit.jar to ANT_HOME/lib
 
-The genesis maven goals are:
+The genesis main tasks are:
 
    genesis:clean
    genesis:compile
    genesis:test:compile
+   genesis:test:deploy
    genesis:test:test
-   genesis:site  (the generated site will be in genesis/genesis/target/docs )
-   genesis:dist
-   genesis  (runs the default goal: genesis:dist)
+   genesis:site  (Only in maven. The generated site will be in genesis/genesis/target/docs )
+   genesis:jar	(build genesis jar files)
+   genesis  (runs the default goal: genesis:jar)
 
 To run some goal, go to genesis/genesis directory and type:
 
    maven <some_goal>
+   	or
+   ant <some_goal>
 
 e.g.
    maven genesis:compile
+   ant genesis:compile

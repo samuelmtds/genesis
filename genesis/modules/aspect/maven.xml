@@ -2,11 +2,11 @@
    xmlns:ant="jelly:ant" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
 
    <goal name="java:compile">
-      <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="server:compile"/>
+      <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="aspect:compile"/>
    </goal>
 
    <goal name="jar:jar">
-      <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="server:jar"/>
+      <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="aspect:jar"/>
    </goal>
 
 </project>
