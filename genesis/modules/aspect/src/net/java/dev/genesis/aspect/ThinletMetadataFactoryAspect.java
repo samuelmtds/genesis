@@ -68,21 +68,21 @@ public class ThinletMetadataFactoryAspect {
          for (int i = 0; i < methods.length; i++) {
 
             annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
-                  "PreAction", methods[i]);
+                  "BeforeAction", methods[i]);
             if (annon != null) {
                final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
-               thinletMetadata.addPreAction(
+               thinletMetadata.addBeforeAction(
                      actionName.trim().length() == 0 ? methodName : actionName,
                      methodName);
             }
 
             annon = (UntypedAnnotationProxy)Annotations.getAnnotation(
-                  "PosAction", methods[i]);
+                  "AfterAction", methods[i]);
             if (annon != null) {
                final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
-               thinletMetadata.addPosAction(
+               thinletMetadata.addAfterAction(
                      actionName.trim().length() == 0 ? methodName : actionName,
                      methodName);
             }

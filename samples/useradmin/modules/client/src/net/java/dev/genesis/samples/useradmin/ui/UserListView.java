@@ -37,7 +37,7 @@ public class UserListView extends BaseView {
    }
 
    /**
-    * @PreAction
+    * @BeforeAction
     */
    public void update() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame(), form
@@ -49,7 +49,7 @@ public class UserListView extends BaseView {
    }
    
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void remove() throws Exception {
       invokeFormAction("reset");
@@ -57,14 +57,14 @@ public class UserListView extends BaseView {
    }
    
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void nextPage() throws Exception {
       invokeFormAction("search");
    }
    
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void previousPage() throws Exception {
       invokeFormAction("search");

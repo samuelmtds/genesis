@@ -50,7 +50,7 @@ public class RoleListView extends BaseDialogView {
    }
 
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void select() throws Exception {
       getDialog().dispose();
@@ -65,7 +65,7 @@ public class RoleListView extends BaseDialogView {
    }
    
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void remove() throws Exception {
       invokeFormAction("provideRoles");

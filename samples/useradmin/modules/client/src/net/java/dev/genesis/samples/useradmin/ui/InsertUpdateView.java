@@ -48,7 +48,7 @@ public class InsertUpdateView extends BaseDialogView {
    }
 
    /**
-    * @PreAction
+    * @BeforeAction
     */
    public void chooseRole() throws Exception {
       final RoleListView view = new RoleListView(getFrame());
@@ -58,7 +58,7 @@ public class InsertUpdateView extends BaseDialogView {
    }
 
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void save() {
       getDialog().dispose();

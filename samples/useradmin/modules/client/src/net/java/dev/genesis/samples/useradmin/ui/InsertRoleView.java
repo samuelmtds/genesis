@@ -39,7 +39,7 @@ public class InsertRoleView extends BaseDialogView {
    }
    
    /**
-    * @PosAction
+    * @AfterAction
     */
    public void save() {
       getDialog().dispose();

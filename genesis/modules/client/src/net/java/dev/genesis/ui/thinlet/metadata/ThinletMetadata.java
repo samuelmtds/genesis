@@ -27,32 +27,32 @@ import net.java.dev.genesis.reflection.ReflectionInvoker;
 public class ThinletMetadata {
    private final Class thinletClass;
 
-   private final Map preActions;
-   private final Map posActions;
+   private final Map beforeActions;
+   private final Map afterActions;
 
    public ThinletMetadata(final Class formClass) {
       this.thinletClass = formClass;
-      this.preActions = new HashMap();
-      this.posActions = new HashMap();
+      this.beforeActions = new HashMap();
+      this.afterActions = new HashMap();
    }
 
    public Class getThinletClass() {
       return thinletClass;
    }
 
-   public void addPreAction(final String actionName, final String methodName) {
-      preActions.put(actionName, methodName);
+   public void addBeforeAction(final String actionName, final String methodName) {
+      beforeActions.put(actionName, methodName);
    }
 
-   public void addPosAction(final String actionName, final String methodName) {
-      posActions.put(actionName, methodName);
+   public void addAfterAction(final String actionName, final String methodName) {
+      afterActions.put(actionName, methodName);
    }
 
    public boolean invokePreAction(final Object target, final String actionName)
          throws NoSuchMethodException, IllegalAccessException,
          ClassNotFoundException, InvocationTargetException {
 
-      final String methodName = (String)preActions.get(actionName);
+      final String methodName = (String)beforeActions.get(actionName);
 
       if (methodName == null) {
          return true;
@@ -68,7 +68,7 @@ public class ThinletMetadata {
          throws NoSuchMethodException, IllegalAccessException,
          ClassNotFoundException, InvocationTargetException {
 
-      final String methodName = (String)posActions.get(actionName);
+      final String methodName = (String)afterActions.get(actionName);
 
       if (methodName == null) {
          return;
