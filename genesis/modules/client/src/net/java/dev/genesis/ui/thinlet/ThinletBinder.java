@@ -385,7 +385,6 @@ public class ThinletBinder {
       }
 
       final Object ret = dataProviderMetadata.invoke(form);
-      dataProviderMetadata.resetSelectedFields(form);
       final List items = (dataProviderMetadata.getObjectField().isArray()) ? Arrays
             .asList((Object[]) ret)
             : (List) ret;
@@ -393,6 +392,7 @@ public class ThinletBinder {
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
+         dataProviderMetadata.resetSelectedFields(form);
          thinlet.populateFromCollection(component, items);
       } else if (className.equals(BaseThinlet.COMBOBOX)) {
          final String key = (String) thinlet.getProperty(component, "key");
