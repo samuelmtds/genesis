@@ -29,6 +29,8 @@ import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -85,20 +87,22 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       someValues.put("field4", "notEmpty");
       controller.populate(someValues);
 
-      final MethodEntry calculateEntry = new MethodEntry("calculate", new String[]{});
-      final MethodEntry providerEntry = new MethodEntry("provideSomeList", new String[]{});
+      final ActionMetadata calculateMetadata = getFormMetadata(form)
+            .getActionMetadata(form.getClass().getMethod("calculate", new Class[]{}));
+      final DataProviderMetadata providerMetadata = getFormMetadata(form)
+            .getDataProviderMetadata(form.getClass().getMethod("provideSomeList", new Class[]{}));
       assertEquals(form.getField3(), "abcd");
       assertEquals(controller.getEnabledMap().get("field2"), Boolean.FALSE);
       assertEquals(controller.getVisibleMap().get("field4"), Boolean.TRUE);
-      assertEquals(controller.getDataProviderTriggerMap().get(providerEntry), Boolean.TRUE);
+      assertTrue(controller.getDataProviderActions().contains(providerMetadata));
+      assertTrue(controller.getCallActions().contains(calculateMetadata));
 
       controller.reset();
       assertEquals(form.getField3(), DefaultValueRegistry.getInstance().get(
             form.getField3()));
       assertEquals(controller.getEnabledMap().get("field2"), Boolean.TRUE);
       assertEquals(controller.getVisibleMap().get("field4"), Boolean.FALSE);
-      assertEquals(controller.getCallMap().get(calculateEntry), Boolean.FALSE);
-      assertEquals(controller.getDataProviderTriggerMap().get(providerEntry), Boolean.FALSE);
+      assertFalse(controller.getDataProviderActions().contains(providerMetadata));
    }
 
    /**

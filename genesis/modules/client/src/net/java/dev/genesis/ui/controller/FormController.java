@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.controller;
 
+import java.util.Collection;
 import java.util.Map;
 
 import net.java.dev.genesis.ui.metadata.FormMetadata;
@@ -25,12 +26,16 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 public interface FormController {
    public void setForm(Object form);
    public void setFormMetadata(FormMetadata form);
+   public Object getForm();
+   public FormMetadata getFormMetadata();
    public void setup() throws Exception;
    public void populate(Map properties) throws Exception;
    public Map getEnabledMap();
    public Map getVisibleMap();
-   public Map getCallMap();
-   public Map getDataProviderTriggerMap();
+   public Map getChangedMap();
+   public Collection getCallActions();
+   public Collection getDataProviderActions();
    public void reset() throws Exception;
    public void save() throws Exception;
+   public void update() throws Exception;
 }

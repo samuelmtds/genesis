@@ -482,8 +482,8 @@ public class FormMetadataFactoryAspect {
          for (int i = 0; i < propertyDescriptors.length; i++) {
             propDesc = propertyDescriptors[i];
             // Ignoring java.lang.Object.getClass()
-            if (!propDesc.getName().equals("class")
-                  && propDesc.getReadMethod() != null) {
+            if (!propDesc.getName().equals("class") && 
+                  propDesc.getReadMethod() != null) {
                fieldMetadata = new FieldMetadata(propDesc.getName(), propDesc
                      .getPropertyType());
                formMetadata.addFieldMetadata(propDesc.getName(), fieldMetadata);

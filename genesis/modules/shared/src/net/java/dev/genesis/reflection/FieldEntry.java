@@ -18,10 +18,11 @@
  */
 package net.java.dev.genesis.reflection;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-public class FieldEntry {
+public class FieldEntry implements Serializable {
    private final String fieldName;
    private final String fieldTypeName;
    private final boolean isArray;

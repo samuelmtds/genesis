@@ -50,6 +50,10 @@ public class FieldMetadata extends MemberMetadata {
       return fieldName;
    }
 
+   public String getName() {
+      return getFieldName();
+   }
+   
    public CompiledExpression getClearOnCondition() {
       return clearOnCondition;
    }

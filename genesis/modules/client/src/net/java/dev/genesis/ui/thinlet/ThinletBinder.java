@@ -19,20 +19,26 @@
 package net.java.dev.genesis.ui.thinlet;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
-import net.java.dev.genesis.reflection.ReflectionInvoker;
+import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+//TODO: call reset() in appropriate points
 public class ThinletBinder {
    private static final Log log = LogFactory.getLog(ThinletBinder.class);
    private static final String[] supportedFieldWidgets = new String[] {
@@ -45,31 +51,64 @@ public class ThinletBinder {
    private final BaseThinlet thinlet;
    private final Object root;
    private final Object form;
+   private final Map visibleStateMap = new HashMap();
+   private final Map enabledStateMap = new HashMap();
+   private final FormController controller;
+   private final Collection boundFieldNames = new HashSet();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, 
             final Object form) {
       this.thinlet = thinlet;
       this.root = root;
       this.form = form;
+      this.controller = getController(form);
+   }
+
+   protected FormController getController(final Object form) {
+      return new DefaultFormController();
    }
 
    public void bind() throws Exception {
-      final FormMetadata formMetadata = ((FormMetadataFactory)form)
-            .getFormMetadata(form.getClass());
-      final FormController controller = (FormController)form;
+      final FormMetadata formMetadata = getFormMetadata(form);
       controller.setForm(form);
       controller.setFormMetadata(formMetadata);
       controller.setup();
 
       bindFieldMetadatas(formMetadata);
       bindActionMetadatas(formMetadata);
-      populateDataProviders(formMetadata);
-      
-      //TODO: invoke call when methods
-      //TODO: invoke lifecycle methods in formMetadata
+
+      updateAndSave(formMetadata.getDataProviderMetadatas().values(), true);
    }
 
-   private void bindFieldMetadatas(final FormMetadata formMetadata) {
+   protected void updateAndSave(Collection dataProviders, boolean displayAll) 
+         throws Exception {
+      invokeCallWhenActions();
+      populateDataProviders(controller.getFormMetadata(), dataProviders);
+      updateEnabledState();
+      updateVisibleState();
+
+      controller.save();
+
+      Map toDisplay = null;
+      if (displayAll) {
+         toDisplay = PropertyUtils.describe(form);
+         toDisplay.keySet().retainAll(boundFieldNames);
+      } else {
+         toDisplay = controller.getChangedMap();
+      }
+
+      if (log.isDebugEnabled()) {
+         log.debug("Displaying: " + toDisplay);
+      }
+
+      thinlet.displayBean(toDisplay, root);
+   }
+
+   protected FormMetadata getFormMetadata(final Object form) {
+      return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+   }
+
+   protected void bindFieldMetadatas(final FormMetadata formMetadata) {
       for (final Iterator i = formMetadata.getFieldMetadatas().entrySet()
             .iterator(); i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
@@ -85,8 +124,8 @@ public class ThinletBinder {
          final FieldMetadata fieldMetadata = (FieldMetadata)entry.getValue();
 
          if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
-            if (log.isDebugEnabled() && !fieldMetadata.isDisplayOnly()) {
-               log.debug(name + " is not represented by an editable widget (" + 
+            if (!fieldMetadata.isDisplayOnly()) {
+               log.warn(name + " is not represented by an editable widget (" + 
                      className + ")");
             }
 
@@ -106,18 +145,21 @@ public class ThinletBinder {
                   form.getClass().getName() + " to " + className);
          }
 
+         boundFieldNames.add(name);
+
          for (final Iterator it = components.iterator(); it.hasNext(); ) {
             final Object component = it.next();
 
             if (className.equals(BaseThinlet.CHECKBOX)) {
                thinlet.setMethod(component, "action", "setValue(" + 
+                     thinlet.getName(component) + "," + 
                      thinlet.getName(component) + ".group)", root, this);
             } else if (Arrays.binarySearch(fieldsChangedByAction, className) > 0) {
-               thinlet.setMethod(component, "action", "setValue(" + name + 
-                     ".name)", root, this);
+               thinlet.setMethod(component, "action", "setValue(" + name + "," +
+                     name + ".name)", root, this);
             } else {
                thinlet.setMethod(component, "focuslost", "setValue(" + name + 
-                     ".name)", root, this);
+                     "," + name + ".name)", root, this);
             }
          }
       }
@@ -144,15 +186,39 @@ public class ThinletBinder {
       return groupComponents;
    }
 
-   public void setValue(String name) {
-      //TODO: implement this
+   public void setValue(Object component, String name) throws Exception {
+      final String type = thinlet.getClass(component);
+
+      String value = null;
+
+      if (type.equals(BaseThinlet.CHECKBOX)) {
+         if (!thinlet.isSelected(component)) {
+            return;
+         }
+
+         value = name;
+      } else if (type.equals(BaseThinlet.COMBOBOX) || type.equals(BaseThinlet.LIST)) {
+         component = thinlet.getSelectedItem(component);
+
+         value = thinlet.getName(component != null ? component : null);
+      } else if (type.equals(BaseThinlet.PROGRESS_BAR) || type.equals(BaseThinlet.SLIDER)) {
+         value = thinlet.getValue(component);
+      } else {
+         value = thinlet.getText(component);
+      }
+
+      final Map properties = new HashMap();
+      properties.put(name, value);
+
+      controller.populate(properties);
+      updateAndSave(controller.getDataProviderActions(), false);
    }
 
-   private void bindActionMetadatas(final FormMetadata formMetadata) {
+   protected void bindActionMetadatas(final FormMetadata formMetadata) {
       for (final Iterator i = formMetadata.getActionMetadatas().entrySet()
             .iterator(); i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
-         final String name = entry.getKey().toString();
+         final String name = ((MethodEntry)entry.getKey()).getMethodName();
          final Object component = thinlet.find(root, name);
 
          if (component == null) {
@@ -163,10 +229,8 @@ public class ThinletBinder {
          final String className = thinlet.getClass(component);
 
          if (!BaseThinlet.BUTTON.equals(className)) {
-            if (log.isDebugEnabled()) {
-               log.debug(name + " is not represented by a button; it is a " + 
-                     className);
-            }
+            log.warn(name + " is not represented by a button; it is a " + 
+                  className);
 
             continue;
          }
@@ -180,15 +244,25 @@ public class ThinletBinder {
       }
    }
 
-   public void invokeAction(String name) {
-      //TODO: implement this
+   public void invokeAction(String name) throws Exception {
+      //TODO: handle validation
+      if (log.isDebugEnabled()) {
+         log.debug("Invoking action: " + name);
+      }
+
+      ((ActionMetadata)controller.getFormMetadata().getActionMetadatas().get(
+            new MethodEntry(name, new String[0]))).invoke(form);
+      controller.update();
+      updateAndSave(controller.getDataProviderActions(), false);
    }
 
-   private void populateDataProviders(FormMetadata formMetadata) throws Exception {
-      for (final Iterator i = formMetadata.getDataProviderMetadatas().entrySet()
-            .iterator(); i.hasNext(); ) {
-         final Map.Entry entry = (Map.Entry)i.next();
-         final String name = entry.getKey().toString();
+   protected void populateDataProviders(final FormMetadata formMetadata, 
+         final Collection dataProviders) throws Exception {
+      for (final Iterator i = dataProviders.iterator(); 
+            i.hasNext(); ) {
+         final DataProviderMetadata dataProviderMetadata = 
+               (DataProviderMetadata)i.next();
+         final String name = dataProviderMetadata.getDataProvider().getFieldName();
          final Object component = thinlet.find(root, name);
 
          if (component == null) {
@@ -197,14 +271,79 @@ public class ThinletBinder {
             continue;
          }
 
-         final MethodEntry methodEntry = ((DataProviderMetadata)
-               entry.getValue()).getMethodEntry();
-         //TODO: finish this method
+         if (log.isDebugEnabled()) {
+            log.debug("Populating " + name + " with " + dataProviderMetadata
+                  .getMethodEntry().getMethodName());
+         }
 
-/*
-         ReflectionInvoker.getInstance().invoke(form, methodEntry.getMethodName(), 
-               methodEntry.getArgsClassesNames(), new Object[0]);
- */
+         final Object ret = dataProviderMetadata.invoke(form);
+         final Collection items = (dataProviderMetadata.getDataProvider()
+               .isArray()) ? Arrays.asList((Object[])ret) : (List)ret;
+
+         thinlet.populateFromCollection(component, items, 
+               thinlet.getProperty(component, "key").toString(), 
+               thinlet.getProperty(component, "value").toString(), 
+               Boolean.valueOf(thinlet.getProperty(component, "blank")
+               .toString()).booleanValue());
       }
+   }
+
+   protected void invokeCallWhenActions() 
+         throws Exception {
+      for (final Iterator i = controller.getCallActions().iterator(); 
+            i.hasNext(); ) {
+         final ActionMetadata actionMetadata = (ActionMetadata)i.next();
+         
+         if (log.isDebugEnabled()) {
+            log.debug("Calling " + actionMetadata.getMethodEntry().getMethodName() +
+                  " automatically");
+         }
+
+         actionMetadata.invoke(form);
+      }
+   }
+
+   protected void updateEnabledState() {
+      final Collection enabledStateEntries = enabledStateMap.entrySet();
+
+      for (final Iterator i = controller.getEnabledMap().entrySet().iterator();
+            i.hasNext(); ) {
+         final Map.Entry entry = (Map.Entry)i.next();
+
+         if (!enabledStateEntries.contains(entry)) {
+            if (log.isDebugEnabled()) {
+               log.debug("Changing " + entry.getKey() + " enabled state to " + 
+                     entry.getValue());
+            }
+
+            thinlet.setEnabled(thinlet.find(root, entry.getKey().toString()), 
+                  ((Boolean)entry.getValue()).booleanValue());
+         }
+      }
+
+      enabledStateMap.clear();
+      enabledStateMap.putAll(controller.getEnabledMap());
+   }
+
+   protected void updateVisibleState() {
+      final Collection visibleStateEntries = visibleStateMap.entrySet();
+
+      for (final Iterator i = controller.getVisibleMap().entrySet().iterator();
+            i.hasNext(); ) {
+         final Map.Entry entry = (Map.Entry)i.next();
+
+         if (!visibleStateEntries.contains(entry)) {
+            if (log.isDebugEnabled()) {
+               log.debug("Changing " + entry.getKey() + " visible state to " + 
+                     entry.getValue());
+            }
+
+            thinlet.setVisible(thinlet.find(root, entry.getKey().toString()), 
+                  ((Boolean)entry.getValue()).booleanValue());
+         }
+      }
+
+      visibleStateMap.clear();
+      visibleStateMap.putAll(controller.getVisibleMap());
    }
 }

@@ -39,12 +39,24 @@ public final class ReflectionInvoker {
          final String[] classNames, final Object[] args)
          throws ClassNotFoundException, IllegalAccessException,
          NoSuchMethodException, InvocationTargetException {
-      Map methodsEntries = (Map) reflectionCache.get(obj.getClass());
+      return getMethod(obj, methodName, classNames).invoke(obj, args);
+   }
+
+   public Method getMethod(final Object obj, final String methodName,
+         final String[] classNames) throws ClassNotFoundException, 
+         NoSuchMethodException {
+      return getMethod(obj.getClass(), methodName, classNames);
+   }
+
+   public Method getMethod(final Class clazz,final String methodName,
+         final String[] classNames) throws ClassNotFoundException, 
+         NoSuchMethodException {
+      Map methodsEntries = (Map) reflectionCache.get(clazz);
       final MethodEntry entry = new MethodEntry(methodName, classNames);
 
       if (methodsEntries == null) {
          methodsEntries = new HashMap();
-         reflectionCache.put(obj.getClass(), methodsEntries);
+         reflectionCache.put(clazz, methodsEntries);
       }
 
       Method method = (Method) methodsEntries.get(entry);
@@ -56,10 +68,10 @@ public final class ReflectionInvoker {
             classes[i] = ClassesCache.getClass(classNames[i]);
          }
 
-         method = obj.getClass().getMethod(methodName, classes);
+         method = clazz.getMethod(methodName, classes);
          methodsEntries.put(entry, method);
       }
 
-      return method.invoke(obj, args);
+      return method;
    }
 }

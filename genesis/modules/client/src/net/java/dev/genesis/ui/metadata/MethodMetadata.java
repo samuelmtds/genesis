@@ -37,6 +37,10 @@ public abstract class MethodMetadata extends MemberMetadata {
       this.methodEntry = new MethodEntry(method);
    }
 
+   public String getName() {
+      return getMethodEntry().getMethodName();
+   }
+
    public MethodEntry getMethodEntry() {
       return methodEntry;
    }

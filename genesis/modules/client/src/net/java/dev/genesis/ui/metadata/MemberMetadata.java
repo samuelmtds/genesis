@@ -39,4 +39,6 @@ public abstract class MemberMetadata {
    public void setVisibleCondition(CompiledExpression visibleCondition) {
       this.visibleCondition = visibleCondition;
    }
+
+   public abstract String getName();
 }

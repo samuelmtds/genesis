@@ -320,7 +320,8 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected void displayBean(Object bean, Object root) throws IllegalAccessException,
                               InvocationTargetException, NoSuchMethodException {
-      final Map properties = PropertyUtils.describe(bean);
+      final Map properties = bean instanceof Map ? (Map)bean : 
+            PropertyUtils.describe(bean);
 
       if (root instanceof Thinlet) {
          root = ((Thinlet)root).getDesktop();
@@ -604,7 +605,11 @@ public abstract class BaseThinlet extends Thinlet {
          add(component, row);
       }
    }
-   
+
+   protected void bind(Object form) throws Exception {
+      bind(getDesktop(), form);
+   }
+
    protected void bind(Object widget, Object form) throws Exception {
       new ThinletBinder(this, widget, form).bind();
    }

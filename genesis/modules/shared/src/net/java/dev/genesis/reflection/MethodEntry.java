@@ -18,10 +18,11 @@
  */
 package net.java.dev.genesis.reflection;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class MethodEntry {
+public class MethodEntry implements Serializable {
    private final String methodName;
    private final String[] argsClassesNames;
 

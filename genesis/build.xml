@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="genesis" name="genesis" basedir=".">
-
 	<property file="modules/tests/build.properties" />
 	<property file="modules/tests/project.properties" />
 	<property file="build.properties" />
@@ -174,12 +173,16 @@
 			<fileset dir="${genesis.module.server}/${build.dest}">
 				<include name="**/CommandExecutor.class" />
 				<include name="**/CommandExecutorHome.class" />
+				<include name="**/CommandExecutorLocal.class" />
+				<include name="**/CommandExecutorLocalHome.class" />
 			</fileset>
 		</copy>
 		<copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="true">
 			<fileset dir="${genesis.module.server}/${build.dest}">
 				<include name="**/CommandExecutor.class" />
 				<include name="**/CommandExecutorHome.class" />
+				<include name="**/CommandExecutorLocal.class" />
+				<include name="**/CommandExecutorLocalHome.class" />
 			</fileset>
 		</copy>
 		<copy todir="${genesis.module.server}/${build.dest}" overwrite="true">
