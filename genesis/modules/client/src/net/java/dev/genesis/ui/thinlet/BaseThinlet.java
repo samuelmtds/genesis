@@ -55,6 +55,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String CLOSE = "close";
    public static final String COLUMNS = "columns";
    public static final String COMBOBOX = "combobox";
+   public static final String EDITABLE = "editable";
    public static final String ENABLED = "enabled";
    public static final String END = "end";
    public static final String GROUP = "group";
@@ -214,6 +215,14 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected void setEnabled(Object component, boolean enabled) {
       setBoolean(component, ENABLED, enabled);
+   }
+
+   protected boolean isEditable(Object component) {
+      return getBoolean(component, EDITABLE);
+   }
+
+   protected void setEditable(Object o, boolean editable) {
+      setBoolean(o, EDITABLE, editable);
    }
 
    protected int getEnd(Object component) {
