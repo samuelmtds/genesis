@@ -26,9 +26,9 @@
         </ul>
       </subsection>
       <subsection name="Known issues">
-        <p>A complete list of known issues can be checked at <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi">
-        https://genesis.dev.java.net/issues/buglist.cgi</a></p>
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1">here
+        </a></p>
       </subsection>
       <subsection name="Acknowledgements">
         <p>The following individuals contributed to this release:</p>
@@ -88,4 +88,3 @@
     </section>
   </body>
 </document>
-
