@@ -557,6 +557,7 @@ public void calculateRemainingAmount() {
 <source>
 @DataProvider &lt;objectField=nameObjectField&gt;
               &lt;indexField=nameIndexField&gt;
+              &lt;callOnInit=booleanValue&gt;
 </source>
       <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array. Values returned by the method
@@ -654,7 +655,28 @@ public class DataProviderFormExample {
       equal to <code>objectField</code> value. Each row will represent an
       instance and each column will be filled with a bean property whose name is
       their <code>name</code>.</p>
-      <p>The <code>@CallWhen</code> annotation may be used together with
+      <p>There is a variation for this annotation which happens with the use
+      of the <code>callOnInit</code> property. Imagine the above 
+      <code>combobox</code> or the <code>table</code> widgets <b> are not
+      supposed</b> to be filled at the dialog startup. In this case, to
+      accomplish this requirement in a easier way, we only have to rewrite
+      the annotation as the following code indicates:</p>
+<source>
+   // ...
+
+   /**
+    * @DataProvider objectField=state callOnInit=false
+    */
+   public Collection populateStates() {
+      // returns a Collection containing State instances
+   }
+
+   // ...
+</source>
+      <p>This way, at dialog startup, the <code>combobox</code> or 
+      <code>table</code> widgets will be empty. In order to populate them
+      a <code>@CallWhen</code> annotation can be added and used together.
+      That is, <code>@CallWhen</code> annotation may be used together with
       <code>@DataProvider</code> to indicate when a table/combo will be
       automatically populate again. <code>@Action</code> may also be used in
       these methods if they need to be triggered by a button (such as Search,

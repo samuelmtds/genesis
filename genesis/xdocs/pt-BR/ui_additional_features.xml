@@ -573,6 +573,7 @@ public void calculaMontanteCorrigido() {
 <source>
 @DataProvider &lt;objectField=nomeCampoObjeto&gt;
               &lt;indexField=nomeCampoIndice&gt;
+              &lt;callOnInit=valorBooleano&gt;
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
       <code>java.util.List</code> ou uma array. O retorno dos métodos será
@@ -671,8 +672,29 @@ public class ExemploDataProviderForm {
       <code>objectField</code>. Cada linha representará uma instância e cada
       coluna será preenchida com a propriedade do bean cujo nome é o valor de
       <code>name</code> em cada uma delas.</p>
-      <p>A anotação <code>@CallWhen</code> pode ser usada em conjunto com
-      <code>@DataProvider</code> para indicar sob que condição a tabela/combo
+      <p>Uma variação desta anotação ocorre com a utilização do atributo
+      <code>callOnInit</code>. Suponha que o <code>combobox</code> ou a 
+      <code>table</code> dos exemplos acima <b>não devam ser preenchidas</b> na
+      inicialização da janela em questão. Neste caso, a anotação deverá ser
+      reescrita da seguinte forma:</p>
+<source>
+   // ...
+
+   /**
+    * @DataProvider objectField=estado callOnInit=false
+    */
+   public Collection populaEstados() {
+      // retorna uma Collection contendo instâncias de Estado
+   }
+
+   // ...
+</source>
+      <p>Desta forma, na inicialização da janela, os widgets 
+      <code>combobox</code> ou <code>table</code> estarão vazios. 
+      O preenchimento dos mesmos poderá ser acionado mediante a anotação
+      <code>@CallWhen</code>. Isto é, a anotação <code>@CallWhen</code> pode ser 
+      usada em conjunto com <code>@DataProvider</code> para 
+      indicar sob que condição a tabela/combo
       será repopulada. <code>@Action</code> pode ser usado no mesmo método caso
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
