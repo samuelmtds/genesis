@@ -29,13 +29,15 @@
         que é uma cópia idêntica de
         <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/server/default</code></li>
         <li>Execute os scripts ant de deploy distribuídos juntamente com 
-        o exemplo - esse passo será detalhado mais a frente.</li>
-        <li>Inicie o servidor JBoss - esse passo será detalhado mais a 
-        frente.</li>
+        o exemplo - <a href="#Execução do exemplo useradmin">
+        conforme instruções abaixo</a>.</li>
+        <li>Inicie o servidor JBoss - <a href="#Execução do exemplo useradmin">
+        conforme instruções abaixo</a>.</li>
       </ol>
       <p>Após a instalação do JBoss e execução dos scripts de deploy, pode-se
       utilizar um link Java Web start ou os scripts de execução ant para rodar 
-      a aplicação exemplo - esses passos também serão detalhados adiante.</p>
+      a aplicação exemplo - <a href="#Execução do exemplo useradmin">
+        conforme instruções abaixo</a>.</p>
     </section>
     <section name="Propósito do exemplo useradmin">
       <p>O exemplo useradmin tem como propósito mostrar ao usuário a maioria das
@@ -232,9 +234,11 @@ public class User implements Serializable {
       e nem estender nenhuma classe abstrata. Convém implementar
       <code>java.io.Serializable</code> para utilizá-lo como parâmetro e/ou
       retorno de chamadas remotas.</p>
+    </section>
+    <section name="Execução do exemplo useradmin">      
       <p>Para executar esse exemplo, foram disponibilizados scripts ant para
-      realizar esta tarefa. Para utilizar esses scripts, siga os seguintes
-      passos:</p>
+      realizar esta tarefa. Para utilizar esses scripts, siga os passos
+      abaixo:</p>
       <ul>
         <li>Faça uma cópia do arquivo <code>buid.properties.sample</code> e
         modifique o nome da cópia para <code>build.properties</code></li>
