@@ -782,6 +782,97 @@ public class ExemploDataProviderForm {
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
       <code>@VisibleWhen</code> também será possível.</p>
+      <subsection name="Invocando os métodos de DataProvider de dentro de um 
+      Form">
+        <p>Para que os dados retornados de um <code>DataProvider</code> possam
+        ser populados no <code>Form</code>, o genesis necessita ter ciência
+        da execução do mesmo. Isso ocorre com a execução de 
+        <code>invokeFormAction(..)</code> como visto 
+        <a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
+        aqui</a>, através da utilização de <code>invokeFormAction(...)</code>.
+        </p>
+        <p>Uma segunda opção para realizar este objetivo do próprio 
+        <code>form</code> (sem a utilização da <code>view</code>) é através 
+        da utilização das classes <code>ActionInvoker</code> e 
+        <code>BaseForm</code>.</p>
+        <p>A classe <code>ActionInvoker</code> possui dois métodos estáticos:
+        <ul>
+          <li><code>invoke(Form, nome de ação)</code>: que executa uma
+          ação do <code>form</code> passado como parâmetro.</li>
+          <li><code>refresh(Form)</code>: que faz a atualização de informações
+          do <code>form</code> passado como parâmetro.</li>
+        </ul>
+        </p>
+        <p>A classe <code>BaseForm</code> pode ser utilizada como classe pai
+        dos <code>forms</code> e dessa forma, tem-se acesso a dois métodos
+        similares:
+        <ul>
+          <li><code>invoke(nome de ação)</code>: que executa uma
+          ação da própria instância de <code>form</code>.</li>
+          <li><code>refresh()</code>: que faz a atualização de informações
+          da própria instância de <code>form</code>.</li>
+        </ul>
+        Para ser mais específicos, estes métodos são atalhos para os respectivos
+        métodos de <code>ActionInvoker</code>. Além disso,
+        <code>BaseForm</code> limita a árvore de herança do <code>Form</code>.
+        </p>
+        <p>Embora a utilização dessas classes torna um <code>Form</code> mais
+        auto-contido, elas aumentam o acoplamento deste com o genesis.</p>
+        <p>Mantendo a mesma lógica do exemplo de 
+        <a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
+        <code>invokeFormAction(...)</code></a> e reescrevendo o mesmo, teremos:
+        </p>
+<source>
+/**
+ * @Form
+ */
+public class ExemploInvokeFormActionForm {
+   private BigDecimal indice;
+   // ...
+
+   public BigDecimal getIndice() {
+      return indice;
+   }
+
+   public void setIndice(BigDecimal indice) {
+      this.indice = indice;
+      ActionInvoker.invoke(this, "recalculaTotais");
+   }
+
+   /**
+    * @DataProvider objectField=totais
+    */
+   public List recalculaTotais() {
+      // logica de recálculo
+   }
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploInvokeFormActionForm extends BaseForm {
+   private BigDecimal indice;
+   // ...
+
+   public BigDecimal getIndice() {
+      return indice;
+   }
+
+   public void setIndice(BigDecimal indice) {
+      this.indice = indice;
+      invoke("recalculaTotais");
+   }
+
+   /**
+    * @DataProvider objectField=totais
+    */
+   public List recalculaTotais() {
+      // logica de recálculo
+   }
+}
+</source>
+      </subsection>
     </section>
     <section name="Formatação">
       <p>Visto que formatar as informações para que sejam exibidas na tela é uma
