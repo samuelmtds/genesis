@@ -60,6 +60,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String END = "end";
    public static final String GROUP = "group";
    public static final String HEADER = "header";
+   public static final String ITEM = "item";
    public static final String LABEL = "label";
    public static final String LIST = "list";
    public static final String MESSAGE = "message";
@@ -120,6 +121,16 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
+   public static class ItemType extends Enum {
+      public static final ItemType CELL = new ItemType(BaseThinlet.CELL);
+      public static final ItemType CHOICE = new ItemType(BaseThinlet.CHOICE);
+      public static final ItemType ITEM = new ItemType(BaseThinlet.ITEM);
+
+      private ItemType(String type) {
+         super(type);
+      }
+   }
+
    protected InputStream getResourceAsStream(String name) {
       return getResourceAsStream(name, 
                                  Thread.currentThread().getContextClassLoader());
@@ -153,12 +164,20 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected Object createChoice(String name, String text) {
-      final Object choice = create(CHOICE);
-      setName(choice, name);
-      setText(choice, text);
-      setTooltip(choice, text);
+      return createItemOfType(name, text, ItemType.CHOICE);
+   }
+
+   protected Object createItem(String name, String text) {
+      return createItemOfType(name, text, ItemType.ITEM);
+   }
+
+   protected Object createItemOfType(String name, String text, ItemType type) {
+      final Object item = create(type.getName());
+      setName(item, name);
+      setText(item, text);
+      setTooltip(item, text);
       
-      return choice;
+      return item;
    }
 
    protected Object createRow() {
@@ -166,12 +185,7 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected Object createCell(String name, String text) {
-      final Object cell = create(CELL);
-      setName(cell, name);
-      setText(cell, text);
-      setTooltip(cell, text);
-      
-      return cell;
+      return createItemOfType(name, text, ItemType.CELL);
    }
    
    protected Object createCell(String name, String text, String alignment) {
@@ -536,23 +550,29 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected void populateFromEnum(Object component, Class clazz, boolean blank) {
-      if (!getClass(component).equals(COMBOBOX)) {
+      final boolean combobox = getClass(component).equals(COMBOBOX);
+
+      if (!combobox && !getClass(component).equals(LIST)) {
          throw new UnsupportedOperationException();
       }
 
+      final ItemType type = combobox ? ItemType.CHOICE : ItemType.ITEM;
+
       String key;
-      Object en;
+      Object enumInstance;
 
       removeAll(component);
 
       if (blank) {
-         add(component, createChoice("", ""));
+         add(component, createItemOfType("", "", type));
       }
 
       for (final Iterator i = Enum.getInstances(clazz).iterator(); i.hasNext(); ) {
-         en = i.next();
-         key = en.toString();
-         add(component, createChoice(key, FormatterRegistry.getInstance().format(en)));
+         enumInstance = i.next();
+         key = enumInstance.toString();
+
+         add(component, createItemOfType(key, FormatterRegistry.getInstance()
+               .format(enumInstance), type));
       }
    }
 
@@ -583,9 +603,13 @@ public abstract class BaseThinlet extends Thinlet {
                         String blankLabel) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
-      if (!getClass(component).equals(COMBOBOX)) {
+      final boolean combobox = getClass(component).equals(COMBOBOX);
+
+      if (!combobox && !getClass(component).equals(LIST)) {
          throw new UnsupportedOperationException();
       }
+
+      final ItemType type = combobox ? ItemType.CHOICE : ItemType.ITEM;
 
       String key;
       String description;
@@ -594,7 +618,8 @@ public abstract class BaseThinlet extends Thinlet {
       removeAll(component);
 
       if (blank) {
-         add(component, createChoice("", blankLabel == null ? "" : blankLabel));
+         add(component, createItemOfType("", blankLabel == null ? 
+               "" : blankLabel, type));
       }
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
@@ -606,7 +631,7 @@ public abstract class BaseThinlet extends Thinlet {
                valueProperty == null ? o : PropertyUtils.getProperty(o, 
                valueProperty));
 
-         add(component, createChoice(key, description));
+         add(component, createItemOfType(key, description, type));
       }
    }
 

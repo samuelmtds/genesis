@@ -293,7 +293,8 @@ public class ThinletBinder implements FormControllerListener {
          final String className = Thinlet.getClass(component);
 
          if (!(className.equals(BaseThinlet.TABLE) || 
-               className.equals(BaseThinlet.COMBOBOX))) {
+               className.equals(BaseThinlet.COMBOBOX) ||
+               className.equals(BaseThinlet.LIST))) {
             log.warn(className + " is not a supported widget for binding a " +
                   "data provider");
             continue;
@@ -320,13 +321,29 @@ public class ThinletBinder implements FormControllerListener {
    //TODO: move more of this logic to controller
    public void updateSelection(String name, Object widget) throws Exception {
       int[] selected = thinlet.getSelectedIndexes(widget);
+      
+      final String widgetClass = BaseThinlet.getClass(widget);
 
-      if (selected.length == 1 && BaseThinlet.COMBOBOX.equals(BaseThinlet
-            .getClass(widget)) && isBlank(widget, name)) {
-         if (selected[0] > 0) {
-            selected[0] = selected[0] - 1;
-         } else {
-            selected = new int[0];
+      if (selected.length >= 1 && (BaseThinlet.COMBOBOX.equals(widgetClass) ||
+            BaseThinlet.LIST.equals(widgetClass)) && isBlank(widget, name)) {
+         boolean remove = false;
+
+         for (int i = 0; i < selected.length; i++) {
+            selected[i] = selected[i] - 1;
+
+            if (selected[i] == -1) {
+               remove = true;
+            }
+         }
+
+         if (remove) {
+            if (selected.length == 1) {
+               selected = new int[0];
+            } else {
+               final int[] aux = selected;
+               selected = new int[aux.length - 1];
+               System.arraycopy(aux, 1, selected, 0, aux.length - 1);
+            }
          }
       }
 
@@ -384,7 +401,8 @@ public class ThinletBinder implements FormControllerListener {
       if (className.equals(BaseThinlet.TABLE)) {
          metadata.resetSelectedFields(form);
          thinlet.populateFromCollection(component, items);
-      } else if (className.equals(BaseThinlet.COMBOBOX)) {
+      } else if (className.equals(BaseThinlet.COMBOBOX) || 
+               className.equals(BaseThinlet.LIST)) {
          //TODO: This parsing shouldn't occur every time
          final String key = (String) thinlet.getProperty(component, "key");
 
@@ -401,7 +419,6 @@ public class ThinletBinder implements FormControllerListener {
          thinlet.populateFromCollection(component, items, key, value, blank, 
                blankLabel);
       } else {
-         // TODO: only table and combobox are implemented
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
       }
