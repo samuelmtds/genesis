@@ -33,9 +33,8 @@
         documentação. Em termos de pacotes, são fornecidos os seguintes
         grupos de arquivos: todos os jars do <code>genesis-full-bin</code>, o
         projeto vazio para iniciar o desenvolvimento de uma aplicação com o
-        genesis, o conteúdo de <code>genesis-docs</code> e outros exemplos de
-        utilização do genesis, como uma simples calculadora (SimpleCalculator)
-        e um aplicativo de administração de usuários (UserAdmin)</li>
+        genesis, o conteúdo de <code>genesis-docs</code> e um aplicativo de
+        exemplo do genesis, uma administração de usuários (UserAdmin)</li>
         <li><b>genesis-useradmin-sample-{versão}.tar.gz</b> e
         <b>genesis-useradmin-sample-{versão}.zip</b>: contém tanto o código
         fonte como os binários de distribuição do exemplo UserAdmin.</li>

@@ -26,9 +26,8 @@
         <b>genesis-full-bin-plus-docs-{version}.zip</b>: genesis full binary
         distribution and documentation. This archive contais all jars contained
         in <code>genesis-full-bin</code>, the empty project structure and
-        complete genesis documentation, as well as some additional genesis
-        samples, such as a simple calculator (SimpleCalculator)
-        and a user administration application (Useradmin).</li>
+        complete genesis documentation, as well as a sample user administration
+        application (Useradmin).</li>
         <li><b>genesis-useradmin-sample-{version}.tar.gz</b> and
         <b>genesis-useradmin-sample-{version}.zip</b>: contain both source code
         as well as binary files for the UserAdmin sample.</li>
