@@ -32,7 +32,7 @@ public class FormControllerFactoryAspect {
       private FormController controller;
       private Object form;
 
-      public FormController retrieveFormController(Object form) {
+      public FormController getFormController(Object form) {
          if (this.form != null && this.form != form) {
             throw new IllegalArgumentException("Different form instances " +
                   "being used: this implementation works for a single form " +
