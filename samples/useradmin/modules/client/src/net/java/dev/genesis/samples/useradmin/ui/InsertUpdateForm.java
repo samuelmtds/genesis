@@ -18,8 +18,9 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.java.dev.genesis.samples.useradmin.business.RoleSearchCommand;
 import net.java.dev.genesis.samples.useradmin.business.UserCreateCommand;
@@ -126,6 +127,9 @@ public class InsertUpdateForm {
       return role == null ? null : role.getLabel();
    }
 
+   /**
+    * @NotBound
+    */
    public Long getId() {
       return id;
    }
@@ -206,16 +210,16 @@ public class InsertUpdateForm {
    /**
     * @DataProvider objectField=country
     */
-   public Collection provideCountries() throws Exception {
-      return Enum.getInstances(Country.class);
+   public List provideCountries() throws Exception {
+      return new ArrayList(Enum.getInstances(Country.class));
    }
 
    /**
     * @DataProvider objectField=state
     * @CallWhen g:hasChanged(country)
     */
-   public Collection provideState() throws Exception {
-      return State.getStates(getCountry());
+   public List provideState() throws Exception {
+      return new ArrayList(State.getStates(getCountry()));
    }
 
    /**
