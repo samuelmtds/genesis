@@ -24,6 +24,7 @@ import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 
 public class FormControllerFactoryAspect {
    /**
@@ -32,6 +33,15 @@ public class FormControllerFactoryAspect {
    public static class AspectFormControllerFactory implements FormControllerFactory {
       private FormController controller;
       private Object form;
+      private int maximumEvaluationTimes = 1;
+
+      public AspectFormControllerFactory(CrossCuttingInfo info) {
+         String timesAsString = info.getParameter("maximumEvaluationTimes");
+
+         if (timesAsString != null) {
+            maximumEvaluationTimes = Integer.parseInt(timesAsString);
+         }
+      }
 
       public FormController getFormController(Object form) {
          if (this.form != null && this.form != form) {
@@ -43,8 +53,10 @@ public class FormControllerFactoryAspect {
 
          if (controller == null) {
             controller = createFormController(form);
+
             controller.setForm(form);
             controller.setFormMetadata(getFormMetadata(form));
+            controller.setMaximumEvaluationTimes(maximumEvaluationTimes);
          }
 
          return controller;

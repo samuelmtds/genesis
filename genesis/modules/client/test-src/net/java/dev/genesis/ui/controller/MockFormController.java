@@ -118,4 +118,13 @@ public class MockFormController implements FormController {
       map.put("updateSelection(selected)", selected);
    }
 
+   public int getMaximumEvaluationTimes() {
+      return ((Integer)map.get("this.maximumEvaluationTimes")).intValue();
+   }
+   
+   public void setMaximumEvaluationTimes(int times) {
+      Integer i = new Integer(times);
+      map.put("setMaximumEvaluationTimes(times)", i);
+      map.put("this.maximumEvaluationTimes", i);
+  }
 }

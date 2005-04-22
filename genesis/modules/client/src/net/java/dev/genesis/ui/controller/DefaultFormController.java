@@ -56,6 +56,7 @@ public class DefaultFormController implements FormController {
 
    private Object form;
    private FormMetadata formMetadata;
+   private int maximumEvaluationTimes = 1;
    private JXPathContext ctx;
 
    private FormState currentState;
@@ -77,6 +78,14 @@ public class DefaultFormController implements FormController {
 
    public FormMetadata getFormMetadata() {
       return formMetadata;
+   }
+
+   public int getMaximumEvaluationTimes() {
+      return maximumEvaluationTimes;
+   }
+
+   public void setMaximumEvaluationTimes(int maximumEvaluationTimes) {
+      this.maximumEvaluationTimes = maximumEvaluationTimes;
    }
 
    /**
@@ -203,8 +212,10 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected void updateChangedMap(Map newData, boolean stringMap, 
+   protected boolean updateChangedMap(Map newData, boolean stringMap, 
             Map converters) {
+      boolean changed = false;
+
       Object value;
       FieldMetadata fieldMeta;
       Map.Entry entry;
@@ -254,7 +265,11 @@ public class DefaultFormController implements FormController {
 
          entry.setValue(value);
          currentState.getValuesMap().put(entry.getKey(), entry.getValue());
+         
+         changed = true;
       }
+
+      return changed;
    }
 
    private Converter getConverter(FieldMetadata fieldMetadata, Map converters) {
@@ -269,27 +284,37 @@ public class DefaultFormController implements FormController {
    }
 
    protected void evaluate(boolean firstCall) throws Exception {
-      evaluateNamedConditions();
+      boolean changed = true;
 
-      if (evaluateClearOnConditions()) {
+      for (int times = 0; changed && times < getMaximumEvaluationTimes(); 
+            times++) {
+         changed = false;
+
          evaluateNamedConditions();
-      }
 
-      if (evaluateCallWhenConditions(firstCall)) {
-         evaluateNamedConditions();
-      }
+         if (evaluateClearOnConditions()) {
+            changed = true;
+            evaluateNamedConditions();
+         }
 
-      if (evaluateDataProvidedIndexes(firstCall)) {
-         evaluateNamedConditions();
-      }
+         if (evaluateCallWhenConditions(firstCall)) {
+            changed = true;
+            evaluateNamedConditions();
+         }
 
-      final Map newData = PropertyUtils.describe(form);
-      updateChangedMap(newData, false, null);
+         if (evaluateDataProvidedIndexes(firstCall)) {
+            changed = true;
+            evaluateNamedConditions();
+         }
 
-      fireValuesChanged(currentState.getChangedMap());
+         final Map newData = PropertyUtils.describe(form);
+         changed |= updateChangedMap(newData, false, null);
 
-      evaluateEnabledWhenConditions();
-      evaluateVisibleWhenConditions();
+         fireValuesChanged(currentState.getChangedMap());
+
+         changed |= evaluateEnabledWhenConditions();
+         changed |= evaluateVisibleWhenConditions();
+      };
    }
 
    protected void fireValuesChanged(Map updatedValues) throws Exception {
@@ -396,15 +421,15 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected void evaluateEnabledWhenConditions() {
-      evaluateConditions(true);
+   protected boolean evaluateEnabledWhenConditions() {
+      return evaluateConditions(true);
    }
 
-   protected void evaluateVisibleWhenConditions() {
-      evaluateConditions(false);
+   protected boolean evaluateVisibleWhenConditions() {
+      return evaluateConditions(false);
    }
 
-   protected void evaluateConditions(boolean enabled) {
+   protected boolean evaluateConditions(boolean enabled) {
       Map.Entry entry;
       MemberMetadata memberMetadata;
       Boolean newValue;
@@ -448,6 +473,8 @@ public class DefaultFormController implements FormController {
       } else {
          fireVisibleConditionChanged(updatedConditions);
       }
+
+      return !updatedConditions.isEmpty();
    }
 
    protected void fireEnabledConditionChanged(Map updatedEnabledConditions) {

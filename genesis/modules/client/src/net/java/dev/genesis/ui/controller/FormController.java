@@ -33,6 +33,9 @@ public interface FormController {
    public Object getForm();
    public FormMetadata getFormMetadata();
 
+   public void setMaximumEvaluationTimes(int times);
+   public int getMaximumEvaluationTimes();
+
    public void addFormControllerListener(FormControllerListener listener);
    public boolean removeFormControllerListener(FormControllerListener listener);
    public Collection getFormControllerListeners();
