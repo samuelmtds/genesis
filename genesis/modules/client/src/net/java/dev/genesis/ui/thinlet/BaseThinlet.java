@@ -204,19 +204,37 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected List getAllOfClass(Object component, String[] classNames) {
-      List all = new ArrayList();
-      Object[] components = getItems(component);
+      return getAllOfClass(component, classNames, 0);
+   }
 
-      for (int i = 0; i < components.length; i++) {
-         for (int j = 0; j < classNames.length; j++) {
-            if (getClass(components[i]).equals(classNames[j])) {
-               all.add(components[i]);
-               break;
-            }
-         }
-      }
+   protected List getAllOfClass(Object component, String[] classNames, 
+         int maximumDepthLevel) {
+      final List all = new ArrayList();
+      getAllOfClass(all, component, classNames, 0, maximumDepthLevel);
 
       return all;
+   }
+
+   protected void getAllOfClass(List all, Object component, String[] classNames, 
+         int currentDepthLevel, int maximumDepthLevel) {
+      Object[] components = getItems(component);
+      boolean match;
+
+      for (int i = 0; i < components.length; i++) {
+         match = false;
+
+         for (int j = 0; !match && j < classNames.length; j++) {
+            if (getClass(components[i]).equals(classNames[j])) {
+               all.add(components[i]);
+               match = true;
+            }
+         }
+
+         if (!match && currentDepthLevel < maximumDepthLevel) {
+            getAllOfClass(all, components[i], classNames, currentDepthLevel + 1,
+                  maximumDepthLevel);
+         }
+      }
    }
 
    protected int getColumns(Object component) {

@@ -68,6 +68,7 @@ public class ThinletBinder implements FormControllerListener {
    private final Object handler;
    private final FormController controller;
 
+   private int componentSearchDepth = 0;
    private List groupComponents;
 
    private final Collection boundFieldNames = new HashSet();
@@ -205,7 +206,8 @@ public class ThinletBinder implements FormControllerListener {
 
       if (groupComponents == null) {
          groupComponents = thinlet.getAllOfClass(root, new String[] {
-               BaseThinlet.CHECKBOX, BaseThinlet.TOGGLE_BUTTON });
+               BaseThinlet.CHECKBOX, BaseThinlet.TOGGLE_BUTTON }, 
+               componentSearchDepth);
       }
 
       final List components = new ArrayList();
@@ -219,6 +221,14 @@ public class ThinletBinder implements FormControllerListener {
       }
 
       return components;
+   }
+
+   public int getComponentSearchDepth() {
+      return componentSearchDepth;
+   }
+
+   public void setComponentSearchDepth(int componentSearchDepth) {
+      this.componentSearchDepth = componentSearchDepth;
    }
 
    protected void createWidgetGroup(Object component, String name) {

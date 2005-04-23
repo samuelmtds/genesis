@@ -480,6 +480,31 @@ public class ThinletBinderTest extends GenesisTestCase {
       ThinletUtils.setGroup(togglebutton, "group_1");
       assertEquals(Collections.singletonList(togglebutton), binder.findComponents("group_1"));
    }
+
+   public void testFindComponentsInDepth() {
+      Object panel1 = ThinletUtils.newPanel();
+      thinlet.add(thinlet.getDesktop(), panel1);
+
+      Object checkboxLevel1 = ThinletUtils.newCheckbox();
+      ThinletUtils.setGroup(checkboxLevel1, "group_1");
+      thinlet.add(panel1, checkboxLevel1);
+
+      Object panel2 = ThinletUtils.newPanel();
+      thinlet.add(panel1, panel2);
+
+      Object checkboxLevel2 = ThinletUtils.newCheckbox();
+      ThinletUtils.setGroup(checkboxLevel2, "group_2");
+      thinlet.add(panel2, checkboxLevel2);
+
+      binder.setComponentSearchDepth(1);
+
+      // This should be found...
+      assertEquals(Collections.singletonList(checkboxLevel1), 
+            binder.findComponents("group_1"));
+      
+      // This shouldn't
+      assertTrue(binder.findComponents("group_2").isEmpty());
+   }
    
    public void testCreateWidgetGroup() {
       Object noGroup = ThinletUtils.newTextField();
