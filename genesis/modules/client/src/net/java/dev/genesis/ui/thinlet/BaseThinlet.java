@@ -87,6 +87,7 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String TOOLTIP = "tooltip";
    public static final String VALUE = "value";
    public static final String VISIBLE = "visible";
+   public static final String VIRTUAL = "virtual";
 
    private final Map formPerClassPerComponent = new IdentityHashMap();
    private final Map binderPerForm = new IdentityHashMap();
@@ -681,10 +682,29 @@ public abstract class BaseThinlet extends Thinlet {
                         String blankLabel, Map formatters) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
+      populateFromCollection(component, c, keyProperty, valueProperty, false,
+            blank, blankLabel, formatters);
+   }
+
+   protected void populateFromCollection(Object component, Collection c, 
+                        String keyProperty, String valueProperty, 
+                        boolean virtual, boolean blank, String blankLabel, 
+                        Map formatters) 
+         throws IllegalAccessException, InvocationTargetException, 
+                NoSuchMethodException {
       final boolean combobox = getClass(component).equals(COMBOBOX);
 
       if (!combobox && !getClass(component).equals(LIST)) {
          throw new UnsupportedOperationException();
+      }
+
+      final String componentName = getName(component);
+
+      Formatter virtualFormatter = null;
+
+      if (virtual) {
+         virtualFormatter = getVirtualFormatter(formatters, componentName, 
+               valueProperty);
       }
 
       final ItemType type = combobox ? ItemType.CHOICE : ItemType.ITEM;
@@ -700,17 +720,16 @@ public abstract class BaseThinlet extends Thinlet {
                "" : blankLabel, type));
       }
 
-      final String componentName = getName(component);
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
 
          key = format(formatters, componentName + '.' + keyProperty, PropertyUtils
                .getProperty(o, keyProperty));
-         description = valueProperty == null ? 
-               format(formatters, componentName + '.', o) : format(formatters, 
-               componentName + '.' + valueProperty, PropertyUtils.getProperty(o, 
-               valueProperty));
+         description = virtual ? virtualFormatter.format(o) : 
+               (valueProperty == null ? format(formatters, componentName + '.', 
+               o) : format(formatters, componentName + '.' + valueProperty, 
+               PropertyUtils.getProperty(o, valueProperty)));
 
          add(component, createItemOfType(key, description, type));
       }
@@ -727,7 +746,7 @@ public abstract class BaseThinlet extends Thinlet {
                 NoSuchMethodException {
       populateFromCollection(component, c, null);
    }
-   
+
    protected void populateFromCollection(Object component, Collection c, 
          Map formatters) throws IllegalAccessException, 
          InvocationTargetException, NoSuchMethodException {
@@ -737,25 +756,34 @@ public abstract class BaseThinlet extends Thinlet {
 
       removeAll(component);
 
+      final String virtualPrefix = VIRTUAL + ':';
       final Collection propertyNames = new ArrayList();
-      final Object[] columns = getTableColumns(component); 
+      final Collection virtualPropertyNames = new ArrayList();
+
+      final String componentName = getName(component);
+      final Object[] columns = getTableColumns(component);
       
       for (int i = 0; i < columns.length; i++) {
-         final String name = getName(columns[i]);
+         String name = getName(columns[i]);
 
          if (name == null) {
             throw new IllegalArgumentException("column (index " + i + ") in " + 
                   "table " + getName(component) + " does not have a name");
          }
 
+         if (name.startsWith(virtualPrefix)) {
+            name = name.substring(virtualPrefix.length());
+            virtualPropertyNames.add(name);
+         }
+
          propertyNames.add(name);
       }
 
-      final String componentName = getName(component);
 
       String propertyName;
       Object row;
       Object bean;
+      Formatter virtualFormatter;
       int indexOfDot;
       boolean skip;
 
@@ -765,6 +793,12 @@ public abstract class BaseThinlet extends Thinlet {
 
          for (final Iterator it = propertyNames.iterator(); it.hasNext(); ) {
             propertyName = it.next().toString();
+
+            if (virtualPropertyNames.contains(propertyName)) {
+               add(row, createCell(propertyName, getVirtualFormatter(formatters, 
+                     componentName, propertyName).format(bean)));
+               continue;
+            }
 
             indexOfDot = 0;
             skip = false;
@@ -793,6 +827,20 @@ public abstract class BaseThinlet extends Thinlet {
 
          add(component, row);
       }
+   }
+
+   private Formatter getVirtualFormatter(Map formatters, String componentName, 
+         String propertyName) {
+      Formatter virtualFormatter = (Formatter)formatters.get(componentName + 
+            '.' + propertyName);
+
+      if (virtualFormatter == null) {
+         throw new IllegalArgumentException("There is no formatter " +
+               "registered for virtual property " + componentName + '.' + 
+               propertyName);
+      }
+
+      return virtualFormatter;
    }
 
    protected void bind(Object form) throws Exception {

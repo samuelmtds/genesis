@@ -855,8 +855,8 @@ public class ThinletBinderTest extends GenesisTestCase {
          }
 
          protected void populateFromCollection(Object component, Collection c,
-               String keyProperty, String valueProperty, boolean blank,
-               String blankLabel, Map formatters)
+               String keyProperty, String valueProperty, boolean virtual, 
+               boolean blank, String blankLabel, Map formatters)
                throws IllegalAccessException, InvocationTargetException,
                NoSuchMethodException {
             populateMap.put(component, c);

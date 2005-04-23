@@ -484,12 +484,13 @@ public class ThinletBinder implements FormControllerListener {
          }
 
          final String value = (String)thinlet.getProperty(component, "value");
+         final boolean virtual = isVirtual(component, name);
          final boolean blank = isBlank(component, name);
          final String blankLabel = (String)thinlet.getProperty(component, 
                "blankLabel");
 
-         thinlet.populateFromCollection(component, items, key, value, blank, 
-               blankLabel, formatters);
+         thinlet.populateFromCollection(component, items, key, value, virtual, 
+               blank, blankLabel, formatters);
       } else {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
@@ -506,22 +507,31 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    private boolean isBlank(Object component, String name) {
-      final Object blankObject = thinlet.getProperty(component, "blank");
-      boolean blank;
+      return isBoolean(component, name, "blank");
+   }
 
-      if (blankObject == null) {
-         blank = false;
-      } else if (blankObject instanceof String) {
-         blank = Boolean.valueOf(blankObject.toString()).booleanValue();
-      } else if (blankObject instanceof Boolean) {
-         blank = ((Boolean) blankObject).booleanValue();
+   private boolean isVirtual(Object component, String name) {
+      return isBoolean(component, name, BaseThinlet.VIRTUAL);
+   }
+
+   private boolean isBoolean(Object component, String name, String propertyName) {
+      final Object booleanObject = thinlet.getProperty(component, propertyName);
+
+      boolean ret;
+
+      if (booleanObject == null) {
+         ret = false;
+      } else if (booleanObject instanceof String) {
+         ret = Boolean.valueOf(booleanObject.toString()).booleanValue();
+      } else if (booleanObject instanceof Boolean) {
+         ret = ((Boolean) booleanObject).booleanValue();
       } else {
-         throw new PropertyMisconfigurationException("Property 'blank' "
-               + "for the widget named " + name + " must either be left "
-               + "empty or contain a boolean value");
+         throw new PropertyMisconfigurationException("Property '" + 
+               propertyName + "' " + "for the widget named " + name + " must " +
+               "either be left empty or contain a boolean value");
       }
 
-      return blank;
+      return ret;
    }
 
    public void enabledConditionsChanged(Map updatedEnabledConditions) {
