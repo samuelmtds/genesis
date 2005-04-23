@@ -498,6 +498,8 @@ public class ThinletBinderTest extends GenesisTestCase {
 
       binder.setComponentSearchDepth(1);
 
+      assertEquals(1, binder.getComponentSearchDepth());
+
       // This should be found...
       assertEquals(Collections.singletonList(checkboxLevel1), 
             binder.findComponents("group_1"));
