@@ -801,7 +801,6 @@ public abstract class BaseThinlet extends Thinlet {
       String propertyName;
       Object row;
       Object bean;
-      Formatter virtualFormatter;
       int indexOfDot;
       boolean skip;
 

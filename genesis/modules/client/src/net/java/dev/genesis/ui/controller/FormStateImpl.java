@@ -27,6 +27,7 @@ public class FormStateImpl implements FormState {
    private final Map changedMap = new HashMap();
    private final Map valuesMap = new HashMap();
    private final Map dataProvidedMap = new HashMap();
+   private final Map dataProvidedIndexesMap = new HashMap();
 
    public FormStateImpl() {
    }
@@ -37,6 +38,7 @@ public class FormStateImpl implements FormState {
       changedMap.putAll(state.getChangedMap());
       valuesMap.putAll(state.getValuesMap());
       dataProvidedMap.putAll(state.getDataProvidedMap());
+      dataProvidedIndexesMap.putAll(state.getDataProvidedIndexesMap());
    }
 
    public Map getChangedMap() {
@@ -57,5 +59,9 @@ public class FormStateImpl implements FormState {
 
    public Map getDataProvidedMap() {
       return dataProvidedMap;
+   }
+
+   public Map getDataProvidedIndexesMap() {
+      return dataProvidedIndexesMap;
    }
 }

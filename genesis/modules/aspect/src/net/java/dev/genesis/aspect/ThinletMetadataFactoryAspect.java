@@ -18,16 +18,8 @@
  */
 package net.java.dev.genesis.aspect;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.thinlet.metadata.ThinletMetadata;
-
-import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 /**
  * @deprecated Use net.java.dev.genesis.aspect.ViewMetadataFactoryAspect instead. 

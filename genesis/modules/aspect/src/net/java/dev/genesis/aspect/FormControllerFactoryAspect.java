@@ -34,6 +34,7 @@ public class FormControllerFactoryAspect {
       private FormController controller;
       private Object form;
       private int maximumEvaluationTimes = 1;
+      private boolean resetOnDataProviderChange;
 
       public AspectFormControllerFactory(CrossCuttingInfo info) {
          String timesAsString = info.getParameter("maximumEvaluationTimes");
@@ -41,6 +42,9 @@ public class FormControllerFactoryAspect {
          if (timesAsString != null) {
             maximumEvaluationTimes = Integer.parseInt(timesAsString);
          }
+
+         resetOnDataProviderChange = !"false".equals(info
+               .getParameter("resetOnDataProviderChange"));
       }
 
       public FormController getFormController(Object form) {
@@ -57,6 +61,7 @@ public class FormControllerFactoryAspect {
             controller.setForm(form);
             controller.setFormMetadata(getFormMetadata(form));
             controller.setMaximumEvaluationTimes(maximumEvaluationTimes);
+            controller.setResetOnDataProviderChange(resetOnDataProviderChange);
          }
 
          return controller;

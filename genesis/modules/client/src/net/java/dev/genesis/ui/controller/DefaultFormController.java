@@ -21,6 +21,7 @@ package net.java.dev.genesis.ui.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,11 +53,15 @@ public class DefaultFormController implements FormController {
    private static final Log log = LogFactory
          .getLog(DefaultFormController.class);
 
+   private static final List EMPTY_LIST = Collections.EMPTY_LIST;
+   private static final int[] EMPTY_INT_ARRAY = new int[0];
+
    private boolean setup;
 
    private Object form;
    private FormMetadata formMetadata;
    private int maximumEvaluationTimes = 1;
+   private boolean resetOnDataProviderChange = true;
    private JXPathContext ctx;
 
    private FormState currentState;
@@ -86,6 +91,14 @@ public class DefaultFormController implements FormController {
 
    public void setMaximumEvaluationTimes(int maximumEvaluationTimes) {
       this.maximumEvaluationTimes = maximumEvaluationTimes;
+   }
+
+   public boolean isResetOnDataProviderChange() {
+      return resetOnDataProviderChange;
+   }
+
+   public void setResetOnDataProviderChange(boolean resetOnDataProviderChange) {
+      this.resetOnDataProviderChange = resetOnDataProviderChange;
    }
 
    /**
@@ -314,7 +327,7 @@ public class DefaultFormController implements FormController {
 
          changed |= evaluateEnabledWhenConditions();
          changed |= evaluateVisibleWhenConditions();
-      };
+      }
    }
 
    protected void fireValuesChanged(Map updatedValues) throws Exception {
@@ -381,9 +394,9 @@ public class DefaultFormController implements FormController {
                }
 
                changed = true;
-               currentState.getDataProvidedMap().put(dataProviderMeta, 
-                     items = new ArrayList());
-               fireDataProvidedListMetadataChanged(dataProviderMeta, items);
+               updateDataProviderCurrentSelection(dataProviderMeta,
+                     items = EMPTY_LIST, EMPTY_INT_ARRAY);
+               fireDataProvidedListMetadataChanged(dataProviderMeta, items, false);
                i.remove();
             }
          }
@@ -533,6 +546,8 @@ public class DefaultFormController implements FormController {
                selectedIndexes);
          fireDataProvidedIndexesChanged(dataMeta, selectedIndexes);
 
+         currentState.getDataProvidedIndexesMap().put(dataMeta, selectedIndexes);
+
          if (dataMeta.getObjectField() == null) {
             continue;
          }
@@ -557,9 +572,9 @@ public class DefaultFormController implements FormController {
          }
 
          if (!dataProviderMeta.isCallOnInit()) {
-            currentState.getDataProvidedMap().put(dataProviderMeta, 
-                  items = new ArrayList());
-            fireDataProvidedListMetadataChanged(dataProviderMeta, items);
+            updateDataProviderCurrentSelection(dataProviderMeta,
+                  items = EMPTY_LIST, EMPTY_INT_ARRAY);
+            fireDataProvidedListMetadataChanged(dataProviderMeta, items, false);
 
             return true;
          }
@@ -580,7 +595,7 @@ public class DefaultFormController implements FormController {
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
                  (List)ret;
             currentState.getDataProvidedMap().put(dataProviderMeta, items);
-            fireDataProvidedListMetadataChanged(dataProviderMeta, items);
+            fireDataProvidedListMetadataChanged(dataProviderMeta, items, firstCall);
          } 
 
          if (methodMetadata.getActionMetadata() != null) {
@@ -595,6 +610,28 @@ public class DefaultFormController implements FormController {
       }
 
       return satisfied;
+   }
+
+   public void resetSelection(DataProviderMetadata meta, List dataProvided)
+         throws Exception {
+      int[] selected;
+
+      if (meta.isResetSelection()) {
+         meta.resetSelectedFields(form);
+         selected = EMPTY_INT_ARRAY;
+      } else {
+         int[] currentSelection = (int[])currentState
+               .getDataProvidedIndexesMap().get(meta);
+         selected = meta.retainSelectedFields(form, dataProvided,
+               currentSelection == null ? EMPTY_INT_ARRAY : currentSelection);
+      }
+
+      currentState.getDataProvidedIndexesMap().put(meta, selected);
+   }
+
+   protected void updateDataProviderCurrentSelection(DataProviderMetadata meta, List objectList, int[] indexes) {
+      currentState.getDataProvidedMap().put(meta, objectList);
+      currentState.getDataProvidedIndexesMap().put(meta, indexes);
    }
 
    protected boolean beforeInvokingMethod(MethodMetadata metadata) 
@@ -616,9 +653,14 @@ public class DefaultFormController implements FormController {
    }
 
    protected void fireDataProvidedListMetadataChanged(
-         DataProviderMetadata metadata, List items) throws Exception {
+         DataProviderMetadata metadata, List items, boolean firstCall) throws Exception {
+
+      if (!firstCall && isResetOnDataProviderChange()) {
+         resetSelection(metadata, items);
+      }
+
       for (final Iterator i = listeners.iterator(); i.hasNext(); ) {
-         ((FormControllerListener)i.next()).dataProvidedListChanged(metadata, 
+         ((FormControllerListener)i.next()).dataProvidedListChanged(metadata,
                items);
       }
    }
@@ -660,7 +702,7 @@ public class DefaultFormController implements FormController {
             i.hasNext();) {
          final Map.Entry entry = (Map.Entry)i.next();
          fireDataProvidedListMetadataChanged((DataProviderMetadata)entry
-               .getKey(), (List)entry.getValue());
+               .getKey(), (List)entry.getValue(), false);
       }
 
       final Map currentValues = PropertyUtils.describe(form);
@@ -773,6 +815,8 @@ public class DefaultFormController implements FormController {
                dataProviderMetadata);
 
          dataProviderMetadata.populateSelectedFields(form, list, selected);
+         currentState.getDataProvidedIndexesMap().put(dataProviderMetadata,
+               selected);
 
          update();
       } catch (Exception e) {

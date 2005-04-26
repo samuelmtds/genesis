@@ -21,8 +21,8 @@ package net.java.dev.genesis.ui.metadata;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,7 +33,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.CompiledExpression;
 
 public class DataProviderMetadata {
-   private static final List EMPTY_LIST = new ArrayList(0);
+   private static final List EMPTY_LIST = Collections.EMPTY_LIST;
    private static final int[] EMPTY_INT_ARRAY = new int[0];
 
    private final String name;
@@ -41,6 +41,7 @@ public class DataProviderMetadata {
    private FieldEntry objectField;
    private FieldEntry indexField;
    private boolean callOnInit;
+   private boolean resetSelection;
    private CompiledExpression clearOnCondition;
 
    protected DataProviderMetadata(Method method) {
@@ -91,6 +92,14 @@ public class DataProviderMetadata {
       this.callOnInit = callOnInit;
    }
 
+   public boolean isResetSelection() {
+      return resetSelection;
+   }
+
+   public void setResetSelection(boolean resetSelection) {
+      this.resetSelection = resetSelection;
+   }
+
    /**
     * @deprecated JXPath will be replaced with generic scripting support in the next major release
     */
@@ -107,12 +116,12 @@ public class DataProviderMetadata {
 
    public int[] getSelectedIndexes(final Object indexes) {
       if (indexes == null) {
-         return new int[0];
+         return EMPTY_INT_ARRAY;
       }
 
       if (!indexField.isMultiple()) {
          final int index = ((Integer)indexes).intValue();
-         return index < 0 ? new int[0] : new int[] {index};
+         return index < 0 ? EMPTY_INT_ARRAY : new int[] {index};
       }
 
       if (indexField.isPrimitiveArray()) {
@@ -150,6 +159,34 @@ public class DataProviderMetadata {
 
    public void resetSelectedFields(final Object target) throws Exception {
       populateSelectedFields(target, EMPTY_LIST, EMPTY_INT_ARRAY);
+   }
+
+   public int[] retainSelectedFields(final Object target,
+         final List newObjectList, final int[] lastSelectedIndexes)
+         throws Exception {
+
+      if (newObjectList.isEmpty()) {
+         resetSelectedFields(target);
+         return EMPTY_INT_ARRAY;
+      }
+
+      Arrays.sort(lastSelectedIndexes);
+
+      int i = 0;
+      for (; i < lastSelectedIndexes.length; i++) {
+         if (lastSelectedIndexes[i] >= newObjectList.size()) {
+            break;
+         }
+      }
+
+      final int[] selectedIndexes = new int[i];
+      if (i > 0) {
+         System.arraycopy(lastSelectedIndexes, 0, selectedIndexes, 0, i);
+      }
+
+      populateSelectedFields(target, newObjectList, selectedIndexes);
+
+      return selectedIndexes;
    }
 
    public Object populateSelectedFields(final Object target, 

@@ -19,6 +19,7 @@
 package net.java.dev.genesis.ui.controller;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -36,6 +37,9 @@ public interface FormController {
    public void setMaximumEvaluationTimes(int times);
    public int getMaximumEvaluationTimes();
 
+   public void setResetOnDataProviderChange(boolean resetOnDataProviderChange);
+   public boolean isResetOnDataProviderChange();
+
    public void addFormControllerListener(FormControllerListener listener);
    public boolean removeFormControllerListener(FormControllerListener listener);
    public Collection getFormControllerListeners();
@@ -49,6 +53,8 @@ public interface FormController {
          throws Exception;
    public void updateSelection(DataProviderMetadata dataProviderMetadata, 
          int[] selected) throws Exception;
+   public void resetSelection(DataProviderMetadata dataProviderMetadata,
+         List dataProvided) throws Exception;
    public void update() throws Exception;
    public FormState getFormState() throws Exception;
    public void reset(FormState state) throws Exception;

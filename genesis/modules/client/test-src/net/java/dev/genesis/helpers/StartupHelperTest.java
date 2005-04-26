@@ -20,7 +20,6 @@ package net.java.dev.genesis.helpers;
 
 import java.util.Locale;
 import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.commons.beanutils.ConverterRegistry;
 import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
 import net.java.dev.genesis.commons.beanutils.converters.BooleanConverter;
 import net.java.dev.genesis.text.BooleanFormatter;
@@ -129,7 +128,7 @@ public class StartupHelperTest extends GenesisTestCase {
       //verifying the values
       assertNotNull(startupHelper.getBeanUtilsBean());
       //validating if the BeanUtilsBean is the same instance as the changed
-      assertSame(bean, startupHelper.getBeanUtilsBean().getInstance());
+      assertSame(bean, BeanUtilsBean.getInstance());
 
       //verifying the property value of FACTORY_NAME_PROPERTY
       assertNotNull(System.getProperties().getProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY));

@@ -54,9 +54,8 @@ public class DefaultConverter implements Converter {
 
       if (returnDefaultValue) {
          return defaultValue;
-      } else {
-         throw new ConversionException(obj + " cannot be converted to " +
-               clazz.getName() + "; its type is " + obj.getClass().getName());
       }
+      throw new ConversionException(obj + " cannot be converted to "
+            + clazz.getName() + "; its type is " + obj.getClass().getName());
    }
 }

@@ -481,7 +481,10 @@ public class ThinletBinder implements FormControllerListener {
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
-         resetSelectedFields(metadata);
+         if (!controller.isResetOnDataProviderChange()) {
+            resetSelectedFields(metadata);
+         }
+
          thinlet.populateFromCollection(component, items, formatters);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
