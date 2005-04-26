@@ -484,6 +484,8 @@ public class ThinletBinderTest extends GenesisTestCase {
    public void testFindComponentsInDepth() {
       Object panel1 = ThinletUtils.newPanel();
       thinlet.add(thinlet.getDesktop(), panel1);
+      thinlet.add(thinlet.getDesktop(), ThinletUtils.newButton());
+      thinlet.add(thinlet.getDesktop(), ThinletUtils.newCheckbox());
 
       Object checkboxLevel1 = ThinletUtils.newCheckbox();
       ThinletUtils.setGroup(checkboxLevel1, "group_1");
