@@ -138,62 +138,67 @@ public class ThinletBinder implements FormControllerListener {
       for (final Iterator i = formMetadata.getFieldMetadatas().entrySet()
             .iterator(); i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
-         final String name = entry.getKey().toString();
-         final List components = findComponents(name);
+         
+         bindFieldMetadata(entry.getKey().toString(), (FieldMetadata)entry.getValue());
+      }
+   }
+   
+   protected void bindFieldMetadata(String name, FieldMetadata fieldMetadata) {
+      final List components = findComponents(name);
 
-         if (components.isEmpty()) {
-            log.warn(name + " could not be found while binding " + form.getClass());
-            continue;
+      if (components.isEmpty()) {
+         log.warn(name + " could not be found while binding " + form.getClass());
+         return;
+      }
+
+      final Object mainComponent = components.get(0);
+      final String className = Thinlet.getClass(mainComponent);
+
+      if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
+         if (fieldMetadata.isWriteable()) {
+            log.warn(name + " is not represented by an editable widget (" + 
+                  className + ")");
          }
 
-         final Object mainComponent = components.get(0);
-         final String className = Thinlet.getClass(mainComponent);
-         final FieldMetadata fieldMetadata = (FieldMetadata)entry.getValue();
+         return;
+      }
 
-         if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
-            if (fieldMetadata.isWriteable()) {
-               log.warn(name + " is not represented by an editable widget (" + 
-                     className + ")");
-            }
+      createWidgetGroup(mainComponent, name);
 
-            continue;
+      if (!fieldMetadata.isWriteable()) {
+         if (log.isDebugEnabled()) {
+            log.debug(name + " is a display only field, skipping...");
          }
+         
+         return;
+      }
 
-         createWidgetGroup(mainComponent, name);
+      if (log.isTraceEnabled()) {
+         log.trace("Binding field " + name + " in " + 
+               form.getClass().getName() + " to " + className);
+      }
 
-         if (!fieldMetadata.isWriteable()) {
-            if (log.isDebugEnabled()) {
-               log.debug(name + " is a display only field, skipping...");
-            }
-            
-            continue;
-         }
+      boundFieldNames.add(name);
 
-         if (log.isTraceEnabled()) {
-            log.trace("Binding field " + name + " in " + 
-                  form.getClass().getName() + " to " + className);
-         }
+      for (final Iterator it = components.iterator(); it.hasNext(); ) {
+         bindComponent(name, className, it.next());
+      }
+   }
 
-         boundFieldNames.add(name);
-
-         for (final Iterator it = components.iterator(); it.hasNext(); ) {
-            final Object component = it.next();
-
-            if (className.equals(BaseThinlet.CHECKBOX) ||
-                  className.equals(BaseThinlet.TOGGLE_BUTTON)) {
-               thinlet.setMethod(component, "action", "setValue(" + 
-                     thinlet.getName(component) + "," + 
-                     thinlet.getName(component) + 
-                     (thinlet.getGroup(component) == null ? ".name)" : ".group)"),
-                     root, this);
-            } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1) {
-               thinlet.setMethod(component, "action", "setValue(" + name + "," +
-                     name + ".name)", root, this);
-            } else {
-               thinlet.setMethod(component, "focuslost", "setValue(" + name + 
-                     "," + name + ".name)", root, this);
-            }
-         }
+   protected void bindComponent(String name, String className, Object component) {
+      if (className.equals(BaseThinlet.CHECKBOX) ||
+            className.equals(BaseThinlet.TOGGLE_BUTTON)) {
+         thinlet.setMethod(component, "action", "setValue(" + 
+               thinlet.getName(component) + "," + 
+               thinlet.getName(component) + 
+               (thinlet.getGroup(component) == null ? ".name)" : ".group)"),
+               root, this);
+      } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1) {
+         thinlet.setMethod(component, "action", "setValue(" + name + "," +
+               name + ".name)", root, this);
+      } else {
+         thinlet.setMethod(component, "focuslost", "setValue(" + name + 
+               "," + name + ".name)", root, this);
       }
    }
 
@@ -311,68 +316,72 @@ public class ThinletBinder implements FormControllerListener {
       for (final Iterator i = formMetadata.getActionMetadatas().entrySet()
             .iterator(); i.hasNext(); ) {
          final Map.Entry entry = (Map.Entry)i.next();
-         final String name = ((MethodEntry)entry.getKey()).getMethodName();
-         final Object component = thinlet.find(root, name);
-
-         if (component == null) {
-            log.warn(name + " could not be found while binding " + form.getClass());
-            continue;
-         }
-
-         final String className = Thinlet.getClass(component);
-
-         if (!BaseThinlet.BUTTON.equals(className)) {
-            log.warn(name + " is not represented by a button; it is a " + 
-                  className);
-
-            continue;
-         }
-
-         createWidgetGroup(component, name);
-         
-         if (log.isTraceEnabled()) {
-            log.trace("Binding action " + name + " in " + form.getClass().getName());
-         }
-
-         thinlet.setMethod(component, "action", "invokeAction(" + 
-               name + ".name)", root, this);
+         bindActionMetadata(((MethodEntry)entry.getKey()).getMethodName());
       }
+   }
+   
+   protected void bindActionMetadata(String name) {
+      final Object component = thinlet.find(root, name);
+
+      if (component == null) {
+         log.warn(name + " could not be found while binding " + form.getClass());
+         return;
+      }
+
+      final String className = Thinlet.getClass(component);
+
+      if (!BaseThinlet.BUTTON.equals(className)) {
+         log.warn(name + " is not represented by a button; it is a " + 
+               className);
+
+         return;
+      }
+
+      createWidgetGroup(component, name);
+      
+      if (log.isTraceEnabled()) {
+         log.trace("Binding action " + name + " in " + form.getClass().getName());
+      }
+
+      thinlet.setMethod(component, "action", "invokeAction(" + 
+            name + ".name)", root, this);
    }
 
    protected void bindDataProviders(final Collection dataProviders) {
       for (final Iterator i = dataProviders.iterator(); i.hasNext();) {
-         final DataProviderMetadata dataProviderMetadata = 
-               (DataProviderMetadata)i.next();
-
-         final String name = dataProviderMetadata.getWidgetName();
-         final Object component = thinlet.find(root, name);
-
-         if (component == null) {
-            log.warn(name + " could not be found while binding data provider in " + 
-                  form.getClass());
-            continue;
-         }
-
-         final String className = Thinlet.getClass(component);
-
-         if (!(className.equals(BaseThinlet.TABLE) || 
-               className.equals(BaseThinlet.COMBOBOX) ||
-               className.equals(BaseThinlet.LIST))) {
-            log.warn(className + " is not a supported widget for binding a " +
-                  "data provider");
-            continue;
-         }
-
-         createWidgetGroup(component, name);
-
-         if (log.isDebugEnabled()) {
-            log.debug("Binding an action method for " + name);
-         }
-
-         thinlet.setMethod(component, "action", "updateSelection(" + name
-               + ".name," + name + ")", root, this);
-         dataProvided.put(name, dataProviderMetadata);
+         bindDataProvider((DataProviderMetadata)i.next());
       }
+   }
+   
+   protected void bindDataProvider(DataProviderMetadata dataProviderMetadata) {
+      final String name = dataProviderMetadata.getWidgetName();
+      final Object component = thinlet.find(root, name);
+
+      if (component == null) {
+         log.warn(name + " could not be found while binding data provider in " + 
+               form.getClass());
+         return;
+      }
+
+      final String className = Thinlet.getClass(component);
+
+      if (!(className.equals(BaseThinlet.TABLE) || 
+            className.equals(BaseThinlet.COMBOBOX) ||
+            className.equals(BaseThinlet.LIST))) {
+         log.warn(className + " is not a supported widget for binding a " +
+               "data provider");
+         return;
+      }
+
+      createWidgetGroup(component, name);
+
+      if (log.isDebugEnabled()) {
+         log.debug("Binding an action method for " + name);
+      }
+
+      thinlet.setMethod(component, "action", "updateSelection(" + name
+            + ".name," + name + ")", root, this);
+      dataProvided.put(name, dataProviderMetadata);
    }
 
    public void updateSelection(String name, Object widget) throws Exception {
