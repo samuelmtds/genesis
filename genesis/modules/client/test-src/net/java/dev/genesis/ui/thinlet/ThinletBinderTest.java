@@ -930,7 +930,14 @@ public class ThinletBinderTest extends GenesisTestCase {
       assertNull(resetMap.get(meta.getWidgetName()));
       // Assert thinlet.populated was called with correct values
       assertSame(someItems, populateMap.get(table));
-      
+
+      form.getController().setResetOnDataProviderChange(false);
+      binder.dataProvidedListChanged(meta, someItems);
+      // Assert resetSelectedFields(..) was called
+      assertEquals(Boolean.TRUE, resetMap.get(meta.getWidgetName()));
+      // Assert thinlet.populated was called with correct values
+      assertSame(someItems, populateMap.get(table));
+
       // Combo without key property
       ex = null;
       meta.setWidgetName("combobox");
