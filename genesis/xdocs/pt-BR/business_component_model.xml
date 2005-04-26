@@ -311,6 +311,29 @@ public class ExemploIntegracaoHibernate extends AbstractHibernateCommand {
       PageImpl</code> nem tampouco terão sua própria implementação de <code>Page
       </code>, mas a implementação provida pelo framework pode ser bastante útil
       para implementações específicas de <code>Pager</code>.</p>
+      <subsection name="Paginação de listas">
+        <p><code>net.java.dev.genesis.paging.ListPager</code> é uma
+        implementação de <code>Pager</code> que pode ser usada para gerar
+        páginas a partir de instâncias de <code>java.util.List</code>.</p>
+        <p>Existem dois construtores para esta classe: um que aceita somente a
+        instância de <code>List</code> e outro que aceita também um parâmetro
+        booleano indicando se a propriedade <code>results</code> da instância
+        de <code>Page</code> retornada deve ser uma referência direta a uma
+        subseção da lista - permitindo assim a modificação da lista original
+        pelo código cliente - ou uma nova lista. Caso o primeiro construtor
+        seja chamado, o valor dessa propriedade será <code>true</code>, o que
+        significa que não será possível alterar o objeto original passado no
+        construtor utilizando-se o retorno do método.</p>
+        <p>Pode-se utilizar esta classe da seguinte maneira:</p>
+        <source>
+public class ExemploPaginacaoList {
+   public Page getSecao(List lista, int numeroPagina, int resultadosPorPagina)
+         throws PagingException {
+      return new ListPager(lista).getPage(numeroPagina, resultadosPorPagina);
+   }
+}
+</source>
+      </subsection>
       <subsection name="Paginação com Hibernate">
         <p>Duas implementação de <code>Pager</code> são providas junto com o
         genesis para integração com Hibernate: <code>CriteriaPager</code> e
