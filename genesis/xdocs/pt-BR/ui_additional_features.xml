@@ -1019,6 +1019,64 @@ binder.bind();
       <p>O valor de <code>propriedade</code> exibido na tela será sempre a
       constante <code>Formato alterado</code>, independentemente do seu
       valor no form.</p>
+      <subsection name="Propriedades virtuais">
+        <p>Desde a versão 2.2, é possível se trabalhar com propriedades
+        virtuais, ou seja, que não existem no objeto sendo exibido. Essas
+        propriedades tem seu valor de exibição determinado através em um
+        formatador específico, que tem de estar obrigatoriamente registrado na
+        instância de <code>ThinletBinder</code>.
+        </p>
+        <p>O processo de definição e exibição de uma propriedade virtual é
+        basicamente o mesmo de uma propriedade normal, exceto pelos pontos
+        abaixos:</p>
+        <ul>
+           <li>Apenas células de tabelas e valores exibidos em comboboxes e
+           listas podem ser propriedades virtuais.</li>
+           <li>Propriedades virtuais podem ser definidas em comboboxes e listas
+           definindo-se no elemento <code>property</code> do xml
+           <code>virtual=true</code>. Visto que colunas de tabelas não possuem
+           o atributo <code>property</code>, o valor de seu atributo
+           <code>name</code> deve ser precedido do prefixo <code>virtual:</code>
+           .</li>
+           <li>A instância de <code>Formatter</code> receberá como parâmetro do
+           método <code>format(Object)</code> todo o bean sendo exibido, já que
+           a propriedade a ser exibida não existe fisicamente no objeto.</li>
+        </ul>
+        <p>Um exemplo de definição e uso de uma propriedade virtual é mostrado
+        abaixo, tanto para comboboxes como para tabelas:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <combobox name="widget"
+             property="key=propriedadeUnica;value=valorVirtual;virtual=true" />
+</panel>
+]]>
+</source>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="propriedadeUnica" text="#" />
+         <column name="virtual:valorVirtual" text="Virtual" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.valorVirtual", new Formatter() {
+   public String format(Object o) {
+      return o == null ? "0" : String.valueOf(o.hashCode());
+   }
+});
+binder.bind();
+</source>
+        <p>É importante notar que, embora o nome da coluna seja precedido de
+        <code>virtual:</code>, isso não afeta a formação do nome da propriedade
+        na hora de registrar o formatador.</p>
+      </subsection>
     </section>
     <section name="Validando os dados">
       <p>A validação de dados é crítica para a integridade de um sistema,
