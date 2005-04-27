@@ -161,7 +161,7 @@
  * @Condition findRoleCondition=g:isNotEmpty(roleCode) and
  g:hasChanged(roleCode)
  *
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
 <b>...</b>
@@ -197,7 +197,7 @@ public class InsertUpdateForm {
  * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and
  g:hasChanged(roleCode)</b>
  *
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
 <b>...</b>
