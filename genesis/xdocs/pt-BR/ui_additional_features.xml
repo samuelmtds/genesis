@@ -679,6 +679,7 @@ public void calculaMontanteCorrigido() {
               &lt;indexField=nomeCampoIndice&gt;
               &lt;widgetName=nomeCampo&gt;
               &lt;callOnInit=valorBooleano&gt;
+              &lt;resetSelection=valorBooleano&gt;
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
       <code>java.util.List</code> ou uma array de Objetos.
@@ -849,6 +850,14 @@ public class ExemploDataProviderForm {
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
       <code>@VisibleWhen</code> também será possível.</p>
+      <p>O atributo <code>resetSelection</code> determina se os elementos serão
+      desselecionados quando o método for invocado. Este é o comportamento
+      padrão, ou seja, se omitido, o valor desse atributo é considerado
+      <code>false</code>. Quando o valor informado é <code>true</code>, a
+      seleção é mantida com respeito a <b>posição</b> dos ítens, o que torna
+      essa funcionalidade mais útil quando algo está sendo adicionado ao final
+      da <code>java.util.List</code> ou array cada vez que o método é
+      executado.</p>
       <subsection name="Invocando ações de dentro de um form">
         <p>Para que os dados retornados de um <code>@DataProvider</code> possam
         ser populados no form, o genesis precisa invocar o método que possui a
@@ -1488,7 +1497,7 @@ public class InsertUpdateForm {
               <field property="address"
                      depends="required">
                   <arg position="0"
-                       key="User.address"
+                       key="User.address"
                   />
               </field>
               <field property="state"
