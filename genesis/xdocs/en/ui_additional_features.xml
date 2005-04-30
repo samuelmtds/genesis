@@ -665,6 +665,7 @@ public void calculateRemainingAmount() {
               &lt;indexField=nameIndexField&gt;
               &lt;widgetName=nameObjectField&gt;
               &lt;callOnInit=booleanValue&gt;
+              &lt;resetSelection=booleanValue&gt;
 </source>
       <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array of <code>Object</code>s. Values
@@ -832,6 +833,14 @@ public class DataProviderFormExample {
       these methods if they need to be triggered by a button (such as Search,
       for example) and, when that is true, using <code>@EnabledWhen</code> and
       <code>@VisibleWhen</code> is also allowed.</p>
+      <p><code>resetSelection</code> determines whether selected elements will
+      be unselected when the method is invoked. This is the default behaviour,
+      i.e., if this property has no value, it is considered <code>false</code>.
+      When the value informed is <code>true</code>, the selection is kept
+      relative to the <b>position</b> of the itens, what makes this feature
+      more useful when something is being added to the end of the
+      <code>java.util.List</code> instance or array each time the method gets
+      executed.</p>
       <subsection name="Invoking actions within a form">
         <p>In order to have a form re-populated with the data returned by
         a <code>@DataProvider</code> annotated method, genesis must be aware of

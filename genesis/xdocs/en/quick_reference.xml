@@ -307,6 +307,13 @@ public class FormExample {
             binding</td>
             <td>No, default: <code>true</code></td>
           </tr>
+          <tr>
+            <td>resetSelection</td>
+            <td>boolean</td>
+            <td>Defines whether the selection will be cleared each time the
+            method gets invoked</td>
+            <td>No, default: <code>true</code></td>
+          </tr>
         </table>
   <p>Example (InsertUpdateForm.java):</p>
   <source>
