@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<project name="hibernate" default="all">
+    <property name="xdoclet.root.dir" value="${basedir}/../.."/>
+    <property file="${xdoclet.root.dir}/build.properties"/>
+    <property file="${xdoclet.root.dir}/project.properties"/>
+
+    <!-- Module specific properties that can't be put in build.properties -->
+    <property name="module.dir"               value="${modules.dir}/${ant.project.name}"/>
+    <property name="module.src.dir"           value="${module.dir}/src"/>
+    <property name="module.jar.file"          value="${dist.lib.dir}/xdoclet-${ant.project.name}-ext-module.jar"/>
+
+    <!-- =================================================================== -->
+    <!-- Executes all targets                                                -->
+    <!-- =================================================================== -->
+    <target name="all" depends="init,jar" unless="module.jar.uptodate"/>
+
+    <!-- =================================================================== -->
+    <!-- Initialises the build.                                              -->
+    <!-- =================================================================== -->
+    <target name="init">
+<echo>
++----------------------------------------------------------------------
+|
+| B U I L D I N G  X D O C L E T  M O D U L E  '${ant.project.name}'
+|
++----------------------------------------------------------------------
+</echo>
+        
+        <mkdir dir="${dist.lib.dir}" />
+
+        <!-- Checks if the module jar is uptodate -->
+        <uptodate property="module.jar.uptodate" targetfile="${module.jar.file}">
+            <srcfiles dir="${module.dir}"/>
+        </uptodate>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Creates the module jar                                              -->
+    <!-- =================================================================== -->
+    <target name="jar" depends="init" unless="module.jar.uptodate">
+        <jar jarfile="${module.jar.file}">
+            <fileset dir="${module.src.dir}">
+                <!-- just exclude java. modules like to store all the funny things inside... -->
+                <exclude name="**/*.java"/>
+            </fileset>
+        </jar>
+    </target>
+
+</project>

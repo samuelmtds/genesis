@@ -1,12 +1,23 @@
-To build genesis xdoclet module, you need:
+To build xdoclet modules, you need:
 
 - Ant (http://ant.apache.org/)
-- XDoclet 1.2.2 source distribution (http://xdoclet.sourceforge.net/)
+- XDoclet (1.2.2 or newer version) binary distribution (http://xdoclet.sourceforge.net/)
+- To create a file named build.properties
 
-Copy genesis module to xdoclet modules dir (<XDOCLET_HOME>/modules/genesis)
+In build.properties you must define a XDoclet Home pointing to
+XDoclet installation:
 
-Go to <XDOCLET_HOME> and type:
+   xdoclet.home=<XDOCLET_HOME>
 
-   ant modules
-   
-xdoclet-genesis-module-1.2.2.jar will be created (<XDOCLET_HOME>/target/lib)
+e.g.
+   xdoclet.home=/usr/xdoclet
+
+Run ant to build the xdoclet modules distribution.
+
+e.g.:
+   ant
+
+xdoclet-genesis-module.jar will be created (<CURRENT_DIR>/dist)
+xdoclet-hibernate-ext-module.jar will be created (<CURRENT_DIR>/dist)
+
+You can put those jars in your xdoclet lib directory
