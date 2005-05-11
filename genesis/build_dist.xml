@@ -22,6 +22,10 @@
 
       <!-- Problems with <ant ...>, <antcall ...> or <subant...>. TODO: See what's happening -->
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
+         <arg line="-f ${basedir}/../xdoclet/build.xml" />
+      </exec>
+      
+      <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
          <arg line="-f ${basedir}/build.xml genesis:jar" />
       </exec>
 
@@ -89,7 +93,7 @@
 
       <patternset id="genesis-xdoclet-extensions.pattern">
          <patternset refid="genesis-license.pattern" />
-         <include name="${xdoclet.dist}/xdoclet-genesis-module-*.jar" />
+         <include name="${xdoclet.dist}/xdoclet-*.jar" />
       </patternset>
 
       <patternset id="genesis-all.pattern">
