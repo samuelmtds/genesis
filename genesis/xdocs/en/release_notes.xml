@@ -7,10 +7,71 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#2.2-RC1">2.2-RC1</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="2.2-RC1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="#TODO:link">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>The <a href="xdoclet_extensions.html">XDoclet extensions</a> had
+          their structure reworked and are now properly documented</li>
+          <li>Support for <a
+          href="ui_additional_features.html#Virtual_properties">virtual
+          properties</a> has been added</li>
+          <li>An <a
+          href="business_component_model.html#Paging_lists">implementation
+          of paging for lists</a> is now part of the framework</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li><code>SessionContext.setRollbackOnly()</code> should only be
+          called inside a transaction (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=213">Issue
+          # 213</a>)</li>
+          <li>The <code>DefaultConverter(boolean)</code> constructor is broken
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=218">Issue
+          # 218</a>)</li>
+          <li><code>@VisibleWhen</code><code>/@EnabledWhen</code> do not work
+          for read-only properties (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=202">Issue
+          # 225</a>)</li>
+        </ul>
+        <p>The full change log between 2.1 and 2.2-RC1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/2.2-RC1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
     </section>
     <section name="2.1">
       <subsection name="Downloads">
@@ -73,7 +134,6 @@
             <li>Eduardo Ito</li>
             <li>Einar Saukas</li>
             <li>Gustavo Nalle</li>
-            <li>Liaw Mike</li>
             <li>Jonas Boner</li>
             <li>José Geraldo</li>
             <li>Paulo Pacheco</li>
