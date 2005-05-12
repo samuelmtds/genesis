@@ -42,19 +42,19 @@
         <dependency>
         	<groupId>xdoclet</groupId>
 	        <artifactId>xdoclet</artifactId>
-	        <jar>xdoclet-1.2.jar</jar>
-           <url>http://xdoclet.sourceforge.net/</url>
+	        <jar>xdoclet-1.2.2.jar</jar>
+          <url>http://xdoclet.sourceforge.net/</url>
 	    </dependency>
         <dependency>
         	<groupId>xdoclet</groupId>
 	        <artifactId>xdoclet-ejb-module</artifactId>
-	        <jar>xdoclet-ejb-module-1.2.jar</jar>
+	        <jar>xdoclet-ejb-module-1.2.2.jar</jar>
            <url>http://xdoclet.sourceforge.net/</url>
 	    </dependency>
 	    <dependency>
         	<groupId>xjavadoc</groupId>
 	        <artifactId>xjavadoc</artifactId>
-	        <jar>xjavadoc-1.0.2.jar</jar>
+	        <jar>xjavadoc-1.1.jar</jar>
            <url>http://xdoclet.sourceforge.net/</url>
 	    </dependency>
     </dependencies>
