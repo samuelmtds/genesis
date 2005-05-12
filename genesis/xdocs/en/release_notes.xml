@@ -15,8 +15,8 @@
     </section>
     <section name="2.2-RC1">
       <subsection name="Downloads">
-        <p>All distribution files for this release can be found
-        <a href="#TODO:link">here</a>.</p>
+        <p>All distribution files for this release can be found <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3345&amp;expandFolder=3345&amp;folderID=1756">here</a>.</p>
       </subsection>
       <subsection name="Features and changes">
         <p>Some of the most noteworthy new features and changes are:</p>
