@@ -390,7 +390,24 @@ public interface FormControllerFactory {
             <td><code>true</code></td>
           </tr>
           <tr>
-            <td rowspan="2">FormMetadataFactoryAspect$AspectFormMetadataFactory</td>
+            <td rowspan="4">FormControllerFactoryAspect$AspectFormControllerFactory</td>
+            <td>maximumEvaluationTimes</td>
+            <td>int</td>
+            <td>Maximum number of times form conditions will be evaluated as
+            long as they change</td>
+            <td>No</td>
+            <td><code>1</code></td>
+          </tr>
+          <tr>
+            <td>resetOnDataProviderChange</td>
+            <td>boolean</td>
+            <td>Indicates whether the <code>FormController</code> instance
+            should perform a conditional reset of indexes in
+            <code>@DataProvider</code> every time the method gets called</td>
+            <td>No</td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
             <td>scriptFactory</td>
             <td>Fully qualified class name / class nickname</td>
             <td>Name of a

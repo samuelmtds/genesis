@@ -237,7 +237,7 @@
  * <b>@Form</b>
  * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
  *
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
 <b>...</b>
@@ -273,7 +273,7 @@ public class InsertUpdateForm {
  * @Form
  * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)</b>
  *
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
 <b>...</b>
@@ -378,6 +378,13 @@ public class FormExample {
             <td>boolean</td>
             <td>Defines whether the annotated method will be invoked on
             binding</td>
+            <td>No, default: <code>true</code></td>
+          </tr>
+          <tr>
+            <td>resetSelection</td>
+            <td>boolean</td>
+            <td>Defines whether the selection will be cleared each time the
+            method gets invoked</td>
             <td>No, default: <code>true</code></td>
           </tr>
         </table>

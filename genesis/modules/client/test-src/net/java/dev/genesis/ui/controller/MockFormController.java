@@ -21,6 +21,7 @@ package net.java.dev.genesis.ui.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -118,4 +119,35 @@ public class MockFormController implements FormController {
       map.put("updateSelection(selected)", selected);
    }
 
+   public void resetSelection(DataProviderMetadata dataProviderMetadata, List dataProvided) throws Exception {
+      map.put("resetSelection(dataProviderMetadata)", dataProviderMetadata);
+      map.put("resetSelection(dataProvided)", dataProvided);
+   }
+
+   public int getMaximumEvaluationTimes() {
+      return ((Integer)map.get("this.maximumEvaluationTimes")).intValue();
+   }
+   
+   public void setMaximumEvaluationTimes(int times) {
+      Integer i = new Integer(times);
+      map.put("setMaximumEvaluationTimes(times)", i);
+      map.put("this.maximumEvaluationTimes", i);
+  }
+
+   public boolean isResetOnDataProviderChange() {
+      Boolean b = (Boolean)map.get("this.resetOnDataProviderChange");
+
+      if (b == null) {
+         setResetOnDataProviderChange(true);
+         return true;
+      }
+
+      return b.booleanValue();
+   }
+
+   public void setResetOnDataProviderChange(boolean resetOnDataProviderChange) {
+      Boolean b = new Boolean(resetOnDataProviderChange);
+      map.put("setResetOnDataProviderChange(resetOnDataProviderChange)", b);
+      map.put("this.resetOnDataProviderChange", b);
+   }
 }

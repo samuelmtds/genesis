@@ -680,6 +680,7 @@ public void calculaMontanteCorrigido() {
               &lt;indexField=nomeCampoIndice&gt;
               &lt;widgetName=nomeCampo&gt;
               &lt;callOnInit=valorBooleano&gt;
+              &lt;resetSelection=valorBooleano&gt;
 </source>
       <p>Esta anotação deve ser colocada em métodos que retornam uma
       <code>java.util.List</code> ou uma array de Objetos.
@@ -850,6 +851,14 @@ public class ExemploDataProviderForm {
       este também possa ser acionado por um botão (como Pesquisar, por exemplo)
       e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
       <code>@VisibleWhen</code> também será possível.</p>
+      <p>O atributo <code>resetSelection</code> determina se os elementos serão
+      desselecionados quando o método for invocado. Este é o comportamento
+      padrão, ou seja, se omitido, o valor desse atributo é considerado
+      <code>false</code>. Quando o valor informado é <code>true</code>, a
+      seleção é mantida com respeito a <b>posição</b> dos ítens, o que torna
+      essa funcionalidade mais útil quando algo está sendo adicionado ao final
+      da <code>java.util.List</code> ou array cada vez que o método é
+      executado.</p>
       <subsection name="Invocando ações de dentro de um form">
         <p>Para que os dados retornados de um <code>@DataProvider</code> possam
         ser populados no form, o genesis precisa invocar o método que possui a
@@ -877,7 +886,7 @@ public class ExemploDataProviderForm {
           <li><code>refresh()</code>: atualiza as informações
           da própria instância do <code>form</code>.</li>
         </ul>
-        Para ser mais específicos, estes métodos são atalhos para os respectivos
+        Para ser mais específico, estes métodos são atalhos para os respectivos
         métodos de <code>ActionInvoker</code> passando o form atual como parâmetro.
         No entanto, estender <code>BaseForm</code> restringe a herança do form
         e pode não ser apropriado.</p>
@@ -1020,6 +1029,64 @@ binder.bind();
       <p>O valor de <code>propriedade</code> exibido na tela será sempre a
       constante <code>Formato alterado</code>, independentemente do seu
       valor no form.</p>
+      <subsection name="Propriedades virtuais">
+        <p>Desde a versão 2.2, é possível se trabalhar com propriedades
+        virtuais, ou seja, que não existem no objeto sendo exibido. Essas
+        propriedades tem seu valor de exibição determinado através em um
+        formatador específico, que tem de estar obrigatoriamente registrado na
+        instância de <code>ThinletBinder</code>.
+        </p>
+        <p>O processo de definição e exibição de uma propriedade virtual é
+        basicamente o mesmo de uma propriedade normal, exceto pelos pontos
+        abaixos:</p>
+        <ul>
+           <li>Apenas células de tabelas e valores exibidos em comboboxes e
+           listas podem ser propriedades virtuais.</li>
+           <li>Propriedades virtuais podem ser definidas em comboboxes e listas
+           definindo-se no elemento <code>property</code> do xml
+           <code>virtual=true</code>. Visto que colunas de tabelas não possuem
+           o atributo <code>property</code>, o valor de seu atributo
+           <code>name</code> deve ser precedido do prefixo <code>virtual:</code>
+           .</li>
+           <li>A instância de <code>Formatter</code> receberá como parâmetro do
+           método <code>format(Object)</code> todo o bean sendo exibido, já que
+           a propriedade a ser exibida não existe fisicamente no objeto.</li>
+        </ul>
+        <p>Um exemplo de definição e uso de uma propriedade virtual é mostrado
+        abaixo, tanto para comboboxes como para tabelas:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <combobox name="widget"
+             property="key=propriedadeUnica;value=valorVirtual;virtual=true" />
+</panel>
+]]>
+</source>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="propriedadeUnica" text="#" />
+         <column name="virtual:valorVirtual" text="Virtual" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.valorVirtual", new Formatter() {
+   public String format(Object o) {
+      return o == null ? "0" : String.valueOf(o.hashCode());
+   }
+});
+binder.bind();
+</source>
+        <p>É importante notar que, embora o nome da coluna seja precedido de
+        <code>virtual:</code>, isso não afeta a formação do nome da propriedade
+        na hora de registrar o formatador.</p>
+      </subsection>
     </section>
     <section name="Validando os dados">
       <p>A validação de dados é crítica para a integridade de um sistema,
@@ -1230,42 +1297,42 @@ binder.bind();
 <source>
 /**
  * @Form
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.birthday"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.birthday"
     *
-    * @struts.validator type="date"
-    * @struts.validator-var name="pattern" value="MM/dd/yyyy"
+    * @genesis.validator type="date"
+    * @genesis.validator-var name="pattern" value="MM/dd/yyyy"
     */
    public void setBirthday(Date birthday) {
       this.birthday = birthday;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.country"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.country"
     */
    public void setCountry(Country country) {
       this.country = country;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.email"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.email"
     *
-    * @struts.validator type="email"
-    * @struts.validator-args arg0resource="User.email"
+    * @genesis.validator type="email"
+    * @genesis.validator-args arg0resource="User.email"
     */
    public void setEmail(String email) {
       this.email = email;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.role"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.role"
     */
    public void setRole(Role role) {
       this.role = role;
@@ -1273,49 +1340,49 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.login"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.login"
     *
-    * @struts.validator type="minlength" arg1value="${var:minlength}"
-    * @struts.validator-var name="minlength" value="4"
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="4"
     */
    public void setLogin(String login) {
       this.login = login;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.name"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.name"
     */
    public void setName(String name) {
       this.name = name;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.password"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.password"
     *
-    * @struts.validator type="minlength" arg1value="${var:minlength}"
-    * @struts.validator-var name="minlength" value="6"
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="6"
     *
-    * @struts.validator type="maxlength" arg1value="${var:maxlength}"
-    * @struts.validator-var name="maxlength" value="8"
+    * @genesis.validator type="maxlength" arg1value="${var:maxlength}"
+    * @genesis.validator-var name="maxlength" value="8"
     */
    public void setPassword(String password) {
       this.password = password;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.address"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.address"
     */
    public void setAddress(String address) {
       this.address = address;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.state"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.state"
     */
    public void setState(State state) {
       this.state = state;
@@ -1432,7 +1499,7 @@ public class InsertUpdateForm {
               <field property="address"
                      depends="required">
                   <arg position="0"
-                       key="User.address"
+                       key="User.address"
                   />
               </field>
               <field property="state"

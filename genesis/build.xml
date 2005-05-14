@@ -15,9 +15,9 @@
 	<property name="test.dest" value="${build.dir}/test-classes" />
 	<property name="test.reportsDirectory" value="${build.dir}/test-reports" />
 
-	<path id="xdoclet.path">
+   <path id="xdoclet.path">
+      <fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
 		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
-		<fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
 	</path>
 
 	<path id="aspectwerkz.path">
@@ -45,6 +45,10 @@
 
    <path id="script.path">
       <fileset dir="${genesis.script.dist}" includes="*.jar" />
+   </path>
+
+   <path id="thinlet.path">
+      <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
    </path>
 
 	<path id="hibernate.path">
@@ -114,7 +118,7 @@
    <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
    <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
    <taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask" classpathref="xdoclet.path" />
-   <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
+   <taskdef name="genesisdoclet" classname="xdoclet.modules.genesis.GenesisDocletTask" classpathref="xdoclet.path" />
    <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
    
 	<target name="shared:compile">
@@ -286,21 +290,21 @@
          <fileset dir="${genesis.module.aspect}/${src.dir}" includes="annotation.properties" />
       </copy>    
 	</target>
+   
+   <target name="integrationtest:compile" depends="integrationtest:hibernatedoclet,integrationtest:webdoclet">
+      <mkdir dir="${genesis.module.tests}/${test.dest}" />
+      <javac destdir="${genesis.module.tests}/${test.dest}"
+                debug="true"
+                source="1.4"
+                classpathref="tests.dependency.classpath">
+         <src path="${genesis.module.tests}/${src.dir}" />
+      </javac>
+      <antcall target="integrationtest:resources" />
+      <antcall target="integrationtest:annotation" />
+      <antcall target="integrationtest:weaving" />
+   </target>
 
-	<target name="test:compile" depends="test:client.compile,test:hibernatedoclet,test:webdoclet">
-		<mkdir dir="${genesis.module.tests}/${test.dest}" />
-		<javac destdir="${genesis.module.tests}/${test.dest}"
-		       debug="true"
-		       source="1.4"
-		       classpathref="tests.dependency.classpath">
-			<src path="${genesis.module.tests}/${src.dir}" />
-		</javac>
-		<antcall target="test:resources" />
-		<antcall target="test:annotation" />
-		<antcall target="test:weaving" />
-	</target>
-
-	<target name="test:hibernatedoclet">
+	<target name="integrationtest:hibernatedoclet">
 		<mkdir dir="${genesis.module.tests}/${build.src}" />
 		<hibernatedoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
 			<fileset dir="${genesis.module.tests}/${src.dir}">
@@ -329,15 +333,15 @@
 		</hibernatedoclet>
 	</target>
 
-   <target name="test:webdoclet">
+   <target name="integrationtest:webdoclet">
       <mkdir dir="${genesis.module.tests}/${build.src}" />
-      <webdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
+      <genesisdoclet destdir="${genesis.module.tests}/${build.src}" verbose="true">
          <fileset dir="${basedir}/${genesis.module.tests}/${src.dir}" includes="**/*.java" />
-         <strutsvalidationxml xmlencoding="ISO-8859-1" />
-      </webdoclet>
+         <genesisvalidationxml xmlencoding="ISO-8859-1" />
+      </genesisdoclet>
    </target>  
 
-	<target name="test:annotation">
+	<target name="integrationtest:annotation">
       <annotationc verbose="true"
             srcdir="${genesis.module.tests}/${src.dir}"
             destdir="${genesis.module.tests}/${genesis.annotation.dest}"
@@ -348,7 +352,7 @@
       </copy>  
 	</target>
 
-	<target name="test:weaving">
+	<target name="integrationtest:weaving">
 		<mkdir dir="${genesis.module.tests}/${genesis.weaving.dest}" />
 		<unjar dest="${genesis.module.tests}/${genesis.weaving.dest}" overwrite="true">
 			<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
@@ -365,7 +369,7 @@
             targetpath="${genesis.module.tests}/${genesis.weaving.dest}" />
 	</target>
 
-	<target name="test:resources">
+	<target name="integrationtest:resources">
 		<copy todir="${genesis.module.tests}/${test.dest}" overwrite="true">
 			<fileset dir="${genesis.module.tests}/${src.dir}">
 				<include name="**/*.properties" />
@@ -377,18 +381,8 @@
 			</fileset>
 		</copy>
 	</target>
-
-   <target name="test:client.compile">
-      <mkdir dir="${genesis.module.client}/${test.dest}" />  
-      <javac destdir="${genesis.module.client}/${test.dest}"
-             debug="true"
-             source="1.4"
-             classpathref="client.tests.dependency.classpath">
-         <src path="${genesis.module.client}/${test.src.dir}" />
-      </javac>
-   </target>  
-
-   <target name="test:create.jboss.app.dir" unless="app.dir.exists">
+ 
+   <target name="integrationtest:create.jboss.app.dir" unless="app.dir.exists">
       <mkdir dir="${genesis.jboss.app}" />
       <copy todir="${genesis.jboss.app}">
          <fileset dir="${genesis.jboss.home}/server/default">
@@ -398,47 +392,47 @@
             <include name="deploy/transaction-service.xml" />
             <include name="conf/**" />
             <include name="lib/**" />
-         	<exclude name="lib/hibernate2.jar" />
+            <exclude name="lib/hibernate2.jar" />
          </fileset>
       </copy>    
-   </target>  
+   </target>
 
-	<target name="test:deploy">
+   <target name="integrationtest:deploy">
       <available type="dir" file="${jboss.app}" property="app.dir.exists" />
-      <antcall target="test:create.jboss.app.dir"/>
-		<mkdir dir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF" />
-		<mkdir dir="${genesis.jboss.app}/deploy/genesis-server.jar" />
-		<copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF">
-			<fileset dir="${genesis.module.tests}/${build.src}" includes="jboss-service.xml" />
-		</copy>
-		<copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar">
-			<fileset dir="${genesis.hibernate.dist}">
-				<include name="commons-logging*.jar" />
-				<include name="log4j*.jar" />
-				<include name="dom4j*.jar" />
-				<include name="optional*.jar" />
-				<include name="commons-collections*.jar" />
-				<include name="ehcache*.jar" />
-				<include name="cglib*.jar" />
-				<include name="odmg*.jar" />
-				<include name="hibernate*.jar" />
-			</fileset>
-			<fileset dir="${genesis.commons.dist}">
-				<include name="commons-beanutils*.jar" />
-			</fileset>
+      <antcall target="integrationtest:create.jboss.app.dir"/>
+      <mkdir dir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF" />
+      <mkdir dir="${genesis.jboss.app}/deploy/genesis-server.jar" />
+      <copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar/META-INF">
+         <fileset dir="${genesis.module.tests}/${build.src}" includes="jboss-service.xml" />
+      </copy>
+      <copy todir="${genesis.jboss.app}/deploy/genesis-tests.sar">
+         <fileset dir="${genesis.hibernate.dist}">
+            <include name="commons-logging*.jar" />
+            <include name="log4j*.jar" />
+            <include name="dom4j*.jar" />
+            <include name="optional*.jar" />
+            <include name="commons-collections*.jar" />
+            <include name="ehcache*.jar" />
+            <include name="cglib*.jar" />
+            <include name="odmg*.jar" />
+            <include name="hibernate*.jar" />
+         </fileset>
+         <fileset dir="${genesis.commons.dist}">
+            <include name="commons-beanutils*.jar" />
+         </fileset>
          <fileset dir="${genesis.module.shared}/${build.dest}" />
          <fileset dir="${genesis.module.tests}/${test.dest}">
             <include name="**/*.class" />
             <include name="**/*.hbm.xml" />
             <include name="hibernate.properties" />
          </fileset>
-		</copy>
-		<copy todir="${genesis.jboss.app}/deploy/genesis-server.jar">
-			<fileset dir="${genesis.module.server}/${build.dest}" />
-		</copy>
-	</target>
+      </copy>
+      <copy todir="${genesis.jboss.app}/deploy/genesis-server.jar">
+         <fileset dir="${genesis.module.server}/${build.dest}" />
+      </copy>
+   </target>
 
-	<target name="test:test">
+	<target name="integrationtest:test">
 		<mkdir dir="${genesis.module.tests}/${test.reportsDirectory}" />
 		<junit printsummary="yes" fork="yes">
 			<sysproperty key="java.naming.factory.initial"
@@ -454,9 +448,92 @@
 				<pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
 				<pathelement path="${genesis.jdbc.driver}" />
 				<path location="${genesis.module.tests}/${genesis.weaving.dest}" />
-            <path location="${genesis.module.client}/${test.dest}" />
 			</classpath>
 			<batchtest todir="${genesis.module.tests}/${test.reportsDirectory}">
+            <fileset dir="${genesis.module.tests}/${src.dir}">
+               <include name="**/*Test.java" />
+            </fileset>
+         </batchtest>
+      </junit>
+   </target>
+
+   <target name="integrationtest:test-with-html-reports" depends="integrationtest:test">
+      <junitreport todir="${genesis.module.tests}/${test.reportsDirectory}">
+         <fileset dir="${genesis.module.tests}/${test.reportsDirectory}">
+            <include name="TEST-*.xml" />
+         </fileset>
+         <report format="frames" todir="${genesis.module.tests}/${test.reportsDirectory}" />
+      </junitreport>
+        <echo>JUnit hmtl reports is located at ${genesis.module.tests}/${test.reportsDirectory}</echo>
+   </target>
+
+   <target name="unittest:compile">
+      <mkdir dir="${genesis.module.client}/${test.dest}" />  
+      <javac destdir="${genesis.module.client}/${test.dest}"
+             debug="true"
+             source="1.4" 
+             classpathref="client.tests.dependency.classpath">
+         <src location="${genesis.module.client}/${test.src.dir}" />
+      </javac>
+      <javac destdir="${genesis.module.client}/${test.dest}"
+             debug="true"
+             source="1.4"
+             classpathref="client.tests.dependency.classpath" 
+             srcdir="${genesis.module.client}/${test.src.dir}">
+         <filename name="messages.java" />
+      </javac>
+   </target>
+
+   <target name="unittest:test">
+      <mkdir dir="${genesis.module.client}/${test.reportsDirectory}" />
+      <junit printsummary="yes" fork="yes">
+         <formatter type="xml" />
+         <classpath>
+            <path refid="commons.path" />
+            <path refid="thinlet.path" />
+            <path location="${genesis.module.client}/${build.dest}" />
+            <path location="${genesis.module.shared}/${build.dest}" />
+            <path location="${genesis.module.client}/${test.dest}" />
+         </classpath>
+         <batchtest todir="${genesis.module.client}/${test.reportsDirectory}">
+            <fileset dir="${genesis.module.client}/${test.src.dir}">
+               <include name="**/*Test.java" />
+            </fileset>
+         </batchtest>
+      </junit>
+   </target>
+
+   <target name="unittest:test-with-html-reports" depends="unittest:test">
+      <junitreport todir="${genesis.module.client}/${test.reportsDirectory}">
+         <fileset dir="${genesis.module.client}/${test.reportsDirectory}">
+            <include name="TEST-*.xml" />
+         </fileset>
+         <report format="frames" todir="${genesis.module.client}/${test.reportsDirectory}" />
+      </junitreport>
+        <echo>JUnit hmtl reports is located at ${genesis.module.client}/${test.reportsDirectory}</echo>
+   </target>
+
+   <target name="test:compile" depends="unittest:compile,integrationtest:compile" />
+
+   <target name="test:test">
+      <mkdir dir="${genesis.build.dir}/${test.reportsDirectory}" />
+      <junit printsummary="yes" fork="yes">
+         <sysproperty key="java.naming.factory.initial"
+                      value="org.jnp.interfaces.NamingContextFactory" />
+         <sysproperty key="java.naming.provider.url" value="${genesis.jboss.provider.url}" />
+         <sysproperty key="aspectwerkz.definition.file"
+                      value="${basedir}/${genesis.module.tests}/${src.dir}/aspectwerkz.xml" />
+         <formatter type="xml" />
+         <classpath>
+            <path refid="aspectwerkz.path" />
+            <path refid="commons.path" />
+            <path refid="hibernate.path" />
+            <pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
+            <pathelement path="${genesis.jdbc.driver}" />
+            <path location="${genesis.module.tests}/${genesis.weaving.dest}" />
+            <path location="${genesis.module.client}/${test.dest}" />
+         </classpath>
+         <batchtest todir="${genesis.build.dir}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.client}/${test.src.dir}">
                <include name="**/*Test.java" />
             </fileset>
@@ -468,11 +545,11 @@
    </target>
 
 	<target name="test:test-with-html-reports" depends="test:test">
-		<junitreport todir="${genesis.module.tests}/${test.reportsDirectory}">
-			<fileset dir="${genesis.module.tests}/${test.reportsDirectory}">
+		<junitreport todir="${genesis.build.dir}/${test.reportsDirectory}">
+			<fileset dir="${genesis.build.dir}/${test.reportsDirectory}">
 				<include name="TEST-*.xml" />
 			</fileset>
-			<report format="frames" todir="${genesis.module.tests}/${test.reportsDirectory}" />
+			<report format="frames" todir="${genesis.build.dir}/${test.reportsDirectory}" />
 		</junitreport>
         <echo>JUnit hmtl reports is located at ${genesis.module.tests}/${test.reportsDirectory}</echo>
 	</target>
@@ -486,6 +563,7 @@
 		<delete dir="${genesis.module.tests}/${build.dir}" />
 		<delete>
 			<fileset dir=".">
+				<include name="**/jcoverage.ser" />
 				<include name="*.log" />
 				<include name="junit*.properties" />
 			</fileset>
@@ -503,19 +581,47 @@
 	        depends="genesis:compile,shared:jar,server:jar,client:jar,aspect:jar" />
 
 	<target name="genesis:test:compile"
-	        description="Compiles all unit tests"
+	        description="Compiles all tests"
 	        depends="genesis:compile,test:compile" />
 
 	<target name="genesis:test:deploy"
-	        description="Deploy unit tests"
-	        depends="genesis:test:compile,test:deploy" />
+	        description="Deploy tests"
+	        depends="genesis:test:compile,integrationtest:deploy" />
 
 	<target name="genesis:test:test"
-	        description="Run all unit tests"
+	        description="Run all tests"
 	        depends="genesis:test:deploy,test:test" />
    
    <target name="genesis:test:test-with-html-reports"
+              description="Run all tests and build html reports"
+              depends="genesis:test:deploy,test:test-with-html-reports" />
+ 
+   <target name="genesis:integrationtest:compile"
+              description="Compiles all integration tests"
+              depends="genesis:compile,integrationtest:compile" />
+
+   <target name="genesis:integrationtest:deploy"
+              description="Deploy integration tests"
+              depends="genesis:integrationtest:compile,integrationtest:deploy" />
+
+   <target name="genesis:integrationtest:test"
+              description="Run all integration tests"
+              depends="genesis:integrationtest:deploy,integrationtest:test" />
+
+   <target name="genesis:integrationtest:test-with-html-reports"
+                 description="Run all integration tests and build html reports"
+                 depends="genesis:integrationtest:test,integrationtest:test-with-html-reports" />
+
+   <target name="genesis:unittest:compile"
+           description="Compiles all unit tests"
+           depends="genesis:compile,unittest:compile" />
+
+   <target name="genesis:unittest:test"
+           description="Run all unit tests"
+           depends="genesis:unittest:compile,unittest:test" />
+
+   <target name="genesis:unittest:test-with-html-reports"
               description="Run all unit tests and build html reports"
-              depends="genesis:test:deploy,test:test-with-html-reports" />  
+              depends="genesis:unittest:test,unittest:test-with-html-reports" />
 
 </project>

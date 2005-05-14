@@ -42,6 +42,8 @@
               href="/en/business_component_model.html" />
         <item name="Annotation quick reference guide"
               href="/en/quick_reference.html" />
+        <item name="XDoclet extensions"
+              href="/en/xdoclet_extensions.html" />
       </item>
       <item name="Understanding genesis jars" href="/en/jars_explained.html" />
       <item name="Developing with genesis" href="/en/empty_project.html" />
@@ -54,9 +56,9 @@
               href="/en/generic_scripting.html" />
       </item>
       <item name="FAQ" href="/en/faq.html" />
-      <item name="Roadmap" 
+      <item name="Roadmap"
             href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" />
-      <item name="Wiki" 
+      <item name="Wiki"
             href="http://wiki.java.net/bin/view/Projects/Genesis" />
     </menu>
     <menu name="java.net" type="footer">

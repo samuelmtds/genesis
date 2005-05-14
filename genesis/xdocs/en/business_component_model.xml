@@ -302,15 +302,39 @@ public class HibernateIntegrationExample extends AbstractHibernateCommand {
       <code>PageImpl</code> direclty nor will have their own <code>Page</code>
       implementation. Nevertheless the genesis implementation should prove quite
       useful for specifics <code>Pager</code> implementations.</p>
-        <subsection name="Paging with Hibernate">
-          <p>Two <code>Pager</code> implementations are provided with genesis in
-          order to integrate with Hibernate: <code>CriteriaPager</code> and
-          <code>QueryPager</code>. They are in
-          <code>net.java.dev.genesis.paging.hibernate</code> package. These
-          classes can be used as is (the easier way) or by extending the
-          <code>AbstractHibernateCommand</code> class. As an example, let's
-          change our Hibernate example in such a way it will return only one
-          page of data:</p>
+      <subsection name="Paging lists">
+        <p><code>net.java.dev.genesis.paging.ListPager</code> is a
+        <code>Pager</code> implementation that can be used to generate pages
+        from <code>java.util.List</code> instances.</p>
+        <p>There are two constructors for this class: one takes a single
+        <code>List</code> parameter and the other accepts an extra boolean
+        parameter that indicates whether property <code>results</code> of the
+        returned <code>Page</code> instance should reference the list
+        subsection directly - allowing the original list to be modified by
+        client coode - or if it should be a new instance. If the first
+        constructor is invoked, the value of this boolean property will be
+        <code>true</code>, meaning that it won't be possible to change the
+        original object used as an argument to the constructor by calling
+        methods in the returned instance.</p>
+        <p>This class can be used as shown below:</p>
+        <source>
+public class ListPagingExample {
+   public Page getSection(List list, int pageNumber, int resultsPerPage)
+         throws PagingException {
+      return new ListPager(list).getPage(pageNumber, resultsPerPage);
+   }
+}
+</source>
+      </subsection>
+      <subsection name="Paging with Hibernate">
+        <p>Two <code>Pager</code> implementations are provided with genesis in
+        order to integrate with Hibernate: <code>CriteriaPager</code> and
+        <code>QueryPager</code>. They are in the
+        <code>net.java.dev.genesis.paging.hibernate</code> package. These
+        classes can be used as is (the easier way) or by extending the
+        <code>AbstractHibernateCommand</code> class. As an example, let's
+        change our Hibernate example in such a way it will return only one page
+        of data:</p>
 <source>
 public class HibernatePagingExample extends AbstractHibernateCommand {
    /**

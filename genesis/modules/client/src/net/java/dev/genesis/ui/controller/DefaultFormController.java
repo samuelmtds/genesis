@@ -21,6 +21,7 @@ package net.java.dev.genesis.ui.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,11 +48,16 @@ public class DefaultFormController implements FormController {
    private static final Log log = LogFactory
          .getLog(DefaultFormController.class);
 
+   private static final List EMPTY_LIST = Collections.EMPTY_LIST;
+   private static final int[] EMPTY_INT_ARRAY = new int[0];
+
    private boolean setup;
 
    private Object form;
    private FormMetadata formMetadata;
    private ScriptContext ctx;
+   private int maximumEvaluationTimes = 1;
+   private boolean resetOnDataProviderChange = true;
 
    private FormState currentState;
    private FormState previousState;
@@ -76,6 +82,21 @@ public class DefaultFormController implements FormController {
 
    protected final ScriptContext getScriptContext() {
       return ctx;
+   }
+   public int getMaximumEvaluationTimes() {
+      return maximumEvaluationTimes;
+   }
+
+   public void setMaximumEvaluationTimes(int maximumEvaluationTimes) {
+      this.maximumEvaluationTimes = maximumEvaluationTimes;
+   }
+
+   public boolean isResetOnDataProviderChange() {
+      return resetOnDataProviderChange;
+   }
+
+   public void setResetOnDataProviderChange(boolean resetOnDataProviderChange) {
+      this.resetOnDataProviderChange = resetOnDataProviderChange;
    }
 
    protected FormState createFormState() {
@@ -167,8 +188,10 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected void updateChangedMap(Map newData, boolean stringMap, 
+   protected boolean updateChangedMap(Map newData, boolean stringMap, 
             Map converters) {
+      boolean changed = false;
+
       Object value;
       FieldMetadata fieldMeta;
       Map.Entry entry;
@@ -218,7 +241,11 @@ public class DefaultFormController implements FormController {
 
          entry.setValue(value);
          currentState.getValuesMap().put(entry.getKey(), entry.getValue());
+         
+         changed = true;
       }
+
+      return changed;
    }
 
    private Converter getConverter(FieldMetadata fieldMetadata, Map converters) {
@@ -233,27 +260,42 @@ public class DefaultFormController implements FormController {
    }
 
    protected void evaluate(boolean firstCall) throws Exception {
+      boolean changed = true;
+
+      for (int times = 0; changed && times < getMaximumEvaluationTimes(); 
+            times++) {
+         changed = doEvaluate(firstCall);
+      }
+   }
+
+   protected boolean doEvaluate(boolean firstCall) throws Exception {
+      boolean changed = false;
       evaluateNamedConditions();
 
       if (evaluateClearOnConditions()) {
+         changed = true;
          evaluateNamedConditions();
       }
 
       if (evaluateCallWhenConditions(firstCall)) {
+         changed = true;
          evaluateNamedConditions();
       }
 
       if (evaluateDataProvidedIndexes(firstCall)) {
+         changed = true;
          evaluateNamedConditions();
       }
 
       final Map newData = PropertyUtils.describe(form);
-      updateChangedMap(newData, false, null);
+      changed |= updateChangedMap(newData, false, null);
 
       fireValuesChanged(currentState.getChangedMap());
 
-      evaluateEnabledWhenConditions();
-      evaluateVisibleWhenConditions();
+      changed |= evaluateEnabledWhenConditions();
+      changed |= evaluateVisibleWhenConditions();
+      
+      return changed;
    }
 
    protected void fireValuesChanged(Map updatedValues) throws Exception {
@@ -320,9 +362,9 @@ public class DefaultFormController implements FormController {
                }
 
                changed = true;
-               currentState.getDataProvidedMap().put(dataProviderMeta, 
-                     items = new ArrayList());
-               fireDataProvidedListMetadataChanged(dataProviderMeta, items);
+               updateDataProviderCurrentSelection(dataProviderMeta,
+                     items = EMPTY_LIST, EMPTY_INT_ARRAY);
+               fireDataProvidedListMetadataChanged(dataProviderMeta, items, false);
                i.remove();
             }
          }
@@ -348,31 +390,33 @@ public class DefaultFormController implements FormController {
       for (final Iterator i = formMetadata.getNamedConditions().entrySet()
             .iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
-
-         ctx.declare(entry.getKey().toString(),
-               isSatisfied((ScriptExpression)entry.getValue()));
-
-         if (log.isDebugEnabled()) {
-            log.debug("Named Condition '" + entry.getKey() + "' evaluated as '"
-                  + ctx.lookup(entry.getKey().toString())
-                  + "'");
-         }
+         
+         evaluateNamedCondition(entry.getKey().toString(), 
+                 (ScriptExpression)entry.getValue());
       }
    }
 
-   protected void evaluateEnabledWhenConditions() {
-      evaluateConditions(true);
+   protected void evaluateNamedCondition(String conditionName, 
+         ScriptExpression expr) {
+      Boolean conditionValue = isSatisfied(expr);
+      ctx.declare(conditionName, conditionValue);
+
+      if (log.isDebugEnabled()) {
+         log.debug("Named Condition '" + conditionName + "' evaluated as '" + 
+                 conditionValue + "'");
+      }
    }
 
-   protected void evaluateVisibleWhenConditions() {
-      evaluateConditions(false);
+   protected boolean evaluateEnabledWhenConditions() {
+      return evaluateConditions(true);
    }
 
-   protected void evaluateConditions(boolean enabled) {
+   protected boolean evaluateVisibleWhenConditions() {
+      return evaluateConditions(false);
+   }
+
+   protected boolean evaluateConditions(boolean enabled) {
       Map.Entry entry;
-      MemberMetadata memberMetadata;
-      Boolean newValue;
-      Map conditionMap;
 
       final Map updatedConditions = new HashMap();
       final Map toEvaluate = new HashMap(formMetadata.getFieldMetadatas());
@@ -380,37 +424,41 @@ public class DefaultFormController implements FormController {
 
       for (final Iterator i = toEvaluate.entrySet().iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
-         memberMetadata = (MemberMetadata) entry.getValue();
-
-         if ((enabled && memberMetadata.getEnabledCondition() == null)
-               || (!enabled && memberMetadata.getVisibleCondition() == null)) {
-            continue;
-         }
-
-         newValue = isSatisfied(enabled ? memberMetadata.getEnabledCondition()
-               : memberMetadata.getVisibleCondition());
-         
-         conditionMap = enabled ?
-               currentState.getEnabledMap() : currentState.getVisibleMap();
-
-         if (!newValue.equals(conditionMap.get(memberMetadata
-               .getName()))) {
-            conditionMap.put(memberMetadata.getName(), newValue);
-            updatedConditions.put(memberMetadata.getName(), newValue);
-         }
-
-         if (log.isDebugEnabled()) {
-            log.debug((enabled ? "EnabledWhen" : "VisibleWhen")
-                  + " Condition for member '" + memberMetadata.getName()
-                  + "' evaluated as '"
-                  + conditionMap.get(memberMetadata.getName()) + "'");
-         }
+         evaluateCondition((MemberMetadata) entry.getValue(), updatedConditions, enabled);
       }
 
       if (enabled) {
          fireEnabledConditionChanged(updatedConditions);
       } else {
          fireVisibleConditionChanged(updatedConditions);
+      }
+
+      return !updatedConditions.isEmpty();
+   }
+   
+   protected void evaluateCondition(MemberMetadata memberMetadata, Map updatedConditions, boolean enabled) {
+      if ((enabled && memberMetadata.getEnabledCondition() == null)
+            || (!enabled && memberMetadata.getVisibleCondition() == null)) {
+         return;
+      }
+
+      final Object newValue = isSatisfied(enabled ? memberMetadata.getEnabledCondition()
+            : memberMetadata.getVisibleCondition());
+      
+      final Map conditionMap = enabled ?
+            currentState.getEnabledMap() : currentState.getVisibleMap();
+
+      if (!newValue.equals(conditionMap.get(memberMetadata
+            .getName()))) {
+         conditionMap.put(memberMetadata.getName(), newValue);
+         updatedConditions.put(memberMetadata.getName(), newValue);
+      }
+
+      if (log.isDebugEnabled()) {
+         log.debug((enabled ? "EnabledWhen" : "VisibleWhen")
+               + " Condition for member '" + memberMetadata.getName()
+               + "' evaluated as '"
+               + conditionMap.get(memberMetadata.getName()) + "'");
       }
    }
 
@@ -441,44 +489,46 @@ public class DefaultFormController implements FormController {
 
    protected boolean evaluateDataProvidedIndexes(boolean firstCall) throws Exception {
       boolean changed = false;
-      DataProviderMetadata dataMeta;
-      Object indexes;
-      int[] selectedIndexes;
-      Object objectFieldValue;
+
       Map currentMap = firstCall ? PropertyUtils.describe(form) : currentState.getChangedMap();
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
-         dataMeta = (DataProviderMetadata) i.next();
-         indexes = currentMap.get(dataMeta.getIndexField().getFieldName());
-
-         if (indexes == null) {
-            if (log.isDebugEnabled()) {
-               log.debug("Index field " + dataMeta.getIndexField()
-                     .getFieldName() + " haven't been changed.");
-            }
-
-            continue;
-         }
-
-         changed = true;
-
-         selectedIndexes = dataMeta.getSelectedIndexes(indexes);
-
-         objectFieldValue = dataMeta.populateSelectedFields(form,
-               (List)currentState.getDataProvidedMap().get(dataMeta),
-               selectedIndexes);
-         fireDataProvidedIndexesChanged(dataMeta, selectedIndexes);
-
-         if (dataMeta.getObjectField() == null) {
-            continue;
-         }
-
-         currentState.getChangedMap().put(dataMeta.getObjectField()
-               .getFieldName(), objectFieldValue);
+         changed |= evaluateDataProvidedIndex((DataProviderMetadata) i.next(), currentMap);
       }
 
       return changed;
+   }
+
+   protected boolean evaluateDataProvidedIndex(DataProviderMetadata dataMeta,
+         Map currentMap) throws Exception {
+      final Object indexes = currentMap.get(dataMeta.getIndexField()
+            .getFieldName());
+
+      if (indexes == null) {
+         if (log.isDebugEnabled()) {
+            log.debug("Index field " + dataMeta.getIndexField().getFieldName()
+                  + " haven't been changed.");
+         }
+
+         return false;
+      }
+
+      final int[] selectedIndexes = dataMeta.getSelectedIndexes(indexes);
+
+      final Object objectFieldValue = dataMeta.populateSelectedFields(form,
+            (List)currentState.getDataProvidedMap().get(dataMeta),
+            selectedIndexes);
+      fireDataProvidedIndexesChanged(dataMeta, selectedIndexes);
+
+      currentState.getDataProvidedIndexesMap().put(dataMeta, selectedIndexes);
+
+      if (dataMeta.getObjectField() != null) {
+         currentState.getChangedMap().put(
+               dataMeta.getObjectField().getFieldName(), objectFieldValue);
+      }
+
+      return true;
    }
 
    protected boolean invokeAction(MethodMetadata methodMetadata, 
@@ -494,9 +544,9 @@ public class DefaultFormController implements FormController {
          }
 
          if (!dataProviderMeta.isCallOnInit()) {
-            currentState.getDataProvidedMap().put(dataProviderMeta, 
-                  items = new ArrayList());
-            fireDataProvidedListMetadataChanged(dataProviderMeta, items);
+            updateDataProviderCurrentSelection(dataProviderMeta,
+                  items = EMPTY_LIST, EMPTY_INT_ARRAY);
+            fireDataProvidedListMetadataChanged(dataProviderMeta, items, false);
 
             return true;
          }
@@ -517,7 +567,7 @@ public class DefaultFormController implements FormController {
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
                  (List)ret;
             currentState.getDataProvidedMap().put(dataProviderMeta, items);
-            fireDataProvidedListMetadataChanged(dataProviderMeta, items);
+            fireDataProvidedListMetadataChanged(dataProviderMeta, items, firstCall);
          } 
 
          if (methodMetadata.getActionMetadata() != null) {
@@ -532,6 +582,28 @@ public class DefaultFormController implements FormController {
       }
 
       return satisfied;
+   }
+
+   public void resetSelection(DataProviderMetadata meta, List dataProvided)
+         throws Exception {
+      int[] selected;
+
+      if (meta.isResetSelection()) {
+         meta.resetSelectedFields(form);
+         selected = EMPTY_INT_ARRAY;
+      } else {
+         int[] currentSelection = (int[])currentState
+               .getDataProvidedIndexesMap().get(meta);
+         selected = meta.retainSelectedFields(form, dataProvided,
+               currentSelection == null ? EMPTY_INT_ARRAY : currentSelection);
+      }
+
+      currentState.getDataProvidedIndexesMap().put(meta, selected);
+   }
+
+   protected void updateDataProviderCurrentSelection(DataProviderMetadata meta, List objectList, int[] indexes) {
+      currentState.getDataProvidedMap().put(meta, objectList);
+      currentState.getDataProvidedIndexesMap().put(meta, indexes);
    }
 
    protected boolean beforeInvokingMethod(MethodMetadata metadata) 
@@ -553,9 +625,14 @@ public class DefaultFormController implements FormController {
    }
 
    protected void fireDataProvidedListMetadataChanged(
-         DataProviderMetadata metadata, List items) throws Exception {
+         DataProviderMetadata metadata, List items, boolean firstCall) throws Exception {
+
+      if (!firstCall && isResetOnDataProviderChange()) {
+         resetSelection(metadata, items);
+      }
+
       for (final Iterator i = listeners.iterator(); i.hasNext(); ) {
-         ((FormControllerListener)i.next()).dataProvidedListChanged(metadata, 
+         ((FormControllerListener)i.next()).dataProvidedListChanged(metadata,
                items);
       }
    }
@@ -591,7 +668,7 @@ public class DefaultFormController implements FormController {
             i.hasNext();) {
          final Map.Entry entry = (Map.Entry)i.next();
          fireDataProvidedListMetadataChanged((DataProviderMetadata)entry
-               .getKey(), (List)entry.getValue());
+               .getKey(), (List)entry.getValue(), false);
       }
 
       final Map currentValues = PropertyUtils.describe(form);
@@ -704,6 +781,8 @@ public class DefaultFormController implements FormController {
                dataProviderMetadata);
 
          dataProviderMetadata.populateSelectedFields(form, list, selected);
+         currentState.getDataProvidedIndexesMap().put(dataProviderMetadata,
+               selected);
 
          update();
       } catch (Exception e) {

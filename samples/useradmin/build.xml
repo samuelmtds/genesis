@@ -9,7 +9,7 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="3.0-EA1" />
+      <property name="genesis.version" value="3.0-EA2-dev" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
@@ -67,7 +67,6 @@
       </path>
 
       <path id="xdoclet.path">
-         <path refid="j2ee.path" />
          <fileset dir="${xdoclet.dist}" includes="*.jar" />
       </path>
 
@@ -94,6 +93,7 @@
 
       <path id="client.dependency.classpath">
          <path location="${module.shared}/${annotation.dest}" />
+         <path refid="aspectwerkz.path" />
          <fileset dir="${genesis.dist}">
             <include name="genesis-shared-annotated-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
@@ -123,7 +123,7 @@
             <exclude name="aspectwerkz-extensions-*.jar" />
             <exclude name="aspectwerkz-jdk5-*.jar" />
             <include name="dom4j-*.jar" />
-         	<include name="jrexx-*.jar" />
+            <include name="jrexx-*.jar" />
             <include name="trove-*.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}">
@@ -132,7 +132,7 @@
             <include name="odmg-*.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
-            <include name="commons-beanutils-*.jar" />            
+            <include name="commons-beanutils-*.jar" />
             <include name="commons-digester-*.jar" />
             <include name="commons-jxpath-*.jar" />
             <include name="commons-logging-*.jar" />
@@ -177,7 +177,7 @@
       <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
       <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
       <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.path" />
-      <taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.path" />
+      <taskdef name="genesisdoclet" classname="xdoclet.modules.genesis.GenesisDocletTask" classpathref="xdoclet.path" />
 
       <condition property="generate.validation">
          <istrue value="${generate.client.validation}" />
@@ -279,10 +279,10 @@
    </target>
 
    <target name="client:validation" if="generate.validation" depends="init">
-      <webdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
+      <genesisdoclet destdir="${module.client}/${build.dest}" verbose="${verbose}">
          <fileset dir="${module.client}/${src.dir}" includes="**/*.java" />
-         <strutsvalidationxml xmlencoding="ISO-8859-1" />
-      </webdoclet>
+         <genesisvalidationxml xmlencoding="ISO-8859-1" />
+      </genesisdoclet>
    </target>
 
    <target name="useradmin:weaving" depends="init">

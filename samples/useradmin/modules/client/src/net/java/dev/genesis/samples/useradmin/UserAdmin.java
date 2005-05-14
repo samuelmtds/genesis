@@ -24,6 +24,7 @@ import net.java.dev.genesis.samples.useradmin.ui.UserListView;
 
 public class UserAdmin {
    public static void main(String[] args) throws Exception {
+      Thread.currentThread().getContextClassLoader().loadClass("org.codehaus.aspectwerkz.annotation.Annotation");
       new StartupHelper(Locale.ENGLISH, "MM/dd/yyyy").initialize();
       new UserListView().display();
    }

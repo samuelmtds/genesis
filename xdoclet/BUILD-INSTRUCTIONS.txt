@@ -1,23 +1,23 @@
-To build hacked-xdoclet, you need:
+To build xdoclet modules, you need:
 
 - Ant (http://ant.apache.org/)
-- To create a file named genesis/xdoclet/build.properties
+- XDoclet (1.2.2 or newer version) binary distribution (http://xdoclet.sourceforge.net/)
+- To create a file named build.properties
 
-In genesis/xdoclet/build.properties you must define a XDoclet Home pointing to a
-XDoclet 1.2.0 installation:
+In build.properties you must define a XDoclet Home pointing to
+XDoclet installation:
 
    xdoclet.home=<XDOCLET_HOME>
 
 e.g.
    xdoclet.home=/usr/xdoclet
-   
-You can download a binary XDoclet 1.2.0 distribution from 
-http://xdoclet.sourceforge.net/
 
-
-Run ant to build the hacked xdoclet distribution.
+Run ant to build the xdoclet modules distribution.
 
 e.g.:
    ant
-     or
-   ant xdoclet
+
+xdoclet-genesis-module.jar will be created (<CURRENT_DIR>/dist)
+xdoclet-hibernate-ext-module.jar will be created (<CURRENT_DIR>/dist)
+
+You can put those jars in your xdoclet lib directory

@@ -19,6 +19,7 @@
 package net.java.dev.genesis;
 
 import junit.framework.TestCase;
+import net.java.dev.genesis.ui.UIUtils;
 
 public abstract class GenesisTestCase extends TestCase {
    public static final Class[] EMPTY_CLASS_ARRAY = new Class[0];
@@ -29,5 +30,10 @@ public abstract class GenesisTestCase extends TestCase {
 
    public GenesisTestCase(String name) {
       super(name);
+   }
+
+   public void putInResourceBundle(String key, Object value) {
+      ((PropertiesProvider)UIUtils.getInstance().getBundle()).getProperties()
+            .put(key, value);
    }
 }

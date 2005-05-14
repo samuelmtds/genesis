@@ -17,7 +17,8 @@
       href="documentation_intro.html">User Manual</a> and <a href=
       "jars_explained.html">understand genesis distribution jars</a>.</p>
       <p>We call an empty project strutucture <code>empty-project</code> and it
-      comes with every genesis distribution. This structure can be found in dir
+      comes with genesis-empty-project distribution or genesis-all distribution.
+      This structure can be found in dir
       <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.
       </p>
     </section>

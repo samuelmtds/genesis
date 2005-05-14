@@ -27,4 +27,5 @@ public interface FormState extends Serializable {
    public Map getChangedMap();
    public Map getValuesMap();
    public Map getDataProvidedMap();
+   public Map getDataProvidedIndexesMap();
 }

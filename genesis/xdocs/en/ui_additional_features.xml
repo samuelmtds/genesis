@@ -664,6 +664,7 @@ public void calculateRemainingAmount() {
               &lt;indexField=nameIndexField&gt;
               &lt;widgetName=nameObjectField&gt;
               &lt;callOnInit=booleanValue&gt;
+              &lt;resetSelection=booleanValue&gt;
 </source>
       <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array of <code>Object</code>s. Values
@@ -831,6 +832,14 @@ public class DataProviderFormExample {
       these methods if they need to be triggered by a button (such as Search,
       for example) and, when that is true, using <code>@EnabledWhen</code> and
       <code>@VisibleWhen</code> is also allowed.</p>
+      <p><code>resetSelection</code> determines whether selected elements will
+      be unselected when the method is invoked. This is the default behaviour,
+      i.e., if this property has no value, it is considered <code>false</code>.
+      When the value informed is <code>true</code>, the selection is kept
+      relative to the <b>position</b> of the itens, what makes this feature
+      more useful when something is being added to the end of the
+      <code>java.util.List</code> instance or array each time the method gets
+      executed.</p>
       <subsection name="Invoking actions within a form">
         <p>In order to have a form re-populated with the data returned by
         a <code>@DataProvider</code> annotated method, genesis must be aware of
@@ -996,6 +1005,63 @@ binder.bind();
       <p>The value of <code>property</code> to be displayed on the screen
       will be the <code>Custom format</code> constant, no matter what its
       value on the form is.</p>
+      <subsection name="Virtual properties">
+        <p>Since release 2.2, it is possible to work with virtual properties,
+        i.e., properties that don't exist in the object being displayed. These
+        properties have their display value determined by a specific formatter,
+        that must be registered in the <code>ThinletBinder</code> instance.</p>
+        <p>The process for defining and displaying a virtual property is
+        basically the same of a regular property, except for the following
+        things:</p>
+        <ul>
+           <li>Only table cells and values displayed in comboboxes or lists can
+           be virtual properties.</li>
+           <li>Virtual properties can be defined for comboboxes and lists by
+           adding to the <code>property</code> element in the xml definition a
+           <code>virtual=true</code> token. Since table columns do not have
+           a <code>property</code> attribute, the value of its attribute
+           <code>name</code> must be prefixed with <code>virtual:</code>
+           .</li>
+           <li>The <code>Formatter</code> instance will receive the whole bean
+           being displayed as a parameter to the <code>format(Object)</code>,
+           since the property being displayed does not actually exist in the
+           instance.</li>
+        </ul>
+        <p>An example of how to define and use a virtual property is shown
+        below, both for comboboxes and tables:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <combobox name="widget"
+             property="key=uniqueProperty;value=virtualValue;virtual=true" />
+</panel>
+]]>
+</source>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="uniqueProperty" text="#" />
+         <column name="virtual:virtualValue" text="Virtual" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.virtualValue", new Formatter() {
+   public String format(Object o) {
+      return o == null ? "0" : String.valueOf(o.hashCode());
+   }
+});
+binder.bind();
+</source>
+        <p>It is important to notice that although the name of the column is
+        prefixed with <code>virtual:</code>, this does not affect how the
+        property name is composed for registering the formatter.</p>
+      </subsection>
     </section>
     <section name="Validating data">
       <p>Data validation is critical for system integrity, especially when data
@@ -1201,42 +1267,42 @@ binder.bind();
 <source>
 /**
  * @Form
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.birthday"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.birthday"
     *
-    * @struts.validator type="date"
-    * @struts.validator-var name="pattern" value="MM/dd/yyyy"
+    * @genesis.validator type="date"
+    * @genesis.validator-var name="pattern" value="MM/dd/yyyy"
     */
    public void setBirthday(Date birthday) {
       this.birthday = birthday;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.country"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.country"
     */
    public void setCountry(Country country) {
       this.country = country;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.email"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.email"
     *
-    * @struts.validator type="email"
-    * @struts.validator-args arg0resource="User.email"
+    * @genesis.validator type="email"
+    * @genesis.validator-args arg0resource="User.email"
     */
    public void setEmail(String email) {
       this.email = email;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.role"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.role"
     */
    public void setRole(Role role) {
       this.role = role;
@@ -1244,49 +1310,49 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.login"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.login"
     *
-    * @struts.validator type="minlength" arg1value="${var:minlength}"
-    * @struts.validator-var name="minlength" value="4"
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="4"
     */
    public void setLogin(String login) {
       this.login = login;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.name"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.name"
     */
    public void setName(String name) {
       this.name = name;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.password"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.password"
     *
-    * @struts.validator type="minlength" arg1value="${var:minlength}"
-    * @struts.validator-var name="minlength" value="6"
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="6"
     *
-    * @struts.validator type="maxlength" arg1value="${var:maxlength}"
-    * @struts.validator-var name="maxlength" value="8"
+    * @genesis.validator type="maxlength" arg1value="${var:maxlength}"
+    * @genesis.validator-var name="maxlength" value="8"
     */
    public void setPassword(String password) {
       this.password = password;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.address"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.address"
     */
    public void setAddress(String address) {
       this.address = address;
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.state"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.state"
     */
    public void setState(State state) {
       this.state = state;

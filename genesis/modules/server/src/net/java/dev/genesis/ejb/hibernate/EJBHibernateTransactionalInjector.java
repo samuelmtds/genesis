@@ -70,7 +70,9 @@ public class EJBHibernateTransactionalInjector implements TransactionalInjector 
    }
    
    public void onException(Exception e) {
-      ctx.setRollbackOnly();
+      if (transactional) {
+         ctx.setRollbackOnly();
+      }
    }
    
    public void onFinally() throws HibernateException {

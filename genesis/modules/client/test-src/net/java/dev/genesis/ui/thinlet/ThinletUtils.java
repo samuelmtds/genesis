@@ -157,7 +157,11 @@ public class ThinletUtils {
    public static Object newButton() {
       return create(BaseThinlet.BUTTON, "button");
    }
-   
+
+   public static Object newPanel() {
+      return create(BaseThinlet.PANEL, BaseThinlet.PANEL);
+   }
+
    public static Object putProperty(Object widget, Object key, Object value) {
       helper.putProperty(widget, key, value);
       return widget;

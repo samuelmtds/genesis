@@ -152,6 +152,7 @@
     <reports>
         <!--report>maven-pmd-plugin</report-->
         <report>maven-simian-plugin</report>
+        <report>maven-junit-report-plugin</report>
         <report>maven-jcoverage-plugin</report>
         <!--report>maven-checkstyle-plugin</report>
         <report>maven-jdepend-plugin</report-->
@@ -160,7 +161,6 @@
         <report>maven-developer-activity-plugin</report>
         <report>maven-jxr-plugin</report>
         <report>maven-javadoc-plugin</report>
-        <report>maven-junit-report-plugin</report>
     </reports>
     <properties/>
 </project>

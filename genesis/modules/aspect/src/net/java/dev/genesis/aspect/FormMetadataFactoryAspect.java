@@ -297,6 +297,8 @@ public class FormMetadataFactoryAspect {
                      .get("indexField");
                final String callOnInit = (String)attributesMap
                      .get("callOnInit");
+               final String resetSelection = (String)attributesMap
+                     .get("resetSelection");
 
                final DataProviderMetadata dataProviderMetadata = methodMetadata
                      .getDataProviderMetadata();
@@ -308,6 +310,7 @@ public class FormMetadataFactoryAspect {
                }
 
                dataProviderMetadata.setCallOnInit(!"false".equals(callOnInit));
+               dataProviderMetadata.setResetSelection(!"false".equals(resetSelection));
 
                PropertyDescriptor[] descriptors = PropertyUtils
                      .getPropertyDescriptors(formMetadata.getFormClass());

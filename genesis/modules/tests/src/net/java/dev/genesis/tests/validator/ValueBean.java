@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @struts.form
+ * @genesis.form
  */
 public class ValueBean implements Serializable {
    private Object required;
@@ -52,8 +52,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="validatorTest.required"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="validatorTest.required"
     */
    public void setRequired(Object required) {
       this.required = required;
@@ -64,8 +64,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="byte"
-    * @struts.validator-args arg0resource="validatorTest.byte"
+    * @genesis.validator type="byte"
+    * @genesis.validator-args arg0resource="validatorTest.byte"
     */
    public void setSomeByte(Byte oneByte) {
       this.someByte = oneByte;
@@ -76,8 +76,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="short"
-    * @struts.validator-args arg0resource="validatorTest.short"
+    * @genesis.validator type="short"
+    * @genesis.validator-args arg0resource="validatorTest.short"
     */
    public void setSomeShort(Short short1) {
       someShort = short1;
@@ -88,8 +88,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="int"
-    * @struts.validator-args arg0resource="validatorTest.integer"
+    * @genesis.validator type="int"
+    * @genesis.validator-args arg0resource="validatorTest.integer"
     */
    public void setInteger(Integer integer) {
       this.integer = integer;
@@ -100,8 +100,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="long"
-    * @struts.validator-args arg0resource="validatorTest.long"
+    * @genesis.validator type="long"
+    * @genesis.validator-args arg0resource="validatorTest.long"
     */
    public void setSomeLong(Long long1) {
       someLong = long1;
@@ -112,8 +112,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="float"
-    * @struts.validator-args arg0resource="validatorTest.float"
+    * @genesis.validator type="float"
+    * @genesis.validator-args arg0resource="validatorTest.float"
     */
    public void setSomeFloat(Float float1) {
       someFloat = float1;
@@ -124,8 +124,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="double"
-    * @struts.validator-args arg0resource="validatorTest.double"
+    * @genesis.validator type="double"
+    * @genesis.validator-args arg0resource="validatorTest.double"
     */
    public void setSomeDouble(Double double1) {
       someDouble = double1;
@@ -136,8 +136,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="bigDecimal"
-    * @struts.validator-args arg0resource="validatorTest.bigDecimal"
+    * @genesis.validator type="bigDecimal"
+    * @genesis.validator-args arg0resource="validatorTest.bigDecimal"
     */
    public void setSomeBigDecimal(BigDecimal someBigDecimal) {
       this.someBigDecimal = someBigDecimal;
@@ -148,8 +148,8 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="email"
-    * @struts.validator-args arg0resource="validatorTest.email"
+    * @genesis.validator type="email"
+    * @genesis.validator-args arg0resource="validatorTest.email"
     */
    public void setEmail(String email) {
       this.email = email;
@@ -160,10 +160,10 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="requiredif"
-    * @struts.validator-args arg0resource="validatorTest.requiredIf"
-    * @struts.validator-var name="field[0]" value="requiredIfDependency"
-    * @struts.validator-var name="fieldTest[0]" value="NOTNULL"
+    * @genesis.validator type="requiredif"
+    * @genesis.validator-args arg0resource="validatorTest.requiredIf"
+    * @genesis.validator-var name="field[0]" value="requiredIfDependency"
+    * @genesis.validator-var name="fieldTest[0]" value="NOTNULL"
     */
    public void setRequiredIf(Object requiredIf) {
       this.requiredIf = requiredIf;
@@ -182,9 +182,9 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="mask"
-    * @struts.validator-args arg0resource="validatorTest.mask"
-    * @struts.validator-var name="mask" value="[AZ][0-9]"
+    * @genesis.validator type="mask"
+    * @genesis.validator-args arg0resource="validatorTest.mask"
+    * @genesis.validator-var name="mask" value="[AZ][0-9]"
     */
    public void setMask(String mask) {
       this.mask = mask;
@@ -195,9 +195,9 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="date"
-    * @struts.validator-args arg0resource="validatorTest.date"
-    * @struts.validator-var name="pattern" value="dd/MM/yyyy"
+    * @genesis.validator type="date"
+    * @genesis.validator-args arg0resource="validatorTest.date"
+    * @genesis.validator-var name="pattern" value="dd/MM/yyyy"
     */
    public void setDate(Date date) {
       this.date = date;
@@ -208,9 +208,9 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="maxlength" arg1value="10"
-    * @struts.validator-args arg0resource="validatorTest.maxLength"
-    * @struts.validator-var name="maxlength" value="10"
+    * @genesis.validator type="maxlength" arg1value="10"
+    * @genesis.validator-args arg0resource="validatorTest.maxLength"
+    * @genesis.validator-var name="maxlength" value="10"
     */
    public void setMaxLength(String maxLength) {
       this.maxLength = maxLength;
@@ -221,9 +221,9 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="minlength" arg1value="2"
-    * @struts.validator-args arg0resource="validatorTest.minLength"
-    * @struts.validator-var name="minlength" value="2"
+    * @genesis.validator type="minlength" arg1value="2"
+    * @genesis.validator-args arg0resource="validatorTest.minLength"
+    * @genesis.validator-var name="minlength" value="2"
     */
    public void setMinLength(String minLength) {
       this.minLength = minLength;
@@ -234,10 +234,10 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="longRange"
-    * @struts.validator-args arg0resource="validatorTest.longrange"
-    * @struts.validator-var name="min" value="5"
-    * @struts.validator-var name="max" value="10"
+    * @genesis.validator type="longRange"
+    * @genesis.validator-args arg0resource="validatorTest.longrange"
+    * @genesis.validator-var name="min" value="5"
+    * @genesis.validator-var name="max" value="10"
     */
    public void setLongRange(Long longRange) {
       this.longRange = longRange;
@@ -248,10 +248,10 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="doubleRange"
-    * @struts.validator-args arg0resource="validatorTest.doublerange"
-    * @struts.validator-var name="min" value="5"
-    * @struts.validator-var name="max" value="10"
+    * @genesis.validator type="doubleRange"
+    * @genesis.validator-args arg0resource="validatorTest.doublerange"
+    * @genesis.validator-var name="min" value="5"
+    * @genesis.validator-var name="max" value="10"
     */
    public void setDoubleRange(Double doubleRange) {
       this.doubleRange = doubleRange;
@@ -262,10 +262,10 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="bigDecimalRange"
-    * @struts.validator-args arg0resource="validatorTest.bigDecimalRange"
-    * @struts.validator-var name="min" value="5.1234"
-    * @struts.validator-var name="max" value="9.1234"
+    * @genesis.validator type="bigDecimalRange"
+    * @genesis.validator-args arg0resource="validatorTest.bigDecimalRange"
+    * @genesis.validator-var name="min" value="5.1234"
+    * @genesis.validator-var name="max" value="9.1234"
     */
    public void setBigDecimalRange(BigDecimal bigDecimalRange) {
       this.bigDecimalRange = bigDecimalRange;
@@ -276,9 +276,9 @@ public class ValueBean implements Serializable {
    }
 
    /**
-    * @struts.validator type="jxpath"
-    * @struts.validator-args arg0resource="validatorTest.jxpath"
-    * @struts.validator-var name="jxpath" value="jxpathDependency = 10"
+    * @genesis.validator type="jxpath"
+    * @genesis.validator-args arg0resource="validatorTest.jxpath"
+    * @genesis.validator-var name="jxpath" value="jxpathDependency = 10"
     */
    public void setJxpath(String jxpath) {
       this.jxpath = jxpath;

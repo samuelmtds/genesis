@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="<XDtConfig:configParameterValue paramName='Xmlencoding'/>"?>
+<!DOCTYPE server>
+
+<!-- <XDtI18n:getString resource="do_not_edit"/> -->
+
+<server>
+   <mbean code="<XDtHibernate:serviceClassName/>" name="jboss.jca:service=<XDtHibernate:serviceName/>">
+       <depends>jboss.jca:service=RARDeployer</depends>
+     <XDtConfig:ifHasConfigParam paramName="depends">
+       <depends><XDtConfig:configParameterValue paramName="depends"/></depends>
+     </XDtConfig:ifHasConfigParam>
+       <attribute name="MapResources"><XDtHibernate:mappingList/></attribute>
+       <attribute name="JndiName"><XDtHibernate:jndiName/></attribute>
+       <attribute name="Datasource"><XDtHibernate:dataSource/></attribute>
+       <attribute name="Dialect"><XDtHibernate:dialect/></attribute>
+     <XDtConfig:ifHasConfigParam paramName="username">
+       <attribute name="UserName"><XDtConfig:configParameterValue paramName="userName"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="password">
+       <attribute name="Password"><XDtConfig:configParameterValue paramName="password"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifConfigParamNotGreaterOrEquals paramName="version" value="2.1.6">
+       <attribute name="UseOuterJoin"><XDtConfig:configParameterValue paramName="useOuterJoin"/></attribute>
+     </XDtConfig:ifConfigParamNotGreaterOrEquals>
+       <attribute name="ShowSql"><XDtConfig:configParameterValue paramName="showSql"/></attribute>
+     <XDtConfig:ifHasConfigParam paramName="userTransactionName">
+       <attribute name="UserTransactionName"><XDtConfig:configParameterValue paramName="userTransactionName"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="transactionStrategy">
+       <attribute name="TransactionStrategy"><XDtConfig:configParameterValue paramName="transactionStrategy"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="transactionManagerStrategy">
+       <attribute name="TransactionManagerLookupStrategy"><XDtConfig:configParameterValue paramName="transactionManagerStrategy"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="cacheProvider">
+       <attribute name="CacheProvider"><XDtConfig:configParameterValue paramName="cacheProvider"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+	<XDtConfig:ifConfigParamGreaterOrEquals paramName="version" value="2.1">
+     <XDtConfig:ifHasConfigParam paramName="maxFetchDepth">
+       <attribute name="MaxFetchDepth"><XDtConfig:configParameterValue paramName="maxFetchDepth"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="jdbcFetchSize">
+       <attribute name="JdbcFetchSize"><XDtConfig:configParameterValue paramName="jdbcFetchSize"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="useQueryCache">
+       <XDtConfig:ifConfigParamNotGreaterOrEquals paramName="version" value="2.1.6">
+       <attribute name="UseQueryCache"><XDtConfig:configParameterValue paramName="useQueryCache"/></attribute>
+       </XDtConfig:ifConfigParamNotGreaterOrEquals>
+       <XDtConfig:ifConfigParamGreaterOrEquals paramName="version" value="2.1.6">
+       <attribute name="QueryCacheEnabled"><XDtConfig:configParameterValue paramName="useQueryCache"/></attribute>
+       </XDtConfig:ifConfigParamGreaterOrEquals>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="querySubstitutions">
+       <attribute name="QuerySubstitutions"><XDtConfig:configParameterValue paramName="querySubstitutions"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="defaultSchema">
+       <attribute name="DefaultSchema"><XDtConfig:configParameterValue paramName="defaultSchema"/></attribute>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="autoCreate" value="create">
+       <attribute name="AutoCreateSchema" value="true"/>
+     </XDtConfig:ifHasConfigParam> 
+     <XDtConfig:ifHasConfigParam paramName="autoCreate" value="create-drop">
+       <attribute name="AutoDropSchema" value="true"/>
+     </XDtConfig:ifHasConfigParam>
+     <XDtConfig:ifHasConfigParam paramName="autoCreate" value="update">
+       <attribute name="AutoUpdateSchema" value="true"/>
+     </XDtConfig:ifHasConfigParam>
+	</XDtConfig:ifConfigParamGreaterOrEquals>
+     
+     <XDtMerge:merge file="jboss-service-custom-attributes.ent"></XDtMerge:merge>
+   </mbean>
+
+   <XDtMerge:merge file="jboss-service-custom.xdt">
+   </XDtMerge:merge>
+</server>

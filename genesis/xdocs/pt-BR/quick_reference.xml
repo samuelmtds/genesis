@@ -234,7 +234,7 @@
  * @Condition findRoleCondition=g:isNotEmpty(roleCode) and
  g:hasChanged(roleCode)
  *
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
 <b>...</b>
@@ -270,7 +270,7 @@ public class InsertUpdateForm {
  * <b>@Condition findRoleCondition=g:isNotEmpty(roleCode) and
  g:hasChanged(roleCode)</b>
  *
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
 <b>...</b>
@@ -343,6 +343,13 @@ public class InsertUpdateForm {
             <td>callOnInit</td>
             <td>valor booleano</td>
             <td>Indica se o método será chamado ao se fazer o binding</td>
+            <td>Não, default: <code>true</code></td>
+          </tr>
+          <tr>
+            <td>resetSelection</td>
+            <td>valor booleano</td>
+            <td>Indica se a seleção deverá ser resetada cada vez que o método
+            for chamado</td>
             <td>Não, default: <code>true</code></td>
           </tr>
         </table>

@@ -38,7 +38,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * @Form
  * @Condition findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)
  * 
- * @struts.form
+ * @genesis.form
  */
 public class InsertUpdateForm {
    private Long id;
@@ -59,11 +59,11 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.birthday"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.birthday"
     * 
-    * @struts.validator type="date"
-    * @struts.validator-var name="pattern" value="MM/dd/yyyy"
+    * @genesis.validator type="date"
+    * @genesis.validator-var name="pattern" value="MM/dd/yyyy"
     */
    public void setBirthday(Date birthday) {
       this.birthday = birthday;
@@ -74,8 +74,8 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.country"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.country"
     */
    public void setCountry(Country country) {
       this.country = country;
@@ -86,11 +86,11 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.email"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.email"
     * 
-    * @struts.validator type="email"
-    * @struts.validator-args arg0resource="User.email"
+    * @genesis.validator type="email"
+    * @genesis.validator-args arg0resource="User.email"
     */
    public void setEmail(String email) {
       this.email = email;
@@ -104,8 +104,8 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.role"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.role"
     */
    public void setRole(Role role) {
       this.role = role;
@@ -143,11 +143,11 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.login"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.login"
     * 
-    * @struts.validator type="minlength" arg1value="${var:minlength}"
-    * @struts.validator-var name="minlength" value="4"
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="4"
     */
    public void setLogin(String login) {
       this.login = login;
@@ -158,8 +158,8 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.name"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.name"
     */
    public void setName(String name) {
       this.name = name;
@@ -170,14 +170,14 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.password"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.password"
     * 
-    * @struts.validator type="minlength" arg1value="${var:minlength}"
-    * @struts.validator-var name="minlength" value="6"
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="6"
     * 
-    * @struts.validator type="maxlength" arg1value="${var:maxlength}"
-    * @struts.validator-var name="maxlength" value="8"
+    * @genesis.validator type="maxlength" arg1value="${var:maxlength}"
+    * @genesis.validator-var name="maxlength" value="8"
     */
    public void setPassword(String password) {
       this.password = password;
@@ -188,8 +188,8 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.address"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.address"
     */
    public void setAddress(String address) {
       this.address = address;
@@ -200,8 +200,8 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @struts.validator type="required"
-    * @struts.validator-args arg0resource="User.state"
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.state"
     */
    public void setState(State state) {
       this.state = state;

@@ -24,6 +24,7 @@ import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import org.codehaus.aspectwerkz.aspect.management.Mixins;
 
 public class FormControllerFactoryAspect {
    /**
@@ -32,6 +33,21 @@ public class FormControllerFactoryAspect {
    public static class AspectFormControllerFactory implements FormControllerFactory {
       private FormController controller;
       private Object form;
+      private int maximumEvaluationTimes = 1;
+      private boolean resetOnDataProviderChange;
+
+      public AspectFormControllerFactory() {
+         String timesAsString = (String)Mixins.getParameters(getClass(),
+               getClass().getClassLoader()).get("maximumEvaluationTimes");
+
+         if (timesAsString != null) {
+            maximumEvaluationTimes = Integer.parseInt(timesAsString);
+         }
+
+         resetOnDataProviderChange = !"false".equals(Mixins.getParameters(
+               getClass(), getClass().getClassLoader()).get(
+               "resetOnDataProviderChange"));
+      }
 
       public FormController getFormController(Object form) {
          if (this.form != null && this.form != form) {
@@ -43,8 +59,11 @@ public class FormControllerFactoryAspect {
 
          if (controller == null) {
             controller = createFormController(form);
+
             controller.setForm(form);
             controller.setFormMetadata(getFormMetadata(form));
+            controller.setMaximumEvaluationTimes(maximumEvaluationTimes);
+            controller.setResetOnDataProviderChange(resetOnDataProviderChange);
          }
 
          return controller;

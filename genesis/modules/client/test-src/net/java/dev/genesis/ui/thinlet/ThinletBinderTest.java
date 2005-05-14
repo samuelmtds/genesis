@@ -426,10 +426,10 @@ public class ThinletBinderTest extends GenesisTestCase {
       // Unsupported widgets are not bound
       assertNull(widgetGroup.get("table"));
       
-      // Not writeable fields are not bound
-      assertNull(widgetGroup.get("checkbox_not_writeable"));
+      // Not writeable fields are not bound, but widgetGroup are created
+      assertNotNull(widgetGroup.get("checkbox_not_writeable"));
       
-      // Not found widgets are not bound
+      // Not found widgets are not bound 
       assertNull(widgetGroup.get("no_components"));
       
       // Assert action methods
@@ -479,6 +479,35 @@ public class ThinletBinderTest extends GenesisTestCase {
       
       ThinletUtils.setGroup(togglebutton, "group_1");
       assertEquals(Collections.singletonList(togglebutton), binder.findComponents("group_1"));
+   }
+
+   public void testFindComponentsInDepth() {
+      Object panel1 = ThinletUtils.newPanel();
+      thinlet.add(thinlet.getDesktop(), panel1);
+      thinlet.add(thinlet.getDesktop(), ThinletUtils.newButton());
+      thinlet.add(thinlet.getDesktop(), ThinletUtils.newCheckbox());
+
+      Object checkboxLevel1 = ThinletUtils.newCheckbox();
+      ThinletUtils.setGroup(checkboxLevel1, "group_1");
+      thinlet.add(panel1, checkboxLevel1);
+
+      Object panel2 = ThinletUtils.newPanel();
+      thinlet.add(panel1, panel2);
+
+      Object checkboxLevel2 = ThinletUtils.newCheckbox();
+      ThinletUtils.setGroup(checkboxLevel2, "group_2");
+      thinlet.add(panel2, checkboxLevel2);
+
+      binder.setComponentSearchDepth(1);
+
+      assertEquals(1, binder.getComponentSearchDepth());
+
+      // This should be found...
+      assertEquals(Collections.singletonList(checkboxLevel1), 
+            binder.findComponents("group_1"));
+      
+      // This shouldn't
+      assertTrue(binder.findComponents("group_2").isEmpty());
    }
    
    public void testCreateWidgetGroup() {
@@ -855,8 +884,8 @@ public class ThinletBinderTest extends GenesisTestCase {
          }
 
          protected void populateFromCollection(Object component, Collection c,
-               String keyProperty, String valueProperty, boolean blank,
-               String blankLabel, Map formatters)
+               String keyProperty, String valueProperty, boolean virtual, 
+               boolean blank, String blankLabel, Map formatters)
                throws IllegalAccessException, InvocationTargetException,
                NoSuchMethodException {
             populateMap.put(component, c);
@@ -897,11 +926,18 @@ public class ThinletBinderTest extends GenesisTestCase {
       // Table
       meta.setWidgetName("table");
       binder.dataProvidedListChanged(meta, someItems);
+      // Assert resetSelectedFields(..) wasn't called
+      assertNull(resetMap.get(meta.getWidgetName()));
+      // Assert thinlet.populated was called with correct values
+      assertSame(someItems, populateMap.get(table));
+
+      form.getController().setResetOnDataProviderChange(false);
+      binder.dataProvidedListChanged(meta, someItems);
       // Assert resetSelectedFields(..) was called
       assertEquals(Boolean.TRUE, resetMap.get(meta.getWidgetName()));
       // Assert thinlet.populated was called with correct values
       assertSame(someItems, populateMap.get(table));
-      
+
       // Combo without key property
       ex = null;
       meta.setWidgetName("combobox");

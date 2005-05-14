@@ -19,7 +19,17 @@
 package net.java.dev.genesis.text;
 
 public class DefaultFormatter implements Formatter {
+   private final String defaultValue;
+
+   public DefaultFormatter() {
+      this("");
+   }
+
+   public DefaultFormatter(String defaultValue) {
+      this.defaultValue = defaultValue;
+   }
+
    public String format(Object o) {
-      return o == null ? "" : o.toString();
+      return o == null ? defaultValue : o.toString();
    }
 }
