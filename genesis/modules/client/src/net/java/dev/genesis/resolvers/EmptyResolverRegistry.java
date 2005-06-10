@@ -24,35 +24,32 @@ import java.util.Map;
 import net.java.dev.genesis.registry.RegistryFactory;
 
 
-public class EmptyResolverRegistry {
+public class EmptyResolverRegistry extends RegistryFactory {
 	private static final EmptyResolverRegistry instance = new EmptyResolverRegistry();
-	private final RegistryFactory factory = new RegistryFactory();
 
 	private EmptyResolverRegistry() {
-		factory.register(Object.class, new DefaultEmptyResolver());
-		factory.register(String.class, new StringEmptyResolver());
-      factory.register(Collection.class, new CollectionEmptyResolver());
-      factory.register(Map.class, new MapEmptyResolver());
-	}
+      register(Object.class, new DefaultEmptyResolver());
+      register(String.class, new StringEmptyResolver());
+      register(Collection.class, new CollectionEmptyResolver());
+      register(Map.class, new MapEmptyResolver());
+   }
 
-	public static EmptyResolverRegistry getInstance() {
-		return instance;
-	}
+   public static EmptyResolverRegistry getInstance() {
+      return instance;
+   }
 
-	public EmptyResolver getEmptyResolver(final String resolverClassName,
-			final Map attributesMap) {
-		return (EmptyResolver) factory.getNewInstance(resolverClassName,
-				attributesMap);
-	}
+   public EmptyResolver getEmptyResolver(final String resolverClassName,
+         final Map attributesMap) {
+      return (EmptyResolver)getNewInstance(resolverClassName, attributesMap);
+   }
 
-	public EmptyResolver getDefaultEmptyResolverFor(final Class clazz) {
-		return getDefaultEmptyResolverFor(clazz, (Map) null);
-	}
+   public EmptyResolver getDefaultEmptyResolverFor(final Class clazz) {
+      return getDefaultEmptyResolverFor(clazz, (Map)null);
+   }
 
-	public EmptyResolver getDefaultEmptyResolverFor(final Class clazz,
-			final Map attributesMap) {
-		return (EmptyResolver) factory
-				.getExistingInstance(clazz, attributesMap);
-	}
+   public EmptyResolver getDefaultEmptyResolverFor(final Class clazz,
+         final Map attributesMap) {
+      return (EmptyResolver)getExistingInstance(clazz, attributesMap);
+   }
 
 }
