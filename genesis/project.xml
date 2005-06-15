@@ -31,6 +31,11 @@
          <tag>GENESIS_3_0_EA_1</tag>
       </version>
       <version>
+         <id>2.2-RC2</id>
+         <name>2.2-RC2</name>
+         <tag>GENESIS_2_2_RC_2</tag>
+      </version>
+      <version>
          <id>2.2-RC1</id>
          <name>2.2-RC1</name>
          <tag>GENESIS_2_2_RC_1</tag>

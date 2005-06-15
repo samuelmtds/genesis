@@ -8,6 +8,7 @@
       <item name="genesis-client" href="../genesis-client/index.html" />
       <item name="genesis-shared" href="../genesis-shared/index.html" />
       <item name="genesis-aspect" href="../genesis-aspect/index.html" />
+      <item name="genesis-xdoclet" href="../../tags/genesis-tags.html" />
     </links>
     <menu name="Projects">
       <item name="genesis" href="../../index.html" />

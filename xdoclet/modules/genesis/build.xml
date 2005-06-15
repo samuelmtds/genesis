@@ -51,9 +51,6 @@
 
         <!-- Define classpath required for compiling modules -->
         <path id="module.compile.class.path">
-            <fileset dir="${lib.dir}">
-                <include name="*.jar"/>
-            </fileset>
 
             <fileset dir="${dist.lib.dir}">
                 <!-- include previously built jars -->
@@ -70,9 +67,6 @@
 		<mkdir dir="${module.resources.dir}"/>
 
         <path id="module.xml.class.path">
-            <fileset dir="${lib.dir}">
-                <include name="*.jar"/>
-            </fileset>
             <fileset dir="${dist.lib.dir}">
                 <!-- include previously built jars -->
                 <include name="*.jar"/>
@@ -202,7 +196,7 @@
     <!-- =================================================================== -->
     <!-- Compiles the source code                                            -->
     <!-- =================================================================== -->
-    <target name="compile" depends="beautify" unless="module.jar.uptodate">
+    <target name="compile" unless="module.jar.uptodate">
         <mkdir dir="${module.classes.dir}"/>
         <javac
             destdir="${module.classes.dir}"
@@ -233,22 +227,6 @@
     </target>
 
     <!-- =================================================================== -->
-    <!-- Beautify the code                                                   -->
-    <!-- =================================================================== -->
-    <target name="beautify" depends="init" unless="module.jar.uptodate">
-
-        <taskdef name="pretty2" classname="org.acm.seguin.ant.Pretty"
-                 classpath="${lib.dir}/prettyprinter.jar"/>
-
-        <pretty2 settingsDir="${config.dir}" cvs="true" compileDir="${module.classes.dir}">
-            <fileset dir="${module.src.dir}">
-                <include name="**/*.java" />
-            </fileset>
-        </pretty2>
-
-    </target>
-
-    <!-- =================================================================== -->
     <!-- Generate tag documentation.                                         -->
     <!-- =================================================================== -->
     <target name="docs" depends="init"
@@ -258,9 +236,6 @@
 
         <mkdir dir="${docs.tags.dir}"/>
         <path id="doc.class.path">
-            <fileset dir="${lib.dir}">
-                <include name="**/*.jar" />
-            </fileset>
             <fileset dir="${dist.lib.dir}">
                 <include name="**/*.jar" />
             </fileset>

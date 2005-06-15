@@ -9,6 +9,7 @@
     <section name="Downloads e notas de versão">
       <ul>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
+        <li><a href="#2.2-RC2">2.2-RC2</a></li>
         <li><a href="#2.2-RC1">2.2-RC1</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
@@ -62,6 +63,60 @@
         2.</p>
       </subsection>
     </section>
+    <section name="2.2-RC2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+          <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3533&amp;expandFolder=3533&amp;folderID=3533">aqui</a>. 
+          </p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>A <a href="../tags/genesis-tags.html">documentação das tags do 
+          genesis para o XDoclet</a> foi integrada ao site</li>
+          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
+          foi modificada para permitir o registro programático de instâncias de
+          <code>net.java.dev.genesis.resolvers.EmptyResolver</code></li>
+        </ul>
+        <p>O seguinte bug foi corrigido nessa versão:</p>
+        <ul>
+          <li>O processo de build do módulo xdoclet não funciona (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=241">Issue
+          # 241</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 2.2-RC1 e a 2.2-RC2
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;target_milestone=2.2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/2.2-RC2/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniel Gonçalves</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
     <section name="2.2-RC1">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
@@ -97,14 +152,14 @@
         </ul>
         <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 2.2-RC1
         pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2">aqui</a>.</p>
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2-RC1">aqui</a>.</p>
         <p>A documentação completa para esta versão pode ser encontrada <a
         href="https://genesis.dev.java.net/nonav/2.2-RC1/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
         versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">aqui</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;issue_type=DEFECT">aqui</a>
         </p>
       </subsection>
       <subsection name="Agradecimentos">

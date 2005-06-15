@@ -8,6 +8,7 @@
     <section name="Downloads and release notes">
       <ul>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
+        <li><a href="#2.2-RC2">2.2-RC2</a></li>
         <li><a href="#2.2-RC1">2.2-RC1</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
@@ -59,6 +60,56 @@
         could work with it.</p>
       </subsection>
     </section>
+    <section name="2.2-RC2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3533&amp;expandFolder=3533&amp;folderID=3533">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>The <a href="../tags/genesis-tags.html">documentation for genesis 
+          XDoclet tags</a> has been integrated to the site</li>
+          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
+          has been modified to allow 
+          <code>net.java.dev.genesis.resolvers.EmptyResolver</code> instances to
+          be registered programmatically</li>
+        </ul>
+        <p>The following bug has been fixed on this release:</p>
+        <ul>
+          <li>The build process for the xdoclet module does not work (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=241">Issue
+          # 241</a>)</li>
+        </ul>
+        <p>The full change log between 2.2-RC1 and 2.2-RC2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;target_milestone=2.2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/2.2-RC2/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
     <section name="2.2-RC1">
       <subsection name="Downloads">
         <p>All distribution files for this release can be found <a 
@@ -91,13 +142,13 @@
           # 225</a>)</li>
         </ul>
         <p>The full change log between 2.1 and 2.2-RC1 can be found <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2">here</a>.</p>
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2-RC1">here</a>.</p>
         <p>The full documentation for this release can be found <a
         href="https://genesis.dev.java.net/nonav/2.2-RC1/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">here</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;issue_type=DEFECT">here</a>
         </p>
       </subsection>
       <subsection name="Acknowledgements">

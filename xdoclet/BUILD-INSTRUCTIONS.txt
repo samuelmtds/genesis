@@ -1,7 +1,7 @@
 To build xdoclet modules, you need:
 
 - Ant (http://ant.apache.org/)
-- XDoclet (1.2.2 or newer version) binary distribution (http://xdoclet.sourceforge.net/)
+- XDoclet (1.2.3 or newer version) binary distribution (http://xdoclet.sourceforge.net/)
 - To create a file named build.properties
 
 In build.properties you must define a XDoclet Home pointing to
