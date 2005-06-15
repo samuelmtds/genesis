@@ -20,6 +20,7 @@
       />
       <item name="genesis-aspect" href="/multiproject/genesis-aspect/index.html"
       />
+      <item name="genesis-xdoclet" href="/tags/genesis-tags.html" />
     </links>
     <menu name="genesis">
       <item name="Overview" href="/en/index.html" />
@@ -52,8 +53,6 @@
       <item name="Advanced guide" collapse="true"
             href="/en/advanced_introduction.html">
         <item name="genesis aspects" href="/en/aspects.html" />
-        <item name="Generic scripting support"
-              href="/en/generic_scripting.html" />
       </item>
       <item name="FAQ" href="/en/faq.html" />
       <item name="Roadmap"

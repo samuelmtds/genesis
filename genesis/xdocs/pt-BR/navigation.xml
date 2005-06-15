@@ -20,6 +20,7 @@
       />
       <item name="genesis-aspect" href="/multiproject/genesis-aspect/index.html"
       />
+      <item name="genesis-xdoclet" href="/tags/genesis-tags.html" />
     </links>
     <menu name="genesis">
       <item name="Visão geral" href="/pt-BR/index.html" />
@@ -55,8 +56,6 @@
             href="/pt-BR/advanced_introduction.html">
         <item name="Aspectos do genesis"
               href="/pt-BR/aspects.html" />
-        <item name="Suporte a linguagens de script"
-              href="/pt-BR/generic_scripting.html" />
         <!--item name="Arquitetura do binding"
               href="/pt-BR/binding_architecture.html" /-->
       </item>

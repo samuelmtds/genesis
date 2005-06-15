@@ -23,10 +23,10 @@ import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-import net.java.dev.genesis.script.ScriptExpression;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.apache.commons.jxpath.CompiledExpression;
 
 public class FieldMetadata extends MemberMetadata {
    private final String fieldName;
@@ -34,7 +34,7 @@ public class FieldMetadata extends MemberMetadata {
    private final boolean writeable;
 
    private Converter converter;
-   private ScriptExpression clearOnCondition;
+   private CompiledExpression clearOnCondition;
    private EqualityComparator equalityComparator;
    private EmptyResolver emptyResolver;
    private Object emptyValue;
@@ -59,11 +59,17 @@ public class FieldMetadata extends MemberMetadata {
       return writeable;
    }
 
-   public ScriptExpression getClearOnCondition() {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public CompiledExpression getClearOnCondition() {
       return clearOnCondition;
    }
 
-   public void setClearOnCondition(ScriptExpression clearOnCondition) {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public void setClearOnCondition(CompiledExpression clearOnCondition) {
       this.clearOnCondition = clearOnCondition;
    }
 

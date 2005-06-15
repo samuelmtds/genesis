@@ -24,11 +24,11 @@ import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
-import org.codehaus.aspectwerkz.aspect.management.Mixins;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 
 public class FormControllerFactoryAspect {
    /**
-    * @Mixin(pointcut="formControllerFactoryIntroduction", isTransient=true, deploymentModel="perInstance")
+    * @Introduce formControllerFactoryIntroduction deploymentModel=perInstance
     */
    public static class AspectFormControllerFactory implements FormControllerFactory {
       private FormController controller;
@@ -36,17 +36,15 @@ public class FormControllerFactoryAspect {
       private int maximumEvaluationTimes = 1;
       private boolean resetOnDataProviderChange;
 
-      public AspectFormControllerFactory() {
-         String timesAsString = (String)Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("maximumEvaluationTimes");
+      public AspectFormControllerFactory(CrossCuttingInfo info) {
+         String timesAsString = info.getParameter("maximumEvaluationTimes");
 
          if (timesAsString != null) {
             maximumEvaluationTimes = Integer.parseInt(timesAsString);
          }
 
-         resetOnDataProviderChange = !"false".equals(Mixins.getParameters(
-               getClass(), getClass().getClassLoader()).get(
-               "resetOnDataProviderChange"));
+         resetOnDataProviderChange = !"false".equals(info
+               .getParameter("resetOnDataProviderChange"));
       }
 
       public FormController getFormController(Object form) {
