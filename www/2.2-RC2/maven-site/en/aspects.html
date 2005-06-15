@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - genesis aspects</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 14 June 2005
+                  | Doc for 2.2-RC2</div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/screenshots.html">Screenshots</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="collapsed"><a href="../en/documentation_intro.html">User manual</a></li><li class="none"><a href="../en/jars_explained.html">Understanding genesis jars</a></li><li class="none"><a href="../en/empty_project.html">Developing with genesis</a></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><strong><a href="../en/aspects.html">genesis aspects</a></strong></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="genesis_aspects"></a><h2>genesis aspects</h2><p>A number of genesis features are implemented using aspects. AOP usage
+      makes it possible to extend these features in a significant way with no
+      need to change business or UI code. This documentation section aim is to
+      describe these aspects so that advanced users can understand and customize
+      their behaviour. In order to fully understand this section, AOP,
+      AspectWerkz, EJB and Thinlet knowledge is required.</p><ul>
+        <li><a href="#Determining_remotable_and_transactional_methods">
+        Determining remotable and transactional methods</a></li>
+        <li><a href="#Executing_remotable_and_transactional_methods">Executing
+        remotable and transactional methods</a></li>
+        <li><a href="#Executing_dynamic_searches">Executing dynamic searches</a>
+        </li>
+        <li><a href="#Limiting_method_execution_time">Limiting method execution
+        time</a></li>
+        <li><a href="#Changing_mouse_cursor_during_event_handling">Changing
+        mouse cursor during event handling</a></li>
+        <li><a href="#Instantiating_metadata">Instantiating metadata</a></li>
+        <li><a href="#Instantiating_the_form_controller">Instantiating the form
+        controller</a></li>
+        <li><a href="#Configuration_reference">Configuration reference</a>
+        </li>
+      </ul></div><div class="section"><a name="Determining_remotable_and_transactional_methods"></a><h2>Determining remotable and transactional methods</h2><p>Interface <code>CommandResolver</code>, contained in package
+      <code>net.java.dev.genesis.aspect</code>, is used to determine whether a
+      method is remotable or transactional or not. Below, it is possible to see
+      the relevant code section for the interface definition:</p>
+    <div class="source"><pre>
+public interface CommandResolver {
+   public boolean isRemotable(Method m);
+   public boolean isTransactional(Method m);
+}
+</pre></div>
+  <p>Aspect <code>CommandInvocationAspect</code>, defined in the same
+      package as the interface, has a inner class that implements this
+      interface, <code>CommandResolverImpl</code>, that decides whether a method
+      is remotable/transactional or not if it is annotated with
+      <code>@Remotable</code> or <code>@Transactional</code> or if the class
+      containing the method implements <code>Query</code> or
+      <code>Transaction</code>, deprecated interfaces from genesis 0.1.</p><p>If the value for the aspect parameter named <code>useFastMode</code> is
+      <code>true</code> - that is its default value -, any method will be
+      considered remotable, since in the provided aop.xml configuration only
+      remotable or transactional methods are intercepted by the execution
+      pointcut. This implementation is introduced in classes selected by the
+      pointcut named <code>commandResolverIntroduction</code>.</p><p>If it is necessary to determine if a method is remotable or
+      transactional using a different strategy - based on an external xml
+      definition instead of using annotation, for example -, one just have to
+      provide a custom implementation of <code>CommandResolver</code> that takes
+      this decision using this strategy and introduce it into business classes.
+      </p></div><div class="section"><a name="Executing_remotable_and_transactional_methods"></a><h2>Executing remotable and transactional methods</h2><p>Remotable and transactional method execution is intercepted by an
+      aspect so that instances can be transfered (or not, as we'll see soon) to
+      the server and an appropriate transactional context can be used for
+      executing the original call. Besides that, dependency injection is done
+      before execuction.</p><p>Two components implement that: an aspect and a
+      <code>net.java.dev.genesis.command.TransactionalInjector</code>
+      implementation. Interface <code>TransactionalInjector</code> is defined as
+      follows:</p>
+    <div class="source"><pre>
+public interface TransactionalInjector {
+   public void init(Object context);
+   public void beforeInvocation(Object target, boolean transactional)
+                                                          throws Exception;
+   public void afterInvocation() throws Exception;
+   public void onException(Exception e);
+   public void onFinally() throws Exception;
+}
+</pre></div>
+  <p>The interface implementation is used by aspects in a well defined
+      manner, as follow:</p><ol>
+        <li>Right after instantiation, method <code>init(Object)</code> is
+        called with a context object as a parameter. This context object is
+        execution mode specific - local, in an EJB environment etc. - and it
+        allows the newly created instance to read user defined configurations.
+        </li>
+        <li>The <code>beforeInvocation(Object,boolean)</code> method is invoked
+        before executing any remotable or transactional method. Its arguments
+        are the object in which the method will be called and the transactional
+        status for the call. At this moment eventual dependencies should be
+        injected into the instance and that a transaction should be started if
+        necessary.</li>
+        <li><code>afterInvocation()</code> is only invoked when method execution
+        happens with no errors, i.e., when no exception is thrown. It's when a
+        transaction should be commited.</li>
+        <li><code>onException(Exception)</code> gets called if an exception if
+        thrown during <code>beforeInvocation(Object,boolean)</code> method or
+        during execution of the remotable/transactional method. That's the
+        moment to rollback the transaction.</li>
+        <li><code>onFinally()</code> is always called and should release any
+        resources allocated during execution.</li>
+      </ol><p>Each <code>TransactionalInjector</code> instance will be used by just
+      one Thread.</p><p>By using custom aspects and implementations of
+      <code>TransactionalInjector</code> it is possible to completely change the
+      way transactions are executed and perform any type of dependency
+      injection in business components. Three powerful execution modes are
+      provided with genesis and explained below.</p><div class="subsection"><a name="Local_execution"></a><h3>Local execution</h3><p>Local execution is performed by the
+        <code>LocalCommandExecutionAspect</code> aspect. Basically, this aspect
+        delegates most of the work to a <code>TransactionalInjector</code>
+        implementation, as the following code snippet proves:
+        </p>
+    <div class="source"><pre>
+try {
+   injector.beforeInvocation(obj, transactional);
+   final Object ret = joinPoint.proceed();
+   injector.afterInvocation();
+
+   return ret;
+} catch (final Exception e) {
+   injector.onException(e);
+
+   throw e;
+} finally{
+   injector.onFinally();
+}
+</pre></div>
+  <p>Pointcut <code>localCommandExecution</code> is used to define which
+        method execution should be intercepted by advice
+        <code>commandExecution(JoinPoint)</code>. A
+        <code>TransactionalInjector</code> implementation can be configured by
+        setting the aspect parameter <code>transactionalInjector</code> to the
+        class name. The context object passed as an argument to
+        <code>init(Object)</code> will be the <code>CrossCuttingInfo</code>
+        instance the aspect holds.</p><p>Class <code>HibernateTransactionalInjector</code>, that is also
+        contained in <code>net.java.dev.genesis.aspect</code> is an appropriate
+        <code>TransactionalInjector</code> implementation for this scenario. It
+        introduces a Hibernate session in classes that implement
+        <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code> and
+        it controls transactions using resources provided by the Hibernate
+        session itself.</p></div><div class="subsection"><a name="Remote_EJB_execution"></a><h3>Remote EJB execution</h3><p>Another execution possibility bundled with genesis is executing the
+        call inside a Stateless Session Bean, taking advantage of container
+        managed transactions (CMT). Aspect <code>EJBCommandExecutionAspect</code> does that by invoking
+        <code>executeTransaction(Object,String,String[],Object[])</code> and
+        <code>executeQuery(Object,String,String[],Object[])</code> in the EJB
+        instance whose remote interface is
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code>. Argument values
+        for both methods are the instance for which a method will be invoked,
+        method name, class names for method signature and values used in the
+        original invocation.</p><p>Advice <code>commandExecution(JoinPoint)</code> will actually do a
+        remote invocation to the Session Bean instance. Pointcut named
+        <code>ejbCommandExecution</code> will be used to select which method
+        execution should be performed remotely. Aspect parameter named
+        <code>jndiName</code> contains the JNDI address for the EJB home
+        instance, while the boolean parameter <code>retryOnNoSuchObject</code>
+        indicates whether execution should be retried (just once more) when a
+        <code>java.rmi.NoSuchObjectException</code> is thrown (that may happen
+        if the application server is restarted).</p><p>Since method execution takes place in a Session Bean instance, the
+        <code>TransactionalInjector</code> implementation resides on the server,
+        and it can be specified as the value for an env-entry named
+        <code>TransactionalInjector</code>. The context object passed as an
+        argument to <code>init(Object)</code>, is the instance of
+        <code>SessionContext</code> the Session Bean instance holds.</p><p>Implementation <code>
+        net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector
+        </code> provided by genesis is the appropriate one for this
+        configuration. During its <code>init(Object)</code> method execution, a
+        Hibernate <code>SessionFactory</code> implementation is retrived from
+        the JNDI adress specified as a value for env-entry
+        <code>HibernateFactoryAddress</code>. The transaction mechanism used by
+        this implementation is JTA, since only methods that use CMT are involved
+        in execution. Rollback will be performed, if necessary, by calling
+        <code>setRollbackOnly()</code> in the <code>SessionContext</code>
+        instance.</p></div><div class="subsection"><a name="Local_EJB_execution"></a><h3>Local EJB execution</h3><p>Executing the method inside a Stateless Session Bean instance with
+        CMT through the EJB local interface might be a better option in some
+        environments, such as web applications, for example. The aspect named
+        <code>LocalEJBCommandExecutionAspect</code> invokes the
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code> instance using the
+        exposed local interface and its behaviour is basically the same as the
+        behaviour of the previously aspect mentioned,
+        <code>EJBCommandExecutionAspect</code>, except for the following
+        things:</p><ul>
+          <li>The name of the execution pointcut is
+          <code>localEjbCommandExecution</code></li>
+          <li>Only the parameter named <code>jndiName</code> is meaningful,
+          since there is no remote communication with the server</li>
+        </ul></div></div><div class="section"><a name="Executing_dynamic_searches"></a><h2>Executing dynamic searches</h2><p>Dynamic searches, i.e., classes that have a <code>Criteria</code>
+      instance injected on them and have setters invoked for non-empty
+      properties, are executed by the
+      <code>net.java.dev.genesis.aspect.CriteriaCommandExecutionAspect</code>
+      aspect.</p><p>Every class intercepted by this aspect must implement
+      <code>net.java.dev.genesis.command.hibernate.CriteriaResolver</code>,
+      shown below:</p>
+    <div class="source"><pre>
+public interface CriteriaResolver {
+   public Map getPropertiesMap();
+   public void setPropertiesMap(final Map propertiesMap);
+}
+</pre></div>
+  <p>Method <code>setPropertiesMap(Map)</code> will be invoked on the client
+      side passing only data that will be used for performing the search.
+      Usually this method will be invoked indirectly by calling the auxiliary
+      method <code>fillCriteria(HibernateCriteria,Object)</code> contained in
+      <code>net.java.dev.genesis.helpers.CriteriaPropertyHelper</code>.</p><p>Pointcut named <code>criteriaResolverIntroduction</code> defines which
+      classes will have an implementation of this interface called
+      <code>CriteriaResolverImpl</code> introduced into them. This is static
+      inner class of the aspect. This implementation uses a member variable
+      whose type is <code>java.util.Map</code> to keep and expose properties.</p><p>Pointcut named <code>criteriaCommandExecution</code> defines which
+      methods will be intercepted by the <code>commandExecution(JoinPoint)</code> advice. This method relies on information returned by
+      <code>getPropertiesMap()</code> in <code>CriteriaResolver</code> to
+      determine which properties will be used for the search, together with the
+      method signature and argument values to instantiate
+      <code>net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor</code>. Method <code>execute()</code> will be called on the new instance. Since
+      this method is annotated as <code>@Remotable</code>, it will be
+      intercepted for <a href="#Remote_EJB_execution">remote execution</a>. This method initializes
+      a <code>Criteria</code> instance (when the name of a Hibernate mapped
+      class is configured for the annotation), injects it into the instance,
+      invokes setters for search criteria and invokes the search method.</p></div><div class="section"><a name="Limiting_method_execution_time"></a><h2>Limiting method execution time</h2><p>Aspect <code>TimeoutAspect</code> allows controlling how long a method
+      takes to execute; if the execution times out, a
+      <code>net.java.dev.genesis.exception.TimeoutException</code> will be
+      thrown.</p><p>The time limit is configured by the aspect parameter named
+      <code>timeout</code>. Pointcut named <code>timeout</code> selects methods
+      whose execution will be intercepted by advice
+      <code>timeoutAdvice(JoinPoint)</code>. This advice executes the
+      intercepted method in a new thread and waits for its completion for
+      <code>timeout</code> seconds. Any exception that could be normally thrown
+      by the intercepted method is thrown back to the caller.</p><p>The <code>keepThreadInstance</code> parameter defines whether genesis
+      should reuse the thread which controls the execution timeout of a method.
+      In case this parameter is set to <code>true</code>, the aspect will create
+      and maintain a single thread and therefore all next intercepted methods
+      executions will reuse the same thread. This way the application perfomance
+      will be increased.</p><p>However in case the application needs quite a few threads to run, this
+      parameter (if set to true) will keep a lot of children threads in memory
+      that might consume system resources - this way, in this particular case,
+      it is recommended setting this parameter to <code>false</code>.</p></div><div class="section"><a name="Changing_mouse_cursor_during_event_handling"></a><h2>Changing mouse cursor during event handling</h2><p>In order to allow a user to realize a time consuming operation is being
+      performed, aspect <code>WaitCursorAspect</code> changes the mouse cursor
+      to a wait cursor during a UI event handling method.</p><p>Pointcut named <code>waitCursorExecution</code> specify which methods
+      perform event handling and must be intercepted by the advice named
+      <code>waitCursorExecution(JoinPoint)</code>. This advice saves the current
+      cursor, changes it to a wait cursor and then restore the original cursor
+      when event handling is done. It is expected that the intercepted methods
+      belong to a <code>java.awt.Component</code> instance, since this class is
+      the one that defines methods for getting and setting the current cursor.
+      </p></div><div class="section"><a name="Instantiating_metadata"></a><h2>Instantiating metadata</h2><p>All form to view binding is based on metadata exposed by both sides.
+      This metadata model can be found at
+      <code>net.java.dev.genesis.ui.metadata</code> for forms and views. In
+      this package, there are interfaces - <code>FormMetadataFactory</code> and
+      <code>ViewMetadataFactory</code> -, that need to be implemented by
+      classes responsible for returning metadata. Below there is a transcription
+      of relevant code snippets for both of them:</p>
+    <div class="source"><pre>
+public interface FormMetadataFactory {
+    public FormMetadata getFormMetadata(Class formClass);
+}
+</pre></div>
+  
+    <div class="source"><pre>
+public interface ViewMetadataFactory {
+   public ViewMetadata getViewMetadata(Class formClass);
+}
+</pre></div>
+  <p>Aspects <code>FormMetadataFactoryAspect</code> and
+      <code>ViewMetadataFactoryAspect</code> define implementations of these
+      interfaces that use annotation for building metadata. The implementations
+      are called <code>AspectFormMetadataFactory</code> and
+      <code>AspectViewMetadataFactory</code> and they are static inner
+      classes of the aspects. Classes that need to have these implementations
+      introduced into them are selected by pointcuts named
+      <code>formMetadataFactoryIntroduction</code> and
+      <code>viewMetadataFactoryIntroduction</code>. To override the way
+      metadata is created - by using an external xml definition, for example -
+      one just have to introduce different interface implementations in forms
+      and views.</p><p>The <code>ThinletMetadataFactory</code> class and its related classes
+      have been replaced starting from relase 2.1 by the
+      <code>ViewMetadataFactory</code> class family and they will be removed in
+      a future genesis release.</p></div><div class="section"><a name="Instantiating_the_form_controller"></a><h2>Instantiating the form controller</h2><p>Updating the internal state of a form and firing events related to
+      changes is performed by a
+      <code>net.java.dev.genesis.ui.controller.FormController</code>
+      implementation. The <code>FormController</code> instance is obtained by
+      using the
+      <code>net.java.dev.genesis.ui.controller.FormControllerFactory</code>
+      interface. Its definition is:</p>
+    <div class="source"><pre>
+public interface FormControllerFactory {
+   public FormController getFormController(Object form);
+}
+</pre></div>
+  <p>The <code>FormControllerFactoryAspect</code> aspect defines an
+      implementation of this interface as a static inner class,
+      <code>AspectFormControllerFactory</code>, that always return a
+      <code>net.java.dev.genesis.ui.controller.DefaultFormController</code>
+      instance. Classes that need to have this implementation introduced into
+      them are selected by the pointcut named
+      <code>formControllerFactoryIntroduction</code>.</p></div><div class="section"><a name="Configuration_reference"></a><h2>Configuration reference</h2><p>There are below a few useful tables for advanced developers and also a
+      default configuration that should be enough for most situations.</p><div class="subsection"><a name="Parameters"></a><h3>Parameters</h3><table class="bodyTable"><tr class="b"><th>Aspect</th><th>Name</th><th>Type</th><th>Description</th><th>Mandatory</th><th>Default value</th></tr><tr class="a"><td>CommandInvocationAspect</td><td>useFastMode</td><td>boolean</td><td>Indicates whether the process that decides whether a method is
+            remotable or not will be actually executed or if every intercepted
+            method will be considered as being at least remotable</td><td><b>Yes</b></td><td><code>true</code></td></tr><tr class="b"><td>CriteriaCommandExecutionAspect</td><td>useOriginalMethod</td><td>boolean</td><td>Configures how the name for the method to be executed will be
+            obtained from the <code>MethodJoinPoint</code> instance. It should
+            be <code>true</code> for local execution modes.</td><td>No</td><td><code>false</code></td></tr><tr class="a"><td rowspan="2">EJBCommandExecutionAspect</td><td>jndiName</td><td>String</td><td>A JNDI address from where a
+            <code>net.java.dev.genesis.ejb.CommandExecutorHome</code> instance
+            can be obtained</td><td><b>Yes</b></td><td>None</td></tr><tr class="b"><td>retryOnNoSuchObject</td><td>boolean</td><td>Indicates whether the method should be called again if a
+            <code>java.rmi.NoSuchObjectException</code> occurs</td><td>No</td><td><code>true</code></td></tr><tr class="a"><td rowspan="2">FormControllerFactoryAspect$AspectFormControllerFactory</td><td>maximumEvaluationTimes</td><td>int</td><td>Maximum number of times form conditions will be evaluated as
+            long as they change</td><td>No</td><td><code>1</code></td></tr><tr class="b"><td>resetOnDataProviderChange</td><td>boolean</td><td>Indicates whether the <code>FormController</code> instance
+            should perform a conditional reset of indexes in
+            <code>@DataProvider</code> every time the method gets called</td><td>No</td><td><code>true</code></td></tr><tr class="a"><td>LocalCommandExecutionAspect</td><td>transactionalInjector</td><td>Fully qualified class name</td><td>Name for a
+            <code>net.java.dev.genesis.command.TransactionalInjector</code>
+            implementation</td><td><b>Yes</b></td><td>None</td></tr><tr class="b"><td>LocalEJBCommandExecutionAspect</td><td>jndiName</td><td>String</td><td>A JNDI address from where a
+            <code>net.java.dev.genesis.ejb.CommandExecutorLocalHome</code>
+            instance can be obtained</td><td><b>Yes</b></td><td>None</td></tr><tr class="a"><td rowspan="2">TimeoutAspect</td><td>timeout</td><td>long</td><td>Maximum amount of milliseconds a method execution can take</td><td><b>Yes</b></td><td>None</td></tr><tr class="b"><td>keepThreadInstance</td><td>boolean</td><td>Indicates whether the timeout controlling thread should be
+            kept and reused by all intercepted methods</td><td>No</td><td><code>false</code></td></tr></table></div><div class="subsection"><a name="Named_pointcuts"></a><h3>Named pointcuts</h3><p>Named pointcuts will only be available when the annotated jar is used
+        and, under these conditions, attributing values for them is mandatory if
+        the aspect that defines them is configured.</p><table class="bodyTable"><tr class="a"><th>Aspect</th><th>Name</th><th>Type</th><th>Description</th></tr><tr class="b"><td>CommandInvocationAspect</td><td>commandResolverIntroduction</td><td>Class</td><td>Introduces interface
+            <code>net.java.dev.genesis.aspect.CommandResolver</code> having
+            <code>CommandInvocationAspect$CommandResolverImpl</code> as its
+            implementation</td></tr><tr class="a"><td rowspan="2">CriteriaCommandExecutionAspect</td><td>criteriaCommandExecution</td><td>Method</td><td>Intercepts dynamic search method execution</td></tr><tr class="b"><td>criteriaResolverIntroduction</td><td>Class</td><td>Introduces interface
+            <code>net.java.dev.genesis.command.hibernate.CriteriaResolver</code>
+            having
+            <code>CriteriaCommandExecutionAspect$CriteriaResolverImpl</code> as
+            its implementation</td></tr><tr class="a"><td>EJBCommandExecutionAspect</td><td>ejbCommandExecution</td><td>Method</td><td>Intercepts remotable and transactional method execution and
+            transfer the instance for which the method has been called to the
+            server</td></tr><tr class="b"><td>FormControllerFactoryAspect</td><td>formControllerFactoryIntroduction</td><td>Class</td><td>Introduces interface
+            <code>net.java.dev.genesis.ui.controller.FormControllerFactory</code>
+            having
+            <code>FormControllerFactoryAspect$AspectFormControllerFactory</code> as
+            its implementation</td></tr><tr class="a"><td>FormMetadataFactoryAspect</td><td>formMetadataFactoryIntroduction</td><td>Class</td><td>Introduces interface
+            <code>net.java.dev.genesis.ui.metadata.FormMetadataFactory</code>
+            having
+            <code>FormMetadataFactoryAspect$AspectFormMetadataFactory</code> as
+            its implementation</td></tr><tr class="b"><td>LocalCommandExecutionAspect</td><td>localCommandExecution</td><td>Method</td><td>Intercepts remotable and transactional method execution and
+            execute them locally</td></tr><tr class="a"><td>LocalEJBCommandExecutionAspect</td><td>localEjbCommandExecution</td><td>Method</td><td>Intercepts remotable and transactional method execution and
+            transfer the instance for which the method has been called to the
+            EJB instance using its local interface</td></tr><tr class="b"><td>TimeoutAspect</td><td>timeout</td><td>Method</td><td>Intercepts a method execution so it completes in a specified
+            amount of time or an exception is thrown</td></tr><tr class="a"><td>ViewMetadataFactoryAspect</td><td>viewMetadataFactoryIntroduction</td><td>Class</td><td>Introduces interface
+            <code>
+            net.java.dev.genesis.ui.metadata.ViewMetadataFactory
+            </code>
+            having
+            <code>ViewMetadataFactoryAspect$AspectViewMetadataFactory
+            </code> as its implementation</td></tr><tr class="b"><td>WaitCursorAspect</td><td>waitCursorExecution</td><td>Method</td><td>Changes the mouse cursor to a wait cursor while method execution
+            is not completed</td></tr></table></div><div class="subsection"><a name="Sample_aop_xml_configuration"></a><h3>Sample aop.xml configuration</h3><p>useradmin sample remote-aop.xml configuration is shown below. It might be
+        necessary to adjust it as needed by a project, but we believe this
+        configuration will be enough for most cases.</p>
+    <div class="source"><pre>
+
+&lt;!DOCTYPE aspectwerkz PUBLIC
+      "-//AspectWerkz//DTD 1.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd"&gt;
+&lt;aspectwerkz&gt;
+   &lt;system id="useradmin" base-package="net.java.dev.genesis.aspect"&gt;
+      &lt;!-- helpers pointcuts --&gt;
+      &lt;pointcut name="executeCommand"
+         expression="execution(@Remotable * ...*(..)) OR
+                     execution(@Transactional * ...*(..))" /&gt;
+      &lt;pointcut name="form" expression="within(@Form ..)" /&gt;
+
+      &lt;!-- genesis pointcuts --&gt;
+      &lt;pointcut name="formMetadataFactoryIntroduction" expression="form" /&gt;
+      &lt;pointcut name="formControllerFactoryIntroduction" expression="form" /&gt;
+      &lt;pointcut name="thinletMetadataFactoryIntroduction"
+         expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" /&gt;
+      &lt;pointcut name="viewMetadataFactoryIntroduction"
+         expression="thinletMetadataFactoryIntroduction OR within(@ViewHandler ..)" /&gt;
+      &lt;pointcut name="criteriaResolverIntroduction"
+         expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" /&gt;
+      &lt;pointcut name="commandResolverIntroduction"
+         expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" /&gt;
+      &lt;pointcut name="timeout" expression="executeCommand" /&gt;
+      &lt;pointcut name="ejbCommandExecution" expression="executeCommand" /&gt;
+      &lt;pointcut name="criteriaCommandExecution"
+         expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" /&gt;
+      &lt;pointcut name="waitCursorExecution"
+         expression="execution(* thinlet.Thinlet.invokeImpl(..))" /&gt;
+
+      &lt;!-- genesis aspects --&gt;
+      &lt;aspect class="CommandInvocationAspect" /&gt;
+      &lt;aspect class="FormMetadataFactoryAspect" /&gt;
+      &lt;aspect class="FormControllerFactoryAspect" /&gt;
+      &lt;aspect class="ViewMetadataFactoryAspect" /&gt;
+      &lt;aspect class="TimeoutAspect"&gt;
+         &lt;param name="timeout" value="60000" /&gt;
+         &lt;param name="keepThreadInstance" value="true" /&gt;
+      &lt;/aspect&gt;
+      &lt;aspect class="EJBCommandExecutionAspect"&gt;
+         &lt;param name="jndiName" value="ejb/CommandExecutor"/&gt;
+      &lt;/aspect&gt;
+      &lt;aspect class="CriteriaCommandExecutionAspect"/&gt;
+      &lt;aspect class="WaitCursorAspect"/&gt;
+   &lt;/system&gt;
+&lt;/aspectwerkz&gt;
+
+</pre></div>
+  </div></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
