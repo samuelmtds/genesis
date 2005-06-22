@@ -32,7 +32,6 @@ public class FormControllerFactoryAspect {
     */
    public static class AspectFormControllerFactory implements FormControllerFactory {
       private FormController controller;
-      private Object form;
       private int maximumEvaluationTimes = 1;
       private boolean resetOnDataProviderChange;
 
@@ -48,13 +47,6 @@ public class FormControllerFactoryAspect {
       }
 
       public FormController getFormController(Object form) {
-         if (this.form != null && this.form != form) {
-            throw new IllegalArgumentException("Different form instances " +
-                  "being used: this implementation works for a single form " +
-                  "instance; first invoked with " + this.form + " and now " +
-                  "with " + form);
-         }
-
          if (controller == null) {
             controller = createFormController(form);
 
