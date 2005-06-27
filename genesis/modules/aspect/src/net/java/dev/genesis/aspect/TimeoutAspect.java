@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,11 @@
  */
 package net.java.dev.genesis.aspect;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.LinkedList;
 import net.java.dev.genesis.exception.TimeoutException;
 import org.apache.commons.logging.Log;
 
@@ -31,7 +36,76 @@ import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 public class TimeoutAspect {
    private static final Log log = LogFactory.getLog(TimeoutAspect.class);
 
-   private static class WorkerThread extends Thread {
+   private static final class LiveThreadWorkerThreadPair 
+         extends PhantomReference {
+      private final WeakReference reference;
+
+      public LiveThreadWorkerThreadPair(Thread parentThread, ReferenceQueue queue,
+            WorkerThread workerThread) {
+         super(parentThread, queue);
+         reference = new WeakReference(workerThread);
+      }
+
+      public WorkerThread getWorkerThread() {
+         return (WorkerThread)reference.get();
+      }
+   }
+
+   private static final class WorkerThreadDisposer extends Thread {
+      private static WorkerThreadDisposer instance;
+      private final ReferenceQueue queue = new ReferenceQueue();
+      private final Collection references = new LinkedList();
+
+      public WorkerThreadDisposer() {
+         setDaemon(true);
+         setPriority(Thread.MIN_PRIORITY);
+         start();
+      }
+
+      public static WorkerThreadDisposer getInstance() {
+         synchronized (WorkerThreadDisposer.class) {
+            if (instance == null) {
+               instance = new WorkerThreadDisposer();
+            }
+         }
+
+         return instance;
+      }
+
+      public void enqueue(Thread parentThread, WorkerThread workerThread) {
+         LiveThreadWorkerThreadPair pair = new LiveThreadWorkerThreadPair(
+               parentThread, queue, workerThread);
+
+         synchronized (references) {
+            references.add(pair);
+         }
+      }
+
+      public void run() {
+         while (true) {
+            try {
+               LiveThreadWorkerThreadPair pair = 
+                     (LiveThreadWorkerThreadPair)queue.remove();
+               WorkerThread worker = pair.getWorkerThread();
+
+               if (worker != null) {
+                  worker.interrupt();
+               }
+               
+               pair.clear();
+
+               synchronized (references) {
+                  references.remove(pair);
+               }
+            } catch (InterruptedException ie) {
+               log.error("WorkerThreadDisposed interrupted", ie);
+               return;
+            }
+         }
+      }
+   }
+
+   private static final class WorkerThread extends Thread {
       private Throwable throwable;
       private Object returnValue;
       private JoinPoint jp;
@@ -88,6 +162,8 @@ public class TimeoutAspect {
                   if (log.isTraceEnabled()) {
                      log.trace(ie);
                   }
+
+                  return;
                }
             }
 
@@ -100,9 +176,11 @@ public class TimeoutAspect {
                   if (log.isTraceEnabled()) {
                      log.trace(ie);
                   }
+
+                  return;
                }
             }
-         } while (!isInterrupted());
+         } while (true);
       }
 
       public Object getReturnValue() {
@@ -140,8 +218,13 @@ public class TimeoutAspect {
       if (thread == null) {
          thread = new WorkerThread();
 
-         if (keepThreadInstance && log.isDebugEnabled()) {
-            log.debug("New thread created: " + thread);
+         if (keepThreadInstance) {
+            if (log.isDebugEnabled()) {
+               log.debug("New thread created: " + thread);
+            }
+
+            WorkerThreadDisposer.getInstance().enqueue(Thread.currentThread(), 
+                  thread);
          }
       } else {
          if (keepThreadInstance && log.isDebugEnabled()) {
