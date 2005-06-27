@@ -21,6 +21,7 @@ package net.java.dev.genesis.ui.thinlet;
 import java.awt.Frame;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,6 +89,19 @@ public abstract class BaseThinlet extends Thinlet {
    public static final String VALUE = "value";
    public static final String VISIBLE = "visible";
    public static final String VIRTUAL = "virtual";
+
+   // Workaround for a Thinlet bug that prevents garbage collection (# 243)
+   private static Field timerField = null;
+
+   static {
+      try {
+         timerField = Thinlet.class.getDeclaredField("timer");
+         timerField.setAccessible(true);
+      } catch (Exception e) {
+         LogFactory.getLog(BaseThinlet.class).error("Error obtaining Thread " +
+               "instance", e);
+      }
+   }
 
    private final Map formPerClassPerComponent = new IdentityHashMap();
    private final Map binderPerForm = new IdentityHashMap();
@@ -1113,5 +1127,21 @@ public abstract class BaseThinlet extends Thinlet {
 
    protected String getErrorMessage() {
       return "Error";
+   }
+
+   // Workaround for a Thinlet bug that prevents garbage collection (# 243)
+   protected boolean releaseThinletThread() throws IllegalAccessException {
+      if (timerField == null) {
+         return false;
+      }
+
+      Thread t = (Thread)timerField.get(this);
+
+      if (t != null) {
+         timerField.set(this, null);
+         t.interrupt();
+      }
+
+      return true;
    }
 }
