@@ -51,9 +51,9 @@ public class ErrorReporterDialog extends BaseDialogThinlet {
          show();
       }
 
-      public void close() {
+      public void close() throws Exception {
          super.close();
-         getDialog().dispose();
+         onClose();
       }
    }
 

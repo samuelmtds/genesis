@@ -133,7 +133,7 @@ public abstract class BaseThinlet extends Thinlet {
          add(screen);
       }
 
-      public void close() {
+      public void close() throws Exception {
          remove(screen);
          repaint();
       }
