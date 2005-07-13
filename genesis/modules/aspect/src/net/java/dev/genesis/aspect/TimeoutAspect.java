@@ -106,6 +106,7 @@ public class TimeoutAspect {
    }
 
    private static final class WorkerThread extends Thread {
+      private final boolean keepThreadInstance;
       private Throwable throwable;
       private Object returnValue;
       private JoinPoint jp;
@@ -114,8 +115,9 @@ public class TimeoutAspect {
       private boolean running;
       private boolean waiting;
 
-      public WorkerThread() {
+      public WorkerThread(boolean keepThreadInstance) {
          setDaemon(true);
+         this.keepThreadInstance = keepThreadInstance;
       }
 
       public void execute(JoinPoint jp, long timeout) {
@@ -170,6 +172,10 @@ public class TimeoutAspect {
             synchronized (lock) {
                lock.notifyAll();
 
+               if (!keepThreadInstance) {
+                  return;
+               }
+
                try {
                   lock.wait();
                } catch (InterruptedException ie) {
@@ -216,7 +222,7 @@ public class TimeoutAspect {
     */
    public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
       if (thread == null) {
-         thread = new WorkerThread();
+         thread = new WorkerThread(keepThreadInstance);
 
          if (keepThreadInstance) {
             if (log.isDebugEnabled()) {
@@ -250,15 +256,9 @@ public class TimeoutAspect {
       final Throwable throwable = thread.getThrowable();
       final Object returnValue = thread.getReturnValue();
 
-      if (keepThreadInstance) {
-         thread.cleanUp();
-      } else {
-         try {
-            thread.interrupt();
-         } catch (Throwable t) {
-            log.error(t);
-         }
+      thread.cleanUp();
 
+      if (!keepThreadInstance) {
          thread = null;
       }
 
