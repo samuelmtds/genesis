@@ -57,6 +57,7 @@ public class TimeoutAspect {
       private final Collection references = new LinkedList();
 
       public WorkerThreadDisposer() {
+         super("WorkerThreadDisposer-Daemon");
          setDaemon(true);
          setPriority(Thread.MIN_PRIORITY);
          start();
@@ -116,6 +117,7 @@ public class TimeoutAspect {
       private boolean waiting;
 
       public WorkerThread(boolean keepThreadInstance) {
+         super("WorkerThread-" + Thread.currentThread().getName());
          setDaemon(true);
          this.keepThreadInstance = keepThreadInstance;
       }
