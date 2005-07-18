@@ -46,14 +46,14 @@ public class RoleListView extends BaseDialogView {
    }
 
    public void cancel() throws Exception {
-      getDialog().dispose();
+      onClose();
    }
 
    /**
     * @AfterAction
     */
    public void select() throws Exception {
-      getDialog().dispose();
+      onClose();
       hasChanged = true;
    }
 

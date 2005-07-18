@@ -33,15 +33,15 @@ public class InsertRoleView extends BaseDialogView {
       return hasChanged;
    }
 
-   public void cancel() {
-      getDialog().dispose();
+   public void cancel() throws Exception {
+      onClose();
    }
    
    /**
     * @AfterAction
     */
-   public void save() {
-      getDialog().dispose();
+   public void save() throws Exception {
+      onClose();
       hasChanged = true;
    }
 }
