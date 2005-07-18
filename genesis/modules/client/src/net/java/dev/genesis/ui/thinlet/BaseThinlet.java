@@ -643,14 +643,29 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
+   /**
+    * @deprecated Use #populateFromCollection(java.lang.Object, java.util.Collection, 
+    *             java.lang.String, java.lang.String, boolean,
+    *             java.lang.String, java.util.Map) instead
+    */
    protected void populateFromEnum(String name, Class clazz) {
       populateFromEnum(name, clazz, false);
    }
 
+   /**
+    * @deprecated Use #populateFromCollection(java.lang.Object, java.util.Collection, 
+    *             java.lang.String, java.lang.String, boolean,
+    *             java.lang.String, java.util.Map) instead
+    */
    protected void populateFromEnum(String name, Class clazz, boolean blank) {
       populateFromEnum(find(name), clazz, blank);
    }
 
+   /**
+    * @deprecated Use #populateFromCollection(java.lang.Object, java.util.Collection, 
+    *             java.lang.String, java.lang.String, boolean,
+    *             java.lang.String, java.util.Map) instead
+    */
    protected void populateFromEnum(Object component, Class clazz, boolean blank) {
       final boolean combobox = getClass(component).equals(COMBOBOX);
 
