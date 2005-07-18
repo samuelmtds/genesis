@@ -467,14 +467,14 @@ public abstract class BaseThinlet extends Thinlet {
                setText(component, "");
             }
 
-            String valuePropertyName = (String)getProperty(component, "value");
+            String keyPropertyName = (String)getProperty(component, "key");
 
-            if (valuePropertyName != null) {
+            if (keyPropertyName != null) {
                Object o = properties.get(propertyName);
                o = o == null ? null : PropertyUtils.getProperty(
-                     properties.get(propertyName), valuePropertyName);
+                     properties.get(propertyName), keyPropertyName);
 
-               propertyValue = format(formatters, valuePropertyName, o);
+               propertyValue = format(formatters, keyPropertyName, o);
             } else {
                propertyValue = getPropertyValue(properties, propertyName, true, 
                      formatters);
