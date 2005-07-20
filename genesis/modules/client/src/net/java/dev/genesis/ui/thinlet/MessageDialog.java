@@ -62,9 +62,9 @@ public class MessageDialog extends BaseDialogThinlet {
          requestFocus(find(getScreen(), CLOSE));
       }
 
-      public void close() {
+      public void close() throws Exception {
          super.close();
-         getDialog().dispose();
+         onClose();
       }
    }
 

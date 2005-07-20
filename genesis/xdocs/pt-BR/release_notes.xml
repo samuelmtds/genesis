@@ -8,121 +8,18 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
-        <li><a href="#3.0-EA1">3.0-EA1</a></li>
-        <li><a href="#2.2-RC2">2.2-RC2</a></li>
-        <li><a href="#2.2-RC1">2.2-RC1</a></li>
+        <li><a href="#2.2">2.2</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
-    <section name="3.0-EA1">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2932&amp;expandFolder=2932&amp;folderID=0">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li><a href="generic_scripting.html">Suporte genérico a linguagens de
-          script</a>: expandindo o suporte JXPath, o framework suporta
-          diretamente  BeanShell, JavaScript e EL, e ainda provê um mecanismo
-          para suporte de outras linguagens</li>
-          <li>Upgrade para o AspectWerkz 2.0. Os <a
-          href="aspects.html">aspectos</a> do genesis sofreram pequenas
-          alterações do ponto de vista do usuário e o arquivo
-          <code>aop.xml</code> precisa ser atualizado</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 3.0-EA1
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=3.0-EA1">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-EA1/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniela Gomes</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-          </ul>
-        <p>Agradecemos especialmente a Alexandre Vasseur, Alexandru Popescu e
-        Jonas Boner pelo suporte e modificações feitas para que completássemos
-        a migração para o <a href="http://aspectwerkz.codehaus.org">AspectWerkz</a>
-        2.</p>
-      </subsection>
-    </section>
-    <section name="2.2-RC2">
+    <section name="2.2">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
           <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3533&amp;expandFolder=3533&amp;folderID=3533">aqui</a>. 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3762&amp;expandFolder=3762&amp;folderID=3533">aqui</a>. 
           </p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li>A <a href="../tags/genesis-tags.html">documentação das tags do 
-          genesis para o XDoclet</a> foi integrada ao site</li>
-          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
-          foi modificada para permitir o registro programático de instâncias de
-          <code>net.java.dev.genesis.resolvers.EmptyResolver</code></li>
-        </ul>
-        <p>O seguinte bug foi corrigido nessa versão:</p>
-        <ul>
-          <li>O processo de build do módulo xdoclet não funciona (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=241">Issue
-          # 241</a>)</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 2.2-RC1 e a 2.2-RC2
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;target_milestone=2.2">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/2.2-RC2/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Cláudio Rocha</li>
-            <li>Daniel Gonçalves</li>
-            <li>Daniela Gomes</li>
-            <li>Danielle Albuquerque</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-            <li>Marcelo Ohashi</li>
-            <li>Roberto Arnaldo</li>
-            <li>Valéria Fernandes</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="2.2-RC1">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
-          <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3345&amp;expandFolder=3345&amp;folderID=1756">aqui</a>.
-        </p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
         <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
@@ -135,6 +32,22 @@
           <li>Uma <a
           href="business_component_model.html#Paginação_de_listas">implementação
           de paginação para listas</a> foi incluída</li>
+          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
+          foi modificada para permitir o registro programático de instâncias de
+          <code>net.java.dev.genesis.resolvers.EmptyResolver</code></li>
+          <li>O método <code>onClose()</code> de 
+          <code>net.java.dev.genesis.ui.thinlet.BaseDialogThinlet</code> foi
+          modificado a fim de melhorar a liberação de memória (mais informações
+          nos issues <a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=243">243</a>
+          e <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=244">244</a>
+          )</li>
+          <li><code>textarea</code>s se tornam não-editáveis ao invés de serem 
+          desabilitadas de modo a ser possível utilizar a barra de rolagem (mais
+          informações no issue <a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=248">248</a>
+          )</li>
         </ul>
         <p>Os seguintes bugs foram corrigidos nessa versão:</p>
         <ul>
@@ -149,17 +62,26 @@
           para propriedades somente leitura (<a
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=225">Issue
           # 225</a>)</li>
+          <li>O ciclo de vida de <code>WorkerThread</code> deveria estar ligado
+          ao ciclo de vida de <code>TimeoutAspect</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=245">Issue
+          # 245</a>)</li>
+          <li>A seleção falha para combos e listas populados com 
+          <code>@DataProvider</code> e contendo valores diferentes para 
+          <code>key</code> e <code>value</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=246">Issue
+          # 246</a>)</li>
         </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 2.2-RC1
+        <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 2.2
         pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2-RC1">aqui</a>.</p>
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;version=2.2-RC1&amp;version=2.2-RC2&amp;target_milestone=2.2-RC1&amp;target_milestone=2.2-RC2&amp;target_milestone=2.2">aqui</a>.</p>
         <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/2.2-RC1/maven-site/pt-BR/">aqui</a>.</p>
+        href="https://genesis.dev.java.net/nonav/2.2/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
         versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;issue_type=DEFECT">aqui</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">aqui</a>
         </p>
       </subsection>
       <subsection name="Agradecimentos">

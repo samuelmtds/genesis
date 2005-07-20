@@ -211,7 +211,7 @@ value in remote(): 2
         how a Stateless Session Bean (SSB) works, for example. And the behavior
         of non-remote parameters sent through a RMI call is also the same. A
         stateful component model will be implemented in the near future -
-        probably in the 3.0 release.</p>
+        probably in the 0.3 release.</p>
       </subsection>
     </section>
     <section name="Transaction support">
@@ -246,7 +246,7 @@ public void transactionalMethod() {
       Currently, in order to take advantage of it, classes must implement the
       <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code>
       interface by definition or by AOP introduction. In the future this won't
-      be necessary anymore - most likely beginning with the 3.0 genesis version.
+      be necessary anymore - most likely beginning with the 0.3 genesis version.
       </p>
       <p>This interface exposes the <code>setSession(Session)</code> method
       which is called by genesis (on the server-side) before the execution

@@ -18,48 +18,38 @@
  */
 package net.java.dev.genesis.aspect;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
-
-import org.codehaus.aspectwerkz.AspectContext;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
+import org.codehaus.aspectwerkz.MethodTuple;
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
+import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
+import org.codehaus.aspectwerkz.joinpoint.impl.MethodRttiImpl;
 
 /**
- * @Aspect("perJVM")
+ * @Aspect perJVM
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    private static final String CRITERIA_ATTRIBUTE = "Criteria";
-   private ThreadLocal threadLocal = new InheritableThreadLocal();
    
-   private boolean preventStackOverflow;
+   private boolean useOriginalMethod;
 
-   public CriteriaCommandExecutionAspect(final AspectContext ctx) {
-      super(ctx);
-      preventStackOverflow = "true".equals(ctx.getParameter("preventStackOverflow"));
+   public CriteriaCommandExecutionAspect(CrossCuttingInfo ccInfo) {
+      super(ccInfo);
+      
+      useOriginalMethod = "true".equals(ccInfo.getParameter("useOriginalMethod"));
    }
 
    /**
-    * @Around("criteriaCommandExecution")
+    * @Around criteriaCommandExecution
     */
    public Object commandExecution(JoinPoint jp) throws Throwable {
-      final MethodRtti rtti = (MethodRtti)jp.getRtti();
-
-      if (preventStackOverflow) {
-         Method m = (Method)threadLocal.get();
-         if (m != null && m.equals(rtti.getMethod())) {
-            Object value = jp.proceed();
-            threadLocal.set(null);
-            return value;
-         }
-      }
-
       final CriteriaResolver obj = (CriteriaResolver)jp.getTarget();
+      final MethodRtti rtti = (MethodRtti) jp.getRtti();
       final Class[] classes = rtti.getParameterTypes();
       final String[] classNames = new String[classes.length];
 
@@ -67,27 +57,20 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          classNames[i] = classes[i].getName();
       }
 
-      final String methodName = rtti.getMethod().getName();
+      final MethodTuple methodTuple = ((MethodRttiImpl) rtti).getMethodTuple();
+      final String methodName = useOriginalMethod ? methodTuple
+            .getOriginalMethod().getName() : methodTuple.getWrapperMethod()
+            .getName();
       final Object[] parameterValues = rtti.getParameterValues();
 
-      final UntypedAnnotation annon = (UntypedAnnotation)Annotations
+      final UntypedAnnotationProxy annon = (UntypedAnnotationProxy) Annotations
             .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
-      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.value().toString());
+      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.getValue());
       
-      if (preventStackOverflow) {
-         threadLocal.set(rtti.getMethod());
-      }
-
-      try {
-         return new CriteriaCommandExecutor(obj, methodName, classNames,
-               parameterValues, parser.getPersisterClassName(), parser
-                     .getOrderBy(), parser.isAsc(), obj.getPropertiesMap())
-               .execute();
-      } finally {
-         if (preventStackOverflow) {
-            threadLocal.set(null);
-         }
-      }
+      return new CriteriaCommandExecutor(obj, methodName, classNames,
+            parameterValues, parser.getPersisterClassName(), parser
+                  .getOrderBy(), parser.isAsc(), obj.getPropertiesMap())
+            .execute();
    }
 
    public static class CriteriaAnnotationParser {
@@ -148,7 +131,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    /**
-    * @Mixin(pointcut="criteriaResolverIntroduction", isTransient=true, deploymentModel="perInstance")
+    * @Introduce criteriaResolverIntroduction deployment-model=perInstance
     */
    public static class CriteriaResolverImpl implements CriteriaResolver {
       private Map propertiesMap;

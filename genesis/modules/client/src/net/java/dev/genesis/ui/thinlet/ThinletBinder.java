@@ -598,8 +598,13 @@ public class ThinletBinder implements FormControllerListener {
             }
 
             if (enabled) {
-               thinlet.setEnabled(widget, ((Boolean)entry.getValue())
-                     .booleanValue());
+               if (BaseThinlet.TEXTAREA.equals(Thinlet.getClass(widget))) {
+                  thinlet.setEditable(widget, ((Boolean)entry.getValue())
+                        .booleanValue());
+               } else {
+                  thinlet.setEnabled(widget, ((Boolean)entry.getValue())
+                        .booleanValue());
+               }
             } else {
                thinlet.setVisible(widget, ((Boolean)entry.getValue())
                      .booleanValue());

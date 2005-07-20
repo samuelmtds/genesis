@@ -101,107 +101,34 @@
         </table>
       </p>
     </section>
-    <section name="Funções script do genesis">
+    <section name="Funções JXPath do genesis">
       <p>Além das anotações, foram implementadas as seguintes funções de
-      extensão às linguagens de script:</p>
+      extensão ao JXPath:</p>
       <ul>
-        <li>isEmpty(any), isNotEmpty(any)</li>
-        <li>equals(any,any), notEquals(any,any)</li>
-        <li>hasChanged(campo), hasNotChanged(campo)
+        <li>g:isEmpty(any), g:isNotEmpty(any)</li>
+        <li>g:equals(any,any), g:notEquals(any,any)</li>
+        <li>g:hasChanged(any), g:hasNotChanged(any)
         </li>
       </ul>
       <p>Podem ser usadas pelas anotações que aceitam expressões condicionais
-      de script. No caso de JXPath, o <b>g:</b> indica o namespace do genesis.
-      As funções core do JXPath não utilizam namespace.</p>
-      <subsection name="isEmpty(any), isNotEmpty(any)">
+      JXPath. O <b>g:</b> indica o namespace do genesis. As funções core do
+      JXPath não utilizam namespace.</p>
+      <subsection name="g:isEmpty(any), g:isNotEmpty(any)">
         <p>Verifica se um dado está vazio. Usa o <a href="#@EmptyResolver">
         @EmptyResolver</a> quando disponível. Recebe como argumento um número,
-        uma String, uma varíavel ou função pré-definida da linguagem de script,
-        ou o nome de um campo do <code>Form</code>.</p>
-        <p>A sintaxe específica para cada linguagem de script segue a tabela
-        abaixo:</p>
-        <table>
-          <tr>
-            <th>Linguagem</th>
-            <th>isEmpty</th>
-            <th>isNotEmpty</th>
-          </tr>
-          <tr>
-            <th>JXPath</th>
-            <td>g:isEmpty(campoDoForm)</td>
-            <td>g:isNotEmpty(campoDoForm)</td>
-          </tr>
-          <tr>
-            <th>JavaScript/Beanshell</th>
-            <td>genesis.isEmpty("form:campoDoForm")</td>
-            <td>genesis.isNotEmpty("form:campoDoForm")</td>
-          </tr>
-          <tr>
-            <th>EL</th>
-            <td>g:isEmpty("form:campoDoForm")</td>
-            <td>g:isNotEmpty("form:campoDoForm")</td>
-          </tr>
-        </table>
+        uma String, uma varíavel ou função JXPath, ou o nome de uma propriedade
+        no form.</p>
       </subsection>
-      <subsection name="equals(any,any), notEquals(any,any)">
+      <subsection name="g:equals(any,any), g:notEquals(any,any)">
         <p>Verifica se dois objetos são iguais. Usa os <a href=
         "#@EqualityComparator">@EqualityComparator</a>s, caso existam, para
         efetuar a comparação. Recebe como argumentos números, Strings, variáveis
-        ou funções pré-definidas da linguagem de script, ou nomes de
-        campos do <code>Form</code>.</p>
-        <p>A sintaxe específica para cada linguagem de script segue a tabela
-        abaixo:</p>
-        <table>
-          <tr>
-            <th>Linguagem</th>
-            <th>equals</th>
-            <th>notEquals</th>
-          </tr>
-          <tr>
-            <th>JXPath</th>
-            <td>g:equals(campoDoForm, outroCampo)</td>
-            <td>g:notEquals(campoDoForm, outroCampo)</td>
-          </tr>
-          <tr>
-            <th>JavaScript/Beanshell</th>
-            <td>genesis.equals("form:campoDoForm", "form:outroCampo")</td>
-            <td>genesis.notEquals("form:campoDoForm", "form:outroCampo")</td>
-          </tr>
-          <tr>
-            <th>EL</th>
-            <td>g:equals("form:campoDoForm", "form:outroCampo")</td>
-            <td>g:notEquals("form:campoDoForm", "form:outroCampo")</td>
-          </tr>
-        </table>
+        ou funções JXPath, ou nomes de propriedades no form.</p>
       </subsection>
-      <subsection name="hasChanged(campo),
-                        hasNotChanged(campo)">
+      <subsection name="g:hasChanged(campo),
+                        g:hasNotChanged(campo)">
         <p>Verifica se um campo do form foi alterado ou não. O parâmetro tem que
         ser um campo do form.</p>
-        <p>A sintaxe específica para cada linguagem de script segue a tabela
-        abaixo:</p>
-        <table>
-          <tr>
-            <th>Linguagem</th>
-            <th>hasChanged</th>
-            <th>hasNotChanged</th>
-          </tr>
-          <tr>
-            <th>JXPath</th>
-            <td>g:hasChanged(campoDoForm)</td>
-            <td>g:hasNotChanged(campoDoForm)</td>
-          </tr>
-          <tr>
-            <th>JavaScript/Beanshell</th>
-            <td>genesis.hasChanged("form:campoDoForm")</td>
-            <td>genesis.hasNotChanged("form:campoDoForm")</td>
-          </tr>
-          <tr>
-            <th>EL</th>
-            <td>g:hasChanged("form:campoDoForm")</td>
-            <td>g:hasNotChanged("form:campoDoForm")</td>
-          </tr>
-        </table>
       </subsection>
     <p><a href=
     "ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">Mais informações...

@@ -27,12 +27,11 @@ import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
+import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 public class ViewMetadataFactoryAspect {
    /**
-    * @Mixin(pointcut="viewMetadataFactoryIntroduction", isTransient=true, 
-    *        deploymentModel="perJVM")
+    * @Introduce viewMetadataFactoryIntroduction deploymentModel=perJVM
     */
    public static class AspectViewMetadataFactory implements
          ViewMetadataFactory {
@@ -62,14 +61,14 @@ public class ViewMetadataFactoryAspect {
       private void processMethodsAnnotations(
             final ViewMetadata viewMetadata) {
          final Method[] methods = viewMetadata.getViewClass().getMethods();
-         UntypedAnnotation annon;
+         UntypedAnnotationProxy annon;
 
          for (int i = 0; i < methods.length; i++) {
             for (final Iterator it = Annotations.getAnnotations(
                   "BeforeAction", methods[i]).iterator(); it.hasNext(); ) {
-               annon = (UntypedAnnotation)it.next();
+               annon = (UntypedAnnotationProxy)it.next();
 
-               final String actionName = annon.value().toString();
+               final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
                viewMetadata.addBeforeAction(
                      actionName.trim().length() == 0 ? methodName : actionName,
@@ -78,9 +77,9 @@ public class ViewMetadataFactoryAspect {
 
             for (final Iterator it = Annotations.getAnnotations(
                   "AfterAction", methods[i]).iterator(); it.hasNext(); ) {
-               annon = (UntypedAnnotation)it.next();
+               annon = (UntypedAnnotationProxy)it.next();
 
-               final String actionName = annon.value().toString();
+               final String actionName = annon.getValue();
                final String methodName = methods[i].getName();
                viewMetadata.addAfterAction(
                      actionName.trim().length() == 0 ? methodName : actionName,

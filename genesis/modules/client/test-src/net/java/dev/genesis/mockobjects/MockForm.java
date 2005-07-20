@@ -20,7 +20,6 @@ package net.java.dev.genesis.mockobjects;
 
 import java.util.Map;
 
-import net.java.dev.genesis.script.jxpath.JXPathScript;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.controller.MockFormController;
@@ -28,7 +27,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
 
 public class MockForm implements FormMetadataFactory, FormControllerFactory {
-   private FormMetadata metadata = new FormMetadata(getClass(), new JXPathScript());
+   private FormMetadata metadata = new FormMetadata(getClass());
    private MockFormController controller = new MockFormController();
    private Map context;
 

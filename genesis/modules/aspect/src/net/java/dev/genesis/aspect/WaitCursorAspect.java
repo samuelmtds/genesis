@@ -23,12 +23,12 @@ import java.awt.Cursor;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
 /**
- * @Aspect("perJVM")
+ * @Aspect perJVM
  */
 public class WaitCursorAspect {
    
    /**
-    * @Around("waitCursorExecution")
+    * @Around waitCursorExecution
     */
    public Object waitCursorExecution(final JoinPoint jp) throws Throwable {
       final Component c = (Component) jp.getTarget();

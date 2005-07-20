@@ -20,9 +20,8 @@
       <jar href="@webstart.context@-remote-weaved.jar" download="eager" main="true"/>
       <jar href="genesis-aspect-annotated-@genesis.version@.jar" download="eager" />
       <jar href="genesis-client-@genesis.version@.jar" download="eager" />
-      <jar href="aspectwerkz-2.0.jar" download="eager" />
-      <jar href="aspectwerkz-core-2.0.jar" download="eager" />
-      <jar href="aspectwerkz-jdk14-2.0.jar" download="eager" />
+      <jar href="aspectwerkz-1.1.jar" download="eager" />
+      <jar href="aspectwerkz-core-1.1.jar" download="eager" />
       <jar href="commons-beanutils-1.7.jar" download="eager"/>
       <jar href="commons-collections-2.1.1.jar" download="eager"/>
       <jar href="commons-digester-1.5.jar" download="eager"/>
@@ -39,7 +38,6 @@
       <jar href="jbosssx-client.jar" download="eager"/>
       <jar href="jnp-client.jar" download="eager"/>
       <jar href="jrexx-1.1.1.jar" download="eager" />
-      <jar href="odmg-3.0.jar" download="eager" />
       <jar href="reusable-components-20040406.jar" download="eager"/>
       <jar href="trove-1.0.2.jar" download="eager" />
 

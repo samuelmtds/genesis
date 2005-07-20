@@ -27,9 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.java.dev.genesis.commons.jxpath.VariablesImpl;
+import net.java.dev.genesis.commons.jxpath.functions.ExtensionFunctions;
 import net.java.dev.genesis.reflection.MethodEntry;
-import net.java.dev.genesis.script.ScriptContext;
-import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -41,6 +41,11 @@ import net.java.dev.genesis.util.GenesisUtils;
 import org.apache.commons.beanutils.Converter;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.jxpath.ClassFunctions;
+import org.apache.commons.jxpath.CompiledExpression;
+import org.apache.commons.jxpath.Functions;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Variables;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -55,9 +60,9 @@ public class DefaultFormController implements FormController {
 
    private Object form;
    private FormMetadata formMetadata;
-   private ScriptContext ctx;
    private int maximumEvaluationTimes = 1;
    private boolean resetOnDataProviderChange = true;
+   private JXPathContext ctx;
 
    private FormState currentState;
    private FormState previousState;
@@ -80,9 +85,6 @@ public class DefaultFormController implements FormController {
       return formMetadata;
    }
 
-   protected final ScriptContext getScriptContext() {
-      return ctx;
-   }
    public int getMaximumEvaluationTimes() {
       return maximumEvaluationTimes;
    }
@@ -97,6 +99,51 @@ public class DefaultFormController implements FormController {
 
    public void setResetOnDataProviderChange(boolean resetOnDataProviderChange) {
       this.resetOnDataProviderChange = resetOnDataProviderChange;
+   }
+
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected JXPathContext createJXPathContext() {
+      final JXPathContext ctx = JXPathContext.newContext(getForm());
+      ctx.setFunctions(getFunctions());
+      ctx.setVariables(getVariables());
+      return ctx;
+   }
+
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected Functions getFunctions() {
+      return new ClassFunctions(ExtensionFunctions.class, "g");
+   }
+
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected Variables getVariables() {
+      return new VariablesImpl();
+   }
+
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected Map getVariablesMap() {
+      return ((VariablesImpl) getContext().getVariables()).getVariablesMap();
+   }
+
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected final JXPathContext getContext() {
+      return ctx;
+   }
+
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected void setContext(JXPathContext ctx) {
+      this.ctx = ctx;
    }
 
    protected FormState createFormState() {
@@ -114,25 +161,23 @@ public class DefaultFormController implements FormController {
 
       setup = true;
 
-      ctx = createScriptContext();
-      ctx.declare(FORM_METADATA_KEY, formMetadata);
+      JXPathContext ctx = createJXPathContext();
+      ctx.getVariables().declareVariable(FORM_METADATA_KEY, formMetadata);
 
       currentState = createFormState();
-      ctx.declare(CURRENT_STATE_KEY, currentState);
+      ctx.getVariables().declareVariable(CURRENT_STATE_KEY, currentState);
 
-      if (PropertyUtils.isWriteable(form, "context")
-            && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(form,
+      setContext(ctx);
+
+      if (PropertyUtils.isWriteable(getForm(), "context")
+            && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(getForm(),
                   "context"))) {
-         PropertyUtils.setProperty(form, "context", ctx.getContextMap());
+         PropertyUtils.setProperty(getForm(), "context", getVariablesMap());
       }
 
       evaluate(true);
    }
    
-   protected ScriptContext createScriptContext() {
-      return getFormMetadata().getScript().newContext(form);
-   }
-
    public boolean isSetup() {
       return setup;
    }
@@ -159,11 +204,12 @@ public class DefaultFormController implements FormController {
 
    protected void populate(Map properties, boolean stringMap, Map converters) 
          throws Exception {
+
       final boolean createPreviousState = createPreviousState();
 
       try {
          if (properties == null) {
-            properties = PropertyUtils.describe(form);
+            properties = PropertyUtils.describe(getForm());
          }
 
          updateChangedMap(properties, stringMap, converters);
@@ -175,7 +221,7 @@ public class DefaultFormController implements FormController {
          }
 
          if (stringMap) {
-            PropertyUtils.copyProperties(form, currentState.getChangedMap());
+            PropertyUtils.copyProperties(getForm(), currentState.getChangedMap());
          }
 
          evaluate(false);
@@ -287,7 +333,7 @@ public class DefaultFormController implements FormController {
          evaluateNamedConditions();
       }
 
-      final Map newData = PropertyUtils.describe(form);
+      final Map newData = PropertyUtils.describe(getForm());
       changed |= updateChangedMap(newData, false, null);
 
       fireValuesChanged(currentState.getChangedMap());
@@ -314,7 +360,7 @@ public class DefaultFormController implements FormController {
       DataProviderMetadata dataProviderMeta;
       List items;
       Map.Entry entry;
-      final Map properties = PropertyUtils.describe(form);
+      final Map properties = PropertyUtils.describe(getForm());
 
       do {
          changed = false;
@@ -378,7 +424,7 @@ public class DefaultFormController implements FormController {
          return false;
       }
 
-      PropertyUtils.copyProperties(form, toCopy);
+      PropertyUtils.copyProperties(getForm(), toCopy);
       currentState.getChangedMap().putAll(toCopy);
 
       return true;
@@ -391,19 +437,19 @@ public class DefaultFormController implements FormController {
             .iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
          
-         evaluateNamedCondition(entry.getKey().toString(), 
-                 (ScriptExpression)entry.getValue());
+         evaluateNamedCondition(entry.getKey().toString(), (CompiledExpression) entry.getValue());
       }
    }
-
-   protected void evaluateNamedCondition(String conditionName, 
-         ScriptExpression expr) {
-      Boolean conditionValue = isSatisfied(expr);
-      ctx.declare(conditionName, conditionValue);
+   
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected void evaluateNamedCondition(String conditionName, CompiledExpression expr) {
+      getContext().getVariables().declareVariable(conditionName, isSatisfied(expr));
 
       if (log.isDebugEnabled()) {
-         log.debug("Named Condition '" + conditionName + "' evaluated as '" + 
-                 conditionValue + "'");
+         log.debug("Named Condition '" + conditionName + "' evaluated as '"
+               + getContext().getVariables().getVariable(conditionName) + "'");
       }
    }
 
@@ -490,7 +536,7 @@ public class DefaultFormController implements FormController {
    protected boolean evaluateDataProvidedIndexes(boolean firstCall) throws Exception {
       boolean changed = false;
 
-      Map currentMap = firstCall ? PropertyUtils.describe(form) : currentState.getChangedMap();
+      Map currentMap = firstCall ? PropertyUtils.describe(getForm()) : currentState.getChangedMap();
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
@@ -516,7 +562,7 @@ public class DefaultFormController implements FormController {
 
       final int[] selectedIndexes = dataMeta.getSelectedIndexes(indexes);
 
-      final Object objectFieldValue = dataMeta.populateSelectedFields(form,
+      final Object objectFieldValue = dataMeta.populateSelectedFields(getForm(),
             (List)currentState.getDataProvidedMap().get(dataMeta),
             selectedIndexes);
       fireDataProvidedIndexesChanged(dataMeta, selectedIndexes);
@@ -561,7 +607,7 @@ public class DefaultFormController implements FormController {
             return false;
          }
 
-         final Object ret = methodMetadata.invoke(form);
+         final Object ret = methodMetadata.invoke(getForm());
 
          if (dataProviderMeta != null) {
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
@@ -589,12 +635,12 @@ public class DefaultFormController implements FormController {
       int[] selected;
 
       if (meta.isResetSelection()) {
-         meta.resetSelectedFields(form);
+         meta.resetSelectedFields(getForm());
          selected = EMPTY_INT_ARRAY;
       } else {
          int[] currentSelection = (int[])currentState
                .getDataProvidedIndexesMap().get(meta);
-         selected = meta.retainSelectedFields(form, dataProvided,
+         selected = meta.retainSelectedFields(getForm(), dataProvided,
                currentSelection == null ? EMPTY_INT_ARRAY : currentSelection);
       }
 
@@ -645,21 +691,27 @@ public class DefaultFormController implements FormController {
       }
    }
 
-   protected boolean isConditionSatisfied(ScriptExpression expr) {
-      return Boolean.TRUE.equals(expr.eval(ctx));
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected boolean isConditionSatisfied(CompiledExpression compiledEx) {
+      return Boolean.TRUE.equals(compiledEx.getValue(getContext()));
    }
 
-   protected Boolean isSatisfied(ScriptExpression expr) {
-      return Boolean.valueOf(isConditionSatisfied(expr));
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   protected Boolean isSatisfied(CompiledExpression compiledEx) {
+      return Boolean.valueOf(isConditionSatisfied(compiledEx));
    }
 
    public void reset(FormState state) throws Exception {
       if (log.isDebugEnabled()) {
-         log.debug("Reseting form '" + form + "'");
+         log.debug("Reseting form '" + getForm() + "'");
       }
 
       currentState = state = createFormState(state);
-      ctx.declare(CURRENT_STATE_KEY, currentState);
+      getContext().getVariables().declareVariable(CURRENT_STATE_KEY, currentState);
 
       fireEnabledConditionChanged(state.getEnabledMap());
       fireVisibleConditionChanged(state.getVisibleMap());
@@ -671,7 +723,7 @@ public class DefaultFormController implements FormController {
                .getKey(), (List)entry.getValue(), false);
       }
 
-      final Map currentValues = PropertyUtils.describe(form);
+      final Map currentValues = PropertyUtils.describe(getForm());
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
@@ -707,7 +759,7 @@ public class DefaultFormController implements FormController {
                entry.getKey()));
       }
 
-      PropertyUtils.copyProperties(form, currentValues);
+      PropertyUtils.copyProperties(getForm(), currentValues);
       state.getChangedMap().clear();
       state.getChangedMap().putAll(currentValues);
 
@@ -738,12 +790,12 @@ public class DefaultFormController implements FormController {
 
       if (methodMetadata.getActionMetadata() != null && methodMetadata
             .getActionMetadata().isValidateBefore()) {
-         final String formName = form.getClass().getName();
+         final String formName = getForm().getClass().getName();
 
          final Map validationErrors = ValidationUtils.getInstance()
                .getMessages(ValidationUtils.getInstance().validate(
                stringProperties == null || stringProperties.isEmpty() ?
-               form : stringProperties, formName), formName);
+               getForm() : stringProperties, formName), formName);
 
          if (!validationErrors.isEmpty()) {
             throw new ValidationException(validationErrors);
@@ -780,7 +832,7 @@ public class DefaultFormController implements FormController {
          final List list = (List)currentState.getDataProvidedMap().get(
                dataProviderMetadata);
 
-         dataProviderMetadata.populateSelectedFields(form, list, selected);
+         dataProviderMetadata.populateSelectedFields(getForm(), list, selected);
          currentState.getDataProvidedIndexesMap().put(dataProviderMetadata,
                selected);
 
@@ -827,7 +879,7 @@ public class DefaultFormController implements FormController {
                (List)entry.getValue());
       }
 
-      final Map currentValues = PropertyUtils.describe(form);
+      final Map currentValues = PropertyUtils.describe(getForm());
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {

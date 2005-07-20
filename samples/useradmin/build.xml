@@ -9,12 +9,11 @@
       <!-- properties -->
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
-      <property name="genesis.version" value="3.0-EA2-dev" />
+      <property name="genesis.version" value="2.2" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
       <property name="commons.dist" location="${genesis.home}/lib/commons" />
-      <property name="script.dist" location="${genesis.home}/lib/script" />
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
       <property name="annotation.properties" location="${genesis.dist}/annotation.properties" />
@@ -40,7 +39,6 @@
 
       <!-- jboss and server properties -->
       <property name="jboss.app" location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
-      <property name="jboss.app.lib" location="${jboss.app}/lib" />
       <property name="jboss.provider.url" value="jnp://localhost" />
       <property name="jboss.factory.initial" value="org.jnp.interfaces.NamingContextFactory" />
       <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
@@ -49,7 +47,7 @@
       <property name="webstart.port" value="8080" />
 
       <!-- jdbc properties -->
-      <property name="jdbc.driver" value="${jboss.app.lib}/hsqldb.jar" />
+      <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
       <property name="jdbc.driver.class" value="org.hsqldb.jdbcDriver" />
       <property name="jdbc.username" value="sa" />
       <property name="jdbc.password" value="" />
@@ -74,15 +72,22 @@
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
             <include name="ant*.jar" />
+            <exclude name="asm*.jar" />
+            <include name="concurrent*.jar" />
             <include name="dom4j*.jar" />
+            <include name="javassist*.jar" />
+            <include name="jrexx*.jar" />
+            <include name="junit*.jar" />
+            <include name="managementapi*.jar" />
             <include name="piccolo*.jar" />
             <include name="qdox*.jar" />
+            <include name="trove*.jar" />
          </fileset>
       </path>
 
       <path id="shared.dependency.classpath">
          <fileset dir="${genesis.dist}"
-                  includes="genesis-shared-annotated-${genesis.version}.jar" />
+                  includes="genesis-shared-${genesis.version}.jar" />
          <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
@@ -92,10 +97,10 @@
       </path>
 
       <path id="client.dependency.classpath">
-         <path location="${module.shared}/${annotation.dest}" />
+         <path location="${module.shared}/${build.dest}" />
          <path refid="aspectwerkz.path" />
          <fileset dir="${genesis.dist}">
-            <include name="genesis-shared-annotated-${genesis.version}.jar" />
+            <include name="genesis-shared-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
@@ -120,8 +125,6 @@
          </fileset>
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
-            <exclude name="aspectwerkz-extensions-*.jar" />
-            <exclude name="aspectwerkz-jdk5-*.jar" />
             <include name="dom4j-*.jar" />
             <include name="jrexx-*.jar" />
             <include name="trove-*.jar" />
@@ -129,7 +132,6 @@
          <fileset dir="${hibernate.dist}">
             <include name="hibernate2.jar" />
             <include name="commons-collections-*.jar" />
-            <include name="odmg-*.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils-*.jar" />
@@ -139,9 +141,6 @@
             <include name="commons-validator-*.jar" />
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components-*.jar" />
-         </fileset>
-         <fileset dir="${script.dist}">
-            <include name="*.jar" />
          </fileset>
       </path>
 
@@ -312,7 +311,7 @@
          <fileset dir="${genesis.dist}"
                   includes="genesis-shared-annotated-${genesis.version}.jar" />
       </unjar>
-      <awc verbose="${verbose}" details="${verbose}" genjp="true">
+      <awc verbose="${verbose}">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
@@ -321,7 +320,7 @@
          </classpath>
          <targetpath location="${weaving.remote.dest}"/>
       </awc>
-      <awc verbose="${verbose}" details="${verbose}" genjp="true">
+      <awc verbose="${verbose}">
          <classpath>
             <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
             <path refid="client.dependency.classpath" />
@@ -347,13 +346,7 @@
 
    <target name="useradmin:jar" depends="init">
       <pathconvert property="local.classpath" pathsep=" ">
-         <map from="${genesis.dist}" to="." />
-         <map from="${hibernate.dist}" to="." />
-         <map from="${commons.dist}" to="." />
-         <map from="${aspectwerkz.dist}" to="." />
-         <map from="${j2ee.dist}" to="." />
-         <map from="${script.dist}" to="." />
-         <map from="${jboss.app.lib}" to="." />
+         <mapper type="flatten"/>
          <path refid="local.dependency.classpath" />
       </pathconvert>
       <mkdir dir="${build.dir}" />
@@ -420,7 +413,6 @@
             <include name="ehcache*.jar" />
             <include name="hibernate*.jar" />
             <include name="jta.jar" />
-            <include name="odmg-*.jar" />
          </fileset>
          <fileset dir="${genesis.dist}">
             <include name="genesis-client-${genesis.version}.jar"/>
@@ -437,11 +429,9 @@
          </fileset>
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
-            <exclude name="aspectwerkz-extensions-*.jar" />
-            <exclude name="aspectwerkz-jdk5-*.jar" />
-            <include name="dom4j-*.jar" />
+            <include name="dom4j*.jar" />
             <include name="jrexx-*.jar" />
-            <include name="trove-*.jar" />
+            <include name="trove*.jar" />
          </fileset>
          <fileset dir="${jboss.app}/lib">
             <include name="hsqldb.jar" />
