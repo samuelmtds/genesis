@@ -1026,10 +1026,12 @@ public class ThinletBinderTest extends GenesisTestCase {
 
       // Some widgets
       Object textfield = ThinletUtils.newTextField();
+      Object textarea = ThinletUtils.newTextArea();
       Object combobox = ThinletUtils.newCombobox();
       Object passwordfield = ThinletUtils.newPasswordField();
 
       thinlet.add(thinlet.getDesktop(), textfield);
+      thinlet.add(thinlet.getDesktop(), textarea);
       thinlet.add(thinlet.getDesktop(), combobox);
       thinlet.add(thinlet.getDesktop(), passwordfield);
 
@@ -1037,16 +1039,20 @@ public class ThinletBinderTest extends GenesisTestCase {
          private Map widgetGroupCollection = new HashMap();
          {
             // textfield and combobox with widgetGroup collection
-            widgetGroupCollection.put("condition_true", Collections.singletonList("textfield"));
-            widgetGroupCollection.put("condition_false", Collections.singletonList("combobox"));
+            widgetGroupCollection.put("condition_true", 
+                  Collections.singletonList("textfield"));
+            widgetGroupCollection.put("condition_false", Arrays.asList( 
+                  new Object [] {"combobox", "textarea"}));
             
             // passwordfield with no widgetGroupCollection
             
             // widgetGroupCollection with unknown widgets
-            widgetGroupCollection.put("unknown_widget", Collections.singletonList("unknown"));
+            widgetGroupCollection.put("unknown_widget", 
+                  Collections.singletonList("unknown"));
          }
          
-         protected Collection getWidgetGroupCollection(String widgetGroupKey, boolean enabled) {
+         protected Collection getWidgetGroupCollection(String widgetGroupKey, 
+               boolean enabled) {
             return (Collection)widgetGroupCollection.get(widgetGroupKey);
          }
       };
@@ -1054,12 +1060,14 @@ public class ThinletBinderTest extends GenesisTestCase {
       // Enabled Condition
       binder.enabledConditionsChanged(updatedConditions);
       assertTrue("textfield must be enabled.", thinlet.isEnabled(textfield));
+      assertTrue("textarea must be not editable.", !thinlet.isEditable(textarea));
       assertTrue("combobox must be disabled.", !thinlet.isEnabled(combobox));
       assertTrue("passwordfield must be enabled.", thinlet.isEnabled(passwordfield));
       
       // Visible Condition
       binder.visibleConditionsChanged(updatedConditions);
       assertTrue("textfield must be visible.", thinlet.isVisible(textfield));
+      assertTrue("textarea must be invisible.", !thinlet.isVisible(textarea));
       assertTrue("combobox must be invisible.", !thinlet.isVisible(combobox));
       assertTrue("passwordfield must be visible.", thinlet.isVisible(passwordfield));
    }

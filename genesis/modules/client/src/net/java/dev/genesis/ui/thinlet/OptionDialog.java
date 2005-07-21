@@ -43,12 +43,12 @@ public class OptionDialog extends MessageDialog {
          requestFocus(find(getScreen(), Option.YES.toString().toLowerCase()));
       }
 
-      public void yes() {
+      public void yes() throws Exception {
          selected = Option.YES;
          close();
       }
 
-      public void no() {
+      public void no() throws Exception {
          selected = Option.NO;
          close();
       }

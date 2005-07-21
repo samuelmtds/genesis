@@ -21,10 +21,12 @@ package net.java.dev.genesis.ui.thinlet;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public abstract class BaseDialogThinlet extends BaseThinlet {
    private final Dialog dialog;
    private ScreenHandler handler;
+   private WindowListener listener;
    private boolean exitOnClose;
    private boolean doDialogPackAction = true;
 
@@ -47,7 +49,7 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
       this.dialog = dialog;
 
       dialog.add(this, BorderLayout.CENTER);
-      dialog.addWindowListener(new WindowAdapter() {
+      dialog.addWindowListener(listener = new WindowAdapter() {
          public void windowClosing(WindowEvent we) {
             try {
                onClose();
@@ -78,7 +80,7 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
    /**
     * @deprecated
     */
-   protected void setHandler(ScreenHandler handler) {
+   protected void setHandler(ScreenHandler handler) throws Exception{
       if (this.handler != null) {
          handler.close();
       }
@@ -132,6 +134,16 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
 
    public void onClose() throws Exception {
       dialog.dispose();
+
+      dialog.remove(this);
+      dialog.getParent().remove(dialog);
+
+      if (listener != null) {
+         dialog.removeWindowListener(listener);
+         listener = null;
+      }
+
+      releaseThinletThread();
 
       if (exitOnClose) {
          System.exit(0);

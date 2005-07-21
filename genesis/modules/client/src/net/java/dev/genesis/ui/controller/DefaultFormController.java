@@ -83,6 +83,7 @@ public class DefaultFormController implements FormController {
    protected final ScriptContext getScriptContext() {
       return ctx;
    }
+
    public int getMaximumEvaluationTimes() {
       return maximumEvaluationTimes;
    }
@@ -120,17 +121,17 @@ public class DefaultFormController implements FormController {
       currentState = createFormState();
       ctx.declare(CURRENT_STATE_KEY, currentState);
 
-      if (PropertyUtils.isWriteable(form, "context")
-            && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(form,
+      if (PropertyUtils.isWriteable(getForm(), "context")
+            && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(getForm(),
                   "context"))) {
-         PropertyUtils.setProperty(form, "context", ctx.getContextMap());
+         PropertyUtils.setProperty(getForm(), "context", ctx.getContextMap());
       }
 
       evaluate(true);
    }
    
    protected ScriptContext createScriptContext() {
-      return getFormMetadata().getScript().newContext(form);
+      return getFormMetadata().getScript().newContext(getForm());
    }
 
    public boolean isSetup() {
@@ -163,7 +164,7 @@ public class DefaultFormController implements FormController {
 
       try {
          if (properties == null) {
-            properties = PropertyUtils.describe(form);
+            properties = PropertyUtils.describe(getForm());
          }
 
          updateChangedMap(properties, stringMap, converters);
@@ -175,7 +176,7 @@ public class DefaultFormController implements FormController {
          }
 
          if (stringMap) {
-            PropertyUtils.copyProperties(form, currentState.getChangedMap());
+            PropertyUtils.copyProperties(getForm(), currentState.getChangedMap());
          }
 
          evaluate(false);
@@ -287,7 +288,7 @@ public class DefaultFormController implements FormController {
          evaluateNamedConditions();
       }
 
-      final Map newData = PropertyUtils.describe(form);
+      final Map newData = PropertyUtils.describe(getForm());
       changed |= updateChangedMap(newData, false, null);
 
       fireValuesChanged(currentState.getChangedMap());
@@ -314,7 +315,7 @@ public class DefaultFormController implements FormController {
       DataProviderMetadata dataProviderMeta;
       List items;
       Map.Entry entry;
-      final Map properties = PropertyUtils.describe(form);
+      final Map properties = PropertyUtils.describe(getForm());
 
       do {
          changed = false;
@@ -378,7 +379,7 @@ public class DefaultFormController implements FormController {
          return false;
       }
 
-      PropertyUtils.copyProperties(form, toCopy);
+      PropertyUtils.copyProperties(getForm(), toCopy);
       currentState.getChangedMap().putAll(toCopy);
 
       return true;
@@ -399,7 +400,7 @@ public class DefaultFormController implements FormController {
    protected void evaluateNamedCondition(String conditionName, 
          ScriptExpression expr) {
       Boolean conditionValue = isSatisfied(expr);
-      ctx.declare(conditionName, conditionValue);
+      getScriptContext().declare(conditionName, conditionValue);
 
       if (log.isDebugEnabled()) {
          log.debug("Named Condition '" + conditionName + "' evaluated as '" + 
@@ -490,7 +491,7 @@ public class DefaultFormController implements FormController {
    protected boolean evaluateDataProvidedIndexes(boolean firstCall) throws Exception {
       boolean changed = false;
 
-      Map currentMap = firstCall ? PropertyUtils.describe(form) : currentState.getChangedMap();
+      Map currentMap = firstCall ? PropertyUtils.describe(getForm()) : currentState.getChangedMap();
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
@@ -516,7 +517,7 @@ public class DefaultFormController implements FormController {
 
       final int[] selectedIndexes = dataMeta.getSelectedIndexes(indexes);
 
-      final Object objectFieldValue = dataMeta.populateSelectedFields(form,
+      final Object objectFieldValue = dataMeta.populateSelectedFields(getForm(),
             (List)currentState.getDataProvidedMap().get(dataMeta),
             selectedIndexes);
       fireDataProvidedIndexesChanged(dataMeta, selectedIndexes);
@@ -561,7 +562,7 @@ public class DefaultFormController implements FormController {
             return false;
          }
 
-         final Object ret = methodMetadata.invoke(form);
+         final Object ret = methodMetadata.invoke(getForm());
 
          if (dataProviderMeta != null) {
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
@@ -589,12 +590,12 @@ public class DefaultFormController implements FormController {
       int[] selected;
 
       if (meta.isResetSelection()) {
-         meta.resetSelectedFields(form);
+         meta.resetSelectedFields(getForm());
          selected = EMPTY_INT_ARRAY;
       } else {
          int[] currentSelection = (int[])currentState
                .getDataProvidedIndexesMap().get(meta);
-         selected = meta.retainSelectedFields(form, dataProvided,
+         selected = meta.retainSelectedFields(getForm(), dataProvided,
                currentSelection == null ? EMPTY_INT_ARRAY : currentSelection);
       }
 
@@ -646,7 +647,7 @@ public class DefaultFormController implements FormController {
    }
 
    protected boolean isConditionSatisfied(ScriptExpression expr) {
-      return Boolean.TRUE.equals(expr.eval(ctx));
+      return Boolean.TRUE.equals(expr.eval(getScriptContext()));
    }
 
    protected Boolean isSatisfied(ScriptExpression expr) {
@@ -655,11 +656,11 @@ public class DefaultFormController implements FormController {
 
    public void reset(FormState state) throws Exception {
       if (log.isDebugEnabled()) {
-         log.debug("Reseting form '" + form + "'");
+         log.debug("Reseting form '" + getForm() + "'");
       }
 
       currentState = state = createFormState(state);
-      ctx.declare(CURRENT_STATE_KEY, currentState);
+      getScriptContext().declare(CURRENT_STATE_KEY, currentState);
 
       fireEnabledConditionChanged(state.getEnabledMap());
       fireVisibleConditionChanged(state.getVisibleMap());
@@ -671,7 +672,7 @@ public class DefaultFormController implements FormController {
                .getKey(), (List)entry.getValue(), false);
       }
 
-      final Map currentValues = PropertyUtils.describe(form);
+      final Map currentValues = PropertyUtils.describe(getForm());
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {
@@ -707,7 +708,7 @@ public class DefaultFormController implements FormController {
                entry.getKey()));
       }
 
-      PropertyUtils.copyProperties(form, currentValues);
+      PropertyUtils.copyProperties(getForm(), currentValues);
       state.getChangedMap().clear();
       state.getChangedMap().putAll(currentValues);
 
@@ -738,12 +739,12 @@ public class DefaultFormController implements FormController {
 
       if (methodMetadata.getActionMetadata() != null && methodMetadata
             .getActionMetadata().isValidateBefore()) {
-         final String formName = form.getClass().getName();
+         final String formName = getForm().getClass().getName();
 
          final Map validationErrors = ValidationUtils.getInstance()
                .getMessages(ValidationUtils.getInstance().validate(
                stringProperties == null || stringProperties.isEmpty() ?
-               form : stringProperties, formName), formName);
+               getForm() : stringProperties, formName), formName);
 
          if (!validationErrors.isEmpty()) {
             throw new ValidationException(validationErrors);
@@ -780,7 +781,7 @@ public class DefaultFormController implements FormController {
          final List list = (List)currentState.getDataProvidedMap().get(
                dataProviderMetadata);
 
-         dataProviderMetadata.populateSelectedFields(form, list, selected);
+         dataProviderMetadata.populateSelectedFields(getForm(), list, selected);
          currentState.getDataProvidedIndexesMap().put(dataProviderMetadata,
                selected);
 
@@ -827,7 +828,7 @@ public class DefaultFormController implements FormController {
                (List)entry.getValue());
       }
 
-      final Map currentValues = PropertyUtils.describe(form);
+      final Map currentValues = PropertyUtils.describe(getForm());
 
       for (final Iterator i = formMetadata.getDataProviderIndexes().values()
             .iterator(); i.hasNext(); ) {

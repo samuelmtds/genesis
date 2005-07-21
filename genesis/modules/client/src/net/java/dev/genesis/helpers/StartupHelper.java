@@ -177,7 +177,7 @@ public class StartupHelper {
          return;
       }
 
-      final Thread t = new Thread() {
+      final Thread t = new Thread("NoopCommand-Daemon") {
          {
             setDaemon(true);
          }
@@ -204,7 +204,7 @@ public class StartupHelper {
          return;
       }
 
-      final Thread t = new Thread() {
+      final Thread t = new Thread("ValidatorRulesLoader-Daemon") {
          {
             setDaemon(true);
          }

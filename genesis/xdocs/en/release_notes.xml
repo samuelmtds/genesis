@@ -8,8 +8,7 @@
     <section name="Downloads and release notes">
       <ul>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
-        <li><a href="#2.2-RC2">2.2-RC2</a></li>
-        <li><a href="#2.2-RC1">2.2-RC1</a></li>
+        <li><a href="#2.2">2.2</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
@@ -60,60 +59,10 @@
         could work with it.</p>
       </subsection>
     </section>
-    <section name="2.2-RC2">
+    <section name="2.2">
       <subsection name="Downloads">
         <p>All distribution files for this release can be found <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3533&amp;expandFolder=3533&amp;folderID=3533">here</a>.</p>
-      </subsection>
-      <subsection name="Features and changes">
-        <p>Some of the most noteworthy new features and changes are:</p>
-        <ul>
-          <li>The <a href="../tags/genesis-tags.html">documentation for genesis 
-          XDoclet tags</a> has been integrated to the site</li>
-          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
-          has been modified to allow 
-          <code>net.java.dev.genesis.resolvers.EmptyResolver</code> instances to
-          be registered programmatically</li>
-        </ul>
-        <p>The following bug has been fixed on this release:</p>
-        <ul>
-          <li>The build process for the xdoclet module does not work (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=241">Issue
-          # 241</a>)</li>
-        </ul>
-        <p>The full change log between 2.2-RC1 and 2.2-RC2 can be found <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;target_milestone=2.2">here</a>.</p>
-        <p>The full documentation for this release can be found <a
-        href="https://genesis.dev.java.net/nonav/2.2-RC2/maven-site/en/">here</a>.</p>
-      </subsection>
-      <subsection name="Known issues">
-        <p>A complete list of known issues can be checked <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">here</a>
-        </p>
-      </subsection>
-      <subsection name="Acknowledgements">
-        <p>The following individuals contributed to this release:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Cláudio Rocha</li>
-            <li>Daniela Gomes</li>
-            <li>Danielle Albuquerque</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-            <li>Marcelo Ohashi</li>
-            <li>Roberto Arnaldo</li>
-            <li>Valéria Fernandes</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="2.2-RC1">
-      <subsection name="Downloads">
-        <p>All distribution files for this release can be found <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3345&amp;expandFolder=3345&amp;folderID=1756">here</a>.</p>
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3762&amp;expandFolder=3762&amp;folderID=3533">here</a>.</p>
       </subsection>
       <subsection name="Features and changes">
         <p>Some of the most noteworthy new features and changes are:</p>
@@ -126,6 +75,23 @@
           <li>An <a
           href="business_component_model.html#Paging_lists">implementation
           of paging for lists</a> is now part of the framework</li>
+          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
+          has been modified to allow 
+          <code>net.java.dev.genesis.resolvers.EmptyResolver</code> instances to
+          be registered programmatically</li>
+          <li>The <code>onClose()</code> method from
+          <code>net.java.dev.genesis.ui.thinlet.BaseDialogThinlet</code> has 
+          been modified in order to improve memory release (for more information,
+          check issues <a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=243">243</a>
+          and <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=244">244</a>
+          )</li>
+          <li><code>textarea</code>s are now made not editable instead of being
+          disabled so it is possible to scroll them (for more information, check
+          issue <a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=248">248</a>
+          )</li>
         </ul>
         <p>The following bugs have been fixed on this release:</p>
         <ul>
@@ -140,15 +106,24 @@
           for read-only properties (<a
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=202">Issue
           # 225</a>)</li>
+          <li><code>WorkerThread</code>'s lifecycle should be bound to 
+          <code>TimeoutAspect</code>'s one (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=245">Issue
+          # 245</a>)</li>
+          <li>Selection fails for comboboxes and lists populated using
+          <code>@DataProvider</code> and containing different values for the
+          <code>key</code> and <code>value</code> properties (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=246">Issue
+          # 246</a>)</li>
         </ul>
-        <p>The full change log between 2.1 and 2.2-RC1 can be found <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=2.2-RC1">here</a>.</p>
+        <p>The full change log between 2.1 and 2.2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;version=2.2-RC1&amp;version=2.2-RC2&amp;target_milestone=2.2-RC1&amp;target_milestone=2.2-RC2&amp;target_milestone=2.2">here</a>.</p>
         <p>The full documentation for this release can be found <a
-        href="https://genesis.dev.java.net/nonav/2.2-RC1/maven-site/en/">here</a>.</p>
+        href="https://genesis.dev.java.net/nonav/2.2/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2-RC1&amp;issue_type=DEFECT">here</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">here</a>
         </p>
       </subsection>
       <subsection name="Acknowledgements">

@@ -61,13 +61,13 @@ public class InsertUpdateView extends BaseDialogView {
    /**
     * @AfterAction
     */
-   public void save() {
-      getDialog().dispose();
+   public void save() throws Exception {
+      onClose();
       this.hasChanged = true;
    }
 
-   public void cancel() {
-      getDialog().dispose();
+   public void cancel() throws Exception {
+      onClose();
    }
 
 }
