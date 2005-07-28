@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="genesis">
-  <title>genesis-shared</title>
+  <title>genesis-container</title>
   <body>
     <links>
       <item name="genesis" href="../../index.html" />
