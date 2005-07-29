@@ -114,7 +114,7 @@ public class CriteriaPropertyHelperTest extends GenesisTestCase {
       assertEquals(1, criteria.getPropertiesMap().size());
       assertSame(value, criteria.getPropertiesMap().get("property2"));
 
-      // Fields that don't in both classes shouldn't be copied
+      // Fields that don't exist in both classes shouldn't be copied
       form.setProperty2(null);
       form.setFormProperty(value);
       criteria.setCriteriaProperty(value);
