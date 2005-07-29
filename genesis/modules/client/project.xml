@@ -82,6 +82,15 @@
             <url>http://thinlet.sourceforge.net/</url>
             <properties/>
         </dependency>
+        <!-- Unit test dependency -->
+        <dependency>
+            <groupId>hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>2.1.8</version>
+            <type>jar</type>
+            <url>http://www.hibernate.org/</url>
+            <properties/>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -100,7 +109,7 @@
                     <include>**/*.properties</include>
                     <include>**/*.sample</include>
                 </includes>
-			      </resource>
+            </resource>
         </resources>
     </build>
     <reports>
