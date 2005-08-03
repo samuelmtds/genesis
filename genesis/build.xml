@@ -24,7 +24,6 @@
 		<fileset dir="${genesis.aspectwerkz.dist}">
          <include name="aspectwerkz*.jar"/>
          <exclude name="aspectwerkz-extensions-*.jar" />
-         <exclude name="aspectwerkz-jdk5-*.jar" />
          <include name="ant*.jar"/>
          <exclude name="asm*.jar"/>
          <include name="concurrent*.jar"/>

@@ -20,9 +20,10 @@
       <jar href="@webstart.context@-local-weaved.jar" download="eager" main="true" />
       <jar href="genesis-aspect-annotated-@genesis.version@.jar" download="eager" />
       <jar href="genesis-client-@genesis.version@.jar" download="eager" />
-      <jar href="aspectwerkz-2.0.jar" download="eager" />
-      <jar href="aspectwerkz-core-2.0.jar" download="eager" />
-      <jar href="aspectwerkz-jdk14-2.0.jar" download="eager" />
+      <jar href="aspectwerkz-2.0.1.jar" download="eager" />
+      <jar href="aspectwerkz-core-2.0.1.jar" download="eager" />
+      <jar href="aspectwerkz-jdk14-2.0.1.jar" download="eager" />
+      <jar href="aspectwerkz-jdk5-2.0.1.jar" download="eager" />
       <jar href="cglib-full-2.0.2.jar" download="eager" />
       <jar href="commons-beanutils-1.7.jar" download="eager" />
       <jar href="commons-collections-2.1.1.jar" download="eager" />

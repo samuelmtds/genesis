@@ -121,7 +121,6 @@
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
             <exclude name="aspectwerkz-extensions-*.jar" />
-            <exclude name="aspectwerkz-jdk5-*.jar" />
             <include name="dom4j-*.jar" />
             <include name="jrexx-*.jar" />
             <include name="trove-*.jar" />
@@ -438,7 +437,6 @@
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
             <exclude name="aspectwerkz-extensions-*.jar" />
-            <exclude name="aspectwerkz-jdk5-*.jar" />
             <include name="dom4j-*.jar" />
             <include name="jrexx-*.jar" />
             <include name="trove-*.jar" />
