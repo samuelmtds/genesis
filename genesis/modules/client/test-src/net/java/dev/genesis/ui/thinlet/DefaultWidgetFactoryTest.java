@@ -28,6 +28,8 @@ public class DefaultWidgetFactoryTest extends GenesisTestCase {
 
    public void testCreate() {
       DefaultWidgetFactory factory = new DefaultWidgetFactory();
+      
+      // Cannot instantiate abstract class
       BaseThinlet thinlet = new BaseThinlet() {
       };
 
