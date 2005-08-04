@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,9 @@
  */
 package net.java.dev.genesis.aspect;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import net.java.dev.genesis.command.TransactionalInjector;
 
 import org.codehaus.aspectwerkz.AspectContext;
@@ -25,21 +28,33 @@ import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
 
 /**
- * @Aspect("perThread")
+ * @Aspect("perJVM")
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
-   private final TransactionalInjector injector;
-
-   public LocalCommandExecutionAspect(final AspectContext ctx) 
-                                                            throws Exception {
+   private final Map injectorsPerThread = new WeakHashMap();
+   
+   public LocalCommandExecutionAspect(final AspectContext ctx) throws Exception {
       super(ctx);
+   }
+   
+   private TransactionalInjector getTransactionalInjector() throws Exception {
+      Thread currentThread = Thread.currentThread();
+      TransactionalInjector injector = (TransactionalInjector)injectorsPerThread
+            .get(currentThread);
 
-      injector = (ctx.isPrototype()) ? null : (TransactionalInjector)
-            Class.forName(ctx.getParameter("transactionalInjector"), true, 
-            Thread.currentThread().getContextClassLoader()).newInstance();
-      if (!ctx.isPrototype()) {
-         injector.init(ctx);
+      if (injector == null) {
+         injector = (TransactionalInjector)Class.forName(
+               ctx.getParameter("transactionalInjector"), true,
+               currentThread.getContextClassLoader()).newInstance();
+
+         if (!ctx.isPrototype()) {
+            injector.init(ctx);
+         }
+
+         injectorsPerThread.put(currentThread, injector);
       }
+
+      return injector;
    }
     
    /**
@@ -54,6 +69,8 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
          return joinPoint.proceed();
       }
 
+      TransactionalInjector injector = getTransactionalInjector();
+
       try {
          injector.beforeInvocation(obj, transactional);
          final Object ret = joinPoint.proceed();
@@ -64,7 +81,7 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
          injector.onException(e);
 
          throw e;
-      } finally{
+      } finally {
          injector.onFinally();
       }
    }
