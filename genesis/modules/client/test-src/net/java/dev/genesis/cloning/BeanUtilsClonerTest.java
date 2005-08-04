@@ -21,17 +21,33 @@ package net.java.dev.genesis.cloning;
 import net.java.dev.genesis.GenesisTestCase;
 
 public class BeanUtilsClonerTest extends GenesisTestCase {
+   public static class SomeBean {
+      private Object field;
+
+      public Object getField() {
+         return field;
+      }
+
+      public void setField(Object field) {
+         this.field = field;
+      }
+   }
+
    public BeanUtilsClonerTest() {
       super("BeanUtils Cloner Unit Test");
    }
-   
+
    public void testClone() {
       BeanUtilsCloner cloner = new BeanUtilsCloner();
-      
+
       assertNull(cloner.clone(null));
-      
-      Object o = new Object();
-      Object clone = cloner.clone(o);
-      assertNotSame(o, clone);
+
+      SomeBean bean = new SomeBean();
+      bean.setField(new Object());
+      SomeBean clone = (SomeBean)cloner.clone(bean);
+
+      assertNotSame(bean, clone);
+      assertSame(bean.getField(), clone.getField());
+
    }
 }
