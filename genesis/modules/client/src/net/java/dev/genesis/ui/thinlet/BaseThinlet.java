@@ -190,12 +190,22 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected Object createItemOfType(String name, String text, ItemType type) {
-      final Object item = create(type.getName());
-      setName(item, name);
-      setText(item, text);
-      setTooltip(item, text);
-      
-      return item;
+      return createItemOfType(name, text, type, null, null);
+   }
+
+   protected Object createItemOfType(String name, String text, ItemType type,
+         Map widgetFactories, String propertyName) {
+      WidgetFactory factory = null;
+
+      if (widgetFactories != null) {
+         factory = (WidgetFactory)widgetFactories.get(propertyName);
+      }
+
+      if (factory == null) {
+         factory = WidgetFactoryRegistry.getInstance().get(type);
+      }
+
+      return factory.create(this, name, text, type);
    }
 
    protected Object createRow() {
@@ -733,10 +743,19 @@ public abstract class BaseThinlet extends Thinlet {
             blank, blankLabel, formatters);
    }
 
+   protected void populateFromCollection(Object component, Collection c,
+         String keyProperty, String valueProperty, boolean virtual,
+         boolean blank, String blankLabel, Map formatters)
+         throws IllegalAccessException, InvocationTargetException,
+         NoSuchMethodException {
+      populateFromCollection(component, c, keyProperty, valueProperty, virtual,
+            blank, blankLabel, formatters, null);
+   }
+
    protected void populateFromCollection(Object component, Collection c, 
                         String keyProperty, String valueProperty, 
                         boolean virtual, boolean blank, String blankLabel, 
-                        Map formatters) 
+                        Map formatters, Map widgetFactories) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
       final boolean combobox = getClass(component).equals(COMBOBOX);
@@ -763,22 +782,28 @@ public abstract class BaseThinlet extends Thinlet {
       removeAll(component);
 
       if (blank) {
-         add(component, createItemOfType("", blankLabel == null ? 
-               "" : blankLabel, type));
+         Object item = createItemOfType("", blankLabel == null ? ""
+               : blankLabel, type, widgetFactories, componentName + '.'
+               + keyProperty);
+         add(component, item);
       }
 
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
 
-         key = format(formatters, componentName + '.' + keyProperty, PropertyUtils
-               .getProperty(o, keyProperty));
-         description = virtual ? virtualFormatter.format(o) : 
-               (valueProperty == null ? format(formatters, componentName + '.', 
-               o) : format(formatters, componentName + '.' + valueProperty, 
-               PropertyUtils.getProperty(o, valueProperty)));
+         String propertyKey = componentName + '.' + keyProperty;
+         key = format(formatters, propertyKey, PropertyUtils.getProperty(o,
+               keyProperty));
+         description = virtual ? virtualFormatter.format(o)
+               : (valueProperty == null ? format(formatters,
+                     componentName + '.', o) : format(formatters, componentName
+                     + '.' + valueProperty, PropertyUtils.getProperty(o,
+                     valueProperty)));
+         Object item = createItemOfType(key, description, type,
+               widgetFactories, propertyKey);
 
-         add(component, createItemOfType(key, description, type));
+         add(component, item);
       }
    }
 
@@ -794,8 +819,14 @@ public abstract class BaseThinlet extends Thinlet {
       populateFromCollection(component, c, null);
    }
 
-   protected void populateFromCollection(Object component, Collection c, 
-         Map formatters) throws IllegalAccessException, 
+   protected void populateFromCollection(Object component, Collection c,
+         Map formatters) throws IllegalAccessException,
+         InvocationTargetException, NoSuchMethodException {
+      populateFromCollection(component, c, formatters, null);
+   }
+
+   protected void populateFromCollection(Object component, Collection c,
+         Map formatters, Map widgetFactories) throws IllegalAccessException,
          InvocationTargetException, NoSuchMethodException {
       if (!getClass(component).equals(TABLE)) {
          throw new UnsupportedOperationException();
@@ -841,8 +872,11 @@ public abstract class BaseThinlet extends Thinlet {
             propertyName = it.next().toString();
 
             if (virtualPropertyNames.contains(propertyName)) {
-               add(row, createCell(propertyName, getVirtualFormatter(formatters, 
-                     componentName, propertyName).format(bean)));
+               Object cell = createItemOfType(propertyName,
+                     getVirtualFormatter(formatters, componentName,
+                           propertyName).format(bean), ItemType.CELL,
+                     widgetFactories, componentName + '.' + propertyName);
+               add(row, cell);
                continue;
             }
 
@@ -852,9 +886,12 @@ public abstract class BaseThinlet extends Thinlet {
             while ((indexOfDot = propertyName.indexOf('.', indexOfDot)) != -1) {
                if (PropertyUtils.getProperty(bean, 
                      propertyName.substring(0, indexOfDot)) == null) {
-                  add(row, createCell(propertyName, 
-                        format(formatters, componentName + '.' + propertyName, 
-                        null)));
+                  String propertyKey = componentName + '.' + propertyName;
+                  Object cell = createItemOfType(propertyName, format(
+                        formatters, propertyKey, null), ItemType.CELL,
+                        widgetFactories, propertyKey);
+
+                  add(row, cell);
                   skip = true;
                   break;
                }
@@ -866,9 +903,12 @@ public abstract class BaseThinlet extends Thinlet {
                continue;
             }
 
-            add(row, createCell(propertyName, format(formatters, 
-                  componentName + '.' + propertyName, 
-                  PropertyUtils.getProperty(bean, propertyName))));
+            String propertyKey = componentName + '.' + propertyName;
+            Object cell = createItemOfType(propertyName, format(formatters,
+                  propertyKey, PropertyUtils.getProperty(bean, propertyName)),
+                  ItemType.CELL, widgetFactories, propertyKey);
+
+            add(row, cell);
          }
 
          add(component, row);

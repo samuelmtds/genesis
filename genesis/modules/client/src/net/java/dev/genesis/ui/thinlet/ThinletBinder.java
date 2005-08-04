@@ -79,6 +79,7 @@ public class ThinletBinder implements FormControllerListener {
 
    private final Map formatters = new HashMap();
    private final Map converters = new HashMap();
+   private final Map widgetFactories = new HashMap();
 
    public ThinletBinder(final BaseThinlet thinlet, final Object root, 
          final Object form) {
@@ -456,6 +457,10 @@ public class ThinletBinder implements FormControllerListener {
       return (Converter)converters.put(key, converter);
    }
 
+   public WidgetFactory registerWidgetFactory(String key, WidgetFactory factory) {
+      return (WidgetFactory)widgetFactories.put(key, factory);
+   }
+
    public void valuesChanged(Map updatedValues) throws Exception {
       thinlet.displayBean(updatedValues, root, formatters);
    }
@@ -494,7 +499,8 @@ public class ThinletBinder implements FormControllerListener {
             resetSelectedFields(metadata);
          }
 
-         thinlet.populateFromCollection(component, items, formatters);
+         thinlet.populateFromCollection(component, items, formatters,
+               widgetFactories);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
          //TODO: This parsing shouldn't occur every time
@@ -511,8 +517,8 @@ public class ThinletBinder implements FormControllerListener {
          final String blankLabel = (String)thinlet.getProperty(component, 
                "blankLabel");
 
-         thinlet.populateFromCollection(component, items, key, value, virtual, 
-               blank, blankLabel, formatters);
+         thinlet.populateFromCollection(component, items, key, value, virtual,
+               blank, blankLabel, formatters, widgetFactories);
       } else {
          throw new UnsupportedOperationException(className + " is not "
                + "supported for data providing");
