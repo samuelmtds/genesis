@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import net.java.dev.genesis.cloning.Cloner;
+import net.java.dev.genesis.cloning.ClonerRegistry;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.reflection.FieldEntry;
@@ -467,6 +470,45 @@ public class FormMetadataFactoryAspect {
 
          }
 
+         public static class ClonerAnnotationHandler implements
+               AnnotationHandler {
+            public void processFormAnnotation(final FormMetadata formMetadata,
+                  final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "Cloner cannot be a form annotation");
+            }
+
+            public void processFieldAnnotation(final FormMetadata formMetadata,
+                  final FieldMetadata fieldMetadata, final Annotation annotation) {
+               fieldMetadata.setCloner(getCloner(fieldMetadata,
+                     ((UntypedAnnotationProxy)annotation).getValue()));
+            }
+
+            public void processMethodAnnotation(
+                  final FormMetadata formMetadata,
+                  final MethodMetadata methodMetadata,
+                  final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "Cloner cannot be a method annotation");
+            }
+
+            private Cloner getCloner(final FieldMetadata fieldMetadata,
+                  final String attributesLine) {
+               final Map attributesMap = GenesisUtils
+                     .getAttributesMap(attributesLine);
+               final String clonerClass = (String)attributesMap.remove("class");
+
+               if (clonerClass == null) {
+                  return ClonerRegistry.getInstance().getDefaultClonerFor(
+                        fieldMetadata.getFieldClass(), attributesMap);
+               }
+
+               return ClonerRegistry.getInstance().getCloner(clonerClass,
+                     attributesMap);
+            }
+
+         }
+
          public static final MetadataAttribute CONDITION = new MetadataAttribute(
                "Condition", new ConditionAnnotationHandler());
          public static final MetadataAttribute ENABLED_WHEN = new MetadataAttribute(
@@ -487,6 +529,8 @@ public class FormMetadataFactoryAspect {
                "EmptyResolver", new EmptyResolverAnnotationHandler());
          public static final MetadataAttribute EMPTY_VALUE = new MetadataAttribute(
                "EmptyValue", new EmptyValueAnnotationHandler());
+         public static final MetadataAttribute CLONER = new MetadataAttribute(
+               "Cloner", new ClonerAnnotationHandler());
 
          private final AnnotationHandler handler;
 
