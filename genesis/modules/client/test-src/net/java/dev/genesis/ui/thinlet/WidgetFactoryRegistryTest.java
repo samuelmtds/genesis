@@ -47,31 +47,26 @@ public class WidgetFactoryRegistryTest extends GenesisTestCase {
    }
 
    public void testRegister() {
-      registry.register(BaseThinlet.ItemType.CELL, factory);
+      registry.register(Number.class, factory);
 
-      assertSame(factory, registry.get(BaseThinlet.ItemType.CELL));
-      assertSame(WIDGET, registry.get(BaseThinlet.ItemType.CELL).create(null,
+      Integer number = new Integer(0);
+
+      assertSame(factory, registry.get(number));
+      assertSame(WIDGET, ((WidgetFactory)registry.get(number)).create(null,
             null, null, null));
 
-      registry.register(BaseThinlet.ItemType.CELL, new DefaultWidgetFactory());
+      registry.deregister(Number.class);
    }
 
    public void testDeregister() {
-      assertNotNull(registry.get(BaseThinlet.ItemType.CELL));
-      assertNotNull(registry.get(BaseThinlet.ItemType.CHOICE));
-      assertNotNull(registry.get(BaseThinlet.ItemType.ITEM));
+      registry.register(Number.class, factory);
 
-      registry.deregister(BaseThinlet.ItemType.CELL);
+      Integer number = new Integer(0);
+      assertSame(factory, registry.get(number));
 
-      assertNull(registry.get(BaseThinlet.ItemType.CELL));
+      registry.deregister(Number.class);
 
-      registry.register(BaseThinlet.ItemType.CELL, new DefaultWidgetFactory());
-
-      assertNotNull(registry.get(BaseThinlet.ItemType.CELL));
-
-      registry.deregister();
-      assertNull(registry.get(BaseThinlet.ItemType.CELL));
-      assertNull(registry.get(BaseThinlet.ItemType.CHOICE));
-      assertNull(registry.get(BaseThinlet.ItemType.ITEM));
+      // DefaultWidgetFactory registered for Object.class
+      assertTrue(registry.get(number) instanceof DefaultWidgetFactory);
    }
 }

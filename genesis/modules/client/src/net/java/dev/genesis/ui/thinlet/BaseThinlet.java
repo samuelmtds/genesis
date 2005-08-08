@@ -190,19 +190,15 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    protected Object createItemOfType(String name, String text, ItemType type) {
-      return createItemOfType(name, text, type, null, null);
+      return createItemOfType(name, text, type, null);
    }
 
    protected Object createItemOfType(String name, String text, ItemType type,
-         Map widgetFactories, String propertyName) {
-      WidgetFactory factory = null;
-
-      if (widgetFactories != null) {
-         factory = (WidgetFactory)widgetFactories.get(propertyName);
-      }
+         WidgetFactory factory) {
 
       if (factory == null) {
-         factory = WidgetFactoryRegistry.getInstance().get(type);
+         factory = (WidgetFactory)WidgetFactoryRegistry.getInstance().get(
+               Object.class);
       }
 
       return factory.create(this, name, text, type);
@@ -783,8 +779,7 @@ public abstract class BaseThinlet extends Thinlet {
 
       if (blank) {
          Object item = createItemOfType("", blankLabel == null ? ""
-               : blankLabel, type, widgetFactories, componentName + '.'
-               + keyProperty);
+               : blankLabel, type, null);
          add(component, item);
       }
 
@@ -792,16 +787,17 @@ public abstract class BaseThinlet extends Thinlet {
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
 
-         String propertyKey = componentName + '.' + keyProperty;
-         key = format(formatters, propertyKey, PropertyUtils.getProperty(o,
-               keyProperty));
-         description = virtual ? virtualFormatter.format(o)
+         key = format(formatters, componentName + '.' + keyProperty,
+               PropertyUtils.getProperty(o, keyProperty));
+         Object value = null;
+         description = virtual ? virtualFormatter.format(value = o)
                : (valueProperty == null ? format(formatters,
-                     componentName + '.', o) : format(formatters, componentName
-                     + '.' + valueProperty, PropertyUtils.getProperty(o,
+                     componentName + '.', value = o) : format(formatters, componentName
+                     + '.' + valueProperty, value = PropertyUtils.getProperty(o,
                      valueProperty)));
          Object item = createItemOfType(key, description, type,
-               widgetFactories, propertyKey);
+               value == null ? null : (WidgetFactory)widgetFactories.get(value
+                     .getClass()));
 
          add(component, item);
       }
@@ -875,7 +871,8 @@ public abstract class BaseThinlet extends Thinlet {
                Object cell = createItemOfType(propertyName,
                      getVirtualFormatter(formatters, componentName,
                            propertyName).format(bean), ItemType.CELL,
-                     widgetFactories, componentName + '.' + propertyName);
+                     bean == null ? null : (WidgetFactory)widgetFactories
+                           .get(bean.getClass()));
                add(row, cell);
                continue;
             }
@@ -886,10 +883,9 @@ public abstract class BaseThinlet extends Thinlet {
             while ((indexOfDot = propertyName.indexOf('.', indexOfDot)) != -1) {
                if (PropertyUtils.getProperty(bean, 
                      propertyName.substring(0, indexOfDot)) == null) {
-                  String propertyKey = componentName + '.' + propertyName;
                   Object cell = createItemOfType(propertyName, format(
-                        formatters, propertyKey, null), ItemType.CELL,
-                        widgetFactories, propertyKey);
+                        formatters, componentName + '.' + propertyName, null),
+                        ItemType.CELL, null);
 
                   add(row, cell);
                   skip = true;
@@ -903,10 +899,11 @@ public abstract class BaseThinlet extends Thinlet {
                continue;
             }
 
-            String propertyKey = componentName + '.' + propertyName;
+            Object value = PropertyUtils.getProperty(bean, propertyName);
             Object cell = createItemOfType(propertyName, format(formatters,
-                  propertyKey, PropertyUtils.getProperty(bean, propertyName)),
-                  ItemType.CELL, widgetFactories, propertyKey);
+                  componentName + '.' + propertyName, value), ItemType.CELL,
+                  value == null ? null : (WidgetFactory)widgetFactories
+                        .get(value.getClass()));
 
             add(row, cell);
          }

@@ -18,37 +18,16 @@
  */
 package net.java.dev.genesis.ui.thinlet;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
+import net.java.dev.genesis.registry.Registry;
 
-public class WidgetFactoryRegistry {
+public class WidgetFactoryRegistry extends Registry {
    private static final WidgetFactoryRegistry instance = new WidgetFactoryRegistry();
 
-   private final Map registry = new IdentityHashMap();
-
    private WidgetFactoryRegistry() {
-      register(BaseThinlet.ItemType.CELL, new DefaultWidgetFactory());
-      register(BaseThinlet.ItemType.CHOICE, new DefaultWidgetFactory());
-      register(BaseThinlet.ItemType.ITEM, new DefaultWidgetFactory());
+      register(Object.class, new DefaultWidgetFactory());
    }
 
    public static WidgetFactoryRegistry getInstance() {
       return instance;
-   }
-
-   public Object register(BaseThinlet.ItemType type, WidgetFactory factory) {
-      return registry.put(type, factory);
-   }
-
-   public void deregister() {
-      registry.clear();
-   }
-
-   public void deregister(BaseThinlet.ItemType type) {
-      registry.remove(type);
-   }
-
-   public WidgetFactory get(BaseThinlet.ItemType type) {
-      return (WidgetFactory)registry.get(type);
    }
 }
