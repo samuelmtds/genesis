@@ -23,12 +23,12 @@ import net.java.dev.genesis.ui.thinlet.BaseThinlet.ItemType;
 
 public class DefaultWidgetFactory implements WidgetFactory {
    public Object create(BaseThinlet thinlet, String name, String value,
-         ItemType type) {
+         Object bean, ItemType type) {
       final Object item = Thinlet.create(type.getName());
       thinlet.setName(item, name);
       thinlet.setText(item, value);
       thinlet.setTooltip(item, value);
-      
+
       return item;
    }
 

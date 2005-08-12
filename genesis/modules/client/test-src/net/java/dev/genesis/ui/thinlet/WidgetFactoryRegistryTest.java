@@ -25,7 +25,7 @@ public class WidgetFactoryRegistryTest extends GenesisTestCase {
    private static final Object WIDGET = new Object();
 
    private WidgetFactory factory = new WidgetFactory() {
-      public Object create(BaseThinlet thinlet, String name, String value,
+      public Object create(BaseThinlet thinlet, String name, String value, Object bean,
             ItemType type) {
          return WIDGET;
       }
@@ -53,7 +53,7 @@ public class WidgetFactoryRegistryTest extends GenesisTestCase {
 
       assertSame(factory, registry.get(number));
       assertSame(WIDGET, ((WidgetFactory)registry.get(number)).create(null,
-            null, null, null));
+            null, null, null, null));
 
       registry.deregister(Number.class);
    }

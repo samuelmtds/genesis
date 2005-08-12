@@ -33,7 +33,7 @@ public class DefaultWidgetFactoryTest extends GenesisTestCase {
       BaseThinlet thinlet = new BaseThinlet() {
       };
 
-      Object cell = factory.create(thinlet, "cellname1", "cellvalue1",
+      Object cell = factory.create(thinlet, "cellname1", "cellvalue1", null,
             BaseThinlet.ItemType.CELL);
 
       assertEquals("cellname1", thinlet.getName(cell));
@@ -42,7 +42,7 @@ public class DefaultWidgetFactoryTest extends GenesisTestCase {
       assertEquals(BaseThinlet.ItemType.CELL.getName(), Thinlet.getClass(cell));
 
       Object choice = factory.create(thinlet, "choicename1", "choicevalue1",
-            BaseThinlet.ItemType.CHOICE);
+            null, BaseThinlet.ItemType.CHOICE);
 
       assertEquals("choicename1", thinlet.getName(choice));
       assertEquals("choicevalue1", thinlet.getText(choice));
@@ -50,7 +50,7 @@ public class DefaultWidgetFactoryTest extends GenesisTestCase {
       assertEquals(BaseThinlet.ItemType.CHOICE.getName(), Thinlet
             .getClass(choice));
 
-      Object item = factory.create(thinlet, "itemname1", "itemvalue1",
+      Object item = factory.create(thinlet, "itemname1", "itemvalue1", null,
             BaseThinlet.ItemType.ITEM);
 
       assertEquals("itemname1", thinlet.getName(item));
