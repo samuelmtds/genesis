@@ -25,6 +25,9 @@ import net.java.dev.genesis.commons.beanutils.converters.BooleanConverter;
 import net.java.dev.genesis.text.BooleanFormatter;
 import net.java.dev.genesis.text.DefaultFormatter;
 import net.java.dev.genesis.text.FormatterRegistry;
+import net.java.dev.genesis.ui.thinlet.DefaultWidgetFactory;
+import net.java.dev.genesis.ui.thinlet.WidgetFactory;
+import net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.ConvertUtilsBean;
@@ -65,6 +68,8 @@ public class StartupHelperTest extends GenesisTestCase {
       assertEquals(1, startupHelper.getConverters().size());
       //testing if the formatters collection contains one element.
       assertEquals(1, startupHelper.getFormatters().size());
+      //testing if the widget factories collection contains zero elements.
+      assertTrue(startupHelper.getWidgetFactories().isEmpty());
       //testing if the JXPathContextFactoryClassName is still the default value.
       assertEquals("net.java.dev.genesis.commons.jxpath.JXPathContextFactory",
             startupHelper.getJXPathContextFactoryClassName());
@@ -121,6 +126,12 @@ public class StartupHelperTest extends GenesisTestCase {
       startupHelper.addFormatter(BooleanFormatter.class, booleanFormatter);
       DefaultFormatter defaultFormatter = new DefaultFormatter();
       startupHelper.addFormatter(DefaultFormatter.class, defaultFormatter);
+
+      //adding some widget factories
+      WidgetFactory widgetFactory1 = new DefaultWidgetFactory();
+      startupHelper.addWidgetFactory(WidgetFactory.class, widgetFactory1);
+      WidgetFactory widgetFactory2 = new DefaultWidgetFactory();
+      startupHelper.addWidgetFactory(DefaultWidgetFactory.class, widgetFactory2);
       
       //initializing
       startupHelper.initialize();
@@ -164,9 +175,26 @@ public class StartupHelperTest extends GenesisTestCase {
       assertEquals(startupHelper.getFormatter(DefaultFormatter.class),
             FormatterRegistry.getInstance().get(DefaultFormatter.class));
 
+      //testing the widget factories
+      assertNotNull(startupHelper.getWidgetFactory(WidgetFactory.class));
+      assertSame(widgetFactory1, startupHelper.getWidgetFactory(
+            WidgetFactory.class));
+      assertNotNull(WidgetFactoryRegistry.getInstance().get(WidgetFactory.class));
+      assertEquals(startupHelper.getWidgetFactory(WidgetFactory.class),
+            WidgetFactoryRegistry.getInstance().get(WidgetFactory.class));
+      
+      assertNotNull(startupHelper.getWidgetFactory(DefaultWidgetFactory.class));
+      assertSame(widgetFactory2, startupHelper.getWidgetFactory(
+              DefaultWidgetFactory.class));
+      assertNotNull(WidgetFactoryRegistry.getInstance().get(
+              DefaultWidgetFactory.class));
+      assertEquals(startupHelper.getWidgetFactory(DefaultWidgetFactory.class),
+            WidgetFactoryRegistry.getInstance().get(DefaultWidgetFactory.class));
+
       //testing the map collections
       assertEquals(3, startupHelper.getConverters().size());
       assertEquals(3, startupHelper.getFormatters().size());
+      assertEquals(2, startupHelper.getWidgetFactories().size());
    }
 }
 
