@@ -31,8 +31,6 @@ import net.java.dev.genesis.text.FormatAdapter;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.ValidationUtils;
-import net.java.dev.genesis.ui.thinlet.WidgetFactory;
-import net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -51,7 +49,6 @@ public class StartupHelper {
          "net.java.dev.genesis.commons.jxpath.JXPathContextFactory";
    private final Map converters = new HashMap();
    private final Map formatters = new HashMap();
-   private final Map widgetFactories = new HashMap();
    private Locale locale;
    private String dateFormat;
    private boolean runNoopCommand = true;
@@ -167,34 +164,6 @@ public class StartupHelper {
       }
    }
 
-   public WidgetFactory addWidgetFactory(Class clazz, WidgetFactory widgetFactory) {
-      return (WidgetFactory)widgetFactories.put(clazz, widgetFactory);
-   }
-
-   public WidgetFactory removeWidgetFactory(Class clazz) {
-      return (WidgetFactory)widgetFactories.remove(clazz);
-   }
-
-   public WidgetFactory getWidgetFactory(Class clazz) {
-      return (WidgetFactory)widgetFactories.get(clazz);
-   }
-
-   public Map getWidgetFactories() {
-      return new HashMap(widgetFactories);
-   }
-
-   protected void registerWidgetFactories() {
-      log.info("Registering WidgetFactory instances");
-
-      for (final Iterator i = widgetFactories.entrySet().iterator(); 
-            i.hasNext(); ) {
-         Map.Entry entry = (Map.Entry)i.next();
-
-         WidgetFactoryRegistry.getInstance().register((Class)entry.getKey(),
-               (WidgetFactory)entry.getValue());
-      }
-   }
-
    public boolean isRunNoopCommand() {
       return runNoopCommand;
    }
@@ -254,7 +223,6 @@ public class StartupHelper {
       registerJXPathContextFactory();
       registerConverters();
       registerFormatters();
-      registerWidgetFactories();
       runNoopCommand();
       loadValidatorRules();
 
