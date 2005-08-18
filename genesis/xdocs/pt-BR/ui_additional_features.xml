@@ -1498,8 +1498,6 @@ public class InsertUpdateForm {
                      depends="required">
                   <arg position="0"
                        key="User.address"
-
-
                   />
               </field>
               <field property="state"
