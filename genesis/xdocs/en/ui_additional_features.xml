@@ -156,7 +156,7 @@ public class ViewHandlerExample {
       used for views.</p>
       <p>Conditional expressions are interpreted using <a href=
       "http://jakarta.apache.org/commons/jxpath">JXPath</a>. Support for other
-      script languages is expected for release 0.3. For now, subsections below
+      script languages is expected for release 3.0. For now, subsections below
       explain how to use these expression and to explore genesis features
       related to them.</p>
       <subsection name="Declaring conditions">

@@ -159,7 +159,7 @@ public class ExemploViewHandler {
       para as views.</p>
       <p>As expressões condicionais são interpretadas com <a href=
       "http://jakarta.apache.org/commons/jxpath">JXPath</a>. Espera-se expandir
-      o suporte para linguagens de script em geral na versão 0.3. Por ora, as
+      o suporte para linguagens de script em geral na versão 3.0. Por ora, as
       sub-seções abaixo explicam como utilizar essas expressões e tirar proveito
       das funcionalidades do genesis relacionadas com elas.</p>
       <subsection name="Declarando condições">
@@ -1497,7 +1497,9 @@ public class InsertUpdateForm {
               <field property="address"
                      depends="required">
                   <arg position="0"
-                       key="User.address"
+                       key="User.address"
+
+
                   />
               </field>
               <field property="state"
