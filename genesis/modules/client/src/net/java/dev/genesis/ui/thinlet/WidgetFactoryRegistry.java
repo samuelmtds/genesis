@@ -20,14 +20,35 @@ package net.java.dev.genesis.ui.thinlet;
 
 import net.java.dev.genesis.registry.Registry;
 
-public class WidgetFactoryRegistry extends Registry {
+public class WidgetFactoryRegistry {
    private static final WidgetFactoryRegistry instance = new WidgetFactoryRegistry();
+	private final Registry registry = new Registry();
 
    private WidgetFactoryRegistry() {
-      register(Object.class, new DefaultWidgetFactory());
+      registry.register(Object.class, new DefaultWidgetFactory());
    }
 
    public static WidgetFactoryRegistry getInstance() {
       return instance;
+   }
+
+	public WidgetFactory get(Class clazz) {
+		return (WidgetFactory) registry.get(clazz);
+	}
+
+	public WidgetFactory get(Class clazz, boolean superClass) {
+		return (WidgetFactory) registry.get(clazz, superClass);
+	}
+
+	public WidgetFactory get(Object o) {
+		return (WidgetFactory) registry.get(o);
+	}
+	
+	public WidgetFactory register(Class clazz, WidgetFactory wf) {
+      return (WidgetFactory) registry.register(clazz, wf);
+   }
+
+   public void deregister(Class clazz) {
+      registry.deregister(clazz);
    }
 }
