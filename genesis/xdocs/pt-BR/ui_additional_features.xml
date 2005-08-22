@@ -20,6 +20,8 @@
         <li><a href="#Populando combos, listas e tabelas">Populando combos,
         listas e tabelas</a></li>
         <li><a href="#Formatação">Formatação</a></li>
+        <li><a href="#Customizando a criação de componentes">Customizando a 
+        criação de componentes</a></li>
         <li><a href="#Validando os dados">Validando os dados</a></li>
         <li><a href="#Configurando as mensagens">Configurando as mensagens</a>
         </li>
@@ -1086,6 +1088,77 @@ binder.bind();
         <code>virtual:</code>, isso não afeta a formação do nome da propriedade
         na hora de registrar o formatador.</p>
       </subsection>
+   </section>
+   <section name="Customizando a criação de componentes">
+      <p>A partir da versão 2.3, é possivel customizar a maneira com que os
+      componentes são criados através da interface 
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactory</code> e de outras
+      classes de suporte. É possível fazer isso tanto por classe do dado a ser 
+      representado quanto por widget específico.</p>
+      <p>Para fazer com que, por exemplo, tanto as células das tabelas como os 
+      ítens das listas e comboboxes sejam alinhadas a direita quando seu
+      conteúdo for uma subclasse de <code>java.lang.Number</code>, deve-se
+      registrar uma instância de <code>WidgetFactory</code> em
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry</code> 
+      antes que qualquer código que crie widgets seja executado. Isto pode ser 
+      feito como mostrado abaixo:</p>
+<source>
+public class NumberWidgetFactory extends DefaultWidgetFactory {
+   public Object create(BaseThinlet thinlet, String name, String value,
+         Object bean, BaseThinlet.ItemType type) {
+      Object widget = super.create(thinlet, name, value, bean, type);
+      Thinlet.setChoice(widget, BaseThinlet.ALIGNMENT, BaseThinlet.RIGHT);
+      return widget;
+   }
+}
+</source>
+<source>
+// Código de registro, provavelmente no main
+WidgetFactoryRegistry.getInstance().register(Number.class, new NumberWidgetFactory());
+</source>
+      <p>Conforme mostrado no código acima, a maioria das implementações de
+      <code>WidgetFactory</code> herdará da classe 
+      <code>DefaultWidgetFactory</code>, que implementa o comportamento 
+      básico utilizado no genesis. Os argumentos passados para o método 
+      <code>create(BaseThinlet, String, String, Object, BaseThinlet.ItemType)</code>
+      são, respectivamente:</p>
+      <ul>
+         <li><b>thinlet</b>: a instância da subclasse de 
+         <code>BaseThinlet</code> onde o widget será adicionado.</li>
+         <li><b>name</b>: valor da propriedade a ser usada como nome do 
+         componente. Pode ser ignorada, mas isso normalmente não é recomendável.
+         </li>
+         <li><b>value</b>: o valor do texto a ser usado no componente. Pode ser 
+         ignorado, mas isso normalmente não é recomendável.</li>
+         <li><b>property</b>: a propriedade que foi formatada para produzir
+         <code>value</code>. Pode ser usada em casos bem específicos, como para 
+         criar uma tooltip com base em outra propriedade de um bean.</li>
+         <li><b>type</b>: o tipo do widget a ser criado, de acordo com a 
+         enumeração.</li>
+      </ul>
+      <p>Para utilizar uma instância de <code>WidgetFactory</code> para criar
+      algum widget específico, deve-se registrá-la na instância de 
+      <code>ThinletBinder</code> com o método <code>registerWidgetFactory(String,
+      WidgetFactory)</code>, utilizando-se a mesma regra de nomenclatura 
+      explicada na seção de <a href="#Formatação">Formatação</a>, conforme 
+      exemplificado abaixo:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="propriedadeComum" text="Comum" />
+         <column name="propriedadeEspecifica" text="Especifica" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.propriedadeEspecifica", new NumberWidgetFactory());
+binder.bind();
+</source>
     </section>
     <section name="Validando os dados">
       <p>A validação de dados é crítica para a integridade de um sistema,
