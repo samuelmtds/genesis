@@ -457,8 +457,8 @@ public class ThinletBinder implements FormControllerListener {
       return (Converter)converters.put(key, converter);
    }
 
-   public WidgetFactory registerWidgetFactory(Class clazz, WidgetFactory factory) {
-      return (WidgetFactory)widgetFactories.put(clazz, factory);
+   public WidgetFactory registerWidgetFactory(String key, WidgetFactory factory) {
+      return (WidgetFactory)widgetFactories.put(key, factory);
    }
 
    public void valuesChanged(Map updatedValues) throws Exception {

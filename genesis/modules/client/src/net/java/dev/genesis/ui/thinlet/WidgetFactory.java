@@ -20,5 +20,5 @@ package net.java.dev.genesis.ui.thinlet;
 
 public interface WidgetFactory {
    public Object create(BaseThinlet thinlet, String name, String value,
-         Object bean, BaseThinlet.ItemType type);
+         Object property, BaseThinlet.ItemType type);
 }
