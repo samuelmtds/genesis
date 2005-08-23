@@ -22,8 +22,9 @@ import java.util.Map;
 
 import net.java.dev.genesis.registry.RegistryFactory;
 
-public class ClonerRegistry extends RegistryFactory {
+public final class ClonerRegistry {
    private static final ClonerRegistry instance = new ClonerRegistry();
+	private final RegistryFactory factory = new RegistryFactory();
 
    private ClonerRegistry() {
       register(Object.class, new DefaultCloner());
@@ -35,14 +36,18 @@ public class ClonerRegistry extends RegistryFactory {
 
    public Cloner getCloner(final String className,
          final Map attributesMap) {
-      return (Cloner)getNewInstance(className, attributesMap);
+      return (Cloner)factory.getNewInstance(className, attributesMap);
    }
 
    public Cloner getDefaultClonerFor(final Class clazz) {
-      return getDefaultClonerFor(clazz, (Map)null);
+      return getDefaultClonerFor(clazz, null);
    }
 
    public Cloner getDefaultClonerFor(final Class clazz, final Map attributesMap) {
-      return (Cloner)getExistingInstance(clazz, attributesMap);
+      return (Cloner)factory.getExistingInstance(clazz, attributesMap);
+   }
+
+   public Cloner register(final Class clazz, final Cloner cloner) {
+      return (Cloner)factory.register(clazz, cloner);
    }
 }
