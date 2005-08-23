@@ -219,7 +219,7 @@ public abstract class BaseThinlet extends Thinlet {
          ItemType type, WidgetFactory factory) {
 
       if (factory == null) {
-         factory = WidgetFactoryRegistry.getInstance().get(Object.class);
+         factory = WidgetFactoryRegistry.getInstance().get(bean);
       }
 
       return factory.create(this, name, text, bean, type);
