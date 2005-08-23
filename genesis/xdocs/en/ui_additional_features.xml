@@ -538,7 +538,7 @@ public void setDependantAttribute(String dependantAttribute) {
       </subsection>
     </section>
     <section name="Comparing values">
-      <p>Both the framework and developers need smetimes to check if a field
+      <p>Both the framework and developers need sometimes to check if a field
       value has been changed or if its value is equal to some constant or
       another field value. Interface <code>EqualityComparator</code> contained
       in <code>net.java.dev.genesis.equality</code> is implemented by classes
@@ -654,6 +654,55 @@ public void calculateRemainingAmount() {
    // logic for calculating amount
 }
 </source>
+      </subsection>
+      <subsection name="Changing the way values are cloned">
+         <p>In previous releases, old property values were merely copied as 
+         part of form state, what implied in some limitations on how change 
+         detecction worked. For example, if the value of a property was a 
+         JavaBean and one of its properties was changed, it was not possible to
+         detect this change by using <code>g:hasChanged(property)</code>, 
+         since both the previous state copy that genesis hold and the current 
+         value would point to the same instance in memory.</p>
+         <p>Starting from release 2.3, a new API has been introduced that allows
+         to control how genesis generates a copy of the previous value of a 
+         property. The <code>net.java.dev.genesis.cloning.Cloner</code> 
+         interface has a single <code>clone(Object)</code> method that returns 
+         the value genesis is suposed to keep as a copy of the value used as an
+         argument to the call. The default implementation of that interface - 
+         provided by <code>net.java.dev.genesis.cloning.DefaultCloner</code> - 
+         simply returns the value used as a parameter, preserving backwards 
+         compatibility.</p>
+         <p>Similar to <code>EqualityComparator</code>, there is a registry that
+         associates <code>Cloner</code> implementations with the class used in
+         the property, <code>net.java.dev.genesis.cloning.ClonerRegistry</code>, 
+         as well as an annotation that allows the <code>Cloner</code> 
+         implementation to be used to be overridden on a property basis, 
+         <code>@Cloner</code>.</p>
+         <p>The following code shows how to override the <code>Cloner</code> 
+         implementation that is going to be used both globally and for a 
+         specific bean property:</p>
+<source>
+ClonerRegistry.getInstance().register(User.class, new BeanUtilsCloner());
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ClonerFormExample {
+   /**
+    * @Cloner net.java.dev.genesis.cloning.BeanUtilsCloner
+    */
+   public User getUser() {
+      // ...
+   }
+   
+   // ...
+}
+</source>
+         <p>The class used in both examples above,  
+         <code>net.java.dev.genesis.cloning.BeanUtilsCloner</code>, is the other 
+         implementation provided by genesis that clones the value using the 
+         Commons BeanUtils API.</p>
       </subsection>
     </section>
     <section name="Populating comboboxes, lists and tables">
