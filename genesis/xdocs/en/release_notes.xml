@@ -7,11 +7,67 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#2.3-RC1">2.3-RC1</a></li>
         <li><a href="#2.2">2.2</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="2.3-RC1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found 
+          <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3982&amp;expandFolder=3982&amp;folderID=0">here</a>. 
+          </p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>It is possible to customize <a 
+          href="ui_additional_features.html#Customizing_how_components_are_created">how 
+          components are created</a> by a <code>@DataProvider</code></li>
+          <li>A new API that makes <a 
+          href="ui_additional_features.html#Changing_the_way_values_are_cloned">the way
+          values are cloned</a> by genesis configurable has been defined</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li><code>CriteriaPropertyHelper</code> throws a
+          <code>NullPointerException</code> if the form has a 
+          <code>@NotBound</code> property (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=252">Issue
+          # 252</a>)</li>
+        </ul>
+        <p>The full change log between 2.2 and 2.3-RC1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;target_milestone=2.3-RC1">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/2.3-RC1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC1&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniel Gonçalves</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
     </section>
     <section name="2.2">
       <subsection name="Downloads">
