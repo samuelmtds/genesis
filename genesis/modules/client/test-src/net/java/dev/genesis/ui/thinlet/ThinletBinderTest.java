@@ -878,14 +878,14 @@ public class ThinletBinderTest extends GenesisTestCase {
 
       thinlet = new BaseThinlet() {
          protected void populateFromCollection(Object component, Collection c,
-               Map formatters) throws IllegalAccessException,
+               Map formatters, Map widgetFactories) throws IllegalAccessException,
                InvocationTargetException, NoSuchMethodException {
             populateMap.put(component, c);
          }
 
          protected void populateFromCollection(Object component, Collection c,
                String keyProperty, String valueProperty, boolean virtual, 
-               boolean blank, String blankLabel, Map formatters)
+               boolean blank, String blankLabel, Map formatters, Map widgetFactories)
                throws IllegalAccessException, InvocationTargetException,
                NoSuchMethodException {
             populateMap.put(component, c);

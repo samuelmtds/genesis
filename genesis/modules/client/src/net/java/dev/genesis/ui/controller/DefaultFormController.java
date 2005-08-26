@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.java.dev.genesis.cloning.ClonerRegistry;
+import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptExpression;
@@ -105,7 +107,20 @@ public class DefaultFormController implements FormController {
    }
 
    protected FormState createFormState(FormState state) {
-      return new FormStateImpl(state);
+      Map clonedValues = new HashMap(state.getValuesMap().size());
+
+      for (Iterator iter = state.getValuesMap().entrySet().iterator(); iter
+            .hasNext();) {
+         Map.Entry entry = (Map.Entry)iter.next();
+
+         FieldMetadata fieldMeta = formMetadata.getFieldMetadata(entry.getKey()
+               .toString());
+
+         clonedValues.put(entry.getKey(), fieldMeta.getCloner().clone(
+               entry.getValue()));
+      }
+
+      return new FormStateImpl(state, clonedValues);
    }
 
    public void setup() throws Exception {

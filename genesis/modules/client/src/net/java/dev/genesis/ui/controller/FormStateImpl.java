@@ -33,10 +33,14 @@ public class FormStateImpl implements FormState {
    }
 
    public FormStateImpl(FormState state) {
+      this(state, state.getValuesMap());
+   }
+
+   public FormStateImpl(FormState state, Map values) {
       enabledMap.putAll(state.getEnabledMap());
       visibleMap.putAll(state.getVisibleMap());
       changedMap.putAll(state.getChangedMap());
-      valuesMap.putAll(state.getValuesMap());
+      valuesMap.putAll(values);
       dataProvidedMap.putAll(state.getDataProvidedMap());
       dataProvidedIndexesMap.putAll(state.getDataProvidedIndexesMap());
    }
@@ -44,11 +48,11 @@ public class FormStateImpl implements FormState {
    public Map getChangedMap() {
       return changedMap;
    }
-   
+
    public Map getEnabledMap() {
       return enabledMap;
    }
-   
+
    public Map getVisibleMap() {
       return visibleMap;
    }

@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.java.dev.genesis.cloning.Cloner;
+import net.java.dev.genesis.cloning.ClonerRegistry;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.reflection.ClassesCache;
@@ -128,7 +130,7 @@ public class FormMetadataFactoryAspect {
                   final Annotation annotation) {
 
                final String value = ((UntypedAnnotation) annotation)
-                     .value().toString();
+                     .value();
                final int equalIndex = value.indexOf('=');
                if (equalIndex > 0) {
                   formMetadata.addNamedCondition(value.substring(0, equalIndex)
@@ -288,7 +290,7 @@ public class FormMetadataFactoryAspect {
                   final Annotation annotation) {
 
                final Map attributesMap = GenesisUtils.getAttributesMap(
-                     ((UntypedAnnotation) annotation).value().toString());
+                     ((UntypedAnnotation) annotation).value());
                final String widgetName = (String)attributesMap
                      .get("widgetName");
                final String objectFieldName = (String)attributesMap
@@ -423,7 +425,7 @@ public class FormMetadataFactoryAspect {
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEqualityComparator(getEqualityComparator(
                      fieldMetadata, ((UntypedAnnotation) annotation)
-                           .value().toString()));
+                           .value()));
             }
 
             public void processMethodAnnotation(
@@ -461,7 +463,7 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEmptyResolver(getEmptyResolver(fieldMetadata,
-                     ((UntypedAnnotation) annotation).value().toString()));
+                     ((UntypedAnnotation) annotation).value()));
             }
 
             public void processMethodAnnotation(
@@ -503,7 +505,7 @@ public class FormMetadataFactoryAspect {
                fieldMetadata.setConverter(converter);
                fieldMetadata.setEmptyValue(converter.convert(fieldMetadata
                      .getFieldClass(), ((UntypedAnnotation) annotation)
-                     .value().toString()));
+                     .value()));
             }
 
             public void processMethodAnnotation(
@@ -512,6 +514,45 @@ public class FormMetadataFactoryAspect {
                   final Annotation annotation) {
                throw new UnsupportedOperationException(
                      "EmptyValue cannot be a method annotation");
+            }
+
+         }
+
+         public static class ClonerAnnotationHandler implements
+               AnnotationHandler {
+            public void processFormAnnotation(final FormMetadata formMetadata,
+                  final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "Cloner cannot be a form annotation");
+            }
+
+            public void processFieldAnnotation(final FormMetadata formMetadata,
+                  final FieldMetadata fieldMetadata, final Annotation annotation) {
+               fieldMetadata.setCloner(getCloner(fieldMetadata,
+                     ((UntypedAnnotation)annotation).value()));
+            }
+
+            public void processMethodAnnotation(
+                  final FormMetadata formMetadata,
+                  final MethodMetadata methodMetadata,
+                  final Annotation annotation) {
+               throw new UnsupportedOperationException(
+                     "Cloner cannot be a method annotation");
+            }
+
+            private Cloner getCloner(final FieldMetadata fieldMetadata,
+                  final String attributesLine) {
+               final Map attributesMap = GenesisUtils
+                     .getAttributesMap(attributesLine);
+               final String clonerClass = (String)attributesMap.remove("class");
+
+               if (clonerClass == null) {
+                  return ClonerRegistry.getInstance().getDefaultClonerFor(
+                        fieldMetadata.getFieldClass(), attributesMap);
+               }
+
+               return ClonerRegistry.getInstance().getCloner(clonerClass,
+                     attributesMap);
             }
 
          }
@@ -536,6 +577,8 @@ public class FormMetadataFactoryAspect {
                "EmptyResolver", new EmptyResolverAnnotationHandler());
          public static final MetadataAttribute EMPTY_VALUE = new MetadataAttribute(
                "EmptyValue", new EmptyValueAnnotationHandler());
+         public static final MetadataAttribute CLONER = new MetadataAttribute(
+               "Cloner", new ClonerAnnotationHandler());
 
          private final AnnotationHandler handler;
 
@@ -553,7 +596,7 @@ public class FormMetadataFactoryAspect {
          }
 
          private static ScriptExpression compile(Script script, Annotation annon) {
-            return compile(script, ((UntypedAnnotation)annon).value().toString());
+            return compile(script, ((UntypedAnnotation)annon).value());
          }
          
          private static ScriptExpression compile(Script script, String value) {

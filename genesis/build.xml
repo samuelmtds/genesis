@@ -83,6 +83,7 @@
       <path refid="client.dependency.classpath" />
       <fileset dir="${genesis.aspectwerkz.dist}" includes="junit-*.jar" />
       <path location="${genesis.module.client}/${build.dest}" />
+		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
    </path>
 
    <path id="aspect.dependency.classpath">
@@ -512,6 +513,7 @@
             <path location="${genesis.module.client}/${build.dest}" />
             <path location="${genesis.module.shared}/${build.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
+            <fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
          </classpath>
          <batchtest todir="${genesis.module.client}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.client}/${test.src.dir}">

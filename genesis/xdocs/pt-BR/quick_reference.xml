@@ -43,6 +43,7 @@
             <td>
               <ul>
                 <li><a href="#@ClearOn">@ClearOn</a></li>
+                <li><a href="#@Cloner">@Cloner</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
                 <li><a href="#@EmptyResolver">@EmptyResolver</a></li>
                 <li><a href="#@EmptyValue">@EmptyValue</a></li>
@@ -597,6 +598,42 @@ public class ExemploForm {
         </table>
     <p><a href="ui_additional_features.html#Comparando_valores">Mais
     informações...</a></p>
+      </subsection>
+      <subsection name="@Cloner">
+        <p>Permite configurar a classe usada para fazer a cópia do estado 
+        anterior da propriedade do form. Tem como
+        parâmetro principal o nome qualificado completo da classe
+        (pacote.Classe) que implementa a interface
+        <code>net.java.dev.genesis.cloning.Cloner</code>. Só pode ser usada em
+        atributos do form.</p>
+        <table>
+          <tr>
+            <th>Parâmetros</th>
+            <th>Tipo</th>
+            <th>Uso</th>
+            <th>Descrição</th>
+            <th>Obrigatório</th>
+          </tr>
+          <tr>
+            <td>anônimo</td>
+            <td>Nome qualificado completo de classe</td>
+            <td>@Cloner pacote.MeuCloner</td>
+            <td>Nome da classe que implementa a interface
+            <code>Cloner</code>.</td>
+            <td><b>Sim, a menos que existam propriedades</b></td>
+          </tr>
+          <tr>
+            <td>nomeDePropriedade</td>
+            <td>Nome de uma propriedade da classe especificada</td>
+            <td>@Cloner pacote.MeuCloner copiaEmProfundidade=true</td>
+            <td>Nome de um atributo da classe que implementa a interface
+            <code>Cloner</code>. Podem haver vários desses
+            parâmetros.</td>
+            <td><b>Não</b></td>
+          </tr>
+        </table>
+        <p><a href="ui_additional_features.html#Alterando_a_forma_como_os_valores_são_clonados">Mais
+        informações...</a></p>
       </subsection>
       <subsection name="@EmptyResolver">
         <p>Anotação colocada antes de getter de atributos do form. Identifica a

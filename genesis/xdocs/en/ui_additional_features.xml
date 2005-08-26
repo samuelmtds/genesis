@@ -20,6 +20,8 @@
         comboboxes, lists and tables</a>
         </li>
         <li><a href="#Formatting">Formatting</a></li>
+        <li><a href="#Customizing how components are created">Customizing how 
+        components are created</a></li>
         <li><a href="#Validating data">Validating data</a></li>
         <li><a href="#Configuring messages">Configuring messages</a>
         </li>
@@ -534,7 +536,7 @@ public void setDependantAttribute(String dependantAttribute) {
       </subsection>
     </section>
     <section name="Comparing values">
-      <p>Both the framework and developers need smetimes to check if a field
+      <p>Both the framework and developers need sometimes to check if a field
       value has been changed or if its value is equal to some constant or
       another field value. Interface <code>EqualityComparator</code> contained
       in <code>net.java.dev.genesis.equality</code> is implemented by classes
@@ -651,6 +653,55 @@ public void calculateRemainingAmount() {
    // logic for calculating amount
 }
 </source>
+      </subsection>
+      <subsection name="Changing the way values are cloned">
+         <p>In previous releases, old property values were merely copied as 
+         part of form state, what implied in some limitations on how change 
+         detecction worked. For example, if the value of a property was a 
+         JavaBean and one of its properties was changed, it was not possible to
+         detect this change by using <code>g:hasChanged(property)</code>, 
+         since both the previous state copy that genesis hold and the current 
+         value would point to the same instance in memory.</p>
+         <p>Starting from release 2.3, a new API has been introduced that allows
+         to control how genesis generates a copy of the previous value of a 
+         property. The <code>net.java.dev.genesis.cloning.Cloner</code> 
+         interface has a single <code>clone(Object)</code> method that returns 
+         the value genesis is suposed to keep as a copy of the value used as an
+         argument to the call. The default implementation of that interface - 
+         provided by <code>net.java.dev.genesis.cloning.DefaultCloner</code> - 
+         simply returns the value used as a parameter, preserving backwards 
+         compatibility.</p>
+         <p>Similar to <code>EqualityComparator</code>, there is a registry that
+         associates <code>Cloner</code> implementations with the class used in
+         the property, <code>net.java.dev.genesis.cloning.ClonerRegistry</code>, 
+         as well as an annotation that allows the <code>Cloner</code> 
+         implementation to be used to be overridden on a property basis, 
+         <code>@Cloner</code>.</p>
+         <p>The following code shows how to override the <code>Cloner</code> 
+         implementation that is going to be used both globally and for a 
+         specific bean property:</p>
+<source>
+ClonerRegistry.getInstance().register(User.class, new BeanUtilsCloner());
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ClonerFormExample {
+   /**
+    * @Cloner net.java.dev.genesis.cloning.BeanUtilsCloner
+    */
+   public User getUser() {
+      // ...
+   }
+   
+   // ...
+}
+</source>
+         <p>The class used in both examples above,  
+         <code>net.java.dev.genesis.cloning.BeanUtilsCloner</code>, is the other 
+         implementation provided by genesis that clones the value using the 
+         Commons BeanUtils API.</p>
       </subsection>
     </section>
     <section name="Populating comboboxes, lists and tables">
@@ -1062,6 +1113,77 @@ binder.bind();
         prefixed with <code>virtual:</code>, this does not affect how the
         property name is composed for registering the formatter.</p>
       </subsection>
+    </section>
+    <section name="Customizing how components are created">
+      <p>Starting from release 2.3, it is possible to customize how componentes
+      are created by using the 
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactory</code> interface and 
+      its related support classes. It is possible to do so based on either the
+      class of the data for which the widget will be created or for a specific
+      widget.</p>
+      <p>For instance, in order to make both table cells and list and comboboxes 
+      itens right-aligned when their content is a <code>java.lang.Number</code>
+      class, an instance of <code>WidgetFactory</code> should be registered in
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry</code> 
+      before any code that creates widgets is executed. This can be done as 
+      shown below:</p>
+<source>
+public class NumberWidgetFactory extends DefaultWidgetFactory {
+   public Object create(BaseThinlet thinlet, String name, String value,
+         Object bean, BaseThinlet.ItemType type) {
+      Object widget = super.create(thinlet, name, value, bean, type);
+      Thinlet.setChoice(widget, BaseThinlet.ALIGNMENT, BaseThinlet.RIGHT);
+      return widget;
+   }
+}
+</source>
+<source>
+// Code for registering the instance, probably at the main(String[]) method
+WidgetFactoryRegistry.getInstance().register(Number.class, new NumberWidgetFactory());
+</source>
+      <p>As shown above, most implementations of <code>WidgetFactory</code> will
+      extend <code>DefaultWidgetFactory</code>, a class that implements the 
+      basic behaviour used by genesis. The arguments used as parameters for 
+      invoking the
+      <code>create(BaseThinlet, String, String, Object, BaseThinlet.ItemType)</code>
+      method are, in order:</p>
+      <ul>
+         <li><b>thinlet</b>: the instance of the <code>BaseThinlet</code> 
+         subclass the widget will be added to.</li>
+         <li><b>name</b>: property value to be used as the component name. It 
+         might be ignored, but that is usually not advisable.</li>
+         <li><b>value</b>: the text value to be used in the component. It 
+         might be ignored, but that is usually not advisable.</li>
+         <li><b>property</b>: the property that has been formatted to produce 
+         the <code>value</code> argument. It might be useful in some specific 
+         cases, such as when creating a tooltip based on another property of a
+         bean.</li>
+         <li><b>type</b>: the type of the widget to be created, according to the
+         enum <code>BaseThinlet.ItemType</code>.</li>
+      </ul>
+      <p>In order to use an instance of <code>WidgetFactory</code> to create 
+      some specific widget, it should be registered in the 
+      <code>ThinletBinder</code> instance by invoking the 
+      <code>registerWidgetFactory(String,WidgetFactory)</code> method, using the
+      same naming rule explained in the <a href="#Formatting">Formatting</a> 
+      section, as shown below:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="regularProperty" text="Regular" />
+         <column name="specificProperty" text="Specific" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.specificProperty", new NumberWidgetFactory());
+binder.bind();
+</source>
     </section>
     <section name="Validating data">
       <p>Data validation is critical for system integrity, especially when data

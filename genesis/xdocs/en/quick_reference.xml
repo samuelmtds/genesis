@@ -13,7 +13,7 @@
       sample application.</p>
     </section>
     <section name="genesis Annotations">
-      <p>genesis annotations are classified by it's scope in:</p>
+      <p>genesis annotations are classified by the place they should be used at:</p>
       <ul>
         <li><b>Class</b>: use before a class definition</li>
         <li><b>Atribute</b>: use before an attribute getter</li>
@@ -42,6 +42,7 @@
             <td>
               <ul>
                 <li><a href="#@ClearOn">@ClearOn</a></li>
+                <li><a href="#@Cloner">@Cloner</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
                 <li><a href="#@EmptyResolver">@EmptyResolver</a></li>
                 <li><a href="#@EmptyValue">@EmptyValue</a></li>
@@ -620,7 +621,7 @@ public class FormExample {
             <td><b>Yes, except when properties exist</b></td>
           </tr>
           <tr>
-            <td>PropertyName</td>
+            <td>propertyName</td>
             <td>Property name of the specified class</td>
             <td>@EmptyResolver package.MyEmptyResolver
                                zerosAsEmpty=true</td>
@@ -631,6 +632,39 @@ public class FormExample {
           </tr>
         </table>
     <p><a href="ui_additional_features.html#Determining_if_a_field_is_empty">More info...</a></p>
+      </subsection>
+      <subsection name="@Cloner">
+        <p>Makes it possible to configure the class used for copying the 
+        previous state of a form property. Its main parameter is the fully 
+        qualified name of a class (package.Class) that implements
+        <code>net.java.dev.genesis.cloning.Cloner</code>. It can be used only in
+        form attributes.</p>
+        <table>
+          <tr>
+            <th>Parameters</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Description</th>
+            <th>Required</th>
+          </tr>
+          <tr>
+            <td>anonymous</td>
+            <td>Fully qualified class name</td>
+            <td>@Cloner package.MyCloner</td>
+            <td>Name of a class that implements <code>Cloner</code>.</td>
+            <td><b>Yes, unless properties are used</b></td>
+          </tr>
+          <tr>
+            <td>propertyName</td>
+            <td>Name of a property of the specified class</td>
+            <td>@Cloner package.MyCloner deepCloning=true</td>
+            <td>Name of an attribute of the <code>Cloner</code> implementation
+            class. There might be more than one of these.</td>
+            <td><b>No</b></td>
+          </tr>
+        </table>
+        <p><a href="ui_additional_features.html#Changing_the_way_values_are_cloned">More 
+        info...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
         <p>It specifies the empty value of a field. It's used together with the <a href="#@ClearOn">@ClearOn</a> annotation.</p>

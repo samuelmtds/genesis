@@ -20,6 +20,8 @@
         <li><a href="#Populando combos, listas e tabelas">Populando combos,
         listas e tabelas</a></li>
         <li><a href="#Formatação">Formatação</a></li>
+        <li><a href="#Customizando a criação de componentes">Customizando a 
+        criação de componentes</a></li>
         <li><a href="#Validando os dados">Validando os dados</a></li>
         <li><a href="#Configurando as mensagens">Configurando as mensagens</a>
         </li>
@@ -667,6 +669,56 @@ public void calculaMontanteCorrigido() {
 }
 </source>
       </subsection>
+      <subsection name="Alterando a forma como os valores são clonados">
+         <p>Em versões anteriores, os valores anteriores das propriedades eram
+         simplesmente copiados como parte do estado do form, o que trazia 
+         algumas limitações na detecção de mudança de valores. Por exemplo, 
+         caso o valor de uma propriedade fosse um JavaBean e uma das 
+         propriedades deste bean fosse alterada, não seria possível detectar a
+         mudança com <code>g:hasChanged(propriedade)</code>, visto que tanto a
+         cópia do estado anterior que o genesis possuía como o valor atual 
+         apontariam para a mesma instância em memória.</p>
+         <p>A partir da versão 2.3 foi introduzida uma API que permite controlar
+         como o genesis gera a cópia do valor anterior de uma propriedade. A 
+         interface <code>net.java.dev.genesis.cloning.Cloner</code> possui um
+         método <code>clone(Object)</code> que retorna o valor que o genesis 
+         deve guardar como cópia do valor informado como parâmetro. A 
+         implementação padrão dessa interface - provida por 
+         <code>net.java.dev.genesis.cloning.DefaultCloner</code> - simplesmente 
+         retorna o valor passado como parâmetro, preservando assim a 
+         compatibilidade com a versão anterior.</p>
+         <p>Assim como no caso de <code>EqualityComparator</code>, existe um 
+         registro que associa as implementações de <code>Cloner</code> com a 
+         classe usada na propriedade, 
+         <code>net.java.dev.genesis.cloning.ClonerRegistry</code>, bem como uma
+         anotação que permite sobrescrever a implementação de 
+         <code>Cloner</code> a ser usada, <code>@Cloner</code>.</p>
+         <p>O código abaixo mostra como sobrescrever a implementação de 
+         <code>Cloner</code> usada tanto globalmente como para uma propriedade
+         específica de um bean:</p>
+<source>
+ClonerRegistry.getInstance().register(Usuario.class, new BeanUtilsCloner());
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploClonerForm {
+   /**
+    * @Cloner net.java.dev.genesis.cloning.BeanUtilsCloner
+    */
+   public Usuario getUsuario() {
+      // ...
+   }
+   
+   // ...
+}
+</source>
+         <p>A classe utilizada nos exemplos acima, 
+         <code>net.java.dev.genesis.cloning.BeanUtilsCloner</code>, é a outra 
+         implementação provida pelo genesis que clona o valor utilizando a API 
+         do Commons BeanUtils.</p>
+      </subsection>
     </section>
     <section name="Populando combos, listas e tabelas">
       <p>As opções disponíveis em um combo box podem variar de acordo com os
@@ -727,6 +779,7 @@ public void calculaMontanteCorrigido() {
           <code>Integer</code>s</td>
         </tr>
       </table>
+
       <p>Um exemplo de uso desta anotação é ilustrado abaixo:</p>
 <source>
 <![CDATA[
@@ -1087,6 +1140,77 @@ binder.bind();
         <code>virtual:</code>, isso não afeta a formação do nome da propriedade
         na hora de registrar o formatador.</p>
       </subsection>
+   </section>
+   <section name="Customizando a criação de componentes">
+      <p>A partir da versão 2.3, é possivel customizar a maneira com que os
+      componentes são criados através da interface 
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactory</code> e de outras
+      classes de suporte. É possível fazer isso tanto por classe do dado a ser 
+      representado quanto por widget específico.</p>
+      <p>Para fazer com que, por exemplo, tanto as células das tabelas como os 
+      ítens das listas e comboboxes sejam alinhadas a direita quando seu
+      conteúdo for uma subclasse de <code>java.lang.Number</code>, deve-se
+      registrar uma instância de <code>WidgetFactory</code> em
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry</code> 
+      antes que qualquer código que crie widgets seja executado. Isto pode ser 
+      feito como mostrado abaixo:</p>
+<source>
+public class NumberWidgetFactory extends DefaultWidgetFactory {
+   public Object create(BaseThinlet thinlet, String name, String value,
+         Object bean, BaseThinlet.ItemType type) {
+      Object widget = super.create(thinlet, name, value, bean, type);
+      Thinlet.setChoice(widget, BaseThinlet.ALIGNMENT, BaseThinlet.RIGHT);
+      return widget;
+   }
+}
+</source>
+<source>
+// Código de registro, provavelmente no main
+WidgetFactoryRegistry.getInstance().register(Number.class, new NumberWidgetFactory());
+</source>
+      <p>Conforme mostrado no código acima, a maioria das implementações de
+      <code>WidgetFactory</code> herdará da classe 
+      <code>DefaultWidgetFactory</code>, que implementa o comportamento 
+      básico utilizado no genesis. Os argumentos passados para o método 
+      <code>create(BaseThinlet, String, String, Object, BaseThinlet.ItemType)</code>
+      são, respectivamente:</p>
+      <ul>
+         <li><b>thinlet</b>: a instância da subclasse de 
+         <code>BaseThinlet</code> onde o widget será adicionado.</li>
+         <li><b>name</b>: valor da propriedade a ser usada como nome do 
+         componente. Pode ser ignorada, mas isso normalmente não é recomendável.
+         </li>
+         <li><b>value</b>: o valor do texto a ser usado no componente. Pode ser 
+         ignorado, mas isso normalmente não é recomendável.</li>
+         <li><b>property</b>: a propriedade que foi formatada para produzir
+         <code>value</code>. Pode ser usada em casos bem específicos, como para 
+         criar uma tooltip com base em outra propriedade de um bean.</li>
+         <li><b>type</b>: o tipo do widget a ser criado, de acordo com a 
+         enumeração.</li>
+      </ul>
+      <p>Para utilizar uma instância de <code>WidgetFactory</code> para criar
+      algum widget específico, deve-se registrá-la na instância de 
+      <code>ThinletBinder</code> com o método <code>registerWidgetFactory(String,
+      WidgetFactory)</code>, utilizando-se a mesma regra de nomenclatura 
+      explicada na seção de <a href="#Formatação">Formatação</a>, conforme 
+      exemplificado abaixo:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="propriedadeComum" text="Comum" />
+         <column name="propriedadeEspecifica" text="Especifica" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.propriedadeEspecifica", new NumberWidgetFactory());
+binder.bind();
+</source>
     </section>
     <section name="Validando os dados">
       <p>A validação de dados é crítica para a integridade de um sistema,
@@ -1499,7 +1623,7 @@ public class InsertUpdateForm {
               <field property="address"
                      depends="required">
                   <arg position="0"
-                       key="User.address"
+                       key="User.address"
                   />
               </field>
               <field property="state"
