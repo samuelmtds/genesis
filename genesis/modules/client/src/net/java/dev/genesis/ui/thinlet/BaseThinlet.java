@@ -181,35 +181,77 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
+   /**
+    * @deprecated
+    */
    protected Object createChoice(String name, String text) {
-      return createItemOfType(name, text, ItemType.CHOICE);
+      return createItemOfType(name, text, null, ItemType.CHOICE);
    }
 
+   protected Object createChoice(String name, String text, Object bean) {
+      return createItemOfType(name, text, bean, ItemType.CHOICE);
+   }
+
+   /**
+    * @deprecated
+    */
    protected Object createItem(String name, String text) {
-      return createItemOfType(name, text, ItemType.ITEM);
+      return createItemOfType(name, text, null, ItemType.ITEM);
    }
 
+   protected Object createItem(String name, String text, Object bean) {
+      return createItemOfType(name, text, bean, ItemType.ITEM);
+   }
+
+   /**
+    * @deprecated
+    */
    protected Object createItemOfType(String name, String text, ItemType type) {
-      final Object item = create(type.getName());
-      setName(item, name);
-      setText(item, text);
-      setTooltip(item, text);
-      
-      return item;
+      return createItemOfType(name, text, null, type, null);
+   }
+
+   protected Object createItemOfType(String name, String text, Object bean,
+         ItemType type) {
+      return createItemOfType(name, text, bean, type, null);
+   }
+
+   protected Object createItemOfType(String name, String text, Object bean,
+         ItemType type, WidgetFactory factory) {
+
+      if (factory == null) {
+         factory = WidgetFactoryRegistry.getInstance().get(bean);
+      }
+
+      return factory.create(this, name, text, bean, type);
    }
 
    protected Object createRow() {
       return create(ROW);
    }
 
+   /**
+    * @deprecated
+    */
    protected Object createCell(String name, String text) {
-      return createItemOfType(name, text, ItemType.CELL);
+      return createItemOfType(name, text, null, ItemType.CELL);
    }
-   
+
+   protected Object createCell(String name, String text, Object bean) {
+      return createItemOfType(name, text, bean, ItemType.CELL);
+   }
+
+   /**
+    * @deprecated
+    */
    protected Object createCell(String name, String text, String alignment) {
-      final Object cell = createCell(name, text);
+      return createCell(name, text, null, alignment);
+   }
+
+   protected Object createCell(String name, String text, Object bean,
+         String alignment) {
+      final Object cell = createCell(name, text, bean);
       setChoice(cell, ALIGNMENT, alignment);
-      
+
       return cell;
    }
 
@@ -681,7 +723,7 @@ public abstract class BaseThinlet extends Thinlet {
       removeAll(component);
 
       if (blank) {
-         add(component, createItemOfType("", "", type));
+         add(component, createItemOfType("", "", null, type));
       }
 
       for (final Iterator i = Enum.getInstances(clazz).iterator(); i.hasNext(); ) {
@@ -689,7 +731,7 @@ public abstract class BaseThinlet extends Thinlet {
          key = enumInstance.toString();
 
          add(component, createItemOfType(key, FormatterRegistry.getInstance()
-               .format(enumInstance), type));
+               .format(enumInstance), enumInstance, type));
       }
    }
 
@@ -733,10 +775,19 @@ public abstract class BaseThinlet extends Thinlet {
             blank, blankLabel, formatters);
    }
 
+   protected void populateFromCollection(Object component, Collection c,
+         String keyProperty, String valueProperty, boolean virtual,
+         boolean blank, String blankLabel, Map formatters)
+         throws IllegalAccessException, InvocationTargetException,
+         NoSuchMethodException {
+      populateFromCollection(component, c, keyProperty, valueProperty, virtual,
+            blank, blankLabel, formatters, null);
+   }
+
    protected void populateFromCollection(Object component, Collection c, 
                         String keyProperty, String valueProperty, 
                         boolean virtual, boolean blank, String blankLabel, 
-                        Map formatters) 
+                        Map formatters, Map widgetFactories) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
       final boolean combobox = getClass(component).equals(COMBOBOX);
@@ -763,22 +814,28 @@ public abstract class BaseThinlet extends Thinlet {
       removeAll(component);
 
       if (blank) {
-         add(component, createItemOfType("", blankLabel == null ? 
-               "" : blankLabel, type));
+         Object item = createItemOfType("", blankLabel == null ? ""
+               : blankLabel, null, type, null);
+         add(component, item);
       }
 
 
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
 
-         key = format(formatters, componentName + '.' + keyProperty, PropertyUtils
-               .getProperty(o, keyProperty));
-         description = virtual ? virtualFormatter.format(o) : 
-               (valueProperty == null ? format(formatters, componentName + '.', 
-               o) : format(formatters, componentName + '.' + valueProperty, 
-               PropertyUtils.getProperty(o, valueProperty)));
+         key = format(formatters, componentName + '.' + keyProperty,
+               PropertyUtils.getProperty(o, keyProperty));
+         Object value = null;
+         description = virtual ? virtualFormatter.format(value = o)
+               : (valueProperty == null ? format(formatters,
+                     componentName + '.', value = o) : format(formatters, componentName
+                     + '.' + valueProperty, value = PropertyUtils.getProperty(o,
+                     valueProperty)));
+         Object item = createItemOfType(key, description, value, type,
+               (WidgetFactory)widgetFactories.get(componentName + '.' + 
+               keyProperty));
 
-         add(component, createItemOfType(key, description, type));
+         add(component, item);
       }
    }
 
@@ -794,8 +851,14 @@ public abstract class BaseThinlet extends Thinlet {
       populateFromCollection(component, c, null);
    }
 
-   protected void populateFromCollection(Object component, Collection c, 
-         Map formatters) throws IllegalAccessException, 
+   protected void populateFromCollection(Object component, Collection c,
+         Map formatters) throws IllegalAccessException,
+         InvocationTargetException, NoSuchMethodException {
+      populateFromCollection(component, c, formatters, null);
+   }
+
+   protected void populateFromCollection(Object component, Collection c,
+         Map formatters, Map widgetFactories) throws IllegalAccessException,
          InvocationTargetException, NoSuchMethodException {
       if (!getClass(component).equals(TABLE)) {
          throw new UnsupportedOperationException();
@@ -841,8 +904,12 @@ public abstract class BaseThinlet extends Thinlet {
             propertyName = it.next().toString();
 
             if (virtualPropertyNames.contains(propertyName)) {
-               add(row, createCell(propertyName, getVirtualFormatter(formatters, 
-                     componentName, propertyName).format(bean)));
+               Object cell = createItemOfType(propertyName,
+                     getVirtualFormatter(formatters, componentName,
+                           propertyName).format(bean), bean, ItemType.CELL,
+                     (WidgetFactory)widgetFactories.get(componentName + '.' + 
+                     propertyName));
+               add(row, cell);
                continue;
             }
 
@@ -852,9 +919,12 @@ public abstract class BaseThinlet extends Thinlet {
             while ((indexOfDot = propertyName.indexOf('.', indexOfDot)) != -1) {
                if (PropertyUtils.getProperty(bean, 
                      propertyName.substring(0, indexOfDot)) == null) {
-                  add(row, createCell(propertyName, 
-                        format(formatters, componentName + '.' + propertyName, 
-                        null)));
+                  Object cell = createItemOfType(propertyName, format(
+                        formatters, componentName + '.' + propertyName, null),
+                        null, ItemType.CELL, (WidgetFactory)widgetFactories.get(
+                        componentName + '.' + propertyName));
+
+                  add(row, cell);
                   skip = true;
                   break;
                }
@@ -866,9 +936,13 @@ public abstract class BaseThinlet extends Thinlet {
                continue;
             }
 
-            add(row, createCell(propertyName, format(formatters, 
-                  componentName + '.' + propertyName, 
-                  PropertyUtils.getProperty(bean, propertyName))));
+            Object value = PropertyUtils.getProperty(bean, propertyName);
+            Object cell = createItemOfType(propertyName, format(formatters,
+                  componentName + '.' + propertyName, value), value,
+                  ItemType.CELL, (WidgetFactory)widgetFactories.get(
+                  componentName + '.' + propertyName));
+
+            add(row, cell);
          }
 
          add(component, row);

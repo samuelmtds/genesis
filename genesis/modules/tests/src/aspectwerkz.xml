@@ -1,6 +1,6 @@
 <!DOCTYPE aspectwerkz PUBLIC
-      "-//AspectWerkz//DTD 2.0//EN"
-      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_2_0.dtd">
+      "-//AspectWerkz//DTD 1.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
 <aspectwerkz>
    <system id="tests" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
@@ -27,11 +27,9 @@
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
       <!-- Genesis Aspects -->
-      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
-      <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
-      <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
-
+      <aspect class="CommandInvocationAspect" />
+      <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="FormControllerFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="2500" />
          <param name="keepThreadInstance" value="true" />

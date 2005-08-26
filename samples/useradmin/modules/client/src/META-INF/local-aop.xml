@@ -1,10 +1,10 @@
 <!DOCTYPE aspectwerkz PUBLIC
-      "-//AspectWerkz//DTD 2.0//EN"
-      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_2_0.dtd">
+      "-//AspectWerkz//DTD 1.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
 <aspectwerkz>
    <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
-      <pointcut name="executeCommand" 
+      <pointcut name="executeCommand"
          expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
@@ -22,12 +22,14 @@
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
       <!-- Genesis Aspects -->
-      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
-      <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
-      <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
-      <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
-
+      <aspect class="CommandInvocationAspect" />
+      <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="FormControllerFactoryAspect" />
+      <!-- 
+      Deprecated class:
+      <aspect class="ThinletMetadataFactoryAspect" />
+      -->
+      <aspect class="ViewMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />
@@ -37,7 +39,7 @@
              value="net.java.dev.genesis.aspect.HibernateTransactionalInjector"/>
       </aspect>
       <aspect class="CriteriaCommandExecutionAspect">
-         <param name="preventStackOverflow" value="true" />
+         <param name="useOriginalMethod" value="true" />
       </aspect>
       <aspect class="WaitCursorAspect"/>
    </system>

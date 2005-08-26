@@ -1,17 +1,17 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
- * 
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -26,6 +26,8 @@ import java.util.Map;
 
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
 import net.java.dev.genesis.command.hibernate.HibernateCriteria;
+import net.java.dev.genesis.resolvers.EmptyResolver;
+import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
@@ -37,6 +39,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class CriteriaPropertyHelper {
    private static final Log log = LogFactory.getLog(CriteriaPropertyHelper.class);
+
+   private CriteriaPropertyHelper() {
+   }
 
    public static void fillCriteria(HibernateCriteria hibCriteria, Object form)
          throws Exception {
@@ -54,15 +59,23 @@ public class CriteriaPropertyHelper {
          criteriaPropertyNames.add(descriptors[i].getName());
       }
 
-      FieldMetadata fieldMeta;
       Map.Entry entry;
+      FieldMetadata fieldMeta;
+      Object value;
+      EmptyResolver emptyResolver;
+
+      propertiesMap.keySet().retainAll(criteriaPropertyNames);
 
       for (Iterator iter = propertiesMap.entrySet().iterator(); iter.hasNext();) {
          entry = (Map.Entry) iter.next();
          fieldMeta = formMeta.getFieldMetadata(entry.getKey().toString());
+         value = entry.getValue();
 
-         if (!criteriaPropertyNames.contains(entry.getKey()) || 
-               fieldMeta.getEmptyResolver().isEmpty(entry.getValue())) {
+         emptyResolver = (fieldMeta == null) ? EmptyResolverRegistry
+               .getInstance().getDefaultEmptyResolverFor((value == null ?
+               Object.class : value.getClass())) : fieldMeta.getEmptyResolver();
+
+         if (emptyResolver.isEmpty(value)) {
             iter.remove();
             continue;
          }

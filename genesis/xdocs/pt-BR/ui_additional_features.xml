@@ -20,6 +20,8 @@
         <li><a href="#Populando combos, listas e tabelas">Populando combos,
         listas e tabelas</a></li>
         <li><a href="#Formatação">Formatação</a></li>
+        <li><a href="#Customizando a criação de componentes">Customizando a 
+        criação de componentes</a></li>
         <li><a href="#Validando os dados">Validando os dados</a></li>
         <li><a href="#Configurando as mensagens">Configurando as mensagens</a>
         </li>
@@ -157,9 +159,13 @@ public class ExemploViewHandler {
       campos e chamadas automáticas a métodos. Tudo isso é feito de maneira
       declarativa no form, sem necessidade de lidar com a API gráfica utilizada
       para as views.</p>
+      <p>As expressões condicionais são interpretadas com <a href=
+      "http://jakarta.apache.org/commons/jxpath">JXPath</a>. Espera-se expandir
+      o suporte para linguagens de script em geral na versão 3.0. Por ora, as
+      sub-seções abaixo explicam como utilizar essas expressões e tirar proveito
+      das funcionalidades do genesis relacionadas com elas.</p>
       <subsection name="Declarando condições">
-        <p>Embora todas as anotações que recebem condições em formato de script
-        possam receber
+        <p>Embora todas as anotações que recebem condições JXPath possam receber
         expressões de qualquer tipo, certas condições podem ser utilizadas
         repetidas vezes no código ou como parte de outra expressão. Assim, o
         genesis possibilita a declaração dessas condições e sua exportação como
@@ -167,11 +173,11 @@ public class ExemploViewHandler {
         declarar uma condição utiliza-se a anotação <code>@Condition</code>, que
         possui a seguinte sintaxe:</p>
 <source>
-@Condition nomeCondicao=expressaoScript
+@Condition nomeCondicao=expressaoJXPath
 </source>
         <p>A variável <code>nomeCondicao</code> é exportada de modo a
-        representar a expressão <code>expressaoScript</code> em outros pontos do
-        código. Como toda variável de script, quando for utilizada numa expressão
+        representar a expressão <code>expressaoJXPath</code> em outros pontos do
+        código. Como toda variável JXPath, quando for utilizada numa expressão
         deve-se preceder o seu nome com <code>$</code>. Para o exemplo dado,
         deve-se referenciar a variável em uma expressão condicional como
         <code>$nomeCondicao</code>.</p>
@@ -392,7 +398,7 @@ public class ExemploClearOnForm {
 <source>
    /**
     * @DataProvider objectField=estado
-    * @ClearOn &lt;alguma condição em linguagem de script&gt;
+    * @ClearOn &lt;alguma condição jxpath&gt;
     */
    public List populaEstados() {
       ...
@@ -508,19 +514,16 @@ public String getAtributo() {
       <subsection name="Verificando se um campo está vazio em expressões
           condicionais">
         <p>Conforme já mencionado, é muito comum determinar condições baseadas
-        no fato de um campo estar vazio ou não. O genesis expõe funções de script
+        no fato de um campo estar vazio ou não. O genesis expõe funções JXPath
         auxiliares que podem ser usadas nas condições com o intuito de facilitar
-        esta tarefa: <code>isEmpty(any)</code> e <code>isNotEmpty(any)</code>
-        (<a href="quick_reference.html#Funções_script_do_genesis">mais
-        informações...</a>).</p>
+        esta tarefa: <code>g:isEmpty(any)</code> e <code>g:isNotEmpty(any)</code>.</p>
         <p>Quando o valor passado para elas é uma propriedade do form, o
         <code>EmptyResolver</code> configurado para ela - determinado pelo
         processo acima descrito - é utilizado para determinar o retorno da
         função. Caso seja uma variável ou mesmo uma constante, obtém-se de
         <code>EmptyResolverRegistry</code> a implementação padrão de
         <code>EmptyResolver</code> para o tipo da expressão e esta é usada.
-        Pode-se utilizar estas funções, com 
-        <a href="generic_scripting.html">JXPath</a>, como mostrado abaixo:</p>
+        Pode-se utilizar estas funções como mostrado abaixo:</p>
 <source>
 public String getAtributo() {
    return atributo;
@@ -580,25 +583,25 @@ public void setAtributoDependente(String atributoDependente) {
       </ul>
       <subsection name="Verificando mudanças de valores em campos e fazendo
           comparações em expressões condicionais">
-        <p>Algumas funções de script são exportadas pelo genesis para auxiliar o
+        <p>Quatro funções JXPath são exportadas pelo genesis para auxiliar o
         programador em tarefas comuns:</p>
         <ul>
-          <li><code>hasChanged(propriedade)</code> e
-          <code>hasNotChanged(propriedade)</code> verificam se ocorreram ou
+          <li><code>g:hasChanged(propriedade)</code> e
+          <code>g:hasNotChanged(propriedade)</code> verificam se ocorreram ou
           não mudanças no valor da propriedade do form.</li>
-          <li><code>equals(any,any)</code> e <code>notEquals(any,any)</code>
+          <li><code>g:equals(any,any)</code> e <code>g:notEquals(any,any)</code>
           comparam dois valores - que podem ser constantes, propriedades do form
           ou variáveis - e retornam o resultado da comparação.</li>
         </ul>
         <p>O genesis mantém internamente um controle dos campos que tiveram seu
         valor alterado na iteração atual. É esta lista que é consultada pelas
-        funções <code>hasChanged(propriedade)</code> e
-        <code>hasNotChanged(propriedade)</code>. Para determinar se um valor
+        funções <code>g:hasChanged(propriedade)</code> e
+        <code>g:hasNotChanged(propriedade)</code>. Para determinar se um valor
         foi alterado ou não e popular esta lista interna, o framework utiliza a
         instância de <code>EqualityComparator</code> configurada para a
         propriedade.</p>
-        <p>As funções <code>equals(any,any)</code> e
-        <code>notEquals(any,any)</code> também utilizam instâncias de
+        <p>As funções <code>g:equals(any,any)</code> e
+        <code>g:notEquals(any,any)</code> também utilizam instâncias de
         <code>EqualityComparator</code> para determinar seu retorno. No entanto,
         o processo para isto é um pouco mais complexo, conforme explicado
         abaixo:</p>
@@ -621,9 +624,7 @@ public void setAtributoDependente(String atributoDependente) {
           <li>Se nenhuma das condições acima for verdade será retornado
           <code>false</code>.</li>
         </ul>
-        <p>O uso de uma função de cada par, utilizando 
-        <a href="generic_scripting.html">JXPath</a>, é demonstrado 
-        abaixo:</p>
+        <p>O uso de uma função de cada par é demonstrado abaixo:</p>
 <source>
 public BigDecimal getTaxa() {
    return taxa;
@@ -666,6 +667,56 @@ public void calculaMontanteCorrigido() {
    // lógica para cálculo do montante corrigido
 }
 </source>
+      </subsection>
+      <subsection name="Alterando a forma como os valores são clonados">
+         <p>Em versões anteriores, os valores anteriores das propriedades eram
+         simplesmente copiados como parte do estado do form, o que trazia 
+         algumas limitações na detecção de mudança de valores. Por exemplo, 
+         caso o valor de uma propriedade fosse um JavaBean e uma das 
+         propriedades deste bean fosse alterada, não seria possível detectar a
+         mudança com <code>g:hasChanged(propriedade)</code>, visto que tanto a
+         cópia do estado anterior que o genesis possuía como o valor atual 
+         apontariam para a mesma instância em memória.</p>
+         <p>A partir da versão 2.3 foi introduzida uma API que permite controlar
+         como o genesis gera a cópia do valor anterior de uma propriedade. A 
+         interface <code>net.java.dev.genesis.cloning.Cloner</code> possui um
+         método <code>clone(Object)</code> que retorna o valor que o genesis 
+         deve guardar como cópia do valor informado como parâmetro. A 
+         implementação padrão dessa interface - provida por 
+         <code>net.java.dev.genesis.cloning.DefaultCloner</code> - simplesmente 
+         retorna o valor passado como parâmetro, preservando assim a 
+         compatibilidade com a versão anterior.</p>
+         <p>Assim como no caso de <code>EqualityComparator</code>, existe um 
+         registro que associa as implementações de <code>Cloner</code> com a 
+         classe usada na propriedade, 
+         <code>net.java.dev.genesis.cloning.ClonerRegistry</code>, bem como uma
+         anotação que permite sobrescrever a implementação de 
+         <code>Cloner</code> a ser usada, <code>@Cloner</code>.</p>
+         <p>O código abaixo mostra como sobrescrever a implementação de 
+         <code>Cloner</code> usada tanto globalmente como para uma propriedade
+         específica de um bean:</p>
+<source>
+ClonerRegistry.getInstance().register(Usuario.class, new BeanUtilsCloner());
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploClonerForm {
+   /**
+    * @Cloner net.java.dev.genesis.cloning.BeanUtilsCloner
+    */
+   public Usuario getUsuario() {
+      // ...
+   }
+   
+   // ...
+}
+</source>
+         <p>A classe utilizada nos exemplos acima, 
+         <code>net.java.dev.genesis.cloning.BeanUtilsCloner</code>, é a outra 
+         implementação provida pelo genesis que clona o valor utilizando a API 
+         do Commons BeanUtils.</p>
       </subsection>
     </section>
     <section name="Populando combos, listas e tabelas">
@@ -1087,6 +1138,77 @@ binder.bind();
         <code>virtual:</code>, isso não afeta a formação do nome da propriedade
         na hora de registrar o formatador.</p>
       </subsection>
+   </section>
+   <section name="Customizando a criação de componentes">
+      <p>A partir da versão 2.3, é possivel customizar a maneira com que os
+      componentes são criados através da interface 
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactory</code> e de outras
+      classes de suporte. É possível fazer isso tanto por classe do dado a ser 
+      representado quanto por widget específico.</p>
+      <p>Para fazer com que, por exemplo, tanto as células das tabelas como os 
+      ítens das listas e comboboxes sejam alinhadas a direita quando seu
+      conteúdo for uma subclasse de <code>java.lang.Number</code>, deve-se
+      registrar uma instância de <code>WidgetFactory</code> em
+      <code>net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry</code> 
+      antes que qualquer código que crie widgets seja executado. Isto pode ser 
+      feito como mostrado abaixo:</p>
+<source>
+public class NumberWidgetFactory extends DefaultWidgetFactory {
+   public Object create(BaseThinlet thinlet, String name, String value,
+         Object bean, BaseThinlet.ItemType type) {
+      Object widget = super.create(thinlet, name, value, bean, type);
+      Thinlet.setChoice(widget, BaseThinlet.ALIGNMENT, BaseThinlet.RIGHT);
+      return widget;
+   }
+}
+</source>
+<source>
+// Código de registro, provavelmente no main
+WidgetFactoryRegistry.getInstance().register(Number.class, new NumberWidgetFactory());
+</source>
+      <p>Conforme mostrado no código acima, a maioria das implementações de
+      <code>WidgetFactory</code> herdará da classe 
+      <code>DefaultWidgetFactory</code>, que implementa o comportamento 
+      básico utilizado no genesis. Os argumentos passados para o método 
+      <code>create(BaseThinlet, String, String, Object, BaseThinlet.ItemType)</code>
+      são, respectivamente:</p>
+      <ul>
+         <li><b>thinlet</b>: a instância da subclasse de 
+         <code>BaseThinlet</code> onde o widget será adicionado.</li>
+         <li><b>name</b>: valor da propriedade a ser usada como nome do 
+         componente. Pode ser ignorada, mas isso normalmente não é recomendável.
+         </li>
+         <li><b>value</b>: o valor do texto a ser usado no componente. Pode ser 
+         ignorado, mas isso normalmente não é recomendável.</li>
+         <li><b>property</b>: a propriedade que foi formatada para produzir
+         <code>value</code>. Pode ser usada em casos bem específicos, como para 
+         criar uma tooltip com base em outra propriedade de um bean.</li>
+         <li><b>type</b>: o tipo do widget a ser criado, de acordo com a 
+         enumeração.</li>
+      </ul>
+      <p>Para utilizar uma instância de <code>WidgetFactory</code> para criar
+      algum widget específico, deve-se registrá-la na instância de 
+      <code>ThinletBinder</code> com o método <code>registerWidgetFactory(String,
+      WidgetFactory)</code>, utilizando-se a mesma regra de nomenclatura 
+      explicada na seção de <a href="#Formatação">Formatação</a>, conforme 
+      exemplificado abaixo:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="propriedadeComum" text="Comum" />
+         <column name="propriedadeEspecifica" text="Especifica" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.propriedadeEspecifica", new NumberWidgetFactory());
+binder.bind();
+</source>
     </section>
     <section name="Validando os dados">
       <p>A validação de dados é crítica para a integridade de um sistema,
@@ -1131,8 +1253,8 @@ binder.bind();
         <li><code><b>requiredif</b></code>: compatível com a versão que
         acompanha o Struts, implementa um tipo de validação relativamente fraco.
         Seu uso não é recomendado e é provido somente para facilitar a migração
-        de usuários do Struts. Utilize <a href="generic_scripting.html">scripts</a> 
-        ao invés deste.</li>
+        de usuários do Struts. Utilize <code><b>jxpath</b></code> ao invés
+        deste.</li>
         <li><code><b>mask</b></code>: implementa validação com base numa
         expressão regular de máscara. Requer a definição da variável
         <code>mask</code> contendo a expressão regular.</li>
@@ -1144,20 +1266,19 @@ binder.bind();
         </code>: verificam se o número informado encontra-se dentro da faixa
         esperada, definida através das variáveis <code>min</code> e
         <code>max</code>.</li>
-        <li><a href="generic_scripting.html">Scripts</a>: o mais flexível validador provido com o
-        genesis. Considera o dado válido se a análise da expressão de script
-        definida pela variável <code>de script</code> retornar um dado diferente de
+        <li><code><b>jxpath</b></code>: o mais flexível validador provido com o
+        genesis. Considera o dado válido se a análise da expressão JXPath
+        definida pela variável <code>jxpath</code> retornar um dado diferente de
         <code>java.lang.Boolean.FALSE</code>.</li>
       </ul>
       <p>Assim como os validadores do Struts, todos os providos com o genesis,
-      exceto pelos de <a href="generic_scripting.html">scripts</a> só são 
-      acionados se o campo estiver
+      exceto pelo <code>jxpath</code> só são acionados se o campo estiver
       preenchido. Isso significa que <b>mesmo que você configure seu validador
       corretamente, ele só será invocado quando o usuário preencher algo no
       campo</b>. Se sua intenção é que o validador seja sempre executado,
       <code>required</code> também deverá estar configurado para o campo.</p>
       <p>Os dados a serem validados são passados ainda em formato String para os
-      validadores. É importante lembrar-se disso ao escrever expressões de script
+      validadores. É importante lembrar-se disso ao escrever expressões JXPath
       ou quando se utiliza um validador customizado.</p>
       <p>A classe que integra o commons-validator ao genesis,
       <code>net.java.dev.genesis.ui.ValidationUtils</code>, espera que dois
@@ -1499,7 +1620,7 @@ public class InsertUpdateForm {
               <field property="address"
                      depends="required">
                   <arg position="0"
-                       key="User.address"
+                       key="User.address"
                   />
               </field>
               <field property="state"

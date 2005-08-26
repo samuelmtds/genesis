@@ -27,23 +27,15 @@ import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
-import org.codehaus.aspectwerkz.aspect.management.Mixins;
+import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 public class ViewMetadataFactoryAspect {
    /**
-    * @Mixin(pointcut="viewMetadataFactoryIntroduction", isTransient=true, 
-    *        deploymentModel="perJVM")
+    * @Introduce viewMetadataFactoryIntroduction deploymentModel=perJVM
     */
    public static class AspectViewMetadataFactory implements
          ViewMetadataFactory {
       private final Map cache = new HashMap();
-      private final boolean skipSystemClasses;
-      
-      public AspectViewMetadataFactory() {
-         skipSystemClasses = !"false".equals(Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("skipSystemClasses"));
-      }
 
       public ViewMetadata getViewMetadata(final Class viewClass) {
          ViewMetadata viewMetadata = (ViewMetadata)cache
@@ -69,42 +61,30 @@ public class ViewMetadataFactoryAspect {
       private void processMethodsAnnotations(
             final ViewMetadata viewMetadata) {
          final Method[] methods = viewMetadata.getViewClass().getMethods();
-
+         UntypedAnnotationProxy annon;
 
          for (int i = 0; i < methods.length; i++) {
-            if (skipSystemClasses
-                  && methods[i].getDeclaringClass().getClassLoader() == null) {
-               continue;
+            for (final Iterator it = Annotations.getAnnotations(
+                  "BeforeAction", methods[i]).iterator(); it.hasNext(); ) {
+               annon = (UntypedAnnotationProxy)it.next();
+
+               final String actionName = annon.getValue();
+               final String methodName = methods[i].getName();
+               viewMetadata.addBeforeAction(
+                     actionName.trim().length() == 0 ? methodName : actionName,
+                     methodName);
             }
 
-            processMethodAnnotation(viewMetadata, methods[i]);
-         }
-      }
-      
-      private void processMethodAnnotation(final ViewMetadata viewMetadata,
-            Method method) {
-         UntypedAnnotation annon;
+            for (final Iterator it = Annotations.getAnnotations(
+                  "AfterAction", methods[i]).iterator(); it.hasNext(); ) {
+               annon = (UntypedAnnotationProxy)it.next();
 
-         for (final Iterator it = Annotations.getAnnotations("BeforeAction",
-               method).iterator(); it.hasNext();) {
-            annon = (UntypedAnnotation)it.next();
-
-            final String actionName = annon.value().toString();
-            final String methodName = method.getName();
-            viewMetadata.addBeforeAction(
-                  actionName.trim().length() == 0 ? methodName : actionName,
-                  methodName);
-         }
-
-         for (final Iterator it = Annotations.getAnnotations("AfterAction",
-               method).iterator(); it.hasNext();) {
-            annon = (UntypedAnnotation)it.next();
-
-            final String actionName = annon.value().toString();
-            final String methodName = method.getName();
-            viewMetadata.addAfterAction(
-                  actionName.trim().length() == 0 ? methodName : actionName,
-                  methodName);
+               final String actionName = annon.getValue();
+               final String methodName = methods[i].getName();
+               viewMetadata.addAfterAction(
+                     actionName.trim().length() == 0 ? methodName : actionName,
+                     methodName);
+            }
          }
       }
    }

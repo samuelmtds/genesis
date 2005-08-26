@@ -18,15 +18,17 @@
  */
 package net.java.dev.genesis.ui.metadata;
 
+import net.java.dev.genesis.cloning.Cloner;
+import net.java.dev.genesis.cloning.ClonerRegistry;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.registry.DefaultValueRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-import net.java.dev.genesis.script.ScriptExpression;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.apache.commons.jxpath.CompiledExpression;
 
 public class FieldMetadata extends MemberMetadata {
    private final String fieldName;
@@ -34,9 +36,10 @@ public class FieldMetadata extends MemberMetadata {
    private final boolean writeable;
 
    private Converter converter;
-   private ScriptExpression clearOnCondition;
+   private CompiledExpression clearOnCondition;
    private EqualityComparator equalityComparator;
    private EmptyResolver emptyResolver;
+   private Cloner cloner;
    private Object emptyValue;
 
    private boolean processed = false;
@@ -59,11 +62,17 @@ public class FieldMetadata extends MemberMetadata {
       return writeable;
    }
 
-   public ScriptExpression getClearOnCondition() {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public CompiledExpression getClearOnCondition() {
       return clearOnCondition;
    }
 
-   public void setClearOnCondition(ScriptExpression clearOnCondition) {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public void setClearOnCondition(CompiledExpression clearOnCondition) {
       this.clearOnCondition = clearOnCondition;
    }
 
@@ -115,6 +124,17 @@ public class FieldMetadata extends MemberMetadata {
       this.emptyValue = emptyValue;
    }
 
+   public Cloner getCloner() {
+      if (!processed) {
+         internalProcess();
+      }
+      return cloner;
+   }
+
+   public void setCloner(Cloner cloner) {
+      this.cloner = cloner;
+   }
+
    private void internalProcess() {
       if (equalityComparator == null) {
          equalityComparator = EqualityComparatorRegistry.getInstance()
@@ -128,6 +148,10 @@ public class FieldMetadata extends MemberMetadata {
          converter = ConvertUtils.lookup(getFieldClass());
          emptyValue = DefaultValueRegistry.getInstance().get(getFieldClass(),
                true);
+      }
+      if (cloner == null) {
+         cloner = ClonerRegistry.getInstance().getDefaultClonerFor(
+               getFieldClass());
       }
       processed = true;
    }
@@ -149,6 +173,8 @@ public class FieldMetadata extends MemberMetadata {
       buffer.append(emptyResolver);
       buffer.append("\n\t\tconverter = ");
       buffer.append(converter);
+      buffer.append("\n\t\tcloner = ");
+      buffer.append(cloner);
       buffer.append("\n\t\tfieldClass = ");
       buffer.append(fieldClass);
       buffer.append("\n\t\temptyValue = ");

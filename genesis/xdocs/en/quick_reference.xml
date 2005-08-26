@@ -13,7 +13,7 @@
       sample application.</p>
     </section>
     <section name="genesis Annotations">
-      <p>genesis annotations are classified by it's scope in:</p>
+      <p>genesis annotations are classified by the place they should be used at:</p>
       <ul>
         <li><b>Class</b>: use before a class definition</li>
         <li><b>Atribute</b>: use before an attribute getter</li>
@@ -42,6 +42,7 @@
             <td>
               <ul>
                 <li><a href="#@ClearOn">@ClearOn</a></li>
+                <li><a href="#@Cloner">@Cloner</a></li>
                 <li><a href="#@Condition">@Condition</a></li>
                 <li><a href="#@EmptyResolver">@EmptyResolver</a></li>
                 <li><a href="#@EmptyValue">@EmptyValue</a></li>
@@ -100,116 +101,43 @@
         </table>
       </p>
     </section>
-    <section name="genesis scripting auxiliary functions">
+    <section name="genesis JXPath auxiliary functions">
       <p>genesis add these functions as extensions to JXPath:</p>
       <ul>
-        <li>isEmpty(any), isNotEmpty(any)</li>
-        <li>equals(any,any), notEquals(any,any)</li>
-        <li>hasChanged(field), hasNotChanged(field)
+        <li>g:isEmpty(any), g:isNotEmpty(any)</li>
+        <li>g:equals(any,any), g:notEquals(any,any)</li>
+        <li>g:hasChanged(any), g:hasNotChanged(any)
         </li>
       </ul>
       <p>These functions may be applied to all annotations that accept boolean
-      scripting expressions as parameters.
-      With <a href="generic_scripting.html">JXPath</a>
-      the <b>g:</b> prefix identifies the genesis functions' namespace. Core
-      JXPath functions don't use any prefix.</p>
-      <subsection name="isEmpty(any), isNotEmpty(any)">
-        <p>Checks whether a field is empty or not. When the argument is a form
-        property, the <code>EmptyResolver</code> instance configured for it is
-        used to determine the return value. If the argument is a variable or a constant,
+      JXPath expressions as parameters. The <b>g:</b> prefix defines the genesis
+      namespace. Core JXPath functions don't use any prefix.</p>
+      <subsection name="g:isEmpty(any), g:isNotEmpty(any)">
+        <p>
+  Checks whether a field is empty or not.When the argument is a form property,
+  the <code>EmptyResolver</code> instance configured for it is used to
+        determine the return value. If the argument is a variable or a constant,
         a default <code>EmptyResolver</code> instance for the expression type is
         obtained from <code>EmptyResolverRegistry</code> and used for
         evaluation.
-        </p>
-        <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
-        <p>Specific syntax for default supported script languages are shown
-        bellow:</p>
-        <table>
-          <tr>
-            <th>Script</th>
-            <th>isEmpty</th>
-            <th>isNotEmpty</th>
-          </tr>
-          <tr>
-            <th>JXPath</th>
-            <td>g:isEmpty(formField)</td>
-            <td>g:isNotEmpty(formField)</td>
-          </tr>
-          <tr>
-            <th>JavaScript/Beanshell</th>
-            <td>genesis.isEmpty("form:formField")</td>
-            <td>genesis.isNotEmpty("form:formField")</td>
-          </tr>
-          <tr>
-            <th>EL</th>
-            <td>g:isEmpty("form:formField")</td>
-            <td>g:isNotEmpty("form:formField")</td>
-          </tr>
-        </table>
+  </p>
+    <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
       </subsection>
-      <subsection name="equals(any,any), notEquals(any,any)">
+      <subsection name="g:equals(any,any), g:notEquals(any,any)">
         <p>Checks if a field value is equal to some constant or another field
         value. Uses any <code>@EqualityComparator</code> defined class available
         or a default implementation to make this decision. Accepts numbers,
-        strings, fields or script functions as arguments.</p>
-        <p>Specific syntax for default supported script languages are shown
-        bellow:</p>
-        <table>
-          <tr>
-            <th>Linguagem</th>
-            <th>equals</th>
-            <th>notEquals</th>
-          </tr>
-          <tr>
-            <th>JXPath</th>
-            <td>g:equals(formField, otherField)</td>
-            <td>g:notEquals(formField, otherField)</td>
-          </tr>
-          <tr>
-            <th>JavaScript/Beanshell</th>
-            <td>genesis.equals("form:formField", "form:otherField")</td>
-            <td>genesis.notEquals("form:formField", "form:otherField")</td>
-          </tr>
-          <tr>
-            <th>EL</th>
-            <td>g:equals("form:formField", "form:otherField")</td>
-            <td>g:notEquals("form:formField", "form:otherField")</td>
-          </tr>
-        </table>
+        strings, fields or JXPath functions as arguments.</p>
       </subsection>
-      <subsection name="hasChanged(property),
-                        hasNotChanged(property)">
+      <subsection name="g:hasChanged(property),
+                        g:hasNotChanged(property)">
         <p>Checks whether a field value has been changed or not. genesis
         internally keeps control of fields that have their value changed in the
         current iteraction using the <code>EqualityComparator</code> instance
         configured for the property.
-        </p>
-        <p>Specific syntax for default supported script languages are shown
-        bellow:</p>
-        <table>
-          <tr>
-            <th>Linguagem</th>
-            <th>hasChanged</th>
-            <th>hasNotChanged</th>
-          </tr>
-          <tr>
-            <th>JXPath</th>
-            <td>g:hasChanged(campoDoForm)</td>
-            <td>g:hasNotChanged(campoDoForm)</td>
-          </tr>
-          <tr>
-            <th>javascript ou Beanshell</th>
-            <td>genesis.hasChanged("form:campoDoForm")</td>
-            <td>genesis.hasNotChanged("form:campoDoForm")</td>
-          </tr>
-          <tr>
-            <th>EL</th>
-            <td>g:hasChanged("form:campoDoForm")</td>
-            <td>g:hasNotChanged("form:campoDoForm")</td>
-          </tr>
-        </table>
+  </p>
       </subsection>
-        <p><a href="ui_additional_features.html#Verifying_field_value_changes_and_doing_comparisson_in___________conditional_expressions">More info...</a></p>
+    <p><a href="ui_additional_features.html#Verifying_field_value_changes_and_doing_comparisson_in___________conditional_expressions">More info...</a></p>
     </section>
     <section name="Tag Reference">
       <subsection name="@Form">
@@ -620,7 +548,7 @@ public class FormExample {
             <td><b>Yes, except when properties exist</b></td>
           </tr>
           <tr>
-            <td>PropertyName</td>
+            <td>propertyName</td>
             <td>Property name of the specified class</td>
             <td>@EmptyResolver package.MyEmptyResolver
                                zerosAsEmpty=true</td>
@@ -631,6 +559,39 @@ public class FormExample {
           </tr>
         </table>
     <p><a href="ui_additional_features.html#Determining_if_a_field_is_empty">More info...</a></p>
+      </subsection>
+      <subsection name="@Cloner">
+        <p>Makes it possible to configure the class used for copying the 
+        previous state of a form property. Its main parameter is the fully 
+        qualified name of a class (package.Class) that implements
+        <code>net.java.dev.genesis.cloning.Cloner</code>. It can be used only in
+        form attributes.</p>
+        <table>
+          <tr>
+            <th>Parameters</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Description</th>
+            <th>Required</th>
+          </tr>
+          <tr>
+            <td>anonymous</td>
+            <td>Fully qualified class name</td>
+            <td>@Cloner package.MyCloner</td>
+            <td>Name of a class that implements <code>Cloner</code>.</td>
+            <td><b>Yes, unless properties are used</b></td>
+          </tr>
+          <tr>
+            <td>propertyName</td>
+            <td>Name of a property of the specified class</td>
+            <td>@Cloner package.MyCloner deepCloning=true</td>
+            <td>Name of an attribute of the <code>Cloner</code> implementation
+            class. There might be more than one of these.</td>
+            <td><b>No</b></td>
+          </tr>
+        </table>
+        <p><a href="ui_additional_features.html#Changing_the_way_values_are_cloned">More 
+        info...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
         <p>It specifies the empty value of a field. It's used together with the <a href="#@ClearOn">@ClearOn</a> annotation.</p>
