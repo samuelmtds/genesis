@@ -832,11 +832,17 @@ public abstract class BaseThinlet extends Thinlet {
                      + '.' + valueProperty, value = PropertyUtils.getProperty(o,
                      valueProperty)));
          Object item = createItemOfType(key, description, value, type,
-               (WidgetFactory)widgetFactories.get(componentName + '.' + 
+               getWidgetFactory(widgetFactories, componentName + '.' + 
                keyProperty));
 
          add(component, item);
       }
+   }
+
+   protected WidgetFactory getWidgetFactory(Map widgetFactories, 
+         String propertyName) {
+      return widgetFactories == null ? null : (WidgetFactory)widgetFactories
+            .get(propertyName);
    }
 
    protected void populateFromCollection(String name, Collection c)
@@ -906,8 +912,8 @@ public abstract class BaseThinlet extends Thinlet {
             if (virtualPropertyNames.contains(propertyName)) {
                Object cell = createItemOfType(propertyName,
                      getVirtualFormatter(formatters, componentName,
-                           propertyName).format(bean), bean, ItemType.CELL,
-                     (WidgetFactory)widgetFactories.get(componentName + '.' + 
+                     propertyName).format(bean), bean, ItemType.CELL,
+                     getWidgetFactory(widgetFactories, componentName + '.' + 
                      propertyName));
                add(row, cell);
                continue;
@@ -921,7 +927,7 @@ public abstract class BaseThinlet extends Thinlet {
                      propertyName.substring(0, indexOfDot)) == null) {
                   Object cell = createItemOfType(propertyName, format(
                         formatters, componentName + '.' + propertyName, null),
-                        null, ItemType.CELL, (WidgetFactory)widgetFactories.get(
+                        null, ItemType.CELL, getWidgetFactory(widgetFactories, 
                         componentName + '.' + propertyName));
 
                   add(row, cell);
@@ -939,7 +945,7 @@ public abstract class BaseThinlet extends Thinlet {
             Object value = PropertyUtils.getProperty(bean, propertyName);
             Object cell = createItemOfType(propertyName, format(formatters,
                   componentName + '.' + propertyName, value), value,
-                  ItemType.CELL, (WidgetFactory)widgetFactories.get(
+                  ItemType.CELL, getWidgetFactory(widgetFactories, 
                   componentName + '.' + propertyName));
 
             add(row, cell);
