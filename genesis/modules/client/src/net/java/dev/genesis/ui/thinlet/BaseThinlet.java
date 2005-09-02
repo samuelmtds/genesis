@@ -293,95 +293,95 @@ public abstract class BaseThinlet extends Thinlet {
       }
    }
 
-   protected int getColumns(Object component) {
+   public int getColumns(Object component) {
       return getInteger(component, COLUMNS);
    }
 
-   protected void setColumns(Object component, int columns) {
+   public void setColumns(Object component, int columns) {
       setInteger(component, COLUMNS, columns);
    }
 
-   protected boolean isEnabled(Object component) {
+   public boolean isEnabled(Object component) {
       return getBoolean(component, ENABLED);
    }
 
-   protected void setEnabled(Object component, boolean enabled) {
+   public void setEnabled(Object component, boolean enabled) {
       setBoolean(component, ENABLED, enabled);
    }
 
-   protected boolean isEditable(Object component) {
+   public boolean isEditable(Object component) {
       return getBoolean(component, EDITABLE);
    }
 
-   protected void setEditable(Object o, boolean editable) {
+   public void setEditable(Object o, boolean editable) {
       setBoolean(o, EDITABLE, editable);
    }
 
-   protected int getEnd(Object component) {
+   public int getEnd(Object component) {
       return getInteger(component, END);
    }
 
-   protected void setEnd(Object component, int end) {
+   public void setEnd(Object component, int end) {
       setInteger(component, END, end);
    }
 
-   protected String getGroup(Object component) {
+   public String getGroup(Object component) {
       return getString(component, GROUP);
    }
 
-   protected void setGroup(Object component, String group) {
+   public void setGroup(Object component, String group) {
       setString(component, GROUP, group);
    }
    
-   protected void setMnemonic(Object component, int value) {
+   public void setMnemonic(Object component, int value) {
       setInteger(component, MNEMONIC, value);
    }
 
-   protected String getName(Object component) {
+   public String getName(Object component) {
       return getString(component, NAME);
    }
 
-   protected void setName(Object component, String name) {
+   public void setName(Object component, String name) {
       setString(component, NAME, name);
    }
 
-   protected int getRows(Object component) {
+   public int getRows(Object component) {
       return getInteger(component, ROWS);
    }
 
-   protected void setRows(Object component, int rows) {
+   public void setRows(Object component, int rows) {
       setInteger(component, ROWS, rows);
    }
 
-   protected void setSelected(Object component, boolean selected) {
+   public void setSelected(Object component, boolean selected) {
       setBoolean(component, SELECTED, selected);
    }
 
-   protected boolean isSelected(Object component) {
+   public boolean isSelected(Object component) {
       return getBoolean(component, SELECTED);
    }
 
-   protected void setSelected(Object component, int index) {
+   public void setSelected(Object component, int index) {
       setInteger(component, SELECTED, index);
    }
 
-   protected int getSelected(Object component) {
+   public int getSelected(Object component) {
       return getInteger(component, SELECTED);
    }
 
-   protected String getSelection(Object component) {
+   public String getSelection(Object component) {
       return getChoice(component, SELECTION);
    }
 
-   protected void setSelection(Object component, String selection) {
+   public void setSelection(Object component, String selection) {
       setChoice(component, SELECTION, selection);
    }
 
-   protected int getStart(Object component) {
+   public int getStart(Object component) {
       return getInteger(component, START);
    }
 
-   protected void setStart(Object component, int start) {
+   public void setStart(Object component, int start) {
       setInteger(component, START, start);
    }
 
@@ -389,39 +389,39 @@ public abstract class BaseThinlet extends Thinlet {
       return getItems(getWidget(table, HEADER));
    }
 
-   protected String getText(Object component) {
+   public String getText(Object component) {
       return getString(component, TEXT);
    }
 
-   protected void setText(Object component, String text) {
+   public void setText(Object component, String text) {
       setString(component, TEXT, text);
    }
 
-   protected String getTooltip(Object component) {
+   public String getTooltip(Object component) {
       return getString(component, TOOLTIP);
    }
 
-   protected void setTooltip(Object component, String tooltip) {
+   public void setTooltip(Object component, String tooltip) {
       setString(component, TOOLTIP, tooltip);
    }
 
-   protected void setValue(Object component, int value) {
+   public void setValue(Object component, int value) {
       setInteger(component, VALUE, value);
    }
 
-   protected int getValue(Object component) {
+   public int getValue(Object component) {
       return getInteger(component, VALUE);
    }
 
-   protected boolean isVisible(Object component) {
+   public boolean isVisible(Object component) {
       return getBoolean(component, VISIBLE);
    }
 
-   protected void setVisible(Object component, boolean visible) {
+   public void setVisible(Object component, boolean visible) {
       setBoolean(component, VISIBLE, visible);
    }
 
-   protected int getIndexOf(Object parent, Object component) {
+   public int getIndexOf(Object parent, Object component) {
       final Object[] components = getItems(parent);
 
       for (int i = 0; i < components.length; i++) {
