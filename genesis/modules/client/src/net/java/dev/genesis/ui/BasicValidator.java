@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,14 +33,14 @@ public class BasicValidator {
    
    public static boolean validateRequired(Object bean, Field field) {
       return !GenericValidator.isBlankOrNull(ValidatorUtils.getValueAsString(
-      bean, field.getProperty()));
+            bean, field.getProperty()));
    }
    
    public static boolean validateByte(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
       return GenericValidator.isBlankOrNull(value) ||
-      GenericValidator.isByte(value);
+            GenericValidator.isByte(value);
    }
 
    public static boolean validateBigDecimal(Object bean, Field field) {
@@ -51,6 +51,19 @@ public class BasicValidator {
    }
    
    public static boolean validateBigDecimalRange(Object bean, Field field) {
+      return validateBigDecimalRange(bean, field, true, true);
+   }
+
+   public static boolean validateMin(Object bean, Field field) {
+      return validateBigDecimalRange(bean, field, true, false);
+   }
+
+   public static boolean validateMax(Object bean, Field field) {
+      return validateBigDecimalRange(bean, field, false, true);
+   }
+
+   private static boolean validateBigDecimalRange(Object bean, Field field, 
+         boolean validateMin, boolean validateMax) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
       if (!validateBigDecimal(bean, field)) {
@@ -59,18 +72,19 @@ public class BasicValidator {
       
       BigDecimal inputValue = normalize(ConvertUtils.convert(value,
             BigDecimal.class));
-      BigDecimal min = normalize(ConvertUtils.convert(field.getVarValue("min"),
-            BigDecimal.class));
-      BigDecimal max = normalize(ConvertUtils.convert(field.getVarValue("max"),
-            BigDecimal.class));
+      BigDecimal min = validateMin ? normalize(ConvertUtils.convert(
+            field.getVarValue("min"), BigDecimal.class)) : null;
+      BigDecimal max = validateMax ? normalize(ConvertUtils.convert(
+            field.getVarValue("max"), BigDecimal.class)) : null;
       
-      return min.compareTo(inputValue) <= 0 && max.compareTo(inputValue) >= 0;
+      return (!validateMin || min.compareTo(inputValue) <= 0) && 
+            (!validateMax || max.compareTo(inputValue) >= 0);
    }
    
    private static BigDecimal normalize(Object value) {
       return value == null ? new BigDecimal(0) : (BigDecimal)value;
    }
-   
+
    public static boolean validateShort(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
