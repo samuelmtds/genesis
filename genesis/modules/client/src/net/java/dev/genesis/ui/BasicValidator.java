@@ -65,7 +65,11 @@ public class BasicValidator {
    private static boolean validateBigDecimalRange(Object bean, Field field, 
          boolean validateMin, boolean validateMax) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
-      
+
+      if (GenericValidator.isBlankOrNull(value)) {
+         return true;
+      }
+
       if (!validateBigDecimal(bean, field)) {
          return false;
       }
@@ -76,7 +80,7 @@ public class BasicValidator {
             field.getVarValue("min"), BigDecimal.class)) : null;
       BigDecimal max = validateMax ? normalize(ConvertUtils.convert(
             field.getVarValue("max"), BigDecimal.class)) : null;
-      
+
       return (!validateMin || min.compareTo(inputValue) <= 0) && 
             (!validateMax || max.compareTo(inputValue) >= 0);
    }

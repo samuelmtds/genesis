@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.Var;
 
@@ -32,7 +32,7 @@ public class BasicValidatorTest extends GenesisTestCase {
    private static final String BIG_DECIMAL_PROPERTY = "bigDecimal";
 
    private Field field;
-   private Var min = new Var("min", "0", null);
+   private Var min = new Var("min", "0.1", null);
    private Var max = new Var("max", "10.1", null);
    private Converter oldConverter;
 
@@ -41,7 +41,7 @@ public class BasicValidatorTest extends GenesisTestCase {
       field.setProperty(BIG_DECIMAL_PROPERTY);
 
       oldConverter = ConvertUtils.lookup(BigDecimal.class);
-      ConvertUtils.register(new BigDecimalConverter(), BigDecimal.class);
+      ConvertUtils.register(new BigDecimalConverter(null), BigDecimal.class);
    }
 
    protected void tearDown() {
@@ -64,6 +64,9 @@ public class BasicValidatorTest extends GenesisTestCase {
       assertFalse(BasicValidator.validateBigDecimalRange(map, field));
 
       map.put(BIG_DECIMAL_PROPERTY, "0");
+      assertFalse(BasicValidator.validateBigDecimalRange(map, field));
+
+      map.put(BIG_DECIMAL_PROPERTY, "0.1");
       assertTrue(BasicValidator.validateBigDecimalRange(map, field));
 
       map.put(BIG_DECIMAL_PROPERTY, "1");
@@ -90,6 +93,9 @@ public class BasicValidatorTest extends GenesisTestCase {
       assertFalse(BasicValidator.validateMin(map, field));
 
       map.put(BIG_DECIMAL_PROPERTY, "0");
+      assertFalse(BasicValidator.validateMin(map, field));
+
+      map.put(BIG_DECIMAL_PROPERTY, "0.1");
       assertTrue(BasicValidator.validateMin(map, field));
 
       map.put(BIG_DECIMAL_PROPERTY, "1");
