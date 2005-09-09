@@ -1236,10 +1236,10 @@ binder.bind();
         informed data has a number of characteres not lesser and not greater,
         respectively, than a character count number defined by
         <code>minlength</code> or <code>maxlength</code> variables.</li>
-        <li><code><b>min<b>: checks if the informed number is greater or equal 
-        to the value defined by the <code>min</code> variable.</li>
-        <li><code><b>max<b>: checks if the informed number is lesser or equal 
-        to the value defined by the <code>max</code> variable.</li>
+        <li><code><b>min</b></code>: checks if the informed number is greater or 
+        equal  to the value defined by the <code>min</code> variable.</li>
+        <li><code><b>max</b></code>: checks if the informed number is lesser or 
+        equal to the value defined by the <code>max</code> variable.</li>
         <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
         ></code>: check if the informed number is part of an expected interval,
         defined by variables <code>min</code> and <code>max</code>.</li>

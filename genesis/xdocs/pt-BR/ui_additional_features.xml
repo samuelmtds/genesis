@@ -1262,10 +1262,10 @@ binder.bind();
         dado informado possui um número não inferior e não superior,
         respectivamente, ao número máximo de caracteres definido através da
         variável <code>minlength</code> e <code>maxlength</code>.</li>
-        <li><code><b>min<b>: verifica se o número informado é maior ou igual ao
-        valor da variável <code>min</code>.</li>
-        <li><code><b>max<b>: verifica se o número informado é menor ou igual ao
-        valor da variável <code>max</code>.</li>
+        <li><code><b>min</b></code>: verifica se o número informado é maior ou 
+        igual ao valor da variável <code>min</code>.</li>
+        <li><code><b>max</b></code>: verifica se o número informado é menor ou 
+        igual ao valor da variável <code>max</code>.</li>
         <li><code><b>longRange</b>, <b>doubleRange</b> e <b>bigDecimalRange</b>
         </code>: verificam se o número informado encontra-se dentro da faixa
         esperada, definida através das variáveis <code>min</code> e
