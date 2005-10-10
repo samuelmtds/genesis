@@ -18,22 +18,22 @@
  */
 package net.java.dev.genesis.command.hibernate;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
 
 import net.java.dev.genesis.hibernate.type.HibernateTypeValue;
 import net.java.dev.genesis.paging.Page;
 import net.java.dev.genesis.paging.PagingException;
 import net.java.dev.genesis.paging.hibernate.CriteriaPager;
 import net.java.dev.genesis.paging.hibernate.QueryPager;
+
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
 
 public abstract class AbstractHibernateCommand implements HibernateCommand {
-
    private Session session;
 
    public void setSession(Session session) {
@@ -82,12 +82,21 @@ public abstract class AbstractHibernateCommand implements HibernateCommand {
       for (Iterator i = parameters.entrySet().iterator(); i.hasNext();) {
          e = (Map.Entry) i.next();
 
-         if (e.getValue() instanceof HibernateTypeValue) {
-            final HibernateTypeValue htv = (HibernateTypeValue) e.getValue();
-            q.setParameter(e.getKey().toString(), htv.getValue(), htv
+	   String key = e.getKey().toString();
+	   Object value = e.getValue();
+
+	   Class valueClass = value.getClass();
+
+         if (HibernateTypeValue.class.isAssignableFrom(valueClass)) {
+            final HibernateTypeValue htv = (HibernateTypeValue)value;
+            q.setParameter(key, htv.getValue(), htv
                         .getType());
+	   } else if (Collection.class.isAssignableFrom(valueClass)) {
+		q.setParameterList(key, (Collection)value);
+	   } else if (valueClass.isArray()) {
+		q.setParameterList(key, (Object[])value);
          } else {
-            q.setParameter(e.getKey().toString(), e.getValue());
+            q.setParameter(key, value);
          }
       }
 
