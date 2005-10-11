@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="genesis-based-project" default="all" basedir=".">
+   <target name="-pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the whole build process -->
+   </target>
+
+   <target name="-do-init">
+      <property name="sources.dir" value="src" />
+      <property name="build.dir" value="target" />
+      <property name="classes.dir" value="${build.dir}/classes" />
+      <property name="annotated.dir" value="${build.dir}/annotated" />
+      <property name="verbose" value="true" />
+
+      <property name="keep.debug.information" value="true" />
+      <property name="java.source.level" value="1.4" />
+   </target>
+
+   <target name="-post-init">
+      <!-- Override to do custom initialization -->
+   </target>
+
+   <target name="init" depends="-pre-init,-do-init,-post-init" />
+
+   <target name="-pre-init-paths">
+      <!-- Override to do custom initialization -->
+   </target>
+
+   <target name="-do-init-paths">
+      <property name="genesis.version" value="2.3-RC2-dev" />
+      <property name="genesis.home" location="../../genesis" />
+      <property name="genesis.dist" location="${genesis.home}/dist" />
+      <property name="annotation.properties" 
+                location="${genesis.dist}/annotation.properties" />
+
+      <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
+      <property name="commons.dist" location="${genesis.home}/lib/commons" />
+      <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
+      <property name="xdoclet.dist" location="../../xdoclet/dist" />
+
+      <path id="aspectwerkz.path">
+         <fileset dir="${aspectwerkz.dist}">
+            <include name="aspectwerkz-*.jar" />
+            <include name="ant*.jar" />
+            <exclude name="asm*.jar" />
+            <include name="concurrent*.jar" />
+            <include name="dom4j*.jar" />
+            <include name="javassist*.jar" />
+            <include name="jrexx*.jar" />
+            <include name="junit*.jar" />
+            <include name="managementapi*.jar" />
+            <include name="piccolo*.jar" />
+            <include name="qdox*.jar" />
+            <include name="trove*.jar" />
+         </fileset>
+      </path>
+
+      <path id="xdoclet.path">
+         <fileset dir="${xdoclet.dist}" includes="*.jar" />
+      </path>
+   </target>
+
+   <target name="-post-init-paths">
+      <!-- Override to do custom initialization -->
+   </target>
+
+   <target name="init-paths" 
+           depends="init,-pre-init-paths,-do-init-paths,-post-init-paths" />
+
+   <target name="define-aw-tasks" depends="init-paths">
+      <taskdef name="annotationc" 
+               classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" 
+               classpathref="aspectwerkz.path" />
+      <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
+               classpathref="aspectwerkz.path" />
+   </target>
+
+   <target name="define-hibernate-tasks" depends="init-paths">
+      <taskdef name="hibernatedoclet" 
+               classname="xdoclet.modules.hibernate.HibernateDocletTask" 
+               classpathref="xdoclet.path" />
+   </target>
+
+   <target name="shared:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the -shared:init target -->
+   </target>
+
+   <target name="shared:init" depends="init-paths,shared:pre-init">
+      <property name="has.shared.sources" value="true" />
+
+      <property name="shared.dir" value="modules/shared" />
+      <property name="shared.sources.dir" value="${shared.dir}/${sources.dir}" />
+      <property name="shared.classes.dir" value="${shared.dir}/${classes.dir}" />
+      <property name="shared.annotated.dir" value="${shared.dir}/${annotated.dir}" />
+      <property name="shared.hibernate.dir" value="${shared.dir}/${build.dir}/hibernate" />
+
+      <property name="hibernate.generate.files" value="true" />
+      <property name="hibernate.session.factory.jndi.name" 
+                value="jboss:/hibernate/SessionFactory" />
+      <property name="hibernate.jboss.service.name" 
+                value="HibernateFactory,name=HibernateFactory" />
+      <property name="hibernate.dialect" 
+                value="net.sf.hibernate.dialect.HSQLDialect"/>
+      <property name="hibernate.show.sql" value="true" />
+      <property name="hibernate.version" value="2.1.8" />
+
+      <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
+      <property name="jdbc.driver.class" value="org.hsqldb.jdbcDriver" />
+      <property name="jdbc.username" value="sa" />
+      <property name="jdbc.password" value="" />
+      <property name="jdbc.connection.url" 
+                value="jdbc:hsqldb:genesis/useradmin" />
+
+      <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
+
+      <path id="shared.standard.javac.classpath">
+         <fileset dir="${genesis.dist}" 
+               includes="genesis-shared-${genesis.version}.jar" />
+         <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
+         <fileset dir="${commons.dist}">
+            <include name="commons-beanutils*.jar" />
+            <include name="commons-logging*.jar" />
+            <include name="reusable-components*.jar" />
+         </fileset>
+      </path>
+   </target>
+
+   <target name="shared:define-conditions" depends="shared:init">
+      <condition property="shared.compile">
+         <istrue value="${has.shared.sources}" />
+      </condition>
+      <condition property="shared.clean">
+         <istrue value="${clean.build}" />
+      </condition>
+   </target>
+
+   <target name="shared:clean" if="shared.clean" 
+           depends="shared:define-conditions">
+      <delete dir="${shared.classes.dir}" />
+      <delete dir="${shared.annotated.dir}" />
+      <delete dir="${shared.hibernate.dir}" />
+   </target>
+
+   <target name="shared:pre-define-classpath">
+      <!-- Override to define shared.javac.overriden.classpath or 
+         shared.additional.javac.classpath-->
+   </target>
+
+   <target name="shared:check-classpath-conditions" depends="shared:init">
+      <condition property="shared.set.custom.javac.classpath">
+         <isreference refid="shared.javac.overriden.classpath" type="path" />
+      </condition>
+      <condition property="shared.set.additional.javac.classpath">
+         <and>
+            <not>
+               <isset property="shared.set.custom.javac.classpath" />
+            </not>
+            <isreference refid="shared.additional.javac.classpath" />
+         </and>
+      </condition>
+      <condition property="shared.set.standard.javac.classpath">
+         <and>
+            <not>
+               <isset property="shared.set.additional.javac.classpath" />
+            </not>
+            <not>
+               <isset property="shared.set.custom.javac.classpath" />
+            </not>
+         </and>
+      </condition>
+   </target>
+
+   <target name="shared:define-overriden-classpath"
+           depends="shared:init" if="shared.set.custom.javac.classpath">
+      <path id="shared.javac.classpath">
+         <path refid="shared.javac.overriden.classpath" />
+      </path>
+   </target>
+
+   <target name="shared:define-classpath-with-extensions" 
+           depends="shared:init" if="shared.set.additional.javac.classpath">
+      <path id="shared.javac.classpath">
+         <path refid="shared.standard.javac.classpath" />
+         <path refid="shared.additional.javac.classpath" />
+      </path>
+   </target>
+
+   <target name="shared:define-standard-classpath"
+           depends="shared:init" if="shared.set.standard.javac.classpath">
+      <path id="shared.javac.classpath">
+         <path refid="shared.standard.javac.classpath" />
+      </path>
+   </target>
+
+   <target name="shared:define-classpath" 
+           depends="shared:init,shared:pre-define-classpath,
+                    shared:check-classpath-conditions,
+                    shared:define-overriden-classpath,
+                    shared:define-classpath-with-extensions,
+                    shared:define-standard-classpath"/>
+
+   <target name="shared:javac" if="shared.compile" 
+           depends="shared:clean,shared:define-classpath">
+      <mkdir dir="${shared.classes.dir}" />
+      <javac destdir="${shared.classes.dir}"
+            debug="${keep.debug.information}"
+            source="${java.source.level}"
+            classpathref="shared.javac.classpath">
+         <src path="${shared.sources.dir}" />
+      </javac>
+   </target>
+
+   <target name="shared:check-annotations-needed" depends="shared:init">
+      <condition property="shared.classes.changed">
+         <or>
+            <not>
+               <available file="${shared.annotated.dir}" />
+            </not>
+            <not>
+               <uptodate>
+                  <srcfiles dir="${shared.classes.dir}" />
+                  <mapper type="merge" to="${shared.annotated.dir}/**/*.*" />
+               </uptodate>
+            </not>
+         </or>
+      </condition>
+   </target>
+
+   <target name="shared:annotations" if="shared.classes.changed"
+           depends="shared:check-annotations-needed,define-aw-tasks">
+      <mkdir dir="${shared.annotated.dir}" />
+      <annotationc verbose="${verbose}"
+            srcdir="${shared.sources.dir}"
+            destdir="${shared.annotated.dir}"
+            classpath="${shared.classes.dir}"
+            properties="${annotation.properties}" />
+   </target>
+
+   <target name="shared:check-hibernate-needed" depends="shared:init">
+      <condition property="shared.hibernate.needed">
+         <and>
+            <istrue value="${hibernate.generate.files}" />
+            <or>
+               <not>
+                  <available file="${shared.hibernate.dir}" />
+               </not>
+               <not>
+                  <uptodate>
+                     <srcfiles dir="${shared.sources.dir}" includes="**/*.java" />
+                     <mapper type="merge" to="${shared.hibernate.dir}/**/*.*" />
+                  </uptodate>
+               </not>
+            </or>
+         </and>
+      </condition>
+   </target>
+
+   <target name="shared:hibernate-doclet" if="shared.hibernate.needed"
+           depends="shared:check-hibernate-needed,define-hibernate-tasks">
+      <basename property="jboss.ds.name" file="${jboss.datasource.jndi.name}"/>
+
+      <mkdir dir="${shared.hibernate.dir}" />
+      <hibernatedoclet destdir="${shared.hibernate.dir}" verbose="${verbose}">
+         <fileset dir="${shared.sources.dir}">
+            <include name="**/*.java" />
+         </fileset>
+         <hibernate version="2.0"
+                    xmlencoding="ISO-8859-1"
+                    validateXML="false" />
+         <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
+                       serviceName="${hibernate.jboss.service.name}"
+                       dialect="${hibernate.dialect}"
+                       dataSource="${jboss.datasource.jndi.name}"
+                       transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
+                       transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
+                       userTransactionName="UserTransaction"
+                       showSql="${hibernate.show.sql}"
+                       depends="jboss.jca:service=LocalTxCM,name=${jboss.ds.name}"
+                       version="${hibernate.version}" />
+         <hibernatecfg dialect="${hibernate.dialect}"
+                       userName="${jdbc.username}"
+                       password="${jdbc.password}"
+                       driver="${jdbc.driver.class}"
+                       jdbcUrl="${jdbc.connection.url}"
+                       transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
+                       showSql="${hibernate.show.sql}" />
+      </hibernatedoclet>
+   </target>
+
+   <target name="shared:compile" 
+           depends="shared:javac,shared:annotations,shared:hibernate-doclet" />
+
+   <target name="all" depends="shared:compile" 
+           description="Builds the whole project"/>
+
+   <target name="pre-clean">
+      <property name="clean.build" value="true" />
+   </target>
+
+   <target name="clean" depends="pre-clean,shared:clean" 
+           description="Deletes build artifacts" />
+
+   <target name="clean-build" depends="clean,all" 
+           description="Deletes build artifacts before building the project"/>
+</project>
