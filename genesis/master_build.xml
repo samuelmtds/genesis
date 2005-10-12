@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="genesis-based-project" default="all" basedir=".">
+<project name="genesis-based-project" default="all" basedir="." 
+         xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
    <target name="-pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
          the whole build process -->
@@ -14,6 +15,30 @@
 
       <property name="keep.debug.information" value="true" />
       <property name="java.source.level" value="1.4" />
+
+      <property name="local.mode" value="false" />
+      <property name="remote.mode" value="true" />
+
+      <condition property="local.mode.only">
+         <and>
+            <istrue value="${local.mode}" />
+            <isfalse value="${remote.mode}" />
+         </and>
+      </condition>
+
+      <condition property="remote.mode.only">
+         <and>
+            <istrue value="${remote.mode}" />
+            <isfalse value="${local.mode}" />
+         </and>
+      </condition>
+
+      <condition property="local.and.remote">
+         <and>
+            <istrue value="${local.mode}" />
+            <istrue value="${remote.mode}" />
+         </and>
+      </condition>
    </target>
 
    <target name="-post-init">
@@ -213,17 +238,20 @@
 
    <target name="shared:check-annotations-needed" depends="shared:init">
       <condition property="shared.classes.changed">
-         <or>
-            <not>
-               <available file="${shared.annotated.dir}" />
-            </not>
-            <not>
-               <uptodate>
-                  <srcfiles dir="${shared.classes.dir}" />
-                  <mapper type="merge" to="${shared.annotated.dir}/**/*.*" />
-               </uptodate>
-            </not>
-         </or>
+         <and>
+            <istrue value="${has.shared.sources}" />
+            <or>
+               <not>
+                  <available file="${shared.annotated.dir}" />
+               </not>
+               <not>
+                  <uptodate>
+                     <srcfiles dir="${shared.classes.dir}" />
+                     <mapper type="merge" to="${shared.annotated.dir}/**/*.*" />
+                  </uptodate>
+               </not>
+            </or>
+         </and>
       </condition>
    </target>
 
@@ -237,11 +265,13 @@
             properties="${annotation.properties}" />
    </target>
 
-   <target name="shared:check-hibernate-needed" depends="shared:init">
+   <target name="shared:check-hibernate-conditions" depends="shared:init">
       <condition property="shared.hibernate.needed">
          <and>
+            <istrue value="${has.shared.sources}" />
             <istrue value="${hibernate.generate.files}" />
             <or>
+               <istrue value="${hibernate.force.generation}" />
                <not>
                   <available file="${shared.hibernate.dir}" />
                </not>
@@ -254,39 +284,129 @@
             </or>
          </and>
       </condition>
+
+      <condition property="shared.hibernate.local.needed">
+         <and>
+            <istrue value="${shared.hibernate.needed}" />
+            <istrue value="${local.mode.only}" />
+         </and>
+      </condition>
+
+      <condition property="shared.hibernate.remote.needed">
+         <and>
+            <istrue value="${shared.hibernate.needed}" />
+            <istrue value="${remote.mode.only}" />
+         </and>
+      </condition>
+
+      <condition property="shared.hibernate.both.needed">
+         <and>
+            <istrue value="${shared.hibernate.needed}" />
+            <istrue value="${local.and.remote}" />
+         </and>
+      </condition>
+  </target>
+
+   <target name="hibernate-macrodefs" depends="define-hibernate-tasks">
+      <macrodef name="hibernatedoclet" 
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="subtasks" optional="true" />
+         <sequential>
+            <mkdir dir="${shared.hibernate.dir}" />
+            <hibernatedoclet destdir="${shared.hibernate.dir}" 
+                             verbose="${verbose}">
+               <fileset dir="${shared.sources.dir}">
+                  <include name="**/*.java" />
+               </fileset>
+               <hibernate version="2.0"
+                          xmlencoding="ISO-8859-1"
+                          validateXML="false" />
+               <subtasks />
+            </hibernatedoclet>
+         </sequential>
+      </macrodef>
+
+      <macrodef name="hibernatedoclet-remote"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="customize" optional="true" />
+         <sequential>
+            <basename property="jboss.ds.name" 
+                      file="${jboss.datasource.jndi.name}"/>
+            <genesis:hibernatedoclet>
+               <subtasks>
+                  <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
+                                serviceName="${hibernate.jboss.service.name}"
+                                dialect="${hibernate.dialect}"
+                                dataSource="${jboss.datasource.jndi.name}"
+                                transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
+                                transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
+                                userTransactionName="UserTransaction"
+                                showSql="${hibernate.show.sql}"
+                                depends="jboss.jca:service=LocalTxCM,name=${jboss.ds.name}"
+                                version="${hibernate.version}" />
+                  <customize />
+               </subtasks>
+            </genesis:hibernatedoclet>
+         </sequential>
+      </macrodef>
+
+      <macrodef name="hibernatedoclet-local"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <sequential>
+            <genesis:hibernatedoclet>
+               <subtasks>
+                  <hibernatecfg dialect="${hibernate.dialect}"
+                                userName="${jdbc.username}"
+                                password="${jdbc.password}"
+                                driver="${jdbc.driver.class}"
+                                jdbcUrl="${jdbc.connection.url}"
+                                transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
+                                showSql="${hibernate.show.sql}" />
+               </subtasks>
+            </genesis:hibernatedoclet>
+         </sequential>
+      </macrodef>
+
+      <macrodef name="hibernatedoclet-both"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <sequential>
+            <genesis:hibernatedoclet-remote>
+               <customize>
+                  <hibernatecfg dialect="${hibernate.dialect}"
+                                userName="${jdbc.username}"
+                                password="${jdbc.password}"
+                                driver="${jdbc.driver.class}"
+                                jdbcUrl="${jdbc.connection.url}"
+                                transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
+                                showSql="${hibernate.show.sql}" />
+               </customize>
+            </genesis:hibernatedoclet-remote>
+         </sequential>
+      </macrodef>
    </target>
 
-   <target name="shared:hibernate-doclet" if="shared.hibernate.needed"
-           depends="shared:check-hibernate-needed,define-hibernate-tasks">
-      <basename property="jboss.ds.name" file="${jboss.datasource.jndi.name}"/>
-
-      <mkdir dir="${shared.hibernate.dir}" />
-      <hibernatedoclet destdir="${shared.hibernate.dir}" verbose="${verbose}">
-         <fileset dir="${shared.sources.dir}">
-            <include name="**/*.java" />
-         </fileset>
-         <hibernate version="2.0"
-                    xmlencoding="ISO-8859-1"
-                    validateXML="false" />
-         <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
-                       serviceName="${hibernate.jboss.service.name}"
-                       dialect="${hibernate.dialect}"
-                       dataSource="${jboss.datasource.jndi.name}"
-                       transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
-                       transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
-                       userTransactionName="UserTransaction"
-                       showSql="${hibernate.show.sql}"
-                       depends="jboss.jca:service=LocalTxCM,name=${jboss.ds.name}"
-                       version="${hibernate.version}" />
-         <hibernatecfg dialect="${hibernate.dialect}"
-                       userName="${jdbc.username}"
-                       password="${jdbc.password}"
-                       driver="${jdbc.driver.class}"
-                       jdbcUrl="${jdbc.connection.url}"
-                       transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
-                       showSql="${hibernate.show.sql}" />
-      </hibernatedoclet>
+   <target name="shared:hibernate-doclet-local" 
+           if="shared.hibernate.local.needed"
+           depends="shared:check-hibernate-conditions,hibernate-macrodefs">
+      <genesis:hibernatedoclet-local />
    </target>
+
+   <target name="shared:hibernate-doclet-remote" 
+           if="shared.hibernate.remote.needed"
+           depends="shared:check-hibernate-conditions,hibernate-macrodefs">
+      <genesis:hibernatedoclet-remote />
+   </target>
+
+   <target name="shared:hibernate-doclet-both" 
+           if="shared.hibernate.both.needed"
+           depends="shared:check-hibernate-conditions,hibernate-macrodefs">
+      <genesis:hibernatedoclet-both />
+   </target>
+
+   <target name="shared:hibernate-doclet" 
+           depends="shared:hibernate-doclet-local,
+                    shared:hibernate-doclet-remote,
+                    shared:hibernate-doclet-both" />
 
    <target name="shared:compile" 
            depends="shared:javac,shared:annotations,shared:hibernate-doclet" />
