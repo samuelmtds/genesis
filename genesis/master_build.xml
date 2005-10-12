@@ -92,7 +92,7 @@
    <target name="init-paths" 
            depends="init,-pre-init-paths,-do-init-paths,-post-init-paths" />
 
-   <target name="define-aw-tasks" depends="init-paths">
+   <target name="define-aw-tasks" if="aw.tasks.needed" depends="init-paths">
       <taskdef name="annotationc" 
                classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" 
                classpathref="aspectwerkz.path" />
@@ -100,7 +100,8 @@
                classpathref="aspectwerkz.path" />
    </target>
 
-   <target name="define-hibernate-tasks" depends="init-paths">
+   <target name="define-hibernate-tasks" if="shared.hibernate.tasks.needed" 
+           depends="init-paths">
       <taskdef name="hibernatedoclet" 
                classname="xdoclet.modules.hibernate.HibernateDocletTask" 
                classpathref="xdoclet.path" />
@@ -253,6 +254,10 @@
             </or>
          </and>
       </condition>
+
+      <condition property="aw.tasks.needed">
+         <istrue value="shared.classes.changed" />
+      </condition>
    </target>
 
    <target name="shared:annotations" if="shared.classes.changed"
@@ -305,9 +310,15 @@
             <istrue value="${local.and.remote}" />
          </and>
       </condition>
+
+      <condition property="shared.hibernate.tasks.needed">
+         <istrue value="${shared.hibernate.needed}" />
+      </condition>
   </target>
 
-   <target name="hibernate-macrodefs" depends="define-hibernate-tasks">
+   <target name="hibernate-macrodefs" 
+           if="shared.hibernate.tasks.needed"
+           depends="define-hibernate-tasks">
       <macrodef name="hibernatedoclet" 
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <element name="subtasks" optional="true" />
