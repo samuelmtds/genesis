@@ -256,7 +256,7 @@
       </condition>
 
       <condition property="aw.tasks.needed">
-         <istrue value="shared.classes.changed" />
+         <istrue value="${shared.classes.changed}" />
       </condition>
    </target>
 
