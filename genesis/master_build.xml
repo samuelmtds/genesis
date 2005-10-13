@@ -11,6 +11,7 @@
       <property name="build.dir" value="target" />
       <property name="classes.dir" value="${build.dir}/classes" />
       <property name="annotated.dir" value="${build.dir}/annotated" />
+      <property name="timestamp.file" value=".timestamp" />
       <property name="verbose" value="true" />
 
       <property name="keep.debug.information" value="true" />
@@ -119,7 +120,11 @@
       <property name="shared.sources.dir" value="${shared.dir}/${sources.dir}" />
       <property name="shared.classes.dir" value="${shared.dir}/${classes.dir}" />
       <property name="shared.annotated.dir" value="${shared.dir}/${annotated.dir}" />
+      <property name="shared.annotated.timestamp.file" 
+                location="${shared.annotated.dir}/${timestamp.file}" />
       <property name="shared.hibernate.dir" value="${shared.dir}/${build.dir}/hibernate" />
+      <property name="shared.hibernate.timestamp.file" 
+                location="${shared.hibernate.dir}/${timestamp.file}" />
 
       <property name="hibernate.generate.files" value="true" />
       <property name="hibernate.session.factory.jndi.name" 
@@ -165,7 +170,9 @@
            depends="shared:define-conditions">
       <delete dir="${shared.classes.dir}" />
       <delete dir="${shared.annotated.dir}" />
+      <delete file="${shared.annotated.timestamp.file}" />
       <delete dir="${shared.hibernate.dir}" />
+      <delete file="${shared.hibernate.timestamp.file}" />
    </target>
 
    <target name="shared:pre-define-classpath">
@@ -248,7 +255,7 @@
                <not>
                   <uptodate>
                      <srcfiles dir="${shared.classes.dir}" />
-                     <mapper type="merge" to="${shared.annotated.dir}/**/*.*" />
+                     <mapper type="merge" to="${shared.annotated.timestamp.file}" />
                   </uptodate>
                </not>
             </or>
@@ -263,6 +270,7 @@
    <target name="shared:annotations" if="shared.classes.changed"
            depends="shared:check-annotations-needed,define-aw-tasks">
       <mkdir dir="${shared.annotated.dir}" />
+      <touch file="${shared.annotated.timestamp.file}" />
       <annotationc verbose="${verbose}"
             srcdir="${shared.sources.dir}"
             destdir="${shared.annotated.dir}"
@@ -281,9 +289,9 @@
                   <available file="${shared.hibernate.dir}" />
                </not>
                <not>
-                  <uptodate>
+                  <uptodate >
                      <srcfiles dir="${shared.sources.dir}" includes="**/*.java" />
-                     <mapper type="merge" to="${shared.hibernate.dir}/**/*.*" />
+                     <mapper type="merge" to="${shared.hibernate.timestamp.file}" />
                   </uptodate>
                </not>
             </or>
@@ -324,6 +332,8 @@
          <element name="subtasks" optional="true" />
          <sequential>
             <mkdir dir="${shared.hibernate.dir}" />
+            <touch file="${shared.hibernate.timestamp.file}" />
+
             <hibernatedoclet destdir="${shared.hibernate.dir}" 
                              verbose="${verbose}">
                <fileset dir="${shared.sources.dir}">
