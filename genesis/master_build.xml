@@ -459,6 +459,12 @@
       <property name="client.annotated.dir" value="${client.dir}/${annotated.dir}" />
       <property name="client.annotated.timestamp.file" 
                 location="${client.annotated.dir}/${timestamp.file}" />
+      <property name="client.validation.dir" 
+                value="${client.dir}/${build.dir}/validation" />
+      <property name="client.validation.timestamp.file" 
+                location="${client.validation.dir}/${timestamp.file}" />
+
+      <property name="validation.generate.files" value="true" />
 
       <path id="client.standard.javac.classpath">
          <path location="${shared.classes.dir}" />
@@ -599,8 +605,42 @@
                            touchfile="${client.annotated.timestamp.file}" />
    </target>
 
+   <target name="client:check-validation-conditions" depends="client:init">
+      <condition property="client.validation.needed">
+         <and>
+            <istrue value="${has.client.sources}" />
+            <istrue value="${validation.generate.files}" />
+            <or>
+               <istrue value="${validation.force.generation}" />
+               <not>
+                  <available file="${client.validation.dir}" />
+               </not>
+               <not>
+                  <uptodate >
+                     <srcfiles dir="${client.sources.dir}" includes="**/*.java" />
+                     <mapper type="merge" to="${client.validation.timestamp.file}" />
+                  </uptodate>
+               </not>
+            </or>
+         </and>
+      </condition>
+   </target>
+
+   <target name="client:validation" if="client.validation.needed" 
+           depends="client:check-validation-conditions">
+      <taskdef name="genesisdoclet" 
+               classname="xdoclet.modules.genesis.GenesisDocletTask" 
+               classpathref="xdoclet.path" />
+
+      <genesisdoclet destdir="${client.validation.dir}" verbose="${verbose}">
+         <fileset dir="${client.sources.dir}" includes="**/*.java" />
+         <genesisvalidationxml xmlencoding="ISO-8859-1" />
+      </genesisdoclet>
+      <touch file="${client.validation.timestamp.file}" />
+   </target>
+
    <target name="client:compile" 
-           depends="client:javac,client:annotations" />
+           depends="client:javac,client:annotations,client:validation" />
 
    <target name="compile" depends="shared:compile,client:compile" 
            description="Compiles all artifacts"/>
