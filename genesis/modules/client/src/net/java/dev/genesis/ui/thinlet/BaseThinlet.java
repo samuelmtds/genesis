@@ -883,8 +883,9 @@ public abstract class BaseThinlet extends Thinlet {
          String name = getName(columns[i]);
 
          if (name == null) {
-            throw new IllegalArgumentException("column (index " + i + ") in " + 
-                  "table " + getName(component) + " does not have a name");
+            throw new IllegalArgumentException("column (index " + i + "; " +
+                  "text: " + getText(columns[i]) +") in " + 
+                  "table " + componentName + " does not have a name");
          }
 
          if (name.startsWith(virtualPrefix)) {
