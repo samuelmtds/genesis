@@ -177,4 +177,24 @@ public class PagingTest extends TestCase {
 		assertTrue(page.isLast());
 	}
 
+   public void testNegativePageNumbers() throws Exception {
+      int instanceCount = 5;
+      int resultsPerPage = 10;
+
+      dbActions.insert(instanceCount);
+
+      Page page = dbActions.getPageUsingCriteria(-1, resultsPerPage);
+		assertEquals(page.getPageNumber(), 0);
+		assertEquals(page.getResultsPerPage(), resultsPerPage);
+		assertEquals(page.getResults().size(), instanceCount);
+		assertTrue(page.isFirst());
+		assertTrue(page.isLast());
+
+		page = dbActions.getPageUsingQuery(-1, resultsPerPage);
+		assertEquals(page.getPageNumber(), 0);
+		assertEquals(page.getResultsPerPage(), resultsPerPage);
+		assertEquals(page.getResults().size(), instanceCount);
+		assertTrue(page.isFirst());
+		assertTrue(page.isLast());
+   }
 }

@@ -74,6 +74,8 @@ public class ListPagerTest extends TestCase {
       testGetPage(pager, 2, 5, 1, 5, false, true, new Integer(5));
 
       testGetPage(pager, 3, 3, 3, 1, false, true, new Integer(9));
+
+      testGetPage(pager, -1, 20, 0, 10, true, false, new Integer(0));
    }
 
    private void testGetPage(ListPager pager, int pageNumber, int resultsPerPage, 
