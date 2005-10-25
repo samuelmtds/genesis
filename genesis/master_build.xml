@@ -99,7 +99,7 @@
    <target name="init-paths" 
            depends="init,-pre-init-paths,-do-init-paths,-post-init-paths" />
 
-   <target name="define-aw-macro" depends="init-paths">
+   <target name="define-aw-macros" depends="init-paths">
       <macrodef name="annotationc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="srcdir" />
@@ -110,8 +110,7 @@
             <taskdef name="annotationc" 
                      classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" 
                      classpathref="aspectwerkz.path" />
-            <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
-                     classpathref="aspectwerkz.path" />
+
             <mkdir dir="@{destdir}" />
             <annotationc verbose="${verbose}"
                   srcdir="@{srcdir}"
@@ -119,6 +118,23 @@
                   classpath="@{classpath}"
                   properties="${annotation.properties}" />
             <touch file="@{touchfile}" />
+         </sequential>
+      </macrodef>
+
+      <macrodef name="awc"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="classpath" />
+         <attribute name="targetpath" />
+         <attribute name="touchfile" />
+         <sequential>
+            <taskdef name="awc" 
+                     classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
+                     classpathref="aspectwerkz.path" />
+
+            <awc classpathref="@{classpath}">
+               <targetpath location="@{targetpath}"/>
+            </awc>
+            <touch file="@{touchfile}"/>
          </sequential>
       </macrodef>
    </target>
@@ -290,7 +306,7 @@
    </target>
 
    <target name="shared:annotations" if="shared.classes.changed"
-           depends="shared:check-annotations-needed,define-aw-macro">
+           depends="shared:check-annotations-needed,define-aw-macros">
       <genesis:annotationc srcdir="${shared.sources.dir}" 
                            destdir="${shared.annotated.dir}"
                            classpath="${shared.classes.dir}"
@@ -603,7 +619,7 @@
    </target>
 
    <target name="client:annotations" if="client.classes.changed"
-           depends="client:check-annotations-needed,define-aw-macro">
+           depends="client:check-annotations-needed,define-aw-macros">
       <genesis:annotationc srcdir="${client.sources.dir}" 
                            destdir="${client.annotated.dir}"
                            classpath="${client.classes.dir}"
@@ -665,17 +681,24 @@
       <property name="weaving.remote.timestamp.file" 
                 location="${weaving.remote.dir}/${timestamp.file}" />
 
-      <condition property="weaving.local.xml" value="META-INF/aop.xml">
+      <property name="weaving.xml.definition.dir" 
+                location="${client.sources.dir}/META-INF" />
+
+      <condition property="weaving.local.xml" 
+                 value="${weaving.xml.definition.dir}/aop.xml">
          <istrue value="${local.mode.only}" />
       </condition>
-      <condition property="weaving.local.xml" value="META-INF/local-aop.xml">
+      <condition property="weaving.local.xml" 
+                 value="${weaving.xml.definition.dir}/local-aop.xml">
          <istrue value="${local.and.remote}" />
       </condition>
 
-      <condition property="weaving.remote.xml" value="META-INF/aop.xml">
+      <condition property="weaving.remote.xml" 
+                 value="${weaving.xml.definition.dir}/aop.xml">
          <istrue value="${remote.mode.only}" />
       </condition>
-      <condition property="weaving.remote.xml" value="META-INF/remote-aop.xml">
+      <condition property="weaving.remote.xml" 
+                 value="${weaving.xml.definition.dir}/remote-aop.xml">
          <istrue value="${local.and.remote}" />
       </condition>
 
@@ -693,17 +716,26 @@
          <path refid="j2ee.path" />
       </path>
 
-      <!--fileset id="weaving.standard.additional.local.fileset">
-         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
-         <fileset dir="${genesis.dist}"
-                  includes="genesis-shared-annotated-${genesis.version}.jar" />
-      </fileset>
-
+      <!--
       <fileset id="weaving.standard.additional.remote.fileset">
          <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
          <fileset dir="${genesis.dist}"
                   includes="genesis-shared-annotated-${genesis.version}.jar" />
       </fileset-->
+   </target>
+
+   <target name="weaving:define-conditions" depends="weaving:init">
+      <condition property="weaving.clean">
+         <istrue value="${clean.build}" />
+      </condition>
+   </target>
+
+   <target name="weaving:clean" if="weaving.clean" 
+           depends="weaving:define-conditions">
+      <delete dir="${weaving.local.dir}" />
+      <delete dir="${weaving.local.timestamp.file}" />
+      <delete dir="${weaving.remote.dir}" />
+      <delete dir="${weaving.remote.timestamp.file}" />
    </target>
 
    <target name="weaving:pre-define-local-classpath">
@@ -832,10 +864,119 @@
                     weaving:define-remote-classpath-with-extensions,
                     weaving:define-standard-remote-classpath"/>
 
-   <target name="weaving:define-classpath" 
-           depends="weaving:define-local-classpath,weaving:define-remote-classpath"/>
+   <target name="weaving:check-conditions" depends="weaving:init">
+      <condition property="weaving.local.needed">
+         <and>
+            <istrue value="${needs.weaving}" />
+            <istrue value="${local.mode}" />
+            <or>
+               <not>
+                  <available file="${weaving.local.dir}" />
+               </not>
+               <not>
+                  <uptodate>
+                     <srcfiles dir="${client.annotated.dir}" 
+                               includes="**/*.class" />
+                     <srcfiles dir="${shared.annotated.dir}" 
+                               includes="**/*.class" />
+                     <mapper type="merge" to="${weaving.local.timestamp.file}" />
+                  </uptodate>
+               </not>
+            </or>
+         </and>
+      </condition>
 
-   <target name="weaving" depends="weaving:init,weaving:define-classpath"/>
+      <condition property="weaving.remote.needed">
+         <and>
+            <istrue value="${needs.weaving}" />
+            <istrue value="${remote.mode}" />
+            <or>
+               <not>
+                  <available file="${weaving.remote.dir}" />
+               </not>
+               <not>
+                  <uptodate>
+                     <srcfiles dir="${client.annotated.dir}" 
+                               includes="**/*.class" />
+                     <srcfiles dir="${shared.annotated.dir}" 
+                               includes="**/*.class" />
+                     <mapper type="merge" to="${weaving.remote.timestamp.file}" />
+                  </uptodate>
+               </not>
+            </or>
+         </and>
+      </condition>
+   </target>
+
+   <target name="weaving:macrodefs">
+      <macrodef name="weaving-copy-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="targetdir" />
+         <attribute name="xml" />
+         <element name="copy-fileset" optional="false" />
+         <element name="unjar-fileset" optional="false" />
+         <sequential>
+            <delete dir="@{targetdir}" />
+            <mkdir dir="@{targetdir}" />
+
+            <copy todir="@{targetdir}">
+               <copy-fileset />
+            </copy>
+            <unjar dest="@{targetdir}">
+               <unjar-fileset />
+            </unjar>
+            <copy file="@{xml}" 
+                  tofile="@{targetdir}/META-INF/aop.xml" />
+         </sequential>
+      </macrodef>
+      <presetdef name="weaving-copy"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:weaving-copy-macro>
+            <copy-fileset>
+               <fileset dir="${client.annotated.dir}" includes="**/*.class" />
+               <fileset dir="${shared.annotated.dir}" includes="**/*.class" />
+            </copy-fileset>
+            <unjar-fileset>
+               <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+               <fileset dir="${genesis.dist}"
+                        includes="genesis-shared-annotated-${genesis.version}.jar" />
+            </unjar-fileset>
+         </genesis:weaving-copy-macro>
+      </presetdef>
+   </target>
+
+   <target name="weaving:copy-local-files" 
+           depends="weaving:check-conditions,weaving:macrodefs" 
+           if="weaving.local.needed">
+      <genesis:weaving-copy targetdir="${weaving.local.dir}" 
+                            xml="${weaving.local.xml}" />
+   </target>
+
+   <target name="weaving:local" 
+           depends="weaving:define-local-classpath,weaving:copy-local-files,
+                    define-aw-macros"
+           if="weaving.local.needed">
+      <genesis:awc classpath="weaving.local.classpath" 
+                   targetpath="${weaving.local.dir}"
+                   touchfile="${weaving.local.timestamp.file}" />
+   </target>
+
+   <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
+           if="weaving.remote.needed">
+      <genesis:weaving-copy targetdir="${weaving.remote.dir}" 
+                            xml="${weaving.remote.xml}" />
+   </target>
+
+   <target name="weaving:remote" 
+           depends="weaving:define-remote-classpath,weaving:copy-remote-files,
+                    define-aw-macros"
+           if="weaving.remote.needed">
+      <genesis:awc classpath="weaving.remote.classpath" 
+                   targetpath="${weaving.remote.dir}"
+                   touchfile="${weaving.remote.timestamp.file}" />
+   </target>
+
+   <target name="weaving" depends="weaving:local,weaving:remote" />
 
    <target name="compile" depends="shared:compile,client:compile,weaving" 
            description="Compiles all artifacts"/>
@@ -847,7 +988,8 @@
       <property name="clean.build" value="true" />
    </target>
 
-   <target name="clean" depends="pre-clean,shared:clean,client:clean" 
+   <target name="clean" 
+           depends="pre-clean,shared:clean,client:clean,weaving:clean" 
            description="Deletes build artifacts" />
 
    <target name="clean-build" depends="clean,all" 
