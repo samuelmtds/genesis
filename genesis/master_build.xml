@@ -131,7 +131,7 @@
                      classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
                      classpathref="aspectwerkz.path" />
 
-            <awc classpathref="@{classpath}">
+            <awc classpathref="@{classpath}" taskverbose="${verbose}">
                <targetpath location="@{targetpath}"/>
             </awc>
             <touch file="@{touchfile}"/>
@@ -981,7 +981,89 @@
    <target name="compile" depends="shared:compile,client:compile,weaving" 
            description="Compiles all artifacts"/>
 
-   <target name="all" depends="compile" 
+   <target name="jar:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the jar:init target -->
+   </target>
+
+   <target name="jar:init" depends="init-paths,jar:pre-init,weaving:init">
+      <property name="needs.jar" value="true" />
+
+      <property name="jar.local.location" 
+               location="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar" />
+      <property name="jar.remote.location" 
+               location="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar" />
+      <property name="jar.shared.location" 
+               location="${build.dir}/${genesisBasedApplication.name}-shared.jar" />
+   </target>
+
+   <target name="jar:clean" depends="jar:init">
+      <delete file="${jar.local.location}" />
+      <delete file="${jar.remote.location}" />
+      <delete file="${jar.shared.location}" />
+   </target>
+
+   <target name="jar:check-conditions" depends="jar:init">
+      <condition property="jar.local.needed">
+         <and>
+            <istrue value="${needs.jar}" />
+            <istrue value="${local.mode}" />
+         </and>
+      </condition>
+
+      <condition property="jar.remote.needed">
+         <and>
+            <istrue value="${needs.jar}" />
+            <istrue value="${remote.mode}" />
+         </and>
+      </condition>
+
+      <condition property="jar.shared.needed">
+         <istrue value="${needs.jar}" />
+      </condition>
+   </target>
+
+   <target name="jar:remote" depends="jar:check-conditions" 
+           if="jar.remote.needed">
+      <jar destfile="${jar.remote.location}">
+         <fileset dir="${weaving.remote.dir}">
+            <exclude name=".timestamp"/>
+         </fileset>
+         <fileset dir="${client.sources.dir}">
+            <exclude name="**/CVS/**" />
+            <exclude name="**/*.bkp" />
+            <exclude name="**/*.class" />
+            <exclude name="**/*.jav~" />
+            <exclude name="**/*.java" />
+            <exclude name="**/*.java~" />
+            <exclude name="META-INF/local-aop.xml" />
+            <exclude name="META-INF/remote-aop.xml" />
+         </fileset>
+      </jar>
+   </target>
+
+   <target name="jar:shared" if="jar.shared.needed">
+      <jar destfile="${jar.shared.location}">
+         <fileset dir="${shared.classes.dir}">
+            <exclude name=".timestamp"/>
+         </fileset>
+         <fileset dir="${shared.sources.dir}">
+            <exclude name="**/CVS/**" />
+            <exclude name="**/*.bkp" />
+            <exclude name="**/*.class" />
+            <exclude name="**/*.jav~" />
+            <exclude name="**/*.java" />
+            <exclude name="**/*.java~" />
+            <exclude name="META-INF/local-aop.xml" />
+            <exclude name="META-INF/remote-aop.xml" />
+         </fileset>
+      </jar>
+   </target>
+
+   <!-- TODO: jar:client and remove exclude duplication -->
+   <target name="jar" depends="jar:remote,jar:shared" />
+
+   <target name="all" depends="compile,jar" 
            description="Builds the whole project"/>
 
    <target name="pre-clean">
@@ -989,7 +1071,7 @@
    </target>
 
    <target name="clean" 
-           depends="pre-clean,shared:clean,client:clean,weaving:clean" 
+           depends="pre-clean,shared:clean,client:clean,weaving:clean,jar:clean" 
            description="Deletes build artifacts" />
 
    <target name="clean-build" depends="clean,all" 
