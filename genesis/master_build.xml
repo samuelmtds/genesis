@@ -62,6 +62,7 @@
       <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
       <property name="commons.dist" location="${genesis.home}/lib/commons" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
+      <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
 
@@ -80,6 +81,10 @@
             <include name="qdox*.jar" />
             <include name="trove*.jar" />
          </fileset>
+      </path>
+
+      <path id="j2ee.path">
+         <fileset dir="${j2ee.dist}" includes="*.jar" />
       </path>
 
       <path id="xdoclet.path">
@@ -303,7 +308,7 @@
                   <available file="${shared.hibernate.dir}" />
                </not>
                <not>
-                  <uptodate >
+                  <uptodate>
                      <srcfiles dir="${shared.sources.dir}" includes="**/*.java" />
                      <mapper type="merge" to="${shared.hibernate.timestamp.file}" />
                   </uptodate>
@@ -616,7 +621,7 @@
                   <available file="${client.validation.dir}" />
                </not>
                <not>
-                  <uptodate >
+                  <uptodate>
                      <srcfiles dir="${client.sources.dir}" includes="**/*.java" />
                      <mapper type="merge" to="${client.validation.timestamp.file}" />
                   </uptodate>
@@ -642,7 +647,197 @@
    <target name="client:compile" 
            depends="client:javac,client:annotations,client:validation" />
 
-   <target name="compile" depends="shared:compile,client:compile" 
+   <target name="weaving:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the weaving:init target -->
+   </target>
+
+   <target name="weaving:init" depends="init-paths,weaving:pre-init,
+                                        client:define-classpath,
+                                        shared:define-classpath">
+      <property name="needs.weaving" value="true" />
+
+      <property name="weaving.dir" value="${build.dir}/weaving" />
+      <property name="weaving.local.dir" value="${weaving.dir}/local" />
+      <property name="weaving.local.timestamp.file" 
+                location="${weaving.local.dir}/${timestamp.file}" />
+      <property name="weaving.remote.dir" value="${weaving.dir}/remote" />
+      <property name="weaving.remote.timestamp.file" 
+                location="${weaving.remote.dir}/${timestamp.file}" />
+
+      <condition property="weaving.local.xml" value="META-INF/aop.xml">
+         <istrue value="${local.mode.only}" />
+      </condition>
+      <condition property="weaving.local.xml" value="META-INF/local-aop.xml">
+         <istrue value="${local.and.remote}" />
+      </condition>
+
+      <condition property="weaving.remote.xml" value="META-INF/aop.xml">
+         <istrue value="${remote.mode.only}" />
+      </condition>
+      <condition property="weaving.remote.xml" value="META-INF/remote-aop.xml">
+         <istrue value="${local.and.remote}" />
+      </condition>
+
+      <path id="weaving.standard.local.classpath">
+         <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
+         <path refid="client.javac.classpath" />
+         <path refid="shared.javac.classpath" />
+         <path refid="j2ee.path" />
+      </path>
+
+      <path id="weaving.standard.remote.classpath">
+         <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
+         <path refid="client.javac.classpath" />
+         <path refid="shared.javac.classpath" />
+         <path refid="j2ee.path" />
+      </path>
+
+      <!--fileset id="weaving.standard.additional.local.fileset">
+         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+         <fileset dir="${genesis.dist}"
+                  includes="genesis-shared-annotated-${genesis.version}.jar" />
+      </fileset>
+
+      <fileset id="weaving.standard.additional.remote.fileset">
+         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+         <fileset dir="${genesis.dist}"
+                  includes="genesis-shared-annotated-${genesis.version}.jar" />
+      </fileset-->
+   </target>
+
+   <target name="weaving:pre-define-local-classpath">
+      <!-- Override to define weaving.local.overriden.classpath or 
+         weaving.additional.local.classpath-->
+   </target>
+
+   <target name="weaving:check-local-classpath-conditions" depends="weaving:init">
+      <condition property="weaving.set.custom.local.classpath">
+         <and>
+            <istrue value="${local.mode}" />
+            <isreference refid="weaving.local.overriden.classpath" type="path" />
+         </and>
+      </condition>
+      <condition property="weaving.set.additional.local.classpath">
+         <and>
+            <istrue value="${local.mode}" />
+            <not>
+               <isset property="weaving.set.custom.local.classpath" />
+            </not>
+            <isreference refid="weaving.additional.local.classpath" />
+         </and>
+      </condition>
+      <condition property="weaving.set.standard.local.classpath">
+         <and>
+            <istrue value="${local.mode}" />
+            <not>
+               <isset property="weaving.set.additional.local.classpath" />
+            </not>
+            <not>
+               <isset property="weaving.set.custom.local.classpath" />
+            </not>
+         </and>
+      </condition>
+   </target>
+
+   <target name="weaving:define-overriden-local-classpath"
+           depends="weaving:init" if="weaving.set.custom.local.classpath">
+      <path id="weaving.local.classpath">
+         <path refid="weaving.local.overriden.classpath" />
+      </path>
+   </target>
+
+   <target name="weaving:define-local-classpath-with-extensions" 
+           depends="weaving:init" if="weaving.set.additional.local.classpath">
+      <path id="weaving.local.classpath">
+         <path refid="weaving.standard.local.classpath" />
+         <path refid="weaving.additional.local.classpath" />
+      </path>
+   </target>
+
+   <target name="weaving:define-standard-local-classpath"
+           depends="weaving:init" if="weaving.set.standard.local.classpath">
+      <path id="weaving.local.classpath">
+         <path refid="weaving.standard.local.classpath" />
+      </path>
+   </target>
+
+   <target name="weaving:define-local-classpath" 
+           depends="weaving:init,weaving:pre-define-local-classpath,
+                    weaving:check-local-classpath-conditions,
+                    weaving:define-overriden-local-classpath,
+                    weaving:define-local-classpath-with-extensions,
+                    weaving:define-standard-local-classpath"/>
+
+   <target name="weaving:pre-define-remote-classpath">
+      <!-- Override to define weaving.remote.overriden.classpath or 
+         weaving.additional.remote.classpath-->
+   </target>
+
+   <target name="weaving:check-remote-classpath-conditions" depends="weaving:init">
+      <condition property="weaving.set.custom.remote.classpath">
+         <and>
+            <istrue value="${remote.mode}" />
+            <isreference refid="weaving.remote.overriden.classpath" type="path" />
+         </and>
+      </condition>
+      <condition property="weaving.set.additional.remote.classpath">
+         <and>
+            <istrue value="${remote.mode}" />
+            <not>
+               <isset property="weaving.set.custom.remote.classpath" />
+            </not>
+            <isreference refid="weaving.additional.remote.classpath" />
+         </and>
+      </condition>
+      <condition property="weaving.set.standard.remote.classpath">
+         <and>
+            <istrue value="${remote.mode}" />
+            <not>
+               <isset property="weaving.set.additional.remote.classpath" />
+            </not>
+            <not>
+               <isset property="weaving.set.custom.remote.classpath" />
+            </not>
+         </and>
+      </condition>
+   </target>
+
+   <target name="weaving:define-overriden-remote-classpath"
+           depends="weaving:init" if="weaving.set.custom.remote.classpath">
+      <path id="weaving.remote.classpath">
+         <path refid="weaving.remote.overriden.classpath" />
+      </path>
+   </target>
+
+   <target name="weaving:define-remote-classpath-with-extensions" 
+           depends="weaving:init" if="weaving.set.additional.remote.classpath">
+      <path id="weaving.remote.classpath">
+         <path refid="weaving.standard.remote.classpath" />
+         <path refid="weaving.additional.remote.classpath" />
+      </path>
+   </target>
+
+   <target name="weaving:define-standard-remote-classpath"
+           depends="weaving:init" if="weaving.set.standard.remote.classpath">
+      <path id="weaving.remote.classpath">
+         <path refid="weaving.standard.remote.classpath" />
+      </path>
+   </target>
+
+   <target name="weaving:define-remote-classpath" 
+           depends="weaving:init,weaving:pre-define-remote-classpath,
+                    weaving:check-remote-classpath-conditions,
+                    weaving:define-overriden-remote-classpath,
+                    weaving:define-remote-classpath-with-extensions,
+                    weaving:define-standard-remote-classpath"/>
+
+   <target name="weaving:define-classpath" 
+           depends="weaving:define-local-classpath,weaving:define-remote-classpath"/>
+
+   <target name="weaving" depends="weaving:init,weaving:define-classpath"/>
+
+   <target name="compile" depends="shared:compile,client:compile,weaving" 
            description="Compiles all artifacts"/>
 
    <target name="all" depends="compile" 
