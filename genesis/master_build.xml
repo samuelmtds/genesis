@@ -1016,41 +1016,59 @@
       </condition>
    </target>
 
-   <target name="jar:remote" depends="jar:check-conditions" 
-           if="jar.remote.needed">
-      <jar destfile="${jar.remote.location}">
-         <fileset dir="${weaving.remote.dir}">
-            <exclude name=".timestamp"/>
-         </fileset>
-         <fileset dir="${client.sources.dir}">
-            <exclude name="**/CVS/**" />
-            <exclude name="**/*.bkp" />
-            <exclude name="**/*.class" />
-            <exclude name="**/*.jav~" />
-            <exclude name="**/*.java" />
-            <exclude name="**/*.java~" />
-            <exclude name="META-INF/local-aop.xml" />
-            <exclude name="META-INF/remote-aop.xml" />
-         </fileset>
-      </jar>
+   <target name="jar:macrodefs" depends="jar:init" if="needs.jar">
+      <macrodef name="jar-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="destfile" />
+         <attribute name="classesdir" />
+         <attribute name="sourcesdir" />
+         <element name="customize" optional="true"/>
+         <element name="classesdir-selector" optional="true"/>
+         <element name="sourcesdir-selector" optional="true"/>
+         <sequential>
+            <jar destfile="@{destfile}">
+               <fileset dir="@{classesdir}">
+                  <classesdir-selector />
+               </fileset>
+               <fileset dir="@{sourcesdir}">
+                  <sourcesdir-selector />
+               </fileset>
+               <customize />
+            </jar>
+         </sequential>
+      </macrodef>
+      <presetdef name="jar"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:jar-macro>
+            <classesdir-selector>
+               <exclude name=".timestamp"/>
+            </classesdir-selector>
+            <sourcesdir-selector>
+               <exclude name="**/CVS/**" />
+               <exclude name="**/*.bkp" />
+               <exclude name="**/*.class" />
+               <exclude name="**/*.jav~" />
+               <exclude name="**/*.java" />
+               <exclude name="**/*.java~" />
+               <exclude name="META-INF/local-aop.xml" />
+               <exclude name="META-INF/remote-aop.xml" />
+            </sourcesdir-selector>
+         </genesis:jar-macro>
+      </presetdef>
    </target>
 
-   <target name="jar:shared" if="jar.shared.needed">
-      <jar destfile="${jar.shared.location}">
-         <fileset dir="${shared.classes.dir}">
-            <exclude name=".timestamp"/>
-         </fileset>
-         <fileset dir="${shared.sources.dir}">
-            <exclude name="**/CVS/**" />
-            <exclude name="**/*.bkp" />
-            <exclude name="**/*.class" />
-            <exclude name="**/*.jav~" />
-            <exclude name="**/*.java" />
-            <exclude name="**/*.java~" />
-            <exclude name="META-INF/local-aop.xml" />
-            <exclude name="META-INF/remote-aop.xml" />
-         </fileset>
-      </jar>
+   <target name="jar:remote" depends="jar:check-conditions,jar:macrodefs" 
+           if="jar.remote.needed">
+      <genesis:jar destfile="${jar.remote.location}" 
+                   classesdir="${weaving.remote.dir}"
+                   sourcesdir="${client.sources.dir}" />
+   </target>
+
+   <target name="jar:shared" depends="jar:check-conditions,jar:macrodefs" 
+           if="jar.shared.needed">
+      <genesis:jar destfile="${jar.shared.location}" 
+                   classesdir="${shared.classes.dir}"
+                   sourcesdir="${shared.sources.dir}" />
    </target>
 
    <!-- TODO: jar:client and remove exclude duplication -->
