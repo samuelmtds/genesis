@@ -715,13 +715,6 @@
          <path refid="shared.javac.classpath" />
          <path refid="j2ee.path" />
       </path>
-
-      <!--
-      <fileset id="weaving.standard.additional.remote.fileset">
-         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
-         <fileset dir="${genesis.dist}"
-                  includes="genesis-shared-annotated-${genesis.version}.jar" />
-      </fileset-->
    </target>
 
    <target name="weaving:define-conditions" depends="weaving:init">
