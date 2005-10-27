@@ -164,6 +164,9 @@
       <property name="shared.hibernate.timestamp.file" 
                 location="${shared.hibernate.dir}/${timestamp.file}" />
 
+      <property name="jboss.app" 
+                location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
+
       <property name="hibernate.generate.files" value="true" />
       <property name="hibernate.session.factory.jndi.name" 
                 value="jboss:/hibernate/SessionFactory" />
@@ -974,12 +977,105 @@
    <target name="compile" depends="shared:compile,client:compile,weaving" 
            description="Compiles all artifacts"/>
 
+   <target name="run:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the run:init target -->
+   </target>
+
+   <target name="run:init" depends="init-paths,run:pre-init">
+      <path id="run.standard.classpath">
+         <fileset dir="${genesis.dist}">
+            <include name="genesis-aspect-annotated-*.jar" />
+            <include name="genesis-client-*.jar" />
+         </fileset>
+         <fileset dir="${aspectwerkz.dist}">
+            <include name="aspectwerkz-*.jar" />
+            <include name="dom4j-*.jar" />
+            <include name="jrexx-*.jar" />
+            <include name="trove-*.jar" />
+         </fileset>
+         <fileset dir="${hibernate.dist}">
+            <include name="hibernate2.jar" />
+            <include name="commons-collections-*.jar" />
+         </fileset>
+         <fileset dir="${commons.dist}">
+            <include name="commons-beanutils-*.jar" />
+            <include name="commons-digester-*.jar" />
+            <include name="commons-jxpath-*.jar" />
+            <include name="commons-logging-*.jar" />
+            <include name="commons-validator-*.jar" />
+            <include name="jakarta-oro-*.jar" />
+            <include name="reusable-components-*.jar" />
+         </fileset>
+      </path>
+   </target>
+
+
+   <target name="run:pre-define-classpath">
+      <!-- Override to define run.overriden.classpath or 
+         run.additional.classpath-->
+   </target>
+
+   <target name="run:check-classpath-conditions" depends="run:init">
+      <condition property="run.set.custom.classpath">
+         <isreference refid="run.overriden.classpath" type="path" />
+      </condition>
+      <condition property="run.set.additional.classpath">
+         <and>
+            <not>
+               <isset property="run.set.custom.classpath" />
+            </not>
+            <isreference refid="run.additional.classpath" />
+         </and>
+      </condition>
+      <condition property="run.set.standard.classpath">
+         <and>
+            <not>
+               <isset property="run.set.additional.classpath" />
+            </not>
+            <not>
+               <isset property="run.set.custom.classpath" />
+            </not>
+         </and>
+      </condition>
+   </target>
+
+   <target name="run:define-overriden-classpath"
+           depends="run:init" if="run.set.custom.classpath">
+      <path id="run.classpath">
+         <path refid="run.overriden.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-classpath-with-extensions" 
+           depends="run:init" if="run.set.additional.classpath">
+      <path id="run.classpath">
+         <path refid="run.standard.classpath" />
+         <path refid="run.additional.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-standard-classpath"
+           depends="run:init" if="run.set.standard.classpath">
+      <path id="run.classpath">
+         <path refid="run.standard.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-classpath" 
+           depends="run:init,run:pre-define-classpath,
+                    run:check-classpath-conditions,
+                    run:define-overriden-classpath,
+                    run:define-classpath-with-extensions,
+                    run:define-standard-classpath"/>
+
    <target name="jar:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
          the jar:init target -->
    </target>
 
-   <target name="jar:init" depends="init-paths,jar:pre-init,weaving:init">
+   <target name="jar:init" 
+           depends="init-paths,jar:pre-init,weaving:init,run:define-classpath">
       <property name="needs.jar" value="true" />
 
       <property name="jar.local.location" 
@@ -988,6 +1084,17 @@
                location="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar" />
       <property name="jar.shared.location" 
                location="${build.dir}/${genesisBasedApplication.name}-shared.jar" />
+
+      <path id="jar.standard.local.classpath">
+         <pathelement path="${jdbc.driver}" />
+         <fileset dir="${hibernate.dist}">
+            <include name="cglib-full-*.jar"/>
+            <include name="ehcache-*.jar"/>
+            <include name="jta*.jar"/>
+         </fileset>
+         <path refid="j2ee.path"/>
+         <path refid="run.classpath" />
+      </path>
    </target>
 
    <target name="jar:clean" depends="jar:init">
@@ -1057,6 +1164,86 @@
       </presetdef>
    </target>
 
+   <target name="jar:pre-define-local-classpath">
+      <!-- Override to define jar.local.overriden.classpath or 
+         jar.additional.local.classpath-->
+   </target>
+
+   <target name="jar:check-local-classpath-conditions" depends="jar:init">
+      <condition property="jar.set.custom.local.classpath">
+         <isreference refid="jar.local.overriden.classpath" type="path" />
+      </condition>
+      <condition property="jar.set.additional.local.classpath">
+         <and>
+            <not>
+               <isset property="jar.set.custom.local.classpath" />
+            </not>
+            <isreference refid="jar.additional.local.classpath" />
+         </and>
+      </condition>
+      <condition property="jar.set.standard.local.classpath">
+         <and>
+            <not>
+               <isset property="jar.set.additional.local.classpath" />
+            </not>
+            <not>
+               <isset property="jar.set.custom.local.classpath" />
+            </not>
+         </and>
+      </condition>
+   </target>
+
+   <target name="jar:define-overriden-local-classpath"
+           depends="jar:init" if="jar.set.custom.local.classpath">
+      <path id="jar.local.classpath">
+         <path refid="jar.local.overriden.classpath" />
+      </path>
+   </target>
+
+   <target name="jar:define-local-classpath-with-extensions" 
+           depends="jar:init" if="jar.set.additional.local.classpath">
+      <path id="jar.local.classpath">
+         <path refid="jar.standard.local.classpath" />
+         <path refid="jar.additional.local.classpath" />
+      </path>
+   </target>
+
+   <target name="jar:define-standard-local-classpath"
+           depends="jar:init" if="jar.set.standard.local.classpath">
+      <path id="jar.local.classpath">
+         <path refid="jar.standard.local.classpath" />
+      </path>
+   </target>
+
+   <target name="jar:define-local-classpath" 
+           depends="jar:init,jar:pre-define-local-classpath,
+                    jar:check-local-classpath-conditions,
+                    jar:define-overriden-local-classpath,
+                    jar:define-local-classpath-with-extensions,
+                    jar:define-standard-local-classpath"/>
+
+   <target name="jar:local" 
+           depends="jar:check-conditions,jar:macrodefs,jar:define-local-classpath" 
+           if="jar.local.needed">
+      <pathconvert property="jar.local.flat.classpath" pathsep=" ">
+         <mapper type="flatten"/>
+         <path refid="jar.local.classpath" />
+      </pathconvert>
+
+      <genesis:jar destfile="${jar.local.location}" 
+                   classesdir="${weaving.local.dir}"
+                   sourcesdir="${client.sources.dir}">
+         <customize>
+            <manifest>
+               <attribute name="Main-Class" 
+                          value="${genesisBasedApplication.mainClass}"/>
+               <attribute name="Class-Path" 
+                          value="${jar.local.flat.classpath}"/>
+            </manifest>
+         </customize>
+      </genesis:jar>
+   </target>
+
    <target name="jar:remote" depends="jar:check-conditions,jar:macrodefs" 
            if="jar.remote.needed">
       <genesis:jar destfile="${jar.remote.location}" 
@@ -1071,8 +1258,7 @@
                    sourcesdir="${shared.sources.dir}" />
    </target>
 
-   <!-- TODO: jar:client and remove exclude duplication -->
-   <target name="jar" depends="jar:remote,jar:shared" />
+   <target name="jar" depends="jar:local,jar:remote,jar:shared" />
 
    <target name="all" depends="compile,jar" 
            description="Builds the whole project"/>
