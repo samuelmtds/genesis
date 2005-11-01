@@ -873,6 +873,11 @@
                   <uptodate>
                      <srcfiles dir="${client.annotated.dir}" 
                                includes="**/*.class" />
+                     <mapper type="merge" to="${weaving.local.timestamp.file}" />
+                  </uptodate>
+               </not>
+               <not>
+                  <uptodate>
                      <srcfiles dir="${shared.annotated.dir}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.local.timestamp.file}" />
@@ -894,6 +899,11 @@
                   <uptodate>
                      <srcfiles dir="${client.annotated.dir}" 
                                includes="**/*.class" />
+                     <mapper type="merge" to="${weaving.remote.timestamp.file}" />
+                  </uptodate>
+               </not>
+               <not>
+                  <uptodate>
                      <srcfiles dir="${shared.annotated.dir}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.remote.timestamp.file}" />
@@ -1148,7 +1158,7 @@
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:jar-macro>
             <classesdir-selector>
-               <exclude name=".timestamp"/>
+               <exclude name="${timestamp.file}"/>
             </classesdir-selector>
             <sourcesdir-selector>
                <exclude name="**/CVS/**" />
@@ -1260,7 +1270,77 @@
 
    <target name="jar" depends="jar:local,jar:remote,jar:shared" />
 
-   <target name="all" depends="compile,jar" 
+   <target name="server-artifact:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the server-artifact:init target -->
+   </target>
+
+   <target name="server-artifact:init" 
+           depends="init-paths,jar:init,shared:init">
+      <property name="needs.server.artifact" value="${remote.mode}" />
+
+      <property name="server.artifact.location" 
+               location="${build.dir}/${genesisBasedApplication.name}.sar" />
+   </target>
+
+   <target name="server-artifact:clean" depends="server-artifact:init">
+      <delete file="${server.artifact.location}" />
+   </target>
+
+   <target name="server-artifact:check-conditions" 
+           depends="server-artifact:init">
+      <condition property="server.artifact.needed">
+         <istrue value="${needs.server.artifact}" />
+      </condition>
+   </target>
+
+   <target name="server-artifact:macrodefs" 
+           depends="server-artifact:check-conditions" 
+           if="needs.server.artifact">
+      <macrodef name="sar"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="customize" optional="true"/>
+         <sequential>
+            <zip destfile="${server.artifact.location}">
+               <fileset dir="${shared.hibernate.dir}">
+                  <include name="**/*.hbm.xml" />
+               </fileset>
+               <zipfileset dir="${shared.hibernate.dir}"
+                     includes="jboss-service.xml" prefix="META-INF" />
+               <fileset dir="${shared.sources.dir}">
+                  <include name="hibernate.properties" />
+               </fileset>
+               <fileset dir="${hibernate.dist}">
+                  <include name="commons-logging*.jar" />
+                  <include name="log4j*.jar" />
+                  <include name="dom4j*.jar" />
+                  <include name="optional*.jar" />
+                  <include name="commons-collections*.jar" />
+                  <include name="ehcache*.jar" />
+                  <include name="cglib*.jar" />
+                  <include name="odmg*.jar" />
+                  <include name="hibernate*.jar" />
+               </fileset>
+               <fileset dir="${commons.dist}">
+                  <include name="commons-beanutils*.jar" />
+                  <include name="reusable-components*.jar" />
+               </fileset>
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-shared-${genesis.version}.jar" />
+               </fileset>
+               <fileset file="${jar.shared.location}" />
+               <customize />
+            </zip>
+         </sequential>
+      </macrodef>
+   </target>
+
+   <target name="server-artifact" depends="server-artifact:macrodefs"
+           if="needs.server.artifact">
+      <genesis:sar />
+   </target>
+
+   <target name="all" depends="compile,jar,server-artifact" 
            description="Builds the whole project"/>
 
    <target name="pre-clean">
@@ -1268,7 +1348,8 @@
    </target>
 
    <target name="clean" 
-           depends="pre-clean,shared:clean,client:clean,weaving:clean,jar:clean" 
+           depends="pre-clean,shared:clean,client:clean,weaving:clean,jar:clean,
+                    server-artifact:clean" 
            description="Deletes build artifacts" />
 
    <target name="clean-build" depends="clean,all" 
