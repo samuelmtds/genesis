@@ -7,6 +7,9 @@
    </target>
 
    <target name="-do-init">
+      <property name="genesisBasedApplication.serverName" 
+                value="${genesisBasedApplication.name}" />
+
       <property name="sources.dir" value="src" />
       <property name="build.dir" value="target" />
       <property name="classes.dir" value="${build.dir}/classes" />
@@ -65,6 +68,9 @@
       <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
+
+      <property name="jboss.app" 
+                location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
 
       <path id="aspectwerkz.path">
          <fileset dir="${aspectwerkz.dist}">
@@ -163,9 +169,6 @@
       <property name="shared.hibernate.dir" value="${shared.dir}/${build.dir}/hibernate" />
       <property name="shared.hibernate.timestamp.file" 
                 location="${shared.hibernate.dir}/${timestamp.file}" />
-
-      <property name="jboss.app" 
-                location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
 
       <property name="hibernate.generate.files" value="true" />
       <property name="hibernate.session.factory.jndi.name" 
@@ -1339,6 +1342,114 @@
            if="needs.server.artifact">
       <genesis:sar />
    </target>
+
+   <target name="webstart:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the webstart:init target -->
+   </target>
+
+   <target name="webstart:init" 
+           depends="init-paths">
+      <property name="needs.webstart" value="${remote.mode}" />
+
+      <property name="webstart.sources.dir" value="webstart" />
+      <property name="webstart.target.dir" 
+                value="${build.dir}/war" />
+      <property name="webstart.jars.dir" 
+                value="${webstart.target.dir}/application" />
+
+      <property name="webstart.signjar.alias" value="genesis" />
+      <property name="webstart.signjar.keystore" 
+                value="${webstart.sources.dir}/application/genesis.keystore" />
+      <property name="webstart.signjar.storepass" value="summa@brasil" />
+      <property name="webstart.signjar.keypass" value="g3n3sis" />
+   </target>
+
+   <target name="webstart:clean" depends="webstart:init">
+      <delete dir="${webstart.target.dir}" />
+   </target>
+
+   <target name="webstart:check-conditions" depends="webstart:init">
+      <condition property="webstart.needed">
+         <istrue value="${needs.webstart}" />
+      </condition>
+   </target>
+
+   <target name="webstart:macrodefs" depends="webstart:check-conditions" 
+           if="needs.webstart">
+      <macrodef name="webstart-signjar-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="lazy" default="true" />
+         <element name="jar-fileset" optional="false" />
+         <element name="customize" optional="true" />
+         <sequential>
+            <copy todir="${webstart.jars.dir}">
+               <jar-fileset />
+               <customize />
+            </copy>
+            <signjar alias="${webstart.signjar.alias}"
+                  keystore="${webstart.signjar.keystore}"
+                  storepass="${webstart.signjar.storepass}" 
+                  keypass="${webstart.signjar.keypass}"
+                  lazy="@{lazy}">
+               <fileset dir="${webstart.jars.dir}" />
+            </signjar>
+         </sequential>
+      </macrodef>
+      <presetdef name="webstart-signjar"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:webstart-signjar-macro>
+            <jar-fileset>
+               <fileset file="${jar.local.location}" />
+               <fileset file="${jar.remote.location}" />
+               <fileset dir="${hibernate.dist}">
+                  <include name="cglib-full*.jar" />
+                  <include name="commons-collection*.jar" />
+                  <include name="ehcache*.jar" />
+                  <include name="hibernate*.jar" />
+                  <include name="jta.jar" />
+               </fileset>
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-client-${genesis.version}.jar"/>
+                  <include name="genesis-aspect-annotated-${genesis.version}.jar" />
+               </fileset>
+               <fileset dir="${commons.dist}">
+                  <include name="commons-beanutils*.jar"/>
+                  <include name="commons-jxpath*.jar"/>
+                  <include name="commons-logging*.jar"/>
+                  <include name="commons-digester*.jar"/>
+                  <include name="commons-validator*.jar"/>
+                  <include name="jakarta-oro-*.jar" />
+                  <include name="reusable-components*.jar"/>
+               </fileset>
+               <fileset dir="${aspectwerkz.dist}">
+                  <include name="aspectwerkz-*.jar" />
+                  <include name="dom4j*.jar" />
+                  <include name="jrexx-*.jar" />
+                  <include name="trove*.jar" />
+               </fileset>
+               <fileset dir="${jboss.app}/lib">
+                  <include name="hsqldb.jar" />
+               </fileset>
+               <fileset dir="${jboss.home}/client">
+                  <include name="jboss-client.jar" />
+                  <include name="jboss-common-client.jar" />
+                  <include name="jboss-j2ee.jar" />
+                  <include name="jboss-transaction-client.jar" />
+                  <include name="jbosssx-client.jar" />
+                  <include name="jnp-client.jar" />
+               </fileset>
+            </jar-fileset>
+         </genesis:webstart-signjar-macro>
+      </presetdef>
+   </target>
+
+   <target name="webstart:signjar" depends="webstart:macrodefs" 
+           if="needs.webstart">
+      <genesis:webstart-signjar />
+   </target>
+
+   <target name="webstart" depends="webstart:signjar" />
 
    <target name="all" depends="compile,jar,server-artifact" 
            description="Builds the whole project"/>
