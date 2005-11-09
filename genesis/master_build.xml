@@ -1142,9 +1142,10 @@
          <attribute name="destfile" />
          <attribute name="classesdir" />
          <attribute name="sourcesdir" />
-         <element name="customize" optional="true"/>
          <element name="classesdir-selector" optional="true"/>
          <element name="sourcesdir-selector" optional="true"/>
+         <element name="additional-filesets" optional="true"/>
+         <element name="customize" optional="true"/>
          <sequential>
             <jar destfile="@{destfile}">
                <fileset dir="@{classesdir}">
@@ -1153,6 +1154,7 @@
                <fileset dir="@{sourcesdir}">
                   <sourcesdir-selector />
                </fileset>
+               <additional-filesets />
                <customize />
             </jar>
          </sequential>
@@ -1174,6 +1176,16 @@
                <exclude name="META-INF/remote-aop.xml" />
             </sourcesdir-selector>
          </genesis:jar-macro>
+      </presetdef>
+      <presetdef name="jar-local"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:jar sourcesdir="${client.sources.dir}">
+            <additional-filesets>
+               <fileset dir="${client.validation.dir}">
+                  <exclude name="${timestamp.file}" />
+               </fileset>
+            </additional-filesets>
+         </genesis:jar>
       </presetdef>
    </target>
 
@@ -1243,9 +1255,8 @@
          <path refid="jar.local.classpath" />
       </pathconvert>
 
-      <genesis:jar destfile="${jar.local.location}" 
-                   classesdir="${weaving.local.dir}"
-                   sourcesdir="${client.sources.dir}">
+      <genesis:jar-local destfile="${jar.local.location}" 
+                         classesdir="${weaving.local.dir}">
          <customize>
             <manifest>
                <attribute name="Main-Class" 
@@ -1254,14 +1265,13 @@
                           value="${jar.local.flat.classpath}"/>
             </manifest>
          </customize>
-      </genesis:jar>
+      </genesis:jar-local>
    </target>
 
    <target name="jar:remote" depends="jar:check-conditions,jar:macrodefs" 
            if="jar.remote.needed">
-      <genesis:jar destfile="${jar.remote.location}" 
-                   classesdir="${weaving.remote.dir}"
-                   sourcesdir="${client.sources.dir}" />
+      <genesis:jar-local destfile="${jar.remote.location}" 
+                         classesdir="${weaving.remote.dir}" />
    </target>
 
    <target name="jar:shared" depends="jar:check-conditions,jar:macrodefs" 
@@ -1349,7 +1359,7 @@
    </target>
 
    <target name="webstart:init" 
-           depends="init-paths">
+           depends="init-paths,jar:init">
       <property name="needs.webstart" value="${remote.mode}" />
 
       <property name="webstart.sources.dir" value="webstart" />
