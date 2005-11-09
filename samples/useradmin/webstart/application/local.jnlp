@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jnlp codebase="http://@webstart.server@:@webstart.port@/@webstart.context@/application">
-
    <information>
       <title>@pretty.name@</title>
       <vendor>Summa Technologies do Brasil Ltda.</vendor>
@@ -40,6 +39,5 @@
       <jar href="trove-1.0.2.jar" download="eager" />
    </resources>
    
-	 <application-desc main-class="@app.main@" />
-
+   <application-desc main-class="@app.main@" />
 </jnlp>
