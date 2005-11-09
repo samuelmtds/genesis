@@ -1368,6 +1368,11 @@
       <property name="webstart.jars.dir" 
                 value="${webstart.target.dir}/application" />
 
+      <property name="webstart.war.file" 
+                value="${build.dir}/${genesisBasedApplication.name}.war" />
+      <property name="webstart.web.xml"
+                value="${webstart.sources.dir}/WEB-INF/web.xml" />
+
       <property name="webstart.signjar.alias" value="genesis" />
       <property name="webstart.signjar.keystore" 
                 value="${webstart.sources.dir}/application/genesis.keystore" />
@@ -1385,6 +1390,7 @@
 
    <target name="webstart:clean" depends="webstart:init">
       <delete dir="${webstart.target.dir}" />
+      <delete file="${webstart.war.file}" />
    </target>
 
    <target name="webstart:check-conditions" depends="webstart:init">
@@ -1510,6 +1516,7 @@
             <excludes>
                <exclude name="**/*.jnlp"/>
                <exclude name="**/*.html"/>
+               <exclude name="WEB-INF/web.xml"/>
             </excludes>
          </genesis:webstart-copy-macro>
       </presetdef>
@@ -1525,7 +1532,14 @@
       <genesis:webstart-copy />
    </target>
 
-   <target name="webstart" depends="webstart:signjar,webstart:copy" />
+   <target name="webstart:war" depends="webstart:check-conditions" 
+           if="needs.webstart">
+      <war warfile="${webstart.war.file}" basedir="${webstart.target.dir}" 
+           webxml="${webstart.web.xml}" />
+   </target>
+
+   <target name="webstart" 
+           depends="webstart:signjar,webstart:copy,webstart:war" />
 
    <target name="all" depends="compile,jar,server-artifact" 
            description="Builds the whole project"/>
