@@ -1363,6 +1363,14 @@
                 value="${webstart.sources.dir}/application/genesis.keystore" />
       <property name="webstart.signjar.storepass" value="summa@brasil" />
       <property name="webstart.signjar.keypass" value="g3n3sis" />
+
+      <property name="jboss.provider.url" value="jnp://127.0.0.1" />
+      <property name="jboss.factory.initial" 
+                value="org.jnp.interfaces.NamingContextFactory" />
+      <property name="webstart.server" value="127.0.0.1" />
+      <property name="webstart.port" value="8080" />
+      <property name="webstart.context" 
+                value="${genesisBasedApplication.name}"/>
    </target>
 
    <target name="webstart:clean" depends="webstart:init">
@@ -1392,7 +1400,7 @@
                   storepass="${webstart.signjar.storepass}" 
                   keypass="${webstart.signjar.keypass}"
                   lazy="@{lazy}">
-               <fileset dir="${webstart.jars.dir}" />
+               <fileset dir="${webstart.jars.dir}" includes="*.jar" />
             </signjar>
          </sequential>
       </macrodef>
@@ -1442,6 +1450,59 @@
             </jar-fileset>
          </genesis:webstart-signjar-macro>
       </presetdef>
+
+      <macrodef name="webstart-copy-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="targetdir" default="${webstart.target.dir}" />
+         <attribute name="sourcedir" default="${webstart.sources.dir}" />
+         <element name="filter-tokens" optional="true" />
+         <element name="includes" optional="true" />
+         <element name="excludes" optional="true" />
+         <sequential>
+            <copy todir="@{targetdir}">
+               <filterset>
+                  <filter-tokens />
+               </filterset>
+               <fileset dir="@{sourcedir}">
+                  <includes />
+               </fileset>
+            </copy>
+            <copy todir="@{targetdir}">
+               <fileset dir="@{sourcedir}">
+                  <excludes />
+               </fileset>
+            </copy>
+         </sequential>
+      </macrodef>
+      <presetdef name="webstart-copy"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:webstart-copy-macro>
+            <filter-tokens>
+               <filter token="genesis.version" value="${genesis.version}"/>
+               <filter token="jboss.provider.url" 
+                       value="${jboss.provider.url}"/>
+               <filter token="jboss.provider.port" 
+                       value="${jboss.provider.port}"/>
+               <filter token="jboss.factory.initial" 
+                       value="${jboss.factory.initial}" />
+               <filter token="webstart.server" value="${webstart.server}"/>
+               <filter token="webstart.port" value="${webstart.port}"/>
+               <filter token="webstart.context" value="${webstart.context}"/>
+               <filter token="app.main" 
+                       value="${genesisBasedApplication.mainClass}"/>
+               <filter token="pretty.name" 
+                       value="${genesisBasedApplication.prettyName}"/>
+            </filter-tokens>
+            <includes>
+               <include name="**/*.jnlp"/>
+               <include name="**/*.html"/>
+            </includes>
+            <excludes>
+               <exclude name="**/*.jnlp"/>
+               <exclude name="**/*.html"/>
+            </excludes>
+         </genesis:webstart-copy-macro>
+      </presetdef>
    </target>
 
    <target name="webstart:signjar" depends="webstart:macrodefs" 
@@ -1449,7 +1510,12 @@
       <genesis:webstart-signjar />
    </target>
 
-   <target name="webstart" depends="webstart:signjar" />
+   <target name="webstart:copy" depends="webstart:macrodefs"
+           if="needs.webstart">
+      <genesis:webstart-copy />
+   </target>
+
+   <target name="webstart" depends="webstart:signjar,webstart:copy" />
 
    <target name="all" depends="compile,jar,server-artifact" 
            description="Builds the whole project"/>
