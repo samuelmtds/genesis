@@ -1541,7 +1541,101 @@
    <target name="webstart" 
            depends="webstart:signjar,webstart:copy,webstart:war" />
 
-   <target name="all" depends="compile,jar,server-artifact" 
+   <target name="deploy:pre-init">
+      <!-- Override to define any properties that shouldn't be redefined by 
+         the deploy:init target -->
+   </target>
+
+   <target name="deploy:init" 
+           depends="init-paths,server-artifact:init,webstart:init">
+      <property name="needs.deploy" value="${remote.mode}" />
+
+      <property name="jboss.app.deploy" location="${jboss.app}/deploy" />
+      <property name="jboss.default.server" 
+                location="${jboss.home}/server/default" />
+      <property name="jboss.datasource.config.xml" 
+                location="${jboss.default.server}/deploy/hsqldb-ds.xml" />
+   </target>
+
+   <target name="deploy:clean" depends="deploy:init" />
+
+   <target name="deploy:check-conditions" depends="deploy:init">
+      <condition property="deploy.needed">
+         <istrue value="${needs.deploy}" />
+      </condition>
+      <condition property="deploy.create.server.needed">
+         <and>
+            <istrue value="${deploy.needed}" />
+            <not>
+               <available type="dir" file="${jboss.app}" />
+            </not>
+         </and>
+      </condition>
+      <condition property="deploy.webstart.needed">
+         <and>
+            <istrue value="${deploy.needed}" />
+            <istrue value="${needs.webstart}" />
+         </and>
+      </condition>
+   </target>
+
+   <target name="deploy:create-server" depends="deploy:check-conditions"
+           if="deploy.create.server.needed">
+      <condition property="jboss.home.not.set">
+         <not>
+            <isset property="jboss.home" />
+         </not>
+      </condition>
+      <fail if="jboss.home.not.set">
+         Set 'jboss.home' properly in buid.properties file. 
+         See build.properties.sample for details.
+      </fail>
+      <condition property="jboss.home.not.found">
+         <not>
+            <available type="dir" file="${jboss.home}" />
+         </not>
+      </condition>
+      <fail if="jboss.home.not.found">
+         JBoss Home not found. It's current value is ${jboss.home}. 
+         Set 'jboss.home' properly in buid.properties file. 
+         See build.properties.sample for details.
+      </fail>
+      <mkdir dir="${jboss.app}" />
+      <copy todir="${jboss.app}">
+         <fileset dir="${jboss.default.server}">
+            <include name="deploy/jboss-jca.sar" />
+            <include name="deploy/jboss-local-jdbc.rar" />
+            <include name="deploy/transaction-service.xml" />
+            <include name="deploy/jbossweb-tomcat*.sar/**" />
+            <include name="conf/**" />
+            <include name="lib/**" />
+            <exclude name="lib/hibernate2.jar" />
+         </fileset>
+      </copy>
+   </target>
+
+   <target name="deploy:server-artifact" depends="deploy:check-conditions"
+           if="deploy.needed">
+      <copy todir="${jboss.app.deploy}">
+         <fileset file="${jboss.datasource.config.xml}" />
+         <fileset dir="${genesis.dist}">
+            <include name="genesis-server-${genesis.version}.jar"/>
+         </fileset>
+         <fileset file="${server.artifact.location}" />
+      </copy>
+   </target>
+
+   <target name="deploy:webstart" depends="deploy:check-conditions"
+           if="deploy.webstart.needed">
+      <copy todir="${jboss.app.deploy}">
+         <fileset file="${webstart.war.file}" />
+      </copy>
+   </target>
+
+   <target name="deploy" 
+           depends="deploy:create-server,deploy:server-artifact,deploy:webstart" />
+
+   <target name="all" depends="compile,jar,server-artifact,deploy" 
            description="Builds the whole project"/>
 
    <target name="pre-clean">
