@@ -71,6 +71,8 @@
 
       <property name="jboss.app" 
                 location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
+      <property name="jboss.client"
+                location="${jboss.home}/client" />
 
       <path id="aspectwerkz.path">
          <fileset dir="${aspectwerkz.dist}">
@@ -123,6 +125,9 @@
                   destdir="@{destdir}"
                   classpath="@{classpath}"
                   properties="${annotation.properties}" />
+            <copy todir="@{destdir}">
+               <fileset dir="@{classpath}" />
+            </copy>
             <touch file="@{touchfile}" />
          </sequential>
       </macrodef>
@@ -996,6 +1001,17 @@
    </target>
 
    <target name="run:init" depends="init-paths,run:pre-init">
+      <property name="jar.local.location" 
+               location="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar" />
+      <property name="jar.remote.location" 
+               location="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar" />
+      <property name="jar.shared.location" 
+               location="${build.dir}/${genesisBasedApplication.name}-shared.jar" />
+
+      <property name="jboss.provider.url" value="jnp://127.0.0.1" />
+      <property name="jboss.factory.initial" 
+                value="org.jnp.interfaces.NamingContextFactory" />
+
       <path id="run.standard.classpath">
          <fileset dir="${genesis.dist}">
             <include name="genesis-aspect-annotated-*.jar" />
@@ -1021,8 +1037,19 @@
             <include name="reusable-components-*.jar" />
          </fileset>
       </path>
-   </target>
 
+      <path id="run.standard.remote.classpath">
+         <fileset file="${jar.remote.location}" />
+         <fileset dir="${jboss.client}">
+            <include name="jboss-client.jar" />
+            <include name="jboss-common-client.jar" />
+            <include name="jboss-j2ee.jar" />
+            <include name="jboss-transaction-client.jar" />
+            <include name="jbosssx-client.jar" />
+            <include name="jnp-client.jar" />
+         </fileset>
+      </path>
+   </target>
 
    <target name="run:pre-define-classpath">
       <!-- Override to define run.overriden.classpath or 
@@ -1051,6 +1078,28 @@
             </not>
          </and>
       </condition>
+
+      <condition property="run.set.custom.remote.classpath">
+         <isreference refid="run.overriden.remote.classpath" type="path" />
+      </condition>
+      <condition property="run.set.additional.remote.classpath">
+         <and>
+            <not>
+               <isset property="run.set.custom.remote.classpath" />
+            </not>
+            <isreference refid="run.additional.remote.classpath" />
+         </and>
+      </condition>
+      <condition property="run.set.standard.remote.classpath">
+         <and>
+            <not>
+               <isset property="run.set.additional.remote.classpath" />
+            </not>
+            <not>
+               <isset property="run.set.custom.remote.classpath" />
+            </not>
+         </and>
+      </condition>
    </target>
 
    <target name="run:define-overriden-classpath"
@@ -1075,12 +1124,73 @@
       </path>
    </target>
 
+   <target name="run:define-overriden-remote-classpath"
+           depends="run:init" if="run.set.custom.remote.classpath">
+      <path id="run.remote.classpath">
+         <path refid="run.overriden.remote.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-remote-classpath-with-extensions" 
+           depends="run:init" if="run.set.additional.remote.classpath">
+      <path id="run.remote.classpath">
+         <path refid="run.standard.remote.classpath" />
+         <path refid="run.additional.remote.classpath" />
+         <path refid="run.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-standard-remote-classpath"
+           depends="run:init" if="run.set.standard.remote.classpath">
+      <path id="run.remote.classpath">
+         <path refid="run.standard.remote.classpath" />
+         <path refid="run.classpath" />
+      </path>
+   </target>
+
    <target name="run:define-classpath" 
            depends="run:init,run:pre-define-classpath,
                     run:check-classpath-conditions,
                     run:define-overriden-classpath,
                     run:define-classpath-with-extensions,
-                    run:define-standard-classpath"/>
+                    run:define-standard-classpath,
+                    run:define-overriden-remote-classpath,
+                    run:define-remote-classpath-with-extensions,
+                    run:define-standard-remote-classpath"/>
+
+   <target name="run:macrodefs" depends="run:init">
+      <macrodef name="java-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="fork" default="true" />
+         <attribute name="failonerror" default="true" />
+         <attribute name="classpathref" />
+         <element name="sysproperties" optional="true" />
+         <element name="customize" optional="true" />
+         <sequential>
+            <java classname="${genesisBasedApplication.mainClass}" fork="@{fork}" 
+                  failonerror="@{failonerror}" classpathref="@{classpathref}">
+               <sysproperties />
+               <customize />
+            </java>
+         </sequential>
+      </macrodef>
+
+      <presetdef name="java-remote"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:java-macro classpathref="run.remote.classpath">
+            <sysproperties>
+               <sysproperty key="java.naming.factory.initial"
+                            value="${jboss.factory.initial}" />
+               <sysproperty key="java.naming.provider.url"
+                            value="${jboss.provider.url}" />
+            </sysproperties>
+         </genesis:java-macro>
+      </presetdef>
+   </target>
+
+   <target name="run:remote" depends="run:define-classpath,run:macrodefs">
+      <genesis:java-remote />
+   </target>
 
    <target name="jar:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
@@ -1090,13 +1200,6 @@
    <target name="jar:init" 
            depends="init-paths,jar:pre-init,weaving:init,run:define-classpath">
       <property name="needs.jar" value="true" />
-
-      <property name="jar.local.location" 
-               location="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar" />
-      <property name="jar.remote.location" 
-               location="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar" />
-      <property name="jar.shared.location" 
-               location="${build.dir}/${genesisBasedApplication.name}-shared.jar" />
 
       <path id="jar.standard.local.classpath">
          <pathelement path="${jdbc.driver}" />
@@ -1379,9 +1482,6 @@
       <property name="webstart.signjar.storepass" value="summa@brasil" />
       <property name="webstart.signjar.keypass" value="g3n3sis" />
 
-      <property name="jboss.provider.url" value="jnp://127.0.0.1" />
-      <property name="jboss.factory.initial" 
-                value="org.jnp.interfaces.NamingContextFactory" />
       <property name="webstart.server" value="127.0.0.1" />
       <property name="webstart.port" value="8080" />
       <property name="webstart.context" 
@@ -1455,7 +1555,7 @@
                <fileset dir="${jboss.app}/lib">
                   <include name="hsqldb.jar" />
                </fileset>
-               <fileset dir="${jboss.home}/client">
+               <fileset dir="${jboss.client}">
                   <include name="jboss-client.jar" />
                   <include name="jboss-common-client.jar" />
                   <include name="jboss-j2ee.jar" />
