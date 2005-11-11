@@ -1014,6 +1014,9 @@
       <property name="jboss.factory.initial" 
                 value="org.jnp.interfaces.NamingContextFactory" />
 
+      <property name="debug.port" value="10000" />
+      <property name="debug.suspend" value="n" />
+
       <path id="run.standard.classpath">
          <fileset dir="${genesis.dist}">
             <include name="genesis-aspect-annotated-*.jar" />
@@ -1226,11 +1229,13 @@
          <attribute name="failonerror" default="true" />
          <attribute name="classpathref" />
          <element name="sysproperties" optional="true" />
+         <element name="jvmargs" optional="true" />
          <element name="customize" optional="true" />
          <sequential>
             <java classname="${genesisBasedApplication.mainClass}" fork="@{fork}" 
                   failonerror="@{failonerror}" classpathref="@{classpathref}">
                <sysproperties />
+               <jvmargs />
                <customize />
             </java>
          </sequential>
@@ -1252,6 +1257,26 @@
             </sysproperties>
          </genesis:java-macro>
       </presetdef>
+
+      <presetdef name="debug-local"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:java-local>
+            <jvmargs>
+               <jvmarg value="-Xdebug"/>
+               <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${debug.port},server=y,suspend=${debug.suspend}"/>
+            </jvmargs>
+         </genesis:java-local>
+      </presetdef>
+
+      <presetdef name="debug-remote"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:java-remote>
+            <jvmargs>
+               <jvmarg value="-Xdebug"/>
+               <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${debug.port},server=y,suspend=${debug.suspend}"/>
+            </jvmargs>
+         </genesis:java-remote>
+      </presetdef>
    </target>
 
    <target name="run:local" depends="run:define-classpath,run:macrodefs">
@@ -1262,6 +1287,14 @@
       <genesis:java-remote />
    </target>
 
+   <target name="run:debug-local" depends="run:define-classpath,run:macrodefs">
+      <genesis:debug-local />
+   </target>
+
+   <target name="run:debug-remote" depends="run:define-classpath,run:macrodefs">
+      <genesis:debug-remote />
+   </target>
+   
    <target name="jar:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
          the jar:init target -->
