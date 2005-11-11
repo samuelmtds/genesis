@@ -62,7 +62,8 @@
       <property name="annotation.properties" 
                 location="${genesis.dist}/annotation.properties" />
 
-      <property name="aspectwerkz.dist" location="${genesis.home}/lib/aspectwerkz" />
+      <property name="aspectwerkz.dist" 
+                location="${genesis.home}/lib/aspectwerkz" />
       <property name="commons.dist" location="${genesis.home}/lib/commons" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
       <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
@@ -73,6 +74,8 @@
                 location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
       <property name="jboss.client"
                 location="${jboss.home}/client" />
+
+      <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
 
       <path id="aspectwerkz.path">
          <fileset dir="${aspectwerkz.dist}">
@@ -185,7 +188,6 @@
       <property name="hibernate.show.sql" value="true" />
       <property name="hibernate.version" value="2.1.8" />
 
-      <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
       <property name="jdbc.driver.class" value="org.hsqldb.jdbcDriver" />
       <property name="jdbc.username" value="sa" />
       <property name="jdbc.password" value="" />
@@ -1038,6 +1040,16 @@
          </fileset>
       </path>
 
+      <path id="run.standard.local.classpath">
+         <fileset file="${jar.local.location}" />
+         <fileset file="${jdbc.driver}" />
+         <fileset dir="${hibernate.dist}">
+            <include name="cglib-full-*.jar"/>
+            <include name="ehcache-*.jar"/>
+            <include name="jta*.jar"/>
+         </fileset>
+      </path>
+
       <path id="run.standard.remote.classpath">
          <fileset file="${jar.remote.location}" />
          <fileset dir="${jboss.client}">
@@ -1075,6 +1087,28 @@
             </not>
             <not>
                <isset property="run.set.custom.classpath" />
+            </not>
+         </and>
+      </condition>
+
+      <condition property="run.set.custom.local.classpath">
+         <isreference refid="run.overriden.local.classpath" type="path" />
+      </condition>
+      <condition property="run.set.additional.local.classpath">
+         <and>
+            <not>
+               <isset property="run.set.custom.local.classpath" />
+            </not>
+            <isreference refid="run.additional.local.classpath" />
+         </and>
+      </condition>
+      <condition property="run.set.standard.local.classpath">
+         <and>
+            <not>
+               <isset property="run.set.additional.local.classpath" />
+            </not>
+            <not>
+               <isset property="run.set.custom.local.classpath" />
             </not>
          </and>
       </condition>
@@ -1124,6 +1158,30 @@
       </path>
    </target>
 
+   <target name="run:define-overriden-local-classpath"
+           depends="run:init" if="run.set.custom.local.classpath">
+      <path id="run.local.classpath">
+         <path refid="run.overriden.local.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-local-classpath-with-extensions" 
+           depends="run:init" if="run.set.additional.local.classpath">
+      <path id="run.local.classpath">
+         <path refid="run.standard.local.classpath" />
+         <path refid="run.additional.local.classpath" />
+         <path refid="run.classpath" />
+      </path>
+   </target>
+
+   <target name="run:define-standard-local-classpath"
+           depends="run:init" if="run.set.standard.local.classpath">
+      <path id="run.local.classpath">
+         <path refid="run.standard.local.classpath" />
+         <path refid="run.classpath" />
+      </path>
+   </target>
+
    <target name="run:define-overriden-remote-classpath"
            depends="run:init" if="run.set.custom.remote.classpath">
       <path id="run.remote.classpath">
@@ -1154,6 +1212,9 @@
                     run:define-overriden-classpath,
                     run:define-classpath-with-extensions,
                     run:define-standard-classpath,
+                    run:define-overriden-local-classpath,
+                    run:define-local-classpath-with-extensions,
+                    run:define-standard-local-classpath,
                     run:define-overriden-remote-classpath,
                     run:define-remote-classpath-with-extensions,
                     run:define-standard-remote-classpath"/>
@@ -1175,6 +1236,11 @@
          </sequential>
       </macrodef>
 
+      <presetdef name="java-local"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:java-macro classpathref="run.local.classpath" />
+      </presetdef>
+
       <presetdef name="java-remote"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:java-macro classpathref="run.remote.classpath">
@@ -1186,6 +1252,10 @@
             </sysproperties>
          </genesis:java-macro>
       </presetdef>
+   </target>
+
+   <target name="run:local" depends="run:define-classpath,run:macrodefs">
+      <genesis:java-local />
    </target>
 
    <target name="run:remote" depends="run:define-classpath,run:macrodefs">
@@ -1287,6 +1357,7 @@
                <fileset dir="${client.validation.dir}">
                   <exclude name="${timestamp.file}" />
                </fileset>
+               <fileset dir="${shared.hibernate.dir}" />
             </additional-filesets>
          </genesis:jar>
       </presetdef>
