@@ -1555,9 +1555,14 @@
       </macrodef>
    </target>
 
+   <target name="-do-server-artifact">
+      <genesis:sar />
+   </target>
+
    <target name="server-artifact" depends="server-artifact:macrodefs"
            if="needs.server.artifact">
-      <genesis:sar />
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-server-artifact" />
    </target>
 
    <target name="webstart:pre-init">
@@ -1726,9 +1731,14 @@
       </presetdef>
    </target>
 
+   <target name="-do-webstart-signjar">
+      <genesis:webstart-signjar />
+   </target>
+
    <target name="webstart:signjar" depends="webstart:macrodefs" 
            if="needs.webstart">
-      <genesis:webstart-signjar />
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-webstart-signjar" />
    </target>
 
    <target name="webstart:copy" depends="webstart:macrodefs"
