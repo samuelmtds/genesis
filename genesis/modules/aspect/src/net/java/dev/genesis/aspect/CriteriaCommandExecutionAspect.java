@@ -131,7 +131,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    /**
-    * @Introduce criteriaResolverIntroduction deployment-model=perInstance
+    * @Introduce criteriaResolverIntroduction deploymentModel=perInstance
     */
    public static class CriteriaResolverImpl implements CriteriaResolver {
       private Map propertiesMap;

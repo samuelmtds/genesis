@@ -33,7 +33,7 @@ public class CommandInvocationAspect {
    }
 
    /**
-    * @Introduce commandResolverIntroduction deployment-model=perJVM
+    * @Introduce commandResolverIntroduction deploymentModel=perJVM
     */
    public static class CommandResolverImpl implements CommandResolver, Serializable {
       private final boolean useFastMode;
