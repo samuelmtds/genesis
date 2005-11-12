@@ -149,7 +149,11 @@ try {
         este cenário. Ela introduz uma sessão do Hibernate nas classes que
         implementam
         <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code> e
-        controla a transação utilizando os recursos da própria sessão.</p>
+        controla a transação utilizando os recursos da própria sessão. Se o 
+        parâmetro <code>preLoadSessionFactory</code> não for <code>false</code>,
+        a <code>SessionFactory</code> do Hibernate será instanciada na primeira
+        chamada de método <code>@Remotable</code> ou <code>@Transactional</code>,
+        o que normalmente ocorre na inicialização.</p>
       </subsection>
       <subsection name="Execução em EJB com chamada remota">
         <p>Outra possibilidade de execução provida diretamente com o genesis é
@@ -415,7 +419,17 @@ public interface FormControllerFactory {
             <td><code>true</code></td>
           </tr>
           <tr>
-            <td>LocalCommandExecutionAspect</td>
+            <td rowspan="2">LocalCommandExecutionAspect</td>
+            <td>preLoadSessionFactory</td>
+            <td>boolean</td>
+            <td>Indica se a <code>SessionFactory</code> será carregada na 
+            primeira chamada remota ou transacional (relevante quando o aspecto
+            é usado com a implementação 
+            <code>net.java.dev.genesis.aspect.HibernateTransactionalInjector</code></td>
+            <td><b>Não</b></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
             <td>transactionalInjector</td>
             <td>Nome qualificado completo de classe</td>
             <td>Nome de uma classe que implemente
