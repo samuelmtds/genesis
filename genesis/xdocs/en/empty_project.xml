@@ -29,9 +29,8 @@
         <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
         3.2.x release.</li>
         <li>To compile and install the application we recommend <a href=
-        "http://ant.apache.org/">Apache Ant</a> and <a href=
-        "http://xdoclet.sourceforge.net/">XDoclet</a> release 1.2 with some
-        modified libraries available <a href="download.html">here</a>.</li>
+        "http://ant.apache.org/">Apache Ant</a> 1.6.x and some XDoclet libraries
+        available <a href="download.html">here</a>.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
@@ -87,19 +86,17 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         <li><code><b>genesis.home</b></code>: Indicates where genesis is
         located. Usually this directory will be something like <code><b>&lt;
         SOME_DIRECTORY&gt;/genesis-&lt;version&gt;/genesis</b></code></li>
-        <li><code><b>xdoclet.dist</b></code>: Indicates the distribution dir for
-        XDoclet. The distribution used by the build process and therefore
-        recommended is the 1.2 release together with some modified libraries
-        available <a href="download.html">here</a>.
-        Note: install the 1.2
-        XDoclet dist and copy the modified libraries to
-        <code>&lt;XDOCLET_DIR&gt;/lib</code> overriding the original ones.</li>
-        <li><code><b>jboss.datasource.config.xml</b></code>: Indicates the JBoss datasource config file location.
-        You can supply another config file that matches your database configuration.</li>
-        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect Hibernate will use.
-        If you're going to use other database than HSQLDB, you must supply the correct dialect.
-        You can find further information about how to configure dialects at the
-        <a href="http://www.hibernate.org/">Hibernate site</a>.
+        <li><code><b>xdoclet.dist</b></code>: Indicates the dir where XDoclet 
+        libraries can be found. The distribution used by the build process is 
+        available <a href="download.html">here</a>.</li>
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indicates the JBoss 
+        datasource config file location. You can supply another config file that 
+        matches your database configuration.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect 
+        Hibernate will use. If you're going to use any database other than 
+        HSQLDB, you must supply the correct dialect. You can find further 
+        information about how to configure dialects at the <a 
+        href="http://www.hibernate.org/">Hibernate site</a>.
         </li>
       </ul>
       <p>To make understanding easier, let's imagine a cenario for a new genesis
@@ -109,8 +106,7 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         </li>
         <li>We install genesis dist at <code>C:\projects</code>, what creates a
         <code>C:\projects\genesis-&lt;version&gt;</code> dir.</li>
-        <li>We install XDoclet 1.2 dist together with modified jars at
-        <code>C:\projects\xdoclet-1.2</code>.</li>
+        <li>We install the XDoclet dist at <code>C:\projects\xdoclet</code>.</li>
         <li>The project will be called<b>helloworld</b> and its descriptive name
         will be <b>Hello World</b>.</li>
         <li>The main project class will be <b>exemplo.HelloWorld</b>.</li>
@@ -123,7 +119,7 @@ genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
 
 genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
-xdoclet.dist=c:/projects/xdoclet-1.2/lib
+xdoclet.dist=c:/projects/xdoclet
 </source>
     </section>
     <section name="Developing with genesis">

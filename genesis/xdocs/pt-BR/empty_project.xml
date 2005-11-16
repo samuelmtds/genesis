@@ -29,10 +29,9 @@
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
         alguma das versões 3.2.x.</li>
-        <li>Para compilar e instalar a aplicação recomendamos <a href=
-        "http://ant.apache.org/">Apache Ant</a> e <a href=
-        "http://xdoclet.sourceforge.net/">XDoclet</a> versão 1.2 com algumas
-        bibliotecas disponíveis <a href="download.html">aqui</a>.</li>
+        <li>Para compilar e instalar a aplicação é necessário o uso do <a href=
+        "http://ant.apache.org/">Apache Ant</a> 1.6.x e de algumas bibliotecas 
+        do XDoclet disponíveis <a href="download.html">aqui</a>.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
@@ -90,13 +89,9 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
         do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
         ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
-        <li><code><b>xdoclet.dist</b></code>: Indica o diretório de distribuição
-        do XDoclet. A distribuição utilizada e recomendada é a distribuição 1.2
-        do XDoclet juntamente com as bibliotecas alteradas e disponíveis
-        <a href="download.html">aqui</a>.
-        Obs: instale a distribuição 1.2 do
-        XDoclet e copie as bibliotecas modificadas para o diretório <code>&lt;
-        DIRETÓRIO_DO_XDOCLET&gt;/lib</code> sobrescrevendo as originais.</li>
+        <li><code><b>xdoclet.dist</b></code>: Indica o diretório das bibliotecas
+        do XDoclet. A distribuição utilizada e recomendada encontra-se 
+        disponível <a href="download.html">aqui</a>.</li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -114,9 +109,8 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         <li>Instalamos a distribuição do genesis no diretório
         <code>C:\projetos</code>, onde que criará o diretório
         <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
-        <li>Instalamos a distribuição do XDoclet 1.2 juntamente com as
-        bibliotecas modificadas no diretório <code>C:\projetos\xdoclet-1.2</code
-        >.</li>
+        <li>Instalamos as bibliotecas do XDoclet no diretório 
+        <code>C:\projetos\xdoclet</code>.</li>
         <li>O projeto se chamará <b>helloworld</b> e seu nome descritivo será <b
         >Hello World</b>.</li>
         <li>A classe principal do projeto será <b>exemplo.HelloWorld</b>.</li>
@@ -129,7 +123,7 @@ genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
 
 genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
-xdoclet.dist=c:/projetos/xdoclet-1.2/lib
+xdoclet.dist=c:/projetos/xdoclet/
 </source>
     </section>
     <section name="Desenvolvendo com o genesis">
