@@ -117,6 +117,8 @@
          <attribute name="destdir" />
          <attribute name="classpath" />
          <attribute name="touchfile" />
+         <element name="customize" optional="true" />
+
          <sequential>
             <taskdef name="annotationc" 
                      classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" 
@@ -127,7 +129,9 @@
                   srcdir="@{srcdir}"
                   destdir="@{destdir}"
                   classpath="@{classpath}"
-                  properties="${annotation.properties}" />
+                  properties="${annotation.properties}">
+               <customize />
+            </annotationc>
             <copy todir="@{destdir}">
                <fileset dir="@{classpath}" />
             </copy>
