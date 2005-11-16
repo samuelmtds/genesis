@@ -370,7 +370,7 @@
       <condition property="shared.hibernate.tasks.needed">
          <istrue value="${shared.hibernate.needed}" />
       </condition>
-  </target>
+   </target>
 
    <target name="hibernate-macrodefs" 
            if="shared.hibernate.tasks.needed"
@@ -484,7 +484,7 @@
          the client:init target -->
    </target>
 
-   <target name="client:init" depends="init-paths,client:pre-init">
+   <target name="client:init" depends="init-paths,shared:init,client:pre-init">
       <property name="has.client.sources" value="true" />
 
       <property name="client.dir" value="modules/client" />
@@ -660,17 +660,48 @@
       </condition>
    </target>
 
-   <target name="client:validation" if="client.validation.needed" 
+   <target name="validation-macrodefs" if="client.validation.needed"
            depends="client:check-validation-conditions">
-      <taskdef name="genesisdoclet" 
-               classname="xdoclet.modules.genesis.GenesisDocletTask" 
-               classpathref="xdoclet.path" />
+      <macrodef name="validation-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="filesets" optional="false" />
+         <element name="validation-task" optional="false" />
+         <sequential>
+            <taskdef name="genesisdoclet" 
+                     classname="xdoclet.modules.genesis.GenesisDocletTask" 
+                     classpathref="xdoclet.path" />
 
-      <genesisdoclet destdir="${client.validation.dir}" verbose="${verbose}">
-         <fileset dir="${client.sources.dir}" includes="**/*.java" />
-         <genesisvalidationxml xmlencoding="ISO-8859-1" />
-      </genesisdoclet>
-      <touch file="${client.validation.timestamp.file}" />
+            <genesisdoclet destdir="${client.validation.dir}" 
+                           verbose="${verbose}">
+               <filesets />
+               <validation-task />
+            </genesisdoclet>
+
+            <touch file="${client.validation.timestamp.file}" />
+         </sequential>
+      </macrodef>
+
+      <presetdef name="validation"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:validation-macro>
+            <filesets>
+               <fileset dir="${client.sources.dir}" includes="**/*.java" />
+            </filesets>
+            <validation-task>
+               <genesisvalidationxml xmlencoding="ISO-8859-1" />
+            </validation-task>
+         </genesis:validation-macro>
+      </presetdef>
+   </target>
+
+   <target name="-do-client-validation">
+      <genesis:validation />
+   </target>
+
+   <target name="client:validation" if="client.validation.needed" 
+           depends="client:check-validation-conditions,validation-macrodefs">
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-client-validation" />
    </target>
 
    <target name="client:compile" 
