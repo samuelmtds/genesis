@@ -1025,7 +1025,13 @@
 
    <target name="weaving" depends="weaving:local,weaving:remote" />
 
-   <target name="compile" depends="shared:compile,client:compile,weaving" 
+   <target name="-do-extra-compile">
+      <!-- Override to implement extra tasks that should be performed after 
+           compiling client/shared sources and before the weaving process -->
+   </target>
+
+   <target name="compile" 
+           depends="shared:compile,client:compile,-do-extra-compile,weaving" 
            description="Compiles all artifacts"/>
 
    <target name="run:pre-init">
