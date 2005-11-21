@@ -781,7 +781,7 @@
 
    <target name="weaving:pre-define-local-classpath">
       <!-- Override to define weaving.local.overriden.classpath or 
-         weaving.additional.local.classpath-->
+         weaving.additional.local.classpath -->
    </target>
 
    <target name="weaving:check-local-classpath-conditions" depends="weaving:init">
@@ -844,7 +844,7 @@
 
    <target name="weaving:pre-define-remote-classpath">
       <!-- Override to define weaving.remote.overriden.classpath or 
-         weaving.additional.remote.classpath-->
+         weaving.additional.remote.classpath -->
    </target>
 
    <target name="weaving:check-remote-classpath-conditions" depends="weaving:init">
@@ -1320,22 +1320,40 @@
       </presetdef>
    </target>
 
-   <target name="run:local" depends="run:define-classpath,run:macrodefs">
+   <target name="-do-run-local">
       <genesis:java-local />
    </target>
 
-   <target name="run:remote" depends="run:define-classpath,run:macrodefs">
+   <target name="run:local" depends="run:define-classpath,run:macrodefs">
+      <antcall inheritall="true" inheritrefs="true" target="-do-run-local" />
+   </target>
+
+   <target name="-do-run-remote">
       <genesis:java-remote />
    </target>
 
-   <target name="run:debug-local" depends="run:define-classpath,run:macrodefs">
+   <target name="run:remote" depends="run:define-classpath,run:macrodefs">
+      <antcall inheritall="true" inheritrefs="true" target="-do-run-remote" />
+   </target>
+
+   <target name="-do-run-debug-local">
       <genesis:debug-local />
    </target>
 
-   <target name="run:debug-remote" depends="run:define-classpath,run:macrodefs">
+   <target name="run:debug-local" depends="run:define-classpath,run:macrodefs">
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-run-debug-local" />
+   </target>
+
+   <target name="-do-run-debug-remote">
       <genesis:debug-remote />
    </target>
-   
+
+   <target name="run:debug-remote" depends="run:define-classpath,run:macrodefs">
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-run-debug-remote" />
+   </target>
+
    <target name="jar:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
          the jar:init target -->
@@ -1421,10 +1439,11 @@
                <exclude name="**/*.java~" />
                <exclude name="META-INF/local-aop.xml" />
                <exclude name="META-INF/remote-aop.xml" />
+               <exclude name="META-INF/aop.xml" />
             </sourcesdir-selector>
          </genesis:jar-macro>
       </presetdef>
-      <presetdef name="jar-local"
+      <presetdef name="jar-client"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:jar sourcesdir="${client.sources.dir}">
             <additional-filesets>
@@ -1434,6 +1453,19 @@
                <fileset dir="${shared.hibernate.dir}" />
             </additional-filesets>
          </genesis:jar>
+      </presetdef>
+      <presetdef name="jar-local"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:jar-client sourcesdir="${client.sources.dir}">
+            <customize>
+               <manifest>
+                  <attribute name="Main-Class" 
+                             value="${genesisBasedApplication.mainClass}"/>
+                  <attribute name="Class-Path" 
+                             value="${jar.local.flat.classpath}"/>
+               </manifest>
+            </customize>
+         </genesis:jar-client>
       </presetdef>
    </target>
 
@@ -1495,6 +1527,11 @@
                     jar:define-local-classpath-with-extensions,
                     jar:define-standard-local-classpath"/>
 
+   <target name="-do-jar-local">
+      <genesis:jar-local destfile="${jar.local.location}" 
+                         classesdir="${weaving.local.dir}" />
+   </target>
+
    <target name="jar:local" 
            depends="jar:check-conditions,jar:macrodefs,jar:define-local-classpath" 
            if="jar.local.needed">
@@ -1503,23 +1540,17 @@
          <path refid="jar.local.classpath" />
       </pathconvert>
 
-      <genesis:jar-local destfile="${jar.local.location}" 
-                         classesdir="${weaving.local.dir}">
-         <customize>
-            <manifest>
-               <attribute name="Main-Class" 
-                          value="${genesisBasedApplication.mainClass}"/>
-               <attribute name="Class-Path" 
-                          value="${jar.local.flat.classpath}"/>
-            </manifest>
-         </customize>
-      </genesis:jar-local>
+      <antcall inheritall="true" inheritrefs="true" target="-do-jar-local" />
+   </target>
+
+   <target name="-do-jar-remote">
+      <genesis:jar-client destfile="${jar.remote.location}" 
+                         classesdir="${weaving.remote.dir}" />
    </target>
 
    <target name="jar:remote" depends="jar:check-conditions,jar:macrodefs" 
            if="jar.remote.needed">
-      <genesis:jar-local destfile="${jar.remote.location}" 
-                         classesdir="${weaving.remote.dir}" />
+      <antcall inheritall="true" inheritrefs="true" target="-do-jar-remote" />
    </target>
 
    <target name="jar:shared" depends="jar:check-conditions,jar:macrodefs" 
