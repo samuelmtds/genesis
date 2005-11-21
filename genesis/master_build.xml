@@ -1643,7 +1643,7 @@
    </target>
 
    <target name="webstart:init" 
-           depends="init-paths,jar:init">
+           depends="init-paths,jar:init,webstart:pre-init">
       <property name="needs.webstart" value="${remote.mode}" />
 
       <property name="webstart.sources.dir" value="webstart" />
