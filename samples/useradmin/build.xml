@@ -11,4 +11,11 @@
       <property name="genesisBasedApplication.mainClass" 
                 value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
    </target>
+
+   <target name="webstart:pre-init">
+      <property name="webstart.jnlp.description" 
+                value="Genesis User Admin sample" />
+      <property name="webstart.jnlp.vendor"
+                value="Summa Technologies do Brasil Ltda." />
+   </target>
 </project>

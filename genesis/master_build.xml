@@ -67,6 +67,8 @@
       <property name="commons.dist" location="${genesis.home}/lib/commons" />
       <property name="hibernate.dist" location="${genesis.home}/lib/hibernate" />
       <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
+      <property name="orangevolt.dist" 
+                location="${genesis.home}/lib/orangevolt-ant-tasks" />
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="xdoclet.dist" location="../../xdoclet/dist" />
 
@@ -96,6 +98,10 @@
 
       <path id="j2ee.path">
          <fileset dir="${j2ee.dist}" includes="*.jar" />
+      </path>
+
+      <path id="orangevolt.path">
+         <fileset dir="${orangevolt.dist}" includes="*.jar" />
       </path>
 
       <path id="xdoclet.path">
@@ -1044,10 +1050,14 @@
    </target>
 
    <target name="run:init" depends="init-paths,run:pre-init">
+      <property name="jar.local.name"
+               value="${genesisBasedApplication.name}-local-weaved.jar" />
       <property name="jar.local.location" 
-               location="${build.dir}/${genesisBasedApplication.name}-local-weaved.jar" />
+               location="${build.dir}/${jar.local.name}" />
+      <property name="jar.remote.name"
+               value="${genesisBasedApplication.name}-remote-weaved.jar" />
       <property name="jar.remote.location" 
-               location="${build.dir}/${genesisBasedApplication.name}-remote-weaved.jar" />
+               location="${build.dir}/${jar.remote.name}" />
       <property name="jar.shared.location" 
                location="${build.dir}/${genesisBasedApplication.name}-shared.jar" />
 
@@ -1649,8 +1659,9 @@
       <property name="webstart.sources.dir" value="webstart" />
       <property name="webstart.target.dir" 
                 value="${build.dir}/war" />
+      <property name="webstart.jars.dir.name" value="application" />
       <property name="webstart.jars.dir" 
-                value="${webstart.target.dir}/application" />
+                value="${webstart.target.dir}/${webstart.jars.dir.name}" />
 
       <property name="webstart.war.file" 
                 value="${build.dir}/${genesisBasedApplication.name}.war" />
@@ -1659,7 +1670,7 @@
 
       <property name="webstart.signjar.alias" value="genesis" />
       <property name="webstart.signjar.keystore" 
-                value="${webstart.sources.dir}/application/genesis.keystore" />
+                value="${webstart.sources.dir}/${webstart.jars.dir.name}/genesis.keystore" />
       <property name="webstart.signjar.storepass" value="summa@brasil" />
       <property name="webstart.signjar.keypass" value="g3n3sis" />
 
@@ -1667,6 +1678,45 @@
       <property name="webstart.port" value="8080" />
       <property name="webstart.context" 
                 value="${genesisBasedApplication.name}"/>
+
+      <property name="webstart.jnlp.homepage"
+                value="http://${webstart.server}:${webstart.port}/${webstart.context}" />
+      <property name="webstart.jnlp.codebase"
+                value="${webstart.jnlp.homepage}/${webstart.jars.dir.name}" />
+      <property name="webstart.jnlp.title" 
+                value="${genesisBasedApplication.prettyName}" />
+      <property name="webstart.jnlp.vendor" 
+                value="${genesisBasedApplication.prettyName}" />
+      <property name="webstart.jnlp.description"
+                value="${genesisBasedApplication.prettyName}" />
+      <property name="webstart.jnlp.tooltip"
+                value="${webstart.jnlp.description}" />
+      <property name="webstart.jnlp.icon" value="icon.gif" />
+
+      <property name="webstart.jnlp.j2se.version" value="1.4+" />
+      <property name="webstart.jnlp.j2se.initial.heap.size" value="32" />
+      <property name="webstart.jnlp.j2se.max.heap.size" value="64" />
+
+      <property name="webstart.jnlp.location.dir"
+                location="${webstart.jars.dir}" />
+
+      <condition property="webstart.local.jnlp.location" 
+                 value="${webstart.jnlp.location.dir}/webstart.jnlp">
+         <istrue value="${local.mode.only}" />
+      </condition>
+      <condition property="webstart.local.jnlp.location" 
+                 value="${webstart.jnlp.location.dir}/local.jnlp">
+         <istrue value="${local.and.remote}" />
+      </condition>
+
+      <condition property="webstart.remote.jnlp.location" 
+                 value="${webstart.jnlp.location.dir}/webstart.jnlp">
+         <istrue value="${remote.mode.only}" />
+      </condition>
+      <condition property="webstart.remote.jnlp.location" 
+                 value="${webstart.jnlp.location.dir}/remote.jnlp">
+         <istrue value="${local.and.remote}" />
+      </condition>
    </target>
 
    <target name="webstart:clean" depends="webstart:init">
@@ -1748,6 +1798,87 @@
          </genesis:webstart-signjar-macro>
       </presetdef>
 
+      <macrodef name="webstart-jnlp-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="tofile" />
+         <element name="customize-fileset" optional="true" />
+         <element name="customize-information" optional="true" />
+         <element name="customize-resources" optional="true" />
+         <element name="customize-security" optional="true" />
+         <element name="properties" optional="true" />
+         <sequential>
+            <taskdef classpathref="orangevolt.path" 
+                     resource="com/orangevolt/tools/ant/taskdefs.properties" />
+            <jnlp codebase="${webstart.jnlp.codebase}" tofile="@{tofile}">
+               <information>
+                  <title>${webstart.jnlp.title}</title>
+                  <vendor>${webstart.jnlp.vendor}</vendor>
+                  <description>${webstart.jnlp.description}</description>
+                  <description kind="tooltip">${webstart.jnlp.tooltip}</description>
+                  <homepage href="${webstart.jnlp.homepage}" />
+                  <icon href="${webstart.jnlp.icon}" />
+                  <customize-information />
+               </information>
+               <customize-security />
+               <resources>
+                  <j2se version="${webstart.jnlp.j2se.version}" 
+                        initial_heap_size="${webstart.jnlp.j2se.initial.heap.size}" 
+                        max_heap_size="${webstart.jnlp.j2se.max.heap.size}" />
+                  <jar download="eager">
+                     <fileset dir="${webstart.jars.dir}" includes="**/*.jar">
+                        <customize-fileset />
+                     </fileset>
+                  </jar>
+                  <customize-resources />
+                  <properties />
+               </resources>
+               <application_desc main_class="${genesisBasedApplication.mainClass}" />
+            </jnlp>
+         </sequential>
+      </macrodef>
+      <presetdef name="webstart-jnlp"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:webstart-jnlp-macro>
+            <customize-fileset>
+               <exclude name="${jar.local.name}" />
+               <exclude name="${jar.remote.name}" />
+            </customize-fileset>
+            <customize-security>
+               <security>
+                 <all_permissions />
+               </security>
+            </customize-security>
+         </genesis:webstart-jnlp-macro>
+      </presetdef>
+      <presetdef name="webstart-jnlp-local"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:webstart-jnlp tofile="${webstart.local.jnlp.location}">
+            <customize-resources>
+               <jar download="eager" main="true">
+                  <fileset dir="${webstart.jars.dir}" 
+                           includes="${jar.local.name}" />
+               </jar>
+            </customize-resources>
+         </genesis:webstart-jnlp>
+      </presetdef>
+      <presetdef name="webstart-jnlp-remote"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:webstart-jnlp tofile="${webstart.remote.jnlp.location}">
+            <customize-resources>
+               <jar download="eager" main="true">
+                  <fileset dir="${webstart.jars.dir}" 
+                           includes="${jar.remote.name}" />
+               </jar>
+            </customize-resources>
+            <properties>
+               <property name="java.naming.provider.url" 
+                         value="${jboss.provider.url}"/>
+               <property name="java.naming.factory.initial" 
+                         value="${jboss.factory.initial}"/>
+            </properties>
+         </genesis:webstart-jnlp>
+      </presetdef>
+
       <macrodef name="webstart-copy-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="targetdir" default="${webstart.target.dir}" />
@@ -1775,23 +1906,12 @@
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:webstart-copy-macro>
             <filter-tokens>
-               <filter token="genesis.version" value="${genesis.version}"/>
-               <filter token="jboss.provider.url" 
-                       value="${jboss.provider.url}"/>
-               <filter token="jboss.provider.port" 
-                       value="${jboss.provider.port}"/>
-               <filter token="jboss.factory.initial" 
-                       value="${jboss.factory.initial}" />
-               <filter token="webstart.server" value="${webstart.server}"/>
-               <filter token="webstart.port" value="${webstart.port}"/>
-               <filter token="webstart.context" value="${webstart.context}"/>
                <filter token="app.main" 
                        value="${genesisBasedApplication.mainClass}"/>
                <filter token="pretty.name" 
                        value="${genesisBasedApplication.prettyName}"/>
             </filter-tokens>
             <includes>
-               <include name="**/*.jnlp"/>
                <include name="**/*.html"/>
             </includes>
             <excludes>
@@ -1813,6 +1933,46 @@
                target="-do-webstart-signjar" />
    </target>
 
+   <target name="webstart:check-jnlp-conditions" 
+           depends="webstart:check-conditions">
+      <condition property="webstart.local.jnlp.needed">
+         <and>
+            <istrue value="${webstart.needed}" />
+            <istrue value="${local.mode}" />
+            <not>
+               <uptodate>
+                  <srcfiles dir="${webstart.jars.dir}" includes="**/*.jar" />
+                  <mapper type="merge" to="${webstart.local.jnlp.location}" />
+               </uptodate>
+            </not>
+         </and>
+      </condition>
+      <condition property="webstart.remote.jnlp.needed">
+         <and>
+            <istrue value="${webstart.needed}" />
+            <istrue value="${remote.mode}" />
+            <not>
+               <uptodate value="false">
+                  <srcfiles dir="${webstart.jars.dir}" includes="**/*.jar" />
+                  <mapper type="merge" to="${webstart.remote.jnlp.location}" />
+               </uptodate>
+            </not>
+         </and>
+      </condition>
+   </target>
+
+   <target name="webstart:jnlp-local" 
+           depends="webstart:macrodefs,webstart:check-jnlp-conditions"
+           if="webstart.local.jnlp.needed">
+      <genesis:webstart-jnlp-local />
+   </target>
+
+   <target name="webstart:jnlp-remote"
+           depends="webstart:macrodefs,webstart:check-jnlp-conditions"
+           if="webstart.remote.jnlp.needed">
+      <genesis:webstart-jnlp-remote />
+   </target>
+
    <target name="webstart:copy" depends="webstart:macrodefs"
            if="needs.webstart">
       <genesis:webstart-copy />
@@ -1825,7 +1985,8 @@
    </target>
 
    <target name="webstart" 
-           depends="webstart:signjar,webstart:copy,webstart:war" />
+           depends="webstart:signjar,webstart:jnlp-local,webstart:jnlp-remote,
+                    webstart:copy,webstart:war" />
 
    <target name="deploy:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
