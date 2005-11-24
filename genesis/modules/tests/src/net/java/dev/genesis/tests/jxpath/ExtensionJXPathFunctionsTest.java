@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -122,6 +122,11 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       emptyTester(ctx, "fieldMap", isEmpty);
    }
 
+   private void nestedPropertyEmptyTest(final JXPathContext ctx,
+         final boolean isEmpty) {
+      emptyTester(ctx, "fieldBean/name", isEmpty);
+   }
+
    private void emptyTester(final JXPathContext ctx, final String fieldName,
          final boolean isEmpty) {
       final boolean result = Boolean.TRUE.equals(JXPathContext.compile(
@@ -196,11 +201,23 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       // Objects must be empty
       objectFieldsEmptyTest(ctx, true);
 
+      // Nested property must be empty
+      nestedPropertyEmptyTest(ctx, true);
+
       // Populate All fields
       form.populateAllFields();
 
       // Objects cannot be empty
       objectFieldsEmptyTest(ctx, false);
+
+      // Nested property must be empty
+      nestedPropertyEmptyTest(ctx, true);
+
+      // Populate nested properties
+      form.populateNestedProperties();
+
+      // Nested property must not be empty
+      nestedPropertyEmptyTest(ctx, false);
 
       // Set empty arrays, collections and maps
       form.populateWithEmptyArraysAndCollections();
@@ -1204,6 +1221,10 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
          setFieldObject(new Object());
          setFieldBean(new RegularJavaBean());
          populateArraysAndCollections();
+      }
+
+      public void populateNestedProperties() {
+         getFieldBean().setName("name");
       }
 
       public void populateArraysAndCollections() {
