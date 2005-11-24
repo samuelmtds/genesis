@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="genesis:dist" name="genesis distribution build" basedir=".">
+<project default="genesis:dist" name="genesis distribution build" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/build_dist.xml">
    <property file="build.properties" />
    <property file="project.properties" />
    <property name="build.dir" value="${genesis.build.dir}" />
@@ -17,7 +17,7 @@
    </condition>
 
    <!-- Call using maven or build site before -->
-   <target name="genesis:dist" description="Generate genesis distribution">
+   <target name="genesis:dist" description="Generate genesis distribution" depends="define-dist-macro">
       <echo>This target must be called using maven... or build site before (maven genesis:site).</echo>
 
       <!-- Problems with <ant ...>, <antcall ...> or <subant...>. TODO: See what's happening -->
@@ -38,22 +38,18 @@
       </delete>
 
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
-         <arg line="-f ${basedir}/../samples/useradmin/build.xml useradmin:dist" />
+         <arg line="-f ${basedir}/../samples/useradmin/build.xml dist" />
       </exec>
 
       <patternset id="genesis-license.pattern">
          <include name="genesis/LICENSE.txt" />
          <include name="genesis/lgpl.txt" />
+         <exclude name="**/Thumbs.db" />
       </patternset>
 
       <patternset id="genesis-dist.pattern">
          <patternset refid="genesis-license.pattern" />
          <include name="genesis/${genesis.dist.dir}/**" />
-      </patternset>
-
-      <patternset id="genesis-dependencies.pattern">
-         <patternset refid="genesis-license.pattern" />
-         <include name="genesis/${genesis.lib.dir}/**" />
       </patternset>
 
       <patternset id="genesis-empty-project.pattern">
@@ -62,7 +58,9 @@
          <include name="samples/empty-project/modules/**" />
          <include name="samples/empty-project/webstart/**" />
          <exclude name="samples/empty-project/.*" />
+         <exclude name="samples/empty-project/**/${build.dir}/**/*" />
          <exclude name="samples/empty-project/build.properties" />
+         <exclude name="samples/empty-project/master_build.xml" />
       </patternset>
 
       <patternset id="genesis-useradmin-sample.pattern">
@@ -74,6 +72,7 @@
          <exclude name="samples/useradmin/.*" />
          <exclude name="samples/useradmin/**/${build.dir}/**/*" />
          <exclude name="samples/useradmin/**/build.properties" />
+         <exclude name="samples/useradmin/master_build.xml" />
       </patternset>
 
       <patternset id="genesis-src.pattern">
@@ -93,7 +92,13 @@
 
       <patternset id="genesis-xdoclet-extensions.pattern">
          <patternset refid="genesis-license.pattern" />
-         <include name="${xdoclet.dist}/xdoclet-*.jar" />
+         <include name="${xdoclet.dist}/*.jar" />
+      </patternset>
+
+      <patternset id="genesis-dependencies.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <patternset refid="genesis-xdoclet-extensions.pattern"/>
+         <include name="genesis/${genesis.lib.dir}/**" />
       </patternset>
 
       <patternset id="genesis-all.pattern">
@@ -107,60 +112,74 @@
          <patternset refid="genesis-xdoclet-extensions.pattern" />
       </patternset>
 
-      <antcall target="generate.dist">
-         <param name="dist.type" value="genesis-dist" />
-      </antcall>
-      <antcall target="generate.dist">
-         <param name="dist.type" value="genesis-dependencies" />
-      </antcall>
-      <antcall target="generate.dist">
-         <param name="dist.type" value="genesis-empty-project" />
-      </antcall>
-      <antcall target="generate.dist">
-         <param name="dist.type" value="genesis-useradmin-sample" />
-      </antcall>
-      <antcall target="generate.dist">
-         <param name="dist.type" value="genesis-src" />
-      </antcall>
-      <antcall target="generate.dist.with.docs">
-         <param name="dist.type" value="genesis-docs" />
-      </antcall>
-      <antcall target="generate.dist">
-         <param name="dist.type" value="genesis-xdoclet-extensions" />
-      </antcall>
-      <antcall target="generate.dist.with.docs">
-         <param name="dist.type" value="genesis-all" />
-      </antcall>
+      <genesis:generate-dist type="genesis-dist"/>
+      <genesis:generate-dist type="genesis-dependencies"/>
+      <genesis:generate-dist type="genesis-xdoclet-extensions"/>
+      <genesis:generate-dist type="genesis-src" />
+      <genesis:generate-dist type="genesis-empty-project">
+         <zipcustomize>
+            <zipfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project" includes="master_build.xml"/>
+		 </zipcustomize>
+         <tarcustomize>
+             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project" includes="master_build.xml"/>
+ 		 </tarcustomize>
+      </genesis:generate-dist>
+
+      <genesis:generate-dist type="genesis-useradmin-sample">
+         <zipcustomize>
+            <zipfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin" includes="master_build.xml"/>
+		 </zipcustomize>
+         <tarcustomize>
+             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin" includes="master_build.xml"/>
+ 		 </tarcustomize>
+      </genesis:generate-dist>
+      
+      <genesis:generate-dist type="genesis-docs">
+         <zipcustomize>
+            <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
+		 </zipcustomize>
+         <tarcustomize>
+             <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
+ 		 </tarcustomize>
+      </genesis:generate-dist>
+      
+      <genesis:generate-dist type="genesis-all">
+         <zipcustomize>
+            <zipfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project" includes="master_build.xml"/>
+            <zipfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin" includes="master_build.xml"/>
+            <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
+		 </zipcustomize>
+         <tarcustomize>
+             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project" includes="master_build.xml"/>
+             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin" includes="master_build.xml"/>
+             <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
+ 		 </tarcustomize>
+      </genesis:generate-dist>
+
    </target>
 
-   <target name="generate.dist">
-      <echo>Generating ${dist.type}...</echo>
-      <zip destfile="${build.dir}/${dist.type}-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="${dist.type}.pattern" />
-         </zipfileset>
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/${dist.type}-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="${dist.type}.pattern" />
-         </tarfileset>
-      </tar>
-   </target>
-
-   <target name="generate.dist.with.docs">
-      <echo>Generating ${dist.type}...</echo>
-      <zip destfile="${build.dir}/${dist.type}-${genesis.version}.zip">
-         <zipfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="${dist.type}.pattern" />
-         </zipfileset>
-         <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
-      </zip>
-      <tar longfile="gnu" tarfile="${build.dir}/${dist.type}-${genesis.version}.tar.gz" compression="gzip">
-         <tarfileset dir="../" prefix="genesis-${genesis.version}">
-            <patternset refid="${dist.type}.pattern" />
-         </tarfileset>
-         <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
-      </tar>
+   <target name="define-dist-macro">
+      <macrodef name="generate-dist"
+              uri="https://genesis.dev.java.net/nonav/ns/build_dist.xml">
+       <attribute name="type"/>
+       <element name="zipcustomize" optional="true" />
+       <element name="tarcustomize" optional="true" />
+       <sequential>
+          <echo>Generating @{type}...</echo>
+	        <zip destfile="${build.dir}/@{type}-${genesis.version}.zip">
+	           <zipfileset dir="../" prefix="genesis-${genesis.version}">
+	              <patternset refid="@{type}.pattern" />
+	           </zipfileset>
+	           <zipcustomize/>
+	        </zip>
+	        <tar longfile="gnu" tarfile="${build.dir}/@{type}-${genesis.version}.tar.gz" compression="gzip">
+	           <tarfileset dir="../" prefix="genesis-${genesis.version}">
+	              <patternset refid="@{type}.pattern" />
+	           </tarfileset>
+	           <tarcustomize/>
+	        </tar>
+       </sequential>
+    </macrodef>
    </target>
 
 </project>

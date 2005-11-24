@@ -70,7 +70,7 @@
       <property name="orangevolt.dist" 
                 location="${genesis.home}/lib/orangevolt-ant-tasks" />
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
-      <property name="xdoclet.dist" location="../../xdoclet/dist" />
+      <property name="xdoclet.dist" location="${genesis.home}/../xdoclet/dist" />
 
       <property name="jboss.app" 
                 location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
@@ -2084,6 +2084,9 @@
 
    <target name="all" depends="compile,jar,server-artifact,deploy" 
            description="Builds the whole project"/>
+
+   <target name="dist" depends="compile,jar,server-artifact" 
+           description="Creates the project distribution.xml"/>
 
    <target name="pre-clean">
       <property name="clean.build" value="true" />
