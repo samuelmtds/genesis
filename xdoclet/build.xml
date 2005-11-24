@@ -18,6 +18,7 @@
               <include name="log4j.jar" />
               <include name="xdoclet-hibernate-module-${xdoclet.version}.jar" />
               <include name="xdoclet-xdoclet-module-${xdoclet.version}.jar" />
+              <include name="xdoclet-ejb-module-${xdoclet.version}.jar" />
            </fileset>
         </copy>
     </target>
