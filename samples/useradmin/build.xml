@@ -20,5 +20,5 @@
    </target>
 
    <target name="dist" depends="compile,jar,server-artifact" 
-              description="Creates the project distribution.xml"/>
+              description="Creates the project distribution"/>
 </project>
