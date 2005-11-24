@@ -77,7 +77,9 @@
       <property name="jboss.client"
                 location="${jboss.home}/client" />
 
-      <property name="jdbc.driver" value="${jboss.app}/lib/hsqldb.jar" />
+      <property name="jdbc.driver.jar.name" value="hsqldb.jar" />
+      <property name="jdbc.driver" 
+                value="${jboss.app}/lib/${jdbc.driver.jar.name}" />
 
       <path id="aspectwerkz.path">
          <fileset dir="${aspectwerkz.dist}">
@@ -1131,7 +1133,7 @@
             <not>
                <isset property="run.set.custom.classpath" />
             </not>
-            <isreference refid="run.additional.classpath" />
+            <isreference refid="run.additional.classpath" type="path" />
          </and>
       </condition>
       <condition property="run.set.standard.classpath">
@@ -1153,7 +1155,7 @@
             <not>
                <isset property="run.set.custom.local.classpath" />
             </not>
-            <isreference refid="run.additional.local.classpath" />
+            <isreference refid="run.additional.local.classpath" type="path" />
          </and>
       </condition>
       <condition property="run.set.standard.local.classpath">
@@ -1175,7 +1177,7 @@
             <not>
                <isset property="run.set.custom.remote.classpath" />
             </not>
-            <isreference refid="run.additional.remote.classpath" />
+            <isreference refid="run.additional.remote.classpath" type="path" />
          </and>
       </condition>
       <condition property="run.set.standard.remote.classpath">
@@ -1735,13 +1737,15 @@
       <macrodef name="webstart-signjar-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="lazy" default="true" />
-         <element name="jar-fileset" optional="false" />
          <element name="customize" optional="true" />
+         <element name="jar-fileset" optional="false" />
+         <element name="before-signjar" optional="true" />
          <sequential>
             <copy todir="${webstart.jars.dir}">
                <jar-fileset />
                <customize />
             </copy>
+            <before-signjar />
             <signjar alias="${webstart.signjar.alias}"
                   keystore="${webstart.signjar.keystore}"
                   storepass="${webstart.signjar.storepass}" 
@@ -1783,9 +1787,7 @@
                   <include name="jrexx-*.jar" />
                   <include name="trove*.jar" />
                </fileset>
-               <fileset dir="${jboss.app}/lib">
-                  <include name="hsqldb.jar" />
-               </fileset>
+               <fileset file="${jdbc.driver}" />
                <fileset dir="${jboss.client}">
                   <include name="jboss-client.jar" />
                   <include name="jboss-common-client.jar" />
@@ -1842,6 +1844,7 @@
             <customize-fileset>
                <exclude name="${jar.local.name}" />
                <exclude name="${jar.remote.name}" />
+               <exclude name="${jdbc.driver.jar.name}" />
             </customize-fileset>
             <customize-security>
                <security>
@@ -1857,6 +1860,10 @@
                <jar download="eager" main="true">
                   <fileset dir="${webstart.jars.dir}" 
                            includes="${jar.local.name}" />
+               </jar>
+               <jar download="eager">
+                  <fileset dir="${webstart.jars.dir}" 
+                           includes="${jdbc.driver.jar.name}" />
                </jar>
             </customize-resources>
          </genesis:webstart-jnlp>
