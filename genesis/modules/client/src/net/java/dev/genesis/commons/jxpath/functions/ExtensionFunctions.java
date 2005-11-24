@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +23,11 @@ import java.util.Map;
 import net.java.dev.genesis.commons.jxpath.GenesisNodeSet;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
+import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormState;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -38,6 +40,14 @@ public class ExtensionFunctions {
 
    private static Object getValue(final ExpressionContext ctx,
          final String propertyName) throws Exception {
+      int indexOfDot = -1;
+      
+      while ((indexOfDot = propertyName.indexOf('.', indexOfDot + 1)) != -1) {
+         if (PropertyUtils.getProperty(ctx.getJXPathContext().getContextBean(),
+            propertyName.substring(0, indexOfDot)) == null) {
+            return null;
+         }
+      }
 
       return PropertyUtils.getProperty(ctx.getJXPathContext().getContextBean(),
             propertyName);
@@ -50,10 +60,7 @@ public class ExtensionFunctions {
    }
 
    private static String getSimplePropertyName(final GenesisNodeSet nodeSet) {
-      final String path = nodeSet.getPath();
-      int index;
-
-      return (index = path.indexOf('/')) > 0 ? path.substring(0, index) : path;
+      return nodeSet.getPath().replace('/', '.');
    }
 
    private static EqualityComparator getEqualityComparator(
@@ -62,9 +69,12 @@ public class ExtensionFunctions {
       if (obj instanceof GenesisNodeSet) {
          final FormMetadata meta = (FormMetadata) ctx.getJXPathContext()
                .getVariables().getVariable(FormController.FORM_METADATA_KEY);
-         return meta.getFieldMetadata(
-               getSimplePropertyName((GenesisNodeSet) obj))
-               .getEqualityComparator();
+         final FieldMetadata fieldMetadata = meta.getFieldMetadata(
+               getSimplePropertyName((GenesisNodeSet)obj));
+
+         if (fieldMetadata != null) {
+            return fieldMetadata.getEqualityComparator();
+         }
       }
 
       return EqualityComparatorRegistry.getInstance()
@@ -95,7 +105,6 @@ public class ExtensionFunctions {
 
    public static boolean isEmpty(final ExpressionContext ctx, final Object obj)
          throws Exception {
-
       if (!(obj instanceof GenesisNodeSet)) {
          return EmptyResolverRegistry.getInstance().getDefaultEmptyResolverFor(
                obj.getClass()).isEmpty(obj);
@@ -104,10 +113,16 @@ public class ExtensionFunctions {
       final GenesisNodeSet nodeSet = (GenesisNodeSet) obj;
       final FormMetadata formMeta = (FormMetadata) ctx.getJXPathContext()
             .getVariables().getVariable(FormController.FORM_METADATA_KEY);
-      final String propertyName = getSimplePropertyName(nodeSet);
 
-      return formMeta.getFieldMetadata(getSimplePropertyName(nodeSet))
-            .getEmptyResolver().isEmpty(getValue(ctx, propertyName));
+      final String propertyName = getSimplePropertyName(nodeSet);
+      final Object value = getValue(ctx, propertyName);
+      final FieldMetadata fieldMetadata = formMeta.getFieldMetadata(propertyName);
+
+      EmptyResolver resolver = (fieldMetadata == null) ?
+            (EmptyResolver)EmptyResolverRegistry.getInstance().get(obj) :
+            fieldMetadata.getEmptyResolver();
+
+      return resolver.isEmpty(value);
    }
 
    public static boolean isNotEmpty(final ExpressionContext ctx, final Object obj)
