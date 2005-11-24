@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="useradmin" default="all" basedir=".">
+<project name="useradmin" default="all" basedir="."
+         xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
    <import file="master_build.xml" />
    
    <target name="-pre-init">
