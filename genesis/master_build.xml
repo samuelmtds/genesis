@@ -2024,7 +2024,7 @@
    </target>
 
    <target name="deploy:init" 
-           depends="init-paths,server-artifact:init,webstart:init">
+           depends="init-paths,server-artifact:init,webstart:init,deploy:pre-init">
       <property name="needs.deploy" value="${remote.mode}" />
 
       <property name="jboss.app.deploy" location="${jboss.app}/deploy" />
@@ -2054,6 +2054,35 @@
             <istrue value="${needs.webstart}" />
          </and>
       </condition>
+   </target>
+
+   <target name="deploy:macrodefs" depends="deploy:check-conditions"
+           if="deploy.needed">
+      <macrodef name="deploy-server-artifact-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="default-filesets" optional="true" />
+         <element name="filesets" optional="true" />
+         <element name="validation-task" optional="false" />
+         <sequential>
+            <copy todir="${jboss.app.deploy}">
+               <default-filesets />
+               <filesets />
+            </copy>
+         </sequential>
+      </macrodef>
+
+      <presetdef name="deploy-server-artifact"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:deploy-server-artifact-macro>
+            <default-filesets>
+               <fileset file="${jboss.datasource.config.xml}" />
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-server-${genesis.version}.jar"/>
+               </fileset>
+               <fileset file="${server.artifact.location}" />
+            </default-filesets>
+         </genesis:deploy-server-artifact-macro>
+      </presetdef>
    </target>
 
    <target name="deploy:create-server" depends="deploy:check-conditions"
@@ -2091,15 +2120,14 @@
       </copy>
    </target>
 
-   <target name="deploy:server-artifact" depends="deploy:check-conditions"
+   <target name="-do-deploy-server-artifact">
+      <genesis:deploy-server-artifact />
+   </target>
+
+   <target name="deploy:server-artifact" depends="deploy:macrodefs"
            if="deploy.needed">
-      <copy todir="${jboss.app.deploy}">
-         <fileset file="${jboss.datasource.config.xml}" />
-         <fileset dir="${genesis.dist}">
-            <include name="genesis-server-${genesis.version}.jar"/>
-         </fileset>
-         <fileset file="${server.artifact.location}" />
-      </copy>
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-deploy-server-artifact" />
    </target>
 
    <target name="deploy:webstart" depends="deploy:check-conditions"
