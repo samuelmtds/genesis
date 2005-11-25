@@ -1595,7 +1595,7 @@
    </target>
 
    <target name="server-artifact:init" 
-           depends="init-paths,jar:init,shared:init">
+           depends="init-paths,jar:init,shared:init,server-artifact:pre-init">
       <property name="needs.server.artifact" value="${remote.mode}" />
 
       <property name="server.artifact.location" 
