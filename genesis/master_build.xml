@@ -1701,22 +1701,25 @@
 
       <property name="webstart.jnlp.location.dir"
                 location="${webstart.jars.dir}" />
+      <property name="webstart.jnlp.local.name" value="local.jnlp" />
+      <property name="webstart.jnlp.remote.name" value="remote.jnlp" />
+      <property name="webstart.jnlp.single.name" value="webstart.jnlp" />
 
       <condition property="webstart.local.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/webstart.jnlp">
+                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.single.name}">
          <istrue value="${local.mode.only}" />
       </condition>
       <condition property="webstart.local.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/local.jnlp">
+                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.local.name}">
          <istrue value="${local.and.remote}" />
       </condition>
 
       <condition property="webstart.remote.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/webstart.jnlp">
+                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.single.name}">
          <istrue value="${remote.mode.only}" />
       </condition>
       <condition property="webstart.remote.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/remote.jnlp">
+                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.remote.name}">
          <istrue value="${local.and.remote}" />
       </condition>
    </target>
@@ -1804,6 +1807,7 @@
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="tofile" />
          <element name="customize-fileset" optional="true" />
+         <element name="default-excludes" optional="true" />
          <element name="customize-information" optional="true" />
          <element name="customize-resources" optional="true" />
          <element name="customize-security" optional="true" />
@@ -1828,6 +1832,7 @@
                         max_heap_size="${webstart.jnlp.j2se.max.heap.size}" />
                   <jar download="eager">
                      <fileset dir="${webstart.jars.dir}" includes="**/*.jar">
+                        <default-excludes />
                         <customize-fileset />
                      </fileset>
                   </jar>
@@ -1841,11 +1846,11 @@
       <presetdef name="webstart-jnlp"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:webstart-jnlp-macro>
-            <customize-fileset>
+            <default-excludes>
                <exclude name="${jar.local.name}" />
                <exclude name="${jar.remote.name}" />
                <exclude name="${jdbc.driver.jar.name}" />
-            </customize-fileset>
+            </default-excludes>
             <customize-security>
                <security>
                  <all_permissions />
@@ -1954,12 +1959,13 @@
             </not>
          </and>
       </condition>
+
       <condition property="webstart.remote.jnlp.needed">
          <and>
             <istrue value="${webstart.needed}" />
             <istrue value="${remote.mode}" />
             <not>
-               <uptodate value="false">
+               <uptodate>
                   <srcfiles dir="${webstart.jars.dir}" includes="**/*.jar" />
                   <mapper type="merge" to="${webstart.remote.jnlp.location}" />
                </uptodate>
@@ -1980,6 +1986,9 @@
       <genesis:webstart-jnlp-remote />
    </target>
 
+   <target name="webstart:jnlp" 
+           depends="webstart:jnlp-local,webstart:jnlp-remote" />
+
    <target name="webstart:copy" depends="webstart:macrodefs"
            if="needs.webstart">
       <genesis:webstart-copy />
@@ -1992,8 +2001,7 @@
    </target>
 
    <target name="webstart" 
-           depends="webstart:signjar,webstart:jnlp-local,webstart:jnlp-remote,
-                    webstart:copy,webstart:war" />
+           depends="webstart:signjar,webstart:jnlp,webstart:copy,webstart:war" />
 
    <target name="deploy:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
