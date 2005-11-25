@@ -972,16 +972,20 @@
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="targetdir" />
          <attribute name="xml" />
-         <element name="copy-fileset" optional="false" />
-         <element name="unjar-fileset" optional="false" />
+         <element name="default-copy-fileset" optional="true" />
+         <element name="copy-fileset" optional="true" />
+         <element name="default-unjar-fileset" optional="true" />
+         <element name="unjar-fileset" optional="true" />
          <sequential>
             <delete dir="@{targetdir}" />
             <mkdir dir="@{targetdir}" />
 
             <copy todir="@{targetdir}">
+               <default-copy-fileset />
                <copy-fileset />
             </copy>
             <unjar dest="@{targetdir}">
+               <default-unjar-fileset />
                <unjar-fileset />
             </unjar>
             <copy file="@{xml}" 
@@ -991,24 +995,32 @@
       <presetdef name="weaving-copy"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:weaving-copy-macro>
-            <copy-fileset>
+            <default-copy-fileset>
                <fileset dir="${client.annotated.dir}" includes="**/*.class" />
                <fileset dir="${shared.annotated.dir}" includes="**/*.class" />
-            </copy-fileset>
-            <unjar-fileset>
+            </default-copy-fileset>
+            <default-unjar-fileset>
                <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
                <fileset dir="${genesis.dist}"
                         includes="genesis-shared-annotated-${genesis.version}.jar" />
-            </unjar-fileset>
+            </default-unjar-fileset>
          </genesis:weaving-copy-macro>
       </presetdef>
+   </target>
+
+   <target name="-do-weaving-copy-files">
+      <genesis:weaving-copy targetdir="${weaving.copy.dir}" 
+                            xml="${weaving.copy.xml}" />
    </target>
 
    <target name="weaving:copy-local-files" 
            depends="weaving:check-conditions,weaving:macrodefs" 
            if="weaving.local.needed">
-      <genesis:weaving-copy targetdir="${weaving.local.dir}" 
-                            xml="${weaving.local.xml}" />
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-weaving-copy-files">
+         <param name="weaving.copy.dir" value="${weaving.local.dir}" />
+         <param name="weaving.copy.xml" value="${weaving.local.xml}" />
+      </antcall>
    </target>
 
    <target name="weaving:local" 
@@ -1022,8 +1034,11 @@
 
    <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
            if="weaving.remote.needed">
-      <genesis:weaving-copy targetdir="${weaving.remote.dir}" 
-                            xml="${weaving.remote.xml}" />
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-weaving-copy-files">
+         <param name="weaving.copy.dir" value="${weaving.remote.dir}" />
+         <param name="weaving.copy.xml" value="${weaving.remote.xml}" />
+      </antcall>
    </target>
 
    <target name="weaving:remote" 
