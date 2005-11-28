@@ -1831,6 +1831,7 @@
          <element name="customize-information" optional="true" />
          <element name="customize-resources" optional="true" />
          <element name="customize-security" optional="true" />
+         <element name="default-properties" optional="true" />
          <element name="properties" optional="true" />
          <sequential>
             <taskdef classpathref="orangevolt.path" 
@@ -1857,6 +1858,7 @@
                         <customize-fileset />
                      </fileset>
                   </jar>
+                  <default-properties />
                   <properties />
                </resources>
                <application_desc main_class="${genesisBasedApplication.mainClass}" />
@@ -1902,12 +1904,12 @@
                            includes="${jar.remote.name}" />
                </jar>
             </customize-resources>
-            <properties>
+            <default-properties>
                <property name="java.naming.provider.url" 
                          value="${jboss.provider.url}"/>
                <property name="java.naming.factory.initial" 
                          value="${jboss.factory.initial}"/>
-            </properties>
+            </default-properties>
          </genesis:webstart-jnlp>
       </presetdef>
 
@@ -1994,16 +1996,26 @@
       </condition>
    </target>
 
+   <target name="-do-webstart-jnlp-local">
+      <genesis:webstart-jnlp-local />
+   </target>
+
    <target name="webstart:jnlp-local" 
            depends="webstart:macrodefs,webstart:check-jnlp-conditions"
            if="webstart.local.jnlp.needed">
-      <genesis:webstart-jnlp-local />
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-webstart-jnlp-local" />
+   </target>
+
+   <target name="do-webstart-jnlp-remote">
+      <genesis:webstart-jnlp-remote />
    </target>
 
    <target name="webstart:jnlp-remote"
            depends="webstart:macrodefs,webstart:check-jnlp-conditions"
            if="webstart.remote.jnlp.needed">
-      <genesis:webstart-jnlp-remote />
+      <antcall inheritall="true" inheritrefs="true" 
+               target="-do-webstart-jnlp-remote" />
    </target>
 
    <target name="webstart:jnlp" 
