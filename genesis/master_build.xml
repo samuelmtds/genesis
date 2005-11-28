@@ -181,14 +181,20 @@
       <property name="has.shared.sources" value="true" />
 
       <property name="shared.dir" value="modules/shared" />
-      <property name="shared.sources.dir" value="${shared.dir}/${sources.dir}" />
-      <property name="shared.classes.dir" value="${shared.dir}/${classes.dir}" />
-      <property name="shared.annotated.dir" value="${shared.dir}/${annotated.dir}" />
+      <property name="shared.sources.dir" 
+                value="${shared.dir}/${sources.dir}" />
+      <property name="shared.classes.dir" 
+                value="${shared.dir}/${classes.dir}" />
+      <property name="shared.annotated.dir" 
+                value="${shared.dir}/${annotated.dir}" />
       <property name="shared.annotated.timestamp.file" 
                 location="${shared.annotated.dir}/${timestamp.file}" />
-      <property name="shared.hibernate.dir" value="${shared.dir}/${build.dir}/hibernate" />
+      <property name="shared.hibernate.dir" 
+                value="${shared.dir}/${build.dir}/hibernate" />
       <property name="shared.hibernate.timestamp.file" 
                 location="${shared.hibernate.dir}/${timestamp.file}" />
+      <property name="shared.hibernate.merge.dir"
+                value="${shared.sources.dir}" />
 
       <property name="hibernate.generate.files" value="true" />
       <property name="hibernate.session.factory.jndi.name" 
@@ -399,7 +405,8 @@
                </fileset>
                <hibernate version="2.0"
                           xmlencoding="ISO-8859-1"
-                          validateXML="false" />
+                          validateXML="false" 
+                          mergedir="${shared.hibernate.merge.dir}" />
                <subtasks />
             </hibernatedoclet>
             <touch file="${shared.hibernate.timestamp.file}" />
@@ -1790,6 +1797,7 @@
                   <include name="ehcache*.jar" />
                   <include name="hibernate*.jar" />
                   <include name="jta.jar" />
+                  <include name="odmg-*.jar" />
                </fileset>
                <fileset dir="${genesis.dist}">
                   <include name="genesis-client-${genesis.version}.jar"/>
