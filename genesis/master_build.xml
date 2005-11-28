@@ -1050,7 +1050,13 @@
                    touchfile="${weaving.remote.timestamp.file}" />
    </target>
 
-   <target name="weaving" depends="weaving:local,weaving:remote" />
+   <target name="-do-custom-weaving">
+      <!-- Override to implement extra tasks that should be performed after 
+           the weaving process -->
+   </target>
+
+   <target name="weaving" 
+           depends="weaving:local,weaving:remote,-do-custom-weaving" />
 
    <target name="-do-custom-compile">
       <!-- Override to implement extra tasks that should be performed after 
