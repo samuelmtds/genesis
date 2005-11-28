@@ -1357,35 +1357,29 @@
       <genesis:java-local />
    </target>
 
-   <target name="run:local" depends="run:define-classpath,run:macrodefs">
-      <antcall inheritall="true" inheritrefs="true" target="-do-run-local" />
-   </target>
+   <target name="run:local" 
+           depends="run:define-classpath,run:macrodefs,-do-run-local" />
 
    <target name="-do-run-remote">
       <genesis:java-remote />
    </target>
 
-   <target name="run:remote" depends="run:define-classpath,run:macrodefs">
-      <antcall inheritall="true" inheritrefs="true" target="-do-run-remote" />
-   </target>
+   <target name="run:remote" 
+           depends="run:define-classpath,run:macrodefs,-do-run-remote" />
 
    <target name="-do-run-debug-local">
       <genesis:debug-local />
    </target>
 
-   <target name="run:debug-local" depends="run:define-classpath,run:macrodefs">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-run-debug-local" />
-   </target>
+   <target name="run:debug-local" 
+           depends="run:define-classpath,run:macrodefs,-do-run-debug-local" />
 
    <target name="-do-run-debug-remote">
       <genesis:debug-remote />
    </target>
 
-   <target name="run:debug-remote" depends="run:define-classpath,run:macrodefs">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-run-debug-remote" />
-   </target>
+   <target name="run:debug-remote" 
+           depends="run:define-classpath,run:macrodefs,-do-run-debug-remote" />
 
    <target name="jar:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
@@ -1593,7 +1587,12 @@
                    sourcesdir="${shared.sources.dir}" />
    </target>
 
-   <target name="jar" depends="jar:local,jar:remote,jar:shared" />
+   <target name="-do-custom-jar">
+      <!-- Override to implement extra tasks that should be performed after 
+           generating the default jar files -->
+   </target>
+
+   <target name="jar" depends="jar:local,jar:remote,jar:shared,-do-custom-jar" />
 
    <target name="server-artifact:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
@@ -1717,8 +1716,8 @@
       <property name="webstart.jnlp.icon" value="icon.gif" />
 
       <property name="webstart.jnlp.j2se.version" value="1.4+" />
-      <property name="webstart.jnlp.j2se.initial.heap.size" value="32" />
-      <property name="webstart.jnlp.j2se.max.heap.size" value="64" />
+      <property name="webstart.jnlp.j2se.initial.heap.size" value="32M" />
+      <property name="webstart.jnlp.j2se.max.heap.size" value="64M" />
 
       <property name="webstart.jnlp.location.dir"
                 location="${webstart.jars.dir}" />
@@ -1851,13 +1850,13 @@
                   <j2se version="${webstart.jnlp.j2se.version}" 
                         initial_heap_size="${webstart.jnlp.j2se.initial.heap.size}" 
                         max_heap_size="${webstart.jnlp.j2se.max.heap.size}" />
+                  <customize-resources />
                   <jar download="eager">
                      <fileset dir="${webstart.jars.dir}" includes="**/*.jar">
                         <default-excludes />
                         <customize-fileset />
                      </fileset>
                   </jar>
-                  <customize-resources />
                   <properties />
                </resources>
                <application_desc main_class="${genesisBasedApplication.mainClass}" />
