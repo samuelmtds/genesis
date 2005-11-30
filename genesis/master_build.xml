@@ -149,6 +149,8 @@
 
       <macrodef name="awc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="verbose" default="false" />
+         <attribute name="taskverbose" default="${verbose}" />
          <attribute name="classpath" />
          <attribute name="targetpath" />
          <attribute name="touchfile" />
@@ -157,7 +159,7 @@
                      classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
                      classpathref="aspectwerkz.path" />
 
-            <awc classpathref="@{classpath}" taskverbose="${verbose}">
+            <awc classpathref="@{classpath}" taskverbose="${verbose}" verbose="@{verbose}">
                <targetpath location="@{targetpath}"/>
             </awc>
             <touch file="@{touchfile}"/>
