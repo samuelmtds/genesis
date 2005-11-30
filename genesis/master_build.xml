@@ -400,6 +400,7 @@
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <element name="subtasks" optional="true" />
          <sequential>
+            <delete dir="${shared.hibernate.dir}" />
             <mkdir dir="${shared.hibernate.dir}" />
             <hibernatedoclet destdir="${shared.hibernate.dir}" 
                              verbose="${verbose}">
