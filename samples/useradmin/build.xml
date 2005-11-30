@@ -20,6 +20,6 @@
                 value="Summa Technologies do Brasil Ltda." />
    </target>
 
-   <target name="dist" depends="compile,jar,server-artifact" 
+   <target name="dist" depends="compile,weaving,jar,server-artifact" 
               description="Creates the project distribution"/>
 </project>

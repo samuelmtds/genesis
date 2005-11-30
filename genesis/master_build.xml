@@ -729,7 +729,16 @@
    <target name="client:compile" 
            depends="client:javac,client:annotations,client:validation" />
 
+   <target name="-do-custom-compile">
+      <!-- Override to implement extra tasks that should be performed after 
+           compiling client/shared sources-->
+   </target>
+
+   <target name="compile" 
+           depends="shared:compile,client:compile,-do-custom-compile"/>
+
    <target name="weaving:pre-init">
+
       <!-- Override to define any properties that shouldn't be redefined by 
          the weaving:init target -->
    </target>
@@ -1067,15 +1076,6 @@
 
    <target name="weaving" 
            depends="weaving:local,weaving:remote,-do-custom-weaving" />
-
-   <target name="-do-custom-compile">
-      <!-- Override to implement extra tasks that should be performed after 
-           compiling client/shared sources and before the weaving process -->
-   </target>
-
-   <target name="compile" 
-           depends="shared:compile,client:compile,-do-custom-compile,weaving" 
-           description="Compiles all artifacts"/>
 
    <target name="run:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
@@ -2169,8 +2169,12 @@
    <target name="deploy" 
            depends="deploy:create-server,deploy:server-artifact,deploy:webstart" />
 
-   <target name="all" depends="compile,jar,server-artifact,deploy" 
+   <target name="all" depends="compile,weaving,jar,server-artifact,deploy" 
            description="Builds the whole project"/>
+
+   <target name="all.with.webstart" 
+           depends="compile,weaving,jar,server-artifact,webstart,deploy" 
+           description="Builds the whole project and webstart artifacts"/>
 
    <target name="pre-clean">
       <property name="clean.build" value="true" />
@@ -2187,4 +2191,8 @@
 
    <target name="clean-build" depends="clean,all" 
            description="Deletes build artifacts before building the project"/>
+
+   <target name="clean-webstart" depends="clean,webstart:clean,all.with.webstart"
+           description="Deletes build artifacts, including webstart's, before 
+                       building the project and webstart artifacts"/>
 </project>
