@@ -159,7 +159,8 @@
                      classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
                      classpathref="aspectwerkz.path" />
 
-            <awc classpathref="@{classpath}" taskverbose="${verbose}" verbose="@{verbose}">
+            <awc classpathref="@{classpath}" taskverbose="@{taskverbose}" 
+                 verbose="@{verbose}">
                <targetpath location="@{targetpath}"/>
             </awc>
             <touch file="@{touchfile}"/>
