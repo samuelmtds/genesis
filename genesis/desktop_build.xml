@@ -1211,6 +1211,7 @@
                         <customize-fileset />
                      </fileset>
                   </jar>
+                  <property name="aspectwerkz.jit.off" value="true"/>
                   <default-properties />
                   <properties />
                </resources>
