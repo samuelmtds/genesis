@@ -726,17 +726,28 @@
          the server-artifact:init target -->
    </target>
 
-   <target name="server-artifact:init" 
-           depends="init-paths,jar:init,shared:init,server-artifact:pre-init">
+   <target name="server-artifact:master-init">
       <property name="needs.server.artifact" value="${remote.mode}" />
 
       <property name="server.artifact.location" 
                location="${build.dir}/${genesisBasedApplication.name}.sar" />
    </target>
 
-   <target name="server-artifact:clean" depends="server-artifact:init">
+   <target name="server-artifact:additional-init" />
+
+   <target name="server-artifact:init" 
+           depends="init-paths,jar:init,shared:init,server-artifact:pre-init,
+                    server-artifact:master-init,server-artifact:additional-init" />
+
+   <target name="server-artifact:master-clean">
       <delete file="${server.artifact.location}" />
    </target>
+
+   <target name="server-artifact:additional-clean" />
+
+   <target name="server-artifact:clean"
+           depends="server-artifact:init,server-artifact:master-clean,
+                    server-artifact:additional-clean" />
 
    <target name="server-artifact:check-conditions" 
            depends="server-artifact:init">
@@ -746,9 +757,10 @@
    </target>
 
    <target name="server-artifact:master-macrodefs" if="needs.server.artifact">
-      <macrodef name="sar"
+      <macrodef name="sar-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <element name="customize" optional="true"/>
+         <element name="additional-fileset" optional="true" />
          <sequential>
             <zip destfile="${server.artifact.location}">
                <fileset dir="${shared.hibernate.dir}">
@@ -774,10 +786,7 @@
                   <include name="commons-beanutils*.jar" />
                   <include name="reusable-components*.jar" />
                </fileset>
-               <fileset dir="${genesis.dist}">
-                  <include name="genesis-shared-${genesis.version}.jar" />
-               </fileset>
-               <fileset file="${jar.shared.location}" />
+               <additional-fileset />
                <customize />
             </zip>
          </sequential>
@@ -790,9 +799,7 @@
            depends="server-artifact:check-conditions,server-artifact:master-macrodefs,
                     server-artifact:additional-macrodefs" />
 
-   <target name="-do-server-artifact">
-      <genesis:sar />
-   </target>
+   <target name="-do-server-artifact" />
 
    <target name="server-artifact" depends="server-artifact:macrodefs"
            if="needs.server.artifact">

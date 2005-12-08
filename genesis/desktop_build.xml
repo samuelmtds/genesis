@@ -1021,6 +1021,24 @@
 
    <target name="jar" depends="jar:local,jar:remote,jar:shared,-do-custom-jar" />
 
+   <target name="server-artifact:additional-macrodefs" if="needs.server.artifact">
+      <presetdef name="sar"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:sar-macro>
+            <additional-fileset>
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-shared-${genesis.version}.jar" />
+               </fileset>
+               <fileset file="${jar.shared.location}" />
+            </additional-fileset>
+         </genesis:sar-macro>
+      </presetdef>
+   </target>
+
+   <target name="-do-server-artifact">
+      <genesis:sar />
+   </target>
+
    <target name="webstart:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
          the webstart:init target -->
