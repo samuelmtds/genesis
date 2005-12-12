@@ -153,15 +153,10 @@
                value="${genesisBasedApplication.name}-client.jar" />
       <property name="jar.client.location" 
                location="${build.dir}/${jar.client.name}" />
-      <property name="jar.shared.name"
-               value="${genesisBasedApplication.name}-shared-weaved.jar" />
-      <property name="jar.shared.location" 
-               location="${build.dir}/${jar.shared.name}" />
    </target>
 
    <target name="jar:clean" depends="jar:init">
       <delete file="${jar.client.location}" />
-      <delete file="${jar.shared.location}" />
    </target>
 
    <target name="jar:additional-check-conditions">
@@ -199,17 +194,7 @@
       <antcall inheritall="true" inheritrefs="true" target="-do-jar-client" />
    </target>
 
-   <target name="-do-jar-shared">
-      <genesis:jar-shared destfile="${jar.shared.location}" 
-                         classesdir="${weaving.dir}" />
-   </target>
-
-   <target name="jar:shared" depends="jar:check-conditions,jar:macrodefs" 
-           if="jar.shared.needed">
-      <antcall inheritall="true" inheritrefs="true" target="-do-jar-shared" />
-   </target>
-
-   <target name="jar" depends="jar:client,jar:shared,-do-custom-jar" />
+   <target name="jar" depends="jar:client,-do-custom-jar" />
 
    <target name="server-artifact:additional-init">
       <property name="server.web.artifact.name" 
@@ -240,7 +225,10 @@
                   <include name="qdox*.jar" />
                   <include name="trove*.jar" />
                </fileset>
-               <fileset file="${jar.shared.location}" />
+               <fileset dir="${commons.dist}">
+                  <include name="commons-validator*.jar"/>
+               </fileset>
+               <fileset dir="${weaving.dir}" />
             </additional-fileset>
          </genesis:sar-macro>
       </presetdef>
