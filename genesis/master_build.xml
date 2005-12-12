@@ -422,6 +422,8 @@
          the client:init target -->
    </target>
 
+   <target name="client:pre-additional-init" />
+
    <target name="client:master-init">
       <property name="has.client.sources" value="true" />
 
@@ -436,6 +438,7 @@
            depends="init-paths,
                     shared:init,
                     client:pre-init,
+                    client:pre-additional-init,
                     client:master-init,
                     client:additional-init" />
 

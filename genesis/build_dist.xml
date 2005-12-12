@@ -52,6 +52,17 @@
          <include name="genesis/${genesis.dist.dir}/**" />
       </patternset>
 
+      <patternset id="genesis-empty-web-project.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="samples/empty-web-project/*" />
+         <include name="samples/empty-web-project/modules/**" />
+         <include name="samples/empty-web-project/webstart/**" />
+         <exclude name="samples/empty-web-project/.*" />
+         <exclude name="samples/empty-web-project/**/${build.dir}/**/*" />
+         <exclude name="samples/empty-web-project/build.properties" />
+         <exclude name="samples/empty-web-project/web_build.xml" />
+      </patternset>
+
       <patternset id="genesis-empty-project.pattern">
          <patternset refid="genesis-license.pattern" />
          <include name="samples/empty-project/*" />
@@ -117,6 +128,11 @@
          <include name="desktop_build.xml" />
       </patternset>
 
+      <patternset id="web.pattern">
+         <include name="master_build.xml" />
+         <include name="web_build.xml" />
+      </patternset>
+
       <genesis:generate-dist type="genesis-dist"/>
       <genesis:generate-dist type="genesis-dependencies"/>
       <genesis:generate-dist type="genesis-xdoclet-extensions"/>
@@ -132,6 +148,19 @@
                 <patternset refid="desktop.pattern" />
              </tarfileset>
  		 </tarcustomize>
+      </genesis:generate-dist>
+      
+      <genesis:generate-dist type="genesis-empty-web-project">
+         <zipcustomize>
+            <zipfileset dir="." prefix="genesis-${genesis.version}/samples/empty-web-project">
+               <patternset refid="web.pattern" />
+            </zipfileset>
+       </zipcustomize>
+         <tarcustomize>
+             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-web-project">
+                <patternset refid="web.pattern" />
+             </tarfileset>
+       </tarcustomize>
       </genesis:generate-dist>
 
       <genesis:generate-dist type="genesis-useradmin-sample">
@@ -161,19 +190,25 @@
             <zipfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project">
                <patternset refid="desktop.pattern" />
             </zipfileset>
+            <zipfileset dir="." prefix="genesis-${genesis.version}/samples/empty-web-project">
+               <patternset refid="web.pattern" />
+            </zipfileset>
             <zipfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
                <patternset refid="desktop.pattern" />
             </zipfileset>
             <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
 		 </zipcustomize>
          <tarcustomize>
-             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project">
-                <patternset refid="desktop.pattern" />
-             </tarfileset>
-             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
-                <patternset refid="desktop.pattern" />
-             </tarfileset>
-             <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
+            <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-project">
+               <patternset refid="desktop.pattern" />
+            </tarfileset>
+            <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-web-project">
+              <patternset refid="web.pattern" />
+            </tarfileset>
+            <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
+               <patternset refid="desktop.pattern" />
+            </tarfileset>
+            <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
  		 </tarcustomize>
       </genesis:generate-dist>
 
