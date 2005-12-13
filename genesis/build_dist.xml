@@ -15,6 +15,8 @@
    <condition property="executableSuffix" value=".bat">
       <os family="dos" />
    </condition>
+   
+   <defaultexcludes add="**/Thumbs.db"/>
 
    <!-- Call using maven or build site before -->
    <target name="genesis:dist" description="Generate genesis distribution" depends="define-dist-macro">
@@ -44,7 +46,6 @@
       <patternset id="genesis-license.pattern">
          <include name="genesis/LICENSE.txt" />
          <include name="genesis/lgpl.txt" />
-         <exclude name="**/Thumbs.db" />
       </patternset>
 
       <patternset id="genesis-dist.pattern">
@@ -80,10 +81,11 @@
          <include name="samples/useradmin/modules/**" />
          <include name="samples/useradmin/webstart/**" />
          <include name="samples/useradmin/dist/**" />
+         <include name="samples/useradmin/${build.dir}/*" />
          <exclude name="samples/useradmin/.*" />
-         <exclude name="samples/useradmin/**/${build.dir}/**/*" />
+         <exclude name="samples/useradmin/modules/**/${build.dir}" />
          <exclude name="samples/useradmin/**/build.properties" />
-         <exclude name="samples/empty-project/desktop_build.xml" />
+         <exclude name="samples/useradmin/desktop_build.xml" />
       </patternset>
 
       <patternset id="genesis-src.pattern">
@@ -122,7 +124,7 @@
          <patternset refid="genesis-docs.pattern" />
          <patternset refid="genesis-xdoclet-extensions.pattern" />
       </patternset>
-      
+
       <patternset id="desktop.pattern">
          <include name="master_build.xml" />
          <include name="desktop_build.xml" />
@@ -170,9 +172,9 @@
             </zipfileset>
          </zipcustomize>
          <tarcustomize>
-             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
-                <patternset refid="desktop.pattern" />
-             </tarfileset>
+            <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
+               <patternset refid="desktop.pattern" />
+            </tarfileset>
          </tarcustomize>
       </genesis:generate-dist>
       
@@ -222,7 +224,7 @@
        <element name="tarcustomize" optional="true" />
        <sequential>
           <echo>Generating @{type}...</echo>
-	        <zip destfile="${build.dir}/@{type}-${genesis.version}.zip">
+	        <zip destfile="${build.dir}/@{type}-${genesis.version}.zip" filesonly="true">
 	           <zipfileset dir="../" prefix="genesis-${genesis.version}">
 	              <patternset refid="@{type}.pattern" />
 	           </zipfileset>
