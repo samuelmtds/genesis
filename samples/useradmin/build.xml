@@ -19,6 +19,10 @@
                 value="Summa Technologies do Brasil Ltda." />
    </target>
 
-   <target name="dist" depends="compile,weaving,jar,server-artifact" 
+   <target name="dist" depends="compile,weaving,jar,server-artifact,webstart" 
               description="Creates the project distribution"/>
+
+   <target name="install" depends="deploy">
+      <unwar src="${webstart.war.file}" dest="${webstart.target.dir}" />
+   </target>
 </project>
