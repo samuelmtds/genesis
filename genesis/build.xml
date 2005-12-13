@@ -157,6 +157,7 @@
 			<localhomeinterface />
 			<remoteinterface />
 			<localinterface />
+         <jboss destdir="${genesis.module.server}/${build.src}/META-INF" />
 		</ejbdoclet>
 	</target>
 
