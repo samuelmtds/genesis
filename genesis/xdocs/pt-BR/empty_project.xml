@@ -29,9 +29,6 @@
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
         alguma das versões 3.2.x.</li>
-        <li>Para compilar e instalar a aplicação é necessário o uso do <a href=
-        "http://ant.apache.org/">Apache Ant</a> 1.6.x e de algumas bibliotecas 
-        do XDoclet disponíveis <a href="download.html">aqui</a>.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
@@ -123,7 +120,6 @@ genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
 
 genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
-xdoclet.dist=c:/projetos/xdoclet/
 </source>
     </section>
     <section name="Desenvolvendo com o genesis">
@@ -182,31 +178,22 @@ xdoclet.dist=c:/projetos/xdoclet/
       <p>Para compilar e instalar a sua aplicação temos as seguintes tarefas
       básicas do Ant:</p>
       <ul>
-        <li><b>genesis.app:compile</b>: Compila sua aplicação.</li>
-        <li><b>genesis.app:jar</b>: Cria os jars de sua aplicação.</li>
-        <li><b>genesis.app:clean</b>: Apaga todos os arquivos gerados numa
-        compilação.</li>
-        <li><b>genesis.app:deploy</b>: Instala sua aplicação no servidor JBoss.
-        Não é necessário que o JBoss esteja iniciado.</li>
-        <li><b>genesis.app:deploy.webstart</b>: Instala sua aplicação no
-        servidor JBoss juntamente com os arquivos necessários para utilizar sua
-        aplicação com Java Web Start</li>
-        <li><b>genesis.run</b>: Inicia sua aplicação. É necessário que sua
-        aplicação esteja compilada, empacotada em jars e instalada no JBoss.
+        <li><b>all</b>: Compila sua aplicação, gera os pacotes jar, sar e war além
+        de fazer o deploy da sua aplicação</li>
+        <li><b>clean</b>: Apaga todos os arquivos gerados numa compilação.</li>
+        <li><b>clean-build</b>: Equivalente a chamar as tarefas <code>clean</code> e 
+        <code>all</code> em seqüência</li>
+        <li><b>all.with.webstart</b>: Equivalente a tarefa <code>all</code> com a adição
+        dos arquivos necessários para utilizar sua aplicação com Java Web Start</li>
+        <li><b>run:remote</b>: Inicia sua aplicação em modo remoto. É necessário
+        que sua aplicação esteja compilada, empacotada em jars e instalada no JBoss.
         Obviamente, o servidor deve estar iniciado.</li>
-        <li><b>genesis.all</b>: É equivalente a <code>genesis.app:clean</code>,
-        <code>genesis.app:compile</code>, <code>genesis.app:jar</code> e <code>
-        genesis.app:deploy</code> em seqüência.</li>
-        <li><b>genesis.all.with.webstart</b>: É equivalente a
-        <code>genesis.app:clean</code>, <code>genesis.app:compile</code>,
-        <code>genesis.app:jar</code> e <code>genesis.app:deploy.webstart</code>
-        em seqüência.</li>
       </ul>
       <p>A maneira rápida de colocar seu projeto para rodar:
 <source>
-ant genesis.app:all
+ant all
 &lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
-ant genesis.app:run
+ant run:remote
 </source>
       </p>
     </section>

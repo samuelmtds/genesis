@@ -29,8 +29,7 @@
         <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
         3.2.x release.</li>
         <li>To compile and install the application we recommend <a href=
-        "http://ant.apache.org/">Apache Ant</a> 1.6.x and some XDoclet libraries
-        available <a href="download.html">here</a>.</li>
+        "http://ant.apache.org/">Apache Ant</a> 1.6.x.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
@@ -119,7 +118,6 @@ genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
 
 genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
-xdoclet.dist=c:/projects/xdoclet
 </source>
     </section>
     <section name="Developing with genesis">
@@ -172,32 +170,23 @@ xdoclet.dist=c:/projects/xdoclet
       <p>To compile and install your application we have the following basic Ant
       targets:</p>
       <ul>
-        <li><b>genesis.app:compile</b>: Compiles your application.</li>
-        <li><b>genesis.app:jar</b>: Creates jars for your application.</li>
-        <li><b>genesis.app:clean</b>: Deletes all files generated during
+        <li><b>all</b>: Compiles, packages and deploys your application</li>
+        <li><b>clean</b>: Deletes all files generated during
         compilation.</li>
-        <li><b>genesis.app:deploy</b>: Installs your application on JBoss. It is
-        not necessary to have the server started to run this target.</li>
-        <li><b>genesis.app:deploy.webstart</b>: Installs your application on
-        JBoss together with all files needed to use it through Java Web Start
-        </li>
-        <li><b>genesis.run</b>: Starts your application. It is necessary that
+        <li><b>clean-build</b>: It does the same as running <code>clean</code> and
+        <code>all</code> in sequence.</li>
+        <li><b>all.with.webstart</b>: The same as running
+        <code>all</code> plus some required tasks to run your application
+        using Java WebStart.</li>
+        <li><b>run:remote</b>: Starts your application. It is necessary that
         your application is compiled, packaged in jars and installed on JBoss.
         Obviously, the server must be running.</li>
-        <li><b>genesis.all</b>: It does the same as running
-        <code>genesis.app:clean</code>, <code>genesis.app:compile</code>,
-        <code>genesis.app:jar</code> and <code>genesis.app:deploy</code> in
-        sequence.</li>
-        <li><b>genesis.all.with.webstart</b>: It does the same as running
-        <code>genesis.app:clean</code>, <code>genesis.app:compile</code>,
-        <code>genesis.app:jar</code> and <code>genesis.app:deploy.webstart</code
-        > in sequence.</li>
       </ul>
       <p>The faster way to put your project to run is:
 <source>
-ant genesis.app:all
+ant all
 &lt;JBOSS_DIR&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
-ant genesis.app:run
+ant run:remote
 </source>
       </p>
     </section>
