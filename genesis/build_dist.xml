@@ -83,7 +83,7 @@
          <include name="samples/useradmin/dist/**" />
          <include name="samples/useradmin/${build.dir}/*" />
          <exclude name="samples/useradmin/.*" />
-         <exclude name="samples/useradmin/modules/**/${build.dir}" />
+         <exclude name="samples/useradmin/modules/**/${build.dir}/**/*" />
          <exclude name="samples/useradmin/**/build.properties" />
          <exclude name="samples/useradmin/desktop_build.xml" />
       </patternset>
