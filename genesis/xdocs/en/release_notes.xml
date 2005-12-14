@@ -7,12 +7,73 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#2.3-RC2">2.3-RC2</a></li>
         <li><a href="#2.3-RC1">2.3-RC1</a></li>
         <li><a href="#2.2">2.2</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="2.3-RC2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found 
+          <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4575">here</a>. 
+          </p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>A new build process was created to be modular, extensible and perform 
+          tasks only if something has changed</li>
+          <li>An empty-web-project sample was created</li>
+          <li>All required XDoclet jars are in genesis distribution</li>
+          <li>Added two new validators: <a href="ui_additional_features.html#Validating_data">
+          <code>min</code> e <code>max</code></a></li>
+           <li>SessionFactory is <a href="aspects.html#Configuration_reference">
+           instantiated on startup for local mode execution</a></li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>useradmin:install does not work using a "clean" genesis installation
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=263">Issue
+          # 263</a>)</li>
+          <li>CriteriaResolverImpl is broken
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=281">Issue
+          # 281</a>)</li>
+        </ul>
+        <p>The full change log between 2.3-RC1 and 2.3-RC2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC1&amp;target_milestone=2.3-RC2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/2.3-RC2/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniel Gonçalves</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
     </section>
     <section name="2.3-RC1">
       <subsection name="Downloads">
