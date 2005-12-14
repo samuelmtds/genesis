@@ -25,10 +25,9 @@
       <subsection name="Features and changes">
         <p>Some of the most noteworthy new features and changes are:</p>
         <ul>
-          <li>A new build process was created to be modular, extensible and perform 
-          tasks only if something has changed</li>
+          <li>A new modular, extensible and more efficient build process has been developed</li>
           <li>An empty-web-project sample was created</li>
-          <li>All required XDoclet jars are in genesis distribution</li>
+          <li>All required XDoclet jars are now part of genesis distribution</li>
           <li>Added two new validators: <a href="ui_additional_features.html#Validating_data">
           <code>min</code> e <code>max</code></a></li>
            <li>SessionFactory is <a href="aspects.html#Configuration_reference">
