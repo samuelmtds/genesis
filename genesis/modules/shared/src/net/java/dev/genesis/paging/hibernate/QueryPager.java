@@ -41,8 +41,12 @@ public class QueryPager implements Pager {
       return getPage(pageNumber, resultsPerPage, false);
    }
 
-   private Page getPage(final int pageNumber, final int resultsPerPage,
+   private Page getPage(int pageNumber, final int resultsPerPage,
          boolean last) throws PagingException {
+      if (pageNumber < 0) {
+         pageNumber = 0;
+      }
+
       try {
          query.setFirstResult(pageNumber * resultsPerPage);
          query.setMaxResults(resultsPerPage);

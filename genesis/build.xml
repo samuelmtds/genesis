@@ -23,7 +23,6 @@
 	<path id="aspectwerkz.path">
 		<fileset dir="${genesis.aspectwerkz.dist}">
          <include name="aspectwerkz*.jar"/>
-         <exclude name="aspectwerkz-extensions-*.jar" />
          <include name="ant*.jar"/>
          <exclude name="asm*.jar"/>
          <include name="concurrent*.jar"/>
@@ -41,10 +40,6 @@
 	<path id="commons.path">
 		<fileset dir="${genesis.commons.dist}" includes="*.jar" />
 	</path>
-
-   <path id="script.path">
-      <fileset dir="${genesis.script.dist}" includes="*.jar" />
-   </path>
 
    <path id="thinlet.path">
       <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
@@ -69,14 +64,13 @@
 	</path>
 
 	<path id="client.dependency.classpath">
-      <path location="${genesis.module.shared}/${build.dest}" />
-      <path refid="script.path" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
-      <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+		<path location="${genesis.module.shared}/${build.dest}" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
+		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
+		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
 
    <path id="client.tests.dependency.classpath">
@@ -99,12 +93,9 @@
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
 
-   <path id="container.dependency.classpath" />
-
 	<path id="tests.dependency.classpath">
 		<path location="${genesis.module.shared}/${genesis.annotation.dest}" />
 		<path location="${genesis.module.client}/${build.dest}" />
-      <path refid="script.path" />  
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="junit*.jar" />
 		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
@@ -166,6 +157,7 @@
 			<localhomeinterface />
 			<remoteinterface />
 			<localinterface />
+         <jboss destdir="${genesis.module.server}/${build.src}/META-INF" />
 		</ejbdoclet>
 	</target>
 
@@ -291,23 +283,6 @@
       <copy todir="${genesis.dist.dir}">
          <fileset dir="${genesis.module.aspect}/${src.dir}" includes="annotation.properties" />
       </copy>    
-	</target>
-
-	<target name="container:compile">
-		<mkdir dir="${genesis.module.container}/${build.dest}" />
-		<javac destdir="${genesis.module.container}/${build.dest}"
-		       debug="true"
-		       source="1.4"
-		       classpathref="container.dependency.classpath">
-			<src path="${genesis.module.container}/${src.dir}" />
-		</javac>
-	</target>
-
-	<target name="container:jar">
-		<mkdir dir="${genesis.dist.dir}" />
-		<jar destfile="${genesis.dist.dir}/genesis-container-${genesis.version}.jar">
-			<fileset dir="${genesis.module.container}/${build.dest}" />
-		</jar>
 	</target>
    
    <target name="integrationtest:compile" depends="integrationtest:hibernatedoclet,integrationtest:webdoclet">
@@ -577,7 +552,6 @@
 	<target name="genesis:clean" description="Clean generated files">
 		<delete dir="${genesis.dist.dir}" />
 		<delete dir="${genesis.module.aspect}/${build.dir}" />
-		<delete dir="${genesis.module.container}/${build.dir}" />
 		<delete dir="${genesis.module.client}/${build.dir}" />
 		<delete dir="${genesis.module.server}/${build.dir}" />
 		<delete dir="${genesis.module.shared}/${build.dir}" />
@@ -595,11 +569,11 @@
 
 	<target name="genesis:compile"
 	        description="Compiles all modules"
-	        depends="genesis:clean,container:compile,shared:compile,server:compile,client:compile,aspect:compile" />
+	        depends="genesis:clean,shared:compile,server:compile,client:compile,aspect:compile" />
 
 	<target name="genesis:jar"
 	        description="Makes distribution jars"
-	        depends="genesis:compile,container:jar,shared:jar,server:jar,client:jar,aspect:jar" />
+	        depends="genesis:compile,shared:jar,server:jar,client:jar,aspect:jar" />
 
 	<target name="genesis:test:compile"
 	        description="Compiles all tests"

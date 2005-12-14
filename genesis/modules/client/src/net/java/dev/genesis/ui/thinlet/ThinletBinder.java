@@ -148,7 +148,11 @@ public class ThinletBinder implements FormControllerListener {
       final List components = findComponents(name);
 
       if (components.isEmpty()) {
-         log.warn(name + " could not be found while binding " + form.getClass());
+         if (log.isTraceEnabled()) {
+            log.trace(name + " could not be found while binding " + 
+                  form.getClass());
+         }
+
          return;
       }
 
@@ -579,10 +583,13 @@ public class ThinletBinder implements FormControllerListener {
                entry.getKey().toString(), enabled);
 
          if (widgetGroup == null) {
-            log.warn(entry.getKey() + (enabled ? " enabled" : " visible")
-                  + " state should be changed, "
-                  + "but could not be found in the view component for "
-                  + form.getClass());
+            if (log.isTraceEnabled()) {
+               log.trace(entry.getKey() + (enabled ? " enabled" : " visible")
+                     + " state should be changed, "
+                     + "but could not be found in the view component for "
+                     + form.getClass());
+            }
+
             continue;
          }
 
@@ -596,10 +603,13 @@ public class ThinletBinder implements FormControllerListener {
             final Object widget = thinlet.find(root, it.next().toString());
 
             if (widget == null) {
-               log.warn(entry.getKey() + (enabled ? " enabled" : " visible")
-                     + " state should be changed, "
-                     + "but could not be found in the view component for "
-                     + form.getClass());
+               if (log.isTraceEnabled()) {
+                  log.trace(entry.getKey() + (enabled ? " enabled" : " visible")
+                        + " state should be changed, "
+                        + "but could not be found in the view component for "
+                        + form.getClass());
+               }
+
                continue;
             }
 

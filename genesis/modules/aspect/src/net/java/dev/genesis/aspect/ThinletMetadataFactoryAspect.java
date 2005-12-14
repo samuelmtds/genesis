@@ -30,7 +30,7 @@ public class ThinletMetadataFactoryAspect {
     * @deprecated Use net.java.dev.genesis.aspect.ViewMetadataFactoryAspect$AspectViewMetadataFactory 
     *             instead. This class will be removed in the next major genesis 
     *             release.
-    * @Mixin(pointcut="thinletMetadataFactoryIntroduction", isTransient=true, deploymentModel="perJVM")
+    * @Introduce thinletMetadataFactoryIntroduction deploymentModel=perJVM
     */
    public static class AspectThinletMetadataFactory extends
          ViewMetadataFactoryAspect.AspectViewMetadataFactory {

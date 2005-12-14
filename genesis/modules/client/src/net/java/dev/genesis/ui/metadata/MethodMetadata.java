@@ -23,7 +23,8 @@ import java.lang.reflect.Method;
 
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
-import net.java.dev.genesis.script.ScriptExpression;
+
+import org.apache.commons.jxpath.CompiledExpression;
 
 public final class MethodMetadata {
    private final static Object[] emptyObjectArray = new Object[0];
@@ -32,7 +33,7 @@ public final class MethodMetadata {
    private final MethodEntry methodEntry;
    private final ActionMetadata actionMetadata;
    private final DataProviderMetadata dataProviderMetadata;
-   private ScriptExpression callCondition;
+   private CompiledExpression callCondition;
 
    public MethodMetadata(Method method, boolean isAction, boolean isProvider) {
       this.methodEntry = new MethodEntry(method);
@@ -48,11 +49,17 @@ public final class MethodMetadata {
       return methodEntry;
    }
 
-   public ScriptExpression getCallCondition() {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public CompiledExpression getCallCondition() {
       return callCondition;
    }
 
-   public void setCallCondition(ScriptExpression callWhen) {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public void setCallCondition(CompiledExpression callWhen) {
       this.callCondition = callWhen;
    }
 

@@ -3,7 +3,7 @@
    <artifactId>genesis</artifactId>
    <name>SOL Genesis</name>
    <groupId>net.java.dev.genesis</groupId>
-   <currentVersion>3.0-EA2-dev</currentVersion>
+   <currentVersion>2.3-RC2</currentVersion>
    <organization>
       <name>Summa Tecnologies do Brasil Ltda.</name>
       <url>http://www.summa-tech.com/</url>
@@ -26,9 +26,9 @@
    </repository>
    <versions>
       <version>
-         <id>3.0-EA1</id>
-         <name>3.0-EA1</name>
-         <tag>GENESIS_3_0_EA_1</tag>
+         <id>2.3-RC2</id>
+         <name>2.3-RC2</name>
+         <tag>GENESIS_2_3_RC_2</tag>
       </version>
       <version>
          <id>2.3-RC1</id>
@@ -173,7 +173,6 @@
    <contributors>
       <contributor>
          <name>Bruno Souza</name>
-         <id>brunos</id>
          <email>brunos@dev.java.net</email>
          <organization>Summa Technologies do Brasil Ltda.</organization>
          <roles>

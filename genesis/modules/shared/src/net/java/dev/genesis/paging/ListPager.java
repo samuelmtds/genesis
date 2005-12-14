@@ -40,6 +40,10 @@ public class ListPager implements Pager {
 
    public Page getPage(int pageNumber, int resultsPerPage) 
          throws PagingException {
+      if (pageNumber < 0) {
+         pageNumber = 0;
+      }
+
       final int listSize = list.size();
 
       int initialPosition = pageNumber * resultsPerPage;

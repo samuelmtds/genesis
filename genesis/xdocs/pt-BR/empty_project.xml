@@ -29,10 +29,6 @@
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
         alguma das versões 3.2.x.</li>
-        <li>Para compilar e instalar a aplicação recomendamos <a href=
-        "http://ant.apache.org/">Apache Ant</a> e <a href=
-        "http://xdoclet.sourceforge.net/">XDoclet</a> versão 1.2 com algumas
-        bibliotecas disponíveis <a href="download.html">aqui</a>.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
@@ -90,13 +86,9 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
         do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
         ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
-        <li><code><b>xdoclet.dist</b></code>: Indica o diretório de distribuição
-        do XDoclet. A distribuição utilizada e recomendada é a distribuição 1.2
-        do XDoclet juntamente com as bibliotecas alteradas e disponíveis
-        <a href="download.html">aqui</a>.
-        Obs: instale a distribuição 1.2 do
-        XDoclet e copie as bibliotecas modificadas para o diretório <code>&lt;
-        DIRETÓRIO_DO_XDOCLET&gt;/lib</code> sobrescrevendo as originais.</li>
+        <li><code><b>xdoclet.dist</b></code>: Indica o diretório das bibliotecas
+        do XDoclet. A distribuição utilizada e recomendada encontra-se 
+        disponível <a href="download.html">aqui</a>.</li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -114,9 +106,8 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         <li>Instalamos a distribuição do genesis no diretório
         <code>C:\projetos</code>, onde que criará o diretório
         <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
-        <li>Instalamos a distribuição do XDoclet 1.2 juntamente com as
-        bibliotecas modificadas no diretório <code>C:\projetos\xdoclet-1.2</code
-        >.</li>
+        <li>Instalamos as bibliotecas do XDoclet no diretório 
+        <code>C:\projetos\xdoclet</code>.</li>
         <li>O projeto se chamará <b>helloworld</b> e seu nome descritivo será <b
         >Hello World</b>.</li>
         <li>A classe principal do projeto será <b>exemplo.HelloWorld</b>.</li>
@@ -129,7 +120,6 @@ genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
 
 genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
-xdoclet.dist=c:/projetos/xdoclet-1.2/lib
 </source>
     </section>
     <section name="Desenvolvendo com o genesis">
@@ -188,31 +178,22 @@ xdoclet.dist=c:/projetos/xdoclet-1.2/lib
       <p>Para compilar e instalar a sua aplicação temos as seguintes tarefas
       básicas do Ant:</p>
       <ul>
-        <li><b>genesis.app:compile</b>: Compila sua aplicação.</li>
-        <li><b>genesis.app:jar</b>: Cria os jars de sua aplicação.</li>
-        <li><b>genesis.app:clean</b>: Apaga todos os arquivos gerados numa
-        compilação.</li>
-        <li><b>genesis.app:deploy</b>: Instala sua aplicação no servidor JBoss.
-        Não é necessário que o JBoss esteja iniciado.</li>
-        <li><b>genesis.app:deploy.webstart</b>: Instala sua aplicação no
-        servidor JBoss juntamente com os arquivos necessários para utilizar sua
-        aplicação com Java Web Start</li>
-        <li><b>genesis.run</b>: Inicia sua aplicação. É necessário que sua
-        aplicação esteja compilada, empacotada em jars e instalada no JBoss.
+        <li><b>all</b>: Compila sua aplicação, gera os pacotes jar, sar e war além
+        de fazer o deploy da sua aplicação</li>
+        <li><b>clean</b>: Apaga todos os arquivos gerados numa compilação.</li>
+        <li><b>clean-build</b>: Equivalente a chamar as tarefas <code>clean</code> e 
+        <code>all</code> em seqüência</li>
+        <li><b>all.with.webstart</b>: Equivalente a tarefa <code>all</code> com a adição
+        dos arquivos necessários para utilizar sua aplicação com Java Web Start</li>
+        <li><b>run:remote</b>: Inicia sua aplicação em modo remoto. É necessário
+        que sua aplicação esteja compilada, empacotada em jars e instalada no JBoss.
         Obviamente, o servidor deve estar iniciado.</li>
-        <li><b>genesis.all</b>: É equivalente a <code>genesis.app:clean</code>,
-        <code>genesis.app:compile</code>, <code>genesis.app:jar</code> e <code>
-        genesis.app:deploy</code> em seqüência.</li>
-        <li><b>genesis.all.with.webstart</b>: É equivalente a
-        <code>genesis.app:clean</code>, <code>genesis.app:compile</code>,
-        <code>genesis.app:jar</code> e <code>genesis.app:deploy.webstart</code>
-        em seqüência.</li>
       </ul>
       <p>A maneira rápida de colocar seu projeto para rodar:
 <source>
-ant genesis.app:all
+ant all
 &lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
-ant genesis.app:run
+ant run:remote
 </source>
       </p>
     </section>

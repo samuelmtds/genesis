@@ -28,9 +28,9 @@ import java.util.List;
 
 import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.FieldEntry;
-import net.java.dev.genesis.script.ScriptExpression;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.jxpath.CompiledExpression;
 
 public class DataProviderMetadata {
    private static final List EMPTY_LIST = Collections.EMPTY_LIST;
@@ -42,7 +42,7 @@ public class DataProviderMetadata {
    private FieldEntry indexField;
    private boolean callOnInit;
    private boolean resetSelection;
-   private ScriptExpression clearOnCondition;
+   private CompiledExpression clearOnCondition;
 
    protected DataProviderMetadata(Method method) {
       this.name = method.getName();
@@ -100,11 +100,17 @@ public class DataProviderMetadata {
       this.resetSelection = resetSelection;
    }
 
-   public ScriptExpression getClearOnCondition() {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public CompiledExpression getClearOnCondition() {
       return clearOnCondition;
    }
 
-   public void setClearOnCondition(ScriptExpression clearOnCondition) {
+   /**
+    * @deprecated JXPath will be replaced with generic scripting support in the next major release
+    */
+   public void setClearOnCondition(CompiledExpression clearOnCondition) {
       this.clearOnCondition = clearOnCondition;
    }
 

@@ -27,12 +27,12 @@ import net.java.dev.genesis.ejb.CommandExecutorLocalHome;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.aspectwerkz.AspectContext;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
 
 /**
- * @Aspect("perJVM")
+ * @Aspect perJVM
  */
 public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
    private static Log log = LogFactory.getLog(LocalEJBCommandExecutionAspect.class);
@@ -40,14 +40,14 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
    private CommandExecutorLocalHome home;
    private CommandExecutorLocal session;
 
-   public LocalEJBCommandExecutionAspect(final AspectContext ctx) {
-      super(ctx);
+   public LocalEJBCommandExecutionAspect(CrossCuttingInfo ccInfo) {
+      super(ccInfo);
    }
 
    private CommandExecutorLocalHome getHome() throws Exception {
       if (home == null) {
          home = (CommandExecutorLocalHome)new InitialContext().lookup(
-             ctx.getParameter("jndiName"));
+             ccInfo.getParameter("jndiName"));
       }
 
       return home;
@@ -69,7 +69,7 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
    }
 
    /**
-    * @Around("localEjbCommandExecution")
+    * @Around localEjbCommandExecution
     */
    public Object commandExecution(final JoinPoint jp) throws Throwable {
       final MethodRtti rtti = (MethodRtti)jp.getRtti();
