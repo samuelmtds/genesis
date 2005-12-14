@@ -32,6 +32,8 @@
           com o nome de <code>empty-web-project</code></li>
           <li>Todos as bibliotecas necessárias do XDoclet estão disponíveis na distribuição do genesis,
           dispensando o download do XDoclet</li>
+          <li>Adicionado novos validadores: <code>min</code> e <code>max</code></li>
+           <li>SessionFactory do hibernate é instanciado na inicialização no modo de execução local</li>
         </ul>
         <p>Os seguintes bugs foram corrigidos nessa versão:</p>
         <ul>
