@@ -257,9 +257,11 @@
            depends="client:javac,client:annotations,client:validation" />
 
    <target name="weaving:additional-init">
+      <property name="preweaving.local.dir" value="${preweaving.dir}/local" />
       <property name="weaving.local.dir" value="${weaving.dir}/local" />
       <property name="weaving.local.timestamp.file" 
                 location="${weaving.local.dir}/${timestamp.file}" />
+      <property name="preweaving.remote.dir" value="${preweaving.dir}/remote" />
       <property name="weaving.remote.dir" value="${weaving.dir}/remote" />
       <property name="weaving.remote.timestamp.file" 
                 location="${weaving.remote.dir}/${timestamp.file}" />
@@ -302,8 +304,10 @@
 
    <target name="weaving:clean" if="weaving.clean" 
            depends="weaving:define-conditions">
+      <delete dir="${preweaving.local.dir}" />
       <delete dir="${weaving.local.dir}" />
       <delete dir="${weaving.local.timestamp.file}" />
+      <delete dir="${preweaving.remote.dir}" />
       <delete dir="${weaving.remote.dir}" />
       <delete dir="${weaving.remote.timestamp.file}" />
    </target>
@@ -510,7 +514,7 @@
            if="weaving.local.needed">
       <antcall inheritall="true" inheritrefs="true" 
                target="-do-weaving-copy-files">
-         <param name="weaving.copy.dir" value="${weaving.local.dir}" />
+         <param name="weaving.copy.dir" value="${preweaving.local.dir}" />
          <param name="weaving.copy.xml" value="${weaving.local.xml}" />
       </antcall>
    </target>
@@ -520,7 +524,8 @@
                     define-aw-macros"
            if="weaving.local.needed">
       <genesis:awc classpath="weaving.local.classpath" 
-                   targetpath="${weaving.local.dir}"
+                   sourcepath="${preweaving.local.dir}"
+                   destdir="${weaving.local.dir}"
                    touchfile="${weaving.local.timestamp.file}" />
    </target>
 
@@ -528,7 +533,7 @@
            if="weaving.remote.needed">
       <antcall inheritall="true" inheritrefs="true" 
                target="-do-weaving-copy-files">
-         <param name="weaving.copy.dir" value="${weaving.remote.dir}" />
+         <param name="weaving.copy.dir" value="${preweaving.remote.dir}" />
          <param name="weaving.copy.xml" value="${weaving.remote.xml}" />
       </antcall>
    </target>
@@ -538,7 +543,8 @@
                     define-aw-macros"
            if="weaving.remote.needed">
       <genesis:awc classpath="weaving.remote.classpath" 
-                   targetpath="${weaving.remote.dir}"
+                   sourcepath="${preweaving.remote.dir}"
+                   destdir="${weaving.remote.dir}"
                    touchfile="${weaving.remote.timestamp.file}" />
    </target>
 
@@ -895,7 +901,7 @@
       </condition>
    </target>
 
-   <target name="jar:additional-macrodefs" if="needs.jar">
+   <target name="jar:additional-macrodefs" if="jar.needed">
       <presetdef name="jar-client"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:jar sourcesdir="${client.sources.dir}">
@@ -1021,7 +1027,7 @@
 
    <target name="jar" depends="jar:local,jar:remote,jar:shared,-do-custom-jar" />
 
-   <target name="server-artifact:additional-macrodefs" if="needs.server.artifact">
+   <target name="server-artifact:additional-macrodefs" if="server.artifact.needed">
       <presetdef name="sar"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:sar-macro>
@@ -1126,7 +1132,7 @@
    </target>
 
    <target name="webstart:macrodefs" depends="webstart:check-conditions" 
-           if="needs.webstart">
+           if="webstart.needed">
       <macrodef name="webstart-signjar-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="lazy" default="true" />
@@ -1183,12 +1189,16 @@
                </fileset>
                <fileset file="${jdbc.driver}" />
                <fileset dir="${jboss.client}">
+                  <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->
                   <include name="jboss-client.jar" />
                   <include name="jboss-common-client.jar" />
                   <include name="jboss-j2ee.jar" />
                   <include name="jboss-transaction-client.jar" />
                   <include name="jbosssx-client.jar" />
                   <include name="jnp-client.jar" />
+
+                  <!-- JBoss 4.x specific files  -->
+                  <include name="jboss-remoting.jar" />
                </fileset>
             </jar-fileset>
          </genesis:webstart-signjar-macro>
@@ -1334,7 +1344,7 @@
    </target>
 
    <target name="webstart:signjar" depends="webstart:macrodefs" 
-           if="needs.webstart">
+           if="webstart.needed">
       <antcall inheritall="true" inheritrefs="true" 
                target="-do-webstart-signjar" />
    </target>
@@ -1394,12 +1404,12 @@
            depends="webstart:jnlp-local,webstart:jnlp-remote" />
 
    <target name="webstart:copy" depends="webstart:macrodefs"
-           if="needs.webstart">
+           if="webstart.needed">
       <genesis:webstart-copy />
    </target>
 
    <target name="webstart:war" depends="webstart:check-conditions" 
-           if="needs.webstart">
+           if="webstart.needed">
       <war warfile="${webstart.war.file}" basedir="${webstart.target.dir}" 
            webxml="${webstart.web.xml}" />
    </target>

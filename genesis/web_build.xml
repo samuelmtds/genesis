@@ -136,7 +136,7 @@
            if="weaving.needed">
       <antcall inheritall="true" inheritrefs="true" 
                target="-do-weaving-copy-files">
-         <param name="weaving.copy.dir" value="${weaving.dir}" />
+         <param name="weaving.copy.dir" value="${preweaving.dir}" />
          <param name="weaving.copy.xml" value="${weaving.xml}" />
       </antcall>
    </target>
@@ -146,7 +146,8 @@
                     define-aw-macros"
            if="weaving.needed">
       <genesis:awc classpath="weaving.classpath" 
-                   targetpath="${weaving.dir}"
+                   srcpath="${preweaving.dir}"
+                   destdir="${weaving.dir}"
                    touchfile="${weaving.timestamp.file}" />
    </target>
 
@@ -174,7 +175,7 @@
       </condition>
    </target>
 
-   <target name="jar:additional-macrodefs" if="needs.jar">
+   <target name="jar:additional-macrodefs" if="jar.needed">
       <presetdef name="jar-client"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:jar sourcesdir="${client.sources.dir}"/>
@@ -230,7 +231,7 @@
       <delete file="${server.client.artifact.location}" />
    </target>
 
-   <target name="server-artifact:additional-macrodefs" if="needs.server.artifact">
+   <target name="server-artifact:additional-macrodefs" if="server.artifact.needed">
       <presetdef name="sar"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:sar-macro>

@@ -39,7 +39,7 @@
    </target>
 
    <target name="-do-master-init-paths">
-      <property name="genesis.version" value="2.3-RC2" />
+      <property name="genesis.version" value="2.3-dev" />
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
       <property name="annotation.properties" 
@@ -52,6 +52,7 @@
       <property name="j2ee.dist" location="${genesis.home}/lib/j2ee" />
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="xdoclet.dist" location="${genesis.home}/../xdoclet/dist" />
+      <property name="anttasks.dist" location="${genesis.home}/../ant-tasks/dist" />
 
       <property name="jboss.app" 
                 location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
@@ -86,6 +87,11 @@
       <path id="xdoclet.path">
          <fileset dir="${xdoclet.dist}" includes="*.jar" />
       </path>
+      
+      <path id="anttasks.path">
+         <path refid="aspectwerkz.path" />
+         <fileset dir="${anttasks.dist}" includes="*.jar" />
+      </path>
    </target>
 
    <target name="-do-additional-init-paths" />
@@ -111,8 +117,8 @@
 
          <sequential>
             <taskdef name="annotationc" 
-                     classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" 
-                     classpathref="aspectwerkz.path" />
+                     classname="net.java.dev.genesis.anttasks.aspectwerkz.AnnotationCTask" 
+                     classpathref="anttasks.path" />
 
             <mkdir dir="@{destdir}" />
             <annotationc verbose="${verbose}"
@@ -134,16 +140,18 @@
          <attribute name="verbose" default="false" />
          <attribute name="taskverbose" default="${verbose}" />
          <attribute name="classpath" />
-         <attribute name="targetpath" />
+         <attribute name="sourcepath" />
+         <attribute name="destdir" />
          <attribute name="touchfile" />
          <sequential>
             <taskdef name="awc" 
-                     classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" 
-                     classpathref="aspectwerkz.path" />
+                     classname="net.java.dev.genesis.anttasks.aspectwerkz.SimplifiedAspectWerkzCTask" 
+                     classpathref="anttasks.path" />
 
-            <awc classpathref="@{classpath}" taskverbose="@{taskverbose}" 
-                 verbose="@{verbose}">
-               <targetpath location="@{targetpath}"/>
+            <mkdir dir="@{destdir}" />
+            <awc classpathref="@{classpath}" 
+                 verbose="@{verbose}" destdir="@{destdir}">
+               <sourcepath location="@{sourcepath}"/>
             </awc>
             <touch file="@{touchfile}"/>
          </sequential>
@@ -360,7 +368,8 @@
            depends="shared:master-check-hibernate-conditions,
                     shared:additional-check-hibernate-conditions"/>
    
-   <target name="master-hibernate-macrodefs" if="shared.hibernate.tasks.needed">
+   <target name="master-hibernate-macrodefs" if="shared.hibernate.tasks.needed"
+      depends="deploy:check-conditions,server:check-conditions">
       <macrodef name="hibernatedoclet-macro" 
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <element name="subtasks" optional="true" />
@@ -387,6 +396,24 @@
          <sequential>
             <basename property="jboss.ds.name" 
                       file="${jboss.datasource.jndi.name}"/>
+            <loadproperties resource="org/jboss/version.properties">
+               <classpath>
+                  <fileset dir="${jboss.home}/bin" includes="run.jar"/>
+               </classpath>
+               <filterchain>
+                  <tokenfilter>
+                      <replacestring from="version.major" to="jboss.jca.service.name" />
+                      <replacestring from="3" to="LocalTxCM"/>
+                      <replacestring from="4" to="DataSourceBinding"/>
+                  </tokenfilter>
+                  <linecontains>
+                     <contains value="jboss.jca.service.name"/>
+                  </linecontains>
+               </filterchain>
+            </loadproperties>
+            <fail unless="jboss.jca.service.name">
+               Unable to determine JBoss version
+            </fail>
             <genesis:hibernatedoclet-macro>
                <subtasks>
                   <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
@@ -397,7 +424,7 @@
                                 transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
                                 userTransactionName="UserTransaction"
                                 showSql="${hibernate.show.sql}"
-                                depends="jboss.jca:service=LocalTxCM,name=${jboss.ds.name}"
+                                depends="jboss.jca:service=${jboss.jca.service.name},name=${jboss.ds.name}"
                                 version="${hibernate.version}" />
                   <customize />
                </subtasks>
@@ -552,6 +579,7 @@
    <target name="weaving:master-init">
       <property name="needs.weaving" value="true" />
       <property name="weaving.dir" value="${build.dir}/weaving" />
+      <property name="preweaving.dir" value="${build.dir}/pre-weaving" />
    </target>
 
    <target name="weaving:additional-init" />
@@ -582,14 +610,13 @@
          <element name="default-unjar-fileset" optional="true" />
          <element name="unjar-fileset" optional="true" />
          <sequential>
-            <delete dir="@{targetdir}" />
             <mkdir dir="@{targetdir}" />
 
             <copy todir="@{targetdir}">
                <default-copy-fileset />
                <copy-fileset />
             </copy>
-            <unjar dest="@{targetdir}">
+            <unjar dest="@{targetdir}" overwrite="false">
                <default-unjar-fileset />
                <unjar-fileset />
             </unjar>
@@ -647,6 +674,10 @@
    <target name="jar:clean" depends="jar:init" />
 
    <target name="jar:master-check-conditions">
+      <condition property="jar.needed">
+         <istrue value="${needs.jar}" />
+      </condition>
+
       <condition property="jar.shared.needed">
          <istrue value="${needs.jar}" />
       </condition>
@@ -658,7 +689,7 @@
            depends="jar:init,jar:master-check-conditions,
                     jar:additional-check-conditions" />
 
-   <target name="jar:master-macrodefs" if="needs.jar">
+   <target name="jar:master-macrodefs" if="jar.needed">
       <patternset id="sources.patternset">
          <exclude name="${timestamp.file}" />
          <exclude name="**/CVS/**" />
@@ -712,9 +743,9 @@
       </presetdef>
    </target>
 
-   <target name="jar:additional-macrodefs" if="needs.jar" />
+   <target name="jar:additional-macrodefs" if="jar.needed" />
 
-   <target name="jar:macrodefs" if="needs.jar"
+   <target name="jar:macrodefs" if="jar.needed"
            depends="jar:init,jar:master-macrodefs,jar:additional-macrodefs" />
 
    <target name="-do-custom-jar">
@@ -759,7 +790,7 @@
       </condition>
    </target>
 
-   <target name="server-artifact:master-macrodefs" if="needs.server.artifact">
+   <target name="server-artifact:master-macrodefs" if="server.artifact.needed">
       <macrodef name="sar-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <element name="customize" optional="true"/>
@@ -796,16 +827,16 @@
       </macrodef>
    </target>
 
-   <target name="server-artifact:additional-macrodefs" if="needs.server.artifact"/>
+   <target name="server-artifact:additional-macrodefs" if="server.artifact.needed"/>
 
-   <target name="server-artifact:macrodefs" if="needs.server.artifact"
+   <target name="server-artifact:macrodefs" if="server.artifact.needed"
            depends="server-artifact:check-conditions,server-artifact:master-macrodefs,
                     server-artifact:additional-macrodefs" />
 
    <target name="-do-server-artifact" />
 
    <target name="server-artifact" depends="server-artifact:macrodefs"
-           if="needs.server.artifact">
+           if="server.artifact.needed">
       <antcall inheritall="true" inheritrefs="true" 
                target="-do-server-artifact" />
    </target>
@@ -881,8 +912,7 @@
       </presetdef>
    </target>
 
-   <target name="deploy:create-server" depends="deploy:check-conditions"
-           if="deploy.create.server.needed">
+   <target name="server:check-conditions" if="deploy.needed">
       <condition property="jboss.home.not.set">
          <not>
             <isset property="jboss.home" />
@@ -902,16 +932,27 @@
          Set 'jboss.home' properly in buid.properties file. 
          See build.properties.sample for details.
       </fail>
+   </target>
+   
+   <target name="deploy:create-server" if="deploy.create.server.needed"
+           depends="deploy:check-conditions,server:check-conditions">
       <mkdir dir="${jboss.app}" />
       <copy todir="${jboss.app}">
          <fileset dir="${jboss.default.server}">
-            <include name="deploy/jboss-jca.sar" />
-            <include name="deploy/jboss-local-jdbc.rar" />
-            <include name="deploy/transaction-service.xml" />
+            <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->
             <include name="deploy/jbossweb-tomcat*.sar/**" />
+            <include name="deploy/jboss-local-jdbc.rar" />
             <include name="conf/**" />
             <include name="lib/**" />
-            <exclude name="lib/hibernate2.jar" />
+            <exclude name="lib/hibernate*.jar" />
+            
+            <!-- JBoss 3.2.x specific files  -->
+            <include name="deploy/jboss-jca.sar" />
+            <include name="deploy/transaction-service.xml" />
+            
+            <!-- JBoss 4.x specific files  -->
+            <include name="deploy/ejb-deployer.xml" />
+            <include name="deploy/jbossjca-service.xml" />
          </fileset>
       </copy>
    </target>

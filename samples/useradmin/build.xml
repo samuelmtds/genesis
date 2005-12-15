@@ -19,10 +19,44 @@
                 value="Summa Technologies do Brasil Ltda." />
    </target>
 
-   <target name="dist" depends="compile,weaving,jar,server-artifact,webstart" 
+   <target name="dist" depends="clean,compile,weaving,jar,server-artifact,webstart" 
               description="Creates the project distribution"/>
 
-   <target name="install" depends="deploy">
-      <unwar src="${webstart.war.file}" dest="${webstart.target.dir}" />
+   <target name="install"
+           depends="shared:hibernate-doclet,server-artifact,copy-local-dependency-jars,webstart,deploy" />
+   
+   <target name="copy-local-dependency-jars" unless="server.artifact.needed">
+      <copy todir="${build.dir}">
+         <fileset file="${jar.local.location}" />
+         <fileset dir="${hibernate.dist}">
+            <include name="cglib-full-*.jar"/>
+            <include name="ehcache-*.jar"/>
+            <include name="jta*.jar"/>
+         </fileset>
+         <fileset dir="${genesis.dist}">
+            <include name="genesis-aspect-annotated-*.jar" />
+            <include name="genesis-client-*.jar" />
+         </fileset>
+         <fileset dir="${aspectwerkz.dist}">
+            <include name="aspectwerkz-*.jar" />
+            <include name="dom4j-*.jar" />
+            <include name="jrexx-*.jar" />
+            <include name="trove-*.jar" />
+         </fileset>
+         <fileset dir="${hibernate.dist}">
+            <include name="hibernate2.jar" />
+            <include name="commons-collections-*.jar" />
+            <include name="odmg-*.jar" />
+         </fileset>
+         <fileset dir="${commons.dist}">
+            <include name="commons-beanutils-*.jar" />
+            <include name="commons-digester-*.jar" />
+            <include name="commons-jxpath-*.jar" />
+            <include name="commons-logging-*.jar" />
+            <include name="commons-validator-*.jar" />
+            <include name="jakarta-oro-*.jar" />
+            <include name="reusable-components-*.jar" />
+         </fileset>
+      </copy>
    </target>
 </project>

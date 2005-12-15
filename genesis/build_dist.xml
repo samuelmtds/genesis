@@ -2,6 +2,7 @@
 <project default="genesis:dist" name="genesis distribution build" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/build_dist.xml">
    <property file="build.properties" />
    <property file="project.properties" />
+   <property file="modules/tests/build.properties" />
    <property name="build.dir" value="${genesis.build.dir}" />
    <property name="build.docs" value="${build.dir}/docs" />
    <property name="xdoclet.dist" value="xdoclet/dist" />
@@ -26,7 +27,11 @@
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
          <arg line="-f ${basedir}/../xdoclet/build.xml" />
       </exec>
-      
+
+      <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
+         <arg line="-f ${basedir}/../ant-tasks/build.xml" />
+      </exec>
+
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
          <arg line="-f ${basedir}/build.xml genesis:jar" />
       </exec>
@@ -80,8 +85,7 @@
          <include name="samples/useradmin/*" />
          <include name="samples/useradmin/modules/**" />
          <include name="samples/useradmin/webstart/**" />
-         <include name="samples/useradmin/dist/**" />
-         <include name="samples/useradmin/${build.dir}/*" />
+         <include name="samples/useradmin/${build.dir}/*.jar" />
          <exclude name="samples/useradmin/.*" />
          <exclude name="samples/useradmin/modules/**/${build.dir}/**/*" />
          <exclude name="samples/useradmin/**/build.properties" />
@@ -114,6 +118,11 @@
          <include name="genesis/${genesis.lib.dir}/**" />
       </patternset>
 
+      <patternset id="genesis-ant-tasks.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <include name="ant-tasks/dist/**" />
+      </patternset>
+
       <patternset id="genesis-all.pattern">
          <patternset refid="genesis-license.pattern" />
          <patternset refid="genesis-dist.pattern" />
@@ -123,6 +132,7 @@
          <patternset refid="genesis-src.pattern" />
          <patternset refid="genesis-docs.pattern" />
          <patternset refid="genesis-xdoclet-extensions.pattern" />
+         <patternset refid="genesis-ant-tasks.pattern" />
       </patternset>
 
       <patternset id="desktop.pattern">
@@ -170,10 +180,16 @@
             <zipfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
                <patternset refid="desktop.pattern" />
             </zipfileset>
+            <zipfileset dir="${genesis.jboss.home}/server/default/lib" prefix="genesis-${genesis.version}/samples/useradmin/target">
+               <include name="hsqldb.jar" />
+            </zipfileset>
          </zipcustomize>
          <tarcustomize>
             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
                <patternset refid="desktop.pattern" />
+            </tarfileset>
+            <tarfileset dir="${genesis.jboss.home}/server/default/lib" prefix="genesis-${genesis.version}/samples/useradmin/target">
+               <include name="hsqldb.jar" />
             </tarfileset>
          </tarcustomize>
       </genesis:generate-dist>
@@ -198,6 +214,9 @@
             <zipfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
                <patternset refid="desktop.pattern" />
             </zipfileset>
+            <zipfileset dir="${genesis.jboss.home}/server/default/lib" prefix="genesis-${genesis.version}/samples/useradmin/target">
+               <include name="hsqldb.jar" />
+            </zipfileset>
             <zipfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
 		 </zipcustomize>
          <tarcustomize>
@@ -209,6 +228,9 @@
             </tarfileset>
             <tarfileset dir="." prefix="genesis-${genesis.version}/samples/useradmin">
                <patternset refid="desktop.pattern" />
+            </tarfileset>
+            <tarfileset dir="${genesis.jboss.home}/server/default/lib" prefix="genesis-${genesis.version}/samples/useradmin/target">
+               <include name="hsqldb.jar" />
             </tarfileset>
             <tarfileset dir="${build.docs}" prefix="genesis-${genesis.version}/docs" />
  		 </tarcustomize>
