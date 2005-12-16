@@ -535,11 +535,8 @@
    <target name="weaving:copy-local-files" 
            depends="weaving:check-conditions,weaving:macrodefs" 
            if="weaving.local.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-weaving-copy-files">
-         <param name="weaving.copy.dir" value="${preweaving.local.dir}" />
-         <param name="weaving.copy.xml" value="${weaving.local.xml}" />
-      </antcall>
+      <genesis:weaving-copy targetdir="${preweaving.local.dir}" 
+                            xml="${weaving.local.xml}" />
    </target>
 
    <target name="weaving:local" 
@@ -554,11 +551,8 @@
 
    <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
            if="weaving.remote.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-weaving-copy-files">
-         <param name="weaving.copy.dir" value="${preweaving.remote.dir}" />
-         <param name="weaving.copy.xml" value="${weaving.remote.xml}" />
-      </antcall>
+      <genesis:weaving-copy targetdir="${preweaving.remote.dir}" 
+                            xml="${weaving.remote.xml}" />
    </target>
 
    <target name="weaving:remote" 

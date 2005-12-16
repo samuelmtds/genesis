@@ -134,11 +134,8 @@
 
    <target name="weaving:copy-files" depends="weaving:check-conditions,weaving:macrodefs" 
            if="weaving.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-weaving-copy-files">
-         <param name="weaving.copy.dir" value="${preweaving.dir}" />
-         <param name="weaving.copy.xml" value="${weaving.xml}" />
-      </antcall>
+      <genesis:weaving-copy targetdir="${preweaving.dir}" 
+                            xml="${weaving.xml}" />
    </target>
 
    <target name="-do-weaving" 
