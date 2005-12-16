@@ -48,6 +48,7 @@
       </item>
       <item name="Understanding genesis jars" href="/en/jars_explained.html" />
       <item name="Developing with genesis" href="/en/empty_project.html" />
+      <item name="Developing with genesis (WEB)" href="/en/empty_web_project.html" />
       <item name="Using the UserAdmin sample"
             href="/en/useradmin_sample.html" />
       <item name="Advanced guide" collapse="true"

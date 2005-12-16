@@ -50,6 +50,8 @@
             href="/pt-BR/jars_explained.html" />
       <item name="Desenvolvendo com o genesis"
             href="/pt-BR/empty_project.html" />
+      <item name="Desenvolvendo com o genesis (WEB)"
+            href="/pt-BR/empty_web_project.html" />
       <item name="Usando o exemplo UserAdmin"
             href="/pt-BR/useradmin_sample.html" />
       <item name="Guia avançado" collapse="true"
