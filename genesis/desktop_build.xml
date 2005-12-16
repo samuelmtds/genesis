@@ -248,9 +248,8 @@
    </target>
 
    <target name="client:validation" if="client.validation.needed" 
-           depends="client:check-validation-conditions,validation-macrodefs">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-client-validation" />
+           depends="define-call-task,client:check-validation-conditions,validation-macrodefs">
+      <genesis:call target="-do-client-validation" />
    </target>
 
    <target name="client:compile" 
@@ -271,7 +270,19 @@
 
       <condition property="weaving.local.xml" 
                  value="${weaving.xml.definition.dir}/aop.xml">
-         <istrue value="${local.mode.only}" />
+         <and>
+            <istrue value="${local.mode.only}" />
+            <available file="${weaving.xml.definition.dir}/aop.xml" />
+         </and>
+      </condition>
+      <condition property="weaving.local.xml" 
+                 value="${weaving.xml.definition.dir}/local-aop.xml">
+         <and>
+            <istrue value="${local.mode.only}" />
+            <not>
+               <available file="${weaving.xml.definition.dir}/aop.xml" />
+            </not>
+         </and>
       </condition>
       <condition property="weaving.local.xml" 
                  value="${weaving.xml.definition.dir}/local-aop.xml">
@@ -280,7 +291,19 @@
 
       <condition property="weaving.remote.xml" 
                  value="${weaving.xml.definition.dir}/aop.xml">
-         <istrue value="${remote.mode.only}" />
+         <and>
+            <istrue value="${remote.mode.only}" />
+            <available file="${weaving.xml.definition.dir}/aop.xml" />
+         </and>
+      </condition>
+      <condition property="weaving.remote.xml" 
+                 value="${weaving.xml.definition.dir}/local-aop.xml">
+         <and>
+            <istrue value="${remote.mode.only}" />
+            <not>
+               <available file="${weaving.xml.definition.dir}/aop.xml" />
+            </not>
+         </and>
       </condition>
       <condition property="weaving.remote.xml" 
                  value="${weaving.xml.definition.dir}/remote-aop.xml">
@@ -998,14 +1021,14 @@
    </target>
 
    <target name="jar:local" 
-           depends="jar:check-conditions,jar:macrodefs,jar:define-local-classpath" 
+           depends="define-call-task,jar:check-conditions,jar:macrodefs,jar:define-local-classpath" 
            if="jar.local.needed">
       <pathconvert property="jar.local.flat.classpath" pathsep=" ">
          <mapper type="flatten"/>
          <path refid="jar.local.classpath" />
       </pathconvert>
 
-      <antcall inheritall="true" inheritrefs="true" target="-do-jar-local" />
+      <genesis:call target="-do-jar-local" />
    </target>
 
    <target name="-do-jar-remote">
@@ -1013,9 +1036,9 @@
                          classesdir="${weaving.remote.dir}" />
    </target>
 
-   <target name="jar:remote" depends="jar:check-conditions,jar:macrodefs" 
+   <target name="jar:remote" depends="define-call-task,jar:check-conditions,jar:macrodefs" 
            if="jar.remote.needed">
-      <antcall inheritall="true" inheritrefs="true" target="-do-jar-remote" />
+      <genesis:call target="-do-jar-remote" />
    </target>
 
    <target name="jar:shared" depends="jar:check-conditions,jar:macrodefs" 
@@ -1343,10 +1366,9 @@
       <genesis:webstart-signjar />
    </target>
 
-   <target name="webstart:signjar" depends="webstart:macrodefs" 
+   <target name="webstart:signjar" depends="define-call-task,webstart:macrodefs" 
            if="webstart.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-webstart-signjar" />
+      <genesis:call target="-do-webstart-signjar" />
    </target>
 
    <target name="webstart:check-jnlp-conditions" 
@@ -1383,10 +1405,9 @@
    </target>
 
    <target name="webstart:jnlp-local" 
-           depends="webstart:macrodefs,webstart:check-jnlp-conditions"
+           depends="define-call-task,webstart:macrodefs,webstart:check-jnlp-conditions"
            if="webstart.local.jnlp.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-webstart-jnlp-local" />
+      <genesis:call target="-do-webstart-jnlp-local" />
    </target>
 
    <target name="-do-webstart-jnlp-remote">
@@ -1394,10 +1415,9 @@
    </target>
 
    <target name="webstart:jnlp-remote"
-           depends="webstart:macrodefs,webstart:check-jnlp-conditions"
+           depends="define-call-task,webstart:macrodefs,webstart:check-jnlp-conditions"
            if="webstart.remote.jnlp.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-webstart-jnlp-remote" />
+      <genesis:call target="-do-webstart-jnlp-remote" />
    </target>
 
    <target name="webstart:jnlp" 

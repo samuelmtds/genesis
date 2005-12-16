@@ -106,6 +106,13 @@
    <target name="init-paths" 
            depends="init,-pre-init-paths,-do-init-paths,-post-init-paths" />
 
+   <target name="define-call-task" depends="init-paths">
+      <taskdef name="call" 
+               uri="https://genesis.dev.java.net/nonav/ns/master_build.xml"
+               classname="net.java.dev.genesis.anttasks.Call"
+               classpathref="anttasks.path" />
+   </target>
+
    <target name="define-aw-macros" depends="init-paths">
       <macrodef name="annotationc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
@@ -137,8 +144,7 @@
 
       <macrodef name="awc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <attribute name="verbose" default="false" />
-         <attribute name="taskverbose" default="${verbose}" />
+         <attribute name="verbose" default="${verbose}" />
          <attribute name="classpath" />
          <attribute name="sourcepath" />
          <attribute name="destdir" />
@@ -835,10 +841,9 @@
 
    <target name="-do-server-artifact" />
 
-   <target name="server-artifact" depends="server-artifact:macrodefs"
+   <target name="server-artifact" depends="define-call-task,server-artifact:macrodefs"
            if="server.artifact.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-server-artifact" />
+      <genesis:call target="-do-server-artifact" />
    </target>
 
    <target name="deploy:pre-init">
@@ -961,10 +966,9 @@
       <genesis:deploy-server-artifact />
    </target>
 
-   <target name="deploy:server-artifact" depends="deploy:macrodefs"
+   <target name="deploy:server-artifact" depends="define-call-task,deploy:macrodefs"
            if="deploy.needed">
-      <antcall inheritall="true" inheritrefs="true" 
-               target="-do-deploy-server-artifact" />
+      <genesis:call target="-do-deploy-server-artifact" />
    </target>
 
    <target name="deploy" 

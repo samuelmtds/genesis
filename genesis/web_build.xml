@@ -199,9 +199,9 @@
    </target>
 
    <target name="jar:client" 
-           depends="jar:check-conditions,jar:macrodefs" 
+           depends="define-call-task,jar:check-conditions,jar:macrodefs" 
            if="jar.client.needed">
-      <antcall inheritall="true" inheritrefs="true" target="-do-jar-client" />
+      <genesis:call target="-do-jar-client" />
    </target>
 
    <target name="-do-jar-shared">
@@ -209,9 +209,9 @@
                          classesdir="${weaving.dir}" />
    </target>
 
-   <target name="jar:shared" depends="jar:check-conditions,jar:macrodefs" 
+   <target name="jar:shared" depends="define-call-task,jar:check-conditions,jar:macrodefs" 
            if="jar.shared.needed">
-      <antcall inheritall="true" inheritrefs="true" target="-do-jar-shared" />
+      <genesis:call target="-do-jar-shared" />
    </target>
 
    <target name="jar" depends="jar:client,jar:shared,-do-custom-jar" />
