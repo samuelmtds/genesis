@@ -6,6 +6,9 @@
     </author>
   </properties>
   <body>
+    <section name="Configurando seu projeto no Eclipse">
+       Aprenda a configurar o seu projeto no Eclipse <a href="ide_eclipse_empty_project.html">aqui</a>
+    </section>
     <section name="Como começar?">
       <p>O genesis foi criado com o intuito de sempre facilitar e agilizar o
       processo de desenvolvimento. Para que você possa utilizá-lo da forma mais

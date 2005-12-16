@@ -6,6 +6,9 @@
     </author>
   </properties>
   <body>
+    <section name="Configuring your project on Eclipse">
+       Learn how to configure your project on Eclipse <a href="ide_eclipse_empty_project.html">here</a>
+    </section>
     <section name="How to start?">
       <p>genesis was conceived having as a goal to make development easier and
       faster. In order to allow someone to use it in an easier and faster way,
