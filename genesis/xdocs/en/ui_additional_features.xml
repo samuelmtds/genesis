@@ -1235,6 +1235,10 @@ binder.bind();
         informed data has a number of characteres not lesser and not greater,
         respectively, than a character count number defined by
         <code>minlength</code> or <code>maxlength</code> variables.</li>
+        <li><code><b>min</b></code>: checks if the informed number is greater or 
+        equal  to the value defined by the <code>min</code> variable.</li>
+        <li><code><b>max</b></code>: checks if the informed number is lesser or 
+        equal to the value defined by the <code>max</code> variable.</li>
         <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
         ></code>: check if the informed number is part of an expected interval,
         defined by variables <code>min</code> and <code>max</code>.</li>
@@ -1262,121 +1266,111 @@ binder.bind();
 <source>
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE form-validation PUBLIC
-   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration
-   1.1//EN'
+<!DOCTYPE form-validation PUBLIC 
+   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN' 
    'http://jakarta.apache.org/commons/dtds/validator_1_1.dtd'>
 <form-validation>
     <global>
-        <validator name="byte"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateByte"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="byte" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateByte" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.byte"/>
-        <validator name="short"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateShort"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.short"/>
-        <validator name="int"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateInt"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="short" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateShort" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.short"/>	
+        <validator name="int" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateInt" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.int"/>
-        <validator name="long"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateLong"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="long" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateLong" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.long"/>
-        <validator name="float"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateFloat"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="float" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateFloat" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.float"/>
-        <validator name="double"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateDouble"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="double" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateDouble" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.double"/>
-        <validator name="bigDecimal"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateBigDecimal"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="bigDecimal" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateBigDecimal" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.bigdecimal"/>
-        <validator name="required"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateRequired"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="required" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateRequired" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.required"/>
-        <validator name="requiredif"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateRequiredIf"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field,org.apache.
-                commons.validator.Validator"
+        <validator name="requiredif" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateRequiredIf" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field,org.apache.commons.validator.Validator" 
                 msg="errors.requiredif"/>
-        <validator name="mask"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateMask"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="mask" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMask" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.mask"/>
-        <validator name="email"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateEmail"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
+        <validator name="email" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateEmail" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.email"/>
-        <validator name="date"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateDate"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.date"/>
-        <validator name="minlength"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateMinLength"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.minlength"/>
-        <validator name="maxlength"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateMaxLength"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.maxlength"/>
-        <validator name="longRange"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateLongRange"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.longRange"/>
-        <validator name="doubleRange"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateDoubleRange"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.doubleRange"/>
-        <validator name="bigDecimalRange"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateBigDecimalRange"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.bigDecimalRange"/>
-        <validator name="jxpath"
-                classname="net.java.dev.genesis.ui.BasicValidator"
-                method="validateJXPath"
-                methodParams=
-                "java.lang.Object,org.apache.commons.validator.Field"
-                msg="errors.jxpath"/>
+        <validator name="date" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateDate" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.date"/>			
+        <validator name="minlength" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMinLength" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.minlength"/>			
+        <validator name="maxlength" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMaxLength" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.maxlength"/>			
+        <validator name="min" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMin" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.min"/>	
+        <validator name="max" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMax" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.max"/>	
+        <validator name="longRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateLongRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.longRange"/>			
+        <validator name="doubleRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateDoubleRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.doubleRange"/>		
+        <validator name="bigDecimalRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateBigDecimalRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.bigDecimalRange"/>	
+        <validator name="jxpath" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateJXPath" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.jxpath"/>			
     </global>
 </form-validation>
 ]]>
@@ -1647,6 +1641,8 @@ errors.requiredif=The {0} field is required.
 errors.mask=The {0} field is not valid.
 errors.email=The {0} field is not a valid email.
 errors.date=The {0} field is not a valid date.
+errors.min={0} must be greater or equal to {1}.
+errors.max={0} must be lesser or equal to {1}.
 errors.minlength=The {0} field can not be less than {1} characters.
 errors.maxlength=The {0} field can not be greater than {1} characters.
 errors.longRange={0} is not in the range {1} through {2}.

@@ -1,9 +1,25 @@
 <?xml version="1.0"?>
 
 <project name="modules" default="all">
-
     <target name="all">
         <ant dir="modules/genesis" />
         <ant dir="modules/hibernate" />
+
+        <property file="build.properties" />
+        <property name="xdoclet.lib.dir" value="${xdoclet.home}/lib" />
+        <property name="xdoclet.version" value="1.2.3" />
+
+        <copy todir="dist">
+           <fileset dir="${xdoclet.lib.dir}">
+              <include name="xdoclet-${xdoclet.version}.jar" />
+              <include name="xjavadoc-1.1.jar" />
+              <include name="commons-collections-*.jar" />
+              <include name="commons-logging.jar" />
+              <include name="log4j.jar" />
+              <include name="xdoclet-hibernate-module-${xdoclet.version}.jar" />
+              <include name="xdoclet-xdoclet-module-${xdoclet.version}.jar" />
+              <include name="xdoclet-ejb-module-${xdoclet.version}.jar" />
+           </fileset>
+        </copy>
     </target>
 </project>

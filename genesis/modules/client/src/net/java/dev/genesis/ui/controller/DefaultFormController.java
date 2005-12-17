@@ -27,8 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.java.dev.genesis.cloning.ClonerRegistry;
-import net.java.dev.genesis.commons.jxpath.VariablesImpl;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptExpression;
@@ -102,6 +100,10 @@ public class DefaultFormController implements FormController {
       this.resetOnDataProviderChange = resetOnDataProviderChange;
    }
 
+   protected void setContext(ScriptContext ctx) {
+      this.ctx = ctx;
+   }
+
    protected FormState createFormState() {
       return new FormStateImpl();
    }
@@ -130,11 +132,13 @@ public class DefaultFormController implements FormController {
 
       setup = true;
 
-      ctx = createScriptContext();
+      ScriptContext ctx = createScriptContext();
       ctx.declare(FORM_METADATA_KEY, formMetadata);
 
       currentState = createFormState();
       ctx.declare(CURRENT_STATE_KEY, currentState);
+
+      setContext(ctx);
 
       if (PropertyUtils.isWriteable(getForm(), "context")
             && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(getForm(),

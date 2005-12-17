@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,14 +26,29 @@ import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.aspectwerkz.AspectContext;
 
 public class HibernateTransactionalInjector implements TransactionalInjector {
+   private static final Log log = 
+	   LogFactory.getLog(HibernateTransactionalInjector.class);
    private boolean isHibernateCommand;
    private Transaction transaction;
    private HibernateCommand hibernateCommand;
    private Session session;
 
    public void init(Object context) {
+	if (!(context instanceof AspectContext) || "false".equals(
+		((AspectContext)context).getParameter("preLoadSessionFactory"))) {
+	   return;
+	}
+
+	try {
+	   HibernateHelper.getInstance().getSessionFactory();
+	} catch (HibernateException he) {
+	   log.error("Error preloading SessionFactory", he);
+	}
    }
    
    public void beforeInvocation(final Object target, final boolean transactional) 
@@ -103,11 +118,15 @@ final class HibernateHelper {
         return instance;
     }
 
-    public Session createSession() throws HibernateException {
+    public SessionFactory getSessionFactory() throws HibernateException {
         if (factory == null) {
             factory = new Configuration().configure().buildSessionFactory();
         }
 
-        return factory.openSession();
+        return factory;
+    }
+
+    public Session createSession() throws HibernateException {
+        return getSessionFactory().openSession();
     }
 }

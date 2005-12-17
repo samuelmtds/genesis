@@ -21,7 +21,7 @@
       <ol>
         <li>Download and install <a href=
         "http://www.jboss.org/">JBoss</a> application server. It is recommended
-        to use its latest 3.2.x release.</li>
+        to use its latest 3.2.x or 4.x release.</li>
         <li>Run the ant scripts to deploy the example
         <a href="#Running the useradmin sample">(as instructed later in
         this document)</a>. These scripts are distributed together with
@@ -234,7 +234,7 @@ public class User implements Serializable {
         <li>Edit the new <code>build.properties</code> file in order to modify
         or comment the properties according to your execution environment.</li>
         <li>Within command line, run the ant script by just typing: <code>
-        ant useradmin:install</code>. This command will start the deployment
+        ant install</code>. This command will start the deployment
         process, which will install the sample application in a directory
         named useradmin at your JBoss server folder.</li>
         <li>Once the instalation process has finished, JBoss server can be
@@ -248,21 +248,22 @@ public class User implements Serializable {
         will activate the application download and run it using Java Web
         Start technology.</li>
         <li>Another option to run this sample is to use an ant task with
-        the following command: <code>ant useradmin:run.remote</code>. This
+        the following command: <code>ant run:remote</code>. This
         command will run the useradmin sample with remote calls to the JBoss
         server</li>
         <li>It's also possible to execute this sample with local calls
         configuration only - i.e. the sample will not use the JBoss server in
+
         anyway. In order to perfom this, there are some options:</li>
         <ul>
            <li>Use the "<a href="http://localhost:8080/useradmin/application/local.jnlp">
            Run local User Admin</a>" link from 
            <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/
            </a> URL.</li>
-           <li>Use the following line command: <code>ant useradmin:run.local</code></li>
+           <li>Use the following line command: <code>ant run:local</code></li>
            <li>Double click the <code>useradmin-local-weaved.jar</code> file
            located inside the
-           <code>&lt;GENESIS_DIST&gt;/samples/useradmin/dist/useradmin.war/application</code>
+           <code>&lt;GENESIS_DIST&gt;/samples/useradmin/target/war/application</code>
            directory. In some operating systems this double click should 
            be equivalent to the following line command:</li>
 <source>

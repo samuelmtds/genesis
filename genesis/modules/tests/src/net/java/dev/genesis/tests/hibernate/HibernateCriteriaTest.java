@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,14 @@
  */
 package net.java.dev.genesis.tests.hibernate;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 import net.java.dev.genesis.command.hibernate.AbstractHibernateCriteria;
+import net.java.dev.genesis.command.hibernate.CriteriaResolver;
 import net.java.dev.genesis.helpers.CriteriaPropertyHelper;
 import net.java.dev.genesis.tests.TestCase;
 import net.sf.hibernate.expression.Expression;
@@ -58,6 +61,16 @@ public class HibernateCriteriaTest extends TestCase {
       CriteriaPropertyHelper.fillCriteria(tester, form);
       results = tester.find();
       assertTrue(results.isEmpty());
+   }
+
+   public void testCriteriaIntroduction() throws Exception {
+      CriteriaTester c1 = new CriteriaTester();
+      CriteriaTester c2 = new CriteriaTester();
+
+      Map map = new HashMap();
+      ((CriteriaResolver)c1).setPropertiesMap(map);
+
+      assertNotSame(map, ((CriteriaResolver)c2).getPropertiesMap());
    }
 
    public static class CriteriaTester extends AbstractHibernateCriteria {

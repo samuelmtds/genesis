@@ -30,8 +30,8 @@ import net.java.dev.genesis.command.TransactionalInjector;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
 
 /**
- * @ejb.bean name="ejb/CommandExecutor" type="Stateless" view-type="both"
- *           jndi-name="ejb/CommandExecutor"
+ * @ejb.bean name="CommandExecutor" type="Stateless" view-type="both"
+ *           jndi-name="ejb/CommandExecutor" local-jndi-name="ejb/local/CommandExecutor"
  * @ejb.home remote-class="net.java.dev.genesis.ejb.CommandExecutorHome"
  *           local-class="net.java.dev.genesis.ejb.CommandExecutorLocalHome"
  * @ejb.interface remote-class="net.java.dev.genesis.ejb.CommandExecutor"
