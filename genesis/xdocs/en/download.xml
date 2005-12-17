@@ -10,11 +10,11 @@
       They are:</p>
       <ul>
         <li><b>genesis-dist-{version}.tar.gz</b> and
-        <b>genesis-dist-{version}.zip</b>: genesis distribution jars and the
+        <b>genesis-dist-{version}.zip</b>: genesis distribution jars and the 
         annotation.properties file.</li>
         <li><b>genesis-dependencies-{version}.tar.gz</b> and
-        <b>genesis-dependencies-{version}.zip</b>: all the jar files for genesis
-        dependencies, such as AspectWerkz, Hibernate, Jakarta Commons and
+        <b>genesis-dependencies-{version}.zip</b>: all the jar files for genesis 
+        dependencies, such as AspectWerkz, Hibernate, Jakarta Commons and 
         Thinlet.</li>
         <li><b>genesis-empty-project-{version}.tar.gz</b> and
         <b>genesis-empty-project-{version}.zip</b>: comes with an empty project
@@ -23,7 +23,7 @@
         <b>genesis-useradmin-sample-{version}.zip</b>: comes with the
         <code>useradmin</code> genesis sample application.</li>
         <li><b>genesis-src-{version}.tar.gz</b> and
-        <b>genesis-src-{version}.zip</b>: comes with genesis source code only
+        <b>genesis-src-{version}.zip</b>: comes with genesis source code only 
         (no additional jar files).</li>
         <li><b>genesis-docs-{version}.tar.gz</b> and
         <b>genesis-docs-{version}.zip</b>: only genesis documentation.</li>
@@ -34,8 +34,8 @@
         <b>genesis-all-{version}.zip</b>: comes with all binary files, samples,
         source code and documentation mentioned above.</li>
       </ul>
-      <p>All distribution files for this release can be found
-      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2932&amp;expandFolder=2932&amp;folderID=2932">here</a>.</p>
+      <p>All distribution files for this release can be found <a 
+        href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3982&amp;expandFolder=3982&amp;folderID=0">here</a>.</p>
     </section>
   </body>
 </document>

@@ -11,7 +11,7 @@
       "-//Apache Software Foundation//DTD Struts Validation Configuration 1.1//EN"
       "http://jakarta.apache.org/struts/dtds/validation_1_1.dtd">
 
-    $Id: validation_1_1.dtd,v 1.2 2005-05-14 02:44:09 mister__m Exp $
+    $Id: validation_1_1.dtd,v 1.1.2.1 2005-03-24 10:38:24 allanjones Exp $
 -->
 
 

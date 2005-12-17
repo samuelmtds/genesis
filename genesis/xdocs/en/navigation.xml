@@ -48,13 +48,12 @@
       </item>
       <item name="Understanding genesis jars" href="/en/jars_explained.html" />
       <item name="Developing with genesis" href="/en/empty_project.html" />
+      <item name="Developing with genesis (WEB)" href="/en/empty_web_project.html" />
       <item name="Using the UserAdmin sample"
             href="/en/useradmin_sample.html" />
       <item name="Advanced guide" collapse="true"
             href="/en/advanced_introduction.html">
         <item name="genesis aspects" href="/en/aspects.html" />
-        <item name="Generic scripting support"
-              href="/en/generic_scripting.html" />
       </item>
       <item name="FAQ" href="/en/faq.html" />
       <item name="Roadmap"

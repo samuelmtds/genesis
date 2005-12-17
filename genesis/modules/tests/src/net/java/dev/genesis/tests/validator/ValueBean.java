@@ -44,6 +44,8 @@ public class ValueBean implements Serializable {
    private Long longRange;
    private Double doubleRange;
    private BigDecimal bigDecimalRange;
+   private BigDecimal min;
+   private BigDecimal max;
    private String jxpath;
    private Integer jxpathDependency;
 
@@ -269,6 +271,32 @@ public class ValueBean implements Serializable {
     */
    public void setBigDecimalRange(BigDecimal bigDecimalRange) {
       this.bigDecimalRange = bigDecimalRange;
+   }
+
+   public BigDecimal getMin() {
+      return min;
+   }
+
+   /**
+    * @genesis.validator type="min"
+    * @genesis.validator-args arg0resource="validatorTest.min"
+    * @genesis.validator-var name="min" value="5.1234"
+    */
+   public void setMin(BigDecimal min) {
+      this.min = min;
+   }
+
+   public BigDecimal getMax() {
+      return max;
+   }
+
+   /**
+    * @genesis.validator type="max"
+    * @genesis.validator-args arg0resource="validatorTest.max"
+    * @genesis.validator-var name="max" value="9.1234"
+    */
+   public void setMax(BigDecimal max) {
+      this.max = max;
    }
 
    public String getJxpath() {

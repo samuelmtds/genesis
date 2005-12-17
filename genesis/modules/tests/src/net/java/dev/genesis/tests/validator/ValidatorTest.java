@@ -21,12 +21,17 @@ package net.java.dev.genesis.tests.validator;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.BasicValidator;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.Form;
 import org.apache.commons.validator.Validator;
@@ -37,6 +42,17 @@ import org.apache.commons.validator.ValidatorResults;
 public class ValidatorTest extends TestCase {
    private ValidatorResources resources;
    private Form form;
+   private Converter oldConverter;
+
+   protected void setUp() {
+      oldConverter = ConvertUtils.lookup(BigDecimal.class);
+      ConvertUtils.register(new BigDecimalConverter(null), BigDecimal.class);
+   }
+
+   protected void tearDown() {
+      ConvertUtils.register(oldConverter, BigDecimal.class);
+   }
+
 
    public ValidatorTest() throws Exception {
       resources = new ValidatorResources(new InputStream[] {
@@ -52,10 +68,13 @@ public class ValidatorTest extends TestCase {
       // Calls the BasicValidator static method
       Method method = BasicValidator.class.getDeclaredMethod(methodName,
             new Class[] { Object.class, Field.class });
-      boolean sucess = ((Boolean) method.invoke(null, new Object[] { bean,
+      boolean success = ((Boolean) method.invoke(null, new Object[] { bean,
             field })).booleanValue();
-      assertTrue(methodName + " for field " + field.getProperty() + " has "
-            + (passed ? "" : "not ") + "passed", passed ? sucess : !sucess);
+      assertTrue(methodName + " for field " + field.getProperty() + 
+            " with value " + 
+            PropertyUtils.getProperty(bean, field.getProperty()) + 
+            " and field [" + field +  "] has "
+            + (passed ? "" : "not ") + "passed", passed ? success : !success);
 
       // Performs regular validation
       Validator validator = new Validator(resources, ValueBean.class.getName());
@@ -527,7 +546,7 @@ public class ValidatorTest extends TestCase {
       map.put(field.getProperty(), "10");
       valueTest(map, methodName, field, action, true);
    }
-   
+
    public void testBigDecimalRange() throws Exception {
       final Field field = form.getField("bigDecimalRange");
       final String methodName = "validateBigDecimalRange";
@@ -547,6 +566,41 @@ public class ValidatorTest extends TestCase {
       valueTest(map, methodName, field, action, true);
 
       map.put(field.getProperty(), "9.1234");
+      valueTest(map, methodName, field, action, true);
+   }
+
+   public void testMin() throws Exception {
+      final Field field = form.getField("min");
+      final String methodName = "validateMin";
+      final String action = "min";
+      final Map map = new HashMap();
+
+      map.put(field.getProperty(), "5.1234");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "6");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "2.21312321");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "5.123399999999");
+      valueTest(map, methodName, field, action, false);
+   }
+
+   public void testMax() throws Exception {
+      final Field field = form.getField("max");
+      final String methodName = "validateMax";
+      final String action = "max";
+      final Map map = new HashMap();
+
+      map.put(field.getProperty(), "9.123400000001");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "9.1234");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "9");
       valueTest(map, methodName, field, action, true);
    }
 

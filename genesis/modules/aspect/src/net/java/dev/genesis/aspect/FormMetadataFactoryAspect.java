@@ -30,13 +30,9 @@ import net.java.dev.genesis.cloning.Cloner;
 import net.java.dev.genesis.cloning.ClonerRegistry;
 import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
-import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-import net.java.dev.genesis.script.Script;
-import net.java.dev.genesis.script.ScriptExpression;
-import net.java.dev.genesis.script.ScriptFactory;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
@@ -45,73 +41,20 @@ import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
 import net.java.dev.reusablecomponents.lang.Enum;
-
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.jxpath.JXPathContext;
 import org.codehaus.aspectwerkz.annotation.Annotation;
 import org.codehaus.aspectwerkz.annotation.AnnotationInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
-import org.codehaus.aspectwerkz.aspect.management.Mixins;
+import org.codehaus.aspectwerkz.annotation.UntypedAnnotationProxy;
 
 public class FormMetadataFactoryAspect {
    /**
-    * @Mixin(pointcut="formMetadataFactoryIntroduction", isTransient=true, deploymentModel="perJVM")
+    * @Introduce formMetadataFactoryIntroduction deploymentModel=perJVM
     */
    public static class AspectFormMetadataFactory implements FormMetadataFactory {
-      private final Map FACTORIES = new HashMap();
-      {
-         FACTORIES.put("jxpath", "net.java.dev.genesis.script.jxpath.JXPathScriptFactory");
-         FACTORIES.put("javascript", "net.java.dev.genesis.script.bsf.BSFScriptFactory");
-         FACTORIES.put("beanshell", "net.java.dev.genesis.script.bsf.BSFScriptFactory");
-         FACTORIES.put("el", "net.java.dev.genesis.script.el.ELScriptFactory");
-      }
-
-      private ScriptFactory scriptFactory;
-      private Script script;
-      
-      public AspectFormMetadataFactory() 
-            throws Exception {
-         Map parameters = Mixins.getParameters(getClass(), getClass()
-               .getClassLoader());
-         String factoryName = (String)parameters.get("scriptFactory");
-         String scriptFactoryProperties = (String)parameters
-               .get("scriptFactoryProperties");
-
-         Map properties = new HashMap();
-
-         if (factoryName == null) {
-            factoryName = "jxpath";
-         } 
-
-         String scriptFactoryName = (String)FACTORIES.get(factoryName);
-         if (scriptFactoryName == null) {
-            scriptFactoryName = factoryName;
-         } else {
-            properties.put("lang", factoryName);
-         }
-
-         scriptFactory = (ScriptFactory)ClassesCache
-               .getClass(scriptFactoryName).newInstance();
-
-         if (scriptFactoryProperties != null) {
-            properties.putAll(GenesisUtils
-                  .getAttributesMap(scriptFactoryProperties, ",", "="));
-         }
-
-         if (!properties.isEmpty()) {
-            PropertyUtils.copyProperties(scriptFactory, properties);
-         }
-      }
-      
-      private Script getScript() {         
-         if (script == null) {
-            script = scriptFactory.newScript();
-         }
-         return script;
-      }      
-
       public interface AnnotationHandler {
          public void processFormAnnotation(final FormMetadata formMetadata,
                final Annotation annotation);
@@ -129,12 +72,13 @@ public class FormMetadataFactoryAspect {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
 
-               final String value = ((UntypedAnnotation) annotation)
-                     .value();
+               final String value = ((UntypedAnnotationProxy) annotation)
+                     .getValue();
                final int equalIndex = value.indexOf('=');
                if (equalIndex > 0) {
                   formMetadata.addNamedCondition(value.substring(0, equalIndex)
-                        .trim(), compile(formMetadata.getScript(), value.substring(equalIndex + 1)));
+                        .trim(), JXPathContext.compile(value
+                        .substring(equalIndex + 1)));
                }
             }
 
@@ -161,7 +105,7 @@ public class FormMetadataFactoryAspect {
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               processMemberAnnotation(formMetadata.getScript(), fieldMetadata, annotation);
+               processMemberAnnotation(fieldMetadata, annotation);
             }
 
             public void processMethodAnnotation(
@@ -173,15 +117,17 @@ public class FormMetadataFactoryAspect {
                         "EnabledWhen must be a field or action annotation");
                }
                
-               processMemberAnnotation(formMetadata.getScript(), methodMetadata.getActionMetadata(), 
+               processMemberAnnotation(methodMetadata.getActionMetadata(), 
                      annotation);
             }
 
-            private void processMemberAnnotation(final Script script,
+            private void processMemberAnnotation(
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
                memberMetadata
-                     .setEnabledCondition(compile(script, annotation));
+                     .setEnabledCondition(JXPathContext
+                           .compile(((UntypedAnnotationProxy) annotation)
+                                 .getValue()));
             }
          }
 
@@ -195,7 +141,7 @@ public class FormMetadataFactoryAspect {
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               processMemberAnnotation(formMetadata.getScript(), fieldMetadata, annotation);
+               processMemberAnnotation(fieldMetadata, annotation);
             }
 
             public void processMethodAnnotation(
@@ -207,15 +153,17 @@ public class FormMetadataFactoryAspect {
                         "VisibleWhen must be a field or action annotation");
                }
 
-               processMemberAnnotation(formMetadata.getScript(), methodMetadata.getActionMetadata(), 
+               processMemberAnnotation(methodMetadata.getActionMetadata(), 
                      annotation);
             }
 
-            private void processMemberAnnotation(final Script script,
+            private void processMemberAnnotation(
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
                memberMetadata
-                     .setVisibleCondition(compile(script, annotation));
+                     .setVisibleCondition(JXPathContext
+                           .compile(((UntypedAnnotationProxy) annotation)
+                                 .getValue()));
             }
          }
 
@@ -266,7 +214,9 @@ public class FormMetadataFactoryAspect {
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                methodMetadata
-                     .setCallCondition(compile(formMetadata.getScript(), annotation));
+                     .setCallCondition(JXPathContext
+                           .compile(((UntypedAnnotationProxy) annotation)
+                                 .getValue()));
             }
          }
 
@@ -290,7 +240,7 @@ public class FormMetadataFactoryAspect {
                   final Annotation annotation) {
 
                final Map attributesMap = GenesisUtils.getAttributesMap(
-                     ((UntypedAnnotation) annotation).value());
+                     ((UntypedAnnotationProxy) annotation).getValue());
                final String widgetName = (String)attributesMap
                      .get("widgetName");
                final String objectFieldName = (String)attributesMap
@@ -396,7 +346,9 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata
-                     .setClearOnCondition(compile(formMetadata.getScript(), annotation));
+                     .setClearOnCondition(JXPathContext
+                           .compile(((UntypedAnnotationProxy) annotation)
+                                 .getValue()));
             }
 
             public void processMethodAnnotation(
@@ -409,7 +361,7 @@ public class FormMetadataFactoryAspect {
                }
 
                methodMetadata.getDataProviderMetadata().setClearOnCondition(
-                     compile(formMetadata.getScript(), annotation));
+                     JXPathContext.compile(((UntypedAnnotationProxy) annotation).getValue()));
             }
          }
 
@@ -424,8 +376,8 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEqualityComparator(getEqualityComparator(
-                     fieldMetadata, ((UntypedAnnotation) annotation)
-                           .value()));
+                     fieldMetadata, ((UntypedAnnotationProxy) annotation)
+                           .getValue()));
             }
 
             public void processMethodAnnotation(
@@ -463,7 +415,7 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEmptyResolver(getEmptyResolver(fieldMetadata,
-                     ((UntypedAnnotation) annotation).value()));
+                     ((UntypedAnnotationProxy) annotation).getValue()));
             }
 
             public void processMethodAnnotation(
@@ -504,8 +456,8 @@ public class FormMetadataFactoryAspect {
                      .getFieldClass());
                fieldMetadata.setConverter(converter);
                fieldMetadata.setEmptyValue(converter.convert(fieldMetadata
-                     .getFieldClass(), ((UntypedAnnotation) annotation)
-                     .value()));
+                     .getFieldClass(), ((UntypedAnnotationProxy) annotation)
+                     .getValue()));
             }
 
             public void processMethodAnnotation(
@@ -529,7 +481,7 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setCloner(getCloner(fieldMetadata,
-                     ((UntypedAnnotation)annotation).value()));
+                     ((UntypedAnnotationProxy)annotation).getValue()));
             }
 
             public void processMethodAnnotation(
@@ -594,14 +546,6 @@ public class FormMetadataFactoryAspect {
          public static MetadataAttribute get(String name) {
             return (MetadataAttribute) Enum.get(MetadataAttribute.class, name);
          }
-
-         private static ScriptExpression compile(Script script, Annotation annon) {
-            return compile(script, ((UntypedAnnotation)annon).value());
-         }
-         
-         private static ScriptExpression compile(Script script, String value) {
-            return script.compile(value);
-         }
       }
 
       private final Map cache = new HashMap();
@@ -609,7 +553,7 @@ public class FormMetadataFactoryAspect {
       public FormMetadata getFormMetadata(final Class formClass) {
          FormMetadata formMetadata = (FormMetadata) cache.get(formClass);
          if (formMetadata == null) {
-            formMetadata = new FormMetadata(formClass, getScript());
+            formMetadata = new FormMetadata(formClass);
             processAnnotations(formMetadata);
             cache.put(formClass, formMetadata);
          }

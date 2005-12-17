@@ -41,9 +41,13 @@ public class CriteriaPager implements Pager {
       return getPage(pageNumber, resultsPerPage, false);
    }
 
-   public Page getPage(final int pageNumber, final int resultsPerPage,
+   public Page getPage(int pageNumber, final int resultsPerPage,
          boolean last) throws PagingException {
-      try {
+      if (pageNumber < 0) {
+         pageNumber = 0;
+      }
+
+     try {
          crit.setFirstResult(pageNumber * resultsPerPage);
          crit.setMaxResults(resultsPerPage);
          final List results = crit.list();

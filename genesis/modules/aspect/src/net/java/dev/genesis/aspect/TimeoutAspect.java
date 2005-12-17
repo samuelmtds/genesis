@@ -24,15 +24,14 @@ import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.LinkedList;
 import net.java.dev.genesis.exception.TimeoutException;
-
 import org.apache.commons.logging.Log;
+
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.aspectwerkz.AspectContext;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 
-
 /**
- * @Aspect("perJVM")
+ * @Aspect perThread
  */
 public class TimeoutAspect {
    private static final Log log = LogFactory.getLog(TimeoutAspect.class);
@@ -212,31 +211,20 @@ public class TimeoutAspect {
 
    private final long timeout;
    private final boolean keepThreadInstance;
-   private final ThreadLocal threadLocal = new ThreadLocal();
+   private WorkerThread thread;
    
-   public TimeoutAspect(final AspectContext ctx) {
-      this.timeout = Long.parseLong(ctx.getParameter("timeout"));
+   public TimeoutAspect(final CrossCuttingInfo ccInfo) {
+      this.timeout = Long.parseLong(ccInfo.getParameter("timeout"));
       this.keepThreadInstance = "true".equals(
-            ctx.getParameter("keepThreadInstance"));
+            ccInfo.getParameter("keepThreadInstance"));
    }
-
-   private WorkerThread getWorkerThread() {
-      return (WorkerThread)threadLocal.get();
-   }
-
-   private void setWorkerThread(WorkerThread workerThread) {
-      threadLocal.set(workerThread);
-   }
-
+   
    /**
-    * @Around("timeout")
+    * @Around timeout
     */
    public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
-      WorkerThread thread = getWorkerThread();
-
       if (thread == null) {
          thread = new WorkerThread(keepThreadInstance);
-         setWorkerThread(thread);
 
          if (keepThreadInstance) {
             if (log.isDebugEnabled()) {
@@ -261,7 +249,7 @@ public class TimeoutAspect {
             log.error(t);
          }
 
-         setWorkerThread(null);
+         thread = null;
 
          throw new TimeoutException("Execution took more than " + timeout + 
                " ms");
@@ -273,7 +261,7 @@ public class TimeoutAspect {
       thread.cleanUp();
 
       if (!keepThreadInstance) {
-         setWorkerThread(null);
+         thread = null;
       }
 
       if (throwable != null) {

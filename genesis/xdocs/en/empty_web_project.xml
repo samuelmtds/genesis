@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Empty WEB project structure</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
+    </author>
+  </properties>
+  <body>
+    <section name="How to start?">
+      <p>genesis was conceived having as a goal to make development easier and
+      faster. In order to allow someone to use it in an easier and faster way,
+      we made available a whole empty project structure, so you just need to
+      code your own classes. All compilation and installations process are
+      already configured in this empty web project.</p>
+      <p>It's extremely important you have already read genesis docs and
+      understood its concepts and features. Before starting to code, read the <a
+      href="documentation_intro.html">User Manual</a> and <a href=
+      "jars_explained.html">understand genesis distribution jars</a>.</p>
+      <p>We call an empty web project strutucture <code>empty-web-project</code> and it
+      comes with genesis-empty-web-project distribution or genesis-all distribution.
+      This structure can be found in dir
+      <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-web-project/</b></code>.
+      </p>
+    </section>
+    <section name="What is needed?">
+      <p>Besides genesis, it is necessary:</p>
+      <ul>
+        <li>genesis distribution along its dependency libraries.</li>
+        <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
+        3.2.x release.</li>
+        <li>To compile and install the application we recommend <a href=
+        "http://ant.apache.org/">Apache Ant</a> 1.6.x.</li>
+      </ul>
+    </section>
+    <section name="Configuring a new project">
+      <p>You can copy the whole <b>empty-web-project</b> structure to a development
+      directory of your choice. The first step to configure a new project is to
+      copy the file named <code>build.properties.sample</code> to a new one
+      named <code>build.properties</code>. File <code>build.properties</code>
+      defines certain proprerties that are project or developer specific. The
+      initial content for <code>build.properties.sample</code> is as follows:</p
+      >
+<source>
+## Build properties sample
+
+# The following property must be defined in build.properties with an appropriate
+# value for the local environment
+jboss.home=/opt/jboss-3.2.6
+genesisBasedApplication.name=empty-web-project
+genesisBasedApplication.prettyName=Empty Web Project
+
+# These properties already have a default value defined in build.xml and only
+# need to be defined in build.properties if their values are different in your 
+# local setup
+#genesis.home=../../genesis
+#xdoclet.dist=../../xdoclet/dist
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.6
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+</source>
+      <p>At least three properties must be defined:</p>
+      <ul>
+        <li><code><b>jboss.home</b></code>: Indicates where JBoss 3.2.x is
+        installed</li>
+        <li><code><b>genesisBasedApplication.name</b></code>: Choose a name for
+        your project, preferably with no spaces in it.</li>
+        <li><code><b>genesisBasedApplication.prettyName</b></code>: Defines a
+        descriptive name for your project. This name may contain spaces.</li>
+      </ul>
+      <p>There are other optional properties that have got a default value, but
+      may be redefined. Some of them are:</p>
+      <ul>
+        <li><code><b>genesis.home</b></code>: Indicates where genesis is
+        located. Usually this directory will be something like <code><b>&lt;
+        SOME_DIRECTORY&gt;/genesis-&lt;version&gt;/genesis</b></code></li>
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indicates the JBoss 
+        datasource config file location. You can supply another config file that 
+        matches your database configuration.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indicates what SQL dialect 
+        Hibernate will use. If you're going to use any database other than 
+        HSQLDB, you must supply the correct dialect. You can find further 
+        information about how to configure dialects at the <a 
+        href="http://www.hibernate.org/">Hibernate site</a>.
+        </li>
+      </ul>
+      <p>To make understanding easier, let's imagine a cenario for a new genesis
+      based project creation:</p>
+      <ul>
+        <li>We have JBoss 3.2.6 installed at <code>C:\servers\jboss-3.2.6</code>
+        </li>
+        <li>We install genesis dist at <code>C:\projects</code>, what creates a
+        <code>C:\projects\genesis-&lt;version&gt;</code> dir.</li>
+        <li>The project will be called<b>helloworld</b> and its descriptive name
+        will be <b>Hello World</b>.</li>
+        <li>The main project class will be <b>exemplo.HelloWorld</b>.</li>
+      </ul>
+      <p>Our <code><b>build.properties</b></code> file may look like:</p>
+<source>
+jboss.home=c:/servers/jboss-3.2.6
+genesisBasedApplication.name=helloworld
+genesisBasedApplication.prettyName=Hello World
+
+genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
+</source>
+    </section>
+    <section name="Developing with genesis">
+      <p>There are two source dirs in the project:</p>
+      <ul>
+        <li><b>&lt;PROJECT_DIR&gt;/modules/web/src</b>: Dir that contains all
+        source files related to the web side of your application (servlets, 
+        context listeners, and other classes related to the view tier).</li>
+        <li><b>&lt;PROJECT_DIR&gt;/modules/shared/src</b>: Dir that contains all
+        source files that both the web side and the ejb container side will need.
+        Generally classes that represent business logic and have
+        transactional/remotable methods (<b>Commands</b>) are put there.
+        Together with them, we have what we call <b>Databeans</b>, i.e.,
+        Hibernate mapped objects, named that way since they go from the view
+        layer to the persistence layer.</li>
+      </ul>
+      <p>Another web dir can be found at 
+      <b>&lt;PROJECT_DIR&gt;/modules/web/content</b> and must contains
+      html, jsp, javascript, pics, xml and other files that usually are part of
+      war files.</p>
+      <p>The last dir is <b>&lt;PROJECT_DIR&gt;/modules/web/lib</b>
+      where you should put jars related to your web-tier, such as struts.jar 
+      (if you are using struts).</p>
+    </section>
+    <section name="Compiling and installing your application">
+      <p>The project can be compiled and installed on JBoss using <a href=
+      "http://ant.apache.org/">Ant</a>.</p>
+      <p>To compile and install your application we have the following basic Ant
+      targets:</p>
+      <ul>
+        <li><b>all</b>: Compiles, packages and deploys your application</li>
+        <li><b>clean</b>: Deletes all files generated during
+        compilation.</li>
+        <li><b>clean-build</b>: It does the same as running <code>clean</code> and
+        <code>all</code> in sequence.</li>
+      </ul>
+      <p>The faster way to put your project to run is:
+<source>
+ant all
+&lt;JBOSS_DIR&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
+
+So, go to your application url, i.e:
+http://localhost:8080/&lt;genesisBasedApplication.name&gt;
+</source>
+      </p>
+    </section>
+  </body>
+</document>
+

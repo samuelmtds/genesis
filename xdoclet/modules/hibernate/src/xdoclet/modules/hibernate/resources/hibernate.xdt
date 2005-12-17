@@ -14,7 +14,7 @@
       <XDtClass:ifHasClassTag tagName="hibernate.mapping" paramName="auto-import" superclasses="false">
         auto-import="<XDtClass:classTagValue tagName="hibernate.mapping" paramName="auto-import" values="true,false" />"
       </XDtClass:ifHasClassTag>
->
+>
     <XDtHibernate:logMapping/>
     <class
       <XDtClass:ifHasClassTag tagName="hibernate.class" superclasses="false">
