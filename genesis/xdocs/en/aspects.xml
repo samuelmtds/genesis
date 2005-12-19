@@ -475,6 +475,16 @@ public interface FormControllerFactory {
             <td>No</td>
             <td><code>false</code></td>
           </tr>
+          <tr>
+            <td>ViewMetadataFactoryAspect$AspectViewMetadataFactory</td>
+            <td>skipSystemClasses</td>
+            <td>boolean</td>
+            <td>Indicates whether the class must ignore the parsing of system class methods
+            when constructing the metadata
+            </td>
+            <td><b>No</b></td>
+            <td>true</td>
+          </tr>
         </table>
       </subsection>
       <subsection name="Named pointcuts">

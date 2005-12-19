@@ -480,6 +480,16 @@ public interface FormControllerFactory {
             <td>Não</td>
             <td><code>false</code></td>
           </tr>
+          <tr>
+            <td>ViewMetadataFactoryAspect$AspectViewMetadataFactory</td>
+            <td>skipSystemClasses</td>
+            <td>boolean</td>
+            <td>Indica se a classe deve ignorar métodos herdados de classes de sistema
+            ao gerar os metatados.
+            </td>
+            <td><b>Não</b></td>
+            <td>true</td>
+          </tr>
         </table>
       </subsection>
       <subsection name="Pointcuts nomeados">
