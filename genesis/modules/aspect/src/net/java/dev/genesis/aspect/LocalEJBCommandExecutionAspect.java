@@ -19,6 +19,7 @@
 package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.naming.InitialContext;
 
@@ -36,6 +37,7 @@ import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
  */
 public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
    private static Log log = LogFactory.getLog(LocalEJBCommandExecutionAspect.class);
+   private ThreadLocal threadLocal = new InheritableThreadLocal();
 
    private CommandExecutorLocalHome home;
    private CommandExecutorLocal session;
@@ -73,6 +75,14 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
     */
    public Object commandExecution(final JoinPoint jp) throws Throwable {
       final MethodRtti rtti = (MethodRtti)jp.getRtti();
+
+      Method m = (Method) threadLocal.get();
+      if (m != null && m.equals(rtti.getMethod())) {
+         Object value = jp.proceed();
+         threadLocal.set(null);
+         return value;
+      }
+
       final CommandResolver obj = (CommandResolver)jp.getTarget();
       final Class[] classes = rtti.getParameterTypes();
       final String[] classNames = new String[classes.length];
@@ -88,6 +98,8 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
       try {
          commandExecutorLocal = getCommandExecutor();
 
+         threadLocal.set(rtti.getMethod());
+
          if (obj.isTransactional(rtti.getMethod())) {
             return commandExecutorLocal.executeTransaction(obj, methodName,
                   classNames, parameterValues);
@@ -99,6 +111,8 @@ public class LocalEJBCommandExecutionAspect extends CommandInvocationAspect {
          }
       } catch (final InvocationTargetException ite) {
          throw ite.getTargetException();
+      } finally {
+         threadLocal.set(null);
       }
    }
 }

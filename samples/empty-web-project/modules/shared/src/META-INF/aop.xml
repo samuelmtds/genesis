@@ -1,6 +1,6 @@
 <!DOCTYPE aspectwerkz PUBLIC
-      "-//AspectWerkz//DTD 1.0//EN"
-      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
+      "-//AspectWerkz//DTD 2.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_2_0.dtd">
 <aspectwerkz>
    <system id="genesis-project" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
@@ -16,7 +16,9 @@
       <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       
       <!-- Genesis Aspects -->
-      <aspect class="CommandInvocationAspect" />
+      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
+      <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
+
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />

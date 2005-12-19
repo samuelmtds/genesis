@@ -25,10 +25,6 @@
 
       <!-- Problems with <ant ...>, <antcall ...> or <subant...>. TODO: See what's happening -->
       <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
-         <arg line="-f ${basedir}/../xdoclet/build.xml" />
-      </exec>
-
-      <exec dir="${ant.home}/bin" executable="ant${executableSuffix}" failifexecutionfails="true" failonerror="true">
          <arg line="-f ${basedir}/../ant-tasks/build.xml" />
       </exec>
 
