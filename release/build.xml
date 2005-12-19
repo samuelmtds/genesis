@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="all" name="genesis-release" basedir=".">
+
+   <target name="init">
+      <property file="genesis.properties" />
+      <property file="../genesis/build.properties" />
+      <property file="../genesis/project.properties" />
+      <property name="genesis.home" location="../genesis" />
+      <property name="samples.home" location="../samples" />
+      <property name="xdoclet.home" location="../xdoclet" />
+      <property name="anttasks.home" location="../ant-tasks" />
+      <property name="project.xml" location="${genesis.home}/project.xml" />
+
+      <path id="path">
+         <fileset dir="lib" />
+      </path>
+
+      <taskdef name="call"
+               classname="ise.antelope.tasks.Call"
+               classpathref="path" />
+      <taskdef name="post"
+               classname="ise.antelope.tasks.PostTask"
+               classpathref="path" />
+      <taskdef name="grep"
+               classname="ise.antelope.tasks.Find"
+               classpathref="path" />
+      <taskdef name="stringutil"
+               classname="ise.antelope.tasks.StringUtilTask"
+               classpathref="path" />
+
+      <post to="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=1756&amp;expandFolder=1756&amp;folderID=1756"
+            verbose="no"
+            property="release.page" />
+
+      <fail unless="release.page">
+Fail!
+It was not possible to read java.net site
+      </fail>
+
+      <grep in="${release.page}"
+            regex="(href=&quot;)((.){80,100})&amp;folderID=(\d{1,5})&quot; title=&quot;view contents&quot;&gt;(\s)*${genesis.version}&lt;span class=&quot;alt&quot;&gt;"
+            group="2"
+            property="download.url" />
+
+      <fail unless="download.url">
+Fail!
+You have forgotten to create a new version folder on java.net
+      </fail>
+
+      <stringutil string="${download.url}" property="download.url">
+         <replace regex="&amp;" replacement="&amp;amp;" />
+      </stringutil>
+   </target>
+
+   <target name="step1:init" depends="init">
+      <property environment="env" />
+      <property name="maven.home" value="${env.MAVEN_HOME}" />
+      <property name="xdocs.dir" location="${genesis.home}/xdocs" />
+      <property name="download.en.xml"
+                location="${xdocs.dir}/en/download.xml" />
+      <property name="download.pt-BR.xml"
+                location="${xdocs.dir}/pt-BR/download.xml" />
+      <property name="release.en.xml"
+                location="${xdocs.dir}/en/release_notes.xml" />
+      <property name="release.pt-BR.xml"
+                location="${xdocs.dir}/pt-BR/release_notes.xml" />
+
+      <condition property="executableSuffix" value="">
+         <not>
+            <os family="dos" />
+         </not>
+      </condition>
+
+      <condition property="executableSuffix" value=".bat">
+         <os family="dos" />
+      </condition>
+
+      <property name="maven.cmd"
+                location="${maven.home}${file.separator}bin${file.separator}maven${executableSuffix}" />
+
+      <condition property="maven.ok">
+         <available file="${maven.cmd}" />
+      </condition>
+
+      <fail unless="maven.ok">
+Fail!
+Maven home not set properly (Maven 1.x needed)
+Set maven.home property in build.properties
+or
+Set your environment variable MAVEN_HOME
+      </fail>
+
+      <loadfile property="project.current.version" srcfile="${project.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="&lt;currentVersion&gt;${genesis.version}&lt;/currentVersion&gt;" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="project.current.version">
+Fail!
+You have forgotten to change &lt;currentVersion&gt;&lt;/currentVersion&gt; in ${project.xml}
+It must be &lt;currentVersion&gt;${genesis.version}&lt;/currentVersion&gt;
+      </fail>
+
+      <loadfile property="project.version" srcfile="${project.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="&lt;id&gt;${genesis.version}&lt;/id&gt;" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="project.version">
+Fail!
+You have forgotten to write a new version tag in ${project.xml}
+      </fail>
+
+      <loadfile property="release.en" srcfile="${release.en.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="href=&quot;#${genesis.version}&quot;" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.en">
+Fail!
+You have forgotten to write Release Notes at ${release.en.xml}
+      </fail>
+
+      <loadfile property="release.pt-BR" srcfile="${release.pt-BR.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="href=&quot;#${genesis.version}&quot;" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.pt-BR">
+Fail!
+You have forgotten to write Release Notes at ${release.pt-BR.xml}
+      </fail>
+
+      <loadfile property="download.en" srcfile="${download.en.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="download.en">
+Fail!
+You have forgotten to update Download Link at ${download.en.xml}
+The link must be ${download.url}&amp;folderID=0
+      </fail>
+
+      <loadfile property="download.pt-BR" srcfile="${download.pt-BR.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="download.pt-BR">
+Fail!
+You have forgotten to update Download Link at ${download.pt-BR.xml}
+The link must be ${download.url}&amp;ampfolderID=0
+      </fail>
+   </target>
+
+   <target name="step1" depends="step1:init" description="Build genesis sites">
+      <exec dir="${genesis.home}"
+            executable="${maven.cmd}"
+            failifexecutionfails="true"
+            failonerror="true">
+         <arg value="genesis:site" />
+      </exec>
+   </target>
+
+
+   <target name="step2:init" depends="init">
+      <condition property="executableSuffix" value="">
+         <not>
+            <os family="dos" />
+         </not>
+      </condition>
+
+      <condition property="executableSuffix" value=".bat">
+         <os family="dos" />
+      </condition>
+
+      <property name="ant.cmd"
+                location="${ant.home}${file.separator}bin${file.separator}ant${executableSuffix}" />
+
+      <condition property="ant.ok">
+         <available file="${ant.cmd}" />
+      </condition>
+   </target>
+
+   <target name="step2" depends="step2:init" description="Creates distribution">
+      <exec dir="${genesis.home}"
+            executable="${ant.cmd}"
+            failifexecutionfails="true"
+            failonerror="true">
+         <arg value="-f" />
+         <arg value="build_dist.xml" />
+      </exec>
+   </target>
+
+   <target name="step3:init" depends="init">
+      <taskdef resource="org/kohsuke/javanettasks.properties"
+               classpathref="path" />
+   </target>
+
+   <target name="-do-upload">
+      <echo>Uploading genesis-${dist.type}-${genesis.version}.zip...</echo>
+      <javaNetUpload projectName="${java.net.project}"
+                     fromFile="../genesis/${genesis.build.dir}/genesis-${dist.type}-${genesis.version}.zip"
+                     toFile="/releases/${genesis.version}/genesis-${dist.type}-${genesis.version}.zip"
+                     fileDescription="${description}"
+                     fileStatus="${file.status}"
+                     overwrite="${overwrite}" />
+      <echo>Uploading genesis-${dist.type}-${genesis.version}.tar.gz...</echo>
+      <javaNetUpload projectName="${java.net.project}"
+                     fromFile="../genesis/${genesis.build.dir}/genesis-${dist.type}-${genesis.version}.tar.gz"
+                     toFile="/releases/${genesis.version}/genesis-${dist.type}-${genesis.version}.tar.gz"
+                     fileDescription="${description}"
+                     fileStatus="${file.status}"
+                     overwrite="${overwrite}" />
+   </target>
+
+   <target name="step3"
+           depends="step3:init"
+           description="Uploads distribution files">
+      <antcall target="-do-upload">
+         <param name="dist.type" value="dist" />
+         <param name="description" value="${dist}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="dependencies" />
+         <param name="description" value="${dependencies}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="empty-project" />
+         <param name="description" value="${empty-project}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="empty-web-project" />
+         <param name="description" value="${empty-web-project}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="useradmin-sample" />
+         <param name="description" value="${useradmin-sample}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="src" />
+         <param name="description" value="${src}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="docs" />
+         <param name="description" value="${docs}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="xdoclet-extensions" />
+         <param name="description" value="${xdoclet-extensions}" />
+      </antcall>
+      <antcall target="-do-upload">
+         <param name="dist.type" value="all" />
+         <param name="description" value="${all}" />
+      </antcall>
+   </target>
+
+   <target name="step4:init" depends="init">
+      <property name="root.dir" location="../" />
+      <property name="www.dir" location="${root.dir}/www" />
+      <property name="site.dir" location="${www.dir}/${genesis.version}" />
+      <property name="maven.site.dir" location="${site.dir}/maven-site" />
+      <property name="download.en.file"
+                location="../genesis/${genesis.build.dir}/docs/en/download.html" />
+      <property name="download.pt-BR.file"
+                location="../genesis/${genesis.build.dir}/docs/pt-BR/download.html" />
+      <property name="release.en.file"
+                location="../genesis/${genesis.build.dir}/docs/en/release_notes.html" />
+      <property name="release.pt-BR.file"
+                location="../genesis/${genesis.build.dir}/docs/pt-BR/release_notes.html" />
+   </target>
+
+   <target name="step4:check-conditions" depends="step4:init">
+      <condition property="docs.available">
+         <available file="../genesis/${genesis.build.dir}/docs" type="dir" />
+      </condition>
+      <condition property="docs.tags.available">
+         <available file="../genesis/${genesis.build.dir}/docs/tags"
+                    type="dir" />
+      </condition>
+
+      <fail unless="docs.available">
+Fail!
+Documentation site not available!
+Build genesis site using Maven 1.x
+      </fail>
+
+      <fail unless="docs.tags.available">
+Fail!
+Documentation about genesis-xdoclet not available!
+Make sure xdoclet was built properly
+      </fail>
+
+      <stringutil string="${genesis.version}" property="genesis.version.anchor">
+         <replace regex="[.]" replacement="_" />
+      </stringutil>
+
+      <loadfile property="release.en" srcfile="${release.en.file}">
+         <filterchain>
+            <linecontains>
+               <contains value="href=&quot;#${genesis.version.anchor}&quot;" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.en">
+Fail!
+You have forgotten to write Release Notes at ${release.en.file}
+      </fail>
+
+      <loadfile property="release.pt-BR" srcfile="${release.pt-BR.file}">
+         <filterchain>
+            <linecontains>
+               <contains value="href=&quot;#${genesis.version.anchor}&quot;" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.pt-BR">
+Fail!
+You have forgotten to write Release Notes at ${release.pt-BR.file}
+      </fail>
+
+      <loadfile property="download.en" srcfile="${download.en.file}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="download.en">
+Fail!
+You have forgotten to update Download Link at ${download.en.file}
+The link must be ${download.url}&amp;folderID=0
+      </fail>
+
+      <loadfile property="download.pt-BR" srcfile="${download.pt-BR.file}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="download.pt-BR">
+Fail!
+You have forgotten to update Download Link at ${download.pt-BR.file}
+The link must be ${download.url}&amp;ampfolderID=0
+      </fail>
+
+   </target>
+
+   <target name="step4"
+           depends="step4:check-conditions,cvs:init"
+           description="Upload genesis site">
+      <mkdir dir="${maven.site.dir}" />
+      <copy todir="${maven.site.dir}">
+         <fileset dir="../genesis/${genesis.build.dir}/docs" />
+      </copy>
+      <call target="cvs:import" />
+   </target>
+
+   <target name="cvs:init" depends="init">
+      <property name="repository.path"
+                value="www/${genesis.version}/maven-site" />
+      <property name="cvs.root"
+                value=":pserver:sol@cvs.dev.java.net:/cvs/genesis/www" />
+      <available file="${user.home}/.cvspass"
+                 property="cvs.already.logged.in" />
+
+      <loadfile property="project.xml.raw" srcfile="${project.xml}" />
+
+      <grep in="${project.xml.raw}"
+            regex="(&lt;name&gt;${genesis.version}&lt;/name&gt;(\s)*&lt;tag&gt;)((.){9,30})&lt;/tag&gt;"
+            group="2"
+            property="genesis.tag" />
+
+      <call target="cvs:login" />
+   </target>
+
+   <target name="cvs:login" unless="cvs.already.logged.in">
+      <input message="Please enter CVS password:" addproperty="cvs.password" />
+
+      <cvspass cvsroot="${cvs.root}" password="${cvs.password}" />
+   </target>
+
+   <target name="cvs:import" depends="cvs:init">
+      <cvs compression="true"
+           cvsroot="${cvs.root}"
+           dest="${site.dir}"
+           failonerror="true">
+         <commandline>
+            <argument value="import" />
+            <argument value="-m" />
+            <argument value="genesis ${genesis.version} site" />
+            <argument value="${genesis.version}" />
+            <argument value="Summa" />
+            <argument value="genesis" />
+         </commandline>
+      </cvs>
+   </target>
+
+   <target name="cvs:macrodef">
+      <macrodef name="cvstag">
+         <attribute name="dir" />
+         <sequential>
+            <cvs compression="true" failonerror="true" dest="@{dir}">
+               <commandline>
+                  <argument value="tag" />
+                  <argument value="-F" />
+                  <argument value="${genesis.tag}" />
+               </commandline>
+            </cvs>
+         </sequential>
+      </macrodef>
+   </target>
+
+   <target name="step5"
+           depends="cvs:init,cvs:macrodef"
+           description="Tag project">
+      <cvstag dir="${genesis.home}" />
+      <cvstag dir="${samples.home}" />
+      <cvstag dir="${xdoclet.home}" />
+      <cvstag dir="${anttasks.home}" />
+   </target>
+
+   <target name="step6" depends="cvs:init,cvs:macrodef" description="Tag site">
+      <cvstag dir="${www.dir}" />
+   </target>
+
+   <target name="all"
+           depends="step1,step2,step3,step4,step5,step6"
+           description="Release genesis" />
+</project>
