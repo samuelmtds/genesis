@@ -19,6 +19,8 @@
         <li><b>genesis-empty-project-{version}.tar.gz</b> and
         <b>genesis-empty-project-{version}.zip</b>: comes with an empty project
         structure so it can be used to start a new genesis-based project.</li>
+        <li><b>genesis-empty-web-project-{version}.zip</b>: comes with an empty web project
+        structure so it can be used to start a new genesis-based web project.</li>
         <li><b>genesis-useradmin-sample-{version}.tar.gz</b> and
         <b>genesis-useradmin-sample-{version}.zip</b>: comes with the
         <code>useradmin</code> genesis sample application.</li>

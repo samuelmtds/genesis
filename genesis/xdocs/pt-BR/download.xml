@@ -20,6 +20,8 @@
         <li><b>genesis-empty-project-{versão}.tar.gz</b> e
         <b>genesis-empty-project-{versão}.zip</b>: contém a estrutura de
         um projeto para início de desenvolvimento.</li>
+        <li><b>genesis-empty-web-project-{versão}.zip</b>: contém a estrutura de
+        um projeto WEB para início de desenvolvimento.</li>
         <li><b>genesis-useradmin-sample-{versão}.tar.gz</b> e
         <b>genesis-useradmin-sample-{versão}.zip</b>: contém o exemplo
         <code>useradmin</code> de utilização do genesis.</li>
