@@ -145,7 +145,8 @@
 
       <macrodef name="awc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <attribute name="verbose" default="${verbose}" />
+         <attribute name="verbose" default="false" />
+         <attribute name="taskverbose" default="${verbose}" />
          <attribute name="genjp" default="${genjp}" />
          <attribute name="classpath" />
          <attribute name="sourcepath" />
@@ -157,8 +158,8 @@
                      classpathref="anttasks.path" />
 
             <mkdir dir="@{destdir}" />
-            <awc classpathref="@{classpath}" genjp="@{genjp}"
-                 verbose="@{verbose}" destdir="@{destdir}">
+            <awc classpathref="@{classpath}" genjp="@{genjp}" destdir="@{destdir}"
+                 taskverbose="@{taskverbose}" verbose="@{verbose}">
                <sourcepath location="@{sourcepath}"/>
             </awc>
             <touch file="@{touchfile}"/>
