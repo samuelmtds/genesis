@@ -39,7 +39,7 @@
    </target>
 
    <target name="-do-master-init-paths">
-      <property name="genesis.version" value="2.3-RC3" />
+      <property name="genesis.version" value="2.3" />
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
       <property name="annotation.properties" 
@@ -144,7 +144,8 @@
 
       <macrodef name="awc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <attribute name="verbose" default="${verbose}" />
+         <attribute name="verbose" default="false" />
+         <attribute name="taskverbose" default="${verbose}" />
          <attribute name="classpath" />
          <attribute name="sourcepath" />
          <attribute name="destdir" />
@@ -155,7 +156,7 @@
                      classpathref="anttasks.path" />
 
             <mkdir dir="@{destdir}" />
-            <awc classpathref="@{classpath}" 
+            <awc classpathref="@{classpath}" taskverbose="@{taskverbose}"
                  verbose="@{verbose}" destdir="@{destdir}">
                <sourcepath location="@{sourcepath}"/>
             </awc>
