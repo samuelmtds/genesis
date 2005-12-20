@@ -2,138 +2,52 @@
 <document>
   <properties>
     <title>genesis</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
     <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
   </properties>
   <body>
-    <section name="Bem-vindo ao genesis">
-      <p>O <b>genesis</b> é um framework open source que tem como objetivo
-      atingir a <b>simplicidade, produtividade, testabilidade e escalabilidade
-      </b> no desenvolvimento de aplicações corporativas.</p>
-      <p>Ele combina de forma única biblotecas públicas que se tornaram padrões
-      de mercado como <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b>
-      entre outras e reúne toda a experiência da <b>Summa</b> na construção de
-      aplicações de missão crítica.</p>
-      <p>Foi desenvolvido e testado a partir dos requisitos de usuários reais,
-      sendo resultado da experiência obtida na execução de projetos. Uma das
-      soluções hoje implantadas em um cliente lida com mais de 1 milhão de
-      transações por dia, o que comprova a escalabilidade da solução.</p>
+    <section name="genesis">
+       <p><font size="+4">
+       <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4595&amp;filter=genesis-all">Quick Download
+       <img src="../download.jpg" /></a></font></p>
     </section>
-    <section name="Principais características">
-      <p>Entre as principais características do genesis pode-se citar:</p>
-    <ul>
-       <li><b>Simplicidade:</b> não existem requirementos complexos da parte do
-       framework: seus componentes não precisam estender classes, não é
-       necessário expor uma interface, configurar dezenas de linhas de xml por
-       componente e nem mesmo obter uma instância deles usando uma factory ou
-       interface.</li>
-       <li><b>Produtividade:</b> seu código basicamente se resume a lógica de
-       negócios e o framework é de fácil assimilação, o que torna
-       desenvolvedores que saibam apenas Java básico extremamente produtivos em
-       pouquíssimo tempo.</li>
-       <li><b>Testabilidade:</b> o framework foi concebido de modo que testes
-       unitários possam ser escritos até mesmo para seus componentes de
-       interface gráfica.</li>
-       <li><b>Escalabilidade:</b> sua arquitetura stateless (sem estado) e sem
-       contenção possibilita o desenvolvimento de soluções escaláveis sem grande
-       esforço por parte do programador.</li>
-       <li><b>Remotabilidade/transacionalidade transparente:</b> através do uso
-       de AOP, uma chamada a um método pode ser facilmente configurada para
-       execução remota e/ou transacional sem alteração no código cliente.</li>
-       <li><b>Suporte ao desenvolvimento de UI:</b> o uso do genesis-client
-       torna o desenvolvimento de UIs extremamente simples, permitindo que a
-       partir de pouquíssimas configurações e meros JavaBeans possa-se controlar
-       todo o fluxo da UI e características comuns como visibilidade, travamento
-       de campos, limpeza em cascata, chamada de métodos em determinadas
-       condições, população de componentes como combos e tabelas de forma
-       automática e controlada pelo framework.</li>
-       <li><b>Integração com Hibernate:</b> a integração com o Hibernate permite
-       que se construa de forma extremamente fácil buscas paginadas, pesquisas
-       dinâmicas e etc.</li>
-    </ul>
-    <!--p><b>TODO: mover seções subsequentes para outro lugar e fazer uma seção
-    para onde vou a partir daqui?</b></p-->
+    <section name="Uma visão geral">
+      <p>O <b>genesis</b> é um conjunto de biblotecas (framework) distribuidas 
+      sob licença LGPL com o objetivo de desenvolver aplicações corporativas que
+      consistem em formulários de entrada de dados. O objetivo é que as aplicações 
+      possam ser criadas e mantidas com facilidade, pelas equipes de desenvolvimento 
+      internas a empresa, sem sacrificar os benefícios de uma arquitetura J2EE sólida. 
+      O foco é a transparência no uso da plataforma J2EE e a lógica de controle 
+      da interface com o usuário, dois pontos que na nossa experiência, 
+      criam entraves ao desenvolvimento corporativo.</p>
     </section>
-    <!-- section name="Genesis Server">
-    <p>
-  O coração do Genesis (<b>Genesis Server</b>) é a integracao entre cliente e
-  servidor através do uso de AOP
-        para implementar o padrão "Command" de forma transparente para o
-        usuário,
-        onde o executor dos comandos ("Command Executor") pode ser um Stateless
-        Session Bean, ou qualquer
-        outra coisa determinada pela configuração do Aspecto.
-    </p>
-    <p>
-  O Genesis promove o uso de classes Java puras para representar os métodos de
-  negócio, sem
-        dependências artificiais como a obrigação de extender alguma classe do
-        framework ou ter que
-        implementar uma interface específica. Estas classes são compartilhadas
-        entre o cliente e o servidor.
-    </p>
-    <p>
-    Um método de uma classe de negócio pode ser executado tanto no cliente como
-    no servidor
-    sendo que esta escolha é determinada por anotações no código da classe de
-    negócio (ver <a href="">Arquitetura</a>).<br/>
-    Isto concretiza a noção da existencia de regras de negócio que devem ser
-    praticadas no cliente
-    e regras que executam mais eficientemente no servidor, mantendo ambas
-    encapsuladas na mesma classe que
-    agora passa a representar um conceito consistente.
-    <br/>
-        Isto é possível mediante o uso de <a href="">AOP</a>, o que permite
-        manter as características de uma
-    aplicação J2EE (suporte a transações, escalabilidade, etc) sem perder a
-    simplicidade das classes Java puras.
-    Mais detalhes a respeito em <a href="">Arquitetura do Genesis Server</a>.
-    </p>
+    <section name="Por onde começar ?">
+      <subsection name="Desenvolvedores">
+         <p>Faça o download do genesis e leia o <a href="documentation_intro.html">Manual do Usuário</a>.
+         Rode os <a href="useradmin_sample.html">exemplos</a> e utilize uma 
+         <a href="empty_project.html">estrutura pronta</a> 
+         para começar a desenvolver. Em pouco tempo você estará criando a sua aplicação. 
+         Tire suas dúvidas no <a href="faq.html">FAQ</a> e participe da 
+         <a href="mailto:usuarios-subscribe@genesis.dev.java.net">lista de discussão</a>
+         dentro de nossa comunidade.</p>
+      </subsection>
+      <subsection name="Desenvolvedores de Frameworks">
+         <p>Fique por dentro da arquitetura do genesis estudando a nossa 
+         <a href="advanced_introduction.html">documentação avançada</a>. Veja detalhes a respeito das 
+         tecnologias utilizadas no framework (AOP, IOC, etc).</p>
+      </subsection>
     </section>
-    <section name="Genesis Client">
-  <p>
-  O <b>Genesis Client</b> é uma solução de produtividade baseada na bibloteca
-  Thinlet, para o desenvolvimento de interfaces tipo formulário em
-        aplicações desktop. Ele complementa o <b>Genesis Server</b>, porêm sendo
-        independentes um do outro.<br/>
-  A interface é representada em XML com ajuda de uma ferramenta gráfica e a
-  bibloteca do Thinlet
-        é complementada com uma série de métodos que permitem popular, ler e
-        validar campos e tabelas
-        da interface de forma direta. Extensões ao Thinlet permitem a definição
-        em XML de comportamentos de uso
-        frequente (p.ex: desabilitar um campo em função de outro).<br/>
-  </p>
+    <section name="Dúvidas ?">
+       <subsection name="Lista de Discussão">
+       Inscreva-se na nossa <a href="mailto:usuarios-subscribe@genesis.dev.java.net">lista de discussão</a> 
+       e tire a suas 
+       dúvidas direto com os desenvolvedores.
+       </subsection>
+       <subsection name="FAQ">
+       Dúvidas mais frequentes respondidas no nosso <a href="faq.html">FAQ</a>
+       </subsection>
     </section>
-    <section name="Solução Genesis">
-  <p>
-  O Genesis foi desenvolvido para ser extremamente flexível permitindo a escolha
-  da melhor combinação de soluções
-  de configuração para o cliente (Swing, Struts,etc)  e para o servidor (EJBs,
-  Spring, etc).<br/>
-  Uma combinação foi escolhida para a primeira versão do framework e atende os
-  seguintes requisitos:<br/>
-  <ul>
-  <li>Aplicação de uso intensivo, interface rica e ágil: <b>Thinlet, Genesis
-  Client</b></li>
-  <li>Fácil distribuição via Web: <b>WebStart</b></li>
-  <li>Suporte a transações: <b>JBoss, Genesis Server com
-  EJBCommandExecutor</b></li>
-  <li>Velocidade de execução de queries e suporte a transações:
-  <b>Hibernate</b></li>
-  </ul>
-  A figura a seguir mostra o layout da solução e a sua arquitetura:
-  </p>
-  <p>
-  <img title="Layout Solução Genesis" width="90%" height="90%"
-  src="PlataformaGenesis1.gif" alt="Layout Solução Genesis"></img>
-  </p>
-  <p>
-  <b>Arquitetura da Solução Genesis:</b><br/>
-  <img title="Arquitetura Solução Genesis" width="90%" height="90%"
-  src="PlataformaGenesis2.jpg" alt="Arquitetura Solução Genesis"></img>
-  </p>
-    </section-->
  </body>
 </document>
 
