@@ -2,26 +2,25 @@
 <document>
   <properties>
     <title>Notas de Versão</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Downloads e notas de versão">
       <ul>
-        <li><a href="#2.3-RC3">2.3-RC3</a></li>
-        <li><a href="#2.3-RC2">2.3-RC2</a></li>
-        <li><a href="#2.3-RC1">2.3-RC1</a></li>
+        <li><a href="#2.3">2.3</a></li>
         <li><a href="#2.2">2.2</a></li>
         <li><a href="#2.1">2.1</a></li>
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
-    <section name="2.3-RC3">
+    <section name="2.3">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
           <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4586">aqui</a>. 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4595&amp;expandFolder=4595&amp;folderID=4595">aqui</a>. 
           </p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
@@ -31,18 +30,49 @@
           <li>Algumas tarefas do Ant foram trocadas por outras mais eficientes, resultando num build ainda mais
           otimizado</li>
           <li>Nova documentação de como criar um projeto WEB</li>
+          <li>Foi criado um novo processo de compilação com um build.xml modular e extensível, mais
+          rápido e inteligente</li>
+          <li>Um novo esqueleto de um projeto web foi criado e disponibilizado junto com os exemplos
+          com o nome de <code>empty-web-project</code></li>
+          <li>Todos as bibliotecas necessárias do XDoclet estão disponíveis na distribuição do genesis,
+          dispensando o download do XDoclet</li>
+          <li>Adicionado novos validadores: <a href="ui_additional_features.html#Tratando_erros">
+          <code>min</code> e <code>max</code></a></li>
+          <li>SessionFactory do hibernate é <a href="aspects.html#Referência_de_configuração">
+          instanciado na inicialização no modo de execução local</a></li>
+          <li>É possível customizar <a 
+          href="ui_additional_features.html#Customizando_a_criação_de_componentes">como 
+          os componentes são criados</a> por um <code>@DataProvider</code></li>
+          <li>Foi definida uma API que torna configurável a <a 
+          href="ui_additional_features.html#Alterando_a_forma_como_os_valores_são_clonados">clonagem
+          de valores</a> pelo genesis</li>
         </ul>
-        <p>Nenhum bug foi corrigido nessa versão</p>
-        <p>Uma lista completa das alterações ocorridas entre a 2.3-RC2 e a 2.3-RC3
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>O exemplo useradmin não funciona com uma instalação limpa do genesis
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=263">Issue
+          # 263</a>)</li>
+          <li>CriteriaResolverImpl não funciona corretamente
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=281">Issue
+          # 281</a>)</li>
+          <li><code>CriteriaPropertyHelper</code> lança uma 
+          <code>NullPointerException</code> se o form contiver uma propriedade
+          <code>@NotBound</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=252">Issue
+          # 252</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 2.2 e a 2.3
         pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC2&amp;target_milestone=2.3-RC3">aqui</a>.</p>
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;version=2.3-RC1&amp;version=2.3-RC2&amp;version=2.3-RC3&amp;target_milestone=2.3">aqui</a>.</p>
         <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/2.3-RC3/maven-site/pt-BR/">aqui</a>.</p>
+        href="https://genesis.dev.java.net/nonav/2.3/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
         versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC3&amp;issue_type=DEFECT">aqui</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3&amp;issue_type=DEFECT">aqui</a>
         </p>
       </subsection>
       <subsection name="Agradecimentos">
@@ -62,127 +92,6 @@
             <li>Marcelo Ohashi</li>
             <li>Roberto Arnaldo</li>
             <li>Rodrigo Santos</li>
-            <li>Valéria Fernandes</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="2.3-RC2">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
-          <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4575">aqui</a>. 
-          </p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li>Foi criado um novo processo de compilação com um build.xml modular e extensível, mais
-          rápido e inteligente</li>
-          <li>Um novo esqueleto de um projeto web foi criado e disponibilizado junto com os exemplos
-          com o nome de <code>empty-web-project</code></li>
-          <li>Todos as bibliotecas necessárias do XDoclet estão disponíveis na distribuição do genesis,
-          dispensando o download do XDoclet</li>
-          <li>Adicionado novos validadores: <a href="ui_additional_features.html#Tratando_erros">
-          <code>min</code> e <code>max</code></a></li>
-           <li>SessionFactory do hibernate é <a href="aspects.html#Referência_de_configuração">
-           instanciado na inicialização no modo de execução local</a></li>
-        </ul>
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li>O exemplo useradmin não funciona com uma instalação limpa do genesis
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=263">Issue
-          # 263</a>)</li>
-          <li>CriteriaResolverImpl não funciona corretamente
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=281">Issue
-          # 281</a>)</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 2.3-RC1 e a 2.3-RC2
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC1&amp;target_milestone=2.3-RC2">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/2.3-RC2/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC2&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Cláudio Rocha</li>
-            <li>Daniel Gonçalves</li>
-            <li>Daniela Gomes</li>
-            <li>Danielle Albuquerque</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-            <li>Marcelo Ohashi</li>
-            <li>Roberto Arnaldo</li>
-            <li>Valéria Fernandes</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="2.3-RC1">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
-          <a 
-          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3982&amp;expandFolder=3982&amp;folderID=0">aqui</a>. 
-          </p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li>É possível customizar <a 
-          href="ui_additional_features.html#Customizando_a_criação_de_componentes">como 
-          os componentes são criados</a> por um <code>@DataProvider</code></li>
-          <li>Foi definida uma API que torna configurável a <a 
-          href="ui_additional_features.html#Alterando_a_forma_como_os_valores_são_clonados">clonagem
-          de valores</a> pelo genesis</li>
-        </ul>
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li><code>CriteriaPropertyHelper</code> lança uma 
-          <code>NullPointerException</code> se o form contiver uma propriedade
-          <code>@NotBound</code> (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=252">Issue
-          # 252</a>)</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 2.2 e a 2.3-RC1
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;target_milestone=2.3-RC1">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/2.3-RC1/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3-RC1&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Cláudio Rocha</li>
-            <li>Daniel Gonçalves</li>
-            <li>Daniela Gomes</li>
-            <li>Danielle Albuquerque</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-            <li>Marcelo Ohashi</li>
-            <li>Roberto Arnaldo</li>
             <li>Valéria Fernandes</li>
           </ul>
       </subsection>
