@@ -18,8 +18,15 @@
  */
 package net.java.dev.genesis.anttasks;
 
-import org.apache.tools.ant.Task;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
+
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Target;
+import org.apache.tools.ant.Task;
 
 public class Call extends Task {
    private String target = null;
@@ -33,6 +40,91 @@ public class Call extends Task {
          throw new BuildException("target is required");
       }
 
-      getProject().executeTarget(target);
+      Vector vector = getProject().topoSort(target, getProject().getTargets(), false);
+
+      Set succeededTargets = new HashSet(vector.size());
+      removeOwnerDependencies(getOwningTarget(), vector, succeededTargets);
+      executeSortedTargets(vector, succeededTargets);
+   }
+
+   protected void removeOwnerDependencies(Target owner, Vector vector,
+         Set succeededTargets) {
+      if (owner == null) {
+         return;
+      }
+
+      removeOwnerDependencies(owner.getDependencies(), vector, succeededTargets);
+   }
+
+   protected void removeOwnerDependencies(Enumeration deps, Vector vector,
+         Set succeededTargets) {
+      while (deps.hasMoreElements()) {
+         String dependencyName = (String) deps.nextElement();
+         Target dep = (Target) getProject().getTargets().get(dependencyName);
+         vector.remove(dep);
+         succeededTargets.add(dependencyName);
+
+         removeOwnerDependencies(dep.getDependencies(), vector,
+               succeededTargets);
+      }
+   }
+
+   public void executeSortedTargets(Vector sortedTargets, Set succeededTargets)
+         throws BuildException {
+      BuildException buildException = null; // first build exception
+      for (Enumeration iter = sortedTargets.elements(); iter.hasMoreElements();) {
+         Target curtarget = (Target) iter.nextElement();
+         boolean canExecute = true;
+         for (Enumeration depIter = curtarget.getDependencies(); depIter
+               .hasMoreElements();) {
+            String dependencyName = ((String) depIter.nextElement());
+            if (!succeededTargets.contains(dependencyName)) {
+               canExecute = false;
+               log("Cannot execute '" + curtarget.getName() + "' - '"
+                     + dependencyName + "' failed or was not executed.",
+                     Project.MSG_ERR);
+               break;
+            }
+         }
+         if (canExecute) {
+            Throwable thrownException = null;
+            try {
+               curtarget.performTasks();
+               succeededTargets.add(curtarget.getName());
+            } catch (RuntimeException ex) {
+               if (!(getProject().isKeepGoingMode())) {
+                  throw ex; // throw further
+               }
+               thrownException = ex;
+            } catch (Throwable ex) {
+               if (!(getProject().isKeepGoingMode())) {
+                  throw new BuildException(ex);
+               }
+               thrownException = ex;
+            }
+            if (thrownException != null) {
+               if (thrownException instanceof BuildException) {
+                  log("Target '" + curtarget.getName()
+                        + "' failed with message '"
+                        + thrownException.getMessage() + "'.", Project.MSG_ERR);
+                  // only the first build exception is reported
+                  if (buildException == null) {
+                     buildException = (BuildException) thrownException;
+                  }
+               } else {
+                  log("Target '" + curtarget.getName()
+                        + "' failed with message '"
+                        + thrownException.getMessage() + "'.", Project.MSG_ERR);
+                  thrownException.printStackTrace(System.err);
+                  if (buildException == null) {
+                     buildException = new BuildException(thrownException);
+                  }
+               }
+            }
+         }
+      }
+      if (buildException != null) {
+         throw buildException;
+      }
    }
 }
