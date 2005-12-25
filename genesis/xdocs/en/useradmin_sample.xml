@@ -21,7 +21,7 @@
       <ol>
         <li>Download and install <a href=
         "http://www.jboss.org/">JBoss</a> application server. It is recommended
-        to use its latest 3.2.x or 4.x release.</li>
+        to use its latest 3.2.x release.</li>
         <li>Run the ant scripts to deploy the example
         <a href="#Running the useradmin sample">(as instructed later in
         this document)</a>. These scripts are distributed together with
@@ -253,7 +253,6 @@ public class User implements Serializable {
         server</li>
         <li>It's also possible to execute this sample with local calls
         configuration only - i.e. the sample will not use the JBoss server in
-
         anyway. In order to perfom this, there are some options:</li>
         <ul>
            <li>Use the "<a href="http://localhost:8080/useradmin/application/local.jnlp">

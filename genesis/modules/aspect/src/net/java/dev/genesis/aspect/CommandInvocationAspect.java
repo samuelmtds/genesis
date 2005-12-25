@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,30 +20,27 @@ package net.java.dev.genesis.aspect;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-
 import net.java.dev.genesis.command.Query;
 import net.java.dev.genesis.command.Transaction;
-
-import org.codehaus.aspectwerkz.AspectContext;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.aspect.management.Mixins;
 
 public class CommandInvocationAspect {
-   protected final AspectContext ctx;
-   
-   public CommandInvocationAspect(AspectContext ctx) {
-      this.ctx = ctx;
+   protected final CrossCuttingInfo ccInfo;
+
+   public CommandInvocationAspect(final CrossCuttingInfo ccInfo) {
+      this.ccInfo = ccInfo;
    }
-   
+
    /**
-    * @Mixin(pointcut="commandResolverIntroduction", isTransient=true, deploymentModel="perJVM")
+    * @Introduce commandResolverIntroduction deploymentModel=perJVM
     */
    public static class CommandResolverImpl implements CommandResolver, Serializable {
       private final boolean useFastMode;
 
-      public CommandResolverImpl() {
-         useFastMode = !"false".equals(Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("useFastMode"));
+      public CommandResolverImpl(CrossCuttingInfo ccInfo) {
+         useFastMode = (ccInfo.isPrototype()) ? true :
+               !"false".equals(ccInfo.getParameter("useFastMode"));
       }
 
       public boolean isRemotable(Method m) {

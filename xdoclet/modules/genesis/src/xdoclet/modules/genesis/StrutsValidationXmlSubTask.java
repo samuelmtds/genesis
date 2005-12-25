@@ -11,7 +11,7 @@ package xdoclet.modules.genesis;
  * @created              August 17, 2005
  * @ant.element          display-name="validation.xml" name="strutsvalidationxml"
  *      parent="xdoclet.modules.genesis.GenesisDocletTask"
- * @version              $Revision: 1.2 $
+ * @version              $Revision: 1.1.2.1 $
  * @xdoclet.merge-file   file="validation-global.xml" relates-to="validation.xml" description="An XML unparsed entity
  *      containing the global elements for the validation descriptor."
  */

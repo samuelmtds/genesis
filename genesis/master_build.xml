@@ -16,7 +16,6 @@
       <property name="annotated.dir" value="${build.dir}/annotated" />
       <property name="timestamp.file" value=".timestamp" />
       <property name="verbose" value="true" />
-      <property name="genjp" value="true" />
 
       <property name="keep.debug.information" value="true" />
       <property name="java.source.level" value="1.4" />
@@ -40,7 +39,7 @@
    </target>
 
    <target name="-do-master-init-paths">
-      <property name="genesis.version" value="3.0-EA2-dev" />
+      <property name="genesis.version" value="2.3" />
       <property name="genesis.home" location="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
       <property name="annotation.properties" 
@@ -145,8 +144,8 @@
 
       <macrodef name="awc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <attribute name="verbose" default="${verbose}" />
-         <attribute name="genjp" default="${genjp}" />
+         <attribute name="verbose" default="false" />
+         <attribute name="taskverbose" default="${verbose}" />
          <attribute name="classpath" />
          <attribute name="sourcepath" />
          <attribute name="destdir" />
@@ -157,7 +156,7 @@
                      classpathref="anttasks.path" />
 
             <mkdir dir="@{destdir}" />
-            <awc classpathref="@{classpath}" genjp="@{genjp}"
+            <awc classpathref="@{classpath}" taskverbose="@{taskverbose}"
                  verbose="@{verbose}" destdir="@{destdir}">
                <sourcepath location="@{sourcepath}"/>
             </awc>

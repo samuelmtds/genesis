@@ -22,7 +22,7 @@
       <ol>
         <li>Baixe e instale o servidor de aplicações <a href=
         "http://www.jboss.org/">JBoss</a>. Recomendamos utilizar a última das
-        versões 3.2.x ou 4.x do JBoss.</li>
+        versões 3.2.x do JBoss.</li>
         <li>Execute os scripts ant de deploy distribuídos juntamente com
         o exemplo <a href="#Execução do exemplo useradmin">
         (conforme instruções abaixo)</a>.</li>

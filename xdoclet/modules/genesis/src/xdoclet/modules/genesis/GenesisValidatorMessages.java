@@ -7,7 +7,7 @@ package xdoclet.modules.genesis;
 /**
  * @author    Allan Jones
  * @created   March 17, 2005
- * @version   $Revision: 1.2 $
+ * @version   $Revision: 1.1.2.1 $
  */
 public final class GenesisValidatorMessages
 {

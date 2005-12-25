@@ -112,15 +112,16 @@
          <include name="${xdoclet.dist}/*.jar" />
       </patternset>
 
-      <patternset id="genesis-dependencies.pattern">
-         <patternset refid="genesis-license.pattern" />
-         <patternset refid="genesis-xdoclet-extensions.pattern"/>
-         <include name="genesis/${genesis.lib.dir}/**" />
-      </patternset>
-
       <patternset id="genesis-ant-tasks.pattern">
          <patternset refid="genesis-license.pattern" />
          <include name="ant-tasks/dist/**" />
+      </patternset>
+
+      <patternset id="genesis-dependencies.pattern">
+         <patternset refid="genesis-license.pattern" />
+         <patternset refid="genesis-xdoclet-extensions.pattern" />
+         <patternset refid="genesis-ant-tasks.pattern" />
+         <include name="genesis/${genesis.lib.dir}/**" />
       </patternset>
 
       <patternset id="genesis-all.pattern">

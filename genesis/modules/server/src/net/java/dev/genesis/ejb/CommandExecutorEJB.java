@@ -31,7 +31,7 @@ import net.java.dev.genesis.reflection.ReflectionInvoker;
 
 /**
  * @ejb.bean name="CommandExecutor" type="Stateless" view-type="both"
- *           jndi-name="ejb/CommandExecutor" local-jndi-name="ejb/local/CommandExecutor"
+ *           jndi-name="ejb/CommandExecutor" local-jndi-name="local/ejb/CommandExecutor"
  * @ejb.home remote-class="net.java.dev.genesis.ejb.CommandExecutorHome"
  *           local-class="net.java.dev.genesis.ejb.CommandExecutorLocalHome"
  * @ejb.interface remote-class="net.java.dev.genesis.ejb.CommandExecutor"

@@ -54,8 +54,6 @@
       <item name="Advanced guide" collapse="true"
             href="/en/advanced_introduction.html">
         <item name="genesis aspects" href="/en/aspects.html" />
-        <item name="Generic scripting support"
-              href="/en/generic_scripting.html" />
       </item>
       <item name="FAQ" href="/en/faq.html" />
       <item name="Roadmap"

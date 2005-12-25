@@ -48,7 +48,7 @@ public interface CommandResolver {
       <code>@Remotable</code> or <code>@Transactional</code> or if the class
       containing the method implements <code>Query</code> or
       <code>Transaction</code>, deprecated interfaces from genesis 0.1.</p>
-      <p>If the value for the mixin parameter named <code>useFastMode</code> is
+      <p>If the value for the aspect parameter named <code>useFastMode</code> is
       <code>true</code> - that is its default value -, any method will be
       considered remotable, since in the provided aop.xml configuration only
       remotable or transactional methods are intercepted by the execution
@@ -139,7 +139,7 @@ try {
         <code>TransactionalInjector</code> implementation can be configured by
         setting the aspect parameter <code>transactionalInjector</code> to the
         class name. The context object passed as an argument to
-        <code>init(Object)</code> will be the <code>AspectContext</code>
+        <code>init(Object)</code> will be the <code>CrossCuttingInfo</code>
         instance the aspect holds.</p>
         <p>Class <code>HibernateTransactionalInjector</code>, that is also
         contained in <code>net.java.dev.genesis.aspect</code> is an appropriate
@@ -349,7 +349,7 @@ public interface FormControllerFactory {
       <subsection name="Parameters">
         <table>
           <tr>
-            <th>Aspect / Mixin</th>
+            <th>Aspect</th>
             <th>Name</th>
             <th>Type</th>
             <th>Description</th>
@@ -357,21 +357,22 @@ public interface FormControllerFactory {
             <th>Default value</th>
           </tr>
           <tr>
-            <td>CommandInvocationAspect$CommandResolverImpl</td>
+            <td>CommandInvocationAspect</td>
             <td>useFastMode</td>
             <td>boolean</td>
             <td>Indicates whether the process that decides whether a method is
             remotable or not will be actually executed or if every intercepted
             method will be considered as being at least remotable</td>
-            <td>No</td>
+            <td><b>Yes</b></td>
             <td><code>true</code></td>
           </tr>
           <tr>
             <td>CriteriaCommandExecutionAspect</td>
-            <td>preventStackOverflow</td>
+            <td>useOriginalMethod</td>
             <td>boolean</td>
-            <td>Perform checks to make sure the aspect is not called recursively.
-            It should be <code>true</code> for local execution modes.</td>
+            <td>Configures how the name for the method to be executed will be
+            obtained from the <code>MethodJoinPoint</code> instance. It should
+            be <code>true</code> for local execution modes.</td>
             <td>No</td>
             <td><code>false</code></td>
           </tr>
@@ -394,7 +395,7 @@ public interface FormControllerFactory {
             <td><code>true</code></td>
           </tr>
           <tr>
-            <td rowspan="4">FormControllerFactoryAspect$AspectFormControllerFactory</td>
+            <td rowspan="2">FormControllerFactoryAspect$AspectFormControllerFactory</td>
             <td>maximumEvaluationTimes</td>
             <td>int</td>
             <td>Maximum number of times form conditions will be evaluated as
@@ -412,23 +413,7 @@ public interface FormControllerFactory {
             <td><code>true</code></td>
           </tr>
           <tr>
-            <td>scriptFactory</td>
-            <td>Fully qualified class name / class nickname</td>
-            <td>Name of a
-            <code>net.java.dev.genesis.script.ScriptFactory</code>
-            implementation</td>
-            <td>No</td>
-            <td><code>jxpath</code></td>
-          </tr>
-          <tr>
-            <td>scriptFactoryProperties</td>
-            <td>String in the format key1=value1[,key2=value2,...,keyN=valueN]</td>
-            <td>Properties to configure the
-            <code>net.java.dev.genesis.script.ScriptFactory</code> instance</td>
-            <td>No</td>
-            <td>None</td>
-          </tr>
-          <tr>
+            <td rowspan="2">LocalCommandExecutionAspect</td>
             <td>preLoadSessionFactory</td>
             <td>boolean</td>
             <td>Indicates whether the <code>SessionFactory</code> instance will
@@ -440,10 +425,9 @@ public interface FormControllerFactory {
             <td><code>true</code></td>
           </tr>
           <tr>
-            <td>LocalCommandExecutionAspect</td>
             <td>transactionalInjector</td>
             <td>Fully qualified class name</td>
-            <td>Name of a
+            <td>Name for a
             <code>net.java.dev.genesis.command.TransactionalInjector</code>
             implementation</td>
             <td><b>Yes</b></td>
@@ -483,7 +467,7 @@ public interface FormControllerFactory {
         the aspect that defines them is configured.</p>
         <table>
           <tr>
-            <th>Aspect / Mixin</th>
+            <th>Aspect</th>
             <th>Name</th>
             <th>Type</th>
             <th>Description</th>
@@ -590,13 +574,14 @@ public interface FormControllerFactory {
 <source>
 <![CDATA[
 <!DOCTYPE aspectwerkz PUBLIC
-      "-//AspectWerkz//DTD 2.0//EN"
-      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_2_0.dtd">
+      "-//AspectWerkz//DTD 1.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_1_0.dtd">
 <aspectwerkz>
    <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
       <pointcut name="executeCommand"
-         expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
+         expression="execution(@Remotable * ...*(..)) OR
+                     execution(@Transactional * ...*(..))" />
       <pointcut name="form" expression="within(@Form ..)" />
 
       <!-- genesis pointcuts -->
@@ -614,15 +599,14 @@ public interface FormControllerFactory {
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution"
          expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
-      <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
+      <pointcut name="waitCursorExecution"
+         expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
 
       <!-- genesis aspects -->
-      <mixin class="CommandInvocationAspect$CommandResolverImpl" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
-      <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
-      <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
-      <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
-
+      <aspect class="CommandInvocationAspect" />
+      <aspect class="FormMetadataFactoryAspect" />
+      <aspect class="FormControllerFactoryAspect" />
+      <aspect class="ViewMetadataFactoryAspect" />
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />

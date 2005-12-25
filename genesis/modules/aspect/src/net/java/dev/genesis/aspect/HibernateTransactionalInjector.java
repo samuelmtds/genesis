@@ -28,7 +28,7 @@ import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.aspectwerkz.AspectContext;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 
 public class HibernateTransactionalInjector implements TransactionalInjector {
    private static final Log log = 
@@ -39,8 +39,8 @@ public class HibernateTransactionalInjector implements TransactionalInjector {
    private Session session;
 
    public void init(Object context) {
-	if (!(context instanceof AspectContext) || "false".equals(
-		((AspectContext)context).getParameter("preLoadSessionFactory"))) {
+	if (!(context instanceof CrossCuttingInfo) || "false".equals(
+		((CrossCuttingInfo)context).getParameter("preLoadSessionFactory"))) {
 	   return;
 	}
 
@@ -89,8 +89,7 @@ public class HibernateTransactionalInjector implements TransactionalInjector {
    }
    
    public void onFinally() throws HibernateException {
-
-      if(hibernateCommand != null){
+      if (hibernateCommand != null){
          hibernateCommand.setSession(null);
          hibernateCommand = null;
       }

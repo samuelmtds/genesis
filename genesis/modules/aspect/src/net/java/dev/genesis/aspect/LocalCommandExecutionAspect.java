@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,47 +18,32 @@
  */
 package net.java.dev.genesis.aspect;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import net.java.dev.genesis.command.TransactionalInjector;
 
-import org.codehaus.aspectwerkz.AspectContext;
+import org.codehaus.aspectwerkz.CrossCuttingInfo;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
 
 /**
- * @Aspect("perJVM")
+ * @Aspect perThread
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
-   private final Map injectorsPerThread = new WeakHashMap();
-   
-   public LocalCommandExecutionAspect(final AspectContext ctx) throws Exception {
-      super(ctx);
-   }
-   
-   private TransactionalInjector getTransactionalInjector() throws Exception {
-      Thread currentThread = Thread.currentThread();
-      TransactionalInjector injector = (TransactionalInjector)injectorsPerThread
-            .get(currentThread);
+   private final TransactionalInjector injector;
 
-      if (injector == null) {
-         injector = (TransactionalInjector)Class.forName(
-               ctx.getParameter("transactionalInjector"), true,
-               currentThread.getContextClassLoader()).newInstance();
+   public LocalCommandExecutionAspect(final CrossCuttingInfo ccInfo) 
+                                                            throws Exception {
+      super(ccInfo);
 
-         if (!ctx.isPrototype()) {
-            injector.init(ctx);
-         }
-
-         injectorsPerThread.put(currentThread, injector);
+      injector = (ccInfo.isPrototype()) ? null : (TransactionalInjector)
+            Class.forName(ccInfo.getParameter("transactionalInjector"), true, 
+            Thread.currentThread().getContextClassLoader()).newInstance();
+      if (!ccInfo.isPrototype()) {
+         injector.init(ccInfo);
       }
-
-      return injector;
    }
     
    /**
-    * @Around("localCommandExecution")
+    * @Around localCommandExecution
     */
    public Object commandExecution(final JoinPoint joinPoint) throws Throwable {
       final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -68,8 +53,6 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
       if (!transactional && !obj.isRemotable(methodSignature.getMethod())) {
          return joinPoint.proceed();
       }
-
-      TransactionalInjector injector = getTransactionalInjector();
 
       try {
          injector.beforeInvocation(obj, transactional);
@@ -81,7 +64,7 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
          injector.onException(e);
 
          throw e;
-      } finally {
+      } finally{
          injector.onFinally();
       }
    }

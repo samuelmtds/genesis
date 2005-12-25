@@ -156,8 +156,13 @@ public class ViewHandlerExample {
       and automatically calling a method. All these things are done
       declaratively on the form, with no need to deal with the graphical API
       used for views.</p>
+      <p>Conditional expressions are interpreted using <a href=
+      "http://jakarta.apache.org/commons/jxpath">JXPath</a>. Support for other
+      script languages is expected for release 3.0. For now, subsections below
+      explain how to use these expression and to explore genesis features
+      related to them.</p>
       <subsection name="Declaring conditions">
-        <p>Although all anotations that have script conditions as arguments are
+        <p>Although all anotations that have JXPath conditions as arguments are
         capable of handling any type of expression, certain conditions may be
         used repeatedly in the code or as part of another expression. Due to
         that, genesis makes it possible to declare these conditions and export
@@ -165,11 +170,11 @@ public class ViewHandlerExample {
         The annotation <code>@Condition</code> is used to declare a condition,
         whose syntax is:</p>
 <source>
-@Condition conditionName=scriptExpression
+@Condition conditionName=jxpathExpression
 </source>
         <p>The variable named <code>conditionName</code> is exported in order to
-        represent the expression <code>scriptExpression</code> in other points
-        in the code. As every other script variable, when it's used on a
+        represent the expression <code>jxpathExpression</code> in other points
+        in the code. As every other JXPath variable, when it's used on a
         expression its name should be preceeded by <code>$</code>. In the
         example above, the variable should be referenced in a conditional
         expression as <code>$conditionName</code>.</p>
@@ -378,12 +383,12 @@ public class ClearOnFormExample {
         <p>The annotation <code>@ClearOn</code> can be used together with
         <code>@DataProvider</code> annotation. The DataProviders widgets will
         be cleaned and the form properties that store selected values will be
-        automatically reset to <code>null</code> when script condition is satisfied.
+        automatically reset to <code>null</code> when JXPath condition is satisfied.
         See the following usage:</p>
 <source>
    /**
     * @DataProvider objectField=state
-    * @ClearOn &lt;some script condition&gt;
+    * @ClearOn &lt;some jxpath condition&gt;
     */
    public List populateStates() {
       ...
@@ -500,19 +505,16 @@ public String getAttribute() {
       <subsection name="Verifying if a field is empty in conditional
       expressions">
         <p>As already mentioned, it's very common to determine conditions that
-        are based on the fact a field is empty or not. genesis exposes script
+        are based on the fact a field is empty or not. genesis exposes JXPath
         auxiliary functions that may be used in conditions in order to make this
-        task easier: <code>isEmpty(any)</code> and
-        <code>isNotEmpty(any)</code>
-        (<a href="quick_reference.html#genesis_scripting_auxiliary_functions">more info...</a>).
-        </p>
+        task easier: <code>g:isEmpty(any)</code> and
+        <code>g:isNotEmpty(any)</code>.</p>
         <p>When the argument is a form property, the <code>EmptyResolver</code>
         instance configured for it - determined as explained above - is used to
         determine the return value. If the argument is a variable or a constant,
         a default <code>EmptyResolver</code> instance for the expression type is
         obtained from <code>EmptyResolverRegistry</code> and used for
-        evaluation. These functions may be used with 
-        <a href="generic_scripting.html">JXPath</a> as shown below:</p>
+        evaluation. These functions may be used as shown below:</p>
 <source>
 public String getAttribute() {
    return attribute;
@@ -569,26 +571,26 @@ public void setDependantAttribute(String dependantAttribute) {
       </ul>
       <subsection name="Verifying field value changes and doing comparisson in
           conditional expressions">
-        <p>Some script functions are exported by genesis in order to help
+        <p>Four JXPath functions are exported by genesis in order to help
         developers in common tasks:</p>
         <ul>
-          <li><code>hasChanged(property)</code> and
-          <code>hasNotChanged(property)</code> verify whether a field value
+          <li><code>g:hasChanged(property)</code> and
+          <code>g:hasNotChanged(property)</code> verify whether a field value
           has changed or not.</li>
-          <li><code>equals(any,any)</code> and
-          <code>notEquals(any,any)</code> compare two values - that may be
+          <li><code>g:equals(any,any)</code> and
+          <code>g:notEquals(any,any)</code> compare two values - that may be
           constants, form properties or variables - and return the comparisson
           result.</li>
         </ul>
         <p>genesis internally keeps control of fields that have their value
         changed in the current iteraction. This list is checked by functions
-        <code>hasChanged(propriedade)</code> and
-        <code>hasNotChanged(propriedade)</code>. To determine whether a value
+        <code>g:hasChanged(propriedade)</code> and
+        <code>g:hasNotChanged(propriedade)</code>. To determine whether a value
         has been changed or not and to populate this internal list, the
         framework uses the <code>EqualityComparator</code> instance configured
         for the property.</p>
-        <p>Functions <code>equals(any,any)</code> and
-        <code>notEquals(any,any)</code> also make use of
+        <p>Functions <code>g:equals(any,any)</code> and
+        <code>g:notEquals(any,any)</code> also make use of
         <code>EqualityComparator</code> instances to determine their output.
         However, the actual process used for that is a bit more complicated, as
         explained below:</p>
@@ -609,8 +611,7 @@ public void setDependantAttribute(String dependantAttribute) {
           <li>If none of the above conditions is true, <code>false</code> will
           be returned.</li>
         </ul>
-        <p>There are examples (using <a href="generic_scripting.html">JXPath</a>)
-        of how to use each function pair below:</p>
+        <p>There are examples of how to use each function pair below:</p>
 <source>
 public BigDecimal getTax() {
    return tax;
@@ -1227,7 +1228,7 @@ binder.bind();
         <li><code><b>requiredif</b></code>: compatible with the version that
         comes with Struts, it implements a somewhat weak validation. Its use is
         not recommended and it is provided just as a way to ease migration from
-        Struts users. Use scripting code instead.</li>
+        Struts users. Use <code><b>jxpath</b></code> instead.</li>
         <li><code><b>mask</b></code>: implements validation based on a regular
         expression for a mask. Requires the definition of a <code>mask</code>
         variable containg the regular expression.</li>
@@ -1242,19 +1243,19 @@ binder.bind();
         <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
         ></code>: check if the informed number is part of an expected interval,
         defined by variables <code>min</code> and <code>max</code>.</li>
-        <li><a href="generic_scripting.html">Scripting</a>: the most flexible validator provided
-        with genesis. It considers data as valid if evaluating the script
-        expression defined by <code>scripting language</code> returns a value 
-        different from <code>java.lang.Boolean.FALSE</code>.</li>
+        <li><code><b>jxpath</b></code>: the most flexible validator provided
+        with genesis. It considers data as valid if evaluating the JXPath
+        expression defined by <code>jxpath</code> returns a value different from
+        <code>java.lang.Boolean.FALSE</code>.</li>
       </ul>
       <p>As it is true for Struts validators, all the ones provided with genesis
-      except for <code>scripting code</code> are only triggered if the field is filled.
+      except for <code>jxpath</code> are only triggered if the field is filled.
       This means that <b>even if you configure a validator properly, it will be
       invoked only when the user puts something in the field</b>. If you intend
       to run your validator every time,  <code>required</code> should also be
       configured for the field.</p>
       <p>Data to be validated is passed in a String format to validators. It's
-      important to remember that when coding script expressions or using a
+      important to remember that when coding JXPath expressions or using a
       custom validator.</p>
       <p>The class that actually integrates commons-validator with genesis,
       <code>net.java.dev.genesis.ui.ValidationUtils</code>, expects that two
