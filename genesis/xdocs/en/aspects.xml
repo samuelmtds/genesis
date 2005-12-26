@@ -479,8 +479,8 @@ public interface FormControllerFactory {
             <td>ViewMetadataFactoryAspect$AspectViewMetadataFactory</td>
             <td>skipSystemClasses</td>
             <td>boolean</td>
-            <td>Indicates whether the class must ignore the parsing of system class methods
-            when constructing the metadata
+            <td>Indicates whether the class should skip methods defined by 
+            system classes when building metadata
             </td>
             <td><b>No</b></td>
             <td>true</td>

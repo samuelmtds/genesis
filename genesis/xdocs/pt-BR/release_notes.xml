@@ -8,6 +8,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#3.0-EA2">3.0-EA2</a></li>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
         <li><a href="#2.3-RC3">2.3-RC3</a></li>
         <li><a href="#2.3-RC2">2.3-RC2</a></li>
@@ -17,6 +18,60 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+        <section name="3.0-EA2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4588&amp;expandFolder=4588&amp;folderID=1756">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Novo parâmetro usado em ViewMetadataFactoryAspect chamado 
+          <a href="aspects.html#Referência de configuração">skipSystemClasses</a></li>
+          <li>Upgrade para o commons-validator 1.2.0.</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>Problema ao ler anotações do Java 5
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=242">Issue
+          # 242</a>)</li>
+          <li>LocalCommandExecutionAspect não funciona corretamente, devido a alterações
+          no AspectWerkz 2.0
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=256">Issue
+          # 256</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA1 e a 3.0-EA2
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;target_milestone=3.0-EA2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA2/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+        <p>Agradecemos especialmente a Alexandre Vasseur, Alexandru Popescu e
+        Jonas Boner pelo suporte e modificações feitas para que completássemos
+        a migração para o <a href="http://aspectwerkz.codehaus.org">AspectWerkz</a>
+        2.</p>
+      </subsection>
     </section>
     <section name="3.0-EA1">
       <subsection name="Downloads">
