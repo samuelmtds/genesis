@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="all" name="genesis-release" basedir=".">
 
-   <target name="init">
+   <target name="init" unless="TSTAMP">
+      <tstamp/>
       <property file="genesis.properties" />
       <property file="../genesis/build.properties" />
       <property file="../genesis/project.properties" />
@@ -37,6 +38,11 @@
             regex="(&lt;name&gt;${genesis.version}&lt;/name&gt;\s*&lt;tag&gt;)(.{5,30})&lt;/tag&gt;"
             group="2"
             property="genesis.tag" />
+      
+      <fail unless="genesis.tag">
+Fail!
+It was not possible to determine genesis CVS TAG in ${project.xml}
+      </fail>
 
       <post to="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=1756&amp;expandFolder=1756&amp;folderID=1756"
             verbose="no"
@@ -211,7 +217,7 @@ The link must be https://genesis.dev.java.net/nonav/${genesis.version}/maven-sit
       <loadfile property="release.en.bugs" srcfile="${release.en.xml}">
          <filterchain>
             <linecontains>
-               <contains value="https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT" />
+               <contains value="https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;amp;issue_type=DEFECT" />
             </linecontains>
          </filterchain>
       </loadfile>
@@ -219,13 +225,13 @@ The link must be https://genesis.dev.java.net/nonav/${genesis.version}/maven-sit
       <fail unless="release.en.bugs">
 Fail!
 You have forgotten to update known issues Link at ${release.en.xml}
-The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT
+The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;amp;issue_type=DEFECT
       </fail>
 
       <loadfile property="release.pt-BR.bugs" srcfile="${release.pt-BR.xml}">
          <filterchain>
             <linecontains>
-               <contains value="https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT" />
+               <contains value="https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;amp;issue_type=DEFECT" />
             </linecontains>
          </filterchain>
       </loadfile>
@@ -233,7 +239,7 @@ The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genes
       <fail unless="release.pt-BR.bugs">
 Fail!
 You have forgotten to update known issues Link at ${release.pt-BR.xml}
-The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT
+The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;amp;issue_type=DEFECT
       </fail>
       
       <loadfile property="download.en" srcfile="${download.en.xml}">
@@ -339,12 +345,12 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
 
    <target name="-do-upload">
       <echo>Uploading genesis-${dist.type}-${genesis.version}.zip...</echo>
-      <javaNetUpload projectName="${java.net.project}"
+      <!-- javaNetUpload projectName="${java.net.project}"
                      fromFile="../genesis/${genesis.build.dir}/genesis-${dist.type}-${genesis.version}.zip"
                      toFile="/releases/${genesis.version}/genesis-${dist.type}-${genesis.version}.zip"
                      fileDescription="${description}"
                      fileStatus="${file.status}"
-                     overwrite="${overwrite}" />
+                     overwrite="${overwrite}" / -->
       <echo>Uploading genesis-${dist.type}-${genesis.version}.tar.gz...</echo>
       <javaNetUpload projectName="${java.net.project}"
                      fromFile="../genesis/${genesis.build.dir}/genesis-${dist.type}-${genesis.version}.tar.gz"
@@ -357,15 +363,15 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
    <target name="step3"
            depends="step3:init"
            description="Uploads distribution files">
-      <antcall target="-do-upload">
+      <!-- antcall target="-do-upload">
          <param name="dist.type" value="dist" />
          <param name="description" value="${dist}" />
-      </antcall>
+      </antcall-->
       <antcall target="-do-upload">
          <param name="dist.type" value="dependencies" />
          <param name="description" value="${dependencies}" />
       </antcall>
-      <antcall target="-do-upload">
+      <!--antcall target="-do-upload">
          <param name="dist.type" value="empty-project" />
          <param name="description" value="${empty-project}" />
       </antcall>
@@ -392,7 +398,7 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
       <antcall target="-do-upload">
          <param name="dist.type" value="all" />
          <param name="description" value="${all}" />
-      </antcall>
+      </antcall -->
    </target>
 
    <target name="step4:init" depends="init">
@@ -551,6 +557,22 @@ The link must be ${download.url}&amp;amp;folderID=0
             <argument value="index.html" />
          </commandline>
       </cvs>
+
+      <loadfile property="cvs.entry" srcfile="${www.dir}/CVS/Entries">
+         <filterchain>
+            <linecontains>
+               <contains value="D/${genesis.version}////" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+      
+      <antcall inheritall="true" inheritrefs="true" target="cvs:new.entry" />
+   </target>
+
+   <target name="cvs:new.entry" unless="cvs.entry">
+      <concat destfile="${www.dir}/CVS/Entries" append="true">
+D/${genesis.version}////
+</concat>
    </target>
 
    <target name="cvs:macrodef">
@@ -578,17 +600,6 @@ The link must be ${download.url}&amp;amp;folderID=0
    </target>
 
    <target name="step6" depends="cvs:init,cvs:macrodef" description="Tag site">
-      <!-- cvs compression="true"
-           cvsroot="${cvs.root}"
-           dest="${root.dir}"
-           failonerror="true">
-         <commandline>
-            <argument value="checkout" />
-            <argument value="-d" />
-            <argument value="www" />
-            <argument value="genesis/www" />
-         </commandline>
-      </cvs -->
       <cvstag dir="${www.dir}" />
    </target>
 
