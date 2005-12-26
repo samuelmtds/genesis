@@ -3,7 +3,7 @@
    <artifactId>genesis</artifactId>
    <name>SOL Genesis</name>
    <groupId>net.java.dev.genesis</groupId>
-   <currentVersion>3.0-EA2-dev</currentVersion>
+   <currentVersion>3.0-EA2</currentVersion>
    <organization>
       <name>Summa Tecnologies do Brasil Ltda.</name>
       <url>http://www.summa-tech.com/</url>
@@ -25,6 +25,11 @@
       <url>https://genesis.dev.java.net/source/browse/genesis/genesis/</url>
    </repository>
    <versions>
+      <version>
+         <id>3.0-EA2</id>
+         <name>3.0-EA2</name>
+         <tag>GENESIS_3_0_EA_2</tag>
+      </version>
       <version>
          <id>3.0-EA1</id>
          <name>3.0-EA1</name>
