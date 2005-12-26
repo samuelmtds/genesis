@@ -10,14 +10,17 @@
       <property name="xdoclet.home" location="../xdoclet" />
       <property name="anttasks.home" location="../ant-tasks" />
       <property name="project.xml" location="${genesis.home}/project.xml" />
+      <property name="xdocs.dir" location="${genesis.home}/xdocs" />
+      <property name="index.en.xml" location="${xdocs.dir}/en/index.xml" />
+      <property name="index.pt-BR.xml" location="${xdocs.dir}/pt-BR/index.xml" />
+      <property name="root.dir" location="../" />
+      <property name="www.dir" location="${root.dir}/www" />
+      <property name="site.dir" location="../genesis/${genesis.build.dir}/docs" />
 
       <path id="path">
          <fileset dir="lib" />
       </path>
 
-      <taskdef name="call"
-               classname="ise.antelope.tasks.Call"
-               classpathref="path" />
       <taskdef name="post"
                classname="ise.antelope.tasks.PostTask"
                classpathref="path" />
@@ -27,6 +30,13 @@
       <taskdef name="stringutil"
                classname="ise.antelope.tasks.StringUtilTask"
                classpathref="path" />
+
+      <loadfile property="project.xml.raw" srcfile="${project.xml}" />
+
+      <grep in="${project.xml.raw}"
+            regex="(&lt;name&gt;${genesis.version}&lt;/name&gt;\s*&lt;tag&gt;)(.{5,30})&lt;/tag&gt;"
+            group="2"
+            property="genesis.tag" />
 
       <post to="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=1756&amp;expandFolder=1756&amp;folderID=1756"
             verbose="no"
@@ -55,7 +65,6 @@ You have forgotten to create a new version folder on java.net
    <target name="step1:init" depends="init">
       <property environment="env" />
       <property name="maven.home" value="${env.MAVEN_HOME}" />
-      <property name="xdocs.dir" location="${genesis.home}/xdocs" />
       <property name="download.en.xml"
                 location="${xdocs.dir}/en/download.xml" />
       <property name="download.pt-BR.xml"
@@ -143,6 +152,90 @@ Fail!
 You have forgotten to write Release Notes at ${release.pt-BR.xml}
       </fail>
 
+      <loadfile property="release.en.download" srcfile="${release.en.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.en.download">
+Fail!
+You have forgotten to update Download Link at ${release.en.xml}
+The link must be ${download.url}&amp;amp;folderID=0
+      </fail>
+
+      <loadfile property="release.pt-BR.download" srcfile="${release.pt-BR.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.pt-BR.download">
+Fail!
+You have forgotten to update Download Link at ${release.pt-BR.xml}
+The link must be ${download.url}&amp;amp;folderID=0
+      </fail>
+
+      <loadfile property="release.en.docs" srcfile="${release.en.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="https://genesis.dev.java.net/nonav/${genesis.version}/maven-site/en/" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.en.docs">
+Fail!
+You have forgotten to update Documentation Link at ${release.en.xml}
+The link must be https://genesis.dev.java.net/nonav/${genesis.version}/maven-site/en/
+      </fail>
+
+      <loadfile property="release.pt-BR.docs" srcfile="${release.pt-BR.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="https://genesis.dev.java.net/nonav/${genesis.version}/maven-site/pt-BR/" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.pt-BR.docs">
+Fail!
+You have forgotten to update Documentation Link at ${release.pt-BR.xml}
+The link must be https://genesis.dev.java.net/nonav/${genesis.version}/maven-site/pt-BR/
+      </fail>
+      
+      <loadfile property="release.en.bugs" srcfile="${release.en.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.en.bugs">
+Fail!
+You have forgotten to update known issues Link at ${release.en.xml}
+The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT
+      </fail>
+
+      <loadfile property="release.pt-BR.bugs" srcfile="${release.pt-BR.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="release.pt-BR.bugs">
+Fail!
+You have forgotten to update known issues Link at ${release.pt-BR.xml}
+The link must be https://genesis.dev.java.net/issues/buglist.cgi?version=${genesis.version}&amp;issue_type=DEFECT
+      </fail>
+      
       <loadfile property="download.en" srcfile="${download.en.xml}">
          <filterchain>
             <linecontains>
@@ -154,7 +247,7 @@ You have forgotten to write Release Notes at ${release.pt-BR.xml}
       <fail unless="download.en">
 Fail!
 You have forgotten to update Download Link at ${download.en.xml}
-The link must be ${download.url}&amp;folderID=0
+The link must be ${download.url}&amp;amp;folderID=0
       </fail>
 
       <loadfile property="download.pt-BR" srcfile="${download.pt-BR.xml}">
@@ -168,7 +261,35 @@ The link must be ${download.url}&amp;folderID=0
       <fail unless="download.pt-BR">
 Fail!
 You have forgotten to update Download Link at ${download.pt-BR.xml}
-The link must be ${download.url}&amp;ampfolderID=0
+The link must be ${download.url}&amp;amp;folderID=0
+      </fail>
+
+      <loadfile property="index.en" srcfile="${index.en.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}&amp;amp;filter=genesis-all" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="index.en">
+Fail!
+You have forgotten to update Download Link at ${index.en.xml}
+The link must be ${download.url}&amp;amp;filter=genesis-all
+      </fail>
+
+      <loadfile property="index.pt-BR" srcfile="${index.pt-BR.xml}">
+         <filterchain>
+            <linecontains>
+               <contains value="${download.url}&amp;amp;filter=genesis-all" />
+            </linecontains>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="index.pt-BR">
+Fail!
+You have forgotten to update Download Link at ${index.pt-BR.xml}
+The link must be ${download.url}&amp;amp;filter=genesis-all
       </fail>
    </target>
 
@@ -275,10 +396,6 @@ The link must be ${download.url}&amp;ampfolderID=0
    </target>
 
    <target name="step4:init" depends="init">
-      <property name="root.dir" location="../" />
-      <property name="www.dir" location="${root.dir}/www" />
-      <property name="site.dir" location="${www.dir}/${genesis.version}" />
-      <property name="maven.site.dir" location="${site.dir}/maven-site" />
       <property name="download.en.file"
                 location="../genesis/${genesis.build.dir}/docs/en/download.html" />
       <property name="download.pt-BR.file"
@@ -351,7 +468,7 @@ You have forgotten to write Release Notes at ${release.pt-BR.file}
       <fail unless="download.en">
 Fail!
 You have forgotten to update Download Link at ${download.en.file}
-The link must be ${download.url}&amp;folderID=0
+The link must be ${download.url}&amp;amp;folderID=0
       </fail>
 
       <loadfile property="download.pt-BR" srcfile="${download.pt-BR.file}">
@@ -365,37 +482,24 @@ The link must be ${download.url}&amp;folderID=0
       <fail unless="download.pt-BR">
 Fail!
 You have forgotten to update Download Link at ${download.pt-BR.file}
-The link must be ${download.url}&amp;ampfolderID=0
+The link must be ${download.url}&amp;amp;folderID=0
       </fail>
 
    </target>
 
    <target name="step4"
-           depends="step4:check-conditions,cvs:init"
-           description="Upload genesis site">
-      <mkdir dir="${maven.site.dir}" />
-      <copy todir="${maven.site.dir}">
-         <fileset dir="../genesis/${genesis.build.dir}/docs" />
-      </copy>
-      <call target="cvs:import" />
-   </target>
+           depends="step4:check-conditions,cvs:init,cvs:import"
+           description="Upload genesis site" />
 
    <target name="cvs:init" depends="init">
       <property name="repository.path"
                 value="www/${genesis.version}/maven-site" />
       <property name="cvs.root"
-                value=":pserver:sol@cvs.dev.java.net:/cvs/genesis/www" />
+                value=":pserver:sol@cvs.dev.java.net:/cvs" />
       <available file="${user.home}/.cvspass"
                  property="cvs.already.logged.in" />
 
-      <loadfile property="project.xml.raw" srcfile="${project.xml}" />
-
-      <grep in="${project.xml.raw}"
-            regex="(&lt;name&gt;${genesis.version}&lt;/name&gt;(\s)*&lt;tag&gt;)((.){9,30})&lt;/tag&gt;"
-            group="2"
-            property="genesis.tag" />
-
-      <call target="cvs:login" />
+      <antcall inheritall="true" inheritrefs="true" target="cvs:login" />
    </target>
 
    <target name="cvs:login" unless="cvs.already.logged.in">
@@ -411,11 +515,40 @@ The link must be ${download.url}&amp;ampfolderID=0
            failonerror="true">
          <commandline>
             <argument value="import" />
+            <argument value="-I" />
+            <argument value="!" />
             <argument value="-m" />
             <argument value="genesis ${genesis.version} site" />
-            <argument value="${genesis.version}" />
+            <argument value="genesis/www/${genesis.version}/maven-site" />
             <argument value="Summa" />
             <argument value="genesis" />
+         </commandline>
+      </cvs>
+      
+      <mkdir dir="${www.dir}/${genesis.version}"/>
+      <cvs compression="true"
+           cvsroot="${cvs.root}"
+           dest="${www.dir}"
+           failonerror="true">
+         <commandline>
+            <argument value="checkout" />
+            <argument value="-d" />
+            <argument value="${genesis.version}" />
+            <argument value="genesis/www/${genesis.version}" />
+         </commandline>
+      </cvs>
+
+      <cvs compression="true"
+           cvsroot="${cvs.root}"
+           dest="${www.dir}/${genesis.version}/maven-site"
+           failonerror="true">
+         <commandline>
+            <argument value="commit" />
+            <argument value="-r" />
+            <argument value="1.2" />
+            <argument value="-m" />
+            <argument value="genesis ${genesis.version} site" />
+            <argument value="index.html" />
          </commandline>
       </cvs>
    </target>
@@ -445,6 +578,17 @@ The link must be ${download.url}&amp;ampfolderID=0
    </target>
 
    <target name="step6" depends="cvs:init,cvs:macrodef" description="Tag site">
+      <!-- cvs compression="true"
+           cvsroot="${cvs.root}"
+           dest="${root.dir}"
+           failonerror="true">
+         <commandline>
+            <argument value="checkout" />
+            <argument value="-d" />
+            <argument value="www" />
+            <argument value="genesis/www" />
+         </commandline>
+      </cvs -->
       <cvstag dir="${www.dir}" />
    </target>
 
