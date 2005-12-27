@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.samples.useradmin.ui;
+package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -43,12 +43,18 @@ public abstract class BaseView extends BaseThinlet {
       f.setResizable(resizable);
       f.setTitle(UIUtils.getInstance().getBundle().getString(title));
       f.addWindowListener(new WindowAdapter() {
-         public void windowClosing(WindowEvent e) {
-            System.exit(0);
+         public void windowClosing(WindowEvent event) {
+            try {
+               onClose();
+            } catch (Exception e) {
+               throw new RuntimeException(e);
+            }
          }
       });
       setAllI18n(true);
       setResourceBundle(UIUtils.getInstance().getBundle());
       add(parse(xmlFile));
    }
+
+   protected abstract void onClose() throws Exception;
 }

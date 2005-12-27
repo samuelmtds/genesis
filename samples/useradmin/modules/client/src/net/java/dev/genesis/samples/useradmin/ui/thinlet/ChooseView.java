@@ -16,22 +16,33 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.samples.useradmin.ui;
+package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 
-import java.awt.Frame;
+import net.java.dev.genesis.samples.useradmin.UserAdmin;
 
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.thinlet.BaseDialogThinlet;
+public class ChooseView extends BaseView {
 
-public abstract class BaseDialogView extends BaseDialogThinlet {
-   public BaseDialogView(Frame frame, String title, String xmlFile, boolean resizable,
-         boolean modal) throws Exception {
-      super(frame);
-      getDialog().setModal(modal);
-      getDialog().setResizable(resizable);
-      getDialog().setTitle(UIUtils.getInstance().getBundle().getString(title));
-      setAllI18n(true);
-      setResourceBundle(UIUtils.getInstance().getBundle());
-      add(parse(xmlFile));
+   public ChooseView() throws Exception {
+      super("ChooseView.title", "choose-view.xml", 180, 80, false);
+   }
+
+   protected void onClose() {
+      System.exit(0);
+   }
+
+   public void onThinlet() throws Exception {
+      new net.java.dev.genesis.samples.useradmin.ui.thinlet.UserListView()
+            .display();
+      getFrame().dispose();
+   }
+
+   public void onSwing() throws Exception {
+      new net.java.dev.genesis.samples.useradmin.ui.swing.UserListView()
+            .display();
+      getFrame().dispose();
+   }
+
+   public void onExit() {
+      onClose();
    }
 }

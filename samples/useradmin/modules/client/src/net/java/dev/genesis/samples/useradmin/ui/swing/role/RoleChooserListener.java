@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.samples.useradmin;
+package net.java.dev.genesis.samples.useradmin.ui.swing.role;
 
-import net.java.dev.genesis.helpers.StartupHelper;
-import net.java.dev.genesis.samples.useradmin.ui.thinlet.ChooseView;
+import java.util.EventListener;
 
-import java.util.Locale;
-
-public class UserAdmin {
-   public static void main(String[] args) throws Exception {
-      new StartupHelper(Locale.ENGLISH, "MM/dd/yyyy").initialize();
-      new ChooseView().display();
-   }
+public interface RoleChooserListener extends EventListener {
+   public void roleChanged(RoleChooser component);
 }

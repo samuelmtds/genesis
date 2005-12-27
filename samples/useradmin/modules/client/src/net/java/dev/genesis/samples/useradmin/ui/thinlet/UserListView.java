@@ -16,7 +16,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.samples.useradmin.ui;
+package net.java.dev.genesis.samples.useradmin.ui.thinlet;
+
+import net.java.dev.genesis.samples.useradmin.ui.UserListForm;
 
 
 public class UserListView extends BaseView {
@@ -25,6 +27,11 @@ public class UserListView extends BaseView {
    public UserListView() throws Exception {
       super("UserListView.title", "user-list.xml", 800, 360, false);
       bind(form = new UserListForm());
+   }
+   
+   protected void onClose() throws Exception {
+      getFrame().dispose();
+      new ChooseView().display();
    }
    
    public void create() throws Exception {

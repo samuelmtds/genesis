@@ -49,7 +49,7 @@ public class State extends Enum {
          states.add(ALASKA);
          states.add(FLORIDA);
          states.add(NEW_YORK);
-      } else {
+      } else if (country == Country.OTHER) {
          states.add(OTHER);
       }
 
