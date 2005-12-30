@@ -18,7 +18,7 @@
       sacrificar a escalabilidade e testabilidade do software. Foca 
       principalmente em simplificar o desenvolvimento de componentes de 
       negócio e na construção de interfaces gráficas complexas com o mínimo 
-      de esforço de desenvolvedor.Para cumprir essa missão, o genesis integra
+      de esforço de desenvolvedor. Para cumprir essa missão, o genesis integra
       diversos frameworks open-source e suporta a plataforma Java 2 EE de 
       forma completamente transparente para o desenvolvedor, através do uso de AOP.
       O nosso principal desafio é fazer com que pessoas com pouco conhecimento 
