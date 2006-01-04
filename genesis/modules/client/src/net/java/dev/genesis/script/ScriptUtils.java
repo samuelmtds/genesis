@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,7 @@ import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormState;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -89,8 +90,15 @@ public class ScriptUtils {
                      .getValue().getClass());
       }
 
-      return getFormMetadata(ctx).getFieldMetadata(scriptValue.getFieldName())
-            .getEmptyResolver();
+      final FormMetadata meta = getFormMetadata(ctx);
+      final FieldMetadata fieldMetadata = meta.getFieldMetadata(scriptValue.getFieldName());
+
+      if (fieldMetadata != null) {
+         return fieldMetadata.getEmptyResolver();
+      }
+
+      return (EmptyResolver) EmptyResolverRegistry.getInstance().get(
+            scriptValue.getValue());
    }
 
    public static EqualityComparator getEqualityComparator(ScriptContext ctx,
@@ -102,7 +110,14 @@ public class ScriptUtils {
                            : scriptValue.getValue().getClass());
       }
 
-      return getFormMetadata(ctx).getFieldMetadata(scriptValue.getFieldName())
-            .getEqualityComparator();
+      final FormMetadata meta = getFormMetadata(ctx);
+      final FieldMetadata fieldMetadata = meta.getFieldMetadata(scriptValue.getFieldName());
+
+      if (fieldMetadata != null) {
+         return fieldMetadata.getEqualityComparator();
+      }
+
+      return EqualityComparatorRegistry.getInstance()
+            .getDefaultEqualityComparatorFor(scriptValue.getValue().getClass());
    }
 }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,15 +29,21 @@ import org.apache.commons.jxpath.ExpressionContext;
 public class JXPathFunctionsAdapter {
    private static Object getValue(final ExpressionContext ctx,
          final String propertyName) throws Exception {
+      int indexOfDot = -1;
+
+      while ((indexOfDot = propertyName.indexOf('.', indexOfDot + 1)) != -1) {
+         if (PropertyUtils.getProperty(ctx.getJXPathContext().getContextBean(),
+            propertyName.substring(0, indexOfDot)) == null) {
+            return null;
+         }
+      }
+
       return PropertyUtils.getProperty(ctx.getJXPathContext().getContextBean(),
             propertyName);
    }
 
    private static String getSimplePropertyName(final GenesisNodeSet nodeSet) {
-      final String path = nodeSet.getPath();
-      int index;
-
-      return (index = path.indexOf('/')) > 0 ? path.substring(0, index) : path;
+      return nodeSet.getPath().replace('/', '.');
    }
 
    private static ScriptValue getScriptValue(final ExpressionContext ctx,
