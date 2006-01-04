@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,90 +35,82 @@ public class Call extends Task {
       this.target = target;
    }
 
+   protected boolean isSucceededTarget(String name) {
+      Set s = (Set) getProject().getReference(
+            SucceededTasksListener.SUCCEEDEDTARGETS_KEY);
+
+      if (s == null) {
+         return false;
+      }
+
+      return s.contains(name);
+   }
+
    public void execute() {
       if (target == null) {
          throw new BuildException("target is required");
       }
+      Vector vector = getProject().topoSort(target, getProject().getTargets(),
+            false);
 
-      Vector vector = getProject().topoSort(target, getProject().getTargets(), false);
-
-      Set succeededTargets = new HashSet(vector.size());
-      removeOwnerDependencies(getOwningTarget(), vector, succeededTargets);
-      executeSortedTargets(vector, succeededTargets);
+      executeSortedTargets(vector);
    }
 
-   protected void removeOwnerDependencies(Target owner, Vector vector,
-         Set succeededTargets) {
-      if (owner == null) {
-         return;
-      }
-
-      removeOwnerDependencies(owner.getDependencies(), vector, succeededTargets);
-   }
-
-   protected void removeOwnerDependencies(Enumeration deps, Vector vector,
-         Set succeededTargets) {
-      while (deps.hasMoreElements()) {
-         String dependencyName = (String) deps.nextElement();
-         Target dep = (Target) getProject().getTargets().get(dependencyName);
-         vector.remove(dep);
-         succeededTargets.add(dependencyName);
-
-         removeOwnerDependencies(dep.getDependencies(), vector,
-               succeededTargets);
-      }
-   }
-
-   public void executeSortedTargets(Vector sortedTargets, Set succeededTargets)
-         throws BuildException {
+   public void executeSortedTargets(Vector sortedTargets) throws BuildException {
       BuildException buildException = null; // first build exception
       for (Enumeration iter = sortedTargets.elements(); iter.hasMoreElements();) {
          Target curtarget = (Target) iter.nextElement();
-         boolean canExecute = true;
-         for (Enumeration depIter = curtarget.getDependencies(); depIter
-               .hasMoreElements();) {
-            String dependencyName = ((String) depIter.nextElement());
-            if (!succeededTargets.contains(dependencyName)) {
-               canExecute = false;
-               log("Cannot execute '" + curtarget.getName() + "' - '"
-                     + dependencyName + "' failed or was not executed.",
-                     Project.MSG_ERR);
-               break;
-            }
+         if (isSucceededTarget(curtarget.getName())) {
+            continue;
          }
-         if (canExecute) {
-            Throwable thrownException = null;
-            try {
-               curtarget.performTasks();
-               succeededTargets.add(curtarget.getName());
-            } catch (RuntimeException ex) {
-               if (!(getProject().isKeepGoingMode())) {
-                  throw ex; // throw further
-               }
-               thrownException = ex;
-            } catch (Throwable ex) {
-               if (!(getProject().isKeepGoingMode())) {
-                  throw new BuildException(ex);
-               }
-               thrownException = ex;
+
+         /*
+          * improve performance, since all dependencies had already been
+          * executed boolean canExecute = true; for (Enumeration depIter =
+          * curtarget.getDependencies(); depIter .hasMoreElements();) { String
+          * dependencyName = ((String) depIter.nextElement()); if
+          * (!isSucceededTarget(dependencyName)) { canExecute = false;
+          * log("Cannot execute '" + curtarget.getName() + "' - '" +
+          * dependencyName + "' failed or was not executed.", Project.MSG_ERR);
+          * break; } } if (!canExecute) { continue; }
+          */
+         Throwable thrownException = null;
+         try {
+            curtarget.performTasks();
+            Set s = (Set) getProject().getReference(
+                  SucceededTasksListener.SUCCEEDEDTARGETS_KEY);
+            if (s == null) {
+               s = new HashSet();
+               getProject().addReference(
+                     SucceededTasksListener.SUCCEEDEDTARGETS_KEY, s);
             }
-            if (thrownException != null) {
-               if (thrownException instanceof BuildException) {
-                  log("Target '" + curtarget.getName()
-                        + "' failed with message '"
-                        + thrownException.getMessage() + "'.", Project.MSG_ERR);
-                  // only the first build exception is reported
-                  if (buildException == null) {
-                     buildException = (BuildException) thrownException;
-                  }
-               } else {
-                  log("Target '" + curtarget.getName()
-                        + "' failed with message '"
-                        + thrownException.getMessage() + "'.", Project.MSG_ERR);
-                  thrownException.printStackTrace(System.err);
-                  if (buildException == null) {
-                     buildException = new BuildException(thrownException);
-                  }
+
+            s.add(curtarget.getName());
+         } catch (RuntimeException ex) {
+            if (!(getProject().isKeepGoingMode())) {
+               throw ex; // throw further
+            }
+            thrownException = ex;
+         } catch (Throwable ex) {
+            if (!(getProject().isKeepGoingMode())) {
+               throw new BuildException(ex);
+            }
+            thrownException = ex;
+         }
+         if (thrownException != null) {
+            if (thrownException instanceof BuildException) {
+               log("Target '" + curtarget.getName() + "' failed with message '"
+                     + thrownException.getMessage() + "'.", Project.MSG_ERR);
+               // only the first build exception is reported
+               if (buildException == null) {
+                  buildException = (BuildException) thrownException;
+               }
+            } else {
+               log("Target '" + curtarget.getName() + "' failed with message '"
+                     + thrownException.getMessage() + "'.", Project.MSG_ERR);
+               thrownException.printStackTrace(System.err);
+               if (buildException == null) {
+                  buildException = new BuildException(thrownException);
                }
             }
          }
