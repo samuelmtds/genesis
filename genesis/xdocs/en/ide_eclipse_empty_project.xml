@@ -25,7 +25,8 @@
 
         <p>
         4. In the <b>Source</b> tab, choose the directory <code>modules/shared/src</code> and add it as
-        a source directory (the + icon). Choose <b>Default
+        a source directory (the + icon). Eclipse automaticaly recognize the folder 
+        <code>modules/client/src</code> as a source directory. Choose <b>Default
         output folder</b> to some directory, like &lt;YOUR_PROJECT&gt;/bin.
         </p>
         <img src="../eclipse/04.JPG" border="0" alt="Eclipse - Step 4"></img>
