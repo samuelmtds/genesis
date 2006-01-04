@@ -46,8 +46,16 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 
 public class SwingBinder extends AbstractBinder {
-   public static final String GENESIS_BOUND = "genesis:boundField";
    private static final Log log = LogFactory.getLog(SwingBinder.class);
+
+   public static final String GENESIS_BOUND = "genesis:boundField";
+   public static final String WIDGETGROUP_PROPERTY = "widgetGroup";
+   public static final String ENABLEDGROUP_PROPERTY = "enabledGroup";
+   public static final String VISIBLEGROUP_PROPERTY = "visibleGroup";
+   public static final String BLANK_PROPERTY = "blank";
+   public static final String BLANKLABEL_PROPERTY = "blankLabel";
+   public static final String KEY_PROPERTY = "key";
+   public static final String VALUE_PROPERTY = "value";
 
    private final ComponentBinderRegistryFactory factory =
       ComponentBinderRegistryFactory.getInstance();

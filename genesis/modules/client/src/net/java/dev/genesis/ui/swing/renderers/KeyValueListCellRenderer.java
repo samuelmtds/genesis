@@ -48,7 +48,8 @@ public class KeyValueListCellRenderer extends JLabel implements ListCellRenderer
 
    public Component getListCellRendererComponent(JList list, Object value,
       int index, boolean isSelected, boolean cellHasFocus) {
-      String valueProperty = (String) component.getClientProperty("value");
+      String valueProperty = (String) component
+            .getClientProperty(SwingBinder.VALUE_PROPERTY);
 
       setComponentOrientation(list.getComponentOrientation());
 
@@ -64,7 +65,8 @@ public class KeyValueListCellRenderer extends JLabel implements ListCellRenderer
       String text;
 
       if (value == null) {
-         String blankLabel = (String) component.getClientProperty("blankLabel");
+         String blankLabel = (String) component
+               .getClientProperty(SwingBinder.BLANKLABEL_PROPERTY);
          text = (blankLabel == null) ? "" : blankLabel;
       } else if (value instanceof String) {
          text = (String) value;

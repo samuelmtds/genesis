@@ -148,8 +148,8 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          int i = 0;
 
          if (isBlank) {
-            String blankLabel =
-               (String) component.getClientProperty("blankLabel");
+            String blankLabel = (String) component
+                  .getClientProperty(SwingBinder.BLANKLABEL_PROPERTY);
             values[i] = (blankLabel == null) ? "" : blankLabel;
             i++;
          }
@@ -177,7 +177,8 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
       }
 
       protected String getKey(Object value) throws Exception {
-         String keyPropertyName = (String) component.getClientProperty("key");
+         String keyPropertyName = (String) component
+               .getClientProperty(SwingBinder.KEY_PROPERTY);
 
          if (keyPropertyName != null) {
             Object o =

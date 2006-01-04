@@ -85,15 +85,20 @@ public class AbstractComponentBinder implements ComponentBinder {
       }
 
       protected void createWidgetGroup() {
-         createGroup(component.getClientProperty("widgetGroup"), true, true);
+         createGroup(component
+               .getClientProperty(SwingBinder.WIDGETGROUP_PROPERTY), true, true);
       }
 
       protected void createEnabledGroup() {
-         createGroup(component.getClientProperty("enabledGroup"), true, false);
+         createGroup(component
+               .getClientProperty(SwingBinder.ENABLEDGROUP_PROPERTY), true,
+               false);
       }
 
       protected void createVisibleGroup() {
-         createGroup(component.getClientProperty("visibleGroup"), false, true);
+         createGroup(component
+               .getClientProperty(SwingBinder.VISIBLEGROUP_PROPERTY), false,
+               true);
       }
 
       protected void createGroup(Object group, boolean enabled, boolean visible) {
@@ -102,7 +107,7 @@ public class AbstractComponentBinder implements ComponentBinder {
          }
 
          if (group instanceof String) {
-            String[] componentNames = ((String) group).split(",");
+            String[] componentNames = ((String) group).split("\\s*,\\s*");
 
             for (int i = 0; i < componentNames.length; i++) {
                Component c =
@@ -136,7 +141,7 @@ public class AbstractComponentBinder implements ComponentBinder {
       }
 
       protected boolean isBlank(JComponent component) {
-         return isBoolean(component, "blank");
+         return isBoolean(component, SwingBinder.BLANK_PROPERTY);
       }
 
       protected boolean isBoolean(JComponent component, String propertyName) {
