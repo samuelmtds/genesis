@@ -29,6 +29,7 @@ import org.apache.tools.ant.Target;
 import org.apache.tools.ant.Task;
 
 public class Call extends Task {
+   private static boolean ant163 = true;
    private String target = null;
 
    public void setTarget(String target) {
@@ -50,8 +51,21 @@ public class Call extends Task {
       if (target == null) {
          throw new BuildException("target is required");
       }
-      Vector vector = getProject().topoSort(target, getProject().getTargets(),
-            false);
+
+
+      Vector vector;
+      
+      if (!ant163) {
+         vector = getProject().topoSort(target, getProject().getTargets());
+      } else {
+         try {
+            vector = getProject().topoSort(target, getProject().getTargets(),
+                  false);
+         } catch (NoSuchMethodError error) {
+            ant163 = false;
+            vector = getProject().topoSort(target, getProject().getTargets());
+         }   
+      }
 
       executeSortedTargets(vector);
    }
