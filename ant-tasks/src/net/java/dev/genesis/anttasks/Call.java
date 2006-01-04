@@ -128,6 +128,9 @@ public class Call extends Task {
                }
             }
          }
+         if (curtarget.getName().equals(target)) { // old exit condition
+            break;
+        }
       }
       if (buildException != null) {
          throw buildException;
