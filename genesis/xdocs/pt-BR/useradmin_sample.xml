@@ -17,22 +17,15 @@
       servidor gratuito e open-source. Isso não significa que o genesis só
       rode nesse servidor; o genesis foi desenvolvido totalmente compatível
       com as especificações J2EE.</p>
-      <p>Existem 3 passos simples para fazer a instalação do exemplo useradmin
-      no servidor de aplicações:</p>
-      <ol>
-        <li>Baixe e instale o servidor de aplicações <a href=
-        "http://www.jboss.org/">JBoss</a>. Recomendamos utilizar a última das
-        versões 3.2.x ou 4.x do JBoss.</li>
-        <li>Execute os scripts ant de deploy distribuídos juntamente com
-        o exemplo <a href="#Execução do exemplo useradmin">
-        (conforme instruções abaixo)</a>.</li>
-        <li>Inicie o servidor JBoss <a href="#Execução do exemplo useradmin">
-        (conforme instruções abaixo)</a>.</li>
-      </ol>
-      <p>Após a instalação do JBoss e execução dos scripts de deploy, pode-se
-      utilizar um link Java Web start ou os scripts de execução ant para rodar
-      a aplicação exemplo <a href="#Execução do exemplo useradmin">
-        (conforme instruções abaixo)</a>.</p>
+      <p>Para executar o useradmin é necessário utilizar a ferramenta 
+      <a href="http://ant.apache.org/">Ant</a>. Para executar o exemplo em modo
+      remoto, é necessário também o servidor de aplicações 
+      <a href="http://www.jboss.org/">JBoss</a></p>
+      <p>Aprenda <a href="#Execução em modo local">aqui</a> como executar o
+      exemplo em modo local, ou seja, sem a necessidade de um servidor de
+      aplicações.</p>
+      <p>Aprenda <a href="#Execução em modo remoto">aqui</a> como executar o
+      exemplo em modo remoto, ou seja, utilizando o servidor de aplicações.</p>
     </section>
     <section name="Propósito do exemplo useradmin">
       <p>O exemplo useradmin tem como propósito mostrar ao usuário a maioria das
@@ -45,18 +38,27 @@
       <code>&lt;DISTRIBUIÇÃO_DO_GENESIS&gt;/samples/useradmin/modules/shared/src
       </code> que correspondem respectivamente ao módulo cliente da aplicação e
       ao módulo comum entre cliente e servidor. </p>
-      <p>No diretório de fontes do módulo cliente encontramos "trios" de
-      arquivos fontes, que correspondem ao formulário da tela (form), arquivo
-      XML da tela (XML do thinlet) e arquivo de visualização (view) da tela.
-      Para exemplificar, consideremos a tela inicial do useradmin:</p>
+      <p>No diretório de fontes do módulo cliente encontramos classes relativas
+      à interface gráfica. Temos duas possibilidades de interface gráfica nesse
+      exemplo: O <a href="http://www.thinlet.com/">Thinlet</a> e o
+      <a href="http://java.sun.com/products/jfc/">Swing</a></p>
+      
+      <p>No pacote <code>net.java.dev.genesis.samples.useradmin.ui</code> 
+      encontramos arquivos que definem a lógica da tela,
+      ou seja, seu comportamento (regras para habilitar campos, definição de ações
+      da tela, etc). Chamamos essas classes de <b>forms</b> e <b>são independentes</b>
+      de API gráfica. Por exemplo, <code><b>UserListForm.java</b></code> é uma 
+      classe Java cujos campos representam os dados da tela e que possui métodos 
+      que representam as ações da tela.</p>
+
+      <p>Na parte Thinlet (pacote <code>net.java.dev.genesis.samples.useradmin.ui.thinlet</code>)
+      encontramos dois tipos de arquivos fontes que definem o visual de uma tela.
+      Para exemplificar, consideremos a tela de pesquisa do useradmin:</p>
       <ul>
         <li><code><b>user-list.xml</b></code>: arquivo XML de acordo com o
         padrão Thinlet que descreve como os componentes gráficos estão dispostos
         na tela. Os nomes dos componentes correspondem aos nomes de campos e
         métodos do formulário da tela (form). </li>
-        <li><code><b>UserListForm.java</b></code>: classe Java cujos campos
-        representam os dados da tela e que possui métodos que representam as
-        ações da tela.</li>
         <li><code><b>UserListView.java</b></code>: classe Java responsável pela
         tela, onde é definido o tamanho da tela, qual é o arquivo xml da tela,
         além de fazer o <code>binding</code> de um form a tela, ou seja, indica
@@ -65,6 +67,20 @@
         que essa tela possa abrir outras telas ou programaticamente executar
         ações dessa tela.</li>
       </ul>
+
+      <p>Na parte Swing (pacote <code>net.java.dev.genesis.samples.useradmin.ui.swing</code>
+      e sub-pacotes) temos o esqueto da tela codificado em Swing. Para exemplificar, 
+      consideremos a tela de pesquisa do useradmin:</p>
+      <ul>
+         <li><code><b>UserListView.java</b></code>: classe Java responsável pela
+         tela e codificada utilizando Swing. Nela definimos a aparência da tela,
+         como tamanho, componentes gráficos. Nela também fazemos o <code>binding</code>
+         da tela para um determinado form, ou seja, qual será o form utilizado
+         para tratar os eventos da tela. Outros métodos auxiliares podem existir nessa classe para possibilitar
+         que essa tela possa abrir outras telas ou programaticamente executar
+         ações dessa tela.</li>
+      </ul>
+
       <p>No diretório de fontes do módulo shared encontramos os arquivos fontes
       relativos a lógica de negócio (command) e os arquivos fontes relativos a
       entidades mapeadas em tabelas no banco de dados (databeans). Um exemplo de
@@ -230,24 +246,87 @@ public class User implements Serializable {
       <code>java.io.Serializable</code> para utilizá-lo como parâmetro e/ou
       retorno de chamadas remotas.</p>
     </section>
-    <section name="Execução do exemplo useradmin">
-      <p>Para executar esse exemplo, foram disponibilizados scripts ant para
-      realizar esta tarefa. Para utilizar esses scripts, siga os passos
-      abaixo:</p>
+    <section name="Execução em modo local">
+       <p>Para executar o exemplo em modo local é necessário:</p>
+       <ul>
+          <li>Ferramenta <a href="http://ant.apache.org/">Ant</a>, utilize de 
+          preferência a última versão (que no momento é Ant 1.6.5)</li>
+       </ul>
+       
+       <p>Siga os passos abaixo:</p>
+       <ul>
+        <li>Faça uma cópia do arquivo <code>buid.properties.sample</code> e
+        modifique o nome da cópia para <code>build.properties</code></li>
+        <li>Faça a edição do novo arquivo <code>build.properties</code>
+        modificando ou comentado os valores das propriedades de acordo com o
+        ambiente de execução. Veja um possível exemplo abaixo:</li>
+<source>
+## Build properties sample ##
+
+# Indicamos aqui que o exemplo não deve rodar em modo remoto
+remote.mode=false
+   
+# Como estamos rodando somente em modo local, é necessário utilizar um banco
+# de dados, que no caso é o HSQLDB
+jdbc.driver=target/hsqldb.jar
+</source>
+        <li>Na linha de comando, execute o script ant com o seguinte comando:
+<source>
+c:\genesis\samples\useradmin>ant install
+</source>
+        Esse comando irá iniciar o
+        processo de instalação. Nesse caso, irá apenas copiar as bibliotecas
+        necessárias para o diretório onde se encontra o jar principal de sua
+        aplicação.</li>
+        <li>Para executar o exemplo, use a task do ant:</li>
+<source>
+c:\genesis\samples\useradmin>ant run:local
+</source>
+        <li>Também é possível executar com a linha de comando:</li>
+<source>
+c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
+</source>
+        <li>Ou utilizar o duplo clique no arquivo <code>useradmin-local-weaved.jar</code></li>
+      </ul>
+    </section>
+    <section name="Execução em modo remoto">
+      <p>Para executar o exemplo em modo remoto é necessário:</p>
+       <ul>
+          <li>Ferramenta <a href="http://ant.apache.org/">Ant</a>, utilize de 
+          preferência a última versão (que no momento é Ant 1.6.5)</li>
+          <li>Servidor de aplicações <a href="http://www.jboss.org/">JBoss</a>,
+          utilize de preferência as últimas versões das séries 3.2.x ou 4.0.x</li>
+       </ul>
+      <p>Para rodar o exemplo em modo remoto, siga os seguintes passos:</p>
       <ul>
         <li>Faça uma cópia do arquivo <code>buid.properties.sample</code> e
         modifique o nome da cópia para <code>build.properties</code></li>
         <li>Faça a edição do novo arquivo <code>build.properties</code>
         modificando ou comentado os valores das propriedades de acordo com o
-        ambiente de execução</li>
+        ambiente de execução. Veja um possível exemplo abaixo:</li>
+<source>
+## Build properties sample ##
+
+# Indicamos aqui que não queremos utilizar o modo local, mas se preferir utilizar
+# basta omitir ou comentar essa linha
+local.mode=false
+   
+# Indicamos aqui onde está instalado o servidor JBoss
+jboss.home=/opt/jboss-3.2.7
+</source>
         <li>Na linha de comando, execute o script ant com o seguinte comando:
-        <code>ant install</code>. Esse comando irá iniciar o
+<source>
+c:\genesis\samples\useradmin>ant install
+</source>
+        Esse comando irá iniciar o
         processo de instalação do exemplo no servidor, criando um diretório chamado
         "useradmin" na pasta <code>server</code> do JBoss contendo a aplicação
         do exemplo e todas as suas dependências e configurações.</li>
         <li>Uma vez finalizado o processo de instalação, o JBoss poderá ser
-        iniciado através do comando:
-        <code>&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c useradmin</code></li>
+        iniciado através do comando:</li>
+<source>
+&lt;DIRETÓRIO_DO_JBOSS&gt;\bin>run -c useradmin
+</source>
         <li>Após a completa inicialização do JBoss, o exemplo poderá ser
         executado através da URL <a href="http://localhost:8080/useradmin/">
         http://localhost:8080/useradmin/</a>. Através desta URL, o link
@@ -255,27 +334,18 @@ public class User implements Serializable {
         Run remote User Admin</a>" fará com que a aplicação
         exemplo seja baixada, instalada e executada no computador do
         usuário, utilizando-se tecnologia Java Web start</li>
-        <li>Outra opção de execução do exemplo é através de uma task do ant:
-        <code>ant run:remote</code> .Este comando irá iniciar
-        o exemplo com a utilização de chamadas remotas ao JBoss</li>
-        <li>Também é possível executar o exemplo apenas com chamadas locais,
-        retirando-se a dependência do JBoss - para fazer isso, basta:</li>
-        <ul>
-           <li>Utilizar o link "<a href="http://localhost:8080/useradmin/application/local.jnlp">
-           Run local User Admin</a>" da URL 
-           <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/
-           </a>.</li>
-           <li>Utilizar o seguinte comando: <code>ant run:local</code></li>
-           <li>Fazer um duplo-clique no arquivo 
-           <code>useradmin-local-weaved.jar</code> localizado dentro do diretório
-           <code>&lt;DISTRIBUIÇÃO_DO_GENESIS&gt;/samples/useradmin/target/war/application</code>.
-           Em alguns sistemas operacionais, esse duplo clique é equivalente ao 
-           comando:</li>
+        <li>Outra opção de execução do exemplo é através de uma task do ant que
+        irá iniciar o exemplo com a utilização de chamadas remotas ao JBoss</li>
 <source>
-java -jar useradmin-local-weaved.jar
+c:\genesis\samples\useradmin>ant run:remote
 </source>
-        </ul>
-      </ul>
+        <li>Se você deixou habilitado o modo local, também é possível executar o
+        exemplo via Java Web Start utilizando o link 
+        "<a href="http://localhost:8080/useradmin/application/local.jnlp">Run local User Admin</a>"
+        da URL <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/</a>.</li>
+       </ul>
+    </section>
+    <section name="Considerações">
       <p>Através desse exemplo, mostramos como um projeto é estruturado e como
       usar as funcionalidades do genesis. É recomendado utilizar o <a href=
       "empty_project.html">projeto vazio</a> para iniciar um projeto baseado no

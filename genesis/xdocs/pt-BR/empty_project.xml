@@ -31,9 +31,10 @@
         <li>Distribuição do genesis juntamente com as suas bibliotecas de
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
-        alguma das versões 3.2.x.</li>
+        alguma das versões 3.2.x. ou 4.0.x</li>
         <li>Para compilar e instalar a aplicação recomendamos <a href=
-        "http://ant.apache.org/">Apache Ant</a>.</li>
+        "http://ant.apache.org/">Apache Ant</a>. Prefira sempre a última
+        versão disponível (no momento, Ant 1.6.5)</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
@@ -46,36 +47,73 @@
       conteúdo inicial do arquivo <code>build.properties.sample</code> segue
       abaixo:</p>
 <source>
-## Build properties sample
+## Build properties sample ##
 
-# The following property must be defined in build.properties with an appropriate
-# value for the local environment
-jboss.home=/opt/jboss-3.2.5
+#################################################################################
+## The following property must be defined in build.properties with an appropriate
+## value for the local environment
 genesisBasedApplication.name=empty-project
 genesisBasedApplication.mainClass=net.java.dev.genesis.emptyproject.MyGenesisApp
 genesisBasedApplication.prettyName=Empty Project
 
-# These properties already have a default value defined in build.xml and only
-# need to be defined in build.properties if their values are different in your
-# local setup
-genesis.home=../../genesis
-xdoclet.dist=../../xdoclet/dist
-generate.validation=true
-jboss.provider.url=jnp://localhost
-jboss.datasource.jndi.name=java:/DefaultDS
-jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
-webstart.server=localhost
-webstart.port=8080
-hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
-hibernate.version=2.1.6
-hibernate.show.sql=true
-hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
-hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+
+#################################################################################
+## Use these properties for running the sample in LOCAL or REMOTE MODE          
+jboss.home=/opt/jboss-3.2.7
+
+
+#################################################################################
+## Use these properties for running the sample in LOCAL MODE ONLY               
+#remote.mode=false
+#jdbc.driver=target/hsqldb.jar
+
+
+#################################################################################
+## Use these properties for running the sample in REMOTE MODE ONLY              
+#local.mode=false
+#jboss.home=/opt/jboss-3.2.7
+
+
+#################################################################################
+## If you want to turn off validation generation, uncomment the following 
+## property:
+#validation.generate.files=false
+
+
+#################################################################################
+##	If you want to turn off hibernate files generation, such as hibernate.cfg.xml,
+## jboss-service.xml, and *.hbm.xml, uncomment the following property:
+#hibernate.generate.files=false
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  
+## need to be defined in build.properties if their values are different in your 
+## local setup                                                                  
+#genesis.home=../../genesis
+#jboss.provider.url=jnp://localhost
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#webstart.server=localhost
+#webstart.port=8080
+#build.dir=dist/useradmin.war/application
+#jdbc.driver=dist/useradmin.war/application/hsqldb.jar
+#jdbc.connection.url=jdbc:hsqldb:genesis/useradmin
+#jdbc.driver.class=org.hsqldb.jdbcDriver
+#jdbc.username=sa
+#jdbc.password=
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.8
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
 </source>
       <p>Pelo menos quatro propriedades necessitam ser definidas:</p>
       <ul>
         <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
-        servidor JBoss 3.2.x</li>
+        servidor JBoss. Só é necessário definir essa propriedade se sua aplicação
+        será executada dentro do servidor de aplicação JBoss. Para rodar em modo
+        local apenas, essa propriedade é descartada</li>
         <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
         para seu projeto, de preferência sem espaços.</li>
         <li><code><b>genesisBasedApplication.mainClass</b></code>: Define o nome
@@ -91,9 +129,6 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
         <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
         do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
         ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
-        <li><code><b>xdoclet.dist</b></code>: Indica o diretório das bibliotecas
-        do XDoclet. A distribuição utilizada e recomendada encontra-se 
-        disponível <a href="download.html">aqui</a>.</li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -106,8 +141,8 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
       <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
       de um novo projeto utilizando o genesis.</p>
       <ul>
-        <li>Possuímos o JBoss 3.2.6 instalado no diretório
-        <code>C:\servidores\jboss-3.2.6</code></li>
+        <li>Possuímos o JBoss 3.2.7 instalado no diretório
+        <code>C:\servidores\jboss-3.2.7</code></li>
         <li>Instalamos a distribuição do genesis no diretório
         <code>C:\projetos</code>, onde que criará o diretório
         <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
@@ -117,7 +152,7 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
       </ul>
       <p>O nosso <code><b>build.properties</b></code> poderá ser:</p>
 <source>
-jboss.home=c:/servidores/jboss-3.2.6
+jboss.home=c:/servidores/jboss-3.2.7
 genesisBasedApplication.name=helloworld
 genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
@@ -130,7 +165,7 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
       <ul>
         <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/client/src</b>: Diretório
         que contém todos os arquivos fontes que dizem respeito a parte cliente
-        da sua aplicação (formulários de tela, classes de tela, xmls das telas,
+        da sua aplicação (formulários de tela, arquivos de tela,
         etc.).</li>
         <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/shared/src</b>: Diretório
         que contém os arquivos fontes que são comuns tanto a parte cliente da
@@ -155,8 +190,10 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
         Não é necessário ser alterado, a não ser que seu projeto necessite de
         novos validadores cuja implementação deve estar nessa mesma pasta de
         fontes.</li>
-        <li><b>META-INF/aop.xml</b>: Arquivo que define todos os aspectos que
-        são aplicados ao sistema. Na prática, não é necessário alterar tal
+        <li><b>META-INF/local-aop.xml</b> e <b>META-INF/remote-aop.xml</b>: 
+        Arquivos que definem todos os aspectos que são aplicados ao sistema 
+        (O primeiro são aspectos para rodar em modo local e o segundo arquivo 
+        refere-se aos aspectos em modo remoto). Na prática, não é necessário alterar tal
         arquivo, a não ser para fazer pequenos ajustes em alguns parâmetros dos
         aspectos ou adicionar novos aspectos a aplicação.</li>
         <li><b>net/java/dev/genesis/emptyproject/MyGenesisApp.java</b>: Arquivo
@@ -188,9 +225,26 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
         <code>all</code> em seqüência</li>
         <li><b>all.with.webstart</b>: Equivalente a tarefa <code>all</code> com a adição
         dos arquivos necessários para utilizar sua aplicação com Java Web Start</li>
+        <li><b>clean-webstart</b>: Equivalente a chamar as tarefas <code>clean</code> e 
+        <code>all.with.webstart</code> em seqüência</li>
+        <li><b>run:local</b>: Inicia sua aplicação em modo local. É necessário
+        que sua aplicação esteja compilada (Utilize a tarefa <code>all</code> para compilar).</li>
+        <li><b>run:debug-local</b>: Equivalente a tarefa<code>run:local</code>, porém
+        sua aplicação abre portas para debug, sendo possível você depurar seu código
+        de dentro de sua IDE conectando na porta de debug. A porta padrão de debug
+        é definida pela propriedade <code>debug.port</code> e seu valor padrão
+        é 10000</li>
         <li><b>run:remote</b>: Inicia sua aplicação em modo remoto. É necessário
         que sua aplicação esteja compilada, empacotada em jars e instalada no JBoss.
         Obviamente, o servidor deve estar iniciado.</li>
+        <li><b>run:debug-remote</b>: Equivalente a tarefa<code>run:remote</code>, porém
+        sua aplicação abre portas para debug. Mesma explicação de <code>run:debug-local</code>
+        serve para essa tarefa. Lembre-se que a aplicação faz chamadas remotas ao
+        servidor, logo, método remotos executam no servidor. Não estranhe se algum
+        breakpoint não for chamado se este estiver num método remoto. Para tal,
+        você deve executar o seu servidor com uma porta para debug aberta e conectar
+        nessa porta.
+        </li>
       </ul>
       <p>A maneira rápida de colocar seu projeto para rodar:
 <source>
