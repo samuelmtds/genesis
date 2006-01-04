@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,21 +39,27 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ButtonGroup;
+import javax.swing.FocusManager;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.RootPaneContainer;
 
 public class SwingBinder extends AbstractBinder {
    private static final Log log = LogFactory.getLog(SwingBinder.class);
 
    public static final String GENESIS_BOUND = "genesis:boundField";
-   public static final String WIDGETGROUP_PROPERTY = "widgetGroup";
-   public static final String ENABLEDGROUP_PROPERTY = "enabledGroup";
-   public static final String VISIBLEGROUP_PROPERTY = "visibleGroup";
+   public static final String WIDGET_GROUP_PROPERTY = "widgetGroup";
+   public static final String ENABLED_GROUP_PROPERTY = "enabledGroup";
+   public static final String VISIBLE_GROUP_PROPERTY = "visibleGroup";
    public static final String BLANK_PROPERTY = "blank";
-   public static final String BLANKLABEL_PROPERTY = "blankLabel";
+   public static final String BLANK_LABEL_PROPERTY = "blankLabel";
    public static final String KEY_PROPERTY = "key";
    public static final String VALUE_PROPERTY = "value";
 
@@ -66,6 +72,7 @@ public class SwingBinder extends AbstractBinder {
    private final Map converters = new HashMap();
    private final Map buttonGroupsMap = new HashMap();
    private final Map componentBinders = new HashMap();
+   private final ActionListener defaultButtonListener;
 
    public SwingBinder(Component component, Object form) {
       this(component, (ComponentLookupStrategy) null, form, component);
@@ -81,11 +88,17 @@ public class SwingBinder extends AbstractBinder {
    }
 
    public SwingBinder(Component component,
-      ComponentLookupStrategy lookupStrategy, Object form, Object handler) {
+         ComponentLookupStrategy lookupStrategy, Object form, Object handler) {
+      this(component, lookupStrategy, form, handler, true);
+   }
+   public SwingBinder(Component component,
+      ComponentLookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
       super(form, handler);
       this.root = component;
       this.lookupStrategy = (lookupStrategy == null)
          ? createComponentLookupStrategy() : lookupStrategy;
+      this.defaultButtonListener = bindDefaultButton ? createDefautButtonListener()
+            : null;
    }
 
    public Map getConverters() {
@@ -180,6 +193,41 @@ public class SwingBinder extends AbstractBinder {
    public void bind() throws Exception {
       super.bind();
 
+      bindDefaultButton();
+      markBound();
+   }
+
+   protected void bindDefaultButton() {
+      if (defaultButtonListener == null || !(root instanceof RootPaneContainer)) {
+         return;
+      }
+
+      final JButton defaultButton = ((RootPaneContainer) root).getRootPane()
+            .getDefaultButton();
+
+      if (defaultButton == null) {
+         return;
+      }
+
+      defaultButton.addActionListener(defaultButtonListener);
+   }
+   
+   protected ActionListener createDefautButtonListener() {
+      return new ActionListener() {
+         public void actionPerformed(ActionEvent event) {
+            Component defaultButton = (Component)event.getSource();
+            Component c = FocusManager.getCurrentManager().getFocusOwner();
+
+            if (c != null) {
+               c.dispatchEvent(new FocusEvent(defaultButton, FocusEvent.FOCUS_LOST));
+            }
+
+            defaultButton.dispatchEvent(new FocusEvent(defaultButton, FocusEvent.FOCUS_GAINED));
+         }
+      };
+   }
+
+   protected void markBound() {
       if (root instanceof JComponent) {
          ((JComponent) root).putClientProperty(GENESIS_BOUND, Boolean.TRUE);
       }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -149,7 +149,7 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
 
          if (isBlank) {
             String blankLabel = (String) component
-                  .getClientProperty(SwingBinder.BLANKLABEL_PROPERTY);
+                  .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
             values[i] = (blankLabel == null) ? "" : blankLabel;
             i++;
          }

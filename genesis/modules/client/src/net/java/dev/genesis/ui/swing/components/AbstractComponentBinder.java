@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -86,18 +86,18 @@ public class AbstractComponentBinder implements ComponentBinder {
 
       protected void createWidgetGroup() {
          createGroup(component
-               .getClientProperty(SwingBinder.WIDGETGROUP_PROPERTY), true, true);
+               .getClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY), true, true);
       }
 
       protected void createEnabledGroup() {
          createGroup(component
-               .getClientProperty(SwingBinder.ENABLEDGROUP_PROPERTY), true,
+               .getClientProperty(SwingBinder.ENABLED_GROUP_PROPERTY), true,
                false);
       }
 
       protected void createVisibleGroup() {
          createGroup(component
-               .getClientProperty(SwingBinder.VISIBLEGROUP_PROPERTY), false,
+               .getClientProperty(SwingBinder.VISIBLE_GROUP_PROPERTY), false,
                true);
       }
 
