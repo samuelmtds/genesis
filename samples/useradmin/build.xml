@@ -23,7 +23,7 @@
               description="Creates the project distribution"/>
 
    <target name="install"
-           depends="shared:hibernate-doclet,server-artifact,copy-local-dependency-jars,deploy,webstart" />
+           depends="shared:hibernate-doclet,server-artifact,copy-local-dependency-jars,webstart,deploy" />
    
    <target name="copy-local-dependency-jars" unless="server.artifact.needed">
       <copy todir="${build.dir}">
