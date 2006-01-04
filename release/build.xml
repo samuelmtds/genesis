@@ -345,12 +345,12 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
 
    <target name="-do-upload">
       <echo>Uploading genesis-${dist.type}-${genesis.version}.zip...</echo>
-      <!-- javaNetUpload projectName="${java.net.project}"
+      <javaNetUpload projectName="${java.net.project}"
                      fromFile="../genesis/${genesis.build.dir}/genesis-${dist.type}-${genesis.version}.zip"
                      toFile="/releases/${genesis.version}/genesis-${dist.type}-${genesis.version}.zip"
                      fileDescription="${description}"
                      fileStatus="${file.status}"
-                     overwrite="${overwrite}" / -->
+                     overwrite="${overwrite}" />
       <echo>Uploading genesis-${dist.type}-${genesis.version}.tar.gz...</echo>
       <javaNetUpload projectName="${java.net.project}"
                      fromFile="../genesis/${genesis.build.dir}/genesis-${dist.type}-${genesis.version}.tar.gz"
@@ -363,15 +363,15 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
    <target name="step3"
            depends="step3:init"
            description="Uploads distribution files">
-      <!-- antcall target="-do-upload">
+      <antcall target="-do-upload">
          <param name="dist.type" value="dist" />
          <param name="description" value="${dist}" />
-      </antcall-->
+      </antcall>
       <antcall target="-do-upload">
          <param name="dist.type" value="dependencies" />
          <param name="description" value="${dependencies}" />
       </antcall>
-      <!--antcall target="-do-upload">
+      <antcall target="-do-upload">
          <param name="dist.type" value="empty-project" />
          <param name="description" value="${empty-project}" />
       </antcall>
@@ -398,7 +398,7 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
       <antcall target="-do-upload">
          <param name="dist.type" value="all" />
          <param name="description" value="${all}" />
-      </antcall -->
+      </antcall>
    </target>
 
    <target name="step4:init" depends="init">
