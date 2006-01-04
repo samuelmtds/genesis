@@ -717,11 +717,6 @@
    <target name="weaving:macrodefs"
            depends="weaving:master-macrodefs,weaving:additional-macrodefs"/>
 
-   <target name="-do-weaving-copy-files">
-      <genesis:weaving-copy targetdir="${weaving.copy.dir}" 
-                            xml="${weaving.copy.xml}" />
-   </target>
-
    <target name="-do-custom-weaving">
       <!-- Override to implement extra tasks that should be performed after 
            the weaving process -->

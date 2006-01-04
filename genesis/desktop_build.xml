@@ -562,8 +562,12 @@
    <target name="weaving:copy-local-files" 
            depends="weaving:check-conditions,weaving:macrodefs" 
            if="weaving.local.needed">
+      <genesis:call target="-do-weaving-copy-local-files" />
+   </target>
+
+   <target name="-do-weaving-copy-local-files">
       <genesis:weaving-copy targetdir="${preweaving.local.dir}" 
-                            xml="${weaving.local.xml}" />
+                                  xml="${weaving.local.xml}" />
    </target>
 
    <target name="weaving:local" 
@@ -578,6 +582,10 @@
 
    <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
            if="weaving.remote.needed">
+      <genesis:call target="-do-weaving-copy-remote-files" />
+   </target>
+
+   <target name="-do-weaving-copy-remote-files">
       <genesis:weaving-copy targetdir="${preweaving.remote.dir}" 
                             xml="${weaving.remote.xml}" />
    </target>

@@ -145,6 +145,10 @@
 
    <target name="weaving:copy-files" depends="weaving:check-conditions,weaving:macrodefs" 
            if="weaving.needed">
+      <genesis:call target="-do-weaving-copy-files" />
+   </target>
+
+   <target name="-do-weaving-copy-files">
       <genesis:weaving-copy targetdir="${preweaving.dir}" 
                             xml="${weaving.xml}" />
    </target>
