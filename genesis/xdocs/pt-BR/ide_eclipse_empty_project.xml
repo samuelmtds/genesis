@@ -78,7 +78,7 @@
 
         <p>
         11. Arraste o arquivo <b>build.xml</b> para a view do ant. Dê 2 cliques na
-        tarefa <code>genesis.app:all</code> que seu projeto será compilado.
+        tarefa <code>all</code> que seu projeto será compilado.
         </p>
         <img src="../eclipse/12.JPG" border="0" alt="Eclipse - Passo 11"></img>
 

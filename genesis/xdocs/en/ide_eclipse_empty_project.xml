@@ -75,7 +75,7 @@
 
         <p>
         11. Drag the <b>build.xml</b> to the ant view. Double click on the target 
-        <code>genesis.app:all</code> and your project will be compiled.
+        <code>all</code> and your project will be compiled.
         </p>
         <img src="../eclipse/12.JPG" border="0" alt="Eclipse - Step 11"></img>
 
