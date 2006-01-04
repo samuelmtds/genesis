@@ -4,10 +4,9 @@
 <aspectwerkz>
    <system id="genesis-project" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
-      <pointcut name="executeCommand"
-         expression="execution(@net.java.dev.genesis.annotation.Remotable * ...*(..)) 
-                  OR execution(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
-      <pointcut name="form" expression="within(@Form ..)" />
+      <pointcut name="executeCommand" 
+         expression="execution(@net.java.dev.genesis.annotation.Remotable * ...*(..)) OR execution(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
+      <pointcut name="form" expression="within(@net.java.dev.genesis.annotation.Form ..)" />
 
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
@@ -16,13 +15,12 @@
       <pointcut name="viewMetadataFactoryIntroduction" expression="thinletMetadataFactoryIntroduction OR within(@net.java.dev.genesis.annotation.ViewHandler..)" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
-         expression="hasmethod(@net.java.dev.genesis.annotation.Remotable * ...*(..)) 
-                  OR hasmethod(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
+         expression="hasmethod(@net.java.dev.genesis.annotation.Remotable * ...*(..)) OR hasmethod(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
       <pointcut name="timeout" expression="executeCommand" />
-      <pointcut name="ejbCommandExecution" expression="executeCommand" />
+      <pointcut name="localCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution" expression="execution(@net.java.dev.genesis.annotation.Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
-
+      
       <!-- Genesis Aspects -->
       <mixin class="CommandInvocationAspect$CommandResolverImpl" />
       <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
@@ -34,10 +32,13 @@
          <param name="timeout" value="60000" />
          <param name="keepThreadInstance" value="true" />
       </aspect>
-      <aspect class="EJBCommandExecutionAspect">
-         <param name="jndiName" value="ejb/CommandExecutor"/>
+      <aspect class="LocalCommandExecutionAspect">
+         <param name="transactionalInjector"
+             value="net.java.dev.genesis.aspect.HibernateTransactionalInjector"/>
       </aspect>
-      <aspect class="CriteriaCommandExecutionAspect"/>
+      <aspect class="CriteriaCommandExecutionAspect">
+         <param name="preventStackOverflow" value="true" />
+      </aspect>
       <aspect class="WaitCursorAspect"/>
    </system>
 </aspectwerkz>
