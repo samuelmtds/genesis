@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,18 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import net.java.dev.genesis.annotation.Action;
+import net.java.dev.genesis.annotation.CallWhen;
+import net.java.dev.genesis.annotation.ClearOn;
+import net.java.dev.genesis.annotation.Condition;
+import net.java.dev.genesis.annotation.DataProvider;
+import net.java.dev.genesis.annotation.EmptyValue;
+import net.java.dev.genesis.annotation.EnabledWhen;
+import net.java.dev.genesis.annotation.NotBound;
+import net.java.dev.genesis.annotation.ValidateBefore;
+import net.java.dev.genesis.annotation.VisibleWhen;
 import net.java.dev.genesis.cloning.Cloner;
 import net.java.dev.genesis.cloning.ClonerRegistry;
 import net.java.dev.genesis.equality.EqualityComparator;
@@ -49,11 +57,9 @@ import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.codehaus.aspectwerkz.annotation.Annotation;
-import org.codehaus.aspectwerkz.annotation.AnnotationInfo;
-import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
 import org.codehaus.aspectwerkz.aspect.management.Mixins;
+import org.codehaus.backport175.reader.Annotation;
+import org.codehaus.backport175.reader.Annotations;
 
 public class FormMetadataFactoryAspect {
    /**
@@ -129,12 +135,17 @@ public class FormMetadataFactoryAspect {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
 
-               final String value = ((UntypedAnnotation) annotation)
-                     .value();
-               final int equalIndex = value.indexOf('=');
-               if (equalIndex > 0) {
-                  formMetadata.addNamedCondition(value.substring(0, equalIndex)
-                        .trim(), compile(formMetadata.getScript(), value.substring(equalIndex + 1)));
+               final Condition condition = (Condition) annotation;
+               final String[] values = condition.value();
+               
+               for (int i = 0; i < values.length; i++) {
+                  final int equalIndex = values[i].indexOf('=');
+                  if (equalIndex > 0) {
+                     formMetadata.addNamedCondition(values[i].substring(0,
+                           equalIndex).trim(), compile(
+                           formMetadata.getScript(), values[i]
+                                 .substring(equalIndex + 1)));
+                  }   
                }
             }
 
@@ -180,8 +191,9 @@ public class FormMetadataFactoryAspect {
             private void processMemberAnnotation(final Script script,
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
+               EnabledWhen annon = (EnabledWhen) annotation;
                memberMetadata
-                     .setEnabledCondition(compile(script, annotation));
+                     .setEnabledCondition(compile(script, annon.value()));
             }
          }
 
@@ -214,8 +226,9 @@ public class FormMetadataFactoryAspect {
             private void processMemberAnnotation(final Script script,
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
+               VisibleWhen annon = (VisibleWhen) annotation;
                memberMetadata
-                     .setVisibleCondition(compile(script, annotation));
+                     .setVisibleCondition(compile(script, annon.value()));
             }
          }
 
@@ -265,8 +278,9 @@ public class FormMetadataFactoryAspect {
                   final FormMetadata formMetadata,
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
+               CallWhen annon = (CallWhen) annotation;
                methodMetadata
-                     .setCallCondition(compile(formMetadata.getScript(), annotation));
+                     .setCallCondition(compile(formMetadata.getScript(), annon.value()));
             }
          }
 
@@ -289,30 +303,24 @@ public class FormMetadataFactoryAspect {
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
 
-               final Map attributesMap = GenesisUtils.getAttributesMap(
-                     ((UntypedAnnotation) annotation).value());
-               final String widgetName = (String)attributesMap
-                     .get("widgetName");
-               final String objectFieldName = (String)attributesMap
-                     .get("objectField");
-               final String indexFieldName = (String)attributesMap
-                     .get("indexField");
-               final String callOnInit = (String)attributesMap
-                     .get("callOnInit");
-               final String resetSelection = (String)attributesMap
-                     .get("resetSelection");
+               final DataProvider annon = (DataProvider) annotation;
+               final String widgetName = annon.widgetName();
+               final String objectFieldName = annon.objectField();
+               final String indexFieldName = annon.indexField();
+               final boolean callOnInit = annon.callOnInit();
+               final boolean resetSelection = annon.resetSelection();
 
                final DataProviderMetadata dataProviderMetadata = methodMetadata
                      .getDataProviderMetadata();
 
-               if (widgetName == null && objectFieldName == null && indexFieldName == null) {
+               if (GenesisUtils.isBlank(widgetName) && GenesisUtils.isBlank(objectFieldName) && GenesisUtils.isBlank(indexFieldName)) {
                   throw new RuntimeException("At least one of widgetName, objectField or " + 
                         "indexField must be specified for @DataProvider in " +
                         methodMetadata.getMethodEntry().getMethodName());
                }
 
-               dataProviderMetadata.setCallOnInit(!"false".equals(callOnInit));
-               dataProviderMetadata.setResetSelection(!"false".equals(resetSelection));
+               dataProviderMetadata.setCallOnInit(callOnInit);
+               dataProviderMetadata.setResetSelection(resetSelection);
 
                PropertyDescriptor[] descriptors = PropertyUtils
                      .getPropertyDescriptors(formMetadata.getFormClass());
@@ -324,7 +332,7 @@ public class FormMetadataFactoryAspect {
                         descriptors[i]);
                }
 
-               if (objectFieldName != null) {
+               if (!GenesisUtils.isBlank(objectFieldName)) {
                   PropertyDescriptor descriptor = (PropertyDescriptor)
                         descriptorsPerPropertyName.get(objectFieldName);
 
@@ -348,7 +356,7 @@ public class FormMetadataFactoryAspect {
                         descriptor.getName(), descriptor.getPropertyType()));
                }
 
-               if (indexFieldName != null) {
+               if (!GenesisUtils.isBlank(indexFieldName)) {
                   PropertyDescriptor descriptor = (PropertyDescriptor)
                         descriptorsPerPropertyName.get(indexFieldName);
 
@@ -379,8 +387,8 @@ public class FormMetadataFactoryAspect {
                }
 
                dataProviderMetadata
-                     .setWidgetName(widgetName != null ? widgetName
-                           : objectFieldName != null ? objectFieldName
+                     .setWidgetName(!GenesisUtils.isBlank(widgetName) ? widgetName
+                           : !GenesisUtils.isBlank(objectFieldName) ? objectFieldName
                                  : indexFieldName);
             }
          }
@@ -395,8 +403,9 @@ public class FormMetadataFactoryAspect {
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
+               ClearOn annon = (ClearOn) annotation;
                fieldMetadata
-                     .setClearOnCondition(compile(formMetadata.getScript(), annotation));
+                     .setClearOnCondition(compile(formMetadata.getScript(), annon.value()));
             }
 
             public void processMethodAnnotation(
@@ -408,8 +417,9 @@ public class FormMetadataFactoryAspect {
                         "ClearOn cannot be a method annotation that's not a DataProvider method");
                }
 
+               ClearOn annon = (ClearOn) annotation;
                methodMetadata.getDataProviderMetadata().setClearOnCondition(
-                     compile(formMetadata.getScript(), annotation));
+                     compile(formMetadata.getScript(), annon.value()));
             }
          }
 
@@ -423,9 +433,12 @@ public class FormMetadataFactoryAspect {
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
+               net.java.dev.genesis.annotation.EqualityComparator annon =
+                  (net.java.dev.genesis.annotation.EqualityComparator)annotation;
+               
+               
                fieldMetadata.setEqualityComparator(getEqualityComparator(
-                     fieldMetadata, ((UntypedAnnotation) annotation)
-                           .value()));
+                     fieldMetadata, annon) );
             }
 
             public void processMethodAnnotation(
@@ -437,18 +450,17 @@ public class FormMetadataFactoryAspect {
             }
 
             private EqualityComparator getEqualityComparator(
-                  final FieldMetadata fieldMetadata, final String attributesLine) {
-               final Map attributesMap = GenesisUtils
-                     .getAttributesMap(attributesLine);
-               final String comparatorClass = (String) attributesMap
-                     .remove("class");
-               if (comparatorClass == null) {
+                  final FieldMetadata fieldMetadata, final net.java.dev.genesis.annotation.EqualityComparator annon) {
+               
+               final Map map = GenesisUtils.getAttributesMap(annon.properties());
+               Class klazz = annon.value();
+               if (klazz == null || Object.class.equals(klazz)) {
                   return EqualityComparatorRegistry.getInstance()
                         .getDefaultEqualityComparatorFor(
-                              fieldMetadata.getFieldClass(), attributesMap);
+                              fieldMetadata.getFieldClass(), map);
                }
                return EqualityComparatorRegistry.getInstance()
-                     .getEqualityComparator(comparatorClass, attributesMap);
+                     .getEqualityComparator(annon.value().getName(), map);
             }
          }
 
@@ -463,7 +475,7 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setEmptyResolver(getEmptyResolver(fieldMetadata,
-                     ((UntypedAnnotation) annotation).value()));
+                     (net.java.dev.genesis.annotation.EmptyResolver) annotation));
             }
 
             public void processMethodAnnotation(
@@ -475,18 +487,17 @@ public class FormMetadataFactoryAspect {
             }
 
             private EmptyResolver getEmptyResolver(
-                  final FieldMetadata fieldMetadata, final String attributesLine) {
-               final Map attributesMap = GenesisUtils
-                     .getAttributesMap(attributesLine);
-               final String resolverClass = (String) attributesMap
-                     .remove("class");
-               if (resolverClass == null) {
+                  final FieldMetadata fieldMetadata, final net.java.dev.genesis.annotation.EmptyResolver annon) {
+               
+               Map map = GenesisUtils.getAttributesMap(annon.properties());
+               Class klazz = annon.value();
+               if (klazz == null || Object.class.equals(klazz)) {
                   return EmptyResolverRegistry.getInstance()
                         .getDefaultEmptyResolverFor(
-                              fieldMetadata.getFieldClass(), attributesMap);
+                              fieldMetadata.getFieldClass(), map);
                }
                return EmptyResolverRegistry.getInstance().getEmptyResolver(
-                     resolverClass, attributesMap);
+                     annon.value().getName(), map);
             }
          }
 
@@ -504,7 +515,7 @@ public class FormMetadataFactoryAspect {
                      .getFieldClass());
                fieldMetadata.setConverter(converter);
                fieldMetadata.setEmptyValue(converter.convert(fieldMetadata
-                     .getFieldClass(), ((UntypedAnnotation) annotation)
+                     .getFieldClass(), ((EmptyValue) annotation)
                      .value()));
             }
 
@@ -529,7 +540,7 @@ public class FormMetadataFactoryAspect {
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
                fieldMetadata.setCloner(getCloner(fieldMetadata,
-                     ((UntypedAnnotation)annotation).value()));
+                     (net.java.dev.genesis.annotation.Cloner)annotation));
             }
 
             public void processMethodAnnotation(
@@ -541,44 +552,46 @@ public class FormMetadataFactoryAspect {
             }
 
             private Cloner getCloner(final FieldMetadata fieldMetadata,
-                  final String attributesLine) {
-               final Map attributesMap = GenesisUtils
-                     .getAttributesMap(attributesLine);
-               final String clonerClass = (String)attributesMap.remove("class");
-
-               if (clonerClass == null) {
+                  final net.java.dev.genesis.annotation.Cloner annon) {
+               
+               final Map map = GenesisUtils.getAttributesMap(annon.properties());
+               Class klazz = annon.value();
+               if (klazz == null || Object.class.equals(klazz)) {
                   return ClonerRegistry.getInstance().getDefaultClonerFor(
-                        fieldMetadata.getFieldClass(), attributesMap);
+                        fieldMetadata.getFieldClass(), map);
                }
 
-               return ClonerRegistry.getInstance().getCloner(clonerClass,
-                     attributesMap);
+               return ClonerRegistry.getInstance().getCloner(annon.value().getName(),
+                     map);
             }
 
          }
 
          public static final MetadataAttribute CONDITION = new MetadataAttribute(
-               "Condition", new ConditionAnnotationHandler());
+               Condition.class.getName(), new ConditionAnnotationHandler());
          public static final MetadataAttribute ENABLED_WHEN = new MetadataAttribute(
-               "EnabledWhen", new EnabledWhenAnnotationHandler());
+               EnabledWhen.class.getName(), new EnabledWhenAnnotationHandler());
          public static final MetadataAttribute VISIBLE_WHEN = new MetadataAttribute(
-               "VisibleWhen", new VisibleWhenAnnotationHandler());
+               VisibleWhen.class.getName(), new VisibleWhenAnnotationHandler());
          public static final MetadataAttribute VALIDATE_BEFORE = new MetadataAttribute(
-               "ValidateBefore", new ValidateBeforeAnnotationHandler());
+               ValidateBefore.class.getName(), new ValidateBeforeAnnotationHandler());
          public static final MetadataAttribute DATA_PROVIDER = new MetadataAttribute(
-               "DataProvider", new DataProviderAnnotationHandler());
+               DataProvider.class.getName(), new DataProviderAnnotationHandler());
          public static final MetadataAttribute CALL_WHEN = new MetadataAttribute(
-               "CallWhen", new CallWhenAnnotationHandler());
+               CallWhen.class.getName(), new CallWhenAnnotationHandler());
          public static final MetadataAttribute CLEAR_ON = new MetadataAttribute(
-               "ClearOn", new ClearOnAnnotationHandler());
+               ClearOn.class.getName(), new ClearOnAnnotationHandler());
          public static final MetadataAttribute EQUALITY_COMPARATOR = new MetadataAttribute(
-               "EqualityComparator", new EqualityComparatorAnnotationHandler());
+               net.java.dev.genesis.annotation.EqualityComparator.class.getName(),
+               new EqualityComparatorAnnotationHandler());
          public static final MetadataAttribute EMPTY_RESOLVER = new MetadataAttribute(
-               "EmptyResolver", new EmptyResolverAnnotationHandler());
+               net.java.dev.genesis.annotation.EmptyResolver.class.getName(),
+               new EmptyResolverAnnotationHandler());
          public static final MetadataAttribute EMPTY_VALUE = new MetadataAttribute(
-               "EmptyValue", new EmptyValueAnnotationHandler());
+               EmptyValue.class.getName(), new EmptyValueAnnotationHandler());
          public static final MetadataAttribute CLONER = new MetadataAttribute(
-               "Cloner", new ClonerAnnotationHandler());
+               net.java.dev.genesis.annotation.Cloner.class.getName(),
+               new ClonerAnnotationHandler());
 
          private final AnnotationHandler handler;
 
@@ -593,10 +606,6 @@ public class FormMetadataFactoryAspect {
 
          public static MetadataAttribute get(String name) {
             return (MetadataAttribute) Enum.get(MetadataAttribute.class, name);
-         }
-
-         private static ScriptExpression compile(Script script, Annotation annon) {
-            return compile(script, ((UntypedAnnotation)annon).value());
          }
          
          private static ScriptExpression compile(Script script, String value) {
@@ -623,20 +632,18 @@ public class FormMetadataFactoryAspect {
       }
 
       private void processFormAnnotations(final FormMetadata formMetadata) {
-         final List annotations = Annotations.getAnnotationInfos(formMetadata
+         final Annotation[] annotations = Annotations.getAnnotations(formMetadata
                .getFormClass());
-         AnnotationInfo info;
          MetadataAttribute attr;
-         for (Iterator iter = annotations.iterator(); iter.hasNext();) {
-            info = (AnnotationInfo) iter.next();
-            attr = MetadataAttribute.get(info.getName());
+         for (int i = 0; i < annotations.length; i++) {
+            attr = MetadataAttribute.get(annotations[i].annotationType().getName());
 
             if (attr == null) {
                continue;
             }
 
             attr.getHandler().processFormAnnotation(formMetadata,
-                  info.getAnnotation());
+                  annotations[i]);
          }
       }
 
@@ -652,7 +659,7 @@ public class FormMetadataFactoryAspect {
             // Ignoring java.lang.Object.getClass()
             if (propDesc.getName().equals("class")
                   || propDesc.getReadMethod() == null
-                  || Annotations.getAnnotation("NotBound", propDesc
+                  || Annotations.getAnnotation(NotBound.class, propDesc
                         .getReadMethod()) != null) {
                continue;
             }
@@ -668,20 +675,17 @@ public class FormMetadataFactoryAspect {
 
       private void processFieldAnnotations(final FormMetadata formMetadata,
             final FieldMetadata fieldMetadata, final Method fieldGetterMethod) {
-         final List annotations = Annotations
-               .getAnnotationInfos(fieldGetterMethod);
-         AnnotationInfo info;
+         final Annotation[] annotations = Annotations.getAnnotations(fieldGetterMethod);
          MetadataAttribute attr;
-         for (Iterator iter = annotations.iterator(); iter.hasNext();) {
-            info = (AnnotationInfo) iter.next();
-            attr = MetadataAttribute.get(info.getName());
+         for (int i = 0; i < annotations.length; i++) {
+            attr = MetadataAttribute.get(annotations[i].annotationType().getName());
 
             if (attr == null) {
                continue;
             }
 
             attr.getHandler().processFieldAnnotation(formMetadata,
-                  fieldMetadata, info.getAnnotation());
+                  fieldMetadata, annotations[i]);
          }
       }
 
@@ -692,8 +696,8 @@ public class FormMetadataFactoryAspect {
          MethodMetadata methodMetadata;
 
          for (int i = 0; i < methods.length; i++) {
-            isAction = Annotations.getAnnotation("Action", methods[i]) != null;
-            isProvider = Annotations.getAnnotation("DataProvider", methods[i]) != null;
+            isAction = Annotations.getAnnotation(Action.class, methods[i]) != null;
+            isProvider = Annotations.getAnnotation(DataProvider.class, methods[i]) != null;
 
             if (!isAction && !isProvider) {
                continue;
@@ -707,19 +711,17 @@ public class FormMetadataFactoryAspect {
 
       private void processMethodAnnotations(final FormMetadata formMetadata,
             final MethodMetadata methodMetadata, final Method actionMethod) {
-         final List annotations = Annotations.getAnnotationInfos(actionMethod);
-         AnnotationInfo info;
+         final Annotation[] annotations = Annotations.getAnnotations(actionMethod);
          MetadataAttribute attr;
-         for (Iterator iter = annotations.iterator(); iter.hasNext();) {
-            info = (AnnotationInfo) iter.next();
-            attr = MetadataAttribute.get(info.getName());
+         for (int i = 0; i < annotations.length; i++) {
+            attr = MetadataAttribute.get(annotations[i].annotationType().getName());
 
             if (attr == null) {
                continue;
             }
 
             attr.getHandler().processMethodAnnotation(formMetadata,
-                  methodMetadata, info.getAnnotation());
+                  methodMetadata, annotations[i]);
          }
       }
 

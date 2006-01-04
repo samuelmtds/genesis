@@ -8,10 +8,10 @@
          expression="execution(* net.java.dev.genesis.command.Command+.invoke*(..))
             AND (execution(* net.java.dev.genesis.command.Query+.*(..)) OR execution(* net.java.dev.genesis.command.Transaction+.*(..)))" />
       <pointcut name="executeCommand"
-         expression="oldExecuteCommand OR execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
+         expression="oldExecuteCommand OR execution(@net.java.dev.genesis.annotation.Remotable * ...*(..)) OR execution(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
       <pointcut name="localExecution" expression="execution(* net.java.dev.genesis.tests....LocalCommandExecutionTest$*.*(..))
       		OR execution(* net.java.dev.genesis.tests....LocalHibernateTransactionInjetorTest$*.*(..))" />
-      <pointcut name="form" expression="within(@Form ..)" />
+      <pointcut name="form" expression="within(@net.java.dev.genesis.annotation.Form ..)" />
 
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
@@ -19,11 +19,11 @@
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
          expression="within(net.java.dev.genesis.command.Command+)
-            OR hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
+            OR hasmethod(@net.java.dev.genesis.annotation.Remotable * ...*(..)) OR hasmethod(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
       <pointcut name="timeout" expression="execution(* net.java.dev.genesis.tests....TimeoutTest$*.*(..))" />
       <pointcut name="ejbCommandExecution" expression="executeCommand AND !localExecution" />
       <pointcut name="localCommandExecution" expression="executeCommand AND localExecution" />
-      <pointcut name="criteriaCommandExecution" expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
+      <pointcut name="criteriaCommandExecution" expression="execution(@net.java.dev.genesis.annotation.Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
       
       <!-- Genesis Aspects -->

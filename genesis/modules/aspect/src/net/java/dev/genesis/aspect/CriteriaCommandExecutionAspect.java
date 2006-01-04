@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,20 +21,19 @@ package net.java.dev.genesis.aspect;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import net.java.dev.genesis.annotation.Criteria;
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
 
 import org.codehaus.aspectwerkz.AspectContext;
-import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
+import org.codehaus.backport175.reader.Annotations;
 
 /**
  * @Aspect("perJVM")
  */
 public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
-   private static final String CRITERIA_ATTRIBUTE = "Criteria";
    private ThreadLocal threadLocal = new InheritableThreadLocal();
    
    private boolean preventStackOverflow;
@@ -70,9 +69,10 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       final String methodName = rtti.getMethod().getName();
       final Object[] parameterValues = rtti.getParameterValues();
 
-      final UntypedAnnotation annon = (UntypedAnnotation)Annotations
-            .getAnnotation(CRITERIA_ATTRIBUTE, rtti.getMethod());
-      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon.value().toString());
+      final Criteria annon = (Criteria) Annotations.getAnnotation(
+            Criteria.class, rtti.getMethod());
+      
+      final CriteriaAnnotationParser parser = new CriteriaAnnotationParser(annon);
       
       if (preventStackOverflow) {
          threadLocal.set(rtti.getMethod());
@@ -95,42 +95,39 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
       private String[] orderBy;
       private boolean[] isAsc;
 
-      public CriteriaAnnotationParser(String annotation) {
-         String[] values = annotation.trim().split("(order-by\\s*=)");
+      public CriteriaAnnotationParser(Criteria annotation) {
+         Class klazz = annotation.value();
+         if (klazz != null && !Object.class.equals(annotation.value())) {
+            persisterClassName = annotation.value().getName();
+         }
          
-         if (values.length > 0) {
-            persisterClassName = values[0].trim();
+         String[] values = annotation.orderby();
+         orderBy = new String[values.length];
+         isAsc = new boolean[values.length];
+         for (int i = 0; i < values.length; i++) {
+            String[] props = values[i].split("\\s+");
 
-            if (values.length > 1) {
-               values = values[1].trim().split("(\\s*,\\s*)");
-               orderBy = new String[values.length];
-               isAsc = new boolean[values.length];
-
-               for (int i = 0; i < values.length; i++) {
-                  String[] props = values[i].split("\\s+");
-
-                  if (props.length == 0 || props.length > 2) {
-                     throw new IllegalArgumentException(
-                           "Malformed Criteria annotation");
-                  }
-                  orderBy[i] = props[0];
-
-                  if (props.length < 2) {
-                     isAsc[i] = true;
-                     continue;
-                  }
-
-                  if (props[1].equalsIgnoreCase("asc")) {
-                     isAsc[i] = true;
-                  } else if (props[1].equalsIgnoreCase("desc")) {
-                     isAsc[i] = false;
-                  } else {
-                     throw new IllegalArgumentException(
-                           "Malformed Criteria"
-                                 + "annotation: order-by clause must be 'asc' or 'desc'");
-                  }
-               }
+            if (props.length == 0 || props.length > 2) {
+               throw new IllegalArgumentException(
+                     "Malformed Criteria annotation");
             }
+            orderBy[i] = props[0];
+
+            if (props.length < 2) {
+               isAsc[i] = true;
+               continue;
+            }
+
+            if (props[1].equalsIgnoreCase("asc")) {
+               isAsc[i] = true;
+            } else if (props[1].equalsIgnoreCase("desc")) {
+               isAsc[i] = false;
+            } else {
+               throw new IllegalArgumentException(
+                     "Malformed Criteria"
+                           + "annotation: order-by clause must be 'asc' or 'desc'");
+            }
+
          }
       }
 

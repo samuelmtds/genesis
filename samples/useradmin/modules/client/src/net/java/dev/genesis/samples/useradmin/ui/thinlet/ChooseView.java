@@ -18,8 +18,6 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 
-import net.java.dev.genesis.samples.useradmin.UserAdmin;
-
 public class ChooseView extends BaseView {
 
    public ChooseView() throws Exception {

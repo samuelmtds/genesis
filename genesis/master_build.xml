@@ -18,11 +18,21 @@
       <property name="verbose" value="true" />
       <property name="genjp" value="true" />
 
-      <property name="keep.debug.information" value="true" />
-      <property name="java.source.level" value="1.4" />
-
       <property name="local.mode" value="false" />
       <property name="remote.mode" value="true" />
+
+      <property name="force.annotation" value="false" />
+      <available property="supports.java.annotation" classname="java.lang.annotation.Annotation"  />
+
+      <property name="keep.debug.information" value="true" />
+      <condition property="java.source.level" value="1.4">
+         <not>
+            <isset property="supports.java.annotation" />
+         </not>
+      </condition>
+      <condition property="java.source.level" value="1.5">
+         <isset property="supports.java.annotation" />
+      </condition>
    </target>
 
    <target name="-do-additional-init" />
@@ -54,6 +64,7 @@
       <property name="thinlet.dist" location="${genesis.home}/lib/thinlet" />
       <property name="xdoclet.dist" location="${genesis.home}/../xdoclet/dist" />
       <property name="anttasks.dist" location="${genesis.home}/../ant-tasks/dist" />
+      <property name="backport175.dist" location="${genesis.home}/lib/backport175" />
 
       <property name="jboss.app" 
                 location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
@@ -63,6 +74,25 @@
       <property name="jdbc.driver.jar.name" value="hsqldb.jar" />
       <property name="jdbc.driver" 
                 value="${jboss.app}/lib/${jdbc.driver.jar.name}" />
+
+      <condition property="needs.annotation">
+         <or>
+            <istrue value="${force.annotation}" />
+            <not>
+               <isset property="supports.java.annotation" />
+            </not>
+         </or>
+      </condition>
+
+      <condition property="genesis-annotation.jar" value="genesis-annotation-jdk5-${genesis.version}.jar">
+         <isset property="supports.java.annotation" />
+      </condition>
+
+      <condition property="genesis-annotation.jar" value="genesis-annotation-jdk14-${genesis.version}.jar">
+         <not>
+            <isset property="supports.java.annotation" />
+         </not>
+      </condition>
 
       <path id="aspectwerkz.path">
          <fileset dir="${aspectwerkz.dist}">
@@ -89,10 +119,20 @@
          <fileset dir="${xdoclet.dist}" includes="*.jar" />
       </path>
       
+      <path id="backport175.path">
+         <fileset dir="${backport175.dist}" includes="*.jar" />
+      </path>
+
       <path id="anttasks.path">
+         <path refid="backport175.path" />
          <path refid="aspectwerkz.path" />
          <fileset dir="${anttasks.dist}" includes="*.jar" />
       </path>
+
+      <taskdef name="succeededtargets" 
+               classname="net.java.dev.genesis.anttasks.SucceededTasksListener"
+               classpathref="anttasks.path" />
+       <succeededtargets alreadyexecuted="init,-pre-init-paths" />
    </target>
 
    <target name="-do-additional-init-paths" />
@@ -132,8 +172,12 @@
             <annotationc verbose="${verbose}"
                   srcdir="@{srcdir}"
                   destdir="@{destdir}"
-                  classpath="@{classpath}"
                   properties="${annotation.properties}">
+               <classpath>
+                  <path location="@{classpath}" />
+                  <fileset dir="${genesis.dist}" 
+                           includes="genesis-annotation-jdk14-${genesis.version}.jar" />
+               </classpath>
                <customize />
             </annotationc>
             <copy todir="@{destdir}">
@@ -217,8 +261,10 @@
       <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
 
       <path id="shared.standard.javac.classpath">
-         <fileset dir="${genesis.dist}" 
-               includes="genesis-shared-${genesis.version}.jar" />
+         <fileset dir="${genesis.dist}">
+            <include name="${genesis-annotation.jar}" />
+            <include name="genesis-shared-${genesis.version}.jar" />
+         </fileset>
          <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
@@ -336,9 +382,16 @@
       <condition property="aw.tasks.needed">
          <istrue value="${shared.classes.changed}" />
       </condition>
+
+      <condition property="shared.annotationc.tasks.needed">
+         <and>
+            <istrue value="${shared.classes.changed}" />
+            <istrue value="${needs.annotation}" />
+         </and>
+      </condition>
    </target>
 
-   <target name="shared:annotations" if="shared.classes.changed"
+   <target name="shared:annotations" if="shared.annotationc.tasks.needed"
            depends="shared:check-annotations-needed,define-aw-macros">
       <genesis:annotationc srcdir="${shared.sources.dir}" 
                            destdir="${shared.annotated.dir}"
@@ -609,7 +662,18 @@
    <target name="weaving:clean" if="weaving.clean" 
               depends="weaving:define-conditions" />
 
-   <target name="weaving:master-macrodefs">
+   <target name="weaving:define-default-copy-fileset">
+      <condition property="default-copy-fileset" value="${shared.annotated.dir}">
+         <istrue value="${shared.annotationc.tasks.needed}" />
+      </condition>
+      <condition property="default-copy-fileset" value="${shared.classes.dir}">
+         <not>      
+            <istrue value="${shared.annotationc.tasks.needed}" />
+         </not>
+      </condition>
+   </target>
+
+   <target name="weaving:master-macrodefs" depends="weaving:define-default-copy-fileset">
       <macrodef name="weaving-copy-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="targetdir" />
@@ -638,7 +702,7 @@
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:weaving-copy-macro>
             <default-copy-fileset>
-               <fileset dir="${shared.annotated.dir}" includes="**/*.class" />
+               <fileset dir="${default-copy-fileset}" includes="**/*.class" />
             </default-copy-fileset>
             <default-unjar-fileset>
                <fileset dir="${genesis.dist}"

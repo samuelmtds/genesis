@@ -112,7 +112,18 @@
                     weaving:define-classpath-with-extensions,
                     weaving:define-standard-classpath"/>
 
-   <target name="weaving:check-conditions" depends="weaving:init">
+   <target name="weaving:define-default-copy-fileset">
+      <condition property="default-shared-copy-fileset" value="${shared.annotated.dir}">
+         <istrue value="${shared.annotationc.tasks.needed}" />
+      </condition>
+      <condition property="default-shared-copy-fileset" value="${shared.classes.dir}">
+         <not>      
+            <istrue value="${shared.annotationc.tasks.needed}" />
+         </not>
+      </condition>
+   </target>
+
+   <target name="weaving:check-conditions" depends="weaving:init,weaving:define-default-copy-fileset">
       <condition property="weaving.needed">
          <and>
             <istrue value="${needs.weaving}" />
@@ -122,7 +133,7 @@
                </not>
                <not>
                   <uptodate>
-                     <srcfiles dir="${shared.annotated.dir}" 
+                     <srcfiles dir="${default-shared-copy-fileset}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.timestamp.file}" />
                   </uptodate>
@@ -233,13 +244,19 @@
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:sar-macro>
             <additional-fileset>
-               <fileset dir="${genesis.dist}" includes="genesis-aspect-annotated-${genesis.version}.jar" />
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-annotation-jdk14-${genesis.version}.jar" />
+                  <include name="genesis-aspect-annotated-${genesis.version}.jar" />
+               </fileset>
                <fileset dir="${aspectwerkz.dist}">
                   <include name="aspectwerkz-*.jar" />
                   <include name="dom4j*.jar" />
                   <include name="jrexx*.jar" />
                   <include name="qdox*.jar" />
                   <include name="trove*.jar" />
+               </fileset>
+               <fileset dir="${backport175.dist}">
+                  <include name="backport175-*.jar" />
                </fileset>
                <zipfileset src="${jar.shared.location}" />
             </additional-fileset>

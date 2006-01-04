@@ -136,6 +136,7 @@
          <path location="${shared.classes.dir}" />
          <path refid="aspectwerkz.path" />
          <fileset dir="${genesis.dist}">
+            <include name="${genesis-annotation.jar}" />
             <include name="genesis-shared-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
          </fileset>
@@ -178,9 +179,16 @@
       <condition property="aw.tasks.needed">
          <istrue value="${client.classes.changed}" />
       </condition>
+
+      <condition property="client.annotationc.tasks.needed">
+         <and>
+            <istrue value="${client.classes.changed}" />
+            <istrue value="${needs.annotation}" />
+         </and>
+      </condition>
    </target>
 
-   <target name="client:annotations" if="client.classes.changed"
+   <target name="client:annotations" if="client.annotationc.tasks.needed"
            depends="client:check-annotations-needed,define-aw-macros">
       <genesis:annotationc srcdir="${client.sources.dir}" 
                            destdir="${client.annotated.dir}"
@@ -461,7 +469,26 @@
                     weaving:define-remote-classpath-with-extensions,
                     weaving:define-standard-remote-classpath"/>
 
-   <target name="weaving:check-conditions" depends="weaving:init">
+   <target name="weaving:define-default-copy-fileset">
+      <condition property="default-shared-copy-fileset" value="${shared.annotated.dir}">
+         <istrue value="${shared.annotationc.tasks.needed}" />
+      </condition>
+      <condition property="default-shared-copy-fileset" value="${shared.classes.dir}">
+         <not>
+            <istrue value="${shared.annotationc.tasks.needed}" />
+         </not>
+      </condition>
+      <condition property="default-client-copy-fileset" value="${client.annotated.dir}">
+         <istrue value="${client.annotationc.tasks.needed}" />
+      </condition>
+      <condition property="default-client-copy-fileset" value="${client.classes.dir}">
+         <not>  
+            <istrue value="${client.annotationc.tasks.needed}" />
+         </not>
+      </condition>
+   </target>
+
+   <target name="weaving:check-conditions" depends="weaving:init,weaving:define-default-copy-fileset">
       <condition property="weaving.local.needed">
          <and>
             <istrue value="${needs.weaving}" />
@@ -472,14 +499,14 @@
                </not>
                <not>
                   <uptodate>
-                     <srcfiles dir="${client.annotated.dir}" 
+                     <srcfiles dir="${default-client-copy-fileset}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.local.timestamp.file}" />
                   </uptodate>
                </not>
                <not>
                   <uptodate>
-                     <srcfiles dir="${shared.annotated.dir}" 
+                     <srcfiles dir="${default-shared-copy-fileset}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.local.timestamp.file}" />
                   </uptodate>
@@ -498,14 +525,14 @@
                </not>
                <not>
                   <uptodate>
-                     <srcfiles dir="${client.annotated.dir}" 
+                     <srcfiles dir="${default-client-copy-fileset}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.remote.timestamp.file}" />
                   </uptodate>
                </not>
                <not>
                   <uptodate>
-                     <srcfiles dir="${shared.annotated.dir}" 
+                     <srcfiles dir="${default-shared-copy-fileset}" 
                                includes="**/*.class" />
                      <mapper type="merge" to="${weaving.remote.timestamp.file}" />
                   </uptodate>
@@ -520,8 +547,8 @@
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:weaving-copy-macro>
             <default-copy-fileset>
-               <fileset dir="${client.annotated.dir}" includes="**/*.class" />
-               <fileset dir="${shared.annotated.dir}" includes="**/*.class" />
+               <fileset dir="${default-client-copy-fileset}" includes="**/*.class" />
+               <fileset dir="${default-shared-copy-fileset}" includes="**/*.class" />
             </default-copy-fileset>
             <default-unjar-fileset>
                <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
@@ -593,7 +620,9 @@
       <property name="debug.suspend" value="n" />
 
       <path id="run.standard.classpath">
+         <path refid="backport175.path" />
          <fileset dir="${genesis.dist}">
+            <include name="${genesis-annotation.jar}" />
             <include name="genesis-aspect-annotated-*.jar" />
             <include name="genesis-client-*.jar" />
          </fileset>
@@ -1186,6 +1215,7 @@
                   <include name="odmg-*.jar" />
                </fileset>
                <fileset dir="${genesis.dist}">
+                  <include name="genesis-annotation-jdk14-${genesis.version}.jar"/>
                   <include name="genesis-client-${genesis.version}.jar"/>
                   <include name="genesis-aspect-annotated-${genesis.version}.jar" />
                </fileset>
@@ -1203,6 +1233,9 @@
                   <include name="dom4j*.jar" />
                   <include name="jrexx-*.jar" />
                   <include name="trove*.jar" />
+               </fileset>
+               <fileset dir="${backport175.dist}">
+                  <include name="backport175-*.jar" />
                </fileset>
                <fileset file="${jdbc.driver}" />
                <fileset dir="${jboss.client}">

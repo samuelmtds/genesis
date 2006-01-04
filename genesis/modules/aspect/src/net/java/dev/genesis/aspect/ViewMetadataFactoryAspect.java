@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,15 +20,16 @@ package net.java.dev.genesis.aspect;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
+import net.java.dev.genesis.annotation.AfterAction;
+import net.java.dev.genesis.annotation.BeforeAction;
 import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
-import org.codehaus.aspectwerkz.annotation.Annotations;
-import org.codehaus.aspectwerkz.annotation.UntypedAnnotation;
 import org.codehaus.aspectwerkz.aspect.management.Mixins;
+import org.codehaus.backport175.reader.Annotation;
+import org.codehaus.backport175.reader.Annotations;
 
 public class ViewMetadataFactoryAspect {
    /**
@@ -83,28 +84,36 @@ public class ViewMetadataFactoryAspect {
       
       private void processMethodAnnotation(final ViewMetadata viewMetadata,
             Method method) {
-         UntypedAnnotation annon;
+         Annotation[] annotations = Annotations.getAnnotations(method);
+         
+         for (int i = 0; i < annotations.length; i++) {
+            if (BeforeAction.class.equals(annotations[i].annotationType())) {
+               BeforeAction annon = (BeforeAction)annotations[i];
+               final String[] actionNames = annon.value();
+               final String methodName = method.getName();
+               
+               if (actionNames == null || actionNames.length == 0) {
+                  viewMetadata.addBeforeAction(methodName, methodName);
+                  continue;
+               }
 
-         for (final Iterator it = Annotations.getAnnotations("BeforeAction",
-               method).iterator(); it.hasNext();) {
-            annon = (UntypedAnnotation)it.next();
+               for (int j = 0; j < actionNames.length; j++) {
+                  viewMetadata.addBeforeAction(actionNames[j], methodName);
+               }
+            } else if (AfterAction.class.equals(annotations[i].annotationType())) {
+               AfterAction annon = (AfterAction)annotations[i];
+               final String[] actionNames = annon.value();
+               final String methodName = method.getName();
+               
+               if (actionNames == null || actionNames.length == 0) {
+                  viewMetadata.addAfterAction(methodName, methodName);
+                  continue;
+               }
 
-            final String actionName = annon.value().toString();
-            final String methodName = method.getName();
-            viewMetadata.addBeforeAction(
-                  actionName.trim().length() == 0 ? methodName : actionName,
-                  methodName);
-         }
-
-         for (final Iterator it = Annotations.getAnnotations("AfterAction",
-               method).iterator(); it.hasNext();) {
-            annon = (UntypedAnnotation)it.next();
-
-            final String actionName = annon.value().toString();
-            final String methodName = method.getName();
-            viewMetadata.addAfterAction(
-                  actionName.trim().length() == 0 ? methodName : actionName,
-                  methodName);
+               for (int j = 0; j < actionNames.length; j++) {
+                  viewMetadata.addAfterAction(actionNames[j], methodName);
+               }
+            }
          }
       }
    }

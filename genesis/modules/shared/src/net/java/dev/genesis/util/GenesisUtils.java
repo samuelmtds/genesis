@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package net.java.dev.genesis.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -53,5 +54,22 @@ public final class GenesisUtils {
          }
       }
       return attributesMap;
+   }
+   
+   public static Map getAttributesMap(String[] values) {
+      final Map attributesMap = new HashMap(values.length);
+      for (int i = 0; i < values.length; i++) {
+         String[] value = values[i].split("\\s*=\\s*");
+        
+         if (value.length != 2) {
+            throw new IllegalArgumentException("Invalid argument: " + values[i]);
+         }
+         attributesMap.put(value[0].trim(), value[1].trim());
+      }
+      return attributesMap;
+   }
+   
+   public static boolean isBlank(String value) {
+      return value == null || value.trim().length() == 0;
    }
 }

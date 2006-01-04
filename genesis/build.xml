@@ -8,7 +8,9 @@
 	<property name="xdoclet.validatexml" value="false" />
 	<property name="build.dir" value="${genesis.build.dir}" />
 	<property name="build.dest" value="${build.dir}/classes" />
+   <property name="build5.dest" value="${build.dir}/classes5" />
 	<property name="src.dir" value="src" />
+   <property name="src5.dir" value="src-jdk5" />
    <property name="test.src.dir" value="test-src" />
 	<property name="build.src" value="${build.dir}/src" />
    <property name="build.docs" value="${build.dir}/docs" />
@@ -38,6 +40,10 @@
       </fileset>
 	</path>
 
+   <path id="backport175.path">
+      <fileset dir="${genesis.backport175.dist}" />
+   </path>
+
 	<path id="commons.path">
 		<fileset dir="${genesis.commons.dist}" includes="*.jar" />
 	</path>
@@ -55,7 +61,8 @@
 	</path>
 
 	<path id="shared.dependency.classpath">
-		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
+      <fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz-*.jar" />
+      <fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
@@ -87,6 +94,8 @@
    </path>
 
    <path id="aspect.dependency.classpath">
+      <path refid="backport175.path" />
+      <path location="${genesis.module.annotation}/${build.dest}" />
 		<path location="${genesis.module.shared}/${build.dest}" />
 		<path location="${genesis.module.client}/${build.dest}" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
@@ -102,6 +111,8 @@
    <path id="container.dependency.classpath" />
 
 	<path id="tests.dependency.classpath">
+      <path refid="backport175.path" />
+      <path location="${genesis.module.annotation}/${genesis.annotation.dest}" />
 		<path location="${genesis.module.shared}/${genesis.annotation.dest}" />
 		<path location="${genesis.module.client}/${build.dest}" />
       <path refid="script.path" />  
@@ -116,8 +127,37 @@
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
+
+   <path id="anttasks.path">
+      <path refid="backport175.path" />
+      <path refid="aspectwerkz.path" />
+      <fileset dir="${genesis.anttasks.dist}" />
+   </path>
    
-   <taskdef name="annotationc" classname="org.codehaus.aspectwerkz.annotation.AnnotationCTask" classpathref="aspectwerkz.path" />
+   <available classname="java.lang.annotation.Annotation" property="supports.annotation" />
+   
+   <condition property="needs.java5.home">
+      <and>
+         <not>
+            <isset property="supports.annotation" />
+         </not>
+         <not>
+            <isset property="genesis.java5.home" />
+         </not>
+      </and>
+   </condition>
+
+   <condition property="javac.compiler" value="${genesis.java5.home}/bin/javac">
+      <not>
+         <isset property="supports.annotation" />
+      </not>
+   </condition>
+
+   <condition property="javac.compiler" value="${java.home}/bin/javac">
+      <isset property="supports.annotation" />
+   </condition>
+
+   <taskdef name="annotationc" classname="net.java.dev.genesis.anttasks.aspectwerkz.AnnotationCTask" classpathref="anttasks.path" />
    <taskdef name="awc" classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask" classpathref="aspectwerkz.path" />
    <taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask" classpathref="xdoclet.path" />
    <taskdef name="genesisdoclet" classname="xdoclet.modules.genesis.GenesisDocletTask" classpathref="xdoclet.path" />
@@ -137,8 +177,8 @@
 	<target name="shared:annotation">
       <annotationc verbose="true"
             srcdir="${genesis.module.shared}/${src.dir}"
+            classpath="${genesis.module.shared}/${build.dest}${path.separator}${genesis.module.annotation}/${build.dest}"
             destdir="${genesis.module.shared}/${genesis.annotation.dest}"
-            classpath="${genesis.module.shared}/${build.dest}"
             properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.shared}/${build.dest}" />
@@ -228,25 +268,28 @@
 	<target name="client:annotation">
       <annotationc verbose="true"
             srcdir="${genesis.module.client}/${src.dir}"
-            destdir="${genesis.module.client}/${build.dest}"
-            classpath="${genesis.module.client}/${build.dest}"
+            classpath="${genesis.module.client}/${build.dest}${path.separator}${genesis.module.annotation}/${build.dest}"
+            destdir="${genesis.module.client}/${genesis.annotation.dest}"
             properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
 	</target>
 
 	<target name="client:resources">
-		<copy todir="${genesis.module.client}/${build.dest}" overwrite="true">
-			<fileset dir="${genesis.module.client}/${src.dir}">
-				<include name="**/*.xml" />
-				<include name="**/*.properties" />
-				<include name="**/*.sample" />
-			</fileset>
-		</copy>
+      <copy todir="${genesis.module.client}/${genesis.annotation.dest}" overwrite="false">
+         <fileset dir="${genesis.module.client}/${src.dir}">
+            <include name="**/*.xml" />
+            <include name="**/*.properties" />
+            <include name="**/*.sample" />
+         </fileset>
+         <fileset dir="${genesis.module.client}/${build.dest}">
+            <include name="**/*.class" />
+         </fileset>
+      </copy>
 	</target>
 
 	<target name="client:jar">
 		<mkdir dir="${genesis.dist.dir}" />
 		<jar destfile="${genesis.dist.dir}/genesis-client-${genesis.version}.jar">
-			<fileset dir="${genesis.module.client}/${build.dest}" />
+			<fileset dir="${genesis.module.client}/${genesis.annotation.dest}" />
 		</jar>
 	</target>
 
@@ -266,7 +309,7 @@
       <annotationc verbose="true"
             srcdir="${genesis.module.aspect}/${src.dir}"
             destdir="${genesis.module.aspect}/${genesis.annotation.dest}"
-            classpath="${genesis.module.aspect}/${build.dest}${path.separator}${genesis.module.client}/${build.dest}"
+            classpath="${genesis.module.aspect}/${build.dest}${path.separator}${genesis.module.client}/${build.dest}${path.separator}${genesis.module.annotation}/${build.dest}"
             properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.aspect}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.aspect}/${build.dest}" />
@@ -293,6 +336,50 @@
          <fileset dir="${genesis.module.aspect}/${src.dir}" includes="annotation.properties" />
       </copy>    
 	</target>
+
+   <target name="annotation:compile">
+      <mkdir dir="${genesis.module.annotation}/${build.dest}" />
+      <javac destdir="${genesis.module.annotation}/${build.dest}"
+             debug="true"
+             source="1.4">
+         <src path="${genesis.module.annotation}/${src.dir}" />
+      </javac>
+      <mkdir dir="${genesis.module.annotation}/${build5.dest}" />
+      <fail if="needs.java5.home">
+         'genesis.java5.home' not set
+      </fail>
+      <javac destdir="${genesis.module.annotation}/${build5.dest}"
+             debug="true"
+             source="1.5"
+             fork="true"
+             executable="${javac.compiler}">
+         <src path="${genesis.module.annotation}/${src5.dir}" />
+      </javac>
+      <antcall target="annotation:annotation" />
+   </target>
+
+   <target name="annotation:annotation">
+      <mkdir dir="${genesis.module.annotation}/${genesis.annotation.dest}" />
+      <annotationc verbose="true"
+            srcdir="${genesis.module.annotation}/${src.dir}"
+            destdir="${genesis.module.annotation}/${genesis.annotation.dest}"
+            properties="${genesis.module.aspect}/${src.dir}/annotation.properties">
+         <classpath>
+            <path refid="backport175.path" />
+            <path location="${genesis.module.annotation}/${build.dest}" />
+         </classpath>
+      </annotationc>
+   </target>
+
+   <target name="annotation:jar">
+      <mkdir dir="${genesis.dist.dir}" />
+      <jar destfile="${genesis.dist.dir}/genesis-annotation-jdk14-${genesis.version}.jar">
+         <fileset dir="${genesis.module.annotation}/${genesis.annotation.dest}" />
+      </jar>
+      <jar destfile="${genesis.dist.dir}/genesis-annotation-jdk5-${genesis.version}.jar">
+          <fileset dir="${genesis.module.annotation}/${build5.dest}" />
+       </jar>
+   </target>
 
 	<target name="container:compile">
 		<mkdir dir="${genesis.module.container}/${build.dest}" />
@@ -365,8 +452,14 @@
       <annotationc verbose="true"
             srcdir="${genesis.module.tests}/${src.dir}"
             destdir="${genesis.module.tests}/${genesis.annotation.dest}"
-            classpath="${genesis.module.tests}/${test.dest}"
-            properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
+            properties="${genesis.module.aspect}/${src.dir}/annotation.properties">
+         <classpath>
+            <path refid="backport175.path" />
+            <path location="${genesis.module.annotation}/${genesis.annotation.dest}" />
+            <path location="${genesis.module.client}/${build.dest}" />
+            <path location="${genesis.module.tests}/${test.dest}" />
+         </classpath>
+      </annotationc>
       <copy todir="${genesis.module.tests}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.tests}/${test.dest}" />
       </copy>  
@@ -462,12 +555,14 @@
 			             value="${basedir}/${genesis.module.tests}/${src.dir}/aspectwerkz.xml" />
 			<formatter type="xml" />
 			<classpath>
+            <path refid="backport175.path" />      
 				<path refid="aspectwerkz.path" />
 				<path refid="commons.path" />
 				<path refid="hibernate.path" />
 				<pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
 				<pathelement path="${genesis.jdbc.driver}" />
 				<path location="${genesis.module.tests}/${genesis.weaving.dest}" />
+            <path location="${genesis.module.annotation}/${genesis.annotation.dest}" />
 			</classpath>
 			<batchtest todir="${genesis.module.tests}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.tests}/${src.dir}">
@@ -578,6 +673,7 @@
 	<target name="genesis:clean" description="Clean generated files">
 		<delete dir="${genesis.dist.dir}" />
 		<delete dir="${genesis.module.aspect}/${build.dir}" />
+      <delete dir="${genesis.module.annotation}/${build.dir}" />  
 		<delete dir="${genesis.module.container}/${build.dir}" />
 		<delete dir="${genesis.module.client}/${build.dir}" />
 		<delete dir="${genesis.module.server}/${build.dir}" />
@@ -596,11 +692,11 @@
 
 	<target name="genesis:compile"
 	        description="Compiles all modules"
-	        depends="genesis:clean,container:compile,shared:compile,server:compile,client:compile,aspect:compile" />
+	        depends="genesis:clean,annotation:compile,container:compile,shared:compile,server:compile,client:compile,aspect:compile" />
 
 	<target name="genesis:jar"
 	        description="Makes distribution jars"
-	        depends="genesis:compile,container:jar,shared:jar,server:jar,client:jar,aspect:jar" />
+	        depends="genesis:compile,annotation:jar,container:jar,shared:jar,server:jar,client:jar,aspect:jar" />
 
 	<target name="genesis:test:compile"
 	        description="Compiles all tests"

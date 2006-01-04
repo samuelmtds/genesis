@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -368,7 +368,7 @@ public class ValidatorTest extends TestCase {
       valueTest(map, methodName, field, action, true);
 
       map.put(field.getProperty(), "jsmith@apache.infoo");
-      valueTest(map, methodName, field, action, false);
+      valueTest(map, methodName, field, action, true);
 
       map.put(field.getProperty(), "jsmith@apache.");
       valueTest(map, methodName, field, action, false);
