@@ -8,3 +8,7 @@
 # default maven.username is defined in project.properties
 # Override only if necessary
 #maven.username=guest
+
+# Java 5 home
+# Needed only if your main JVM is not a Java 5 installation
+#genesis.java5.home=C:/java5
