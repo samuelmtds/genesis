@@ -7,6 +7,10 @@
             <suite-component/>
             <module-dependencies/>
             <class-path-extension>
+                <runtime-relative-path>ext/genesis/genesis-annotation-jdk14-3.0-EA3-dev.jar</runtime-relative-path>
+                <binary-origin>../../../genesis/dist/genesis-annotation-jdk14-3.0-EA3-dev.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
                 <runtime-relative-path>ext/genesis/genesis-aspect-annotated-3.0-EA3-dev.jar</runtime-relative-path>
                 <binary-origin>../../../genesis/dist/genesis-aspect-annotated-3.0-EA3-dev.jar</binary-origin>
             </class-path-extension>
@@ -23,6 +27,7 @@
                 <binary-origin>../../../genesis/dist/genesis-shared-annotated-3.0-EA3-dev.jar</binary-origin>
             </class-path-extension>
             <public-packages>
+                <package>net.java.dev.genesis.annotation</package>
                 <package>net.java.dev.genesis.aspect</package>
                 <package>net.java.dev.genesis.cloning</package>
                 <package>net.java.dev.genesis.command</package>

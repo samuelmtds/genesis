@@ -6,20 +6,15 @@
     <description>Builds, tests, and runs the project net.java.dev.genesis.plugins.netbeans.jars.</description>
     <import file="nbproject/build-impl.xml"/>
 
-    <target name="-release.files" depends="-release.dir" if="has.release.dir">
-       <copy todir="${release.dir}/modules/ext/genesis">
+    <target name="netbeans-extra">
+       <copy todir="${cluster}/modules/ext/genesis">
           <fileset dir="../../../genesis/dist">
+             <include name="genesis-annotation-jdk14-*.jar" />
              <include name="genesis-aspect-annotated-*.jar" />
              <include name="genesis-client-*.jar" />
              <include name="genesis-server-*.jar" />
              <include name="genesis-shared-annotated-*.jar" />
           </fileset>
        </copy>
-        <pathconvert pathsep="," property="release.files">
-            <path>
-                <fileset dir="${release.dir}"/>
-            </path>
-            <map from="${release.dir}${file.separator}" to=""/>
-        </pathconvert>
     </target>
 </project>
