@@ -50,7 +50,8 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
    private class GenesisLogicalProviderRootNode extends AbstractNode {
       public GenesisLogicalProviderRootNode() {
          super(new GenesisLogicalProviderChildren(), Lookups.singleton(project));
-         super.setName(ProjectUtils.getInformation(project).getDisplayName());
+         setName(ProjectUtils.getInformation(project).getDisplayName());
+         setShortDescription(project.getProjectDirectory().getPath());
       }
 
       public Action[] getActions(boolean b) {
