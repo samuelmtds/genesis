@@ -7,6 +7,11 @@
             <suite-component/>
             <module-dependencies>
                 <dependency>
+                    <code-name-base>net.java.dev.genesis.plugin.netbeans.depjars</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                </dependency>
+                <dependency>
                     <code-name-base>org.apache.tools.ant.module</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>

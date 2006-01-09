@@ -8,6 +8,7 @@ import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.AuxiliaryConfiguration;
 import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.PropertyEvaluator;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
@@ -22,12 +23,12 @@ public class GenesisProject implements Project {
       private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
       public String getName() {
-         return helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH)
+         return getHelper().getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH)
                .getProperty(APPLICATION_NAME_PROPERTY);
       }
 
       public String getDisplayName() {
-         return helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH)
+         return getHelper().getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH)
                .getProperty(APPLICATION_DISPLAY_NAME_PROPERTY);
       }
 
@@ -49,17 +50,27 @@ public class GenesisProject implements Project {
    }
 
    private final AntProjectHelper helper;
+   private final PropertyEvaluator evaluator;
    private final AuxiliaryConfiguration auxiliaryConfiguration;
    private final Lookup lookup;
 
    GenesisProject(final AntProjectHelper helper) {
       this.helper = helper;
+      evaluator = helper.getStandardPropertyEvaluator();
       auxiliaryConfiguration = helper.createAuxiliaryConfiguration();
       lookup = createLookup();
    }
 
+   public AntProjectHelper getHelper() {
+      return helper;
+   }
+
+   public PropertyEvaluator getEvaluator() {
+      return evaluator;
+   }
+
    public FileObject getProjectDirectory() {
-      return helper.getProjectDirectory();
+      return getHelper().getProjectDirectory();
    }
 
    public Lookup getLookup() {
@@ -70,9 +81,10 @@ public class GenesisProject implements Project {
       return Lookups.fixed(new Object[] {this,
          new GenesisProjectInformation(),
          auxiliaryConfiguration,
-         helper.createCacheDirectoryProvider(),
+         getHelper().createCacheDirectoryProvider(),
          new GenesisActionProvider(this),
-         new GenesisLogicalViewProvider(this)
+         new GenesisLogicalViewProvider(this),
+         new GenesisSources(this)
          });
    }
 }

@@ -7,7 +7,7 @@
             <suite-component/>
             <module-dependencies/>
             <class-path-extension>
-                <runtime-relative-path>modules/ext/genesis-deps/commons/reusable-components-20040406.jar</runtime-relative-path>
+                <runtime-relative-path>ext/genesis-deps/commons/reusable-components-20040406.jar</runtime-relative-path>
                 <binary-origin>../../../genesis/lib/commons/reusable-components-20040406.jar</binary-origin>
             </class-path-extension>
             <public-packages>

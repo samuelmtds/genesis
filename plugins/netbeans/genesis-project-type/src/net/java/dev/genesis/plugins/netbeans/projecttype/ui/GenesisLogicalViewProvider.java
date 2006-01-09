@@ -11,6 +11,8 @@ import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectUtils;
+import org.netbeans.api.project.SourceGroup;
+import org.netbeans.api.project.Sources;
 import org.netbeans.spi.java.project.support.ui.PackageView;
 import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
@@ -38,12 +40,26 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
 
    private class GenesisLogicalProviderChildren extends Children.Array {
       protected void addNotify() {
+         Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+         SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.
+               SOURCES_TYPE_JAVA);
+         Node[] nodes = new Node[groups.length];
+
+         for (int i = 0; i < groups.length; i++) {
+            nodes[i] = PackageView.createPackageView(groups[i]);
+         }
+
+         System.out.println(nodes.length);
+         add(nodes);
+
+/*         
          try {
             add(new Node[] {DataObject.find(project.getProjectDirectory())
                   .getNodeDelegate()});
          } catch (DataObjectNotFoundException ex) {
             ErrorManager.getDefault().notify(ErrorManager.ERROR, ex);
          }
+ */
       }
    }
 
