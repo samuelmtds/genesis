@@ -49,17 +49,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
             nodes[i] = PackageView.createPackageView(groups[i]);
          }
 
-         System.out.println(nodes.length);
          add(nodes);
-
-/*         
-         try {
-            add(new Node[] {DataObject.find(project.getProjectDirectory())
-                  .getNodeDelegate()});
-         } catch (DataObjectNotFoundException ex) {
-            ErrorManager.getDefault().notify(ErrorManager.ERROR, ex);
-         }
- */
       }
    }
 
