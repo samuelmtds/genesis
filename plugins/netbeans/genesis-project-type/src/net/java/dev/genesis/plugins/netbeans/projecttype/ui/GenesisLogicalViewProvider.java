@@ -51,6 +51,8 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
       public GenesisLogicalProviderRootNode() {
          super(new GenesisLogicalProviderChildren(), Lookups.singleton(project));
          setName(ProjectUtils.getInformation(project).getDisplayName());
+         setIconBaseWithExtension("net/java/dev/genesis/plugins/netbeans/" +
+               "projecttype/ui/resources/project_icon.gif");
          setShortDescription(project.getProjectDirectory().getPath());
       }
 
