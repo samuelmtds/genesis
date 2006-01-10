@@ -36,20 +36,9 @@ public class GenesisActionProvider implements ActionProvider {
       return supportedActions;
    }
 
-   public void invokeAction(String string, Lookup lookup) 
+   public void invokeAction(String key, Lookup lookup) 
          throws IllegalArgumentException {
-      FileObject buildFile = getBuildFile(true);
-
-      if (buildFile == null) {
-         return;
-      }
-
-      try {
-         ActionUtils.runTarget(buildFile, 
-               (String[])targetNamesByActionString.get(string), null);
-      } catch (IOException e) {
-         ErrorManager.getDefault().notify(e);
-      }
+      Utils.invokeAction(project, (String[])targetNamesByActionString.get(key));
    }
 
    public boolean isActionEnabled(String key, Lookup lookup) 
@@ -58,24 +47,6 @@ public class GenesisActionProvider implements ActionProvider {
          return false;
       }
 
-      return getBuildFile(false) != null;
-   }
-
-   private FileObject getBuildFile(boolean showMessages) {
-      FileObject build = project.getProjectDirectory().getFileObject(
-            GeneratedFilesHelper.BUILD_XML_PATH);
-
-      if (build == null || !build.isValid()) {
-         if (showMessages) {
-            NotifyDescriptor nd = new NotifyDescriptor.Message(
-                  NbBundle.getMessage(GenesisActionProvider.class,
-                  "LBL_No_Build_XML_Found"), NotifyDescriptor.WARNING_MESSAGE);
-            DialogDisplayer.getDefault().notify(nd);
-         }
-         
-         return null;
-      }
-
-      return build;
+      return Utils.getBuildFile(project, false) != null;
    }
 }

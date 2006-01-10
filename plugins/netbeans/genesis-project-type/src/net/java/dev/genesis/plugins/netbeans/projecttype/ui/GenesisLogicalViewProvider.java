@@ -1,16 +1,20 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JSeparator;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
+import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
+import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
@@ -42,6 +46,8 @@ import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.lookup.Lookups;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class GenesisLogicalViewProvider implements LogicalViewProvider {
    private final GenesisProject project;
@@ -72,6 +78,14 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          actions.add(ProjectSensitiveActions.projectCommandAction(
                ActionProvider.COMMAND_CLEAN, bundle.getString(
                "LBL_CleanAction_Name"), null));
+
+         Collection antActions = getAntActions();
+
+         if (!antActions.isEmpty()) {
+            actions.add(null);
+            actions.addAll(antActions);
+         }
+
          actions.add(null);
          actions.add(ProjectSensitiveActions.projectCommandAction(
                ActionProvider.COMMAND_RUN, bundle.getString(
@@ -118,6 +132,87 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          actions.add(CommonProjectActions.customizeProjectAction());
          
          return (Action[])actions.toArray(new Action[actions.size()]);
+      }
+
+      private List getAntActions() {
+         final List actions = new ArrayList();
+         Element data = project.getHelper().getPrimaryConfigurationData(true);
+         NodeList nl = data.getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "view");
+
+         if (nl.getLength() != 1) {
+            return actions;
+         }
+
+         nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "context-menu");
+
+         if (nl.getLength() != 1) {
+            return actions;
+         }
+
+         nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "action");
+
+         for (int i = 0; i < nl.getLength(); i++) {
+            NodeList labelNodes = ((Element)nl.item(0)).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "label");
+
+            if (labelNodes.getLength() != 1) {
+               continue;
+            }
+
+            String label = labelNodes.item(0).getChildNodes().item(0)
+                  .getNodeValue();
+
+            NodeList targetNodes = ((Element)nl.item(0)).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "target");
+
+            if (targetNodes.getLength() == 0) {
+               continue;
+            }
+
+            Collection targets = new ArrayList(targetNodes.getLength());
+
+            for (int j = 0; j < targetNodes.getLength(); j++) {
+               targets.add(targetNodes.item(j).getChildNodes().item(0)
+                  .getNodeValue());
+            }
+
+            actions.add(new CustomAntAction(project, label, 
+                  (String[])targets.toArray(new String[targets.size()])));
+         }
+
+         return actions;
+      }
+   }
+
+   private static class CustomAntAction extends AbstractAction {
+      private final GenesisProject project;
+      private final String displayName;
+      private final String[] targets;
+
+      public CustomAntAction(final GenesisProject project, 
+            final String displayName, final String[] targets) {
+         this.project = project;
+         this.displayName = displayName;
+         this.targets = targets;
+      }
+
+      public void actionPerformed(ActionEvent e) {
+         Utils.invokeAction(project, targets);
+      }
+
+      public Object getValue(String key) {
+         if (Action.NAME.equals(key)) {
+            return displayName;
+         }
+
+         return super.getValue(key);
+      }
+
+      public boolean isEnabled() {
+         return Utils.getBuildFile(project, false) != null;
       }
    }
 
