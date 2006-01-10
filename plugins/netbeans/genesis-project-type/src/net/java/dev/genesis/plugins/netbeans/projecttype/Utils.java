@@ -31,6 +31,8 @@ import org.openide.util.NbBundle;
 public class Utils {
    public static final String ICON_PATH = "net/java/dev/genesis/plugins/" +
          "netbeans/projecttype/ui/resources/project_icon.gif";
+   public static String RUN_LOCAL_TARGET = "run:local";
+   public static String RUN_REMOTE_TARGET = "run:remote";
 
    private Utils() {
    }
@@ -65,5 +67,17 @@ public class Utils {
       } catch (IOException e) {
          ErrorManager.getDefault().notify(e);
       }
+   }
+
+   public static GenesisProjectExecutionMode getExecutionMode(
+         GenesisProject project) {
+      boolean local = "true".equals(project.getEvaluator().getProperty(
+            "local.mode"));
+      boolean remote = !"false".equals(project.getEvaluator().getProperty(
+            "remote.mode"));
+
+      return local ? (remote ? GenesisProjectExecutionMode.LOCAL_AND_REMOTE :
+            GenesisProjectExecutionMode.LOCAL_MODE_ONLY) : 
+            GenesisProjectExecutionMode.REMOTE_MODE_ONLY;
    }
 }

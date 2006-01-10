@@ -30,6 +30,7 @@ import javax.swing.JSeparator;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
+import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectExecutionMode;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
 import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
@@ -104,10 +105,9 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          }
 
          actions.add(null);
-         actions.add(ProjectSensitiveActions.projectCommandAction(
-               ActionProvider.COMMAND_RUN, bundle.getString(
-               "LBL_RunAction_Name"), null));
+         addRunActions(actions, bundle);
          actions.add(null);
+
          actions.add(CommonProjectActions.setAsMainProjectAction());
          actions.add(CommonProjectActions.closeProjectAction());
          actions.add(null);
@@ -201,6 +201,24 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          }
 
          return actions;
+      }
+
+      private void addRunActions(final List actions, final ResourceBundle bundle) {
+         GenesisProjectExecutionMode executionMode = 
+               Utils.getExecutionMode(project);
+
+         if (executionMode != GenesisProjectExecutionMode.LOCAL_AND_REMOTE) {
+            actions.add(ProjectSensitiveActions.projectCommandAction(
+                  ActionProvider.COMMAND_RUN, bundle.getString(
+                  "LBL_RunAction_Name"), null));
+         } else {
+            actions.add(new CustomAntAction(project, bundle.getString(
+                  "LBL_RunLocalAction_Name"), new String[] {
+                  Utils.RUN_LOCAL_TARGET}));
+            actions.add(new CustomAntAction(project, bundle.getString(
+                  "LBL_RunRemoteAction_Name"), new String[] {
+                  Utils.RUN_REMOTE_TARGET}));
+         }
       }
    }
 

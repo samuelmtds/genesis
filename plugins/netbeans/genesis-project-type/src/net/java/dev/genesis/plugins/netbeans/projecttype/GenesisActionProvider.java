@@ -47,7 +47,10 @@ public class GenesisActionProvider implements ActionProvider {
       targetNamesByActionString.put(COMMAND_CLEAN, new String [] {"clean"});
       targetNamesByActionString.put(COMMAND_REBUILD, new String [] 
             {"clean-build"});
-      targetNamesByActionString.put(COMMAND_RUN, new String [] {"run:local"});
+      targetNamesByActionString.put(COMMAND_RUN, new String [] {
+            Utils.getExecutionMode(project) == 
+            GenesisProjectExecutionMode.LOCAL_MODE_ONLY ? 
+            Utils.RUN_LOCAL_TARGET : Utils.RUN_REMOTE_TARGET});
    }
    
    public String[] getSupportedActions() {
