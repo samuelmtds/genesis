@@ -25,19 +25,9 @@ public class GenesisSources implements Sources {
 
    public GenesisSources(final GenesisProject project) {
       this.project = project;
-
-      try {
-         ProjectManager.mutex().readAccess(new Mutex.ExceptionAction() {
-            public Object run() {
-               return buildSources();
-            }
-         });
-      } catch (MutexException ex) {
-         ErrorManager.getDefault().notify(ex);
-      }
    }
 
-   private Object buildSources() {
+   private Sources buildSources() {
       final SourcesHelper helper = new SourcesHelper(project.getHelper(),
             project.getEvaluator());
       GenesisProjectKind kind = determineKind();
@@ -72,9 +62,8 @@ public class GenesisSources implements Sources {
       }
 
       addCustomSourceFolders(helper);
-      sources = helper.createSources();
 
-      return null;
+      return helper.createSources();
    }
 
    private GenesisProjectKind determineKind() throws DOMException {
@@ -180,8 +169,18 @@ public class GenesisSources implements Sources {
       }
    }
 
-   public SourceGroup[] getSourceGroups(String type) {
-      return sources.getSourceGroups(type);
+   public SourceGroup[] getSourceGroups(final String type) {
+      return (SourceGroup[])ProjectManager.mutex().readAccess(new Mutex.Action() {
+         public Object run() {
+            synchronized (GenesisSources.this) {
+               if (sources == null) {
+                  sources = buildSources();
+               }
+
+               return sources.getSourceGroups(type);
+            }
+         }
+      });
    }
 
    public void addChangeListener(ChangeListener changeListener) {
