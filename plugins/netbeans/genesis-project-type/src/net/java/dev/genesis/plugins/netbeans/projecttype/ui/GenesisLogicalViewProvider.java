@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JSeparator;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
 import org.netbeans.api.java.project.JavaProjectConstants;
@@ -15,6 +17,7 @@ import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectUtils;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
+import org.netbeans.api.queries.VisibilityQuery;
 import org.netbeans.spi.java.project.support.ui.PackageView;
 import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
@@ -25,6 +28,8 @@ import org.openide.actions.FindAction;
 import org.openide.actions.ToolsAction;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.Repository;
+import org.openide.loaders.ChangeableDataFilter;
+import org.openide.loaders.DataFilter;
 import org.openide.loaders.DataFolder;
 import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectNotFoundException;
@@ -40,39 +45,6 @@ import org.openide.util.lookup.Lookups;
 
 public class GenesisLogicalViewProvider implements LogicalViewProvider {
    private final GenesisProject project;
-
-   private class GenesisLogicalProviderChildren extends Children.Array {
-      protected Collection initCollection() {
-         Collection nodes = new ArrayList();
-         Sources sources = (Sources)project.getLookup().lookup(Sources.class);
-
-         SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.
-               SOURCES_TYPE_JAVA);
-
-         for (int i = 0; i < groups.length; i++) {
-            nodes.add(PackageView.createPackageView(groups[i]));
-         }
-
-         groups = sources.getSourceGroups(GenesisSources.SOURCES_TYPE_FOLDER);
-
-         for (int i = 0; i < groups.length; i++) {
-            try {
-               final String displayName = groups[i].getDisplayName();
-
-               nodes.add(new FilterNode(DataObject.find(groups[i].getRootFolder())
-                     .getNodeDelegate()) {
-                  public String getDisplayName() {
-                     return displayName;
-                  }
-               });
-            } catch (DataObjectNotFoundException ex) {
-               ErrorManager.getDefault().notify(ex);
-            }
-         }
-
-         return nodes;
-      }
-   }
 
    private class GenesisLogicalProviderRootNode extends AbstractNode {
       public GenesisLogicalProviderRootNode() {
@@ -146,6 +118,82 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          actions.add(CommonProjectActions.customizeProjectAction());
          
          return (Action[])actions.toArray(new Action[actions.size()]);
+      }
+   }
+
+   private class GenesisLogicalProviderChildren extends Children.Array {
+      protected Collection initCollection() {
+         Collection nodes = new ArrayList();
+         Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+
+         SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.
+               SOURCES_TYPE_JAVA);
+
+         for (int i = 0; i < groups.length; i++) {
+            nodes.add(PackageView.createPackageView(groups[i]));
+         }
+
+         groups = sources.getSourceGroups(GenesisSources.SOURCES_TYPE_FOLDER);
+
+         for (int i = 0; i < groups.length; i++) {
+            try {
+               nodes.add(new TreeNode(((DataFolder)DataObject.find(groups[i]
+                     .getRootFolder())), groups[i].getDisplayName()));
+            } catch (DataObjectNotFoundException ex) {
+               ErrorManager.getDefault().notify(ex);
+            }
+         }
+
+         return nodes;
+      }
+   }
+
+   private static final class TreeNode extends FilterNode {
+      private static final DataFilter filter = new VisibilityQueryDataFilter();
+      private final String displayName;
+
+      public TreeNode(final DataFolder folder, final String displayName) {
+         super(folder.getNodeDelegate(), folder.createNodeChildren(filter));
+         this.displayName = displayName;
+      }
+
+      public String getDisplayName() {
+         return displayName;
+      }
+   }
+    
+   private static final class VisibilityQueryDataFilter 
+         implements ChangeListener, ChangeableDataFilter {
+      private final Collection listeners = new ArrayList();
+      
+      public VisibilityQueryDataFilter() {
+         VisibilityQuery.getDefault().addChangeListener(this);
+      }
+      
+      public boolean acceptDataObject(DataObject dataObject) {
+         return VisibilityQuery.getDefault().isVisible(
+               dataObject.getPrimaryFile());
+      }
+      
+      public void stateChanged(ChangeEvent e) {
+         if (listeners.isEmpty()) {
+            return;
+         }
+
+         ChangeEvent event = new ChangeEvent(this);
+
+         for (Iterator i = listeners.iterator(); i.hasNext();) {
+            ChangeListener listener = (ChangeListener)i.next();
+            listener.stateChanged(event);
+         }
+      }
+      
+      public void addChangeListener(ChangeListener listener) {
+         listeners.add(listener);
+      }
+      
+      public void removeChangeListener(ChangeListener listener) {
+         listeners.remove(listener );
       }
    }
 
