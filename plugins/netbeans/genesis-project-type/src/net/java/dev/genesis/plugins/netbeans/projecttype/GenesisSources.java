@@ -1,6 +1,5 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
-import java.util.MissingResourceException;
 import javax.swing.event.ChangeListener;
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.netbeans.api.java.project.JavaProjectConstants;
@@ -19,6 +18,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public class GenesisSources implements Sources {
+   public static final String SOURCES_TYPE_FOLDER = "genesis:folder";
+
    private final GenesisProject project;
    private Sources sources;
 
@@ -51,7 +52,7 @@ public class GenesisSources implements Sources {
                "${basedir}/modules/web/src");
       }
 
-      if (!Boolean.FALSE.equals(project.getEvaluator().getProperty(
+      if (!"false".equals(project.getEvaluator().getProperty(
             "has.shared.sources"))) {
          String sharedSourcesDir = project.getEvaluator().getProperty(
                "shared.sources.dir");
@@ -70,6 +71,7 @@ public class GenesisSources implements Sources {
                null, null);
       }
 
+      addCustomSourceFolders(helper);
       sources = helper.createSources();
 
       return null;
@@ -97,7 +99,7 @@ public class GenesisSources implements Sources {
    private void addClientSourcesDir(final String displayNameKey, 
          final String sourcesType, final SourcesHelper helper, 
          final String defaultClientSourcesDir) {
-      if (!Boolean.FALSE.equals(project.getEvaluator().getProperty(
+      if (!"false".equals(project.getEvaluator().getProperty(
             "has.client.sources"))) {
          String clientSourcesDir = project.getEvaluator().getProperty(
                "client.sources.dir");
@@ -115,6 +117,69 @@ public class GenesisSources implements Sources {
       }
    }
 
+   private void addCustomSourceFolders(SourcesHelper helper) {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "view");
+
+      if (nl.getLength() != 1) {
+         return;
+      }
+      
+      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "items");
+
+      if (nl.getLength() != 1) {
+         return;
+      }
+
+      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-folder");
+
+      for (int i = 0; i < nl.getLength(); i++) {
+         Node node = nl.item(i);
+         Node styleNode = node.getAttributes().getNamedItem("style");
+         String type = SOURCES_TYPE_FOLDER;
+
+         if (styleNode == null || "packages".equals(styleNode.getNodeValue())) {
+            type = JavaProjectConstants.SOURCES_TYPE_JAVA;
+         }
+
+         nl = ((Element)node).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "label");
+
+         if (nl.getLength() != 1) {
+            continue;
+         }
+
+         nl = nl.item(0).getChildNodes();
+
+         if (nl.getLength() != 1) {
+            continue;
+         }
+
+         String displayName = nl.item(0).getNodeValue();
+
+         nl = ((Element)node).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "location");
+
+         if (nl.getLength() != 1) {
+            continue;
+         }
+
+         nl = nl.item(0).getChildNodes();
+
+         if (nl.getLength() != 1) {
+            continue;
+         }
+
+         String location = nl.item(0).getNodeValue();
+
+         helper.addPrincipalSourceRoot(location, displayName, null, null);
+         helper.addTypedSourceRoot(location, type, displayName, null, null);
+      }
+   }
+
    public SourceGroup[] getSourceGroups(String type) {
       return sources.getSourceGroups(type);
    }
@@ -126,4 +191,5 @@ public class GenesisSources implements Sources {
    public void removeChangeListener(ChangeListener changeListener) {
       //TODO:
    }
+
 }

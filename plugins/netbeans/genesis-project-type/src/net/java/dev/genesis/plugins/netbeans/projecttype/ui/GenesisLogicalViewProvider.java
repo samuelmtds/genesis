@@ -1,12 +1,14 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JSeparator;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
+import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
@@ -29,6 +31,7 @@ import org.openide.loaders.DataObjectNotFoundException;
 import org.openide.loaders.FolderLookup;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
@@ -39,17 +42,35 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
    private final GenesisProject project;
 
    private class GenesisLogicalProviderChildren extends Children.Array {
-      protected void addNotify() {
+      protected Collection initCollection() {
+         Collection nodes = new ArrayList();
          Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+
          SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.
                SOURCES_TYPE_JAVA);
-         Node[] nodes = new Node[groups.length];
 
          for (int i = 0; i < groups.length; i++) {
-            nodes[i] = PackageView.createPackageView(groups[i]);
+            nodes.add(PackageView.createPackageView(groups[i]));
          }
 
-         add(nodes);
+         groups = sources.getSourceGroups(GenesisSources.SOURCES_TYPE_FOLDER);
+
+         for (int i = 0; i < groups.length; i++) {
+            try {
+               final String displayName = groups[i].getDisplayName();
+
+               nodes.add(new FilterNode(DataObject.find(groups[i].getRootFolder())
+                     .getNodeDelegate()) {
+                  public String getDisplayName() {
+                     return displayName;
+                  }
+               });
+            } catch (DataObjectNotFoundException ex) {
+               ErrorManager.getDefault().notify(ex);
+            }
+         }
+
+         return nodes;
       }
    }
 
