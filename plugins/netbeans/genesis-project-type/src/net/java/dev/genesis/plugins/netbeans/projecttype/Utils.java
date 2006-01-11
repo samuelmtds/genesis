@@ -33,6 +33,8 @@ public class Utils {
          "netbeans/projecttype/ui/resources/project_icon.gif";
    public static String RUN_LOCAL_TARGET = "run:local";
    public static String RUN_REMOTE_TARGET = "run:remote";
+   public static String WEBSTART_TARGET = "all.with.webstart";
+   public static String CLEAN_WEBSTART_TARGET = "clean-webstart";
 
    private Utils() {
    }
@@ -79,5 +81,13 @@ public class Utils {
       return local ? (remote ? GenesisProjectExecutionMode.LOCAL_AND_REMOTE :
             GenesisProjectExecutionMode.LOCAL_MODE_ONLY) : 
             GenesisProjectExecutionMode.REMOTE_MODE_ONLY;
+   }
+
+   public static boolean usesWebstart(GenesisProject project) {
+      String needsWebstart = project.getEvaluator().getProperty("needs.webstart");
+
+      return (needsWebstart != null) ? "true".equals(needsWebstart) :
+            getExecutionMode(project) != 
+            GenesisProjectExecutionMode.LOCAL_MODE_ONLY;
    }
 }

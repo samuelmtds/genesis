@@ -105,9 +105,11 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          }
 
          actions.add(null);
-         addRunActions(actions, bundle);
-         actions.add(null);
 
+         addRunActions(actions, bundle);
+         addWebstartActions(actions, bundle);
+
+         actions.add(null);
          actions.add(CommonProjectActions.setAsMainProjectAction());
          actions.add(CommonProjectActions.closeProjectAction());
          actions.add(null);
@@ -219,6 +221,20 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                   "LBL_RunRemoteAction_Name"), new String[] {
                   Utils.RUN_REMOTE_TARGET}));
          }
+      }
+
+      private void addWebstartActions(List actions, ResourceBundle bundle) {
+         if (!Utils.usesWebstart(project)) {
+            return;
+         }
+
+         actions.add(null);
+         actions.add(new CustomAntAction(project, bundle.getString(
+                  "LBL_BuildWebstartAction_Name"), new String[] {
+                  Utils.WEBSTART_TARGET}));
+         actions.add(new CustomAntAction(project, bundle.getString(
+                  "LBL_CleanBuildWebstartAction_Name"), new String[] {
+                  Utils.CLEAN_WEBSTART_TARGET}));
       }
    }
 
