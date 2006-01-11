@@ -18,16 +18,19 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
+import org.netbeans.spi.project.support.ant.AntProjectEvent;
+import org.netbeans.spi.project.support.ant.AntProjectListener;
 import org.netbeans.spi.project.support.ant.SourcesHelper;
-import org.openide.ErrorManager;
 import org.openide.util.Mutex;
-import org.openide.util.MutexException;
 import org.openide.util.NbBundle;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -35,14 +38,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-public class GenesisSources implements Sources {
+public class GenesisSources implements Sources, AntProjectListener {
    public static final String SOURCES_TYPE_FOLDER = "genesis:folder";
 
    private final GenesisProject project;
+   private final Collection listeners = new ArrayList();
    private Sources sources;
 
    public GenesisSources(final GenesisProject project) {
       this.project = project;
+      project.getHelper().addAntProjectListener(this);
    }
 
    private Sources buildSources() {
@@ -152,35 +157,35 @@ public class GenesisSources implements Sources {
             type = JavaProjectConstants.SOURCES_TYPE_JAVA;
          }
 
-         nl = ((Element)node).getElementsByTagNameNS(
+         NodeList subnodes = ((Element)node).getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "label");
 
-         if (nl.getLength() != 1) {
+         if (subnodes.getLength() != 1) {
             continue;
          }
 
-         nl = nl.item(0).getChildNodes();
+         subnodes = subnodes.item(0).getChildNodes();
 
-         if (nl.getLength() != 1) {
+         if (subnodes.getLength() != 1) {
             continue;
          }
 
-         String displayName = nl.item(0).getNodeValue();
+         String displayName = subnodes.item(0).getNodeValue();
 
-         nl = ((Element)node).getElementsByTagNameNS(
+         subnodes = ((Element)node).getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "location");
 
-         if (nl.getLength() != 1) {
+         if (subnodes.getLength() != 1) {
             continue;
          }
 
-         nl = nl.item(0).getChildNodes();
+         subnodes = subnodes.item(0).getChildNodes();
 
-         if (nl.getLength() != 1) {
+         if (subnodes.getLength() != 1) {
             continue;
          }
 
-         String location = nl.item(0).getNodeValue();
+         String location = subnodes.item(0).getNodeValue();
 
          helper.addPrincipalSourceRoot(location, displayName, null, null);
          helper.addTypedSourceRoot(location, type, displayName, null, null);
@@ -201,12 +206,44 @@ public class GenesisSources implements Sources {
       });
    }
 
-   public void addChangeListener(ChangeListener changeListener) {
-      //TODO:
+   public void addChangeListener(ChangeListener listener) {
+      synchronized (listeners) {
+         listeners.add(listener);
+      }
    }
 
-   public void removeChangeListener(ChangeListener changeListener) {
-      //TODO:
+   public void removeChangeListener(ChangeListener listener) {
+      synchronized (listeners) {
+         listeners.remove(listener);
+      }
    }
 
+   private void fireChanges() {
+      ChangeListener[] listeners;
+
+      synchronized (this.listeners) {
+         sources = null;
+
+         if (this.listeners.isEmpty()) {
+            return;
+         }
+
+         listeners = (ChangeListener[])this.listeners.toArray(
+               new ChangeListener[this.listeners.size()]);
+      }
+
+      ChangeEvent event = new ChangeEvent(this);
+
+      for (int i = 0; i < listeners.length; i++) {
+         listeners[i].stateChanged(event);
+      }
+   }
+   
+   public void configurationXmlChanged(AntProjectEvent event) {
+      fireChanges();
+   }
+
+   public void propertiesChanged(AntProjectEvent event) {
+      fireChanges();
+   }
 }

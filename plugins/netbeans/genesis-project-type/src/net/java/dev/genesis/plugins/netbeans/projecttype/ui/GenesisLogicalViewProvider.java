@@ -194,7 +194,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "action");
 
          for (int i = 0; i < nl.getLength(); i++) {
-            NodeList labelNodes = ((Element)nl.item(0)).getElementsByTagNameNS(
+            NodeList labelNodes = ((Element)nl.item(i)).getElementsByTagNameNS(
                GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "label");
 
             if (labelNodes.getLength() != 1) {
@@ -288,8 +288,25 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
    }
 
    private class GenesisLogicalProviderChildren extends Children.Array {
+      private final Collection nodes = new ArrayList();
+
+      public GenesisLogicalProviderChildren() {
+         ((Sources)project.getLookup().lookup(Sources.class)).addChangeListener(
+               new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+               nodes.clear();
+               createNodes();
+               refresh();
+            }
+         });
+      }
+
       protected Collection initCollection() {
-         Collection nodes = new ArrayList();
+         createNodes();
+         return nodes;
+      }
+
+      private void createNodes() {
          Sources sources = (Sources)project.getLookup().lookup(Sources.class);
 
          SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.
@@ -309,8 +326,6 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                ErrorManager.getDefault().notify(ex);
             }
          }
-
-         return nodes;
       }
    }
 
