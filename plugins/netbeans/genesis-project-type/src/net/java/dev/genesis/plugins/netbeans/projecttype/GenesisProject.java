@@ -21,15 +21,21 @@ package net.java.dev.genesis.plugins.netbeans.projecttype;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisLogicalViewProvider;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
+import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.project.AuxiliaryConfiguration;
 import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
+import org.netbeans.spi.project.support.ant.ProjectXmlSavedHook;
 import org.netbeans.spi.project.support.ant.PropertyEvaluator;
+import org.netbeans.spi.project.ui.ProjectOpenedHook;
+import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Lookup;
 import org.openide.util.Utilities;
@@ -86,15 +92,41 @@ public class GenesisProject implements Project {
       }
    }
 
+   private final class GenesisProjectXmlSavedHook extends ProjectXmlSavedHook {
+      protected void projectXmlSaved() throws IOException {
+         generateBuildFiles(false);
+      }
+   }
+
+   private final class GenesisProjectOpenedHook extends ProjectOpenedHook {
+      protected void projectOpened() {
+         try {
+            generateBuildFiles(true);
+         } catch (IOException ioe) {
+            ErrorManager.getDefault().notify(ioe);
+         }
+      }
+
+      protected void projectClosed() {
+         try {
+            ProjectManager.getDefault().saveProject(GenesisProject.this);
+         } catch (IOException ioe) {
+            ErrorManager.getDefault().notify(ioe);
+         }
+      }
+   }
+
    private final AntProjectHelper helper;
    private final PropertyEvaluator evaluator;
    private final AuxiliaryConfiguration auxiliaryConfiguration;
+   private final GeneratedFilesHelper generatedFilesHelper;
    private final Lookup lookup;
 
    GenesisProject(final AntProjectHelper helper) {
       this.helper = helper;
       evaluator = helper.getStandardPropertyEvaluator();
       auxiliaryConfiguration = helper.createAuxiliaryConfiguration();
+      generatedFilesHelper = new GeneratedFilesHelper(helper);
       lookup = createLookup();
    }
 
@@ -122,7 +154,30 @@ public class GenesisProject implements Project {
          new GenesisActionProvider(this),
          new GenesisLogicalViewProvider(this),
          new GenesisSources(this),
-         new GenesisCustomizerProvider(this)
+         new GenesisCustomizerProvider(this),
+         new GenesisProjectXmlSavedHook(),
+         new GenesisProjectOpenedHook()
          });
+   }
+
+   private void generateBuildFiles(boolean check) throws IOException {
+      GenesisProjectKind kind = Utils.determineKind(this);
+
+      if (kind == GenesisProjectKind.DESKTOP) {
+         generatedFilesHelper.refreshBuildScript("nbproject/desktop_build.xml",
+               getClass().getResource("resources/desktop_build.xsl"), check);
+      } else if (kind == GenesisProjectKind.WEB) {
+         generatedFilesHelper.refreshBuildScript("nbproject/web_build.xml",
+               getClass().getResource("resources/web_build.xsl"), check);
+      }
+
+      generatedFilesHelper.refreshBuildScript("nbproject/master_build.xml",
+            getClass().getResource("resources/master_build.xsl"), check);
+      generatedFilesHelper.refreshBuildScript(
+            GeneratedFilesHelper.BUILD_IMPL_XML_PATH, 
+            getClass().getResource("resources/build-impl.xsl"), check);
+      generatedFilesHelper.refreshBuildScript(
+            GeneratedFilesHelper.BUILD_XML_PATH, 
+            getClass().getResource("resources/build.xsl"), check);
    }
 }

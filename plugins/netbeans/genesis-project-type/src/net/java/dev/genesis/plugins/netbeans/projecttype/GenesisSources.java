@@ -53,7 +53,7 @@ public class GenesisSources implements Sources, AntProjectListener {
    private Sources buildSources() {
       final SourcesHelper helper = new SourcesHelper(project.getHelper(),
             project.getEvaluator());
-      GenesisProjectKind kind = determineKind();
+      GenesisProjectKind kind = Utils.determineKind(project);
 
       if (kind == GenesisProjectKind.DESKTOP) {
          addClientSourcesDir("LBL_Client_Sources_Display_Name", 
@@ -87,25 +87,6 @@ public class GenesisSources implements Sources, AntProjectListener {
       addCustomSourceFolders(helper);
 
       return helper.createSources();
-   }
-
-   private GenesisProjectKind determineKind() throws DOMException {
-      GenesisProjectKind kind = null;
-
-      Element data = project.getHelper().getPrimaryConfigurationData(true);
-      NodeList nl = data.getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "type");
-
-      if (nl.getLength() == 1) {
-         nl = nl.item(0).getChildNodes();
-
-         if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
-            kind = (GenesisProjectKind)Enum.get(GenesisProjectKind.class, 
-                  ((Text) nl.item(0)).getNodeValue());
-         }
-      }
-
-      return kind;
    }
 
    private void addClientSourcesDir(final String displayNameKey, 

@@ -19,6 +19,7 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
 import java.io.IOException;
+import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
@@ -27,6 +28,10 @@ import org.openide.ErrorManager;
 import org.openide.NotifyDescriptor;
 import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 public class Utils {
    public static final String ICON_PATH = "net/java/dev/genesis/plugins/" +
@@ -97,5 +102,22 @@ public class Utils {
       return (needsWebstart != null) ? "true".equals(needsWebstart) :
             getExecutionMode(project) != 
             GenesisProjectExecutionMode.LOCAL_MODE_ONLY;
+   }
+
+   public static GenesisProjectKind determineKind(GenesisProject project) {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "type");
+
+      if (nl.getLength() == 1) {
+         nl = nl.item(0).getChildNodes();
+
+         if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
+            return (GenesisProjectKind)Enum.get(GenesisProjectKind.class, 
+                  ((Text) nl.item(0)).getNodeValue());
+         }
+      }
+
+      return null;
    }
 }

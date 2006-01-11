@@ -28,10 +28,10 @@ public class GenesisProjectType implements AntBasedProjectType {
          "net.java.dev.genesis.plugins.netbeans.projecttype";
    private static final String PROJECT_CONFIGURATION_NAME = "data";
    public static final String PROJECT_CONFIGURATION_NAMESPACE = 
-         "https://genesis.dev.java.net/nonav/ns/netbeans/projecttype/1";
+         "https://genesis.dev.java.net/ns/netbeans/projecttype/1";
    private static final String PRIVATE_CONFIGURATION_NAME = "data";
    private static final String PRIVATE_CONFIGURATION_NAMESPACE = 
-         "https://genesis.dev.java.net/nonav/ns/netbeans/projecttype-private/1";
+         "https://genesis.dev.java.net/ns/netbeans/projecttype-private/1";
 
    public String getType() {
       return TYPE;
