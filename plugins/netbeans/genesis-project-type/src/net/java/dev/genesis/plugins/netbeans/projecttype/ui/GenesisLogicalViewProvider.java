@@ -19,6 +19,8 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.api.project.ProjectUtils;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
@@ -74,9 +77,26 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
    private class GenesisLogicalProviderRootNode extends AbstractNode {
       public GenesisLogicalProviderRootNode() {
          super(new GenesisLogicalProviderChildren(), Lookups.singleton(project));
-         setName(ProjectUtils.getInformation(project).getDisplayName());
+         setName();
          setIconBaseWithExtension(Utils.ICON_PATH);
          setShortDescription(project.getProjectDirectory().getPath());
+
+         ProjectUtils.getInformation(project).addPropertyChangeListener(
+               new PropertyChangeListener() {
+                  public void propertyChange(PropertyChangeEvent event) {
+                     if (!ProjectInformation.PROP_DISPLAY_NAME.equals(
+                           event.getPropertyName())) {
+                        return;
+                     }
+
+                     setName();
+                     fireNameChange(null, null);
+                  }
+            });
+      }
+
+      private void setName() {
+         setName(ProjectUtils.getInformation(project).getDisplayName());
       }
 
       public Action[] getActions(boolean b) {

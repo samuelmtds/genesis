@@ -18,6 +18,9 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,6 +50,21 @@ public class GenesisActionProvider implements ActionProvider {
       targetNamesByActionString.put(COMMAND_CLEAN, new String [] {"clean"});
       targetNamesByActionString.put(COMMAND_REBUILD, new String [] 
             {"clean-build"});
+
+      project.getEvaluator().addPropertyChangeListener(
+         new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent event) {
+               if (!Utils.isExecutionRelatedProperty(event.getPropertyName())) {
+                  return;
+               }
+
+               determineRunTarget(project);
+            }
+         });
+      determineRunTarget(project);
+   }
+
+   private void determineRunTarget(final GenesisProject project) {
       targetNamesByActionString.put(COMMAND_RUN, new String [] {
             Utils.getExecutionMode(project) == 
             GenesisProjectExecutionMode.LOCAL_MODE_ONLY ? 

@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.Icon;
@@ -44,15 +45,24 @@ public class GenesisProject implements Project {
 
    private final class GenesisProjectInformation implements ProjectInformation {
       private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+      
+      public GenesisProjectInformation() {
+         getEvaluator().addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent event) {
+               if (APPLICATION_DISPLAY_NAME_PROPERTY.equals(
+                     event.getPropertyName())) {
+                  firePropertyChange(ProjectInformation.PROP_DISPLAY_NAME);
+               }
+            }
+         });
+      }
 
       public String getName() {
-         return getHelper().getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH)
-               .getProperty(APPLICATION_NAME_PROPERTY);
+         return getEvaluator().getProperty(APPLICATION_NAME_PROPERTY);
       }
 
       public String getDisplayName() {
-         return getHelper().getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH)
-               .getProperty(APPLICATION_DISPLAY_NAME_PROPERTY);
+         return getEvaluator().getProperty(APPLICATION_DISPLAY_NAME_PROPERTY);
       }
 
       public Icon getIcon() {
@@ -69,6 +79,10 @@ public class GenesisProject implements Project {
 
       public void removePropertyChangeListener(PropertyChangeListener listener) {
          pcs.removePropertyChangeListener(listener);
+      }
+
+      void firePropertyChange(String property) {
+         pcs.firePropertyChange(property, null, null);
       }
    }
 

@@ -36,6 +36,9 @@ public class Utils {
    public static String WEBSTART_TARGET = "all.with.webstart";
    public static String CLEAN_WEBSTART_TARGET = "clean-webstart";
 
+   private static String LOCAL_MODE_PROPERTY = "local.mode";
+   private static String REMOTE_MODE_PROPERTY = "remote.mode";
+
    private Utils() {
    }
 
@@ -74,13 +77,18 @@ public class Utils {
    public static GenesisProjectExecutionMode getExecutionMode(
          GenesisProject project) {
       boolean local = "true".equals(project.getEvaluator().getProperty(
-            "local.mode"));
+            LOCAL_MODE_PROPERTY));
       boolean remote = !"false".equals(project.getEvaluator().getProperty(
-            "remote.mode"));
+            REMOTE_MODE_PROPERTY));
 
       return local ? (remote ? GenesisProjectExecutionMode.LOCAL_AND_REMOTE :
             GenesisProjectExecutionMode.LOCAL_MODE_ONLY) : 
             GenesisProjectExecutionMode.REMOTE_MODE_ONLY;
+   }
+
+   public static boolean isExecutionRelatedProperty(String property) {
+      return LOCAL_MODE_PROPERTY.equals(property) || 
+            REMOTE_MODE_PROPERTY.equals(property);
    }
 
    public static boolean usesWebstart(GenesisProject project) {
