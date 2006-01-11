@@ -23,6 +23,7 @@ import java.beans.PropertyChangeSupport;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisLogicalViewProvider;
+import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.AuxiliaryConfiguration;
@@ -106,7 +107,8 @@ public class GenesisProject implements Project {
          getHelper().createCacheDirectoryProvider(),
          new GenesisActionProvider(this),
          new GenesisLogicalViewProvider(this),
-         new GenesisSources(this)
+         new GenesisSources(this),
+         new GenesisCustomizerProvider(this)
          });
    }
 }
