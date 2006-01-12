@@ -3,5 +3,5 @@ OpenIDE-Module: net.java.dev.genesis.plugin.netbeans.depjars/0
 OpenIDE-Module-Implementation-Version: 3.0-EA3-dev
 OpenIDE-Module-Localizing-Bundle: net/java/dev/genesis/plugins/netbeans/depjars/resources/Bundle.properties
 OpenIDE-Module-Layer: net/java/dev/genesis/plugins/netbeans/depjars/resources/mf-layer.xml
-OpenIDE-Module-Specification-Version: 3.0
+OpenIDE-Module-Specification-Version: 2.99
 
