@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.api.GenesisBuildSupportManager;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisLogicalViewProvider;
@@ -166,20 +167,12 @@ public class GenesisProject implements Project {
    private void generateBuildFiles(boolean check) throws IOException {
       GenesisProjectKind kind = Utils.determineKind(this);
       String version = Utils.getVersion(this);
-      Lookup.Result result = Lookup.getDefault().lookup(new Lookup.Template(
-            GenesisBuildSupport.class));
 
-      for (Iterator i = result.allInstances().iterator(); i.hasNext(); ) {
-         GenesisBuildSupport support = (GenesisBuildSupport)i.next();
-
-         if (support.getVersion().toString().equals(version)) {
-            support.generateBuildFiles(kind, generatedFilesHelper, check);
-            return;
-         }
+      if (!GenesisBuildSupportManager.getInstance().generateBuildFiles(kind,
+            generatedFilesHelper, version, check)) {
+         //TODO: handle absence of genesis build support for the project
+         ErrorManager.getDefault().notify(ErrorManager.ERROR, new Exception(
+               "There is no build support for version " + version));
       }
-      
-      //TODO: handle absence of genesis build support for the project
-      ErrorManager.getDefault().notify(ErrorManager.ERROR, new Exception(
-            "There is no build support for version " + version));
    }
 }
