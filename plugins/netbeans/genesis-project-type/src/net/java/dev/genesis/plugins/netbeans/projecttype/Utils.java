@@ -19,6 +19,7 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
 import java.io.IOException;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.api.project.Project;
@@ -114,7 +115,23 @@ public class Utils {
 
          if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
             return (GenesisProjectKind)Enum.get(GenesisProjectKind.class, 
-                  ((Text) nl.item(0)).getNodeValue());
+                  ((Text)nl.item(0)).getNodeValue());
+         }
+      }
+
+      return null;
+   }
+
+   public static String getVersion(GenesisProject project) {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "version");
+
+      if (nl.getLength() == 1) {
+         nl = nl.item(0).getChildNodes();
+
+         if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
+            return ((Text)nl.item(0)).getNodeValue();
          }
       }
 

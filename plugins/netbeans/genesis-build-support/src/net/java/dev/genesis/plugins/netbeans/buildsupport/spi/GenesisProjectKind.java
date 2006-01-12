@@ -18,11 +18,14 @@
  */
 package net.java.dev.genesis.plugins.netbeans.buildsupport.spi;
 
-import java.io.IOException;
-import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
+import net.java.dev.reusablecomponents.lang.Enum;
 
-public interface GenesisBuildSupport {
-   public void generateBuildFiles(GenesisProjectKind kind, 
-         GeneratedFilesHelper helper, boolean check) throws IOException;
-   public GenesisVersion getVersion();
+public class GenesisProjectKind extends Enum {
+   public static final GenesisProjectKind DESKTOP = new GenesisProjectKind("desktop");
+   public static final GenesisProjectKind FREEFORM = new GenesisProjectKind("freeform");
+   public static final GenesisProjectKind WEB = new GenesisProjectKind("web");
+   
+   private GenesisProjectKind(String name) {
+      super(name);
+   }
 }

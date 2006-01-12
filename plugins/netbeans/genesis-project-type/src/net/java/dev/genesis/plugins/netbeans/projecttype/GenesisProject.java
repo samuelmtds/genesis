@@ -22,8 +22,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.util.Iterator;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisLogicalViewProvider;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
 import org.netbeans.api.project.Project;
@@ -162,22 +165,21 @@ public class GenesisProject implements Project {
 
    private void generateBuildFiles(boolean check) throws IOException {
       GenesisProjectKind kind = Utils.determineKind(this);
+      String version = Utils.getVersion(this);
+      Lookup.Result result = Lookup.getDefault().lookup(new Lookup.Template(
+            GenesisBuildSupport.class));
 
-      if (kind == GenesisProjectKind.DESKTOP) {
-         generatedFilesHelper.refreshBuildScript("nbproject/desktop_build.xml",
-               getClass().getResource("resources/desktop_build.xsl"), check);
-      } else if (kind == GenesisProjectKind.WEB) {
-         generatedFilesHelper.refreshBuildScript("nbproject/web_build.xml",
-               getClass().getResource("resources/web_build.xsl"), check);
+      for (Iterator i = result.allInstances().iterator(); i.hasNext(); ) {
+         GenesisBuildSupport support = (GenesisBuildSupport)i.next();
+
+         if (support.getVersion().toString().equals(version)) {
+            support.generateBuildFiles(kind, generatedFilesHelper, check);
+            return;
+         }
       }
-
-      generatedFilesHelper.refreshBuildScript("nbproject/master_build.xml",
-            getClass().getResource("resources/master_build.xsl"), check);
-      generatedFilesHelper.refreshBuildScript(
-            GeneratedFilesHelper.BUILD_IMPL_XML_PATH, 
-            getClass().getResource("resources/build-impl.xsl"), check);
-      generatedFilesHelper.refreshBuildScript(
-            GeneratedFilesHelper.BUILD_XML_PATH, 
-            getClass().getResource("resources/build.xsl"), check);
+      
+      //TODO: handle absence of genesis build support for the project
+      ErrorManager.getDefault().notify(ErrorManager.ERROR, new Exception(
+            "There is no build support for version " + version));
    }
 }

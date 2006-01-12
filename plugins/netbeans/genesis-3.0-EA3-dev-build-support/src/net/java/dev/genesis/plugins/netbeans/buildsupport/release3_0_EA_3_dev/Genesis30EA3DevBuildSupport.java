@@ -16,16 +16,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.plugins.netbeans.projecttype;
+package net.java.dev.genesis.plugins.netbeans.buildsupport.release3_0_EA_3_dev;
 
-import net.java.dev.reusablecomponents.lang.Enum;
+import java.io.IOException;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.AbstractGenesisBuildSupport;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
+import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisVersion;
 
-public class GenesisProjectKind extends Enum {
-   public static final GenesisProjectKind DESKTOP = new GenesisProjectKind("desktop");
-   public static final GenesisProjectKind FREEFORM = new GenesisProjectKind("freeform");
-   public static final GenesisProjectKind WEB = new GenesisProjectKind("web");
-   
-   private GenesisProjectKind(String name) {
-      super(name);
+public class Genesis30EA3DevBuildSupport extends AbstractGenesisBuildSupport {
+   public Genesis30EA3DevBuildSupport() {
+      super(new GenesisVersion(3, 0, 
+            GenesisVersion.GenesisReleaseType.EARLY_ACCESS, 3, true));
    }
 }

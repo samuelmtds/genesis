@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.apisupport.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/2">
-            <code-name-base>net.java.dev.genesis.plugins.netbeans.buildsupport</code-name-base>
+            <code-name-base>net.java.dev.genesis.plugins.netbeans.buildsupport.release3_0_EA_3_dev</code-name-base>
             <suite-component/>
             <module-dependencies>
                 <dependency>
@@ -16,18 +16,16 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
-                    <code-name-base>org.netbeans.modules.project.ant</code-name-base>
+                    <code-name-base>net.java.dev.genesis.plugins.netbeans.buildsupport</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <release-version>1</release-version>
-                        <specification-version>1.12.1</specification-version>
+                        <release-version>0</release-version>
+                        <specification-version>2.99</specification-version>
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages>
-                <package>net.java.dev.genesis.plugins.netbeans.buildsupport.spi</package>
-            </public-packages>
+            <public-packages/>
         </data>
     </configuration>
 </project>

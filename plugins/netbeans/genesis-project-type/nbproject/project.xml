@@ -12,7 +12,16 @@
                     <compile-dependency/>
                     <run-dependency>
                         <release-version>0</release-version>
-                        <specification-version>3.0</specification-version>
+                        <specification-version>2.99</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>net.java.dev.genesis.plugins.netbeans.buildsupport</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>0</release-version>
+                        <specification-version>2.99</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
