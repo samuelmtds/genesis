@@ -23,7 +23,7 @@ import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.AbstractGenesisBui
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisVersion;
 
-public class Genesis30EA3DevBuildSupport extends AbstractGenesisBuildSupport {
+public final class Genesis30EA3DevBuildSupport extends AbstractGenesisBuildSupport {
    public Genesis30EA3DevBuildSupport() {
       super(new GenesisVersion(3, 0, 
             GenesisVersion.GenesisReleaseType.EARLY_ACCESS, 3, true));

@@ -356,8 +356,8 @@
    </target>
 
    <target name="weaving:pre-define-local-classpath">
-      <!-- Override to define weaving.local.overriden.classpath or 
-         weaving.additional.local.classpath -->
+      <xsl:comment><![CDATA[ Override to define weaving.local.overriden.classpath or 
+         weaving.additional.local.classpath ]]></xsl:comment> 
    </target>
 
    <target name="weaving:check-local-classpath-conditions" depends="weaving:init">
@@ -419,8 +419,8 @@
                     weaving:define-standard-local-classpath"/>
 
    <target name="weaving:pre-define-remote-classpath">
-      <!-- Override to define weaving.remote.overriden.classpath or 
-         weaving.additional.remote.classpath -->
+      <xsl:comment><![CDATA[ Override to define weaving.remote.overriden.classpath or 
+         weaving.additional.remote.classpath ]]></xsl:comment> 
    </target>
 
    <target name="weaving:check-remote-classpath-conditions" depends="weaving:init">
@@ -616,8 +616,8 @@
            depends="weaving:local,weaving:remote,-do-custom-weaving" />
 
    <target name="run:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the run:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the run:init target ]]></xsl:comment> 
    </target>
 
    <target name="run:init" depends="init-paths,run:pre-init">
@@ -692,8 +692,8 @@
    </target>
 
    <target name="run:pre-define-classpath">
-      <!-- Override to define run.overriden.classpath or 
-         run.additional.classpath-->
+      <xsl:comment><![CDATA[ Override to define run.overriden.classpath or 
+         run.additional.classpath]]></xsl:comment> 
    </target>
 
    <target name="run:check-classpath-conditions" depends="run:init">
@@ -1001,8 +1001,8 @@
    </target>
 
    <target name="jar:pre-define-local-classpath">
-      <!-- Override to define jar.local.overriden.classpath or 
-         jar.additional.local.classpath-->
+      <xsl:comment><![CDATA[ Override to define jar.local.overriden.classpath or 
+         jar.additional.local.classpath]]></xsl:comment> 
    </target>
 
    <target name="jar:check-local-classpath-conditions" depends="jar:init">
@@ -1112,8 +1112,8 @@
    </target>
 
    <target name="webstart:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the webstart:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the webstart:init target ]]></xsl:comment> 
    </target>
 
    <target name="webstart:init" 
@@ -1259,7 +1259,7 @@
                </fileset>
                <fileset file="${{jdbc.driver}}" />
                <fileset dir="${{jboss.client}}">
-                  <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->
+                  <xsl:comment><![CDATA[ Common files (JBoss 3.2.x and JBoxx 4.x) ]]></xsl:comment> 
                   <include name="jboss-client.jar" />
                   <include name="jboss-common-client.jar" />
                   <include name="jboss-j2ee.jar" />
@@ -1267,7 +1267,7 @@
                   <include name="jbosssx-client.jar" />
                   <include name="jnp-client.jar" />
 
-                  <!-- JBoss 4.x specific files  -->
+                  <xsl:comment><![CDATA[ JBoss 4.x specific files  ]]></xsl:comment> 
                   <include name="jboss-remoting.jar" />
                </fileset>
             </jar-fileset>

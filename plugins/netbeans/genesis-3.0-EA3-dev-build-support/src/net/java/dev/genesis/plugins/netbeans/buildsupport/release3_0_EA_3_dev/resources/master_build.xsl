@@ -14,8 +14,8 @@
 <project name="genesis-based-project" default="all" basedir="." 
          xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
    <target name="-pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the whole build process -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the whole build process ]]></xsl:comment> 
    </target>
 
    <target name="-do-master-init">
@@ -52,13 +52,13 @@
    <target name="-do-init" depends="-do-master-init,-do-additional-init" />
 
    <target name="-post-init">
-      <!-- Override to do custom initialization -->
+      <xsl:comment><![CDATA[ Override to do custom initialization ]]></xsl:comment> 
    </target>
 
    <target name="init" depends="-pre-init,-do-init,-post-init" />
 
    <target name="-pre-init-paths">
-      <!-- Override to do custom initialization -->
+      <xsl:comment><![CDATA[ Override to do custom initialization ]]></xsl:comment> 
    </target>
 
    <target name="-do-master-init-paths">
@@ -153,7 +153,7 @@
            depends="-do-master-init-paths,-do-additional-init-paths" />
 
    <target name="-post-init-paths">
-      <!-- Override to do custom initialization -->
+      <xsl:comment><![CDATA[ Override to do custom initialization ]]></xsl:comment> 
    </target>
 
    <target name="init-paths" 
@@ -231,8 +231,8 @@
    </target>
 
    <target name="shared:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the -shared:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the -shared:init target ]]></xsl:comment> 
    </target>
 
    <target name="shared:init" depends="init-paths,shared:pre-init">
@@ -305,8 +305,8 @@
    </target>
 
    <target name="shared:pre-define-classpath">
-      <!-- Override to define shared.javac.overriden.classpath or 
-         shared.additional.javac.classpath-->
+      <xsl:comment><![CDATA[ Override to define shared.javac.overriden.classpath or 
+         shared.additional.javac.classpath]]></xsl:comment> 
    </target>
 
    <target name="shared:check-classpath-conditions" depends="shared:init">
@@ -519,8 +519,8 @@
            depends="shared:javac,shared:annotations,shared:hibernate-doclet" />
 
    <target name="client:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the client:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the client:init target ]]></xsl:comment> 
    </target>
 
    <target name="client:pre-additional-init" />
@@ -567,8 +567,8 @@
                        client:additional-clean" />
 
    <target name="client:pre-define-classpath">
-      <!-- Override to define client.javac.overriden.classpath or 
-         client.additional.javac.classpath-->
+      <xsl:comment><![CDATA[ Override to define client.javac.overriden.classpath or 
+         client.additional.javac.classpath]]></xsl:comment> 
    </target>
 
    <target name="client:check-classpath-conditions" depends="client:init">
@@ -638,16 +638,16 @@
    <target name="client:compile" depends="client:javac" />
 
    <target name="-do-custom-compile">
-      <!-- Override to implement extra tasks that should be performed after 
-           compiling client/shared sources-->
+      <xsl:comment><![CDATA[ Override to implement extra tasks that should be performed after 
+           compiling client/shared sources]]></xsl:comment> 
    </target>
 
    <target name="compile" 
            depends="shared:compile,client:compile,-do-custom-compile"/>
 
    <target name="weaving:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the weaving:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the weaving:init target ]]></xsl:comment> 
    </target>
 
    <target name="weaving:master-init">
@@ -730,15 +730,15 @@
            depends="weaving:master-macrodefs,weaving:additional-macrodefs"/>
 
    <target name="-do-custom-weaving">
-      <!-- Override to implement extra tasks that should be performed after 
-           the weaving process -->
+      <xsl:comment><![CDATA[ Override to implement extra tasks that should be performed after 
+           the weaving process ]]></xsl:comment> 
    </target>
 
    <target name="weaving" depends="-do-custom-weaving" />
 
    <target name="jar:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the jar:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the jar:init target ]]></xsl:comment> 
    </target>
 
    <target name="jar:master-init">
@@ -829,15 +829,15 @@
            depends="jar:init,jar:master-macrodefs,jar:additional-macrodefs" />
 
    <target name="-do-custom-jar">
-      <!-- Override to implement extra tasks that should be performed after 
-           generating the default jar files -->
+      <xsl:comment><![CDATA[ Override to implement extra tasks that should be performed after 
+           generating the default jar files ]]></xsl:comment> 
    </target>
 
    <target name="jar" depends="-do-custom-jar" />
 
    <target name="server-artifact:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the server-artifact:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the server-artifact:init target ]]></xsl:comment> 
    </target>
 
    <target name="server-artifact:master-init">
@@ -921,8 +921,8 @@
    </target>
 
    <target name="deploy:pre-init">
-      <!-- Override to define any properties that shouldn't be redefined by 
-         the deploy:init target -->
+      <xsl:comment><![CDATA[ Override to define any properties that shouldn't be redefined by 
+         the deploy:init target ]]></xsl:comment> 
    </target>
 
    <target name="deploy:master-init">
@@ -1018,18 +1018,18 @@
       <mkdir dir="${{jboss.app}}" />
       <copy todir="${{jboss.app}}">
          <fileset dir="${{jboss.default.server}}">
-            <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->
+            <xsl:comment><![CDATA[ Common files (JBoss 3.2.x and JBoxx 4.x) ]]></xsl:comment> 
             <include name="deploy/jbossweb-tomcat*.sar/**" />
             <include name="deploy/jboss-local-jdbc.rar" />
             <include name="conf/**" />
             <include name="lib/**" />
             <exclude name="lib/hibernate*.jar" />
             
-            <!-- JBoss 3.2.x specific files  -->
+            <xsl:comment><![CDATA[ JBoss 3.2.x specific files  ]]></xsl:comment> 
             <include name="deploy/jboss-jca.sar" />
             <include name="deploy/transaction-service.xml" />
             
-            <!-- JBoss 4.x specific files  -->
+            <xsl:comment><![CDATA[ JBoss 4.x specific files  ]]></xsl:comment> 
             <include name="deploy/ejb-deployer.xml" />
             <include name="deploy/jbossjca-service.xml" />
          </fileset>
@@ -1056,7 +1056,7 @@
    </target>
 
    <target name="-do-custom-clean">
-      <!-- Override to implement custom clean tasks -->
+      <xsl:comment><![CDATA[ Override to implement custom clean tasks ]]></xsl:comment> 
    </target>
 
    <target name="clean" 

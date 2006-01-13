@@ -67,8 +67,8 @@
    </target>
 
    <target name="weaving:pre-define-classpath">
-      <!-- Override to define weaving.overriden.classpath or 
-         weaving.additional.classpath -->
+      <xsl:comment><![CDATA[ Override to define weaving.overriden.classpath or 
+         weaving.additional.classpath ]]></xsl:comment> 
    </target>
 
    <target name="weaving:check-classpath-conditions" depends="weaving:init">

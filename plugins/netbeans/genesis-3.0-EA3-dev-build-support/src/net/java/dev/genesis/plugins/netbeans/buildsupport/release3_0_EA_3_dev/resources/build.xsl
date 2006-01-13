@@ -7,8 +7,7 @@
                 exclude-result-prefixes="xalan project genesis">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" xalan:indent-amount="3"/>
     <xsl:template match="/">
-        <xsl:comment> You may freely edit this file. See commented blocks below for </xsl:comment>
-        <xsl:comment> some examples of how to customize the build. </xsl:comment>
+        <xsl:comment> You may freely edit this file. </xsl:comment>
         <xsl:comment> (If you delete it and reopen the project it will be recreated.) </xsl:comment>
         
         <project name="genesis-based-project-build" default="all"
