@@ -22,11 +22,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.util.Iterator;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.api.GenesisBuildSupportManager;
-import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisLogicalViewProvider;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
@@ -35,13 +33,18 @@ import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.project.AuxiliaryConfiguration;
 import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.EditableProperties;
 import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
 import org.netbeans.spi.project.support.ant.ProjectXmlSavedHook;
 import org.netbeans.spi.project.support.ant.PropertyEvaluator;
+import org.netbeans.spi.project.support.ant.ReferenceHelper;
 import org.netbeans.spi.project.ui.ProjectOpenedHook;
 import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.Lookup;
+import org.openide.util.Mutex;
+import org.openide.util.MutexException;
 import org.openide.util.Utilities;
 import org.openide.util.lookup.Lookups;
 
@@ -124,6 +127,7 @@ public class GenesisProject implements Project {
    private final PropertyEvaluator evaluator;
    private final AuxiliaryConfiguration auxiliaryConfiguration;
    private final GeneratedFilesHelper generatedFilesHelper;
+   private final ReferenceHelper referenceHelper;
    private final Lookup lookup;
 
    GenesisProject(final AntProjectHelper helper) {
@@ -131,6 +135,8 @@ public class GenesisProject implements Project {
       evaluator = helper.getStandardPropertyEvaluator();
       auxiliaryConfiguration = helper.createAuxiliaryConfiguration();
       generatedFilesHelper = new GeneratedFilesHelper(helper);
+      referenceHelper = new ReferenceHelper(helper, auxiliaryConfiguration, 
+            evaluator);
       lookup = createLookup();
    }
 
@@ -171,8 +177,51 @@ public class GenesisProject implements Project {
       if (!GenesisBuildSupportManager.getInstance().generateBuildFiles(kind,
             generatedFilesHelper, version, check)) {
          //TODO: handle absence of genesis build support for the project
-         ErrorManager.getDefault().notify(ErrorManager.ERROR, new Exception(
-               "There is no build support for version " + version));
+         ErrorManager.getDefault().log(ErrorManager.ERROR, "There is no build " +
+               "support for version " + version);
+         return;
+      }
+ 
+      FileObject genesisHomeDir = GenesisBuildSupportManager.getInstance()
+            .getGenesisHome(version);
+
+      if (genesisHomeDir == null) {
+         //TODO: handle absence of genesis build support for the project
+         ErrorManager.getDefault().log(ErrorManager.ERROR, "Libraries for " +
+               "genesis version " + version + " could not be found!");
+         return;
+      }
+
+      String currentGenesisHome = evaluator.getProperty("genesis.home");
+
+      if (currentGenesisHome != null) {
+         return;
+      }
+
+      final String reference = referenceHelper.createForeignFileReference(
+            FileUtil.toFile(genesisHomeDir), null);
+
+      if (reference.equals(currentGenesisHome)) {
+         return;
+      }
+
+      try {
+         ProjectManager.getDefault().mutex().writeAccess(
+               new Mutex.ExceptionAction() {
+            public Object run() throws IOException {
+               EditableProperties properties = helper.getProperties(
+                     AntProjectHelper.PROJECT_PROPERTIES_PATH);
+               properties.setProperty("genesis.home", reference);
+               helper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, 
+                     properties);
+               ProjectManager.getDefault().saveProject(GenesisProject.this);
+
+               return null;
+            }
+         });
+      } catch (MutexException ex) {
+         ErrorManager.getDefault().log(ErrorManager.ERROR, "Could not make " +
+               "property genesis.home point to " + reference);
       }
    }
 }

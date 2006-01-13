@@ -7,6 +7,10 @@
                 exclude-result-prefixes="xalan project genesis">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" xalan:indent-amount="3"/>
     <xsl:template match="/">
+        <xsl:comment><![CDATA[
+*** GENERATED FROM project.xml - DO NOT EDIT  ***
+***         EDIT ../build.xml INSTEAD         ***
+]]></xsl:comment>
 <project name="genesis-based-project" default="all" basedir="." 
          xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
    <target name="-pre-init">

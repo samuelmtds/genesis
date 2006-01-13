@@ -7,6 +7,10 @@
                 exclude-result-prefixes="xalan project genesis">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" xalan:indent-amount="3"/>
     <xsl:template match="/">
+        <xsl:comment><![CDATA[
+*** GENERATED FROM project.xml - DO NOT EDIT  ***
+***         EDIT ../build.xml INSTEAD         ***
+]]></xsl:comment>
 <project name="genesis-desktop-based-project" default="all" basedir="."
          xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
    <import file="master_build.xml" />
@@ -1285,10 +1289,10 @@
                      resource="com/orangevolt/tools/ant/taskdefs.properties" />
             <jnlp codebase="${{webstart.jnlp.codebase}}" tofile="@{{tofile}}">
                <information>
-                  <title>${{webstart.jnlp.title}}</title>
-                  <vendor>${{webstart.jnlp.vendor}}</vendor>
-                  <description>${{webstart.jnlp.description}}</description>
-                  <description kind="tooltip">${{webstart.jnlp.tooltip}}</description>
+                  <title>${webstart.jnlp.title}</title>
+                  <vendor>${webstart.jnlp.vendor}</vendor>
+                  <description>${webstart.jnlp.description}</description>
+                  <description kind="tooltip">${webstart.jnlp.tooltip}</description>
                   <homepage href="${{webstart.jnlp.homepage}}" />
                   <icon href="${{webstart.jnlp.icon}}" />
                   <customize-information />
@@ -1305,7 +1309,6 @@
                         <customize-fileset />
                      </fileset>
                   </jar>
-                  <property name="aspectwerkz.jit.off" value="true"/>
                   <default-properties />
                   <properties />
                </resources>
