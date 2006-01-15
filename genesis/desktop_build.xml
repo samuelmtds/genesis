@@ -654,6 +654,7 @@
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components-*.jar" />
          </fileset>
+         <fileset dir="${script.dist}" includes="*.jar" />
       </path>
 
       <path id="run.standard.local.classpath">

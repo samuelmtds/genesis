@@ -4,6 +4,7 @@
    
    <target name="-pre-init">
       <property file="build.properties" />
+      <property name="force.annotation" value="true" />
 
       <property name="local.mode" value="true" />
       <property name="genesisBasedApplication.name" value="useradmin" />
