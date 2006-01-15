@@ -669,6 +669,7 @@
       <path id="run.standard.remote.classpath">
          <fileset file="${jar.remote.location}" />
          <fileset dir="${jboss.client}">
+            <include name="concurrent.jar" />
             <include name="jboss-client.jar" />
             <include name="jboss-common-client.jar" />
             <include name="jboss-j2ee.jar" />
@@ -1256,6 +1257,7 @@
                   <include name="jnp-client.jar" />
 
                   <!-- JBoss 4.x specific files  -->
+                  <include name="concurrent.jar" />
                   <include name="jboss-remoting.jar" />
                </fileset>
             </jar-fileset>
