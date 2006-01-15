@@ -12,6 +12,8 @@
       <!-- genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="formControllerFactoryIntroduction" expression="form" />
+      <pointcut name="scriptableObjectMixin" expression="form" />
+      <pointcut name="scriptableObjectGetter" expression="get(* *) AND form" />
       <pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
       <pointcut name="viewMetadataFactoryIntroduction" expression="thinletMetadataFactoryIntroduction OR within(@net.java.dev.genesis.annotation.ViewHandler ..)" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
@@ -22,13 +24,16 @@
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
       <pointcut name="criteriaCommandExecution" expression="execution(@net.java.dev.genesis.annotation.Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
-      
+
       <!-- genesis aspects -->
       <mixin class="CommandInvocationAspect$CommandResolverImpl" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
       <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
       <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
       <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
+      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">      
+          <param name="scriptFactory" value="beanshell" />
+      </mixin>
+      <mixin class="ScriptableObjectAspect$ScriptableObjectMixin" />
 
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
@@ -39,5 +44,6 @@
       </aspect>
       <aspect class="CriteriaCommandExecutionAspect"/>
       <aspect class="WaitCursorAspect"/>
+      <aspect class="ScriptableObjectAspect"/>
    </system>
 </aspectwerkz>

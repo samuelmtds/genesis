@@ -1,22 +1,31 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
- * 
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.tests.jxpath;
+package net.java.dev.genesis.tests.script;
+
+import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.script.ScriptFactory;
+import net.java.dev.genesis.tests.TestCase;
+import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormState;
+import net.java.dev.genesis.ui.controller.FormStateImpl;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,34 +39,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
-import net.java.dev.genesis.script.ScriptContext;
-import net.java.dev.genesis.script.ScriptFactory;
-import net.java.dev.genesis.script.jxpath.JXPathScriptFactory;
-import net.java.dev.genesis.tests.TestCase;
-import net.java.dev.genesis.ui.controller.FormController;
-import net.java.dev.genesis.ui.controller.FormState;
-import net.java.dev.genesis.ui.controller.FormStateImpl;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
-public class ExtensionJXPathFunctionsTest extends TestCase {
-
-   static {
-      System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
-            JXPathContextFactory.class.getName());
-   }
-
+public abstract class ScriptFunctionsTest extends TestCase {
    private final FormState state = new FormStateImpl();
    private final Map changedMap = state.getChangedMap();
-   private final ScriptFactory scriptFactory = new JXPathScriptFactory();
+   protected Object root;
+
+   protected abstract ScriptFactory newScriptFactory();
 
    private ScriptContext getContext(final Object root) throws Exception {
-      ScriptContext ctx = scriptFactory.newScript().newContext(root);
-      ctx.declare(FormController.CURRENT_STATE_KEY,
-            state);
-      ctx.declare(
-            FormController.FORM_METADATA_KEY, getFormMetadata(root));
+      this.root = root;
+
+      ScriptContext ctx = newScriptFactory().newScript().newContext(root);
+      ctx.declare(FormController.CURRENT_STATE_KEY, state);
+      ctx.declare(FormController.FORM_METADATA_KEY, getFormMetadata(root));
+
       return ctx;
    }
 
@@ -122,31 +117,79 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
    private void nestedPropertyEmptyTest(final ScriptContext ctx,
          final boolean isEmpty) {
-      emptyTester(ctx, "fieldBean/name", isEmpty);
+      emptyTester(ctx, "fieldBean.name", isEmpty);
    }
+
+   private void constantsEmptyTest(final ScriptContext ctx) {
+      emptyConstantsTester(ctx, toScriptString("the"), false);
+      emptyConstantsTester(ctx, toScriptString(""), true);
+      emptyConstantsTester(ctx, toScriptBoolean(false), false);
+      emptyConstantsTester(ctx, toScriptDouble(123), false);
+      emptyConstantsTester(ctx, toScriptChar('a'), false);
+      emptyConstantsTester(ctx, toScriptByte((byte) 0x01), false);
+      emptyConstantsTester(ctx, toScriptShort((short) 1), false);
+      emptyConstantsTester(ctx, toScriptInt(2), false);
+      emptyConstantsTester(ctx, toScriptLong(3), false);
+      emptyConstantsTester(ctx, toScriptFloat(4), false);
+   }
+
+   protected abstract String toScriptField(String fieldName);
+
+   protected abstract String toScriptString(String string);
+
+   protected abstract String toScriptBoolean(boolean b);
+
+   protected abstract String toScriptDouble(double b);
+
+   protected abstract String toScriptChar(char c);
+
+   protected abstract String toScriptByte(byte b);
+
+   protected abstract String toScriptShort(short s);
+
+   protected abstract String toScriptInt(int i);
+
+   protected abstract String toScriptLong(long l);
+
+   protected abstract String toScriptFloat(float f);
+
+   protected abstract String toScriptNot(String expression);
+
+   protected abstract String toScriptMethod(String methodName, String expression);
 
    private void emptyTester(final ScriptContext ctx, final String fieldName,
          final boolean isEmpty) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:isEmpty(" + fieldName + ")"));
+      String expr = toScriptMethod("isEmpty", toScriptField(fieldName));
+      final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
-            + (isEmpty ? "' is not empty" : "is empty"), isEmpty ? result
-            : !result);
+            + (isEmpty ? "' is not empty" : "' is empty"), isEmpty ? result
+            : (!result));
+   }
+
+   private void emptyConstantsTester(final ScriptContext ctx,
+         final String constant, final boolean isEmpty) {
+      String expr = toScriptMethod("isEmpty", constant);
+      final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
+
+      assertTrue("The constant '" + constant
+            + (isEmpty ? "' is not empty" : "' is empty"), isEmpty ? result
+            : (!result));
    }
 
    private void populateChangedMap() throws Exception {
       changedMap.putAll(PropertyUtils.describe(new TestForm()));
+      changedMap.remove("class");
    }
 
    private void changeTester(final ScriptContext ctx, final String fieldName,
          final boolean changed) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:hasChanged(" + fieldName + ")"));
+      String expr = toScriptMethod("hasChanged", toScriptField(fieldName));
+      final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
             + (changed ? "' has not changed" : "changed"), changed ? result
-            : !result);
+            : (!result));
    }
 
    private Map cloneProperties(final TestForm form) throws Exception {
@@ -159,10 +202,13 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
          if (fieldName.endsWith("Clone")) {
             iter.remove();
+
             continue;
          }
+
          cloneProperties.put(fieldName + "Clone", entry.getValue());
       }
+
       PropertyUtils.copyProperties(form, cloneProperties);
 
       return properties;
@@ -170,22 +216,24 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
    private void equalsTester(final ScriptContext ctx, final String fieldName,
          final boolean isEqual) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:equals(" + fieldName + ", " + fieldName + "Clone)"));
+      String expr = toScriptMethod("equals", toScriptField(fieldName) + ','
+            + toScriptField(fieldName + "Clone"));
+      final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
-            + (isEqual ? "' is not equal to " : "is equal to ") + fieldName
-            + "Clone", isEqual ? result : !result);
+            + (isEqual ? "' is not equal to " : "' is equal to ") + fieldName
+            + "Clone", isEqual ? result : (!result));
    }
 
    private void equalsTester(final ScriptContext ctx, final String fieldName,
          final String value, final boolean isEqual) {
-      final boolean result = Boolean.TRUE.equals(ctx.eval(
-            "g:equals(" + fieldName + ", " + value + ")"));
+      String expr = toScriptMethod("equals", toScriptField(fieldName) + ','
+            + value);
+      final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
-            + (isEqual ? "' is not equal to " : "is equal to ") + value,
-            isEqual ? result : !result);
+            + (isEqual ? "' is not equal to " : "' is equal to ") + value,
+            isEqual ? result : (!result));
    }
 
    public void testIsEmptyFunction() throws Exception {
@@ -199,6 +247,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       objectFieldsEmptyTest(ctx, true);
 
       // Nested property must be empty
+      form.setFieldBean(new RegularJavaBean());
       nestedPropertyEmptyTest(ctx, true);
 
       // Populate All fields
@@ -208,6 +257,7 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       objectFieldsEmptyTest(ctx, false);
 
       // Nested property must be empty
+      form.setFieldBean(new RegularJavaBean());
       nestedPropertyEmptyTest(ctx, true);
 
       // Populate nested properties
@@ -225,6 +275,9 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       form.populateStringWithSpaces();
       emptyTester(ctx, "fieldStringWithoutTrim", false);
       emptyTester(ctx, "fieldString", true);
+
+      // Constants
+      constantsEmptyTest(ctx);
    }
 
    public void testHasChangedFunction() throws Exception {
@@ -233,7 +286,10 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       final TestForm form = new TestForm();
       final ScriptContext ctx = getContext(form);
 
-      final Set keySet = PropertyUtils.describe(form).keySet();
+      final Map map = PropertyUtils.describe(form);
+      map.remove("class");
+
+      final Set keySet = map.keySet();
 
       for (Iterator iter = keySet.iterator(); iter.hasNext();) {
          changeTester(ctx, iter.next().toString(), false);
@@ -250,7 +306,6 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       for (Iterator iter = keySet.iterator(); iter.hasNext();) {
          changeTester(ctx, iter.next().toString(), false);
       }
-
    }
 
    public void testIsEqualFunction() throws Exception {
@@ -277,26 +332,124 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
 
       form.setFieldStringWithoutTrim("   a ");
       form.setFieldString("   a ");
-      equalsTester(ctx, "fieldStringWithoutTrim", "'a'", false);
-      equalsTester(ctx, "fieldStringWithoutTrim", "'   a '", true);
-      equalsTester(ctx, "fieldString", "'a'", true);
-      equalsTester(ctx, "fieldString", "'   a '", true);
-      equalsTester(ctx, "fieldString", "true()", false);
-      equalsTester(ctx, "fieldString", "123", false);
+      equalsTester(ctx, "fieldStringWithoutTrim", toScriptString("a"), false);
+      equalsTester(ctx, "fieldStringWithoutTrim", toScriptString("   a "), true);
+      equalsTester(ctx, "fieldString", toScriptString("a"), true);
+      equalsTester(ctx, "fieldString", toScriptString("   a "), true);
+      equalsTester(ctx, "fieldString", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldString", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldString", toScriptByte((byte) 0x38), false);
+      equalsTester(ctx, "fieldString", toScriptInt(120), false);
+      equalsTester(ctx, "fieldString", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldString", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldString", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldString", toScriptChar('y'), false);
 
       form.setFieldBoolean(false);
-      equalsTester(ctx, "fieldBoolean", "false()", true);
-      equalsTester(ctx, "fieldBoolean", "'trash'", false);
-      equalsTester(ctx, "fieldBoolean", "123", false);
-      equalsTester(ctx, "fieldBoolean", "true()", false);
-      equalsTester(ctx, "fieldBoolean", "not(true())", true);
+      equalsTester(ctx, "fieldBoolean", toScriptBoolean(false), true);
+      equalsTester(ctx, "fieldBoolean", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldBoolean", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldBoolean", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldBoolean", toScriptByte((byte) 0x38), false);
+      equalsTester(ctx, "fieldBoolean", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldBoolean", toScriptInt(120), false);
+      equalsTester(ctx, "fieldBoolean", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldBoolean", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldBoolean", toScriptNot(toScriptBoolean(true)),
+            true);
+      equalsTester(ctx, "fieldBoolean", toScriptChar('y'), false);
 
       form.setFieldDouble(123);
-      equalsTester(ctx, "fieldDouble", "false()", false);
-      equalsTester(ctx, "fieldDouble", "'trash'", false);
-      equalsTester(ctx, "fieldDouble", "123", true);
-      equalsTester(ctx, "fieldDouble", "true()", false);
-      equalsTester(ctx, "fieldDouble", "133 - 10", true);
+      equalsTester(ctx, "fieldDouble", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldDouble", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldDouble", toScriptDouble(123), true);
+      equalsTester(ctx, "fieldDouble", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldDouble", toScriptByte((byte) 0x38), false);
+      equalsTester(ctx, "fieldDouble", toScriptShort((short) 110), false);
+      equalsTester(ctx, "fieldDouble", toScriptInt(120), false);
+      equalsTester(ctx, "fieldDouble", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldDouble", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldDouble", toScriptDouble(133) + " - "
+            + toScriptDouble(10), true);
+      equalsTester(ctx, "fieldDouble", toScriptChar('y'), false);
+
+      form.setFieldChar('y');
+      equalsTester(ctx, "fieldChar", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldChar", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldChar", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldChar", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldChar", toScriptByte((byte) 0x38), false);
+      equalsTester(ctx, "fieldChar", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldChar", toScriptInt(120), false);
+      equalsTester(ctx, "fieldChar", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldChar", toScriptChar('b'), false);
+      equalsTester(ctx, "fieldChar", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldChar", toScriptChar('y'), true);
+
+      form.setFieldByte((byte) 0x38);
+      equalsTester(ctx, "fieldByte", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldByte", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldByte", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldByte", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldByte", toScriptChar('b'), false);
+      equalsTester(ctx, "fieldByte", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldByte", toScriptInt(120), false);
+      equalsTester(ctx, "fieldByte", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldByte", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldByte", toScriptByte((byte) 0x18), false);
+      equalsTester(ctx, "fieldByte", toScriptByte((byte) 0x38), true);
+
+      form.setFieldShort((short) 120);
+      equalsTester(ctx, "fieldShort", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldShort", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldShort", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldShort", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldShort", toScriptChar('b'), false);
+      equalsTester(ctx, "fieldShort", toScriptByte((byte) 0x18), false);
+      equalsTester(ctx, "fieldShort", toScriptInt(120), false);
+      equalsTester(ctx, "fieldShort", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldShort", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldShort", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldShort", toScriptShort((short) 120), true);
+
+      form.setFieldInteger(382);
+      equalsTester(ctx, "fieldInteger", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldInteger", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldInteger", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldInteger", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldInteger", toScriptChar('b'), false);
+      equalsTester(ctx, "fieldInteger", toScriptByte((byte) 0x18), false);
+      equalsTester(ctx, "fieldInteger", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldInteger", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldInteger", toScriptInt(120), false);
+      equalsTester(ctx, "fieldInteger", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldInteger", toScriptInt(382), true);
+
+      form.setFieldLong(2340242342L);
+      equalsTester(ctx, "fieldLong", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldLong", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldLong", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldLong", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldLong", toScriptChar('b'), false);
+      equalsTester(ctx, "fieldLong", toScriptByte((byte) 0x18), false);
+      equalsTester(ctx, "fieldLong", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldLong", toScriptInt(120), false);
+      equalsTester(ctx, "fieldLong", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldLong", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldLong", toScriptLong(2340242342L), true);
+
+      form.setFieldFloat(284324);
+      equalsTester(ctx, "fieldFloat", toScriptBoolean(false), false);
+      equalsTester(ctx, "fieldFloat", toScriptString("trash"), false);
+      equalsTester(ctx, "fieldFloat", toScriptDouble(123), false);
+      equalsTester(ctx, "fieldFloat", toScriptBoolean(true), false);
+      equalsTester(ctx, "fieldFloat", toScriptChar('b'), false);
+      equalsTester(ctx, "fieldFloat", toScriptByte((byte) 0x18), false);
+      equalsTester(ctx, "fieldFloat", toScriptShort((short) 123), false);
+      equalsTester(ctx, "fieldFloat", toScriptInt(120), false);
+      equalsTester(ctx, "fieldFloat", toScriptLong(23432423111111L), false);
+      equalsTester(ctx, "fieldFloat", toScriptFloat(2324), false);
+      equalsTester(ctx, "fieldFloat", toScriptFloat(284324), true);
    }
 
    /**
@@ -307,123 +460,94 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       private Boolean fieldBooleanWrapper;
       private boolean[] fieldBooleanArray;
       private Boolean[] fieldBooleanWrapperArray;
-
       private byte fieldByte;
       private Byte fieldByteWrapper;
       private byte[] fieldByteArray;
       private Byte[] fieldByteWrapperArray;
-
       private char fieldChar;
       private Character fieldCharacterWrapper;
       private char[] fieldCharArray;
       private Character[] fieldCharacterWrapperArray;
-
       private double fieldDouble;
       private Double fieldDoubleWrapper;
       private double[] fieldDoubleArray;
       private Double[] fieldDoubleWrapperArray;
-
       private float fieldFloat;
       private Float fieldFloatWrapper;
       private float[] fieldFloatArray;
       private Float[] fieldFloatWrapperArray;
-
       private int fieldInteger;
       private Integer fieldIntegerWrapper;
       private int[] fieldIntegerArray;
       private Integer[] fieldIntegerWrapperArray;
-
       private long fieldLong;
       private Long fieldLongWrapper;
       private long[] fieldLongArray;
       private Long[] fieldLongWrapperArray;
-
       private short fieldShort;
       private Short fieldShortWrapper;
       private short[] fieldShortArray;
       private Short[] fieldShortWrapperArray;
-
       private String fieldString;
       private String[] fieldStringArray;
       private String fieldStringWithoutTrim;
-
       private BigDecimal fieldBigDecimal;
       private BigInteger fieldBigInteger;
-
       private java.util.Date fieldUtilDate;
-
       private java.sql.Date fieldSqlDate;
       private Time fieldTime;
       private Timestamp fieldTimestamp;
-
       private Object fieldObject;
       private Object[] fieldObjectArray;
-
       private RegularJavaBean fieldBean;
       private RegularJavaBean[] fieldBeanArray;
-
       private Collection fieldCollection;
       private Map fieldMap;
-
       boolean fieldBooleanClone;
       Boolean fieldBooleanWrapperClone;
       boolean[] fieldBooleanArrayClone;
       Boolean[] fieldBooleanWrapperArrayClone;
-
       byte fieldByteClone;
       Byte fieldByteWrapperClone;
       byte[] fieldByteArrayClone;
       Byte[] fieldByteWrapperArrayClone;
-
       char fieldCharClone;
       Character fieldCharacterWrapperClone;
       char[] fieldCharArrayClone;
       Character[] fieldCharacterWrapperArrayClone;
-
       double fieldDoubleClone;
       Double fieldDoubleWrapperClone;
       double[] fieldDoubleArrayClone;
       Double[] fieldDoubleWrapperArrayClone;
-
       float fieldFloatClone;
       Float fieldFloatWrapperClone;
       float[] fieldFloatArrayClone;
       Float[] fieldFloatWrapperArrayClone;
-
       int fieldIntegerClone;
       Integer fieldIntegerWrapperClone;
       int[] fieldIntegerArrayClone;
       Integer[] fieldIntegerWrapperArrayClone;
-
       long fieldLongClone;
       Long fieldLongWrapperClone;
       long[] fieldLongArrayClone;
       Long[] fieldLongWrapperArrayClone;
-
       short fieldShortClone;
       Short fieldShortWrapperClone;
       short[] fieldShortArrayClone;
       Short[] fieldShortWrapperArrayClone;
-
       String fieldStringClone;
       String[] fieldStringArrayClone;
       String fieldStringWithoutTrimClone;
-
       BigDecimal fieldBigDecimalClone;
       BigInteger fieldBigIntegerClone;
-
       Date fieldUtilDateClone;
-
       java.sql.Date fieldSqlDateClone;
       Time fieldTimeClone;
       Timestamp fieldTimestampClone;
-
       Object fieldObjectClone;
       Object[] fieldObjectArrayClone;
-
       RegularJavaBean fieldBeanClone;
       RegularJavaBean[] fieldBeanArrayClone;
-
       Collection fieldCollectionClone;
       Map fieldMapClone;
 
@@ -773,12 +897,10 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
       }
 
       /**
-       * @EmptyResolver
-       * 	class=net.java.dev.genesis.resolvers.StringEmptyResolver
-       * 	trim=false
-       * @EqualityComparator
-       * 	class=net.java.dev.genesis.equality.StringEqualityComparator
-       * 	trim=false
+       * @EmptyResolver class=net.java.dev.genesis.resolvers.StringEmptyResolver
+       *                trim=false
+       * @EqualityComparator class=net.java.dev.genesis.equality.StringEqualityComparator
+       *                     trim=false
        */
       public String getFieldStringWithoutTrim() {
          return fieldStringWithoutTrim;
@@ -1302,5 +1424,4 @@ public class ExtensionJXPathFunctionsTest extends TestCase {
          this.name = name;
       }
    }
-
 }

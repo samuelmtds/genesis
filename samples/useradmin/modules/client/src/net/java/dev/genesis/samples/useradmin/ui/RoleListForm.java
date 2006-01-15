@@ -49,7 +49,7 @@ public class RoleListForm {
 
    /**
     * @Action
-    * @EnabledWhen g:isNotEmpty(role)
+    * @EnabledWhen genesis.isNotEmpty(form.getRole())
     */
    public void remove() throws Exception {
       new RoleRemoveCommand().removeRole(role);
@@ -58,7 +58,7 @@ public class RoleListForm {
    
    /**
     * @Action
-    * @EnabledWhen g:isNotEmpty(role)
+    * @EnabledWhen genesis.isNotEmpty(form.getRole())
     */
    public void select() throws Exception {
    }

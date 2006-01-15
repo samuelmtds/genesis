@@ -21,6 +21,7 @@ package net.java.dev.genesis.script.jxpath;
 import java.util.Map;
 
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
+import net.java.dev.genesis.script.PrimitiveFunctions;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptExpression;
 
@@ -29,7 +30,10 @@ import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Variables;
 
-public class JXPathScriptContext implements ScriptContext {
+public class JXPathScriptContext extends ScriptContext {
+   public static final String GENESIS_FUNCTIONS_NS = "g";
+   public static final String PRIMITIVE_FUNCTIONS_NS = "t";
+
    private JXPathContext ctx;
    private FunctionLibrary functionLib = new FunctionLibrary();
 
@@ -37,12 +41,20 @@ public class JXPathScriptContext implements ScriptContext {
       ctx = JXPathContext.newContext(root);
       ctx.setFunctions(functionLib);
       ctx.setVariables(getVariables());
-
-      registerFunctions("g", getFunctions());
+      registerFunctions(PRIMITIVE_FUNCTIONS_NS, PrimitiveFunctions.class);
+      registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
 
-   public void registerFunctions(String prefix, Object functions) {
-      registerFunctions(prefix, functions.getClass());
+   public Object getContextBean() {
+      return ctx.getContextBean();
+   }
+
+   protected Object doEval(ScriptExpression expr) {
+      return ctx.getValue(expr.getExpressionString());
+   }
+
+   protected ScriptExpression newScriptExpression(String expression) {
+      return new JXPathExpression(expression);
    }
 
    public void registerFunctions(String prefix, Class functionClass) {
@@ -50,10 +62,6 @@ public class JXPathScriptContext implements ScriptContext {
    }
 
    public void declare(String name, Object value) {
-      declare(name, value, null);
-   }
-
-   public void declare(String name, Object value, Class type) {
       ctx.getVariables().declareVariable(name, value);
    }
 
@@ -66,15 +74,7 @@ public class JXPathScriptContext implements ScriptContext {
    }
 
    public Map getContextMap() {
-      return ((VariablesImpl)ctx.getVariables()).getVariablesMap();
-   }
-
-   public Object eval(ScriptExpression expr) {
-      return ctx.getValue(expr.getExpressionString());
-   }
-
-   public Object eval(String expr) {
-      return new JXPathExpression(expr).eval(this);
+      return ((VariablesImpl) ctx.getVariables()).getVariablesMap();
    }
 
    protected Variables getVariables() {

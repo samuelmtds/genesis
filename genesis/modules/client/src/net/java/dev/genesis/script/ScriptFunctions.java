@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -67,6 +67,12 @@ public class ScriptFunctions {
                   + "'");
          }
          return value2 == null;
+      } else if (value2 == null) {
+         if (log.isDebugEnabled()) {
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
+                  + "'");
+         }
+         return false;
       } else if (value1.getClass().equals(value2.getClass())
             || value1.getClass().isAssignableFrom(value2.getClass())) {
          if (log.isDebugEnabled()) {

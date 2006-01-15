@@ -30,25 +30,44 @@ import javax.servlet.jsp.el.VariableResolver;
 
 import org.apache.taglibs.standard.functions.Functions;
 
+import net.java.dev.genesis.script.PrimitiveFunctions;
 import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFunctionsAdapter;
 
-public class ELScriptContext implements ScriptContext, VariableResolver,
+public class ELScriptContext extends ScriptContext implements VariableResolver,
       FunctionMapper {
+   public static final String FORM_NS = "form";
+   public static final String GENESIS_FUNCTIONS_NS = "g";
+
    private final Map variables = new HashMap();
    private final Map functions = new HashMap();
    private final ExpressionEvaluator evaluator;
 
    protected ELScriptContext(Object root, ExpressionEvaluator evaluator) {
+      variables.put(FORM_NS, proxy(root));
       this.evaluator = evaluator;
-      variables.put("form", root);
       registerFunctions("", Functions.class);
-      registerFunctions("g", getFunctions());
+      registerFunctions("", PrimitiveFunctions.class);
+      registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
 
-   public void registerFunctions(String prefix, Object obj) {
-      registerFunctions(prefix, obj.getClass());
+   public Object getContextBean() {
+      return lookup(FORM_NS);
+   }
+
+   protected Object doEval(ScriptExpression expr) {
+      try {
+         return evaluator.evaluate(expr.getExpressionString(), Object.class,
+               getVariableResolver(), getFunctionMapper());
+      } catch (ELException e) {
+         throw new ScriptException(e.getMessage(), e);
+      }
+   }
+
+   protected ScriptExpression newScriptExpression(String expression) {
+      return new ELExpression(expression, evaluator);
    }
 
    public void registerFunctions(String prefix, Class functionClass) {
@@ -56,25 +75,21 @@ public class ELScriptContext implements ScriptContext, VariableResolver,
       for (int i = 0; i < methods.length; i++) {
          Method m = methods[i];
          if (Modifier.isStatic(m.getModifiers())) {
-            functions.put(prefix + ":" + m.getName(), m);
+            functions.put(prefix + ':' + m.getName(), m);
          }
       }
    }
 
    public Method resolveFunction(String prefix, String localName) {
-      return (Method)functions.get(prefix + ":" + localName);
+      return (Method) functions.get(prefix + ':' + localName);
    }
 
    public Object resolveVariable(String var) throws ELException {
       return variables.get(var);
    }
 
-   public void declare(String name, Object value, Class type) {
-      variables.put(name, value);
-   }
-
    public void declare(String name, Object value) {
-      declare(name, value, null);
+      variables.put(name, value);
    }
 
    public Object lookup(String name) {
@@ -87,19 +102,6 @@ public class ELScriptContext implements ScriptContext, VariableResolver,
 
    public Map getContextMap() {
       return variables;
-   }
-
-   public Object eval(ScriptExpression expr) {
-      try {
-         return evaluator.evaluate(expr.getExpressionString(), Object.class,
-               getVariableResolver(), getFunctionMapper());
-      } catch (ELException e) {
-         throw new RuntimeException(e);
-      }
-   }
-
-   public Object eval(String expr) {
-      return new ELExpression(expr, evaluator).eval(this);
    }
 
    protected VariableResolver getVariableResolver() {

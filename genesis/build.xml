@@ -78,6 +78,7 @@
 	<path id="client.dependency.classpath">
       <path location="${genesis.module.shared}/${build.dest}" />
       <path refid="script.path" />
+      <fileset dir="${genesis.hibernate.dist}" includes="cglib*.jar" />  
       <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
@@ -118,7 +119,7 @@
       <path refid="script.path" />  
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="junit*.jar" />
-		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
+		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar,cglib*.jar" />
 		<fileset dir="${genesis.j2ee.dist}" includes="j2ee.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
@@ -348,10 +349,13 @@
       <fail if="needs.java5.home">
          'genesis.java5.home' not set
       </fail>
+      <condition property="javac.fork">
+         <isfalse value="${supports.annotation}"/>
+      </condition>
       <javac destdir="${genesis.module.annotation}/${build5.dest}"
              debug="true"
              source="1.5"
-             fork="true"
+             fork="${javac.fork}"
              executable="${javac.compiler}">
          <src path="${genesis.module.annotation}/${src5.dir}" />
       </javac>
@@ -548,7 +552,7 @@
 	<target name="integrationtest:test">
 		<mkdir dir="${genesis.module.tests}/${test.reportsDirectory}" />
 		<junit printsummary="yes" fork="yes">
-			<sysproperty key="java.naming.factory.initial"
+         <sysproperty key="java.naming.factory.initial"
 			             value="org.jnp.interfaces.NamingContextFactory" />
 			<sysproperty key="java.naming.provider.url" value="${genesis.jboss.provider.url}" />
 			<sysproperty key="aspectwerkz.definition.file"
@@ -559,6 +563,7 @@
 				<path refid="aspectwerkz.path" />
 				<path refid="commons.path" />
 				<path refid="hibernate.path" />
+            <path refid="script.path" />      
 				<pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
 				<pathelement path="${genesis.jdbc.driver}" />
 				<path location="${genesis.module.tests}/${genesis.weaving.dest}" />
@@ -567,6 +572,7 @@
 			<batchtest todir="${genesis.module.tests}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.tests}/${src.dir}">
                <include name="**/*Test.java" />
+               <exclude name="**/ScriptFunctionsTest.java"/>
             </fileset>
          </batchtest>
       </junit>

@@ -35,6 +35,10 @@ public class BSFScriptFactory implements ScriptFactory {
    public BSFScriptFactory() {
    }
 
+   public BSFScriptFactory(String language) {
+      this.lang = language;
+   }
+
    public Script newScript() {
       return new BSFScript(lang);
    }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import net.java.dev.genesis.exception.TimeoutException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.aspectwerkz.AspectContext;
-import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
+import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 
 
 /**
@@ -111,7 +111,7 @@ public class TimeoutAspect {
       private final boolean keepThreadInstance;
       private Throwable throwable;
       private Object returnValue;
-      private JoinPoint jp;
+      private StaticJoinPoint jp;
       private Object lock = new Object();
       private boolean started;
       private boolean running;
@@ -123,7 +123,7 @@ public class TimeoutAspect {
          this.keepThreadInstance = keepThreadInstance;
       }
 
-      public void execute(JoinPoint jp, long timeout) {
+      public void execute(StaticJoinPoint jp, long timeout) {
          this.jp = jp;
          returnValue = null;
          throwable = null;
@@ -231,7 +231,7 @@ public class TimeoutAspect {
    /**
     * @Around("timeout")
     */
-   public Object timeoutAdvice(final JoinPoint jp) throws Throwable {
+   public Object timeoutAdvice(final StaticJoinPoint jp) throws Throwable {
       WorkerThread thread = getWorkerThread();
 
       if (thread == null) {

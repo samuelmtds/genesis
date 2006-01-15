@@ -63,7 +63,7 @@ public class UserListForm extends BaseCriteriaSearchForm {
    }
 
    /**
-    * @Condition usersSelected=g:isNotEmpty(users)
+    * @Condition usersSelected=genesis.isNotEmpty(form.getUsers())
     */
    public List getUsers() {
       return users;
@@ -87,7 +87,7 @@ public class UserListForm extends BaseCriteriaSearchForm {
 
    /**
     * @Action
-    * @CallWhen runSearch=true()
+    * @CallWhen form.isRunSearch()
     * @DataProvider objectField=users callOnInit=false
     */
    public List doSearch() throws Exception {
@@ -98,14 +98,14 @@ public class UserListForm extends BaseCriteriaSearchForm {
 
    /**
     * @Action
-    * @EnabledWhen count(users) = 1
+    * @EnabledWhen form.getUsers().size() == 1
     */
    public void update() throws Exception {
    }
 
    /**
     * @Action
-    * @EnabledWhen $usersSelected
+    * @EnabledWhen  usersSelected
     */
    public void remove() throws Exception {
       new UserRemoveCommand().removeUser(users);

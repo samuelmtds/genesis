@@ -45,7 +45,12 @@ public abstract class BaseSearchForm extends BaseForm {
 
    /**
     * @Action
-    * @VisibleWhen pageNumber > 0
+    * @VisibleWhen({
+    *                "beanshell", "form.getPageNumber() > 0",
+    *                "javascript", "form.pageNumber > 0",
+    *                "jxpath", "pageNumber > 0",
+    *                "el", "${form.pageNumber > 0}"
+    *              })
     */
    public void previousPage() {
       setPageNumber(getPageNumber() - 1);
@@ -55,7 +60,12 @@ public abstract class BaseSearchForm extends BaseForm {
 
    /**
     * @Action
-    * @VisibleWhen lastPage=false()
+    * @VisibleWhen({
+    *             "beanshell", "!form.isLastPage()",
+    *             "javascript", "!form.lastPage",
+    *             "jxpath", "lastPage=false()",
+    *             "el", "${form.lastPage}"
+    *             })
     */
    public void nextPage() {
       pageNumber++;

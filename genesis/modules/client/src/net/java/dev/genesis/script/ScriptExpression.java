@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,12 +26,7 @@ public abstract class ScriptExpression {
    }
 
    public Object eval(ScriptContext ctx) {
-      ScriptUtils.enter(ctx);
-      try {
-         return ctx.eval(this);
-      } finally {
-         ScriptUtils.exit();
-      }
+      return ctx.eval(this);
    }
    
    public String getExpressionString() {

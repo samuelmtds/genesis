@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.script.el;
+package net.java.dev.genesis.script;
 
-import javax.servlet.jsp.el.ELException;
-import javax.servlet.jsp.el.ExpressionEvaluator;
-
-import net.java.dev.genesis.script.ScriptExpression;
-
-public class ELExpression extends ScriptExpression {
-   public ELExpression(String expr, ExpressionEvaluator evaluator) {
-      super(expr.startsWith("${") ? expr : "${" + expr + '}');
-     
-      try {
-         // Compile and cache the expression
-         evaluator.parseExpression(getExpressionString(), Object.class, null);
-      } catch (ELException e) {
-         throw new RuntimeException(e);
-      }
+public class ScriptException extends RuntimeException {
+   public ScriptException(String message, Throwable cause) {
+      super(message, cause);
    }
 }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,8 +39,9 @@ public class ScriptFunctionsAdapter {
 
    public static boolean equals(final Object arg1, final Object arg2)
          throws Exception {
-      return ScriptFunctions.equals(ScriptUtils.getCurrentContext(),
-            ScriptUtils.getScriptValue(arg1), ScriptUtils.getScriptValue(arg2));
+      final ScriptValue[] values = ScriptUtils.getScriptValues(arg1, arg2);
+      return ScriptFunctions.equals(ScriptUtils.getCurrentContext(), values[0],
+            values[1]);
    }
 
    public static boolean notEquals(final Object arg1, final Object arg2)

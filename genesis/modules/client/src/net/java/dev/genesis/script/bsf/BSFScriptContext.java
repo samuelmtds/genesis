@@ -21,57 +21,69 @@ package net.java.dev.genesis.script.bsf;
 import java.util.Hashtable;
 import java.util.Map;
 
+import net.java.dev.genesis.script.PrimitiveFunctions;
 import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFunctionsAdapter;
+import net.java.dev.genesis.script.ScriptableObject;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.bsf.util.ObjectRegistry;
 
-public class BSFScriptContext implements ScriptContext {
+public class BSFScriptContext extends ScriptContext {
+   public static final String FORM_NS = "form";
+   public static final String GENESIS_FUNCTIONS_NS = "genesis";
+   public static final String PRIMITIVE_FUNCTIONS_NS = "types";
+
    private final BSFManager manager = new BSFManager();
    private final Hashtable contextMap = new Hashtable();
    private final String lang;
+   private final ScriptableObject contextBean;
 
-   protected BSFScriptContext(String lang, Object root) {
+   protected BSFScriptContext(String lang, final Object root) {
       this.lang = lang;
       manager.setObjectRegistry(getObjectRegistry());
-      try {
-         manager.declareBean("form", root, null);
-      } catch (Exception e) {
-         throw new RuntimeException(e);
-      }
-
-      registerFunctions("genesis", getFunctions());
+      declare(FORM_NS, contextBean = proxy(root));
+      registerFunctions(PRIMITIVE_FUNCTIONS_NS, PrimitiveFunctions.class);
+      registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
 
-   public void registerFunctions(String prefix, Object functions) {
+   public Object getContextBean() {
+      return contextBean;
+   }
+
+   protected Object doEval(ScriptExpression expr) {
       try {
-         manager.declareBean(prefix, functions, null);
-      } catch (Exception e) {
-         throw new RuntimeException(e);
+         contextBean.beforeEval();
+         return manager.eval(lang, expr.getExpressionString(), 0, 0, expr
+               .getExpressionString());
+      } catch (BSFException e) {
+         throw new ScriptException(e.getMessage(), e);
+      } finally {
+         contextBean.afterEval();
       }
+   }
+
+   protected ScriptExpression newScriptExpression(String expression) {
+      return new BSFExpression(expression);
    }
 
    public void registerFunctions(String prefix, Class functionClass) {
       try {
-         registerFunctions(prefix, functionClass.newInstance());
+         manager.declareBean(prefix, functionClass.newInstance(), null);
       } catch (Exception e) {
-         throw new RuntimeException(e);
-      }
-   }
-
-   public void declare(String name, Object value, Class type) {
-      try {
-         manager.declareBean(name, value, type);
-      } catch (BSFException e) {
-         throw new RuntimeException(e);
+         throw new ScriptException(e.getMessage(), e);
       }
    }
 
    public void declare(String name, Object value) {
-      declare(name, value, value == null ? null : value.getClass());
+      try {
+         manager.declareBean(name, value, null);
+      } catch (BSFException e) {
+         throw new ScriptException(e.getMessage(), e);
+      }
    }
 
    public Object lookup(String name) {
@@ -82,7 +94,7 @@ public class BSFScriptContext implements ScriptContext {
       try {
          manager.undeclareBean(name);
       } catch (BSFException e) {
-         throw new RuntimeException(e);
+         throw new ScriptException(e.getMessage(), e);
       }
    }
 
@@ -90,28 +102,15 @@ public class BSFScriptContext implements ScriptContext {
       return contextMap;
    }
 
-   public Object eval(ScriptExpression expr) {
-      try {
-         return manager.eval(lang, expr.getExpressionString(), 0, 0, expr
-               .getExpressionString());
-      } catch (BSFException e) {
-         throw new RuntimeException(e);
-      }
-   }
-
-   public Object eval(String expr) {
-      return new BSFExpression(expr).eval(this);
-   }
-
    protected ObjectRegistry getObjectRegistry() {
       return new BSFObjectRegistry();
    }
 
-   protected Object getFunctions() {
-      return new ScriptFunctionsAdapter();
+   protected Class getFunctions() {
+      return ScriptFunctionsAdapter.class;
    }
 
-   public class BSFObjectRegistry extends ObjectRegistry {
+   protected class BSFObjectRegistry extends ObjectRegistry {
       public Object lookup(String name) throws IllegalArgumentException {
          Object obj = contextMap.get(name);
 

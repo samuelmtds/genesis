@@ -23,5 +23,5 @@ package net.java.dev.genesis.annotation;
  * @Retention(RetentionPolicy.RUNTIME)
  */
 public interface VisibleWhen {
-   public String value();
+   public String[] value();
 }

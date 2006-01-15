@@ -74,6 +74,7 @@ public class FormMetadataFactoryAspect {
          FACTORIES.put("el", "net.java.dev.genesis.script.el.ELScriptFactory");
       }
 
+      private String scriptFactoryParameter;
       private ScriptFactory scriptFactory;
       private Script script;
       
@@ -81,21 +82,21 @@ public class FormMetadataFactoryAspect {
             throws Exception {
          Map parameters = Mixins.getParameters(getClass(), getClass()
                .getClassLoader());
-         String factoryName = (String)parameters.get("scriptFactory");
+         scriptFactoryParameter = (String)parameters.get("scriptFactory");
          String scriptFactoryProperties = (String)parameters
                .get("scriptFactoryProperties");
 
          Map properties = new HashMap();
 
-         if (factoryName == null) {
-            factoryName = "jxpath";
+         if (scriptFactoryParameter == null) {
+            scriptFactoryParameter = "jxpath";
          } 
 
-         String scriptFactoryName = (String)FACTORIES.get(factoryName);
+         String scriptFactoryName = (String)FACTORIES.get(scriptFactoryParameter);
          if (scriptFactoryName == null) {
-            scriptFactoryName = factoryName;
+            scriptFactoryName = scriptFactoryParameter;
          } else {
-            properties.put("lang", factoryName);
+            properties.put("lang", scriptFactoryParameter);
          }
 
          scriptFactory = (ScriptFactory)ClassesCache
@@ -116,7 +117,16 @@ public class FormMetadataFactoryAspect {
             script = scriptFactory.newScript();
          }
          return script;
-      }      
+      }
+
+      public boolean isCurrentScriptFactoryNameFor(String alias) {
+         if (scriptFactoryParameter.equals(alias)) {
+            return true;
+         }
+
+         String name = (String)FACTORIES.get(alias);
+         return scriptFactoryParameter.equals(name);
+      }
 
       public interface AnnotationHandler {
          public void processFormAnnotation(final FormMetadata formMetadata,
@@ -227,8 +237,31 @@ public class FormMetadataFactoryAspect {
                   final MemberMetadata memberMetadata,
                   final Annotation annotation) {
                VisibleWhen annon = (VisibleWhen) annotation;
-               memberMetadata
-                     .setVisibleCondition(compile(script, annon.value()));
+               String[] values = annon.value();
+               if (values.length == 0) {
+                  throw new IllegalArgumentException(
+                        "VisibleWhen must define at least one script condition");
+               }
+
+               if (values.length == 1) {
+                  memberMetadata
+                  .setVisibleCondition(compile(script, values[0]));
+               } else if (values.length % 2 != 0) {
+                  throw new IllegalArgumentException(
+                        "VisibleWhen must define at least one script condition or pairs of script conditions");
+               } else {
+                  AspectFormMetadataFactory mixin = (AspectFormMetadataFactory) Mixins
+                        .mixinOf(AspectFormMetadataFactory.class);
+                  for (int i = 0; i < values.length / 2; i+=2) {
+                     if (!mixin.isCurrentScriptFactoryNameFor(values[i])) {
+                        continue;
+                     }
+
+                     memberMetadata.setVisibleCondition(compile(script,
+                           values[i + 1]));
+                     break;
+                  }
+               }
             }
          }
 
