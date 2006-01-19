@@ -23,10 +23,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.api.GenesisBuildSupportManager;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
+import net.java.dev.genesis.plugins.netbeans.projecttype.queries.SourceLevelQueryImpl;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisBuildSupportMissingDialog;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.project.GenesisLogicalViewProvider;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
@@ -176,7 +178,8 @@ public class GenesisProject implements Project {
          new GenesisSources(this),
          new GenesisCustomizerProvider(this),
          new GenesisProjectXmlSavedHook(),
-         new GenesisProjectOpenedHook()
+         new GenesisProjectOpenedHook(),
+         new SourceLevelQueryImpl(getHelper())
          });
    }
 
@@ -186,41 +189,7 @@ public class GenesisProject implements Project {
 
       if (!GenesisBuildSupportManager.getInstance().generateBuildFiles(kind,
             generatedFilesHelper, version, check)) {
-         Runnable r = new Runnable() {
-            public void run() {
-               try {
-                  final String newVersion = new GenesisBuildSupportMissingDialog(
-                        version).getVersion();
-
-                  if (newVersion != null) {
-                     ProjectManager.getDefault().mutex().writeAccess(
-                           new Mutex.ExceptionAction() {
-                        public Object run() throws Exception {
-                           Element root = GenesisProject.this.getHelper()
-                                 .getPrimaryConfigurationData(true);
-                           Node node = Utils.getVersionNode(root);
-                           node.setNodeValue(newVersion);
-                           helper.putPrimaryConfigurationData(root, true);
-                           ProjectManager.getDefault().saveProject(
-                                 GenesisProject.this);
-
-                           return null;
-                        }
-                     });
-
-                     generateBuildFiles(true);
-                  }
-               } catch (Exception ex) {
-                  ErrorManager.getDefault().notify(ex);
-               }
-            }
-         };
-
-         if (EventQueue.isDispatchThread()) {
-            r.run();
-         } else {
-            EventQueue.invokeAndWait(r);
-         }
+         handleMissingSupport(version);
 
          return;
       }
@@ -265,6 +234,45 @@ public class GenesisProject implements Project {
       } catch (MutexException ex) {
          ErrorManager.getDefault().log(ErrorManager.ERROR, "Could not make " +
                "property genesis.home point to " + reference);
+      }
+   }
+
+   private void handleMissingSupport(final String version) 
+         throws InterruptedException, InvocationTargetException {
+      Runnable r = new Runnable() {
+         public void run() {
+            try {
+               final String newVersion = new GenesisBuildSupportMissingDialog(
+                     version).getVersion();
+
+               if (newVersion != null) {
+                  ProjectManager.getDefault().mutex().writeAccess(
+                        new Mutex.ExceptionAction() {
+                     public Object run() throws Exception {
+                        Element root = GenesisProject.this.getHelper()
+                              .getPrimaryConfigurationData(true);
+                        Node node = Utils.getVersionNode(root);
+                        node.setNodeValue(newVersion);
+                        helper.putPrimaryConfigurationData(root, true);
+                        ProjectManager.getDefault().saveProject(
+                              GenesisProject.this);
+
+                        return null;
+                     }
+                  });
+
+                  generateBuildFiles(true);
+               }
+            } catch (Exception ex) {
+               ErrorManager.getDefault().notify(ex);
+            }
+         }
+      };
+
+      if (EventQueue.isDispatchThread()) {
+         r.run();
+      } else {
+         EventQueue.invokeAndWait(r);
       }
    }
 }

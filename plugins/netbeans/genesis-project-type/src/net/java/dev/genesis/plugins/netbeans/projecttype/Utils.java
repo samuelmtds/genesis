@@ -23,6 +23,7 @@ import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind
 import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.api.project.Project;
+import org.netbeans.spi.project.support.ant.AntProjectHelper;
 import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
 import org.openide.DialogDisplayer;
 import org.openide.ErrorManager;
@@ -142,6 +143,22 @@ public class Utils {
 
          if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
             return nl.item(0);
+         }
+      }
+
+      return null;
+   }
+
+   public static String getSourceLevel(AntProjectHelper helper) {
+      Element data = helper.getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-level");
+
+      if (nl.getLength() == 1) {
+         nl = nl.item(0).getChildNodes();
+
+         if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
+            return ((Text)nl.item(0)).getNodeValue();
          }
       }
 
