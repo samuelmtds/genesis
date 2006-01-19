@@ -9,6 +9,15 @@
     <target name="netbeans-extra">
        <copy todir="${cluster}/modules/ext/genesis-deps">
           <fileset dir="../../../genesis/lib">
+             <include name="aspectwerkz/aspectwerkz-2*.jar" />
+             <include name="aspectwerkz/aspectwerkz-core-2*.jar" />
+             <include name="aspectwerkz/aspectwerkz-jdk14-2*.jar" />
+             <include name="aspectwerkz/dom4j-*.jar" />
+             <include name="aspectwerkz/jrexx-*.jar" />
+             <include name="aspectwerkz/trove-*.jar" />
+             <include name="backport175/backport175-*.jar" />
+             <include name="commons/commons-beanutils-*.jar" />
+             <include name="commons/commons-jxpath-*.jar" />
              <include name="commons/reusable-components-*.jar" />
           </fileset>
        </copy>

@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
+import java.awt.EventQueue;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -26,7 +27,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.api.GenesisBuildSupportManager;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
-import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisLogicalViewProvider;
+import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisBuildSupportMissingDialog;
+import net.java.dev.genesis.plugins.netbeans.projecttype.ui.project.GenesisLogicalViewProvider;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
@@ -47,6 +49,8 @@ import org.openide.util.Mutex;
 import org.openide.util.MutexException;
 import org.openide.util.Utilities;
 import org.openide.util.lookup.Lookups;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class GenesisProject implements Project {
    private static final String APPLICATION_NAME_PROPERTY = 
@@ -101,7 +105,13 @@ public class GenesisProject implements Project {
 
    private final class GenesisProjectXmlSavedHook extends ProjectXmlSavedHook {
       protected void projectXmlSaved() throws IOException {
-         generateBuildFiles(false);
+         try {
+            generateBuildFiles(false);
+         } catch (IOException ioe) {
+            throw ioe;
+         } catch (Exception e) {
+            ErrorManager.getDefault().notify(e);
+         }
       }
    }
 
@@ -109,8 +119,8 @@ public class GenesisProject implements Project {
       protected void projectOpened() {
          try {
             generateBuildFiles(true);
-         } catch (IOException ioe) {
-            ErrorManager.getDefault().notify(ioe);
+         } catch (Exception e) {
+            ErrorManager.getDefault().notify(e);
          }
       }
 
@@ -170,15 +180,48 @@ public class GenesisProject implements Project {
          });
    }
 
-   private void generateBuildFiles(boolean check) throws IOException {
+   private void generateBuildFiles(boolean check) throws Exception {
       GenesisProjectKind kind = Utils.determineKind(this);
-      String version = Utils.getVersion(this);
+      final String version = Utils.getVersion(this);
 
       if (!GenesisBuildSupportManager.getInstance().generateBuildFiles(kind,
             generatedFilesHelper, version, check)) {
-         //TODO: handle absence of genesis build support for the project
-         ErrorManager.getDefault().log(ErrorManager.ERROR, "There is no build " +
-               "support for version " + version);
+         Runnable r = new Runnable() {
+            public void run() {
+               try {
+                  final String newVersion = new GenesisBuildSupportMissingDialog(
+                        version).getVersion();
+
+                  if (newVersion != null) {
+                     ProjectManager.getDefault().mutex().writeAccess(
+                           new Mutex.ExceptionAction() {
+                        public Object run() throws Exception {
+                           Element root = GenesisProject.this.getHelper()
+                                 .getPrimaryConfigurationData(true);
+                           Node node = Utils.getVersionNode(root);
+                           node.setNodeValue(newVersion);
+                           helper.putPrimaryConfigurationData(root, true);
+                           ProjectManager.getDefault().saveProject(
+                                 GenesisProject.this);
+
+                           return null;
+                        }
+                     });
+
+                     generateBuildFiles(true);
+                  }
+               } catch (Exception ex) {
+                  ErrorManager.getDefault().notify(ex);
+               }
+            }
+         };
+
+         if (EventQueue.isDispatchThread()) {
+            r.run();
+         } else {
+            EventQueue.invokeAndWait(r);
+         }
+
          return;
       }
  

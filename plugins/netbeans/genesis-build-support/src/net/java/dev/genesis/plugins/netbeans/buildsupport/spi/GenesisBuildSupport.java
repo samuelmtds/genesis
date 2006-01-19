@@ -21,7 +21,7 @@ package net.java.dev.genesis.plugins.netbeans.buildsupport.spi;
 import java.io.IOException;
 import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
 
-public interface GenesisBuildSupport {
+public interface GenesisBuildSupport extends Comparable {
    public void generateBuildFiles(GenesisProjectKind kind, 
          GeneratedFilesHelper helper, boolean check) throws IOException;
    public GenesisVersion getVersion();

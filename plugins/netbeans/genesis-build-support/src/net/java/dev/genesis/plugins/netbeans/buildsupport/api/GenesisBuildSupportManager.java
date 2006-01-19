@@ -21,7 +21,10 @@ package net.java.dev.genesis.plugins.netbeans.buildsupport.api;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
@@ -61,5 +64,19 @@ public final class GenesisBuildSupportManager {
    public FileObject getGenesisHome(String version) throws MalformedURLException {
       return URLMapper.findFileObject(new URL("nbinst:///modules/ext/" +
             "genesis/" + version));
+   }
+
+   public List getBuildSupport() {
+      List ret = new ArrayList();
+      Lookup.Result result = Lookup.getDefault().lookup(new Lookup.Template(
+            GenesisBuildSupport.class));
+
+      for (Iterator i = result.allInstances().iterator(); i.hasNext(); ) {
+         ret.add(i.next());
+      }
+
+      Collections.sort(ret, Collections.reverseOrder());
+
+      return ret;
    }
 }

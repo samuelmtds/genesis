@@ -124,14 +124,24 @@ public class Utils {
 
    public static String getVersion(GenesisProject project) {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
-      NodeList nl = data.getElementsByTagNameNS(
+      Node versionNode = getVersionNode(data);
+      
+      if (versionNode != null) {
+         return ((Text)versionNode).getNodeValue();
+      }
+
+      return null;
+   }
+
+   public static Node getVersionNode(Element root) {
+      NodeList nl = root.getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "version");
 
       if (nl.getLength() == 1) {
          nl = nl.item(0).getChildNodes();
 
          if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
-            return ((Text)nl.item(0)).getNodeValue();
+            return nl.item(0);
          }
       }
 

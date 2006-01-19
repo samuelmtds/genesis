@@ -5,4 +5,18 @@
 <project name="net.java.dev.genesis.plugins.netbeans.projecttype" default="netbeans" basedir=".">
     <description>Builds, tests, and runs the project net.java.dev.genesis.plugins.netbeans.projecttype.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="netbeans-extra">
+       <copy todir="${cluster}/modules/ext/genesis">
+          <fileset dir="../genesis-project-type-ui/target">
+             <include name="genesis-project-type-ui.jar" />
+          </fileset>
+          <fileset dir="../../../genesis/dist">
+             <include name="genesis-annotation-jdk14-*.jar" />
+             <include name="genesis-aspect-annotated-*.jar" />
+             <include name="genesis-client-*.jar" />
+             <include name="genesis-shared-annotated-*.jar" />
+          </fileset>
+       </copy>
+    </target>
 </project>

@@ -52,4 +52,12 @@ public abstract class AbstractGenesisBuildSupport implements GenesisBuildSupport
    public GenesisVersion getVersion() {
       return version;
    }
+
+   public int compareTo(Object o) {
+      return getVersion().compareTo(((GenesisBuildSupport)o).getVersion());
+   }
+
+   public String toString() {
+      return version.toString();
+   }
 }
