@@ -18,6 +18,10 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype.classpath;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,13 +37,18 @@ import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.spi.java.classpath.ClassPathProvider;
 import org.netbeans.spi.java.classpath.support.ClassPathSupport;
-import org.netbeans.spi.project.support.ant.AntProjectHelper;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.modules.SpecificationVersion;
-import org.openide.util.Lookup;
 
 public class ClassPathProviderImpl implements ClassPathProvider {
+   private static final Object[][] sharedCompilePaths = new Object[][] {
+         new Object[] {"genesis", new String[] {"genesis-shared-"}},
+         new Object[] {"lib/hibernate", new String[] {"hibernate"}},
+         new Object[] {"lib/commons",  new String[] {"commons-beanutils", 
+               "commons-logging", "reusable-components"}}
+   };
+
    private final Map classpaths = new HashMap();
    private final GenesisProject project;
    
@@ -140,6 +149,8 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          GenesisSources sources) {
       if (ClassPath.SOURCE.equals(type)) {
          return createSourceClassPath(root, sources);
+      } else if (ClassPath.COMPILE.equals(type)) {
+         return createCompileClassPath(root, sources);
       }
 
       return null;
@@ -154,5 +165,46 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       } else {
          return ClassPathSupport.createClassPath(new FileObject[] {root});
       }
+   }
+
+   private ClassPath createCompileClassPath(FileObject root, 
+         GenesisSources sources) {
+      if (root == sources.getSharedSourcesRoot()) {
+         Collection files = new ArrayList();
+
+         for (int i = 0; i < sharedCompilePaths.length; i++) {
+            Object[] filesPerRoot = sharedCompilePaths[i];
+            final String[] filePrefixes = (String[])filesPerRoot[1];
+
+            File rootDir = new File(project.getEvaluator().evaluate(
+                  "${genesis.home}/" + filesPerRoot[0]));
+            File[] filteredFiles = rootDir.listFiles(new FileFilter() {
+               public boolean accept(File pathname) {
+                  for (int j = 0; j < filePrefixes.length; j++) {
+                     if (pathname.getName().startsWith(filePrefixes[j])) {
+                        return true;
+                     }
+                  }
+
+                  return false;
+               }
+            });
+
+            for (int j = 0; j < filteredFiles.length; j++) {
+               FileObject file = FileUtil.toFileObject(filteredFiles[j]);
+
+               if (FileUtil.isArchiveFile(file)) {
+                  file = FileUtil.getArchiveRoot(file);
+               }
+
+               files.add(file);
+            }
+         }
+
+         return ClassPathSupport.createClassPath((FileObject[])files.toArray(
+               new FileObject[files.size()]));
+      }
+
+      return null;
    }
 }
