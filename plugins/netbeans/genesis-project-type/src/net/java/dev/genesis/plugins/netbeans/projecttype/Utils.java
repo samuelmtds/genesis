@@ -106,7 +106,7 @@ public class Utils {
             GenesisProjectExecutionMode.LOCAL_MODE_ONLY;
    }
 
-   public static GenesisProjectKind determineKind(GenesisProject project) {
+   public static GenesisProjectKind getKind(GenesisProject project) {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "type");

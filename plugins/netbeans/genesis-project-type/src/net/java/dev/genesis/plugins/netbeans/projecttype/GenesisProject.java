@@ -187,7 +187,7 @@ public class GenesisProject implements Project {
 
    private void generateBuildFiles(boolean check, boolean overwriteGenesisHome) 
          throws Exception {
-      GenesisProjectKind kind = Utils.determineKind(this);
+      GenesisProjectKind kind = Utils.getKind(this);
       final String version = Utils.getVersion(this);
 
       if (!GenesisBuildSupportManager.getInstance().generateBuildFiles(kind,

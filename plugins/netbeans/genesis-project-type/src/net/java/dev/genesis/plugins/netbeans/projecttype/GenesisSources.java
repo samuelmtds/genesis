@@ -56,7 +56,7 @@ public class GenesisSources implements Sources, AntProjectListener {
    private Sources buildSources() {
       final SourcesHelper helper = new SourcesHelper(project.getHelper(),
             project.getEvaluator());
-      GenesisProjectKind kind = Utils.determineKind(project);
+      GenesisProjectKind kind = Utils.getKind(project);
 
       if (kind == GenesisProjectKind.DESKTOP) {
          addClientSourcesDir("LBL_Client_Sources_Display_Name", 
