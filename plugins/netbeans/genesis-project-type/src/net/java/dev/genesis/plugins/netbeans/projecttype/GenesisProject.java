@@ -28,6 +28,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.api.GenesisBuildSupportManager;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
+import net.java.dev.genesis.plugins.netbeans.projecttype.classpath.ClassPathProviderImpl;
 import net.java.dev.genesis.plugins.netbeans.projecttype.queries.SourceLevelQueryImpl;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisBuildSupportMissingDialog;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.project.GenesisLogicalViewProvider;
@@ -108,7 +109,7 @@ public class GenesisProject implements Project {
    private final class GenesisProjectXmlSavedHook extends ProjectXmlSavedHook {
       protected void projectXmlSaved() throws IOException {
          try {
-            generateBuildFiles(false);
+            generateBuildFiles(false, false);
          } catch (IOException ioe) {
             throw ioe;
          } catch (Exception e) {
@@ -120,7 +121,7 @@ public class GenesisProject implements Project {
    private final class GenesisProjectOpenedHook extends ProjectOpenedHook {
       protected void projectOpened() {
          try {
-            generateBuildFiles(true);
+            generateBuildFiles(true, false);
          } catch (Exception e) {
             ErrorManager.getDefault().notify(e);
          }
@@ -179,11 +180,13 @@ public class GenesisProject implements Project {
          new GenesisCustomizerProvider(this),
          new GenesisProjectXmlSavedHook(),
          new GenesisProjectOpenedHook(),
-         new SourceLevelQueryImpl(getHelper())
+         new SourceLevelQueryImpl(getHelper()),
+         new ClassPathProviderImpl(getHelper())
          });
    }
 
-   private void generateBuildFiles(boolean check) throws Exception {
+   private void generateBuildFiles(boolean check, boolean overwriteGenesisHome) 
+         throws Exception {
       GenesisProjectKind kind = Utils.determineKind(this);
       final String version = Utils.getVersion(this);
 
@@ -206,7 +209,7 @@ public class GenesisProject implements Project {
 
       String currentGenesisHome = evaluator.getProperty("genesis.home");
 
-      if (currentGenesisHome != null) {
+      if (currentGenesisHome != null && !overwriteGenesisHome) {
          return;
       }
 
@@ -261,7 +264,7 @@ public class GenesisProject implements Project {
                      }
                   });
 
-                  generateBuildFiles(true);
+                  generateBuildFiles(true, true);
                }
             } catch (Exception ex) {
                ErrorManager.getDefault().notify(ex);
