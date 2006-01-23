@@ -181,7 +181,7 @@ public class GenesisProject implements Project {
          new GenesisProjectXmlSavedHook(),
          new GenesisProjectOpenedHook(),
          new SourceLevelQueryImpl(getHelper()),
-         new ClassPathProviderImpl(getHelper())
+         new ClassPathProviderImpl(this)
          });
    }
 

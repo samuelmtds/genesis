@@ -18,12 +18,12 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
-import net.java.dev.reusablecomponents.lang.Enum;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.SourceGroup;
@@ -31,13 +31,13 @@ import org.netbeans.api.project.Sources;
 import org.netbeans.spi.project.support.ant.AntProjectEvent;
 import org.netbeans.spi.project.support.ant.AntProjectListener;
 import org.netbeans.spi.project.support.ant.SourcesHelper;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.Mutex;
 import org.openide.util.NbBundle;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 public class GenesisSources implements Sources, AntProjectListener {
    public static final String SOURCES_TYPE_FOLDER = "genesis:folder";
@@ -45,6 +45,8 @@ public class GenesisSources implements Sources, AntProjectListener {
    private final GenesisProject project;
    private final Collection listeners = new ArrayList();
    private Sources sources;
+   private FileObject clientSourcesRoot;
+   private FileObject sharedSourcesRoot;
 
    public GenesisSources(final GenesisProject project) {
       this.project = project;
@@ -59,11 +61,11 @@ public class GenesisSources implements Sources, AntProjectListener {
       if (kind == GenesisProjectKind.DESKTOP) {
          addClientSourcesDir("LBL_Client_Sources_Display_Name", 
                JavaProjectConstants.SOURCES_TYPE_JAVA, helper, 
-               "${basedir}/modules/client/src");
+               "modules/client/src");
       } else if (kind == GenesisProjectKind.WEB) {
          addClientSourcesDir("LBL_Web_Sources_Display_Name", 
                JavaProjectConstants.SOURCES_TYPE_JAVA, helper, 
-               "${basedir}/modules/web/src");
+               "modules/web/src");
       }
 
       if (!"false".equals(project.getEvaluator().getProperty(
@@ -73,7 +75,7 @@ public class GenesisSources implements Sources, AntProjectListener {
 
          if (sharedSourcesDir == null) {
             //TODO: improve this handling
-            sharedSourcesDir = "${basedir}/modules/shared/src";
+            sharedSourcesDir = "modules/shared/src";
          }
 
          String sharedDisplayName = NbBundle.getMessage(GenesisSources.class,
@@ -83,6 +85,9 @@ public class GenesisSources implements Sources, AntProjectListener {
          helper.addTypedSourceRoot(sharedSourcesDir, 
                JavaProjectConstants.SOURCES_TYPE_JAVA, sharedDisplayName,  
                null, null);
+         sharedSourcesRoot = FileUtil.toFileObject(new File(
+               FileUtil.toFile(project.getProjectDirectory()), 
+               project.getEvaluator().evaluate(sharedSourcesDir)));
       }
 
       addCustomSourceFolders(helper);
@@ -108,6 +113,9 @@ public class GenesisSources implements Sources, AntProjectListener {
                null, null);
          helper.addTypedSourceRoot(clientSourcesDir, sourcesType, 
                clientDisplayName,  null, null);
+         clientSourcesRoot = FileUtil.toFileObject(new File(
+               FileUtil.toFile(project.getProjectDirectory()), 
+               project.getEvaluator().evaluate(clientSourcesDir)));
       }
    }
 
@@ -205,6 +213,8 @@ public class GenesisSources implements Sources, AntProjectListener {
 
       synchronized (this.listeners) {
          sources = null;
+         clientSourcesRoot = null;
+         sharedSourcesRoot = null;
 
          if (this.listeners.isEmpty()) {
             return;
@@ -227,5 +237,13 @@ public class GenesisSources implements Sources, AntProjectListener {
 
    public void propertiesChanged(AntProjectEvent event) {
       fireChanges();
+   }
+
+   public FileObject getClientSourcesRoot() {
+      return clientSourcesRoot;
+   }
+
+   public FileObject getSharedSourcesRoot() {
+      return sharedSourcesRoot;
    }
 }
