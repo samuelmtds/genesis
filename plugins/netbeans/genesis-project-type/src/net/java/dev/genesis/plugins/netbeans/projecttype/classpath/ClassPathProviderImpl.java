@@ -188,9 +188,9 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             files.add(sources.getSharedSourcesRoot());
          }
 
-         addSourceClassPath(files, findSourcesRootNode("client"));
+         addClassPath(files, findSourcesRootNode("client"));
       } else if (sources.getSharedSourcesRoot() == root) {
-         addSourceClassPath(files, findSourcesRootNode("shared"));
+         addClassPath(files, findSourcesRootNode("shared"));
       }
 
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
@@ -200,15 +200,16 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    private ClassPath createCompileClassPath(FileObject root, 
          GenesisSources sources) {
       if (root == sources.getSharedSourcesRoot()) {
-         return createCompileClassPath(root, sources, sharedCompilePaths);
+         return createCompileClassPath("shared", root, sources, 
+               sharedCompilePaths);
       } else if (root == sources.getClientSourcesRoot()) {
          GenesisProjectKind kind = Utils.getKind(project);
 
          if (kind == GenesisProjectKind.DESKTOP) {
-            return createCompileClassPath(root, sources, 
+            return createCompileClassPath("client", root, sources, 
                   desktopClientCompilePaths);
          } else if (kind == GenesisProjectKind.WEB) {
-            return createCompileClassPath(root, sources, 
+            return createCompileClassPath("client", root, sources, 
                   webClientCompilePaths);
          } 
       }
@@ -216,7 +217,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       return null;
    }
 
-   private ClassPath createCompileClassPath(FileObject root, 
+   private ClassPath createCompileClassPath(String name, FileObject root, 
          GenesisSources sources, Object[][] paths) {
       Collection files = new ArrayList();
 
@@ -248,6 +249,8 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             files.add(file);
          }
       }
+
+      addClassPath(files, findCompilationPathsRootNode(name));
 
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
@@ -283,7 +286,37 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             "source-folder");
    }
 
-   private void addSourceClassPath(Collection files, NodeList nl) {
+   private NodeList findCompilationPathsRootNode(String name) {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "source-packages");
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, name);
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "compilation");
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      return ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "path");
+   }
+
+   private void addClassPath(Collection files, NodeList nl) {
       if (nl == null) {
          return;
       }
