@@ -207,7 +207,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
             String label = labelNodes.item(0).getChildNodes().item(0)
                   .getNodeValue();
 
-            NodeList targetNodes = ((Element)nl.item(0)).getElementsByTagNameNS(
+            NodeList targetNodes = ((Element)nl.item(i)).getElementsByTagNameNS(
                GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "target");
 
             if (targetNodes.getLength() == 0) {
