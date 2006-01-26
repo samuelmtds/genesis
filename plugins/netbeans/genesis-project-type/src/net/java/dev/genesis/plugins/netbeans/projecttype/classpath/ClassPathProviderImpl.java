@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
+import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
 import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
 import org.netbeans.api.java.classpath.ClassPath;
@@ -41,6 +42,8 @@ import org.netbeans.spi.java.classpath.support.ClassPathSupport;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.modules.SpecificationVersion;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class ClassPathProviderImpl implements ClassPathProvider {
    private static final Object[][] sharedCompilePaths = new Object[][] {
@@ -177,13 +180,21 @@ public class ClassPathProviderImpl implements ClassPathProvider {
 
    private ClassPath createSourceClassPath(FileObject root, 
          GenesisSources sources){
-      if (sources.getClientSourcesRoot() == root && 
-            sources.getSharedSourcesRoot() != null) {
-         return ClassPathSupport.createClassPath(new FileObject[] {
-            sources.getSharedSourcesRoot(), root});
-      } else {
-         return ClassPathSupport.createClassPath(new FileObject[] {root});
+      Collection files = new ArrayList();
+      files.add(root);
+
+      if (sources.getClientSourcesRoot() == root) {
+         if (sources.getSharedSourcesRoot() != null) {
+            files.add(sources.getSharedSourcesRoot());
+         }
+
+         addSourceClassPath(files, findSourcesRootNode("client"));
+      } else if (sources.getSharedSourcesRoot() == root) {
+         addSourceClassPath(files, findSourcesRootNode("shared"));
       }
+
+      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
+            new FileObject[files.size()]));
    }
 
    private ClassPath createCompileClassPath(FileObject root, 
@@ -240,5 +251,52 @@ public class ClassPathProviderImpl implements ClassPathProvider {
 
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
+   }
+
+   private NodeList findSourcesRootNode(String name) {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "source-packages");
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, name);
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "source-dependencies");
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      return ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "source-folder");
+   }
+
+   private void addSourceClassPath(Collection files, NodeList nl) {
+      if (nl == null) {
+         return;
+      }
+
+      for (int i = 0; i < nl.getLength(); i++) {
+         NodeList subNodes = nl.item(i).getChildNodes();
+
+         if (subNodes.getLength() != 1) {
+            continue;
+         }
+
+         files.add(project.getHelper().resolveFileObject(subNodes.item(0)
+               .getNodeValue()));
+      }
    }
 }
