@@ -78,14 +78,14 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    }
    
    public ClassPath findClassPath(FileObject fo, String type) {
-      System.out.println("fo: " + fo + "; type: " + type);
+//      System.out.println("fo: " + fo + "; type: " + type);
 
       if (ClassPath.BOOT.equals(type)) {
          return getBootClassPath();
       }
       
       ClassPath cp = getClassPath(fo, type);
-      System.out.println(cp);
+//      System.out.println(cp);
 
       return cp;
    }
@@ -153,7 +153,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
 
             if (root == fo || FileUtil.isParentOf(root, fo)) {
                ClassPath classPath = createClassPath(root, type, sources);
-               System.out.println("created cp: " + classPath);
+//               System.out.println("created cp: " + classPath);
                classpathsPerType.put(root, classPath);
 
                return classPath;

@@ -56,38 +56,18 @@ public class GenesisSources implements Sources, AntProjectListener {
    private Sources buildSources() {
       final SourcesHelper helper = new SourcesHelper(project.getHelper(),
             project.getEvaluator());
-      GenesisProjectKind kind = Utils.getKind(project);
+      String clientSourcesDir = Utils.getClientSourcesDir(project);
 
-      if (kind == GenesisProjectKind.DESKTOP) {
-         addClientSourcesDir("LBL_Client_Sources_Display_Name", 
-               JavaProjectConstants.SOURCES_TYPE_JAVA, helper, 
-               "modules/client/src");
-      } else if (kind == GenesisProjectKind.WEB) {
-         addClientSourcesDir("LBL_Web_Sources_Display_Name", 
-               JavaProjectConstants.SOURCES_TYPE_JAVA, helper, 
-               "modules/web/src");
+      if (clientSourcesDir != null) {
+         clientSourcesRoot = addSourcesDir(Utils.getClientSourcesDisplayKey(
+               project), helper, clientSourcesDir);
       }
 
-      if (!"false".equals(project.getEvaluator().getProperty(
-            "has.shared.sources"))) {
-         String sharedSourcesDir = project.getEvaluator().getProperty(
-               "shared.sources.dir");
+      String sharedSourcesDir = Utils.getSharedSourcesDir(project);
 
-         if (sharedSourcesDir == null) {
-            //TODO: improve this handling
-            sharedSourcesDir = "modules/shared/src";
-         }
-
-         String sharedDisplayName = NbBundle.getMessage(GenesisSources.class,
-               "LBL_Shared_Sources_Display_Name");
-         helper.addPrincipalSourceRoot(sharedSourcesDir, sharedDisplayName, 
-               null, null);
-         helper.addTypedSourceRoot(sharedSourcesDir, 
-               JavaProjectConstants.SOURCES_TYPE_JAVA, sharedDisplayName,  
-               null, null);
-         sharedSourcesRoot = FileUtil.toFileObject(new File(
-               FileUtil.toFile(project.getProjectDirectory()), 
-               project.getEvaluator().evaluate(sharedSourcesDir)));
+      if (sharedSourcesDir != null) {
+         sharedSourcesRoot = addSourcesDir("LBL_Shared_Sources_Display_Name", 
+               helper, sharedSourcesDir);
       }
 
       addCustomSourceFolders(helper);
@@ -95,28 +75,17 @@ public class GenesisSources implements Sources, AntProjectListener {
       return helper.createSources();
    }
 
-   private void addClientSourcesDir(final String displayNameKey, 
-         final String sourcesType, final SourcesHelper helper, 
-         final String defaultClientSourcesDir) {
-      if (!"false".equals(project.getEvaluator().getProperty(
-            "has.client.sources"))) {
-         String clientSourcesDir = project.getEvaluator().getProperty(
-               "client.sources.dir");
+   private FileObject addSourcesDir(final String displayNameKey, 
+         final SourcesHelper helper, final String sourcesDir) {
+      String clientDisplayName = NbBundle.getMessage(GenesisSources.class,
+            displayNameKey);
+      helper.addPrincipalSourceRoot(sourcesDir, clientDisplayName, 
+            null, null);
+      helper.addTypedSourceRoot(sourcesDir, 
+            JavaProjectConstants.SOURCES_TYPE_JAVA, clientDisplayName, null, 
+            null);
 
-         if (clientSourcesDir == null) {
-            clientSourcesDir = defaultClientSourcesDir;
-         }
-
-         String clientDisplayName = NbBundle.getMessage(GenesisSources.class,
-               displayNameKey);
-         helper.addPrincipalSourceRoot(clientSourcesDir, clientDisplayName, 
-               null, null);
-         helper.addTypedSourceRoot(clientSourcesDir, sourcesType, 
-               clientDisplayName,  null, null);
-         clientSourcesRoot = FileUtil.toFileObject(new File(
-               FileUtil.toFile(project.getProjectDirectory()), 
-               project.getEvaluator().evaluate(clientSourcesDir)));
-      }
+      return project.getHelper().resolveFileObject(sourcesDir);
    }
 
    private void addCustomSourceFolders(SourcesHelper helper) {

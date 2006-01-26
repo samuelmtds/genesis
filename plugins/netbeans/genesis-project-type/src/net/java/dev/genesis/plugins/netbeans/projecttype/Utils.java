@@ -164,4 +164,54 @@ public class Utils {
 
       return null;
    }
+
+   public static String getClientSourcesDir(GenesisProject project) {
+      if ("false".equals(project.getEvaluator().getProperty(
+            "has.client.sources"))) {
+         return null;
+      }
+
+      String clientSourcesDir = project.getEvaluator().getProperty(
+            "client.sources.dir");
+
+      if (clientSourcesDir == null) {
+         GenesisProjectKind kind = getKind(project);
+
+         if (kind == GenesisProjectKind.DESKTOP) {
+            clientSourcesDir = "modules/client/src";
+         } else if (kind == GenesisProjectKind.WEB) {
+            clientSourcesDir = "modules/web/src";
+         }
+      }
+
+      return clientSourcesDir;
+   }
+
+   public static String getClientSourcesDisplayKey(GenesisProject project) {
+      GenesisProjectKind kind = getKind(project);
+
+      if (kind == GenesisProjectKind.DESKTOP) {
+         return "LBL_Client_Sources_Display_Name";
+      } else if (kind == GenesisProjectKind.WEB) {
+         return "LBL_Web_Sources_Display_Name";
+      }
+
+      return null;
+   }
+
+   public static String getSharedSourcesDir(GenesisProject project) {
+      if ("false".equals(project.getEvaluator().getProperty(
+            "has.shared.sources"))) {
+         return null;
+      }
+
+      String sharedSourcesDir = project.getEvaluator().getProperty(
+            "shared.sources.dir");
+
+      if (sharedSourcesDir == null) {
+         sharedSourcesDir = "modules/shared/src";
+      }
+
+      return sharedSourcesDir;
+   }
 }

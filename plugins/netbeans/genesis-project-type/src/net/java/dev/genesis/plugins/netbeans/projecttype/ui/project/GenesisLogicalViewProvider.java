@@ -46,6 +46,9 @@ import org.netbeans.api.project.Sources;
 import org.netbeans.api.queries.VisibilityQuery;
 import org.netbeans.spi.java.project.support.ui.PackageView;
 import org.netbeans.spi.project.ActionProvider;
+import org.netbeans.spi.project.support.GenericSources;
+import org.netbeans.spi.project.support.ant.AntProjectEvent;
+import org.netbeans.spi.project.support.ant.AntProjectListener;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 import org.netbeans.spi.project.ui.support.ProjectSensitiveActions;
@@ -291,42 +294,132 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
       private final Collection nodes = new ArrayList();
 
       public GenesisLogicalProviderChildren() {
-         ((Sources)project.getLookup().lookup(Sources.class)).addChangeListener(
-               new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-               nodes.clear();
-               createNodes();
-               refresh();
+         project.getHelper().addAntProjectListener(new AntProjectListener() {
+            public void configurationXmlChanged(AntProjectEvent e) {
+               reload();
+            }
+
+            public void propertiesChanged(AntProjectEvent e) {
+               reload();
+            }
+         });
+
+         project.getEvaluator().addPropertyChangeListener(
+               new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent e) {
+               reload();
             }
          });
       }
 
-      protected Collection initCollection() {
+      protected synchronized Collection initCollection() {
          createNodes();
          return nodes;
       }
 
+      private synchronized void reload() {
+         nodes.clear();
+         createNodes();
+         refresh();
+      }
+
       private void createNodes() {
-         Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+         String clientSourcesDir = Utils.getClientSourcesDir(project);
 
-         SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.
-               SOURCES_TYPE_JAVA);
-
-         for (int i = 0; i < groups.length; i++) {
-            nodes.add(PackageView.createPackageView(groups[i]));
+         if (clientSourcesDir != null) {
+            addSources(NbBundle.getMessage(GenesisLogicalViewProvider.class, 
+                  Utils.getClientSourcesDisplayKey(project)), clientSourcesDir);
          }
 
-         groups = sources.getSourceGroups(GenesisSources.SOURCES_TYPE_FOLDER);
+         String sharedSourcesDir = Utils.getSharedSourcesDir(project);
 
-         for (int i = 0; i < groups.length; i++) {
-            try {
-               nodes.add(new TreeNode(((DataFolder)DataObject.find(groups[i]
-                     .getRootFolder())), groups[i].getDisplayName()));
-            } catch (DataObjectNotFoundException ex) {
-               ErrorManager.getDefault().notify(ex);
+         if (sharedSourcesDir != null) {
+            addSources(NbBundle.getMessage(GenesisLogicalViewProvider.class, 
+                  "LBL_Shared_Sources_Display_Name"), sharedSourcesDir);
+         }
+
+         addCustomSourceFolders();
+      }
+
+      private void addSources(String displayName, String sourcesDir) {
+         nodes.add(PackageView.createPackageView(GenericSources.group(project, 
+               project.getHelper().resolveFileObject(sourcesDir), 
+               sourcesDir, displayName, null, null)));
+      }
+
+      private void addCustomSourceFolders() {
+         Element data = project.getHelper().getPrimaryConfigurationData(true);
+         NodeList nl = data.getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "view");
+
+         if (nl.getLength() != 1) {
+            return;
+         }
+
+         nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "items");
+
+         if (nl.getLength() != 1) {
+            return;
+         }
+
+         nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+               "source-folder");
+
+         for (int i = 0; i < nl.getLength(); i++) {
+            org.w3c.dom.Node node = nl.item(i);
+            org.w3c.dom.Node styleNode = node.getAttributes().getNamedItem(
+                  "style");
+            boolean tree = true;
+
+            if (styleNode == null || "packages".equals(styleNode.getNodeValue())) {
+               tree = false;
+            }
+
+            NodeList subnodes = ((Element)node).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "label");
+
+            if (subnodes.getLength() != 1) {
+               continue;
+            }
+
+            subnodes = subnodes.item(0).getChildNodes();
+
+            if (subnodes.getLength() != 1) {
+               continue;
+            }
+
+            String displayName = subnodes.item(0).getNodeValue();
+
+            subnodes = ((Element)node).getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "location");
+
+            if (subnodes.getLength() != 1) {
+               continue;
+            }
+
+            subnodes = subnodes.item(0).getChildNodes();
+
+            if (subnodes.getLength() != 1) {
+               continue;
+            }
+
+            String location = subnodes.item(0).getNodeValue();
+
+            if (tree) {
+               try {
+                  nodes.add(new TreeNode(((DataFolder)DataObject.find(project
+                        .getHelper().resolveFileObject(location))), displayName));
+               } catch (DataObjectNotFoundException ex) {
+                  ErrorManager.getDefault().notify(ex);
+               }
+            } else {
+               addSources(displayName, location);
             }
          }
       }
+
    }
 
    private static final class TreeNode extends FilterNode {
