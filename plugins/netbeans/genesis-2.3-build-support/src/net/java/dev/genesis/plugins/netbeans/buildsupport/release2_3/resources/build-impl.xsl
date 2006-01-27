@@ -24,9 +24,35 @@
                 <xsl:comment> You can override this target in the ../build.xml file. </xsl:comment>
             </target>
 
-            <target name="-pre-init" depends="-pre-pre-init">
+            <target name="-do-pre-init">
                <property file="nbproject/project.properties" />
             </target>
+            <target name="-post-pre-init">
+                <xsl:comment> Empty placeholder for easier customization. </xsl:comment>
+                <xsl:comment> You can override this target in the ../build.xml file. </xsl:comment>
+            </target>
+
+            <target name="-pre-init" depends="-pre-pre-init,-do-pre-init,-post-pre-init" />
+
+         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:client/genesis:compilation">
+            <target name="client:pre-init">
+               <path id="client.additional.javac.classpath">
+               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:client/genesis:compilation/genesis:path">
+                  <path location="{.}" />
+               </xsl:for-each>
+               </path>
+            </target>
+         </xsl:if>
+
+         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:shared/genesis:compilation">
+            <target name="shared:pre-init">
+               <path id="shared.additional.javac.classpath">
+               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:shared/genesis:compilation/genesis:path">
+                  <path location="{.}" />
+               </xsl:for-each>
+               </path>
+            </target>
+         </xsl:if>
         </project>
     </xsl:template>
 </xsl:stylesheet>

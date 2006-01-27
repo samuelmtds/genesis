@@ -42,7 +42,17 @@
                </xsl:for-each>
                </path>
             </target>
-         </xsl:if>   
+         </xsl:if>
+
+         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:shared/genesis:compilation">
+            <target name="shared:pre-init">
+               <path id="shared.additional.javac.classpath">
+               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:shared/genesis:compilation/genesis:path">
+                  <path location="{.}" />
+               </xsl:for-each>
+               </path>
+            </target>
+         </xsl:if>
         </project>
     </xsl:template>
 </xsl:stylesheet>
