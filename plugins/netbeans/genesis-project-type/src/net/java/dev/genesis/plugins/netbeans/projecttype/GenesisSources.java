@@ -18,12 +18,10 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.SourceGroup;
@@ -32,7 +30,6 @@ import org.netbeans.spi.project.support.ant.AntProjectEvent;
 import org.netbeans.spi.project.support.ant.AntProjectListener;
 import org.netbeans.spi.project.support.ant.SourcesHelper;
 import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
 import org.openide.util.Mutex;
 import org.openide.util.NbBundle;
 import org.w3c.dom.Element;
@@ -91,63 +88,34 @@ public class GenesisSources implements Sources, AntProjectListener {
    private void addCustomSourceFolders(SourcesHelper helper) {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "view");
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-folders");
 
       if (nl.getLength() != 1) {
          return;
       }
       
       nl = ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "items");
-
-      if (nl.getLength() != 1) {
-         return;
-      }
-
-      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-folder");
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-group");
 
       for (int i = 0; i < nl.getLength(); i++) {
          Node node = nl.item(i);
-         Node styleNode = node.getAttributes().getNamedItem("style");
-         String type = SOURCES_TYPE_FOLDER;
 
-         if (styleNode == null || "packages".equals(styleNode.getNodeValue())) {
-            type = JavaProjectConstants.SOURCES_TYPE_JAVA;
+         NodeList paths = ((Element)node).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-path");
+
+         for (int j = 0; j < paths.getLength(); j++) {
+            NodeList path = paths.item(j).getChildNodes();
+
+            if (path.getLength() != 1) {
+               continue;
+            }
+
+            String location = path.item(0).getNodeValue();
+
+            helper.addPrincipalSourceRoot(location, location, null, null);
+            helper.addTypedSourceRoot(location, 
+                  JavaProjectConstants.SOURCES_TYPE_JAVA, location, null, null);
          }
-
-         NodeList subnodes = ((Element)node).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "label");
-
-         if (subnodes.getLength() != 1) {
-            continue;
-         }
-
-         subnodes = subnodes.item(0).getChildNodes();
-
-         if (subnodes.getLength() != 1) {
-            continue;
-         }
-
-         String displayName = subnodes.item(0).getNodeValue();
-
-         subnodes = ((Element)node).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "location");
-
-         if (subnodes.getLength() != 1) {
-            continue;
-         }
-
-         subnodes = subnodes.item(0).getChildNodes();
-
-         if (subnodes.getLength() != 1) {
-            continue;
-         }
-
-         String location = subnodes.item(0).getNodeValue();
-
-         helper.addPrincipalSourceRoot(location, displayName, null, null);
-         helper.addTypedSourceRoot(location, type, displayName, null, null);
       }
    }
 
