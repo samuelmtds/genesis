@@ -2,9 +2,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:project="http://www.netbeans.org/ns/project/1"
-                xmlns:genesis="https://genesis.dev.java.net/ns/netbeans/projecttype/1"
+                xmlns:g="https://genesis.dev.java.net/ns/netbeans/projecttype/1"
                 xmlns:xalan="http://xml.apache.org/xslt"
-                exclude-result-prefixes="xalan project genesis">
+                xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml"
+                exclude-result-prefixes="xalan project g">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" xalan:indent-amount="3"/>
     <xsl:template match="/">
 
@@ -13,9 +14,9 @@
 ***         EDIT ../build.xml INSTEAD         ***
 ]]></xsl:comment>
         <project name="genesis-based-project-impl" default="all" basedir="..">
-            <xsl:if test="not(/project:project/project:configuration/genesis:data/genesis:type='freeform')">
+            <xsl:if test="not(/project:project/project:configuration/g:data/g:type='freeform')">
                <import>
-                  <xsl:attribute name="file"><xsl:value-of select="/project:project/project:configuration/genesis:data/genesis:type" />_build.xml</xsl:attribute>
+                  <xsl:attribute name="file"><xsl:value-of select="/project:project/project:configuration/g:data/g:type" />_build.xml</xsl:attribute>
                </import>
             </xsl:if>
 
@@ -34,33 +35,45 @@
 
             <target name="-pre-init" depends="-pre-pre-init,-do-pre-init,-post-pre-init" />
 
-         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:client/genesis:compilation">
+         <xsl:if test="/project:project/project:configuration/g:data/g:source-packages/g:client/g:compilation">
             <target name="client:pre-init">
                <path id="client.additional.javac.classpath">
-               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:client/genesis:compilation/genesis:path">
+               <xsl:for-each select="/project:project/project:configuration/g:data/g:source-packages/g:client/g:compilation/g:path">
                   <path location="{.}" />
                </xsl:for-each>
                </path>
             </target>
          </xsl:if>
 
-         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:shared/genesis:compilation">
+         <xsl:if test="/project:project/project:configuration/g:data/g:source-packages/g:shared/g:compilation">
             <target name="shared:pre-init">
                <path id="shared.additional.javac.classpath">
-               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:source-packages/genesis:shared/genesis:compilation/genesis:path">
+               <xsl:for-each select="/project:project/project:configuration/g:data/g:source-packages/g:shared/g:compilation/g:path">
                   <path location="{.}" />
                </xsl:for-each>
                </path>
             </target>
          </xsl:if>
 
-         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:execution">
+         <xsl:if test="/project:project/project:configuration/g:data/g:execution">
             <target name="run:pre-init">
                <path id="run.additional.classpath">
-               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:execution/genesis:path">
+               <xsl:for-each select="/project:project/project:configuration/g:data/g:execution/g:path">
                   <path location="{.}" />
                </xsl:for-each>
                </path>
+            </target>
+         </xsl:if>
+
+         <xsl:if test="/project:project/project:configuration/g:data/g:webstart">
+            <target name="-do-webstart-signjar">
+               <genesis:webstart-signjar>
+                  <customize>
+                     <xsl:for-each select="/project:project/project:configuration/g:data/g:webstart/g:file">
+                        <fileset file="{.}" />
+                     </xsl:for-each>
+                  </customize>
+               </genesis:webstart-signjar>
             </target>
          </xsl:if>
 
