@@ -5,7 +5,7 @@
                 xmlns:genesis="https://genesis.dev.java.net/ns/netbeans/projecttype/1"
                 xmlns:xalan="http://xml.apache.org/xslt"
                 exclude-result-prefixes="xalan project genesis">
-    <xsl:output method="xml" indent="yes" encoding="UTF-8" xalan:indent-amount="4"/>
+    <xsl:output method="xml" indent="yes" encoding="UTF-8" xalan:indent-amount="3"/>
     <xsl:template match="/">
 
         <xsl:comment><![CDATA[
@@ -53,6 +53,17 @@
                </path>
             </target>
          </xsl:if>
+
+         <xsl:if test="/project:project/project:configuration/genesis:data/genesis:execution">
+            <target name="run:pre-init">
+               <path id="run.additional.classpath">
+               <xsl:for-each select="/project:project/project:configuration/genesis:data/genesis:execution/genesis:path">
+                  <path location="{.}" />
+               </xsl:for-each>
+               </path>
+            </target>
+         </xsl:if>
+
         </project>
     </xsl:template>
 </xsl:stylesheet>
