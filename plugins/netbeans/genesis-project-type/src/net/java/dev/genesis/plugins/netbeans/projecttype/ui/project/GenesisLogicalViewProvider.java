@@ -339,7 +339,8 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
 
          try {
             nodes.add(DataObject.find(project.getHelper().resolveFileObject(
-                  GeneratedFilesHelper.BUILD_XML_PATH)).getNodeDelegate());
+                  GeneratedFilesHelper.BUILD_XML_PATH)).getNodeDelegate()
+                  .cloneNode());
          } catch (DataObjectNotFoundException ex) {
             ErrorManager.getDefault().notify(ex);
          }
