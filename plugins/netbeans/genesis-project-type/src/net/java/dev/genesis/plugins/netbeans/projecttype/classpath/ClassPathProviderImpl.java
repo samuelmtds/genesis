@@ -49,30 +49,30 @@ import org.w3c.dom.NodeList;
 
 public class ClassPathProviderImpl implements ClassPathProvider {
    private static final Object[][] sharedCompilePaths = new Object[][] {
-         new Object[] {"genesis", new String[] {"genesis-shared-"}},
-         new Object[] {"lib/hibernate", new String[] {"hibernate"}},
-         new Object[] {"lib/commons",  new String[] {"commons-beanutils", 
-               "commons-logging", "reusable-components"}}
+      new Object[] {"genesis", new String[] {"genesis-shared-"}},
+      new Object[] {"lib/hibernate", new String[] {"hibernate"}},
+      new Object[] {"lib/commons",  new String[] {"commons-beanutils",
+      "commons-logging", "reusable-components"}}
    };
    private static final Object[][] desktopClientCompilePaths = new Object[][] {
-         new Object[] {"genesis", new String[] {"genesis-shared-", 
-                        "genesis-client"}},
-         new Object[] {"lib/hibernate", new String[] {"hibernate"}},
-         new Object[] {"lib/commons", new String[] {"commons-beanutils", 
-               "commons-digester", "commons-jxpath", "commons-logging", 
-               "commons-validator", "jakarta-oro", "reusable-components"}},
-         new Object[] {"lib/thinlet", new String[] {"thinlet"}}
+      new Object[] {"genesis", new String[] {"genesis-shared-",
+      "genesis-client"}},
+      new Object[] {"lib/hibernate", new String[] {"hibernate"}},
+      new Object[] {"lib/commons", new String[] {"commons-beanutils",
+      "commons-digester", "commons-jxpath", "commons-logging",
+      "commons-validator", "jakarta-oro", "reusable-components"}},
+      new Object[] {"lib/thinlet", new String[] {"thinlet"}}
    };
    private static final Object[][] webClientCompilePaths = new Object[][] {
-         new Object[] {"genesis", new String[] {"genesis-shared-", 
-                        "genesis-client"}},
-         new Object[] {"lib/hibernate", new String[] {"hibernate"}},
-         new Object[] {"lib/commons", new String[] {"commons-beanutils", 
-               "commons-jxpath", "commons-logging", "commons-validator", 
-               "reusable-components"}},
-         new Object[] {"lib/j2ee", new String[] {"j2ee", "servlet-api"}}
+      new Object[] {"genesis", new String[] {"genesis-shared-",
+      "genesis-client"}},
+      new Object[] {"lib/hibernate", new String[] {"hibernate"}},
+      new Object[] {"lib/commons", new String[] {"commons-beanutils",
+      "commons-jxpath", "commons-logging", "commons-validator",
+      "reusable-components"}},
+      new Object[] {"lib/j2ee", new String[] {"j2ee", "servlet-api"}}
    };
-
+   
    private final Map classpaths = new HashMap();
    private final GenesisProject project;
    
@@ -84,14 +84,14 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    
    public ClassPath findClassPath(FileObject fo, String type) {
 //      System.out.println("fo: " + fo + "; type: " + type);
-
+      
       if (ClassPath.BOOT.equals(type)) {
          return getBootClassPath();
       }
       
       ClassPath cp = getClassPath(fo, type);
 //      System.out.println(cp);
-
+      
       return cp;
    }
    
@@ -139,37 +139,37 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          }
          
          for (final Iterator i = classpathsPerType.entrySet().iterator();
-               i.hasNext(); ) {
+         i.hasNext(); ) {
             Map.Entry entry = (Map.Entry)i.next();
             FileObject root = (FileObject)entry.getKey();
-
+            
             if (root == fo || FileUtil.isParentOf(root, fo)) {
                return (ClassPath)entry.getValue();
             }
          }
-
+         
          GenesisSources sources = (GenesisSources)project.getLookup().lookup(
                GenesisSources.class);
          SourceGroup[] groups = sources.getSourceGroups(
                JavaProjectConstants.SOURCES_TYPE_JAVA);
-
+         
          for (int i = 0; i < groups.length; i++) {
             FileObject root = groups[i].getRootFolder();
-
+            
             if (root == fo || FileUtil.isParentOf(root, fo)) {
                ClassPath classPath = createClassPath(root, type, sources);
 //               System.out.println("created cp: " + classPath);
                classpathsPerType.put(root, classPath);
-
+               
                return classPath;
             }
          }
       }
-
+      
       return null;
    }
-
-   private ClassPath createClassPath(FileObject root, String type, 
+   
+   private ClassPath createClassPath(FileObject root, String type,
          GenesisSources sources) {
       if (ClassPath.SOURCE.equals(type)) {
          return createSourceClassPath(root, sources);
@@ -178,57 +178,59 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       } else if (ClassPath.EXECUTE.equals(type)) {
          return createExecuteClassPath(root, sources);
       }
-
+      
       return null;
    }
-
-   private ClassPath createSourceClassPath(FileObject root, 
+   
+   private ClassPath createSourceClassPath(FileObject root,
          GenesisSources sources){
       Collection files = new ArrayList();
       files.add(root);
-
+      
       if (sources.getClientSourcesRoot() == root) {
          if (sources.getSharedSourcesRoot() != null) {
             files.add(sources.getSharedSourcesRoot());
          }
-
-         addClassPath(files, findSourcesRootNode("client"));
+         
+         addClassPath(files, findSourcesRootNode(findSourceGroupFor("client")));
       } else if (sources.getSharedSourcesRoot() == root) {
-         addClassPath(files, findSourcesRootNode("shared"));
+         addClassPath(files, findSourcesRootNode(findSourceGroupFor("shared")));
+      } else {
+         addClassPath(files, findSourcesRootNode(findSourceGroupFor(root)));
       }
-
+      
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
    }
 
-   private ClassPath createCompileClassPath(FileObject root, 
+   private ClassPath createCompileClassPath(FileObject root,
          GenesisSources sources) {
       if (root == sources.getSharedSourcesRoot()) {
-         return createCompileClassPath("shared", root, sources, 
+         return createCompileClassPath("shared", root, sources,
                sharedCompilePaths);
       } else if (root == sources.getClientSourcesRoot()) {
          GenesisProjectKind kind = Utils.getKind(project);
-
+         
          if (kind == GenesisProjectKind.DESKTOP) {
-            return createCompileClassPath("client", root, sources, 
+            return createCompileClassPath("client", root, sources,
                   desktopClientCompilePaths);
          } else if (kind == GenesisProjectKind.WEB) {
-            return createCompileClassPath("client", root, sources, 
+            return createCompileClassPath("client", root, sources,
                   webClientCompilePaths);
-         } 
+         }
       }
-
+      
       return null;
    }
-
-   private ClassPath createCompileClassPath(String name, FileObject root, 
+   
+   private ClassPath createCompileClassPath(String name, FileObject root,
          GenesisSources sources, Object[][] paths) {
       Collection files = new ArrayList();
-
+      
       for (int i = 0; i < paths.length; i++) {
          Object[] filesPerRoot = paths[i];
          final String[] filePrefixes = (String[])filesPerRoot[1];
-
+         
          File rootDir = new File(project.getEvaluator().evaluate(
                "${genesis.home}/" + filesPerRoot[0]));
          File[] filteredFiles = rootDir.listFiles(new FileFilter() {
@@ -238,142 +240,186 @@ public class ClassPathProviderImpl implements ClassPathProvider {
                      return true;
                   }
                }
-
+               
                return false;
             }
          });
-
+         
          for (int j = 0; j < filteredFiles.length; j++) {
             FileObject file = FileUtil.toFileObject(filteredFiles[j]);
-
+            
             if (FileUtil.isArchiveFile(file)) {
                file = FileUtil.getArchiveRoot(file);
             }
-
+            
             files.add(file);
          }
       }
-
+      
       addClassPath(files, findCompilationPathsRootNode(name));
-
+      
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
    }
-
-   private ClassPath createExecuteClassPath(FileObject root, 
+   
+   private ClassPath createExecuteClassPath(FileObject root,
          GenesisSources sources) {
       Collection files = new ArrayList();
-
+      
       FileObject[] roots = findClassPath(root, ClassPath.COMPILE).getRoots();
-
+      
       for (int i = 0; i < roots.length; i++) {
          files.add(roots[i]);
       }
-
-      AntArtifact[] artifacts = AntArtifactQuery.findArtifactsByType(project, 
+      
+      AntArtifact[] artifacts = AntArtifactQuery.findArtifactsByType(project,
             JavaProjectConstants.ARTIFACT_TYPE_JAR);
-
+      
       for (int i = 0; i < artifacts.length; i++) {
          FileObject[] artifactFiles = artifacts[i].getArtifactFiles();
-
+         
          for (int j = 0; j < artifactFiles.length; j++) {
             files.add(artifactFiles[j]);
          }
       }
-
+      
       addClassPath(files, findExecutionPathsRootNode());
-
+      
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
    }
-
-   private NodeList findSourcesRootNode(String name) {
+   
+   private Element findSourceGroupFor(String name) {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "source-folders");
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
       nl = ((Element)nl.item(0)).getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, name);
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
+      return (Element)nl.item(0);
+   }
+   
+   private Element findSourceGroupFor(FileObject root) {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
+            "source-folders");
+      
+      if (nl.getLength() != 1) {
+         return null;
+      }
+      
       nl = ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-group");
+      
+      for (int i = 0; i < nl.getLength(); i++) {
+         Element group = (Element)nl.item(i);
+         
+         NodeList paths = group.getElementsByTagNameNS(
+               GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-path");
+         
+         for (int j = 0; j < paths.getLength(); j++) {
+            NodeList path = paths.item(j).getChildNodes();
+            
+            if (path.getLength() != 1) {
+               continue;
+            }
+            
+            if (root == project.getHelper().resolveFileObject(path.item(0)
+                  .getNodeValue())) {
+               return group;
+            }
+         }
+      }
+      
+      return null;
+   }
+   
+   private NodeList findSourcesRootNode(Element e) {
+      if (e == null) {
+         return null;
+      }
+      
+      NodeList nl = e.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "source-dependencies");
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
       return ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "source-folder");
    }
-
+   
    private NodeList findCompilationPathsRootNode(String name) {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "source-folders");
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
       nl = ((Element)nl.item(0)).getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, name);
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
       nl = ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "compilation");
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
       return ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "path");
    }
-
+   
    private NodeList findExecutionPathsRootNode() {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "execution");
-
+      
       if (nl.getLength() != 1) {
          return null;
       }
-
+      
       return ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "path");
    }
-
+   
    private void addClassPath(Collection files, NodeList nl) {
       if (nl == null) {
          return;
       }
-
+      
       for (int i = 0; i < nl.getLength(); i++) {
          NodeList subNodes = nl.item(i).getChildNodes();
-
+         
          if (subNodes.getLength() != 1) {
             continue;
          }
-
+         
          files.add(project.getHelper().resolveFileObject(subNodes.item(0)
                .getNodeValue()));
       }
