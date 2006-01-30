@@ -198,7 +198,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       } else {
          addClassPath(files, findSourcesRootNode(findSourceGroupFor(root)));
       }
-      
+
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
    }
@@ -219,10 +219,14 @@ public class ClassPathProviderImpl implements ClassPathProvider {
                   webClientCompilePaths);
          }
       }
-      
-      return null;
+
+      Collection files = new ArrayList();
+      addClassPath(files, findCompilationPathsRootNode(findSourceGroupFor(root)));
+
+      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
+            new FileObject[files.size()]));
    }
-   
+
    private ClassPath createCompileClassPath(String name, FileObject root,
          GenesisSources sources, Object[][] paths) {
       Collection files = new ArrayList();
@@ -256,7 +260,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          }
       }
       
-      addClassPath(files, findCompilationPathsRootNode(name));
+      addClassPath(files, findCompilationPathsRootNode(findSourceGroupFor(name)));
       
       return ClassPathSupport.createClassPath((FileObject[])files.toArray(
             new FileObject[files.size()]));
@@ -266,10 +270,14 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          GenesisSources sources) {
       Collection files = new ArrayList();
       
-      FileObject[] roots = findClassPath(root, ClassPath.COMPILE).getRoots();
-      
-      for (int i = 0; i < roots.length; i++) {
-         files.add(roots[i]);
+      ClassPath cp = findClassPath(root, ClassPath.COMPILE);
+
+      if (cp != null) {
+         FileObject[] roots = cp.getRoots();
+
+         for (int i = 0; i < roots.length; i++) {
+            files.add(roots[i]);
+         }
       }
       
       AntArtifact[] artifacts = AntArtifactQuery.findArtifactsByType(project,
@@ -335,7 +343,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
                continue;
             }
             
-            if (root == project.getHelper().resolveFileObject(path.item(0)
+            if (root == Utils.resolveFileObject(project, path.item(0)
                   .getNodeValue())) {
                return group;
             }
@@ -363,24 +371,12 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             "source-folder");
    }
    
-   private NodeList findCompilationPathsRootNode(String name) {
-      Element data = project.getHelper().getPrimaryConfigurationData(true);
-      NodeList nl = data.getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
-            "source-folders");
-      
-      if (nl.getLength() != 1) {
+   private NodeList findCompilationPathsRootNode(Element e) {
+      if (e == null) {
          return null;
       }
       
-      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
-            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, name);
-      
-      if (nl.getLength() != 1) {
-         return null;
-      }
-      
-      nl = ((Element)nl.item(0)).getElementsByTagNameNS(
+      NodeList nl = e.getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE,
             "compilation");
       
@@ -419,9 +415,19 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          if (subNodes.getLength() != 1) {
             continue;
          }
-         
-         files.add(project.getHelper().resolveFileObject(subNodes.item(0)
-               .getNodeValue()));
+
+         FileObject file = Utils.resolveFileObject(project, subNodes.item(0)
+               .getNodeValue());
+
+         if (file == null) {
+            continue;
+         }
+
+         if (FileUtil.isArchiveFile(file)) {
+            file = FileUtil.getArchiveRoot(file);
+         }
+
+         files.add(file);
       }
    }
 }

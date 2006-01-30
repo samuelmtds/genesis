@@ -214,4 +214,10 @@ public class Utils {
 
       return sharedSourcesDir;
    }
+
+   public static FileObject resolveFileObject(GenesisProject project, 
+         String path) {
+      return project.getHelper().resolveFileObject(project.getEvaluator()
+            .evaluate(path));
+   }
 }

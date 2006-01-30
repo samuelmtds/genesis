@@ -338,7 +338,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          addCustomSourceFolders();
 
          try {
-            nodes.add(DataObject.find(project.getHelper().resolveFileObject(
+            nodes.add(DataObject.find(Utils.resolveFileObject(project,
                   GeneratedFilesHelper.BUILD_XML_PATH)).getNodeDelegate()
                   .cloneNode());
          } catch (DataObjectNotFoundException ex) {
@@ -348,7 +348,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
 
       private void addSources(String displayName, String sourcesDir) {
          nodes.add(PackageView.createPackageView(GenericSources.group(project, 
-               project.getHelper().resolveFileObject(sourcesDir), 
+               Utils.resolveFileObject(project, sourcesDir), 
                sourcesDir, displayName, null, null)));
       }
 
@@ -414,8 +414,8 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
 
             if (tree) {
                try {
-                  nodes.add(new TreeNode(((DataFolder)DataObject.find(project
-                        .getHelper().resolveFileObject(location))), displayName));
+                  nodes.add(new TreeNode(((DataFolder)DataObject.find(Utils
+                        .resolveFileObject(project, location))), displayName));
                } catch (DataObjectNotFoundException ex) {
                   ErrorManager.getDefault().notify(ex);
                }

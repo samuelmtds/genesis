@@ -82,7 +82,7 @@ public class GenesisSources implements Sources, AntProjectListener {
             JavaProjectConstants.SOURCES_TYPE_JAVA, clientDisplayName, null, 
             null);
 
-      return project.getHelper().resolveFileObject(sourcesDir);
+      return Utils.resolveFileObject(project, sourcesDir);
    }
 
    private void addCustomSourceFolders(SourcesHelper helper) {
@@ -98,9 +98,9 @@ public class GenesisSources implements Sources, AntProjectListener {
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-group");
 
       for (int i = 0; i < nl.getLength(); i++) {
-         Node node = nl.item(i);
+         Element e = (Element)nl.item(i);
 
-         NodeList paths = ((Element)node).getElementsByTagNameNS(
+         NodeList paths = e.getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "source-path");
 
          for (int j = 0; j < paths.getLength(); j++) {
