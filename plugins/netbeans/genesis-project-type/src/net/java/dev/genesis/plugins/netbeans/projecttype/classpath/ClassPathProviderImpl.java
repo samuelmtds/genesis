@@ -291,7 +291,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
-            "source-packages");
+            "source-folders");
 
       if (nl.getLength() != 1) {
          return null;
@@ -321,7 +321,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
-            "source-packages");
+            "source-folders");
 
       if (nl.getLength() != 1) {
          return null;
