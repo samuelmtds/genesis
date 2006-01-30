@@ -34,21 +34,18 @@ import javax.swing.event.ChangeListener;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectExecutionMode;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
-import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
 import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
-import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.api.project.ProjectUtils;
-import org.netbeans.api.project.SourceGroup;
-import org.netbeans.api.project.Sources;
 import org.netbeans.api.queries.VisibilityQuery;
 import org.netbeans.spi.java.project.support.ui.PackageView;
 import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.support.GenericSources;
 import org.netbeans.spi.project.support.ant.AntProjectEvent;
 import org.netbeans.spi.project.support.ant.AntProjectListener;
+import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 import org.netbeans.spi.project.ui.support.ProjectSensitiveActions;
@@ -339,6 +336,13 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          }
 
          addCustomSourceFolders();
+
+         try {
+            nodes.add(DataObject.find(project.getHelper().resolveFileObject(
+                  GeneratedFilesHelper.BUILD_XML_PATH)).getNodeDelegate());
+         } catch (DataObjectNotFoundException ex) {
+            ErrorManager.getDefault().notify(ex);
+         }
       }
 
       private void addSources(String displayName, String sourcesDir) {
