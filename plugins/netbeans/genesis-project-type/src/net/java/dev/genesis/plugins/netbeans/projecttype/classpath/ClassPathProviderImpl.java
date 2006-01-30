@@ -37,6 +37,8 @@ import org.netbeans.api.java.platform.JavaPlatformManager;
 import org.netbeans.api.java.platform.Specification;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.SourceGroup;
+import org.netbeans.api.project.ant.AntArtifact;
+import org.netbeans.api.project.ant.AntArtifactQuery;
 import org.netbeans.spi.java.classpath.ClassPathProvider;
 import org.netbeans.spi.java.classpath.support.ClassPathSupport;
 import org.openide.filesystems.FileObject;
@@ -173,6 +175,8 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          return createSourceClassPath(root, sources);
       } else if (ClassPath.COMPILE.equals(type)) {
          return createCompileClassPath(root, sources);
+      } else if (ClassPath.EXECUTE.equals(type)) {
+         return createExecuteClassPath(root, sources);
       }
 
       return null;
@@ -256,6 +260,33 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             new FileObject[files.size()]));
    }
 
+   private ClassPath createExecuteClassPath(FileObject root, 
+         GenesisSources sources) {
+      Collection files = new ArrayList();
+
+      FileObject[] roots = findClassPath(root, ClassPath.COMPILE).getRoots();
+
+      for (int i = 0; i < roots.length; i++) {
+         files.add(roots[i]);
+      }
+
+      AntArtifact[] artifacts = AntArtifactQuery.findArtifactsByType(project, 
+            JavaProjectConstants.ARTIFACT_TYPE_JAR);
+
+      for (int i = 0; i < artifacts.length; i++) {
+         FileObject[] artifactFiles = artifacts[i].getArtifactFiles();
+
+         for (int j = 0; j < artifactFiles.length; j++) {
+            files.add(artifactFiles[j]);
+         }
+      }
+
+      addClassPath(files, findExecutionPathsRootNode());
+
+      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
+            new FileObject[files.size()]));
+   }
+
    private NodeList findSourcesRootNode(String name) {
       Element data = project.getHelper().getPrimaryConfigurationData(true);
       NodeList nl = data.getElementsByTagNameNS(
@@ -306,6 +337,21 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       nl = ((Element)nl.item(0)).getElementsByTagNameNS(
             GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
             "compilation");
+
+      if (nl.getLength() != 1) {
+         return null;
+      }
+
+      return ((Element)nl.item(0)).getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "path");
+   }
+
+   private NodeList findExecutionPathsRootNode() {
+      Element data = project.getHelper().getPrimaryConfigurationData(true);
+      NodeList nl = data.getElementsByTagNameNS(
+            GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, 
+            "execution");
 
       if (nl.getLength() != 1) {
          return null;
