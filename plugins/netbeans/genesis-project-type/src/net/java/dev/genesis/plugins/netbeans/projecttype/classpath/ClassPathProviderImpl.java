@@ -23,6 +23,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -32,11 +33,13 @@ import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisSources;
 import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
 import org.netbeans.api.java.classpath.ClassPath;
+import org.netbeans.api.java.classpath.GlobalPathRegistry;
 import org.netbeans.api.java.platform.JavaPlatform;
 import org.netbeans.api.java.platform.JavaPlatformManager;
 import org.netbeans.api.java.platform.Specification;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.SourceGroup;
+import org.netbeans.api.project.Sources;
 import org.netbeans.api.project.ant.AntArtifact;
 import org.netbeans.api.project.ant.AntArtifactQuery;
 import org.netbeans.spi.java.classpath.ClassPathProvider;
@@ -49,31 +52,35 @@ import org.w3c.dom.NodeList;
 
 public class ClassPathProviderImpl implements ClassPathProvider {
    private static final Object[][] sharedCompilePaths = new Object[][] {
-      new Object[] {"genesis", new String[] {"genesis-shared-"}},
+      new Object[] {"genesis", new String[] {"genesis-shared-", 
+                     "genesis-annotation-jdk5"}},
       new Object[] {"lib/hibernate", new String[] {"hibernate"}},
       new Object[] {"lib/commons",  new String[] {"commons-beanutils",
-      "commons-logging", "reusable-components"}}
+                     "commons-logging", "reusable-components"}}
    };
    private static final Object[][] desktopClientCompilePaths = new Object[][] {
       new Object[] {"genesis", new String[] {"genesis-shared-",
-      "genesis-client"}},
+                    "genesis-client", "genesis-annotation-jdk5"}},
       new Object[] {"lib/hibernate", new String[] {"hibernate"}},
       new Object[] {"lib/commons", new String[] {"commons-beanutils",
-      "commons-digester", "commons-jxpath", "commons-logging",
-      "commons-validator", "jakarta-oro", "reusable-components"}},
+                  "commons-digester", "commons-jxpath", "commons-logging",
+                  "commons-validator", "jakarta-oro", "reusable-components"}},
       new Object[] {"lib/thinlet", new String[] {"thinlet"}}
    };
    private static final Object[][] webClientCompilePaths = new Object[][] {
       new Object[] {"genesis", new String[] {"genesis-shared-",
-      "genesis-client"}},
+               "genesis-client", "genesis-annotation-jdk5"}},
       new Object[] {"lib/hibernate", new String[] {"hibernate"}},
       new Object[] {"lib/commons", new String[] {"commons-beanutils",
-      "commons-jxpath", "commons-logging", "commons-validator",
-      "reusable-components"}},
+               "commons-jxpath", "commons-logging", "commons-validator",
+               "reusable-components"}},
       new Object[] {"lib/j2ee", new String[] {"j2ee", "servlet-api"}}
    };
-   
+   private static final String[] classPathTypes = new String[] {ClassPath.BOOT,
+         ClassPath.COMPILE, ClassPath.EXECUTE, ClassPath.SOURCE};
+
    private final Map classpaths = new HashMap();
+   private final Map registeredPaths = new HashMap();
    private final GenesisProject project;
    
    private ClassPath bootClassPath;
@@ -81,8 +88,54 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    public ClassPathProviderImpl(final GenesisProject project) {
       this.project = project;
    }
-   
-   public ClassPath findClassPath(FileObject fo, String type) {
+
+   public synchronized void register() {
+      Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+      SourceGroup[] groups = sources.getSourceGroups(
+            JavaProjectConstants.SOURCES_TYPE_JAVA);
+
+      for (int i = 0; i < groups.length; i++) {
+         FileObject root = groups[i].getRootFolder();
+
+         for (int j = 0; j < classPathTypes.length; j++) {
+            ClassPath cp = findClassPath(root, classPathTypes[j]);
+
+            Collection paths = (Collection)registeredPaths.get(classPathTypes[j]);
+
+            if (paths == null) {
+               registeredPaths.put(classPathTypes[j], paths = new HashSet());
+            }
+
+            paths.add(cp);
+         }
+      }
+
+      for (int i = 0; i < classPathTypes.length; i++) {
+         Collection paths = (Collection)registeredPaths.get(classPathTypes[i]);
+
+         if (paths == null) {
+            continue;
+         }
+
+         GlobalPathRegistry.getDefault().register(classPathTypes[i], 
+               (ClassPath[])paths.toArray(new ClassPath[paths.size()]));
+      }
+   }
+
+   public synchronized void unregister() {
+      for (int i = 0; i < classPathTypes.length; i++) {
+         Collection paths = (Collection)registeredPaths.get(classPathTypes[i]);
+
+         if (paths == null) {
+            continue;
+         }
+
+         GlobalPathRegistry.getDefault().unregister(classPathTypes[i], 
+               (ClassPath[])paths.toArray(new ClassPath[paths.size()]));
+      }
+   }
+
+   public synchronized ClassPath findClassPath(FileObject fo, String type) {
 //      System.out.println("fo: " + fo + "; type: " + type);
       
       if (ClassPath.BOOT.equals(type)) {
@@ -98,10 +151,10 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    private synchronized ClassPath getBootClassPath() {
       if (bootClassPath == null) {
          JavaPlatform platform = JavaPlatformManager.getDefault()
-         .getDefaultPlatform();
+               .getDefaultPlatform();
          
          JavaPlatform[] platforms = JavaPlatformManager.getDefault()
-         .getPlatforms(null, new Specification("j2se",
+               .getPlatforms(null, new Specification("j2se",
                new SpecificationVersion(Utils.getSourceLevel(
                project.getHelper()))));
          
@@ -139,7 +192,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          }
          
          for (final Iterator i = classpathsPerType.entrySet().iterator();
-         i.hasNext(); ) {
+               i.hasNext(); ) {
             Map.Entry entry = (Map.Entry)i.next();
             FileObject root = (FileObject)entry.getKey();
             

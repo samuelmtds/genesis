@@ -125,6 +125,10 @@ public class GenesisProject implements Project {
          } catch (Exception e) {
             ErrorManager.getDefault().notify(e);
          }
+
+         ClassPathProviderImpl cp = (ClassPathProviderImpl)getLookup().lookup(
+               ClassPathProviderImpl.class);
+         cp.register();
       }
 
       protected void projectClosed() {
@@ -133,6 +137,10 @@ public class GenesisProject implements Project {
          } catch (IOException ioe) {
             ErrorManager.getDefault().notify(ioe);
          }
+
+         ClassPathProviderImpl cp = (ClassPathProviderImpl)getLookup().lookup(
+               ClassPathProviderImpl.class);
+         cp.unregister();
       }
    }
 
