@@ -18,15 +18,22 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype.classpath;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
@@ -42,8 +49,11 @@ import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
 import org.netbeans.api.project.ant.AntArtifact;
 import org.netbeans.api.project.ant.AntArtifactQuery;
+import org.netbeans.spi.java.classpath.ClassPathFactory;
+import org.netbeans.spi.java.classpath.ClassPathImplementation;
 import org.netbeans.spi.java.classpath.ClassPathProvider;
 import org.netbeans.spi.java.classpath.support.ClassPathSupport;
+import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.modules.SpecificationVersion;
@@ -79,8 +89,47 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    private static final String[] classPathTypes = new String[] {ClassPath.BOOT,
          ClassPath.COMPILE, ClassPath.EXECUTE, ClassPath.SOURCE};
 
+   private static abstract class MutableClassPathImplementation 
+         implements ClassPathImplementation {
+      private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+      private List paths;
+
+      public List getResources() {
+         if (paths == null) {
+            paths = new ArrayList();
+
+            Collection urls = getURLs();
+
+            if (urls != null) {
+               for (Iterator i = urls.iterator(); i.hasNext();) {
+                  URL url = (URL)i.next();
+                  paths.add(ClassPathSupport.createResource(url));
+               }
+            }
+         }
+
+         return paths;
+      }
+
+      public void addPropertyChangeListener(PropertyChangeListener listener) {
+         pcs.addPropertyChangeListener(listener);
+      }
+
+      public void removePropertyChangeListener(PropertyChangeListener listener) {
+         pcs.removePropertyChangeListener(listener);
+      }
+
+      public void reload() {
+         paths = null;
+         pcs.firePropertyChange(ClassPathImplementation.PROP_RESOURCES, null, null);
+      }
+
+      protected abstract Collection getURLs();
+   }
+
    private final Map classpaths = new HashMap();
    private final Map registeredPaths = new HashMap();
+   private final Collection implementations = new ArrayList();
    private final GenesisProject project;
    
    private ClassPath bootClassPath;
@@ -91,6 +140,20 @@ public class ClassPathProviderImpl implements ClassPathProvider {
 
    public synchronized void register() {
       Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+
+      sources.addChangeListener(new ChangeListener() {
+         public void stateChanged(ChangeEvent e) {
+            synchronized (ClassPathProviderImpl.this) {
+               classpaths.clear();
+
+               Collection impls = new ArrayList(implementations);
+               for (Iterator i = impls.iterator(); i.hasNext();) {
+                  ((MutableClassPathImplementation)i.next()).reload();
+               }
+            }
+         }
+      });
+
       SourceGroup[] groups = sources.getSourceGroups(
             JavaProjectConstants.SOURCES_TYPE_JAVA);
 
@@ -136,93 +199,114 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    }
 
    public synchronized ClassPath findClassPath(FileObject fo, String type) {
-//      System.out.println("fo: " + fo + "; type: " + type);
-      
       if (ClassPath.BOOT.equals(type)) {
          return getBootClassPath();
       }
       
       ClassPath cp = getClassPath(fo, type);
-//      System.out.println(cp);
       
       return cp;
    }
    
-   private synchronized ClassPath getBootClassPath() {
+   private ClassPath getBootClassPath() {
       if (bootClassPath == null) {
-         JavaPlatform platform = JavaPlatformManager.getDefault()
-               .getDefaultPlatform();
-         
-         JavaPlatform[] platforms = JavaPlatformManager.getDefault()
-               .getPlatforms(null, new Specification("j2se",
-               new SpecificationVersion(Utils.getSourceLevel(
-               project.getHelper()))));
-         
-         if (platforms.length > 0) {
-            platform = platforms[0];
-            
-            for (int i = 0; i < platforms.length; i++) {
-               if (platforms[i].getJavadocFolders().isEmpty()) {
-                  platform = platforms[i];
-                  break;
-               }
+         MutableClassPathImplementation impl = new MutableClassPathImplementation() {
+            protected Collection getURLs() {
+               return getBootClassPathURLs();
             }
-            
-            for (int i = 0; i < platforms.length; i++) {
-               if (platforms[i].getSourceFolders().getRoots().length > 0) {
-                  platform = platforms[i];
-                  break;
-               }
-            }
-         }
-         
-         bootClassPath = platform.getBootstrapLibraries();
+         };
+
+         implementations.add(impl);
+         bootClassPath = ClassPathFactory.createClassPath(impl);
       }
-      
+
       return bootClassPath;
    }
-   
-   private ClassPath getClassPath(FileObject fo, String type) {
-      synchronized (classpaths) {
-         Map classpathsPerType = (Map)classpaths.get(type);
-         
-         if (classpathsPerType == null) {
-            classpathsPerType = new WeakHashMap();
-            classpaths.put(type, classpathsPerType);
-         }
-         
-         for (final Iterator i = classpathsPerType.entrySet().iterator();
-               i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry)i.next();
-            FileObject root = (FileObject)entry.getKey();
-            
-            if (root == fo || FileUtil.isParentOf(root, fo)) {
-               return (ClassPath)entry.getValue();
+
+   private Collection getBootClassPathURLs() {
+      JavaPlatform platform = JavaPlatformManager.getDefault()
+            .getDefaultPlatform();
+
+      JavaPlatform[] platforms = JavaPlatformManager.getDefault()
+            .getPlatforms(null, new Specification("j2se",
+            new SpecificationVersion(Utils.getSourceLevel(
+            project.getHelper()))));
+
+      if (platforms.length > 0) {
+         platform = platforms[0];
+
+         for (int i = 0; i < platforms.length; i++) {
+            if (platforms[i].getJavadocFolders().isEmpty()) {
+               platform = platforms[i];
+               break;
             }
          }
-         
-         GenesisSources sources = (GenesisSources)project.getLookup().lookup(
-               GenesisSources.class);
-         SourceGroup[] groups = sources.getSourceGroups(
-               JavaProjectConstants.SOURCES_TYPE_JAVA);
-         
-         for (int i = 0; i < groups.length; i++) {
-            FileObject root = groups[i].getRootFolder();
-            
-            if (root == fo || FileUtil.isParentOf(root, fo)) {
-               ClassPath classPath = createClassPath(root, type, sources);
-//               System.out.println("created cp: " + classPath);
-               classpathsPerType.put(root, classPath);
-               
-               return classPath;
+
+         for (int i = 0; i < platforms.length; i++) {
+            if (platforms[i].getSourceFolders().getRoots().length > 0) {
+               platform = platforms[i];
+               break;
             }
+         }
+      }
+
+      Collection entries = platform.getBootstrapLibraries().entries();
+      Collection urls = new ArrayList(entries.size());
+
+      for (Iterator i = entries.iterator(); i.hasNext();) {
+         ClassPath.Entry entry = (ClassPath.Entry)i.next();
+         urls.add(entry.getURL());
+      }
+
+      return urls;
+   }
+
+   private ClassPath getClassPath(FileObject fo, final String type) {
+      Map classpathsPerType = (Map)classpaths.get(type);
+
+      if (classpathsPerType == null) {
+         classpathsPerType = new WeakHashMap();
+         classpaths.put(type, classpathsPerType);
+      }
+
+      for (final Iterator i = classpathsPerType.entrySet().iterator();
+            i.hasNext(); ) {
+         Map.Entry entry = (Map.Entry)i.next();
+         FileObject root = (FileObject)entry.getKey();
+
+         if (root == fo || FileUtil.isParentOf(root, fo)) {
+            return (ClassPath)entry.getValue();
+         }
+      }
+
+      final GenesisSources sources = (GenesisSources)project.getLookup().lookup(
+            GenesisSources.class);
+      SourceGroup[] groups = sources.getSourceGroups(
+            JavaProjectConstants.SOURCES_TYPE_JAVA);
+
+      for (int i = 0; i < groups.length; i++) {
+         final FileObject root = groups[i].getRootFolder();
+
+         if (root == fo || FileUtil.isParentOf(root, fo)) {
+            MutableClassPathImplementation impl = new MutableClassPathImplementation() {
+               protected Collection getURLs() {
+                  return createClassPath(root, type, sources);
+               }
+            };
+
+            implementations.add(impl);
+
+            ClassPath classPath = ClassPathFactory.createClassPath(impl);
+            classpathsPerType.put(root, classPath);
+
+            return classPath;
          }
       }
       
       return null;
    }
    
-   private ClassPath createClassPath(FileObject root, String type,
+   private Collection createClassPath(FileObject root, String type,
          GenesisSources sources) {
       if (ClassPath.SOURCE.equals(type)) {
          return createSourceClassPath(root, sources);
@@ -235,14 +319,14 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       return null;
    }
    
-   private ClassPath createSourceClassPath(FileObject root,
+   private Collection createSourceClassPath(FileObject root,
          GenesisSources sources){
       Collection files = new ArrayList();
-      files.add(root);
+      files.add(FileUtil.toFile(root));
       
       if (sources.getClientSourcesRoot() == root) {
          if (sources.getSharedSourcesRoot() != null) {
-            files.add(sources.getSharedSourcesRoot());
+            files.add(FileUtil.toFile(sources.getSharedSourcesRoot()));
          }
          
          addClassPath(files, findSourcesRootNode(findSourceGroupFor("client")));
@@ -252,11 +336,10 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          addClassPath(files, findSourcesRootNode(findSourceGroupFor(root)));
       }
 
-      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
-            new FileObject[files.size()]));
+      return toURLs(files);
    }
 
-   private ClassPath createCompileClassPath(FileObject root,
+   private Collection createCompileClassPath(FileObject root,
          GenesisSources sources) {
       if (root == sources.getSharedSourcesRoot()) {
          return createCompileClassPath("shared", root, sources,
@@ -276,11 +359,10 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       Collection files = new ArrayList();
       addClassPath(files, findCompilationPathsRootNode(findSourceGroupFor(root)));
 
-      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
-            new FileObject[files.size()]));
+      return toURLs(files);
    }
 
-   private ClassPath createCompileClassPath(String name, FileObject root,
+   private Collection createCompileClassPath(String name, FileObject root,
          GenesisSources sources, Object[][] paths) {
       Collection files = new ArrayList();
       
@@ -303,23 +385,16 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          });
          
          for (int j = 0; j < filteredFiles.length; j++) {
-            FileObject file = FileUtil.toFileObject(filteredFiles[j]);
-            
-            if (FileUtil.isArchiveFile(file)) {
-               file = FileUtil.getArchiveRoot(file);
-            }
-            
-            files.add(file);
+            files.add(filteredFiles[j]);
          }
       }
       
       addClassPath(files, findCompilationPathsRootNode(findSourceGroupFor(name)));
-      
-      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
-            new FileObject[files.size()]));
+
+      return toURLs(files);
    }
    
-   private ClassPath createExecuteClassPath(FileObject root,
+   private Collection createExecuteClassPath(FileObject root,
          GenesisSources sources) {
       Collection files = new ArrayList();
       
@@ -329,7 +404,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          FileObject[] roots = cp.getRoots();
 
          for (int i = 0; i < roots.length; i++) {
-            files.add(roots[i]);
+            files.add(FileUtil.toFile(roots[i]));
          }
       }
       
@@ -340,14 +415,13 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          FileObject[] artifactFiles = artifacts[i].getArtifactFiles();
          
          for (int j = 0; j < artifactFiles.length; j++) {
-            files.add(artifactFiles[j]);
+            files.add(FileUtil.toFile(artifactFiles[j]));
          }
       }
       
       addClassPath(files, findExecutionPathsRootNode());
       
-      return ClassPathSupport.createClassPath((FileObject[])files.toArray(
-            new FileObject[files.size()]));
+      return toURLs(files);
    }
    
    private Element findSourceGroupFor(String name) {
@@ -469,18 +543,48 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             continue;
          }
 
-         FileObject file = Utils.resolveFileObject(project, subNodes.item(0)
-               .getNodeValue());
+         files.add(Utils.resolveFile(project, subNodes.item(0).getNodeValue()));
+      }
+   }
+
+   private Collection toURLs(Collection files) {
+      Collection urls = new ArrayList(files.size());
+
+      for (Iterator i = files.iterator(); i.hasNext();) {
+         File file = (File) i.next();
 
          if (file == null) {
             continue;
          }
 
-         if (FileUtil.isArchiveFile(file)) {
-            file = FileUtil.getArchiveRoot(file);
+         URL url;
+
+         try {
+            url = file.toURI().toURL();
+         } catch (MalformedURLException e) {
+            ErrorManager.getDefault().notify(e);
+            continue;
          }
 
-         files.add(file);
+         if (FileUtil.isArchiveFile(url)) {
+            urls.add(FileUtil.getArchiveRoot(url));
+            continue;
+         }
+         
+         String external = url.toExternalForm();
+
+         if (external.endsWith("/")) {
+            urls.add(url);
+            continue;
+         }
+
+         try {
+            urls.add(new URL(external + '/'));
+         } catch (MalformedURLException e) {
+            ErrorManager.getDefault().notify(e);
+         }
       }
+
+      return urls;
    }
 }

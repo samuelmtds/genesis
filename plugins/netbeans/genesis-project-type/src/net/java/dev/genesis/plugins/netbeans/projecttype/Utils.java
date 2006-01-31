@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype;
 
+import java.io.File;
 import java.io.IOException;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.reusablecomponents.lang.Enum;
@@ -218,6 +219,11 @@ public class Utils {
    public static FileObject resolveFileObject(GenesisProject project, 
          String path) {
       return project.getHelper().resolveFileObject(project.getEvaluator()
+            .evaluate(path));
+   }
+
+   public static File resolveFile(GenesisProject project, String path) {
+      return project.getHelper().resolveFile(project.getEvaluator()
             .evaluate(path));
    }
 }
