@@ -35,6 +35,10 @@
 
             <target name="-pre-init" depends="-pre-pre-init,-do-pre-init,-post-pre-init" />
 
+            <target name="build-jar" depends="compile,weaving,jar" />
+            <target name="clean-jar" 
+                    depends="pre-clean,shared:clean,client:clean,weaving:clean,jar:clean" />
+
          <xsl:if test="/project:project/project:configuration/g:data/g:source-packages/g:client/g:compilation">
             <target name="client:pre-init">
                <path id="client.additional.javac.classpath">
