@@ -140,38 +140,119 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
 
       if (kind == GenesisProjectKind.DESKTOP) {
          PropertyEvaluator eval = project.getEvaluator();
-         String needsJarValue = eval.getProperty("needs.jar");
 
+         String buildDir = eval.getProperty("build.dir");
+
+         if (buildDir == null) {
+            buildDir = "target";
+         }
+
+         String needsJarValue = eval.getProperty("needs.jar");
          boolean needsJar = !"false".equals(needsJarValue);
 
-         String jarSharedNeededValue = eval.getProperty("jar.shared.needed");
+         addSharedJar(artifacts, eval, needsJar, buildDir);
 
-         boolean jarSharedNeeded = needsJar;
+         GenesisProjectExecutionMode mode = Utils.getExecutionMode(project);
 
-         if (jarSharedNeededValue != null) {
-            jarSharedNeeded = !"false".equals(jarSharedNeededValue);
-         }
-
-         if (jarSharedNeeded) {
-            String jarSharedLocation = eval.getProperty("jar.shared.location");
-
-            if (jarSharedLocation == null) {
-               String buildDir = eval.getProperty("build.dir");
-
-               if (buildDir == null) {
-                  buildDir = "target";
-               }
-
-               jarSharedLocation = eval.evaluate(buildDir + 
-                     "/${genesisBasedApplication.name}-shared.jar");
-            }
-
-            artifacts.add(new GenesisAntArtifact("shared",
-                  JavaProjectConstants.ARTIFACT_TYPE_JAR, jarSharedLocation,
-                  "build-jar", "clean-jar"));
-         }
+         addLocalJar(artifacts, eval, needsJar, buildDir, mode);
+         addRemoteJar(artifacts, eval, needsJar, buildDir, mode);
       }
 
       return (AntArtifact[])artifacts.toArray(new AntArtifact[artifacts.size()]);
+   }
+
+   private void addSharedJar(final Collection artifacts, 
+         final PropertyEvaluator eval, final boolean needsJar, 
+         final String buildDir) {
+      String jarSharedNeededValue = eval.getProperty("jar.shared.needed");
+
+      boolean jarSharedNeeded = needsJar;
+
+      if (jarSharedNeededValue != null) {
+         jarSharedNeeded = !"false".equals(jarSharedNeededValue);
+      }
+
+      if (!jarSharedNeeded) {
+         return;
+      }
+
+      String jarSharedLocation = eval.getProperty("jar.shared.location");
+      
+      if (jarSharedLocation == null) {
+         jarSharedLocation = eval.evaluate(buildDir +
+               "/${genesisBasedApplication.name}-shared.jar");
+      }
+      
+      artifacts.add(new GenesisAntArtifact("shared",
+            JavaProjectConstants.ARTIFACT_TYPE_JAR, jarSharedLocation,
+            "build-jar", "clean-jar"));
+   }
+
+   private void addLocalJar(final Collection artifacts, 
+         final PropertyEvaluator eval, final boolean needsJar, 
+         final String buildDir, final GenesisProjectExecutionMode mode) {
+      String jarLocalNeededValue = eval.getProperty("jar.local.needed");
+
+      boolean jarLocalNeeded = needsJar && 
+            mode != GenesisProjectExecutionMode.REMOTE_MODE_ONLY;
+
+      if (jarLocalNeededValue != null) {
+         jarLocalNeeded = !"false".equals(jarLocalNeededValue);
+      }
+
+      if (!jarLocalNeeded) {
+         return;
+      }
+
+      String jarLocalLocation = eval.getProperty("jar.local.location");
+
+      if (jarLocalLocation == null) {
+         String jarLocalName = eval.getProperty("jar.local.name");
+
+         if (jarLocalName == null) {
+            jarLocalName = eval.evaluate(
+                  "${genesisBasedApplication.name}-local-weaved.jar");
+         }
+
+         jarLocalLocation = eval.evaluate(buildDir + "/" + jarLocalName);
+      }
+
+      artifacts.add(new GenesisAntArtifact("local",
+            JavaProjectConstants.ARTIFACT_TYPE_JAR, jarLocalLocation,
+            "build-jar", "clean-jar"));
+   }
+
+   private void addRemoteJar(final Collection artifacts, 
+         final PropertyEvaluator eval, final boolean needsJar, 
+         final String buildDir, final GenesisProjectExecutionMode mode) {
+      String jarRemoteNeededValue = eval.getProperty("jar.remote.needed");
+
+      boolean jarRemoteNeeded = needsJar && 
+            mode != GenesisProjectExecutionMode.REMOTE_MODE_ONLY;
+
+      if (jarRemoteNeededValue != null) {
+         jarRemoteNeeded = !"false".equals(jarRemoteNeededValue);
+      }
+
+      if (!jarRemoteNeeded) {
+         return;
+      }
+
+      String jarRemoteLocation = eval.getProperty("jar.remote.location");
+
+      if (jarRemoteLocation == null) {
+         String jarRemoteName = eval.getProperty("jar.remote.name");
+
+         if (jarRemoteName == null) {
+            jarRemoteName = eval.evaluate(
+                  "${genesisBasedApplication.name}-remote-weaved.jar");
+         }
+
+         jarRemoteLocation = eval.evaluate(buildDir + "/" + jarRemoteName);
+      }
+
+      artifacts.add(new GenesisAntArtifact("remote",
+            JavaProjectConstants.ARTIFACT_TYPE_JAR, jarRemoteLocation,
+            "build-jar", "clean-jar"));
    }
 }
