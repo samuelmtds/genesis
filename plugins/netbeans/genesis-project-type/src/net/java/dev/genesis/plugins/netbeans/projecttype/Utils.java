@@ -44,8 +44,11 @@ public class Utils {
    public static String WEBSTART_TARGET = "all.with.webstart";
    public static String CLEAN_WEBSTART_TARGET = "clean-webstart";
 
+   public static String BUILD_DIR_PROPERTY = "build.dir";
+
    private static String LOCAL_MODE_PROPERTY = "local.mode";
    private static String REMOTE_MODE_PROPERTY = "remote.mode";
+
 
    private Utils() {
    }
@@ -225,5 +228,11 @@ public class Utils {
    public static File resolveFile(GenesisProject project, String path) {
       return project.getHelper().resolveFile(project.getEvaluator()
             .evaluate(path));
+   }
+
+   public static String getBuildDir(GenesisProject project) {
+      String buildDir = project.getEvaluator().getProperty(BUILD_DIR_PROPERTY);
+
+      return (buildDir == null) ? "target" : buildDir;
    }
 }

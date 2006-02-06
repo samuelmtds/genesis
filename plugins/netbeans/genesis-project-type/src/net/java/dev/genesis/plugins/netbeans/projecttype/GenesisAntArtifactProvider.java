@@ -141,11 +141,7 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
       if (kind == GenesisProjectKind.DESKTOP) {
          PropertyEvaluator eval = project.getEvaluator();
 
-         String buildDir = eval.getProperty("build.dir");
-
-         if (buildDir == null) {
-            buildDir = "target";
-         }
+         String buildDir = Utils.getBuildDir(project);
 
          String needsJarValue = eval.getProperty("needs.jar");
          boolean needsJar = !"false".equals(needsJarValue);

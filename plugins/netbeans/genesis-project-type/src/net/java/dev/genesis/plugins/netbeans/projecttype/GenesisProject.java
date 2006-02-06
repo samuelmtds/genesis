@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.api.GenesisBuildSupportManager;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisProjectKind;
 import net.java.dev.genesis.plugins.netbeans.projecttype.classpath.ClassPathProviderImpl;
+import net.java.dev.genesis.plugins.netbeans.projecttype.queries.GenesisSharabilityQueryImplementation;
 import net.java.dev.genesis.plugins.netbeans.projecttype.queries.SourceLevelQueryImpl;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisBuildSupportMissingDialog;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.project.GenesisLogicalViewProvider;
@@ -190,7 +191,8 @@ public class GenesisProject implements Project {
          new GenesisProjectOpenedHook(),
          new SourceLevelQueryImpl(getHelper()),
          new ClassPathProviderImpl(this),
-         new GenesisAntArtifactProvider(this)
+         new GenesisAntArtifactProvider(this),
+         new GenesisSharabilityQueryImplementation(this)
          });
    }
 
