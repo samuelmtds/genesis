@@ -18,11 +18,13 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui.project;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -53,6 +55,11 @@ import org.openide.ErrorManager;
 import org.openide.actions.FindAction;
 import org.openide.actions.ToolsAction;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileStateInvalidException;
+import org.openide.filesystems.FileStatusEvent;
+import org.openide.filesystems.FileStatusListener;
+import org.openide.filesystems.FileSystem;
+import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.Repository;
 import org.openide.loaders.ChangeableDataFilter;
 import org.openide.loaders.DataFilter;
@@ -93,6 +100,22 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                      fireNameChange(null, null);
                   }
             });
+
+         try {
+            FileSystem fs = project.getProjectDirectory().getFileSystem();
+            FileStatusListener fsl = FileUtil.weakFileStatusListener(
+                  new FileStatusListener() {
+                     public void annotationChanged(FileStatusEvent e) {
+                        if (e.isIconChange()) {
+                           fireOpenedIconChange();
+                           fireIconChange();
+                        }
+                     }
+                  }, fs);
+            fs.addFileStatusListener(fsl);
+         } catch (FileStateInvalidException e) {
+            ErrorManager.getDefault().notify(ErrorManager.INFORMATIONAL, e);
+         }
       }
 
       private void setName() {
@@ -255,6 +278,26 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          actions.add(new CustomAntAction(project, bundle.getString(
                   "LBL_CleanBuildWebstartAction_Name"), new String[] {
                   Utils.CLEAN_WEBSTART_TARGET}));
+      }
+
+      public Image getOpenedIcon(int type) {
+         return getAnnotatedIcon(super.getOpenedIcon(type), type);
+      }
+
+      public Image getIcon(int type) {
+         return getAnnotatedIcon(super.getIcon(type), type);
+      }
+
+      private Image getAnnotatedIcon(Image icon, int type) {
+         try {
+            return project.getProjectDirectory().getFileSystem().getStatus()
+                  .annotateIcon(icon, type, Collections.singleton(
+                  project.getProjectDirectory()));
+         } catch (FileStateInvalidException e) {
+            ErrorManager.getDefault().notify(ErrorManager.INFORMATIONAL, e);
+         }
+
+         return icon;
       }
    }
 
