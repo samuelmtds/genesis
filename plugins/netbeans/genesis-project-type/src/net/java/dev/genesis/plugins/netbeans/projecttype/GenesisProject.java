@@ -38,13 +38,17 @@ import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.project.AuxiliaryConfiguration;
+import org.netbeans.spi.project.support.ant.AntProjectEvent;
 import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.AntProjectListener;
 import org.netbeans.spi.project.support.ant.EditableProperties;
 import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
 import org.netbeans.spi.project.support.ant.ProjectXmlSavedHook;
 import org.netbeans.spi.project.support.ant.PropertyEvaluator;
 import org.netbeans.spi.project.support.ant.ReferenceHelper;
+import org.netbeans.spi.project.ui.PrivilegedTemplates;
 import org.netbeans.spi.project.ui.ProjectOpenedHook;
+import org.netbeans.spi.project.ui.RecommendedTemplates;
 import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
@@ -145,6 +149,87 @@ public class GenesisProject implements Project {
       }
    }
 
+   private static final class RecommendedTemplatesImpl 
+         implements RecommendedTemplates, PrivilegedTemplates {
+      private static final String[] RECOMMENDED_TYPES = new String[] {
+         "java-classes",
+         "java-beans",
+         //"oasis-XML-catalogs",
+         "XML",
+         //"ant-script",
+         "ant-task",
+         //"web-service-clients",
+         //"wsdl",
+         "junit",
+         // "MIDP",
+         "simple-files"
+      };
+      private static final String[] RECOMMENDED_DESKTOP_TYPES = new String[] {
+         "java-forms",
+         "gui-java-application"
+      };
+      private static final String[] RECOMMENDED_WEB_TYPES = new String[] {
+         "servlet-types",
+         "web-types"
+      };
+      
+      private static final String[] PRIVILEGED_NAMES = new String[] {
+         "Templates/Classes/Package",
+         "Templates/Other/Folder",
+         "Templates/Other/file",
+         "Templates/Classes/Class.java",
+         "Templates/Classes/Interface.java",
+         "Templates/Thinlet/panel.xml",
+         "Templates/XML/XMLDocument.xml",
+      };
+
+      private final GenesisProject project;
+      private String[] recommended;
+
+      public RecommendedTemplatesImpl(final GenesisProject project) {
+         this.project = project;
+
+         project.getHelper().addAntProjectListener(new AntProjectListener() {
+            public void configurationXmlChanged(AntProjectEvent e) {
+               recommended = null;
+            }
+
+            public void propertiesChanged(AntProjectEvent e) {
+            }
+         });
+      }
+
+      public String[] getRecommendedTypes() {
+         if (recommended == null) {
+            String[] specific;
+
+            GenesisProjectKind kind = Utils.getKind(project);
+
+            if (kind == GenesisProjectKind.DESKTOP) {
+               specific = RECOMMENDED_DESKTOP_TYPES;
+            } else if (kind == GenesisProjectKind.WEB) {
+               specific = RECOMMENDED_WEB_TYPES;
+            } else {
+               specific = new String[0];
+            }
+
+            recommended = new String[RECOMMENDED_TYPES.length + specific.length];
+
+            System.arraycopy(RECOMMENDED_TYPES, 0, recommended, 0, 
+                  RECOMMENDED_TYPES.length);
+            System.arraycopy(specific, 0, recommended, RECOMMENDED_TYPES.length, 
+                  specific.length);
+         }
+
+         return recommended;
+      }
+      
+      public String[] getPrivilegedTemplates() {
+         return PRIVILEGED_NAMES;
+      }
+      
+   }
+
    private final AntProjectHelper helper;
    private final PropertyEvaluator evaluator;
    private final AuxiliaryConfiguration auxiliaryConfiguration;
@@ -192,7 +277,8 @@ public class GenesisProject implements Project {
          new SourceLevelQueryImpl(getHelper()),
          new ClassPathProviderImpl(this),
          new GenesisAntArtifactProvider(this),
-         new GenesisSharabilityQueryImplementation(this)
+         new GenesisSharabilityQueryImplementation(this),
+         new RecommendedTemplatesImpl(this)
          });
    }
 
