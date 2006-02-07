@@ -39,20 +39,20 @@
             <target name="clean-jar" 
                     depends="pre-clean,shared:clean,client:clean,weaving:clean,jar:clean" />
 
-         <xsl:if test="/project:project/project:configuration/g:data/g:source-packages/g:client/g:compilation">
+         <xsl:if test="/project:project/project:configuration/g:data/g:source-folders/g:client/g:compilation">
             <target name="client:pre-init">
                <path id="client.additional.javac.classpath">
-               <xsl:for-each select="/project:project/project:configuration/g:data/g:source-packages/g:client/g:compilation/g:path">
+               <xsl:for-each select="/project:project/project:configuration/g:data/g:source-folders/g:client/g:compilation/g:path">
                   <path location="{.}" />
                </xsl:for-each>
                </path>
             </target>
          </xsl:if>
 
-         <xsl:if test="/project:project/project:configuration/g:data/g:source-packages/g:shared/g:compilation">
+         <xsl:if test="/project:project/project:configuration/g:data/g:source-folders/g:shared/g:compilation">
             <target name="shared:pre-init">
                <path id="shared.additional.javac.classpath">
-               <xsl:for-each select="/project:project/project:configuration/g:data/g:source-packages/g:shared/g:compilation/g:path">
+               <xsl:for-each select="/project:project/project:configuration/g:data/g:source-folders/g:shared/g:compilation/g:path">
                   <path location="{.}" />
                </xsl:for-each>
                </path>
