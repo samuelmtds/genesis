@@ -36,8 +36,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * @Form
- * @Condition findRoleCondition=genesis.isNotEmpty(form.getRoleCode()) 
- *       && genesis.hasChanged(form.getRoleCode())
+ * @Condition findRoleCondition=genesis.isNotEmpty("form:roleCode") &&
+ *       genesis.hasChanged("form:roleCode")
  * 
  * @genesis.form
  */
@@ -98,7 +98,7 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @ClearOn genesis.isEmpty(form.getRoleCode())
+    * @ClearOn genesis.isEmpty("form:roleCode")
     */
    public Role getRole() {
       return role;
@@ -122,7 +122,7 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @ClearOn genesis.isEmpty(form.getRoleCode())
+    * @ClearOn genesis.isEmpty("form:roleCode")
     */
    public String getRoleLabel(){
       return role == null ? null : role.getLabel();
@@ -217,7 +217,7 @@ public class InsertUpdateForm {
 
    /**
     * @DataProvider objectField=state
-    * @CallWhen genesis.hasChanged(form.getCountry())
+    * @CallWhen genesis.hasChanged("form:country")
     */
    public List provideState() throws Exception {
       return new ArrayList(State.getStates(getCountry()));
