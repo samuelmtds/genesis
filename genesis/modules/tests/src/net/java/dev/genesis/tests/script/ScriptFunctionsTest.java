@@ -163,8 +163,8 @@ public abstract class ScriptFunctionsTest extends TestCase {
       final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
-            + (isEmpty ? "' is not empty" : "' is empty"), isEmpty ? result
-            : (!result));
+            + (isEmpty ? "' is not empty" : "' is empty") + "; expression: " + 
+            expr, isEmpty ? result : (!result));
    }
 
    private void emptyConstantsTester(final ScriptContext ctx,
@@ -173,8 +173,8 @@ public abstract class ScriptFunctionsTest extends TestCase {
       final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The constant '" + constant
-            + (isEmpty ? "' is not empty" : "' is empty"), isEmpty ? result
-            : (!result));
+            + (isEmpty ? "' is not empty" : "' is empty") + "; expression: " + 
+            expr, isEmpty ? result : (!result));
    }
 
    private void populateChangedMap() throws Exception {
@@ -188,8 +188,8 @@ public abstract class ScriptFunctionsTest extends TestCase {
       final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
-            + (changed ? "' has not changed" : "changed"), changed ? result
-            : (!result));
+            + (changed ? "' has not changed" : "changed")+ "; expression: " + 
+            expr, changed ? result : (!result));
    }
 
    private Map cloneProperties(final TestForm form) throws Exception {
@@ -222,7 +222,7 @@ public abstract class ScriptFunctionsTest extends TestCase {
 
       assertTrue("The field '" + fieldName
             + (isEqual ? "' is not equal to " : "' is equal to ") + fieldName
-            + "Clone", isEqual ? result : (!result));
+            + "Clone; expression: " + expr, isEqual ? result : (!result));
    }
 
    private void equalsTester(final ScriptContext ctx, final String fieldName,
@@ -232,8 +232,8 @@ public abstract class ScriptFunctionsTest extends TestCase {
       final boolean result = Boolean.TRUE.equals(ctx.eval(expr));
 
       assertTrue("The field '" + fieldName
-            + (isEqual ? "' is not equal to " : "' is equal to ") + value,
-            isEqual ? result : (!result));
+            + (isEqual ? "' is not equal to " : "' is equal to ") + value + 
+            "; expression: " + expr, isEqual ? result : (!result));
    }
 
    public void testIsEmptyFunction() throws Exception {

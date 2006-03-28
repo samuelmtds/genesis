@@ -78,7 +78,6 @@
 	<path id="client.dependency.classpath">
       <path location="${genesis.module.shared}/${build.dest}" />
       <path refid="script.path" />
-      <fileset dir="${genesis.hibernate.dist}" includes="cglib*.jar" />  
       <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
@@ -119,7 +118,7 @@
       <path refid="script.path" />  
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="aspectwerkz*.jar" />
 		<fileset dir="${genesis.aspectwerkz.dist}" includes="junit*.jar" />
-		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar,cglib*.jar" />
+		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
 		<fileset dir="${genesis.j2ee.dist}" includes="j2ee.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
@@ -560,13 +559,13 @@
 			<formatter type="xml" />
 			<classpath>
             <path refid="backport175.path" />      
-				<path refid="aspectwerkz.path" />
-				<path refid="commons.path" />
-				<path refid="hibernate.path" />
+            <path refid="aspectwerkz.path" />
+            <path refid="commons.path" />
+            <path refid="hibernate.path" />
             <path refid="script.path" />      
-				<pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
-				<pathelement path="${genesis.jdbc.driver}" />
-				<path location="${genesis.module.tests}/${genesis.weaving.dest}" />
+            <pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
+            <pathelement path="${genesis.jdbc.driver}" />
+            <path location="${genesis.module.tests}/${genesis.weaving.dest}" />
             <path location="${genesis.module.annotation}/${genesis.annotation.dest}" />
 			</classpath>
 			<batchtest todir="${genesis.module.tests}/${test.reportsDirectory}">
@@ -647,13 +646,16 @@
                       value="${basedir}/${genesis.module.tests}/${src.dir}/aspectwerkz.xml" />
          <formatter type="xml" />
          <classpath>
+            <path refid="backport175.path" />      
             <path refid="aspectwerkz.path" />
             <path refid="commons.path" />
             <path refid="hibernate.path" />
+            <path refid="script.path" />      
             <pathelement path="${genesis.jboss.home}/client/jbossall-client.jar" />
             <pathelement path="${genesis.jdbc.driver}" />
             <path location="${genesis.module.tests}/${genesis.weaving.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
+            <path location="${genesis.module.annotation}/${genesis.annotation.dest}" />
          </classpath>
          <batchtest todir="${genesis.build.dir}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.client}/${test.src.dir}">
@@ -661,6 +663,7 @@
             </fileset>
             <fileset dir="${genesis.module.tests}/${src.dir}">
                <include name="**/*Test.java" />
+               <exclude name="**/ScriptFunctionsTest.java"/>
             </fileset>
          </batchtest>
       </junit>

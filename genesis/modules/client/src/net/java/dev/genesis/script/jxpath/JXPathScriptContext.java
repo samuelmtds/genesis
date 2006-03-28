@@ -45,10 +45,6 @@ public class JXPathScriptContext extends ScriptContext {
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
 
-   public Object getContextBean() {
-      return ctx.getContextBean();
-   }
-
    protected Object doEval(ScriptExpression expr) {
       return ctx.getValue(expr.getExpressionString());
    }

@@ -21,7 +21,7 @@ package net.java.dev.genesis.tests.script;
 
 public class JavascriptUnsafeFunctionsTest extends JavascriptFunctionsTest {
    protected String toScriptField(String fieldName) {
-      return "form." + fieldName;
+      return "'form:" + fieldName + "'";
    }
 
    protected String toScriptString(String string) {

@@ -39,9 +39,8 @@ public class ScriptFunctionsAdapter {
 
    public static boolean equals(final Object arg1, final Object arg2)
          throws Exception {
-      final ScriptValue[] values = ScriptUtils.getScriptValues(arg1, arg2);
-      return ScriptFunctions.equals(ScriptUtils.getCurrentContext(), values[0],
-            values[1]);
+      return ScriptFunctions.equals(ScriptUtils.getCurrentContext(),
+            ScriptUtils.getScriptValue(arg1), ScriptUtils.getScriptValue(arg2));
    }
 
    public static boolean notEquals(final Object arg1, final Object arg2)

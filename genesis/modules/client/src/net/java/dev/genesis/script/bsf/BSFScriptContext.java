@@ -18,7 +18,7 @@
  */
 package net.java.dev.genesis.script.bsf;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.java.dev.genesis.script.PrimitiveFunctions;
@@ -26,7 +26,6 @@ import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFunctionsAdapter;
-import net.java.dev.genesis.script.ScriptableObject;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
@@ -38,31 +37,23 @@ public class BSFScriptContext extends ScriptContext {
    public static final String PRIMITIVE_FUNCTIONS_NS = "types";
 
    private final BSFManager manager = new BSFManager();
-   private final Hashtable contextMap = new Hashtable();
+   private final HashMap contextMap = new HashMap();
    private final String lang;
-   private final ScriptableObject contextBean;
 
    protected BSFScriptContext(String lang, final Object root) {
       this.lang = lang;
       manager.setObjectRegistry(getObjectRegistry());
-      declare(FORM_NS, contextBean = proxy(root));
+      declare(FORM_NS, root);
       registerFunctions(PRIMITIVE_FUNCTIONS_NS, PrimitiveFunctions.class);
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
 
-   public Object getContextBean() {
-      return contextBean;
-   }
-
    protected Object doEval(ScriptExpression expr) {
       try {
-         contextBean.beforeEval();
          return manager.eval(lang, expr.getExpressionString(), 0, 0, expr
                .getExpressionString());
       } catch (BSFException e) {
          throw new ScriptException(e.getMessage(), e);
-      } finally {
-         contextBean.afterEval();
       }
    }
 

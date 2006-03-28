@@ -61,22 +61,25 @@ public class ScriptUtils {
    }
 
    public static ScriptValue getScriptValue(Object obj) {
-      Object root = ScriptUtils.getCurrentContext().getContextBean();
-      if (root instanceof ScriptableObject) {
-         return ((ScriptableObject)root).getScriptValueFor(obj);
+      if (obj instanceof String) {
+         String s = obj.toString();
+
+         String[] values = s.split(":");
+
+         if (values.length == 1) {
+            return new ScriptValue(null, obj); 
+         }
+
+         if (values.length != 2) {
+            throw new IllegalArgumentException("Malformed expression '" + obj + 
+                  "'");       
+         }
+
+         return new ScriptValue(values[1], getPropertyValue(values[0],
+               values[1]));       
       }
 
-      return new ScriptValue(null, obj);
-   }
-
-   public static ScriptValue[] getScriptValues(Object obj1, Object obj2) {
-      Object root = ScriptUtils.getCurrentContext().getContextBean();
-      if (root instanceof ScriptableObject) {
-         return ((ScriptableObject)root).getScriptValuesFor(obj1, obj2);
-      }
-      
-      return new ScriptValue[] { new ScriptValue(null, obj1),
-            new ScriptValue(null, obj2) };
+      return new ScriptValue(null, obj); 
    }
 
    public static FormMetadata getFormMetadata(ScriptContext ctx) {

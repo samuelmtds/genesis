@@ -61,7 +61,7 @@ public class ELFunctionsTest extends ScriptFunctionsTest {
    }
 
    protected String toScriptField(String fieldName) {
-      return "form." + fieldName;
+      return "'form:" + fieldName + "'";
    }
 
    protected String toScriptNot(String expression) {

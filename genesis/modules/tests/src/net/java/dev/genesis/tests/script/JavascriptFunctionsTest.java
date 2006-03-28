@@ -65,29 +65,7 @@ public class JavascriptFunctionsTest extends ScriptFunctionsTest {
    }
 
    protected String toScriptField(String fieldName) {
-      String[] fields = fieldName.split("[.]");
-      StringBuffer buffer = new StringBuffer("form");
-      PropertyDescriptor lastDesc = null;
-      for (int j = 0; j < fields.length; j++) {
-         buffer.append('.');
-         lastDesc = getFieldDesc(lastDesc == null ? root.getClass() : lastDesc
-               .getPropertyType(), fields[j]);
-         buffer.append(lastDesc.getReadMethod().getName());
-         buffer.append("()");
-      }
-
-      return buffer.toString();
-   }
-
-   protected PropertyDescriptor getFieldDesc(Class beanClass, String field) {
-      PropertyDescriptor[] descs = PropertyUtils
-            .getPropertyDescriptors(beanClass);
-      for (int i = 0; i < descs.length; i++) {
-         if (descs[i].getName().equals(field)) {
-            return descs[i];
-         }
-      }
-      throw new IllegalArgumentException("Field not found: " + field);
+      return "'form:" + fieldName + "'";
    }
 
    protected String toScriptNot(String expression) {

@@ -21,7 +21,6 @@ package net.java.dev.genesis.script;
 import java.util.Map;
 
 public abstract class ScriptContext {
-   public abstract Object getContextBean();
    public abstract Object lookup(String name);
    public abstract void declare(String name, Object value);
    public abstract void undeclare(String name);
@@ -43,13 +42,5 @@ public abstract class ScriptContext {
 
    public Object eval(String expression) {
       return eval(newScriptExpression(expression));
-   }
-
-   protected ScriptableObject proxy(final Object object) {
-      if (object instanceof ScriptableObject) {
-         return (ScriptableObject) object;
-      }
-
-      return DynamicProxy.proxy(object);
    }
 }

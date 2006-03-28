@@ -46,15 +46,11 @@ public class ELScriptContext extends ScriptContext implements VariableResolver,
    private final ExpressionEvaluator evaluator;
 
    protected ELScriptContext(Object root, ExpressionEvaluator evaluator) {
-      variables.put(FORM_NS, proxy(root));
+      variables.put(FORM_NS, root);
       this.evaluator = evaluator;
       registerFunctions("", Functions.class);
       registerFunctions("", PrimitiveFunctions.class);
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
-   }
-
-   public Object getContextBean() {
-      return lookup(FORM_NS);
    }
 
    protected Object doEval(ScriptExpression expr) {
