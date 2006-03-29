@@ -1023,6 +1023,7 @@
             <include name="deploy/jbossjca-service.xml" />
          </fileset>
       </copy>
+      <copy file="${jdbc.driver}" todir="${jboss.app}/lib" />
    </target>
 
    <target name="-do-deploy-server-artifact">
