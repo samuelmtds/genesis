@@ -176,7 +176,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EnabledWhen cannot be a form annotation");
             }
 
@@ -190,7 +190,7 @@ public class FormMetadataFactoryAspect {
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                if (methodMetadata.getActionMetadata() == null) {
-                  throw new UnsupportedOperationException(
+                  throw new IllegalArgumentException(
                         "EnabledWhen must be a field or action annotation");
                }
                
@@ -211,7 +211,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "VisibleWhen cannot be a form annotation");
             }
 
@@ -225,7 +225,7 @@ public class FormMetadataFactoryAspect {
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                if (methodMetadata.getActionMetadata() == null) {
-                  throw new UnsupportedOperationException(
+                  throw new IllegalArgumentException(
                         "VisibleWhen must be a field or action annotation");
                }
 
@@ -269,13 +269,13 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "ValidateBefore cannot be a form annotation");
             }
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "ValidateBefore cannot be a field annotation");
             }
 
@@ -285,7 +285,7 @@ public class FormMetadataFactoryAspect {
                   final Annotation annotation) {
 
                if (methodMetadata.getActionMetadata() == null) {
-                  throw new UnsupportedOperationException("ValidateBefore must be an action annotation");
+                  throw new IllegalArgumentException("ValidateBefore must be an action annotation");
                }
 
                methodMetadata.getActionMetadata().setValidateBefore(
@@ -297,13 +297,13 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "CallWhen cannot be a form annotation");
             }
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "CallWhen cannot be a field annotation");
             }
 
@@ -321,13 +321,13 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "DataProvider cannot be a form annotation");
             }
 
             public void processFieldAnnotation(final FormMetadata formMetadata,
                   final FieldMetadata fieldMetadata, final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "DataProvider cannot be a field annotation");
             }
 
@@ -430,7 +430,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "ClearOn cannot be a form annotation");
             }
 
@@ -446,7 +446,7 @@ public class FormMetadataFactoryAspect {
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
                if (methodMetadata.getDataProviderMetadata() == null) {
-                  throw new UnsupportedOperationException(
+                  throw new IllegalArgumentException(
                         "ClearOn cannot be a method annotation that's not a DataProvider method");
                }
 
@@ -460,7 +460,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EqualityComparator cannot be a form annotation");
             }
 
@@ -478,7 +478,7 @@ public class FormMetadataFactoryAspect {
                   final FormMetadata formMetadata,
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EqualityComparator cannot be a method annotation");
             }
 
@@ -501,7 +501,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EmptyResolver cannot be a form annotation");
             }
 
@@ -515,7 +515,7 @@ public class FormMetadataFactoryAspect {
                   final FormMetadata formMetadata,
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EmptyResolver cannot be a method annotation");
             }
 
@@ -538,7 +538,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EmptyValue cannot be a form annotation");
             }
 
@@ -556,7 +556,7 @@ public class FormMetadataFactoryAspect {
                   final FormMetadata formMetadata,
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "EmptyValue cannot be a method annotation");
             }
 
@@ -566,7 +566,7 @@ public class FormMetadataFactoryAspect {
                AnnotationHandler {
             public void processFormAnnotation(final FormMetadata formMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "Cloner cannot be a form annotation");
             }
 
@@ -580,7 +580,7 @@ public class FormMetadataFactoryAspect {
                   final FormMetadata formMetadata,
                   final MethodMetadata methodMetadata,
                   final Annotation annotation) {
-               throw new UnsupportedOperationException(
+               throw new IllegalArgumentException(
                      "Cloner cannot be a method annotation");
             }
 
