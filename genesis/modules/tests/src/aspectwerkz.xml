@@ -16,6 +16,8 @@
       <!-- Genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="formControllerFactoryIntroduction" expression="form" />
+      <pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+      <pointcut name="viewMetadataFactoryIntroduction" expression="thinletMetadataFactoryIntroduction OR within(@net.java.dev.genesis.annotation.ViewHandler..)" />
       <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
          expression="within(net.java.dev.genesis.command.Command+)
@@ -31,6 +33,7 @@
       <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
       <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
       <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
+      <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
 
       <aspect class="TimeoutAspect">
          <param name="timeout" value="2500" />

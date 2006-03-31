@@ -19,6 +19,8 @@
 package net.java.dev.genesis.tests;
 
 import java.util.Map;
+import net.java.dev.genesis.ui.metadata.ViewMetadata;
+import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -41,6 +43,10 @@ public class TestCase extends junit.framework.TestCase {
 
 	protected FormMetadata getFormMetadata(final Object form) {
 		return ((FormMetadataFactory) form).getFormMetadata(form.getClass());
+	}
+
+	protected ViewMetadata getViewMetadata(final Object viewHandler) {
+		return ((ViewMetadataFactory) viewHandler).getViewMetadata(viewHandler.getClass());
 	}
 
 	public static void assertDescribedMapEquals(Map map, Map map2) {
