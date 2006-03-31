@@ -957,21 +957,28 @@
       </condition>
    </target>
 
-   <target name="jar:additional-macrodefs" if="jar.needed">
+   <target name="jar:additional-macrodefs" if="jar.needed" 
+           depends="define-optional-fileset-type">
+      <genesis:optional-fileset id="jar.client.client.validation.dir" 
+                        dir="${client.validation.dir}">
+         <exclude name="${timestamp.file}" />
+      </genesis:optional-fileset>
+      <genesis:optional-fileset id="jar.client.shared.hibernate.dir" 
+                        dir="${shared.hibernate.dir}">
+         <patternset refid="classes.patternset" />
+         <exclude name="jboss-service.xml" />
+      </genesis:optional-fileset>
+      <genesis:optional-fileset id="jar.client.shared.sources.dir" 
+                        dir="${shared.sources.dir}">
+         <patternset refid="sources.patternset" />
+      </genesis:optional-fileset>
       <presetdef name="jar-client"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:jar sourcesdir="${client.sources.dir}">
             <additional-filesets>
-               <fileset dir="${client.validation.dir}">
-                  <exclude name="${timestamp.file}" />
-               </fileset>
-               <fileset dir="${shared.hibernate.dir}">
-                  <patternset refid="classes.patternset" />
-                  <exclude name="jboss-service.xml" />
-               </fileset>
-               <fileset dir="${shared.sources.dir}">
-                  <patternset refid="sources.patternset" />
-               </fileset>
+               <fileset refid="jar.client.client.validation.dir"/>
+               <fileset refid="jar.client.shared.hibernate.dir"/>
+               <fileset refid="jar.client.shared.sources.dir"/>
             </additional-filesets>
          </genesis:jar>
       </presetdef>

@@ -155,6 +155,13 @@
                classpathref="anttasks.path" />
    </target>
 
+   <target name="define-optional-fileset-type" depends="init-paths">
+      <typedef name="optional-fileset" 
+               uri="https://genesis.dev.java.net/nonav/ns/master_build.xml"
+               classname="net.java.dev.genesis.anttasks.ant.types.OptionalFileSet"
+               classpathref="anttasks.path" />
+   </target>
+   
    <target name="define-aw-macros" depends="init-paths">
       <macrodef name="annotationc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
