@@ -88,6 +88,12 @@ public class ViewMetadataFactoryAspect {
          
          for (int i = 0; i < annotations.length; i++) {
             if (BeforeAction.class.equals(annotations[i].annotationType())) {
+               if (method.getParameterTypes().length != 0) {
+                  throw new IllegalArgumentException("@BeforeAction cannot " +
+                        "be used in a method with parameters: " + 
+                        method.toString());
+               }
+
                BeforeAction annon = (BeforeAction)annotations[i];
                final String[] actionNames = annon.value();
                final String methodName = method.getName();
@@ -101,6 +107,12 @@ public class ViewMetadataFactoryAspect {
                   viewMetadata.addBeforeAction(actionNames[j], methodName);
                }
             } else if (AfterAction.class.equals(annotations[i].annotationType())) {
+               if (method.getParameterTypes().length != 0) {
+                  throw new IllegalArgumentException("@AfterAction cannot " +
+                        "be used in a method with parameters: " + 
+                        method.toString());
+               }
+
                AfterAction annon = (AfterAction)annotations[i];
                final String[] actionNames = annon.value();
                final String methodName = method.getName();

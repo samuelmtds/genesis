@@ -32,6 +32,7 @@ public class ViewMetadataFactoryTest extends TestCase {
       String value;
 
       /**
+       * @BeforeAction
        * @AfterAction
        */
       public void simpleMethod() {
@@ -39,6 +40,7 @@ public class ViewMetadataFactoryTest extends TestCase {
       }
 
       /**
+       * @BeforeAction anotherName
        * @AfterAction anotherName
        */
       public void aliasedMethod() {
@@ -46,6 +48,7 @@ public class ViewMetadataFactoryTest extends TestCase {
       }
 
       /**
+       * @BeforeAction({"a", "b"})
        * @AfterAction({"a", "b"})
        */
       public void arrayMethod() {
@@ -101,7 +104,40 @@ public class ViewMetadataFactoryTest extends TestCase {
 
       try {
          getViewMetadata(new InvalidAfterActionViewHandler());
-         fail("An IllegalArgumentException should be thrown while creating the" +
+         fail("An IllegalArgumentException should be thrown while creating the " +
+               "ViewMetadata instance");
+      } catch (IllegalArgumentException iae) {
+         // expected, it is working
+      }
+   }
+
+   public void testBeforeAction() throws Exception {
+      ValidViewHandler valid = new ValidViewHandler();
+      ViewMetadata validMetadata = getViewMetadata(valid);
+
+      valid.value = null;
+      validMetadata.invokeBeforeAction(valid, "non-existant");
+      assertNull(valid.value);
+
+      valid.value = null;
+      validMetadata.invokeBeforeAction(valid, ValidViewHandler.SIMPLE_METHOD);
+      assertSame(ValidViewHandler.SIMPLE_METHOD, valid.value);
+
+      valid.value = null;
+      validMetadata.invokeBeforeAction(valid, "anotherName");
+      assertSame(ValidViewHandler.ALIASED_METHOD, valid.value);
+
+      valid.value = null;
+      validMetadata.invokeBeforeAction(valid, "a");
+      assertSame(ValidViewHandler.ARRAY_METHOD, valid.value);
+
+      valid.value = null;
+      validMetadata.invokeBeforeAction(valid, "b");
+      assertSame(ValidViewHandler.ARRAY_METHOD, valid.value);
+
+      try {
+         getViewMetadata(new InvalidBeforeActionViewHandler());
+         fail("An IllegalArgumentException should be thrown while creating the " +
                "ViewMetadata instance");
       } catch (IllegalArgumentException iae) {
          // expected, it is working
