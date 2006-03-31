@@ -63,7 +63,7 @@ public class UserListForm extends BaseCriteriaSearchForm {
    }
 
    /**
-    * @Condition usersSelected=genesis.isNotEmpty("form:users")
+    * @Condition usersSelected=genesis.isNotEmpty('form:users')
     */
    public List getUsers() {
       return users;

@@ -27,7 +27,7 @@
       <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
       <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
       <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">      
-          <param name="scriptFactory" value="beanshell" />
+          <param name="scriptFactory" value="javascript" />
        </mixin>
 
       <aspect class="TimeoutAspect">
