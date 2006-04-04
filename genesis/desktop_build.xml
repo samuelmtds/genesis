@@ -497,20 +497,26 @@
                <not>
                   <available file="${weaving.local.dir}" />
                </not>
-               <not>
-                  <uptodate>
-                     <srcfiles dir="${default-client-copy-fileset}" 
-                               includes="**/*.class" />
-                     <mapper type="merge" to="${weaving.local.timestamp.file}" />
-                  </uptodate>
-               </not>
-               <not>
-                  <uptodate>
-                     <srcfiles dir="${default-shared-copy-fileset}" 
-                               includes="**/*.class" />
-                     <mapper type="merge" to="${weaving.local.timestamp.file}" />
-                  </uptodate>
-               </not>
+               <and>
+                  <available file="${default-client-copy-fileset}" type="dir" />
+                  <not>
+                     <uptodate>
+                        <srcfiles dir="${default-client-copy-fileset}" 
+                                  includes="**/*.class" />
+                        <mapper type="merge" to="${weaving.local.timestamp.file}" />
+                     </uptodate>
+                  </not>
+               </and>
+               <and>
+                  <available file="${default-shared-copy-fileset}" type="dir" />
+                  <not>
+                     <uptodate>
+                        <srcfiles dir="${default-shared-copy-fileset}" 
+                                  includes="**/*.class" />
+                        <mapper type="merge" to="${weaving.local.timestamp.file}" />
+                     </uptodate>
+                  </not>
+               </and>
             </or>
          </and>
       </condition>
@@ -620,7 +626,7 @@
          the run:init target -->
    </target>
 
-   <target name="run:init" depends="init-paths,run:pre-init">
+   <target name="-do-run-init" depends="init-paths,run:pre-init">
       <property name="jar.local.name"
                value="${genesisBasedApplication.name}-local-weaved.jar" />
       <property name="jar.local.location" 
@@ -693,10 +699,17 @@
       </path>
    </target>
 
+   <target name="run:post-init">
+      <!-- Override to define any properties that depends on things defined by
+         the run:init target -->
+   </target>
+
    <target name="run:pre-define-classpath">
       <!-- Override to define run.overriden.classpath or 
          run.additional.classpath-->
    </target>
+
+   <target name="run:init" depends="run:pre-init,-do-run-init,run:post-init" />
 
    <target name="run:check-classpath-conditions" depends="run:init">
       <condition property="run.set.custom.classpath">

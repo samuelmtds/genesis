@@ -755,7 +755,10 @@
       </condition>
 
       <condition property="jar.shared.needed">
-         <istrue value="${needs.jar}" />
+         <and>
+            <istrue value="${needs.jar}" />
+            <istrue value="${has.shared.sources}" />
+         </and>
       </condition>
    </target>
 
