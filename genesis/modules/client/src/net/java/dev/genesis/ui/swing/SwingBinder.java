@@ -18,6 +18,10 @@
  */
 package net.java.dev.genesis.ui.swing;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.binding.AbstractBinder;
@@ -26,6 +30,7 @@ import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.BoundMember;
 import net.java.dev.genesis.ui.binding.ExceptionHandler;
+import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
@@ -39,6 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -313,6 +319,43 @@ public class SwingBinder extends AbstractBinder {
       }
 
       return member;
+   }
+
+   protected FormControllerListener getFormControllerListener() {
+      return (FormControllerListener) Proxy.newProxyInstance(
+            Thread.currentThread().getContextClassLoader(),
+            new Class[] {FormControllerListener.class}, new InvocationHandler() {
+               public Object invoke(Object proxy, final Method method, 
+                     final Object[] args) throws Throwable {
+                  if (method.getDeclaringClass() != FormControllerListener.class || 
+                        EventQueue.isDispatchThread()) {
+                     return method.invoke(SwingBinder.this, args);
+                  }
+
+                  final Object[] result = new Object[1];
+                  final Exception[] exception = new Exception[1];
+
+                  EventQueue.invokeAndWait(new Runnable() {
+                     public void run() {
+                        try {
+                           result[0] = method.invoke(SwingBinder.this, args);
+                        } catch (IllegalArgumentException ex) {
+                           exception[0] = ex;
+                        } catch (InvocationTargetException ex) {
+                           exception[0] = ex;
+                        } catch (IllegalAccessException ex) {
+                           exception[0] = ex;
+                        }
+                     }
+                  });
+
+                  if (exception[0] != null) {
+                     throw exception[0];
+                  }
+
+                  return result[0];
+               }
+            });
    }
 
    public String format(String propertyName, Object value) {

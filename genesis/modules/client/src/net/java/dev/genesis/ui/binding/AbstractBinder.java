@@ -174,12 +174,16 @@ public abstract class AbstractBinder implements FormControllerListener {
 
    protected void setupController() throws Exception {
       if (!controller.isSetup()) {
-         controller.addFormControllerListener(this);
+         controller.addFormControllerListener(getFormControllerListener());
          controller.setup();
       } else {
          controller.fireAllEvents(this);
-         controller.addFormControllerListener(this);
+         controller.addFormControllerListener(getFormControllerListener());
       }
+   }
+
+   protected FormControllerListener getFormControllerListener() {
+      return this;
    }
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata)
