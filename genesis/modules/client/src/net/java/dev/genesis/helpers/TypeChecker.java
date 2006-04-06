@@ -29,8 +29,9 @@ public final class TypeChecker {
    public static void checkViewMetadataFactory(final Object view) {
       if (!(view instanceof ViewMetadataFactory)) {
          throw new IllegalArgumentException(view + " should implement " +
-               "ViewMetadataFactory; probably your aop.xml/weaving process " +
-               "is not properly configured.");
+               "ViewMetadataFactory; probably it should have been annotated " +
+               "with @ViewHandler or your aop.xml/weaving process is not " +
+               "properly configured.");
       }
    }
 
