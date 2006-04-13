@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.reflection.ReflectionInvoker;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.ui.ValidationException;
@@ -584,6 +585,16 @@ public class DefaultFormController implements FormController {
          final Object ret = methodMetadata.invoke(getForm());
 
          if (dataProviderMeta != null) {
+            if (ret == null) {
+               throw new IllegalStateException("DataProvider " + 
+                     methodMetadata.getName() + " in " + form + " returned " +
+                     "null; it should return an empty " + 
+                     ReflectionInvoker.getInstance().getMethod(form, 
+                     methodMetadata.getName(), methodMetadata.getMethodEntry()
+                     .getArgsClassesNames()).getReturnType().getName() + 
+                     " instead");
+            }
+
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
                  (List)ret;
             currentState.getDataProvidedMap().put(dataProviderMeta, items);
