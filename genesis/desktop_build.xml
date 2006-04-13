@@ -305,7 +305,7 @@
          </and>
       </condition>
       <condition property="weaving.remote.xml" 
-                 value="${weaving.xml.definition.dir}/local-aop.xml">
+                 value="${weaving.xml.definition.dir}/remote-aop.xml">
          <and>
             <istrue value="${remote.mode.only}" />
             <not>
