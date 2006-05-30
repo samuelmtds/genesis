@@ -33,6 +33,8 @@
             href="/pt-BR/documentation_intro.html">
         <item name="Introdução"
               href="/pt-BR/documentation_intro.html" />
+        <item name="Usando anotações"
+              href="/pt-BR/annotations.html" />
         <item name="Modelo de componentes de interface gráfica" collapse="true"
               href="/pt-BR/ui_basic_concepts.html">
           <item name="Conceitos básicos" href="/pt-BR/ui_basic_concepts.html" />
