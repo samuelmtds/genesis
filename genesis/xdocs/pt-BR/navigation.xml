@@ -41,6 +41,8 @@
               href="/pt-BR/remoting.html">
           <item name="Remotabilidade transparente" 
                 href="/pt-BR/remoting.html" />
+          <item name="Suporte a transações"
+                href="/pt-BR/transactions.html" />
         </item>
         <item name="Modelo de componentes de interface gráfica" collapse="true"
               href="/pt-BR/ui_basic_concepts.html">

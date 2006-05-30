@@ -12,7 +12,6 @@
       <ul>
         <li><a href="#Uso das classes de negócio no cliente">Uso das classes de
         negócio no cliente</a></li>
-        <li><a href="#Suporte a transações">Suporte a transações</a></li>
         <li><a href="#Integração com o Hibernate">Integração com o Hibernate</a>
         </li>
         <li><a href="#Paginação">Paginação</a></li>
@@ -38,33 +37,6 @@
         ser alterada, isso provavelmente só ocorrerá uma vez.</li>
       </ul>
       </p>
-    </section>
-    <section name="Suporte a transações">
-      <p>Para executar um método dentro de uma transação, basta usar a anotação
-      <code>@Transactional</code> de forma similar ao uso de <code>@Remotable
-      </code>, como abaixo:</p>
-      <source>
-/**
- * @Transactional
- */
-public void metodoTransacional() {
-   // codigo do metodo
-}
-</source>
-      <p>O uso de <code>@Transactional</code> automaticamente implica em tornar
-      um método <code>@Remotable</code>, de modo que o uso de apenas uma dessas
-      anotações por método é necessário. Além de manter as características de
-      remotabilidade transparente, <code>@Transactional</code> faz com que o
-      método seja executado dentro de uma transação JTA. Quaisquer recursos
-      transacionais que sejam acessados durante sua execução e tenham suporte a
-      JTA serão automaticamente incluídos na transação. O contexto transacional
-      se propagará automaticamente para qualquer outro componente ou método que
-      for invocado durante a execução do método <code>@Transactional</code>, sem
-      que nenhuma programação adicional tenha de ser feita para isso.</p>
-      <p>Se a execução do método transcorrer normalmente, a transação será
-      automaticamente comitada ao final. Caso seja lançada qualquer exceção
-      haverá rollback automático das alterações e a exceção será propagada
-      diretamente ao código cliente.</p>
     </section>
     <section name="Integração com o Hibernate">
       <p>O genesis provê uma ótima integração com o Hibernate para os
