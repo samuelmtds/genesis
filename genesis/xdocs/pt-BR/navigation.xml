@@ -37,6 +37,11 @@
               href="/pt-BR/annotations.html" />
         <item name="Inicializando o genesis"
               href="/pt-BR/startup.html" />
+        <item name="Funcionalidades básicas" collapse="true"
+              href="/pt-BR/remoting.html">
+          <item name="Remotabilidade transparente" 
+                href="/pt-BR/remoting.html" />
+        </item>
         <item name="Modelo de componentes de interface gráfica" collapse="true"
               href="/pt-BR/ui_basic_concepts.html">
           <item name="Conceitos básicos" href="/pt-BR/ui_basic_concepts.html" />
