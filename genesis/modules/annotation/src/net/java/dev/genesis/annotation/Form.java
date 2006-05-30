@@ -19,7 +19,7 @@
 package net.java.dev.genesis.annotation;
 
 /**
- * @Target(ElementType.METHOD)
+ * @Target(ElementType.TYPE)
  * @Retention(RetentionPolicy.RUNTIME)
  */
 public interface Form {
