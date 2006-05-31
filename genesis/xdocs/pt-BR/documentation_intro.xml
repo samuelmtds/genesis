@@ -23,14 +23,6 @@
          <li><b>Integração com Hibernate:</b> Simplifica o uso do Hibernate, não 
          exigindo nenhuma configuração adicional e integrado as funcionalidades 
          de remotabilidade transparente e suporte a transações.</li>
-         <li><b>Paginação:</b> Provê diversas classes de suporte para paginação,
-         tornando simples o seu uso tanto no lado cliente como nas classes de 
-         negócio. Possui implementações para uso com o Hibernate e para 
-         paginação de listas em memória.</li>
-         <li><b>Pesquisas dinâmicas:</b> O genesis possui APIs que eliminam a 
-         complexidade necessária para implementar pesquisas dinâmicas, i.e., 
-         aquelas em que o usuário pode preencher algum de muitos campos de 
-         pesquisa.</li>
          <li><b>Binding Swing e Thinlet:</b> Através do binding do genesis, é 
          possível exibir e manter JavaBeans sincronizados com o estado da tela
          sem a necessidade de listeners, APIs de eventos ou interfaces 
@@ -52,6 +44,14 @@
          JavaBean que retém os dados da interface gráfica e são executadas e
          tratadas pelo framework antes de invocar uma ação anotada com 
          <code>@ValidateBefore</code>.</li>
+         <li><b>Paginação:</b> Provê diversas classes de suporte para paginação,
+         tornando simples o seu uso tanto no lado cliente como nas classes de 
+         negócio. Possui implementações para uso com o Hibernate e para 
+         paginação de listas em memória.</li>
+         <li><b>Pesquisas dinâmicas:</b> O genesis possui APIs que eliminam a 
+         complexidade necessária para implementar pesquisas dinâmicas, i.e., 
+         aquelas em que o usuário pode preencher algum de muitos campos de 
+         pesquisa.</li>
       </ul>
       <p>Esta documentação tem como objetivo apresentar as principais 
       características e conceitos do genesis com o intuito de que estes possam 
