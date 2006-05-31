@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Integração com o Hibernate</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Integração com o Hibernate">
+      <p>O genesis provê uma ótima integração com o Hibernate para os
+      componentes de negócio. Atualmente, para tirar proveito dela, a classe
+      deve implementar a interface <code>
+      net.java.dev.genesis.command.hibernate.HibernateCommand</code> diretamente
+      ou através de introduction. Futuramente essa limitação será removida,
+      quando o container for integrado ao genesis.</p>
+      <p>Essa interface expõe o método <code>setSession(Session)</code> que é
+      invocado automaticamente pelo framework no servidor antes da execução de
+      cada método remoto injetando uma sessão válida e após com o valor <code>
+      null</code>, para liberar a referência. Para facilitar o uso dessa
+      integração na maior parte dos casos, é provida uma classe, <code>
+      net.java.dev.genesis.command.hibernate.AbstractHibernateCommand</code> que
+      implementa a interface e possui métodos úteis como <code>getSession()
+      </code>.</p>
+      <p>Abaixo temos um exemplo de como utilizar essa integração num componente
+      de negócios:</p>
+      <source>
+public class ExemploIntegracaoHibernate extends AbstractHibernateCommand {
+   @Remotable
+   public Collection getTodos() throws HibernateException {
+      return getSession().createQuery("from ClasseMapeada").list();
+   }
+}
+</source>
+      <p>Como o exemplo acima mostra, utilizar o Hibernate em conjunto com suas
+      classes de negócio é bastante simples e direto.</p>
+    </section>
+  </body>
+</document>
