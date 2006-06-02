@@ -266,7 +266,7 @@ public void exibeErro(Throwable t) {
  1. <panel gap="5" top="5" left="5" bottom="5" right="5" weightx="1"
  2.        weighty="1">
  3.    <panel gap="5" columns="2" weightx="1">
- 4.       <label text="Usuario" font="bold" />
+ 4.       <label text="Usuário" font="bold" />
  5.       <textfield name="usuario" columns="10" />
  6.       <label text="Senha" font="bold" />
  7.       <passwordfield name="senha" columns="10" />

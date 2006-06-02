@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Binding</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Binding">
+      <p>Uma das funcionalidades mais inovadoras do genesis é o <b>binding</b>.
+      O binding mantém a interface gráfica sincronizada automaticamente com um
+      JavaBean, a que chamamos de <b>form</b>. Dois toolkits gráficos são 
+      suportados atualmente para esta integração: Swing e Thinlet. Abaixo temos
+      um exemplo básico de como o binding funciona com essas duas APIs para
+      implementar uma tela de login. Primeiro, temos o form:</p>
+<source>
+@Form
+public class LoginForm {
+   private String usuario;
+   private String senha;
+
+   public String getUsuario() {
+      return usuario;
+   }
+
+   public void setUsuario(String usuario) {
+      this.usuario = usuario;
+   }
+
+   public String getSenha() {
+      return senha;
+   }
+
+   public void setSenha(String senha) {
+      this.senha = senha;
+   }
+
+   @Action
+   public void login() {
+      System.out.println(usuario);
+      System.out.println(senha);
+   }
+
+   @Action
+   public void limpar() {
+      setUsuario(null);
+      setSenha(null);
+   }
+}
+</source>
+      <p>A seguir, temos o código para exibir uma tela conectada a este form 
+      usando Swing:</p>
+<source>
+@ViewHandler
+public class LoginSwingView extends JDialog {
+   public LoginSwingView() {
+      super(new JFrame(), "Login");
+      initComponents();
+
+      SwingBinder binder = new SwingBinder(this, new LoginForm());
+      binder.bind();
+   }
+   
+   private void initComponents() {
+      getContentPane().setLayout(new GridLayout(2, 1));
+
+      JPanel panelDados = new JPanel();
+      panelDados.setLayout(new GridLayout(2, 2, 5, 5));
+
+      JLabel labelUsuario = new JLabel();
+      labelUsuario.setText("Usuário");
+      panelDados.add(labelUsuario);
+
+      JTextField usuario = new JTextField();
+      usuario.setName("usuario");
+      panelDados.add(usuario);
+
+      JLabel labelSenha = new JLabel();
+      labelSenha.setText("Senha");
+      panelDados.add(labelSenha);
+
+      JPasswordField senha = new JPasswordField();
+      senha.setName("senha");
+      panelDados.add(senha);
+
+      getContentPane().add(panelDados);
+
+      JPanel panelBotoes = new JPanel();
+
+      JButton login = new JButton();
+      login.setText("Login");
+      login.setName("login");
+      panelBotoes.add(login);
+
+      JButton limpar = new JButton();
+      limpar.setText("Limpar");
+      limpar.setName("limpar");
+      panelBotoes.add(limpar);
+
+      getContentPane().add(panelBotoes);
+
+      pack();
+
+      setLocationRelativeTo(null);
+
+      addWindowListener(new WindowAdapter() {
+         public void windowClosing(WindowEvent e) {
+            System.exit(0);
+         }
+      });
+   }
+
+   public static void main(String args[]) {
+      SwingUtilities.invokeLater(new Runnable() {
+         public void run() {
+            new LoginSwingView().setVisible(true);
+         }
+      });
+   }
+}
+</source>
+      <p>Por fim, temos o xml e o código necessário para exibir o mesmo form com
+      Thinlet:</p>
+<source>
+<![CDATA[
+ 1. <panel gap="5" top="5" left="5" bottom="5" right="5" weightx="1"
+ 2.        weighty="1">
+ 3.    <panel gap="5" columns="2" weightx="1">
+ 4.       <label text="Usuário" font="bold" />
+ 5.       <textfield name="usuario" columns="10" />
+ 6.       <label text="Senha" font="bold" />
+ 7.       <passwordfield name="senha" columns="10" />
+ 8.    </panel>
+ 9.    <panel gap="5" halign="center" weightx="1">
+10.       <button name="login" text="Login" />
+11.       <button name="limpar" text="Limpar" />
+12.    </panel>
+13. </panel>
+]]>
+</source>
+<source>
+public class LoginThinletView extends BaseDialogThinlet {
+   public LoginThinletView() throws Exception {
+      getDialog().setTitle("Login");
+
+      add(parse("login.xml"));
+      bind(new LoginForm());
+   }
+
+   public static void main(String[] args) throws Exception {
+      new LoginThinletView().display();
+   }
+}
+</source>
+      <p>Através deste exemplo podemos observar algumas coisas importantes sobre
+      a definição de um form. Um classe form recebe a anotação 
+      <code>@Form</code>, que indica ao genesis que esta classe deve ser tratada 
+      de forma especial para que proveja as informações necessárias para o 
+      binding.</p>
+      <p>As propriedades expostas através de setters e getters - neste caso,
+      <code>usuario</code> e <code>senha</code> - podem ser "ligadas" 
+      dinamicamente a diversos widgets da interface gráfica, como textfields, 
+      passwordfields, labels e outros. Para que isto aconteça, os nomes dos 
+      componentes têm que ser iguais aos nomes das propriedades. Com Swing, 
+      deve-se usar o método <code>setName(String)</code> dos componentes. Usando 
+      Thinlet, conforme mostrado no exemplo acima, isso é feito por definir a 
+      propriedade <code>name</code> dos widgets no xml com o nome das 
+      propriedades.</p>
+      <p>Tanto o valor da propriedade no form quanto sua exibição na tela 
+      estarão sincronizados quando o componente que representa a propriedade 
+      perder o foco. No caso do exemplo dado, isso acontece quando o usuário 
+      pressiona a tecla TAB ou clica com o mouse em algum outro ponto da tela 
+      quando o foco está nas caixas de texto <code>usuario</code> ou 
+      <code>senha</code>.</p>
+      <p>Os métodos também podem ser ligados a botões na interface gráfica. Para
+      isso, têm de receber a anotação <code>@Action</code> e devem existir 
+      botões com valor da propriedade <code>name</code> igual ao deles na 
+      interface gráfica. Assim, quando o botão é acionado o método com nome 
+      equivalente é invocado no form. No exemplo dado, ao clicar em Login o 
+      valor dos campos Usuário e Senha é impresso na saída padrão enquanto 
+      acionar o botão Limpar exclui o conteúdo dos campos tanto na tela quanto 
+      no form.</p>
+      <p>A maneira de fazer o binding é dependente da API gráfica. Em todos os
+      casos, existe uma classe a que chamamos de <b>view</b>, ou seja, a classe
+      que define a interface gráfica e que chama os métodos necessários para 
+      efetuar o binding. Para o Swing, a view sempre deve ser anotada com 
+      <code>@ViewHandler</code>. Conforme mostrado acima, o binding no 
+      Swing é feito através da classe auxiliar <code>SwingBinder</code>. Através 
+      desta classe é possível fazer diversas customizações no processo de 
+      binding, mas o código mostrado no exemplo atende a maioria dos casos. Para 
+      o Thinlet, o genesis possui duas classes auxiliares, 
+      <code>BaseThinlet</code> e <code>BaseDialogThinlet</code>, que são usadas
+      para construir janelas comuns e janelas de diálogo, respectivamente, e que
+      possuem o método <code>bind(Object)</code>, usado no exemplo.</p>
+      <p>As seções subsequentes dão explicações mais detalhadas sobre cada um
+      dos bindings.</p>
+    </section>
+  </body>
+</document>
+ 

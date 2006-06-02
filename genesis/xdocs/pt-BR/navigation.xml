@@ -45,6 +45,8 @@
                 href="/pt-BR/transactions.html" />
           <item name="Integração com o Hibernate"
                 href="/pt-BR/hibernate_integration.html" />
+          <item name="Binding"
+                href="/pt-BR/binding.html" />
         </item>
         <item name="Modelo de componentes de interface gráfica" collapse="true"
               href="/pt-BR/ui_basic_concepts.html">
