@@ -50,10 +50,11 @@
              <item name="Binding Thinlet"
                    href="/pt-BR/thinlet_binding.html" />
           </item>
+          <item name="Implementando ações mistas"
+                href="/pt-BR/actions.html" />
         </item>
         <item name="Modelo de componentes de interface gráfica" collapse="true"
-              href="/pt-BR/ui_basic_concepts.html">
-          <item name="Conceitos básicos" href="/pt-BR/ui_basic_concepts.html" />
+              href="/pt-BR/ui_additional_features.html">
           <item name="Funcionalidades adicionais"
                 href="/pt-BR/ui_additional_features.html" />
         </item>
