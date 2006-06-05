@@ -46,7 +46,10 @@
           <item name="Integração com o Hibernate"
                 href="/pt-BR/hibernate_integration.html" />
           <item name="Binding"
-                href="/pt-BR/binding.html" />
+                href="/pt-BR/binding.html" collapse="true">
+             <item name="Binding Thinlet"
+                   href="/pt-BR/thinlet_binding.html" />
+          </item>
         </item>
         <item name="Modelo de componentes de interface gráfica" collapse="true"
               href="/pt-BR/ui_basic_concepts.html">
