@@ -1,4 +1,4 @@
-<project default="genesis" xmlns:m="maven" xmlns:jxr="jxr" 
+<project default="genesis" xmlns:jxr="jxr" 
    xmlns:ant="jelly:ant" xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
    
    <!-- =========================== -->

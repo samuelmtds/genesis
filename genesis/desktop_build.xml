@@ -577,15 +577,15 @@
       </presetdef>
    </target>
 
+   <target name="-do-weaving-copy-local-files">
+      <genesis:weaving-copy targetdir="${preweaving.local.dir}" 
+                                  xml="${weaving.local.xml}" />
+   </target>
+
    <target name="weaving:copy-local-files" 
            depends="define-call-task,weaving:check-conditions,weaving:macrodefs" 
            if="weaving.local.needed">
       <genesis:call target="-do-weaving-copy-local-files" />
-   </target>
-
-   <target name="-do-weaving-copy-local-files">
-      <genesis:weaving-copy targetdir="${preweaving.local.dir}" 
-                                  xml="${weaving.local.xml}" />
    </target>
 
    <target name="weaving:local" 
@@ -598,14 +598,14 @@
                    touchfile="${weaving.local.timestamp.file}" />
    </target>
 
-   <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
-           if="weaving.remote.needed">
-      <genesis:call target="-do-weaving-copy-remote-files" />
-   </target>
-
    <target name="-do-weaving-copy-remote-files">
       <genesis:weaving-copy targetdir="${preweaving.remote.dir}" 
                             xml="${weaving.remote.xml}" />
+   </target>
+
+   <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
+           if="weaving.remote.needed">
+      <genesis:call target="-do-weaving-copy-remote-files" />
    </target>
 
    <target name="weaving:remote" 
@@ -1304,6 +1304,7 @@
          <element name="default-excludes" optional="true" />
          <element name="customize-information" optional="true" />
          <element name="customize-resources" optional="true" />
+         <element name="customize-extensions" optional="true" />
          <element name="customize-security" optional="true" />
          <element name="default-properties" optional="true" />
          <element name="properties" optional="true" />
@@ -1332,6 +1333,7 @@
                         <customize-fileset />
                      </fileset>
                   </jar>
+                  <customize-extensions />
                   <default-properties />
                   <properties />
                </resources>
@@ -1393,7 +1395,9 @@
          <attribute name="sourcedir" default="${webstart.sources.dir}" />
          <element name="filter-tokens" optional="true" />
          <element name="includes" optional="true" />
+         <element name="customize-includes" optional="true" />
          <element name="excludes" optional="true" />
+         <element name="customize-excludes" optional="true" />
          <sequential>
             <copy todir="@{targetdir}">
                <filterset>
@@ -1401,11 +1405,13 @@
                </filterset>
                <fileset dir="@{sourcedir}">
                   <includes />
+                  <customize-includes />
                </fileset>
             </copy>
             <copy todir="@{targetdir}">
                <fileset dir="@{sourcedir}">
                   <excludes />
+                  <customize-excludes />
                </fileset>
             </copy>
          </sequential>
@@ -1492,9 +1498,13 @@
    <target name="webstart:jnlp" 
            depends="webstart:jnlp-local,webstart:jnlp-remote" />
 
+   <target name="-do-webstart-copy">
+      <genesis:webstart-copy />
+   </target>
+
    <target name="webstart:copy" depends="webstart:macrodefs"
            if="webstart.needed">
-      <genesis:webstart-copy />
+      <genesis:call target="-do-webstart-copy" />
    </target>
 
    <target name="webstart:war" depends="webstart:check-conditions" 

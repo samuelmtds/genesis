@@ -120,14 +120,6 @@
             <jar>jsp-api.jar</jar>
             <properties/>
         </dependency>
-        <dependency>
-            <groupId>mozilla</groupId>
-            <artifactId>rhino</artifactId>
-            <version>1.5-R3</version>
-            <type>jar</type>
-            <url>http://www.mozilla.org/rhino/</url>
-            <properties/>
-        </dependency>
         <!-- Unit test dependency -->
         <dependency>
             <groupId>hibernate</groupId>

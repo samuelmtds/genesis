@@ -184,6 +184,15 @@
             <role>Documentation</role>
          </roles>
       </developer>
+      <developer>
+         <name>Raphael Winckler de Bettio</name>
+         <id>raphaelwb</id>
+         <email>raphael@summa-tech.com</email>
+         <organization>Summa Technologies do Brasil Ltda.</organization>
+         <roles>
+            <role>Developer</role>
+         </roles>
+      </developer>
    </developers>
    <contributors>
       <contributor>
