@@ -34,10 +34,14 @@ public class SwingExceptionHandler implements ExceptionHandler {
    private final Component root;
 
    public SwingExceptionHandler(Component root) {
-      this.root = root;
-   }
+		this.root = root;
+	}
 
-   public void handleException(Throwable throwable) {
+	public Component getRoot() {
+		return root;
+	}
+
+	public void handleException(Throwable throwable) {
       if (throwable instanceof ValidationException) {
          showValidationErrors((ValidationException) throwable);
 
@@ -80,8 +84,8 @@ public class SwingExceptionHandler implements ExceptionHandler {
 
    protected void handleUIException(UIException uiException) {
       try {
-         JOptionPane.showMessageDialog(root, uiException.getTitle(),
-            uiException.getDescription(), JOptionPane.WARNING_MESSAGE);
+         JOptionPane.showMessageDialog(root, uiException.getDescription(),
+					uiException.getTitle(), JOptionPane.WARNING_MESSAGE);
       } catch (Throwable t) {
          LogFactory.getLog(getClass()).error("Unknown exception", t);
       }
