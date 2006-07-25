@@ -28,6 +28,7 @@ import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.util.FileUtils;
 import org.apache.tools.ant.util.GlobPatternMapper;
 import org.apache.tools.ant.util.SourceFileScanner;
+import org.codehaus.backport175.compiler.CompilerException;
 import org.codehaus.backport175.compiler.MessageHandler;
 
 import java.io.File;
@@ -196,7 +197,12 @@ public class AnnotationCTask extends MatchingTask {
                (destDir == null) ? null : destDir.getAbsolutePath(),
                (properties == null) ? EMPTY_STRING_ARRAY
                      : new String[] { properties.getAbsolutePath() },
-               new MessageHandler.PrintWriter(verbose), true);
+               new MessageHandler.PrintWriter(verbose) {
+                  public void error(CompilerException ex) {
+                     super.error(ex);
+                     throw ex;
+                  }
+               }, true);
       } catch (Exception ex) {
          throw new BuildException("Annotation failed: " + ex.getMessage(), ex,
                getLocation());
