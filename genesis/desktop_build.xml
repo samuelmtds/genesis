@@ -648,7 +648,7 @@
       <path id="run.standard.classpath">
          <path refid="backport175.path" />
          <fileset dir="${genesis.dist}">
-            <include name="${genesis-annotation.jar}" />
+            <include name="genesis-annotation-jdk14-${genesis.version}.jar" />
             <include name="genesis-aspect-annotated-*.jar" />
             <include name="genesis-client-*.jar" />
          </fileset>
@@ -692,6 +692,8 @@
             <include name="jboss-client.jar" />
             <include name="jboss-common-client.jar" />
             <include name="jboss-j2ee.jar" />
+            <include name="jboss-remoting.jar" />
+            <include name="jboss-serialization.jar" />
             <include name="jboss-transaction-client.jar" />
             <include name="jbosssx-client.jar" />
             <include name="jnp-client.jar" />
@@ -1279,6 +1281,7 @@
                <fileset dir="${backport175.dist}">
                   <include name="backport175-*.jar" />
                </fileset>
+               <fileset dir="${script.dist}" includes="*.jar" />
                <fileset file="${jdbc.driver}" />
                <fileset dir="${jboss.client}">
                   <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->
@@ -1292,6 +1295,7 @@
                   <!-- JBoss 4.x specific files  -->
                   <include name="concurrent.jar" />
                   <include name="jboss-remoting.jar" />
+                  <include name="jboss-serialization.jar" />
                </fileset>
             </jar-fileset>
          </genesis:webstart-signjar-macro>
@@ -1441,7 +1445,10 @@
       <genesis:webstart-signjar />
    </target>
 
-   <target name="webstart:signjar" depends="define-call-task,webstart:macrodefs" 
+   <target name="webstart:signjar"
+           depends="define-call-task,
+                    deploy:create-server,
+                    webstart:macrodefs" 
            if="webstart.needed">
       <genesis:call target="-do-webstart-signjar" />
    </target>

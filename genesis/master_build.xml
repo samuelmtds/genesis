@@ -1029,6 +1029,7 @@
             <include name="deploy/transaction-service.xml" />
             
             <!-- JBoss 4.x specific files  -->
+            <include name="deploy/jbossws*.sar/**" />
             <include name="deploy/ejb-deployer.xml" />
             <include name="deploy/jbossjca-service.xml" />
          </fileset>
