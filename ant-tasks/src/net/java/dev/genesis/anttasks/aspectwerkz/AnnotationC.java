@@ -139,9 +139,6 @@ public class AnnotationC {
             logDirs.append("\n\t" + srcFiles[i]);
             javaDocParser.addSource(srcFiles[i]);
          }
-         if (srcFiles.length > 0) {
-            messageHandler.info(logDirs.toString());
-         }
 
          final AnnotationInterfaceRepository repository = new AnnotationInterfaceRepository(
                messageHandler);
@@ -156,11 +153,19 @@ public class AnnotationC {
 
          // sum-up
          if (ignoreUnknown) {
+            int i = 0;
+            StringBuffer buffer = new StringBuffer("ignored tags: ");
             for (Iterator iterator = repository.getIgnoredDocletNames()
-                  .iterator(); iterator.hasNext();) {
+                  .iterator(); iterator.hasNext(); i++) {
                String doclet = (String) iterator.next();
-               messageHandler.info("ignored: @" + doclet);
+               if (i > 0) {
+                  buffer.append(", ");
+               }
+               buffer.append('@');
+               buffer.append(doclet);
             }
+
+            messageHandler.info(buffer.toString());
          }
       } catch (SourceParseException e) {
          messageHandler.error(e);
