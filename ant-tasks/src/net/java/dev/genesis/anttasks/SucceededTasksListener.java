@@ -86,7 +86,6 @@ public class SucceededTasksListener extends Task implements BuildListener {
    }
 
    public void execute() throws BuildException {
-      System.out.println("Project executed " + getProject());
       synchronized (lock) {
          if (!started) {
             removeOwnerDependencies(getOwningTarget());
