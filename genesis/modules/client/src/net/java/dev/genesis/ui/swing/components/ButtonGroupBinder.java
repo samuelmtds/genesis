@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,11 +74,10 @@ public class ButtonGroupBinder implements GroupBinder {
                         return;
                      }
 
-                     getBinder().getFormController()
-                           .populate(Collections.singletonMap(
-                              fieldMetadata.getName(),
-                              getBinder().getLookupStrategy().getName(button)),
-                           getBinder().getConverters());
+                     getBinder().getFormController().populate(
+								Collections.singletonMap(fieldMetadata
+										.getName(), button.getActionCommand()),
+								getBinder().getConverters());
                   } catch (Exception e) {
                      getBinder().handleException(e);
                   }
@@ -96,16 +95,21 @@ public class ButtonGroupBinder implements GroupBinder {
       }
 
       public void setValue(Object value) throws Exception {
-         String buttonName =
-            (String) getBinder().getConverter(fieldMetadata)
-                           .convert(String.class, value);
-         AbstractButton button =
-            (AbstractButton) getBinder().getLookupStrategy()
-                                   .lookup(getBinder().getRoot(), buttonName);
+    	 String actionName = value == null ? null : value.toString();
 
-         if (button != null) {
-            buttonGroup.setSelected(button.getModel(), true);
-         }
+    	 Enumeration en = buttonGroup.getElements();
+    	 while(en.hasMoreElements()) {
+    		 AbstractButton button =
+    	            (AbstractButton) en.nextElement();
+
+    		 if (actionName == null || !actionName.equals(button.getActionCommand())) {
+    			 buttonGroup.setSelected(button.getModel(), false);
+    			 continue;
+    		 }
+    		 
+    		 buttonGroup.setSelected(button.getModel(), true);
+    		 break;
+    	 }
       }
 
       public void setEnabled(boolean enabled) {

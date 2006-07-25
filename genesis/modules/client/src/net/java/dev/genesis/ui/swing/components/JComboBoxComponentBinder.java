@@ -18,14 +18,6 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundDataProvider;
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-import net.java.dev.reusablecomponents.lang.Enum;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +26,14 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+
+import net.java.dev.genesis.helpers.EnumHelper;
+import net.java.dev.genesis.ui.binding.BoundDataProvider;
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.swing.SwingBinder;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 public class JComboBoxComponentBinder extends AbstractComponentBinder {
    public BoundDataProvider bind(SwingBinder binder, Component component,
@@ -73,20 +73,20 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          return new ActionListener() {
                public void actionPerformed(ActionEvent event) {
                   try {
-                     int selectedIndex = component.getSelectedIndex();
-                     int[] selected =
-                        getBinder()
-                              .getIndexesFromUI((selectedIndex < 0)
-                              ? new int[0] : new int[] { selectedIndex },
-                              isBlank(component));
-
                      getBinder().getFormController()
-                           .updateSelection(dataProviderMetadata, selected);
+                           .updateSelection(dataProviderMetadata, getIndexes());
                   } catch (Exception e) {
                      getBinder().handleException(e);
                   }
                }
             };
+      }
+      
+      public int[] getIndexes() {
+         int selectedIndex = component.getSelectedIndex();
+         return getBinder().getIndexesFromUI(
+               (selectedIndex < 0) ? new int[0] : new int[] { selectedIndex },
+               isBlank(component));
       }
 
       public void updateIndexes(int[] indexes) {
@@ -94,8 +94,7 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
                          .getIndexesFromController(indexes, isBlank(component));
 
          if (indexes.length != 1) {
-            // TODO: message
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Length of selected indexes must be one");
          }
 
          deactivateListeners();
@@ -186,7 +185,7 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
                : PropertyUtils.getProperty(value, keyPropertyName);
 
             return getBinder().format(keyPropertyName, o);
-         } else if (value instanceof Enum) {
+         } else if (EnumHelper.getInstance().isEnum(value)) {
             return value.toString();
          }
 

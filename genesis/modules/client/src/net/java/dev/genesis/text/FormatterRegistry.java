@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package net.java.dev.genesis.text;
 
 
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.registry.Registry;
 import net.java.dev.reusablecomponents.lang.Enum;
 
@@ -29,6 +30,10 @@ public final class FormatterRegistry {
 	private FormatterRegistry() {
 		registry.register(Object.class, new DefaultFormatter());
 		registry.register(Enum.class, new EnumFormatter());
+
+      if (EnumHelper.getInstance().supportsEnum()) {
+         registry.register(EnumHelper.getInstance().getEnumClass(), new EnumFormatter());
+      }
 	}
 
 	public static FormatterRegistry getInstance() {

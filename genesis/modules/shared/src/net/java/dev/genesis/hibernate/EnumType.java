@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import net.java.dev.reusablecomponents.lang.Enum;
+
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.UserType;
 
@@ -52,12 +53,12 @@ public abstract class EnumType implements UserType {
        return toEnum(key);
     }
 
-    protected Enum toEnum(String key) {
+    protected Object toEnum(String key) {
        if (key == null || key.trim().length() == 0) {
           return null;
        }
 
-       return Enum.get(returnedClass(), key);
+       return EnumHelper.getInstance().valueOf(returnedClass(), key);
     }
 
     public void nullSafeSet(PreparedStatement preparedStatement, Object obj, 

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,20 @@ import java.util.Collections;
 import javax.swing.text.JTextComponent;
 
 public class JTextComponentBinder extends AbstractComponentBinder {
+   private final boolean trim;
+
+   public JTextComponentBinder() {
+	   this(true);
+   }
+
+   public JTextComponentBinder(boolean trim) {
+	   this.trim = trim;
+   }
+   
+   protected boolean isTrim() {
+	   return trim;
+   }
+
    public BoundField bind(SwingBinder binder, Component component,
       FieldMetadata fieldMetadata) {
       return new JTextComponentBoundField(binder, (JTextComponent) component,
@@ -67,15 +81,19 @@ public class JTextComponentBinder extends AbstractComponentBinder {
          return new FocusAdapter() {
                public void focusLost(FocusEvent event) {
                   try {
-                     getBinder().getFormController()
-                           .populate(Collections.singletonMap(
-                              fieldMetadata.getName(), component.getText()),
-                           getBinder().getConverters());
+                     getBinder().getFormController().populate(
+								Collections.singletonMap(fieldMetadata
+										.getName(), getValue()),
+								getBinder().getConverters());
                   } catch (Exception e) {
                      getBinder().handleException(e);
                   }
                }
             };
+      }
+
+      public Object getValue() {
+         return isTrim() ? component.getText().trim() : component.getText();
       }
 
       public void setValue(Object value) throws Exception {

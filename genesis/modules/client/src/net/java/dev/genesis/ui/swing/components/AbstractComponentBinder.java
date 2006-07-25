@@ -106,8 +106,11 @@ public class AbstractComponentBinder implements ComponentBinder {
             return;
          }
 
-         if (group instanceof String) {
-            String[] componentNames = ((String) group).split("\\s*,\\s*");
+         boolean instanceofString = group instanceof String;
+         if (instanceofString || group instanceof String[]) {
+        	
+            String[] componentNames = instanceofString ?
+            		((String) group).split("\\s*,\\s*") : (String[]) group;
 
             for (int i = 0; i < componentNames.length; i++) {
                Component c =
@@ -135,8 +138,7 @@ public class AbstractComponentBinder implements ComponentBinder {
                visibleWidgetGroupSet.addAll(groupCollection);
             }
          } else {
-            // TODO: message
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Group property must be a comma-separated string, array of strings or a collection of components");
          }
       }
 
@@ -158,7 +160,7 @@ public class AbstractComponentBinder implements ComponentBinder {
          } else {
             throw new PropertyMisconfigurationException("Property '" +
                propertyName + "' " + "for the component named " +
-               component.getName() + " must " +
+               getName() + " must " +
                "either be left empty or contain a boolean value");
          }
 

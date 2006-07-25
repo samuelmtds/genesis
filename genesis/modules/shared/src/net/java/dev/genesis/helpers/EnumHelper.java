@@ -1,0 +1,134 @@
+/*
+ * The Genesis Project
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+package net.java.dev.genesis.helpers;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collection;
+
+import net.java.dev.genesis.reflection.ReflectionInvoker;
+
+
+public final class EnumHelper {
+   private static final EnumHelper instance = new EnumHelper();
+   
+   private boolean isJdk5;
+   private Class enumClass;
+   
+   private EnumHelper() {
+      try {
+         Class.class.getMethod("isEnum", new Class[0]);
+         enumClass = Class.forName("java.lang.Enum");
+         isJdk5 = true;
+      } catch (Exception e) {
+         isJdk5 = false;
+      }
+   }
+
+   private Object invoke(Object target, String methodName) {
+      try {
+         return ReflectionInvoker.getInstance().invoke(target, methodName);
+      } catch (InvocationTargetException e) {
+         throw new RuntimeException(e.getTargetException());
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
+   }
+
+   public static EnumHelper getInstance() {
+      return instance;
+   }
+
+   public Class getEnumClass() {
+      return enumClass;
+   }
+
+   public boolean supportsEnum() {
+      return isJdk5;
+   }
+   
+   public boolean isReusableComponentEnum(Class clazz) {
+      return net.java.dev.reusablecomponents.lang.Enum.class.isAssignableFrom(clazz);
+   }
+   
+   public boolean isJava5Enum(Class clazz) {
+      return isJdk5 && Boolean.TRUE.equals(invoke(clazz, "isEnum"));
+   }
+   
+   public boolean isReusableComponentEnum(Object object) {
+      return object instanceof net.java.dev.reusablecomponents.lang.Enum;
+   }
+   
+   public boolean isJava5Enum(Object object) {
+      return object != null && isJava5Enum(object.getClass());
+   }
+   
+   public boolean isEnum(Object object) {
+      return isReusableComponentEnum(object) || isJava5Enum(object);
+   }
+   
+   public Collection values(Class clazz) {
+      if (isReusableComponentEnum(clazz)) {
+         return net.java.dev.reusablecomponents.lang.Enum.getInstances(clazz);
+      } else if (isJava5Enum(clazz)) {
+         return Arrays.asList((Object[])invoke(clazz, "getEnumConstants"));
+      }
+
+      throw new UnsupportedOperationException(clazz.getName() + " is not an enum");
+   }
+   
+   public Object valueOf(Class clazz, String name) {
+      if (isReusableComponentEnum(clazz)) {
+         return net.java.dev.reusablecomponents.lang.Enum.get(clazz, name);
+      } else if (isJava5Enum(clazz)) {
+         Object[] enums = (Object[]) invoke(clazz, "getEnumConstants");
+         for (int i = 0; i < enums.length; i++) {
+            String enumName = getName(enums[i]);
+            
+            if (name.equals(enumName)) {
+               return enums[i];
+            }
+         }
+
+         return null;
+      }
+
+      throw new UnsupportedOperationException(clazz.getName() + " is not an enum");
+   }
+   
+   public Class getDeclaringClass(Object object) {
+      if (isReusableComponentEnum(object)) {
+         return ((net.java.dev.reusablecomponents.lang.Enum)object).getBaseClass();
+      } else if (isJava5Enum(object)) {
+         return (Class) invoke(object, "getDeclaringClass");
+      }
+
+      throw new UnsupportedOperationException(object + " is not an enum");
+   }
+   
+   public String getName(Object object) {
+      if (isReusableComponentEnum(object)) {
+         return ((net.java.dev.reusablecomponents.lang.Enum)object).getName();
+      } else if (isJava5Enum(object)) {
+         return object.toString();
+      }
+
+      throw new UnsupportedOperationException(object + " is not an enum");
+   }
+}

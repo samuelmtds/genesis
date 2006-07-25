@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,17 +18,16 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-
 import java.awt.Component;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.Collections;
 
 import javax.swing.JSpinner;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class JSpinnerComponentBinder extends AbstractComponentBinder {
    private final boolean useFormatter;
@@ -52,7 +51,7 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
       private final JSpinner component;
       private final FieldMetadata fieldMetadata;
       private final boolean useFormatter;
-      private final FocusListener listener;
+      private final ChangeListener listener;
 
       public JSpinnerBoundField(SwingBinder binder, JSpinner component,
          FieldMetadata fieldMetadata, boolean useFormatter) {
@@ -60,7 +59,7 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
          this.component = component;
          this.fieldMetadata = fieldMetadata;
          this.useFormatter = useFormatter;
-         component.addFocusListener(listener = createFocusListener());
+         component.addChangeListener(listener = createChangeListener());
       }
 
       protected JSpinner getComponent() {
@@ -75,13 +74,13 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
          return useFormatter;
       }
 
-      protected FocusListener getListener() {
+      protected ChangeListener getListener() {
          return listener;
       }
 
-      protected FocusListener createFocusListener() {
-         return new FocusAdapter() {
-               public void focusLost(FocusEvent event) {
+      protected ChangeListener createChangeListener() {
+         return new ChangeListener() {
+               public void stateChanged(ChangeEvent event) {
                   try {
                      getBinder().getFormController()
                            .populate(Collections.singletonMap(
@@ -103,7 +102,7 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
 
       public void unbind() {
          if (listener != null) {
-            component.removeFocusListener(listener);
+            component.removeChangeListener(listener);
          }
       }
    }

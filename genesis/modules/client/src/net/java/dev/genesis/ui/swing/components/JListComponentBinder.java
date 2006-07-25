@@ -18,11 +18,11 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
-import net.java.dev.reusablecomponents.lang.Enum;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -211,7 +211,7 @@ public class JListComponentBinder extends AbstractComponentBinder {
                : PropertyUtils.getProperty(value, keyPropertyName);
 
             return getBinder().format(keyPropertyName, o);
-         } else if (value instanceof Enum) {
+         } else if (EnumHelper.getInstance().isEnum(value)) {
             return value.toString();
          }
 

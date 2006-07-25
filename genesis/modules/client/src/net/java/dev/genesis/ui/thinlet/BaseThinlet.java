@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,8 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.text.Formatter;
 
 import net.java.dev.genesis.text.FormatterRegistry;
@@ -549,7 +551,7 @@ public abstract class BaseThinlet extends Thinlet {
          boolean enumKey, Map formatters) {
       Object o = properties.get(propertyName);
 
-      if (enumKey && o instanceof Enum) {
+      if (enumKey && EnumHelper.getInstance().isEnum(o)) {
         return o.toString();
       }
 
@@ -726,7 +728,7 @@ public abstract class BaseThinlet extends Thinlet {
          add(component, createItemOfType("", "", null, type));
       }
 
-      for (final Iterator i = Enum.getInstances(clazz).iterator(); i.hasNext(); ) {
+      for (final Iterator i = EnumHelper.getInstance().values(clazz).iterator(); i.hasNext(); ) {
          enumInstance = i.next();
          key = enumInstance.toString();
 

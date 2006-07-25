@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -84,7 +84,7 @@ public class JSliderComponentBinder extends AbstractComponentBinder {
       public void setValue(Object value) throws Exception {
          Integer integer =
             (Integer) getBinder().getConverter(fieldMetadata)
-                            .convert(Integer.TYPE, value);
+                            .convert(Integer.class, value);
 
          component.setValue((integer == null) ? 0 : integer.intValue());
       }

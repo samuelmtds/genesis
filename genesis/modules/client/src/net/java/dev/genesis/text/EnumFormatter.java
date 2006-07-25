@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,8 +19,9 @@
 package net.java.dev.genesis.text;
 
 import java.util.MissingResourceException;
+
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.reusablecomponents.lang.Enum;
 import org.apache.commons.logging.LogFactory;
 
 public class EnumFormatter implements Formatter {
@@ -29,19 +30,17 @@ public class EnumFormatter implements Formatter {
          return "";
       }
 
-      final Enum en = (Enum)o;
-
-      String className = en.getBaseClass().getName();
+      String className = EnumHelper.getInstance().getDeclaringClass(o).getName();
       className = className.substring(className.lastIndexOf('.') + 1);
       className = className.substring(className.lastIndexOf('$') + 1);
 
-      final String key = className + '.' + en.getName();
+      final String key = className + '.' + EnumHelper.getInstance().getName(o);
 
       try {
          return UIUtils.getInstance().getBundle().getString(key);
       } catch (MissingResourceException mre) {
          LogFactory.getLog(getClass()).info("Not found: " + key);
-         return en.getName();
+         return EnumHelper.getInstance().getName(o);
       }
    }
 }

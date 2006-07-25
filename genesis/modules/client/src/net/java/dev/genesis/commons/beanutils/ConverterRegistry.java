@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 
 import net.java.dev.genesis.commons.beanutils.converters.BigDecimalConverter;
 import net.java.dev.genesis.commons.beanutils.converters.DefaultConverter;
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.registry.Registry;
 import net.java.dev.reusablecomponents.converters.EnumConverter;
 import net.java.dev.reusablecomponents.lang.Enum;
@@ -104,6 +105,11 @@ public final class ConverterRegistry extends ConvertUtilsBean {
 
       registry.register(BigDecimal.class, new BigDecimalConverter());
       registry.register(Enum.class, new EnumConverter());
+      
+      if (EnumHelper.getInstance().supportsEnum()) {
+         registry.register(EnumHelper.getInstance().getEnumClass(), new net.java.dev.genesis.commons.beanutils.converters.EnumConverter());
+      }
+      
       registry.register(Object.class, new DefaultConverter());
    }
 
