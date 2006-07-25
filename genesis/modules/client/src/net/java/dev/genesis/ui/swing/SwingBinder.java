@@ -97,6 +97,7 @@ public class SwingBinder extends AbstractBinder {
          ComponentLookupStrategy lookupStrategy, Object form, Object handler) {
       this(component, lookupStrategy, form, handler, true);
    }
+
    public SwingBinder(Component component,
       ComponentLookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
       super(form, handler);
@@ -154,6 +155,16 @@ public class SwingBinder extends AbstractBinder {
       return buttonGroup;
    }
 
+   public Formatter registerFormatter(String componentName,
+         Formatter formatter) {
+         return (Formatter) formatters.put(componentName, formatter);
+   }
+
+   public Converter registerConverter(String componentName,
+         Converter converter) {
+         return (Converter) converters.put(componentName, converter);
+   }
+
    public Converter getConverter(FieldMetadata fieldMetadata) {
       Converter converter = (Converter) converters.get(fieldMetadata.getName());
 
@@ -182,7 +193,7 @@ public class SwingBinder extends AbstractBinder {
 
    protected ComponentBinder getComponentBinder(Component component) {
       ComponentBinder binder =
-         (ComponentBinder) componentBinders.get(component.getName());
+         (ComponentBinder) componentBinders.get(getLookupStrategy().getName(component));
 
       if (binder != null) {
          return binder;
