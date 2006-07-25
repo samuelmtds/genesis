@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="empty-project" default="all" basedir=".">
+<project name="empty-project" default="all" basedir="."
+         xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
    <import file="desktop_build.xml" />
    
    <target name="-pre-init">
