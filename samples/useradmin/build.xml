@@ -4,13 +4,17 @@
    
    <target name="-pre-init">
       <property file="build.properties" />
-      <property name="force.annotation" value="true" />
 
       <property name="local.mode" value="true" />
       <property name="genesisBasedApplication.name" value="useradmin" />
       <property name="genesisBasedApplication.prettyName" value="User admin" />
       <property name="genesisBasedApplication.mainClass" 
                 value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
+
+      <!-- Properties defined to make useradmin jdk1.4 compatible, even when compiling with jdk 5.0 -->
+      <property name="java.source.level" value="1.4" />
+      <property name="genjp" value="false" />
+      <property name="force.annotation" value="true" />
    </target>
 
    <target name="webstart:pre-init">
@@ -35,6 +39,7 @@
             <include name="jta*.jar"/>
          </fileset>
          <fileset dir="${genesis.dist}">
+            <include name="genesis-annotation-*.jar" />
             <include name="genesis-aspect-annotated-*.jar" />
             <include name="genesis-client-*.jar" />
          </fileset>
@@ -58,6 +63,7 @@
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components-*.jar" />
          </fileset>
+         <fileset dir="${script.dist}" includes="*.jar" />
       </copy>
    </target>
 </project>
