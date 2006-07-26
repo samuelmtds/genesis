@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,9 +19,9 @@
 package net.java.dev.genesis.samples.useradmin.ui.swing;
 
 import net.java.dev.genesis.samples.useradmin.ui.UserListForm;
-import net.java.dev.genesis.samples.useradmin.ui.thinlet.ChooseView;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.factory.SwingFactory;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -47,10 +47,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 /**
  * @ViewHandler
@@ -153,47 +149,11 @@ public class UserListView extends JFrame {
       tablePane.setBorder(new EtchedBorder());
       tablePane.setPreferredSize(new Dimension(780, 230));
 
-      TableColumn nameColumn = new TableColumn(0);
-      nameColumn.setIdentifier("name");
-      nameColumn.setHeaderValue(getMessage("User.name"));
-
-      TableColumn loginColumn = new TableColumn(1);
-      loginColumn.setIdentifier("login");
-      loginColumn.setHeaderValue(getMessage("User.login"));
-
-      TableColumn emailColumn = new TableColumn(2);
-      emailColumn.setIdentifier("email");
-      emailColumn.setHeaderValue(getMessage("User.email"));
-
-      TableColumn roleColumn = new TableColumn(3);
-      roleColumn.setIdentifier("role");
-      roleColumn.setHeaderValue(getMessage("User.role"));
-
-      TableColumn countryColumn = new TableColumn(4);
-      countryColumn.setIdentifier("country");
-      countryColumn.setHeaderValue(getMessage("User.country"));
-
-      TableColumn stateColumn = new TableColumn(5);
-      stateColumn.setIdentifier("state");
-      stateColumn.setHeaderValue(getMessage("User.state"));
-
-      DefaultTableColumnModel columnModel = new DefaultTableColumnModel();
-      columnModel.addColumn(nameColumn);
-      columnModel.addColumn(loginColumn);
-      columnModel.addColumn(emailColumn);
-      columnModel.addColumn(roleColumn);
-      columnModel.addColumn(countryColumn);
-      columnModel.addColumn(stateColumn);
-
-      TableModel model =
-         new DefaultTableModel() {
-            public boolean isCellEditable(int row, int column) {
-               return false;
-            }
-         };
-
-      usersTable = new JTable(model, columnModel);
-      usersTable.setName("users");
+      usersTable = SwingFactory.createTable(binder, "users", new String[] {
+            "name", "login", "email", "role", "country", "state" },
+            new String[] { getMessage("User.name"), getMessage("User.login"),
+                  getMessage("User.email"), getMessage("User.role"),
+                  getMessage("User.country"), getMessage("User.state") });
       usersTable.setPreferredSize(new Dimension(300, 210));
       usersTable.setShowHorizontalLines(false);
       usersTable.setShowVerticalLines(false);
@@ -264,12 +224,6 @@ public class UserListView extends JFrame {
       addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
                dispose();
-
-               try {
-                  new ChooseView().display();
-               } catch (Exception e) {
-                  binder.handleException(e);
-               }
             }
          });
 
@@ -280,7 +234,7 @@ public class UserListView extends JFrame {
    private static String getMessage(String key) {
       return UIUtils.getInstance().getBundle().getString(key);
    }
-
+   
    public void display() {
       setVisible(true);
    }

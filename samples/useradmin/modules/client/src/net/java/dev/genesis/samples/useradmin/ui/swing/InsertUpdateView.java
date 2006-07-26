@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,17 +17,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package net.java.dev.genesis.samples.useradmin.ui.swing;
-
-import net.java.dev.genesis.samples.useradmin.databeans.User;
-import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
-import net.java.dev.genesis.samples.useradmin.ui.swing.role.RoleChooser;
-import net.java.dev.genesis.samples.useradmin.ui.swing.role.RoleChooserComponentBinder;
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swing.ComponentBinderRegistryFactory;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-import net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer;
-
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -46,6 +35,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+
+import net.java.dev.genesis.samples.useradmin.databeans.User;
+import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
+import net.java.dev.genesis.samples.useradmin.ui.swing.role.RoleChooser;
+import net.java.dev.genesis.samples.useradmin.ui.swing.role.RoleChooserComponentBinder;
+import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.swing.ComponentBinderRegistryFactory;
+import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.factory.SwingFactory;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * @ViewHandler
@@ -196,12 +196,7 @@ public class InsertUpdateView extends JDialog {
       c.gridy = 7;
       panel.add(countryLabel, c);
 
-      countryComboBox = new JComboBox();
-      countryComboBox.setName("country");
-      countryComboBox.putClientProperty("value", "name");
-      countryComboBox.putClientProperty("key", "name");
-      countryComboBox.setRenderer(new KeyValueListCellRenderer(binder,
-            countryComboBox));
+      countryComboBox = SwingFactory.createComboBox(binder, "country", "name", "name");
       c.gridx = 1;
       c.gridy = 7;
       panel.add(countryComboBox, c);
@@ -211,12 +206,7 @@ public class InsertUpdateView extends JDialog {
       c.gridy = 8;
       panel.add(stateLabel, c);
 
-      stateComboBox = new JComboBox();
-      stateComboBox.setName("state");
-      stateComboBox.putClientProperty("value", "name");
-      stateComboBox.putClientProperty("key", "name");
-      stateComboBox.setRenderer(new KeyValueListCellRenderer(binder,
-            stateComboBox));
+      stateComboBox = SwingFactory.createComboBox(binder, "state", "name", "name");
       c.gridx = 1;
       c.gridy = 8;
       panel.add(stateComboBox, c);

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,13 +31,11 @@ public class ChooseView extends BaseView {
    public void onThinlet() throws Exception {
       new net.java.dev.genesis.samples.useradmin.ui.thinlet.UserListView()
             .display();
-      getFrame().dispose();
    }
 
    public void onSwing() throws Exception {
       new net.java.dev.genesis.samples.useradmin.ui.swing.UserListView()
             .display();
-      getFrame().dispose();
    }
 
    public void onExit() {

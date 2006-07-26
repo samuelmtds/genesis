@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ public class RoleListForm {
 
    /**
     * @Action
-    * @DataProvider objectField=role
+    * @DataProvider(objectField="role")
     */
    public List provideRoles() throws Exception {
       return new RoleSearchCommand().getRoles();
@@ -49,7 +49,7 @@ public class RoleListForm {
 
    /**
     * @Action
-    * @EnabledWhen genesis.isNotEmpty('form:role')
+    * @EnabledWhen("genesis.isNotEmpty('form:role')")
     */
    public void remove() throws Exception {
       new RoleRemoveCommand().removeRole(role);
@@ -58,7 +58,7 @@ public class RoleListForm {
    
    /**
     * @Action
-    * @EnabledWhen genesis.isNotEmpty('form:role')
+    * @EnabledWhen("genesis.isNotEmpty('form:role')")
     */
    public void select() throws Exception {
    }

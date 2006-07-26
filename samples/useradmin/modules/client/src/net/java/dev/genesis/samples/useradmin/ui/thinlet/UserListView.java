@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,6 @@ public class UserListView extends BaseView {
    
    protected void onClose() throws Exception {
       getFrame().dispose();
-      new ChooseView().display();
    }
    
    public void create() throws Exception {

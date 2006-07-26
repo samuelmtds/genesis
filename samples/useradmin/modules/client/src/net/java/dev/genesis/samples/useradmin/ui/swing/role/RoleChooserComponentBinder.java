@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,14 +18,13 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui.swing.role;
 
+import java.awt.Component;
+
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.components.AbstractComponentBinder;
-
-import java.awt.Component;
-import java.util.Collections;
 
 public class RoleChooserComponentBinder extends AbstractComponentBinder {
    public BoundField bind(SwingBinder binder, Component component,
@@ -48,19 +47,20 @@ public class RoleChooserComponentBinder extends AbstractComponentBinder {
          this.component.addRoleChooserListener(listener = createRoleChooserListener());
       }
 
+      protected FieldMetadata getFieldMetadata() {
+         return fieldMetadata;
+      }
+
       protected RoleChooserListener createRoleChooserListener() {
          return new RoleChooserListener() {
-               public void roleChanged(RoleChooser chooser) {
-                  try {
-                     getBinder().getFormController()
-                           .populate(Collections.singletonMap(
-                              fieldMetadata.getName(), chooser.getRole()),
-                           getBinder().getConverters());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void roleChanged(RoleChooser chooser) {
+               getBinder().populateForm(getFieldMetadata(), getValue());
+            }
+         };
+      }
+
+      public Object getValue() {
+         return component.getRole();
       }
 
       public void setValue(Object value) throws Exception {

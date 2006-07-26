@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -63,7 +63,7 @@ public class UserListForm extends BaseCriteriaSearchForm {
    }
 
    /**
-    * @Condition usersSelected=genesis.isNotEmpty('form:users')
+    * @Condition("usersSelected=genesis.isNotEmpty('form:users')")
     */
    public List getUsers() {
       return users;
@@ -87,8 +87,8 @@ public class UserListForm extends BaseCriteriaSearchForm {
 
    /**
     * @Action
-    * @CallWhen form.isRunSearch()
-    * @DataProvider objectField=users callOnInit=false
+    * @CallWhen("form.isRunSearch()")
+    * @DataProvider(objectField="users", callOnInit=false)
     */
    public List doSearch() throws Exception {
       search();
@@ -98,14 +98,14 @@ public class UserListForm extends BaseCriteriaSearchForm {
 
    /**
     * @Action
-    * @EnabledWhen form.getUsers().size() == 1
+    * @EnabledWhen("form.getUsers().size() == 1")
     */
    public void update() throws Exception {
    }
 
    /**
     * @Action
-    * @EnabledWhen  usersSelected
+    * @EnabledWhen("usersSelected")
     */
    public void remove() throws Exception {
       new UserRemoveCommand().removeUser(users);

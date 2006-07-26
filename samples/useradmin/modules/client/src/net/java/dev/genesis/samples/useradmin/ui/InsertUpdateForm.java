@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,8 +36,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * @Form
- * @Condition findRoleCondition=genesis.isNotEmpty('form:roleCode') &&
- *       genesis.hasChanged('form:roleCode')
+ * @Condition("findRoleCondition=genesis.isNotEmpty('form:roleCode') &&
+ *       genesis.hasChanged('form:roleCode')")
  * 
  * @genesis.form
  */
@@ -98,7 +98,7 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @ClearOn genesis.isEmpty('form:roleCode')
+    * @ClearOn("genesis.isEmpty('form:roleCode')")
     */
    public Role getRole() {
       return role;
@@ -122,7 +122,7 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @ClearOn genesis.isEmpty('form:roleCode')
+    * @ClearOn("genesis.isEmpty('form:roleCode')")
     */
    public String getRoleLabel(){
       return role == null ? null : role.getLabel();
@@ -209,15 +209,15 @@ public class InsertUpdateForm {
    }
 
    /**
-    * @DataProvider objectField=country
+    * @DataProvider(objectField="country")
     */
    public List provideCountries() throws Exception {
       return new ArrayList(Enum.getInstances(Country.class));
    }
 
    /**
-    * @DataProvider objectField=state
-    * @CallWhen genesis.hasChanged('form:country')
+    * @DataProvider(objectField="state")
+    * @CallWhen("genesis.hasChanged('form:country')")
     */
    public List provideState() throws Exception {
       return new ArrayList(State.getStates(getCountry()));
@@ -240,7 +240,7 @@ public class InsertUpdateForm {
 
    /**
     * @Action
-    * @CallWhen findRoleCondition
+    * @CallWhen("findRoleCondition")
     */
    public void findRole() throws Exception {
       final Role role = new RoleSearchCommand().getRole(roleCode);
