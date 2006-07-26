@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -63,14 +63,10 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
 
       protected ActionListener createActionListener() {
          return new ActionListener() {
-               public void actionPerformed(ActionEvent event) {
-                  try {
-                     getBinder().invokeAction(actionMetadata.getName());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void actionPerformed(ActionEvent event) {
+               getBinder().invokeFormAction(getActionMetadata());
+            }
+         };
       }
 
       public void unbind() {

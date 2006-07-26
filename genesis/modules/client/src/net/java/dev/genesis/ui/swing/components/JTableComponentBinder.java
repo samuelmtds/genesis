@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,7 @@ import net.java.dev.genesis.ui.swing.SwingBinder;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.awt.Component;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
 
 public class JTableComponentBinder extends AbstractComponentBinder {
    private final boolean useFormatter;
@@ -53,7 +55,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
    }
 
    public class JTableComponentBoundDataProvider extends AbstractBoundMember
-         implements BoundDataProvider {
+      implements BoundDataProvider {
       private final JTable component;
       private final DataProviderMetadata dataProviderMetadata;
       private final ListSelectionListener listener;
@@ -68,7 +70,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
          this.useFormatter = useFormatter;
 
          this.component.getSelectionModel()
-                          .addListSelectionListener(listener = createListSelectionListener());
+                             .addListSelectionListener(listener = createListSelectionListener());
       }
 
       protected JTable getComponent() {
@@ -86,55 +88,15 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       protected ListSelectionListener createListSelectionListener() {
          return new ListSelectionListener() {
                public void valueChanged(ListSelectionEvent event) {
-                  try {
-                     getBinder().getFormController()
-                           .updateSelection(dataProviderMetadata,
-                           component.getSelectedRows());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
+                  getBinder()
+                           .updateFormSelection(getDataProviderMetadata(),
+                           getIndexes());
                }
             };
       }
 
-      protected TableModelAdapter createTableModelAdapter() {
-         return new TableModelAdapter() {
-               public void setData(List data) throws Exception {
-                  DefaultTableModel model =
-                     (DefaultTableModel) component.getModel();
-
-                  String[] valueProperties =
-                     new String[component.getColumnModel().getColumnCount()];
-
-                  model.setRowCount(data.size());
-                  model.setColumnCount(valueProperties.length);
-
-                  for (int i = 0; i < valueProperties.length; i++) {
-                     valueProperties[i] = (String) component.getColumnModel()
-                                                               .getColumn(i)
-                                                               .getIdentifier();
-
-                     if (valueProperties[i] == null) {
-                        // TODO : message
-                        throw new IllegalArgumentException();
-                     }
-                  }
-
-                  int i = 0;
-
-                  for (Iterator iter = data.iterator(); iter.hasNext(); i++) {
-                     Object bean = iter.next();
-
-                     for (int j = 0; j < valueProperties.length; j++) {
-                        Object value =
-                           PropertyUtils.getProperty(bean, valueProperties[j]);
-                        model.setValueAt(useFormatter
-                           ? FormatterRegistry.getInstance().format(value) : value,
-                           i, j);
-                     }
-                  }
-               }
-            };
+      protected int[] getIndexes() {
+         return component.getSelectedRows();
       }
 
       public void updateIndexes(int[] indexes) {
@@ -148,6 +110,48 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
       public void updateList(List data) throws Exception {
          createTableModelAdapter().setData(data);
+      }
+
+      protected TableModelAdapter createTableModelAdapter() {
+         return new TableModelAdapter() {
+               public void setData(List data) throws Exception {
+                  DefaultTableModel model = (DefaultTableModel) component.getModel();
+
+                  String[] valueProperties = new String[component.getColumnModel()
+                                                                       .getColumnCount()];
+
+                  model.setRowCount(data.size());
+                  model.setColumnCount(valueProperties.length);
+
+                  for (int i = 0; i < valueProperties.length; i++) {
+                     valueProperties[i] = (String) component.getColumnModel()
+                                                                  .getColumn(i)
+                                                                  .getIdentifier();
+
+                     if (valueProperties[i] == null) {
+                        throw new IllegalArgumentException("Column number " +
+                           i + " from Table " +
+                           getBinder().getLookupStrategy()
+                                    .getName(getComponent()) +
+                           " does not have an identifier");
+                     }
+                  }
+
+                  int i = 0;
+
+                  for (Iterator iter = data.iterator(); iter.hasNext(); i++) {
+                     Object bean = iter.next();
+
+                     for (int j = 0; j < valueProperties.length; j++) {
+                        Object value = PropertyUtils.getProperty(bean,
+                              valueProperties[j]);
+                        model.setValueAt(useFormatter
+                           ? FormatterRegistry.getInstance().format(value) : value,
+                           i, j);
+                     }
+                  }
+               }
+            };
       }
 
       public void unbind() {

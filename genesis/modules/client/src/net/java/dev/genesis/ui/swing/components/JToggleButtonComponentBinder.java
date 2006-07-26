@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,15 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 
 import javax.swing.JToggleButton;
+
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class JToggleButtonComponentBinder extends AbstractComponentBinder {
    public BoundField bind(SwingBinder binder, Component component,
@@ -65,18 +64,14 @@ public class JToggleButtonComponentBinder extends AbstractComponentBinder {
 
       protected ActionListener createActionListener() {
          return new ActionListener() {
-               public void actionPerformed(ActionEvent event) {
-                  try {
-                     getBinder().getFormController()
-                           .populate(Collections.singletonMap(
-                              fieldMetadata.getName(),
-                              String.valueOf(component.isSelected())),
-                           getBinder().getConverters());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void actionPerformed(ActionEvent event) {
+               getBinder().populateForm(getFieldMetadata(), getValue());
+            }
+         };
+      }
+
+      protected Object getValue() {
+         return String.valueOf(component.isSelected());
       }
 
       public void setValue(Object value) {

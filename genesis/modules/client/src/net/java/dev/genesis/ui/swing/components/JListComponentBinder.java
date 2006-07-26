@@ -82,20 +82,15 @@ public class JListComponentBinder extends AbstractComponentBinder {
 
       protected ListSelectionListener createListSelectionListener() {
          return new ListSelectionListener() {
-               public void valueChanged(ListSelectionEvent event) {
-                  try {
-                     int[] selected =
-                        getBinder()
-                              .getIndexesFromUI(component.getSelectedIndices(),
-                              isBlank(component));
+            public void valueChanged(ListSelectionEvent event) {
+               getBinder().updateFormSelection(getDataProviderMetadata(), getIndexes());
+            }
+         };
+      }
 
-                     getBinder().getFormController()
-                           .updateSelection(dataProviderMetadata, selected);
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+      protected int[] getIndexes() {
+         return getBinder().getIndexesFromUI(component.getSelectedIndices(),
+               isBlank(component));
       }
 
       public void updateIndexes(int[] indexes) {
@@ -189,16 +184,15 @@ public class JListComponentBinder extends AbstractComponentBinder {
 
       protected ListModelAdapter createListModelAdapter() {
          return new ListModelAdapter() {
-               public void setData(Object[] data) {
-                  DefaultListModel model =
-                     (DefaultListModel) component.getModel();
-                  model.clear();
+            public void setData(Object[] data) {
+               DefaultListModel model = (DefaultListModel) component.getModel();
+               model.clear();
 
-                  for (int i = 0; i < data.length; i++) {
-                     model.addElement(data[i]);
-                  }
+               for (int i = 0; i < data.length; i++) {
+                  model.addElement(data[i]);
                }
-            };
+            }
+         };
       }
 
       protected String getKey(Object value) throws Exception {

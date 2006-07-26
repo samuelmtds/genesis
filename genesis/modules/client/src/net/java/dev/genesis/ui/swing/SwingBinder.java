@@ -48,6 +48,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -371,5 +372,32 @@ public class SwingBinder extends AbstractBinder {
 
    public String format(String propertyName, Object value) {
       return format(getFormatters(), propertyName, value);
+   }
+   
+   public void invokeFormAction(ActionMetadata actionMetadata) {
+      try {
+         invokeAction(actionMetadata.getName());
+      } catch (Exception e) {
+         handleException(e);
+      }
+   }
+   
+   public void updateFormSelection(DataProviderMetadata dataProviderMetadata,
+         int[] indexes) {
+      try {
+         getFormController().updateSelection(dataProviderMetadata, indexes);
+      } catch (Exception e) {
+         handleException(e);
+      }
+   }
+
+   public void populateForm(FieldMetadata fieldMetadata, Object value) {
+      try {
+         getFormController().populate(
+               Collections.singletonMap(fieldMetadata.getName(), value),
+               getConverters());
+      } catch (Exception e) {
+         handleException(e);
+      }
    }
 }

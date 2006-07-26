@@ -71,18 +71,13 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
 
       protected ActionListener createActionListener() {
          return new ActionListener() {
-               public void actionPerformed(ActionEvent event) {
-                  try {
-                     getBinder().getFormController()
-                           .updateSelection(dataProviderMetadata, getIndexes());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void actionPerformed(ActionEvent event) {
+               getBinder().updateFormSelection(getDataProviderMetadata(), getIndexes());
+            }
+         };
       }
-      
-      public int[] getIndexes() {
+
+      protected int[] getIndexes() {
          int selectedIndex = component.getSelectedIndex();
          return getBinder().getIndexesFromUI(
                (selectedIndex < 0) ? new int[0] : new int[] { selectedIndex },

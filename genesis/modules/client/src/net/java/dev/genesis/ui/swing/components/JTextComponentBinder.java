@@ -18,17 +18,16 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-
 import java.awt.Component;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.Collections;
 
 import javax.swing.text.JTextComponent;
+
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class JTextComponentBinder extends AbstractComponentBinder {
    private final boolean trim;
@@ -79,17 +78,10 @@ public class JTextComponentBinder extends AbstractComponentBinder {
 
       protected FocusListener createFocusListener() {
          return new FocusAdapter() {
-               public void focusLost(FocusEvent event) {
-                  try {
-                     getBinder().getFormController().populate(
-								Collections.singletonMap(fieldMetadata
-										.getName(), getValue()),
-								getBinder().getConverters());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void focusLost(FocusEvent event) {
+               getBinder().populateForm(getFieldMetadata(), getValue());
+            }
+         };
       }
 
       public Object getValue() {

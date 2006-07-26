@@ -18,17 +18,16 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-
 import java.awt.Component;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.Collections;
 
 import javax.swing.JProgressBar;
+
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class JProgressBarComponentBinder extends AbstractComponentBinder {
    public BoundField bind(SwingBinder binder, Component component,
@@ -66,20 +65,15 @@ public class JProgressBarComponentBinder extends AbstractComponentBinder {
 
       protected FocusListener createFocusListener() {
          return new FocusAdapter() {
-               public void focusLost(FocusEvent event) {
-                  try {
-                     getBinder().getFormController()
-                           .populate(Collections.singletonMap(
-                              fieldMetadata.getName(),
-                              getBinder().getConverter(fieldMetadata)
-                                    .convert(String.class,
-                                 new Integer(component.getValue()))),
-                           getBinder().getConverters());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void focusLost(FocusEvent event) {
+               getBinder().populateForm(getFieldMetadata(), getValue());
+            }
+         };
+      }
+
+      protected Object getValue() {
+         return getBinder().getConverter(fieldMetadata).convert(String.class,
+               new Integer(component.getValue()));
       }
 
       public void setValue(Object value) throws Exception {

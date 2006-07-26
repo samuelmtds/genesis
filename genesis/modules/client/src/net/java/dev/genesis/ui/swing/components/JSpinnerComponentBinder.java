@@ -19,7 +19,6 @@
 package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
-import java.util.Collections;
 
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
@@ -80,19 +79,15 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
 
       protected ChangeListener createChangeListener() {
          return new ChangeListener() {
-               public void stateChanged(ChangeEvent event) {
-                  try {
-                     getBinder().getFormController()
-                           .populate(Collections.singletonMap(
-                              fieldMetadata.getName(),
-                              getBinder().getConverter(fieldMetadata)
-                                    .convert(String.class, component.getValue())),
-                           getBinder().getConverters());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
+            public void stateChanged(ChangeEvent event) {
+               getBinder().populateForm(getFieldMetadata(), getValue());
+            }
+         };
+      }
+
+      protected Object getValue() {
+         return getBinder().getConverter(fieldMetadata).convert(String.class,
+               component.getValue());
       }
 
       public void setValue(Object value) throws Exception {
