@@ -103,6 +103,16 @@ public class ExemploBeforeActionForm {
         o usuário escolher a opção "Sim" na janela que será exibida. Quando a
         confirmação ocorre, o método <code>excluir()</code> é invocado pelo
         framework e o tratamento do acionamento do botão, encerrado.</p>
+        <p>Note o uso da anotação <code>@ViewHandler</code> na classe 
+        <code>ExemploBeforeActionViewSwing</code>. Isso é necessário para todas
+        as classes que são responsáveis pelo tratamento de eventos específicos 
+        da API de interface gráfica, exceto pelas classes que herdam de 
+        <code>BaseThinlet</code>. Podemos simplificar a regra do seu uso da 
+        seguinte forma: quando se usa Swing, deve-se utilizá-la na 
+        classe do componente gráfico ou do objeto utilizado como handler no 
+        construtor do <code>SwingBinder</code>; quando se usa Thinlet, só é 
+        necessário utilizar essa anotação se o objeto que trata os eventos for
+        um POJO.</p>
       </subsection>
       <subsection name="Usando @AfterAction">
         <p>Após a execução de um método do form pode ser necessário utilizar

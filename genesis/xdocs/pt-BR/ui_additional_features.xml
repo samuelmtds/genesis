@@ -9,8 +9,6 @@
     gráfica">
       <p>Os seguintes conceitos e/ou características são abordados abaixo:
       <ul>
-        <li><a href="#Utilizando POJOs para tratar eventos">Utilizando POJOs
-        para tratar eventos</a></li>
         <li><a href="#Tratando erros">Tratando erros</a></li>
         <li><a href="#Controlando a interface gráfica e o form condicionalmente"
         >Controlando a interface gráfica e o form condicionalmente</a></li>
@@ -29,72 +27,6 @@
         pesquisas dinâmicas</a></li>
       </ul>
       </p>
-    </section>
-    <section name="Utilizando POJOs para tratar eventos">
-      <p>A API do Thinlet permite que objetos arbitrários (POJOs) possam ser
-      usados para tratar os eventos da interface gráfica, através do método
-      <code>parse(.., Object handler)</code>. Visto que este método é nativo do
-      Thinlet, não é necessário fazer nada no genesis para tirar proveito desta
-      funcionalidade.</p>
-      <p>No entanto, em algumas arquiteturas é desejável que estes objetos
-      sejam usados não somente para tratar eventos do Thinlet, mas também para
-      implementar métodos anotados como <code>@BeforeAction</code> e/ou
-      <code>@AfterAction</code>. Para permitir isto, foi adicionada na versão
-      2.1 a anotação <code>@ViewHandler</code>, que deve ser utilizada na
-      classe que contiver estes métodos. Foram também acrescentadas versões
-      sobrecarregadas dos métodos <code>bind(..)</code> e
-      <code>prepareBinder(..)</code> que recebem como parâmetro adicional o
-      objeto a ser utilizado para tratar os eventos.</p>
-      <p>Esta funcionalidade pode ser utilizada da seguinte forma:</p>
-<source>
-public class ExemploViewHandlerView extends BaseDialogThinlet {
-   public ExemploViewHandlerView(Frame frame) throws Exception {
-      super(frame);
-
-      // código de configuração da janela
-
-      Object handler = new ExemploViewHandler(this);
-      add(parse("view.xml", handler));
-
-      bind(this, new ExemploViewHandlerForm(), handler);
-   }
-}
-</source>
-
-<source>
-/**
- * @Form
- */
-public class ExemploViewHandlerForm {
-   /**
-    * @Action
-    */
-   public void excluir() {
-      // lógica de exclusão
-   }
-}
-</source>
-
-<source>
-/**
- * @ViewHandler
- */
-public class ExemploViewHandler {
-   private final ExemploViewHandlerView view;
-
-   public ExemploViewHandler(ExemploViewHandlerView view) {
-      this.view = view;
-   }
-
-   /**
-    * @BeforeAction
-    */
-    public boolean excluir() {
-       return OptionDialog.displayYesNo(view, "Confirmação",
-             "Deseja realmente excluir?") == OptionDialog.Option.YES;
-    }
-}
-</source>
     </section>
     <section name="Tratando erros">
       <p>O Thinlet já possui um método para tratamento de erros,
