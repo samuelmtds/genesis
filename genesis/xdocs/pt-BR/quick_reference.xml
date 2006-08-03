@@ -485,7 +485,7 @@ public class ExemploForm {
    }
    ... 
    @Action
-   <b>@EnabledWhen("${usersSelected})</b>
+   <b>@EnabledWhen("${usersSelected}")</b>
    public void remove() throws Exception {
    <b>...</b>
   </source>
@@ -498,7 +498,7 @@ public class ExemploForm {
    }
    ... 
    @Action
-   <b>@EnabledWhen($usersSelected)</b>
+   <b>@EnabledWhen("$usersSelected")</b>
    public void remove() throws Exception {
    <b>...</b>
   </source>
@@ -544,7 +544,7 @@ public class ExemploForm {
   <p>Exemplo de uso (EL):</p>
   <source>
    @Action
-   <b>@VisibleWhen(${form.pageNumber &gt; 0})</b>
+   <b>@VisibleWhen("${form.pageNumber &gt; 0}")</b>
    public void previousPage() {
    <b>...</b>
   </source>
@@ -552,7 +552,7 @@ public class ExemploForm {
   <p>Exemplo de uso (JXPath):</p>
   <source>
    @Action
-   <b>@VisibleWhen(pageNumber &gt; 0)</b>
+   <b>@VisibleWhen("pageNumber &gt; 0")</b>
    public void previousPage() {
    <b>...</b>
   </source>
@@ -899,11 +899,13 @@ public class ExemploForm {
     Mais informações...</a></p>
       </subsection>
       <subsection name="@BeforeAction">
-        <p>Aplica-se a métodos de uma view. As views são classes que estendem
-        uma das classes de interface gráfica suportadas. Atualmente, uma view é
-        uma classe que herda da classe BaseThinlet (ou BaseDialogThinlet). A
-        anotação @BeforeAction se aplica ao método da view que deve ser
-        executado <b>antes</b> da execução da @Action. O método deve possuir o
+        <p>Aplica-se a métodos de uma view ou classe de suporte. As views são 
+        classes que estendem uma das classes de interface gráfica suportadas. 
+        Atualmente, a anotação pode ser usada em classes que herdam da classe 
+        BaseThinlet (ou BaseDialogThinlet) ou anotadas com 
+        <a href="#@ViewHandler">@ViewHandler</a>. A anotação 
+        @BeforeAction se aplica ao método da view que deve ser executado 
+        <b>antes</b> da execução da @Action. O método deve possuir o
         mesmo nome da @Action ou indicá-lo como parâmetro anônimo.</p>
         <table>
           <tr>
@@ -932,9 +934,11 @@ public class ExemploForm {
     </a></p>
       </subsection>
       <subsection name="@AfterAction">
-        <p>Aplica-se a métodos de uma view. As views são classes que estendem
-        uma das classes de interface gráfica suportadas. Atualmente, uma view é
-        uma classe que herda da classe BaseThinlet (ou BaseDialogThinlet). A
+        <p>Aplica-se a métodos de uma view ou classe de suporte. As views são 
+        classes que estendem uma das classes de interface gráfica suportadas. 
+        Atualmente, a anotação pode ser usada em classes que herdam da classe 
+        BaseThinlet (ou BaseDialogThinlet) ou anotadas com 
+        <a href="#@ViewHandler">@ViewHandler</a>.
         anotação @AfterAction se aplica ao método da view que deve ser
         executado logo <b>após</b> a execução da @Action. O método deve possuir
         o mesmo nome da @Action ou indicá-lo como parâmetro anônimo.</p>
@@ -942,14 +946,12 @@ public class ExemploForm {
           <tr>
             <th>Parâmetros</th>
             <th>Tipo</th>
-            <th>Uso</th>
             <th>Descrição</th>
             <th>Obrigatório</th>
           </tr>
           <tr>
             <td>anônimo</td>
             <td>String</td>
-            <td>@AfterAction atualizar</td>
             <td>Nome do método do form para o qual o método anotado deve ser
             executado depois</td>
             <td>Somente quando o nome do método da view não coincidir com o
@@ -959,7 +961,7 @@ public class ExemploForm {
   <p>Exemplo de uso (InsertUpdateView.java):</p>
   <source>
    <b>...</b>
-   @AfterAction
+   <b>@AfterAction</b>
    public void save() {
    <b>...</b>
   </source>
@@ -1089,10 +1091,11 @@ public class ExemploViewHandler {
             <td>Obrigatório apenas se possuir propriedades de ordenação</td>
           </tr>
           <tr>
+            <td>orderby</td>
             <td>propriedades de ordenação</td>
             <td>Array de nome das propriedades a serem usadas numa ordenação separadas
-            por vírgula</td>
-            <td>@Criteria(value=meupacote.MinhaClasse.class, orderby= { "propriedade1", "propriedade2 DESC", "propriedade3 ASC" })</td>
+            por vírgula, ex: <code>@Criteria(value=meupacote.MinhaClasse.class, 
+            orderby={"propriedade1", "propriedade2 DESC", "propriedade3 ASC"})</code></td>
             <td>Não</td>
           </tr>
         </table>
