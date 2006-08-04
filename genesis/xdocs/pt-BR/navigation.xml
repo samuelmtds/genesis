@@ -54,7 +54,9 @@
                 href="/pt-BR/actions.html" />
         </item>
         <item name="Funcionalidades adicionais" collapse="true"
-              href="/pt-BR/handling_errors.html">
+              href="/pt-BR/conditions.html">
+          <item name="Trabalhando com condições" 
+                href="/pt-BR/conditions.html" />
           <item name="Tratando erros" 
                 href="/pt-BR/handling_errors.html" />
         </item>
