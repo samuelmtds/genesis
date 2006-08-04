@@ -2,7 +2,7 @@
 
 #################################################################################
 ## The following property must be defined in build.properties with an           #
-## appropriate value for the local environment                         			  #
+## appropriate value for the local environment                                  #
 jboss.home=/opt/jboss-3.2.7
 genesisBasedApplication.name=empty-web-project
 genesisBasedApplication.prettyName=Empty Web Project
