@@ -9,8 +9,6 @@
     gráfica">
       <p>Os seguintes conceitos e/ou características são abordados abaixo:
       <ul>
-        <li><a href="#Determinando se o campo está vazio">Determinando se o
-        campo está vazio</a></li>
         <li><a href="#Comparando valores">Comparando valores</a></li>
         <li><a href="#Populando combos, listas e tabelas">Populando combos,
         listas e tabelas</a></li>
@@ -24,110 +22,6 @@
         pesquisas dinâmicas</a></li>
       </ul>
       </p>
-    </section>
-    <section name="Determinando se o campo está vazio">
-      <p>A fim de realizar ou não algumas operações, o framework precisa
-      determinar se um campo está vazio. Além disso, o fato de um campo estar
-      preenchido ou não é uma informação que costuma ser utilizada pelo
-      desenvolvedor para estabelecer condições nas anotações do genesis. A
-      interface <code>EmptyResolver</code>, definida no pacote
-      <code>net.java.dev.genesis.resolvers</code> é utilizada para isto.</p>
-      <p>Esta interface expõe um único método, <code>isEmpty(Object)</code>, que
-      retorna um <code>boolean</code>. Para especificar qual implementação de
-      <code>EmptyResolver</code> deverá ser utilizada para determinado atributo
-      basta anotá-lo com <code>@EmptyResolver</code>. A sintaxe desta anotação
-      é:</p>
-<source>
-@EmptyResolver &lt;nomeCompletoClasseQueImplementaInterface&gt;
-               &lt;atributos&gt;
-</source>
-      <p>Não é necessário quebrar a linha ao definir a anotação. Basta separar o
-      nome da classe dos atributos com um espaço.</p>
-      <p>Para evitar que fosse necessário especificar qual implementação de
-      <code>EmptyResolver</code> deveria ser utilizada para cada atributo em
-      cada form de uma aplicação, o genesis provê um mecanismo capaz de
-      determinar uma implementação padrão com base no tipo do atributo. A classe
-      <code>EmptyResolverRegistry</code> mantém um registro das implementações
-      padrão de <code>EmptyResolver</code> por classe. As seguintes
-      implementações padrão são mantidas inicialmente:</p>
-      <ul>
-        <li><code>MapEmptyResolver</code> é registrado para instâncias de
-        <code>java.util.Map</code>. Considera como vazias instâncias nulas ou
-        que retornem <code>true</code> para <code>isEmpty()</code>.</li>
-        <li><code>CollectionEmptyResolver</code> é a implementação padrão para
-        <code>java.util.Collection</code>. Usa o mesmo princípio que
-        <code>MapEmptyResolver</code> para determinar as instâncias vazias.</li>
-        <li>A implementação registrada para <code>String</code> é
-        <code>StringEmptyResolver</code>. São consideradas vazias instâncias
-        nulas ou de tamanho zero após removidos os espaços, i.e.,
-        <code>s == null || s.trim().length() == 0</code>.</li>
-        <li>Para todos os casos restantes é registrada uma instância de
-        <code>DefaultEmptyResolver</code>. Esta implementação considera vazias
-        instâncias nulas ou arrays com zero elementos.</li>
-      </ul>
-      <p>Estas implementações registradas como padrão devem ser suficientes para
-      a maioria dos casos. Como exemplo de customização, consideremos o uso da
-      anotação em um atributo de form no qual espaços vazios são relevantes:</p>
-<source>
-/**
- * @EmptyResolver trim=false
- */
-public String getAtributo() {
-   return atributo;
-}
-</source>
-      <p>Visto que <code>String</code> já possui um <code>EmptyResolver</code>
-      padrão registrado, <code>StringEmptyResolver</code>, e que esta
-      implementação já expõe um atributo que permite configurar se os espaços
-      serão removidos ou não, não é necessário especificar o nome da classe que
-      implementa a interface e sim apenas definir a propriedade <code>trim</code>
-      como <code>false</code>. Se não fosse possível configurar a instância
-      padrão, uma outra implementação poderia ser usada da seguinte forma:</p>
-<source>
-/**
- * @EmptyResolver br.com.empresa.pacote.ImplementacaoEmptyResolver
- */
-public String getAtributo() {
-   return atributo;
-}
-</source>
-      <subsection name="Verificando se um campo está vazio em expressões
-          condicionais">
-        <p>Conforme já mencionado, é muito comum determinar condições baseadas
-        no fato de um campo estar vazio ou não. O genesis expõe funções de script
-        auxiliares que podem ser usadas nas condições com o intuito de facilitar
-        esta tarefa: <code>isEmpty(any)</code> e <code>isNotEmpty(any)</code>
-        (<a href="quick_reference.html#Funções_script_do_genesis">mais
-        informações...</a>).</p>
-        <p>Quando o valor passado para elas é uma propriedade do form, o
-        <code>EmptyResolver</code> configurado para ela - determinado pelo
-        processo acima descrito - é utilizado para determinar o retorno da
-        função. Caso seja uma variável ou mesmo uma constante, obtém-se de
-        <code>EmptyResolverRegistry</code> a implementação padrão de
-        <code>EmptyResolver</code> para o tipo da expressão e esta é usada.
-        Pode-se utilizar estas funções, com 
-        <a href="generic_scripting.html">JXPath</a>, como mostrado abaixo:</p>
-<source>
-public String getAtributo() {
-   return atributo;
-}
-
-public void setAtributo(String atributo) {
-   this.atributo = atributo;
-}
-
-/**
- * @EnabledWhen g:isNotEmpty(atributo)
- */
-public String getAtributoDependente() {
-   return atributoDependente;
-}
-
-public void setAtributoDependente(String atributoDependente) {
-   this.atributoDependente = atributoDependente;
-}
-</source>
-      </subsection>
     </section>
     <section name="Comparando valores">
       <p>Tanto o próprio framework como o desenvolvedor precisa diversas vezes
