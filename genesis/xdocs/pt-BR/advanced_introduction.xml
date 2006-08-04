@@ -36,18 +36,13 @@
       anotações são herdadas quando o elemento de código (classe/método) não é
       sobrescrito e ignoradas caso contrário. Um exemplo torna isso claro:</p>
 <source>
-/**
- * @Form
- */
+@Form
 public class FormPai {
-  /**
-   * @EnabledWhen condicao1
-   */
+
+  @EnabledWhen("condicao1")
   public String getPropriedade1() { ... }
 
-  /**
-   * @EnabledWhen condicao2
-   */
+  @EnabledWhen("condicao2")
   public String getPropriedade2() { ... }
 
   // ...
