@@ -399,7 +399,7 @@ public class InsertUpdateForm {
   <p>Exemplo de uso (InsertUpdateForm.java):</p>
   <source>
    <b>@DataProvider(objectField="country")</b>
-   public Collection provideCountries() throws Exception {
+   public List provideCountries() throws Exception {
    <b>...</b>
   </source>
     <p><a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">
@@ -562,7 +562,7 @@ public class ExemploForm {
       <subsection name="@CallWhen">
         <p>Chama o método indicado quando a condição é satisfeita. Só
         pode ser aplicado a métodos do form, i.e., métodos anotados com
-        <a href="#@Action">@Action</a>.</p>
+        <a href="#@Action">@Action</a> ou <a href="#@DataProvider">@DataProvider</a>.</p>
         <table>
           <tr>
             <th>Parâmetros</th>
