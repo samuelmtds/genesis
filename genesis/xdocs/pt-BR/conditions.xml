@@ -423,5 +423,172 @@ public void setAtributoDependente(String atributoDependente) {
         de referência rápida de anotações</a>.</p>
       </subsection>
     </section>
+    <section name="Comparando valores">
+      <p>Tanto o próprio framework como o desenvolvedor precisa diversas vezes
+      verificar se algum campo teve seu valor alterado ou se seu valor é igual
+      ao de uma constante ou ao conteúdo de outro campo. A interface
+      <code>EqualityComparator</code> definida em
+      <code>net.java.dev.genesis.equality</code> é implementada por classes
+      capazes de tomar essa decisão.</p>
+      <p>Nesta interface é definido o método <code>equals(Object,Object)</code>
+      que retorna um <code>boolean</code> indicando se as instâncias comparadas
+      são iguais. A anotação de mesmo nome, <code>@EqualityComparator</code>
+      pode ser usada para definir explicitamente a implementação utilizada para
+      determinado atributo. Sua sintaxe é semelhante a de
+      <code>@EmptyResolver</code>:</p>
+<source>
+@EqualityComparator(value=&lt;classeQueImplementaInterface&gt;,
+                    properties=&lt;atributos&gt;
+</source>
+      <p>Na maioria dos casos não será necessário utilizar a anotação visto que
+      o genesis possui também para este caso um mecanismo padrão para determinar
+      qual implementação da interface deve ser utilizada para um dado atributo.
+      O registro das classes e suas implementações é mantido por
+      <code>EqualityComparatorRegistry</code>. As implementações registradas por
+      padrão são:</p>
+      <ul>
+        <li><code>BigDecimalEqualityComparator</code> considera duas instâncias
+        de <code>java.math.BigDecimal</code> iguais se ambas forem nulas ou se o
+        retorno do método <code>compareTo(BigDecimal)</code> invocado sobre uma
+        delas for zero.</li>
+        <li><code>StringEqualityComparator</code> considera <code>String</code>s
+        nulas ou de tamanho zero após removidos os espaços como iguais. Também
+        são consideradas iguais se <code>s1.trim().equals(s2.trim())</code>.</li>
+        <li>Os casos restantes são tratados por
+        <code>DefaultEqualityComparator</code> que determina como iguais duas
+        instâncias nulas ou utiliza o retorno de <code>o1.equals(o2)</code>.</li>
+      </ul>
+      <subsection name="Verificando mudanças de valores em campos e fazendo
+          comparações em expressões condicionais">
+        <p>Algumas funções de script são exportadas pelo genesis para auxiliar o
+        programador em tarefas comuns:</p>
+        <ul>
+          <li><code>hasChanged(propriedade)</code> e
+          <code>hasNotChanged(propriedade)</code> verificam se ocorreram ou
+          não mudanças no valor da propriedade do form.</li>
+          <li><code>equals(any,any)</code> e <code>notEquals(any,any)</code>
+          comparam dois valores - que podem ser constantes, propriedades do form
+          ou variáveis - e retornam o resultado da comparação.</li>
+        </ul>
+        <p>O genesis mantém internamente um controle dos campos que tiveram seu
+        valor alterado na iteração atual. É esta lista que é consultada pelas
+        funções <code>hasChanged(propriedade)</code> e
+        <code>hasNotChanged(propriedade)</code>. Para determinar se um valor
+        foi alterado ou não e popular esta lista interna, o framework utiliza a
+        instância de <code>EqualityComparator</code> configurada para a
+        propriedade.</p>
+        <p>As funções <code>equals(any,any)</code> e
+        <code>notEquals(any,any)</code> também utilizam instâncias de
+        <code>EqualityComparator</code> para determinar seu retorno. No entanto,
+        o processo para isto é um pouco mais complexo, conforme explicado
+        abaixo:</p>
+        <ul>
+          <li>É determinada a instância de <code>EqualityComparator</code> para
+          cada um dos parâmetros. Se o parâmetro for uma propriedade do form, a
+          implementação configurada para ele será utilizada. Caso contrário,
+          será considerada a implementação padrão obtida através de consulta a
+          <code>EqualityComparatorRegistry</code>.</li>
+          <li>Se os comparadores dos dois parâmetros forem iguais, o primeiro
+          deles será utilizado para compará-los.</li>
+          <li>Se o primeiro parâmetro for da mesma classe ou uma subclasse do
+          tipo do segundo parâmetro, a sua instância de
+          <code>EqualityComparator</code> será utilizada para efetuar a
+          comparação.</li>
+          <li>Se o segundo parâmetro for da mesma classe ou uma subclasse do
+          tipo do primeiro parâmetro, a sua instância de
+          <code>EqualityComparator</code> será utilizada para efetuar a
+          comparação.</li>
+          <li>Se nenhuma das condições acima for verdade será retornado
+          <code>false</code>.</li>
+        </ul>
+        <p>O uso de uma função de cada par, utilizando 
+        <a href="generic_scripting.html">JavaScript</a>, é demonstrado 
+        abaixo:</p>
+<source>
+public BigDecimal getTaxa() {
+   return taxa;
+}
+
+public void setTaxa(BigDecimal taxa) {
+   this.taxa = taxa;
+}
+
+@Action
+@CallWhen("genesis.hasChanged('form:taxa')")
+public void recalculaValores() {
+   // lógica de recálculo
+}
+</source>
+<source>
+public BigDecimal getValorDevido() {
+   return valorDevido;
+}
+
+public void setValorDevido(BigDecimal valorDevido) {
+   this.valorDevido = valorDevido;
+}
+
+public BigDecimal getValorPago() {
+   return valorPago;
+}
+
+public void setValorPago(BigDecimal valorPago) {
+   this.valorPago = valorPago;
+}
+
+@Action
+@CallWhen("genesis.notEquals('form:valorDevido', 'form:valorPago')")
+public void calculaMontanteCorrigido() {
+   // lógica para cálculo do montante corrigido
+}
+</source>
+      </subsection>
+      <subsection name="Alterando a forma como os valores são clonados">
+         <p>Em versões anteriores, os valores anteriores das propriedades eram
+         simplesmente copiados como parte do estado do form, o que trazia 
+         algumas limitações na detecção de mudança de valores. Por exemplo, 
+         caso o valor de uma propriedade fosse um JavaBean e uma das 
+         propriedades deste bean fosse alterada, não seria possível detectar a
+         mudança com <code>genesis.hasChanged('form:propriedade')</code>, visto 
+         que tanto a cópia do estado anterior que o genesis possuía como o valor 
+         atual apontariam para a mesma instância em memória.</p>
+         <p>A partir da versão 2.3 foi introduzida uma API que permite controlar
+         como o genesis gera a cópia do valor anterior de uma propriedade. A 
+         interface <code>net.java.dev.genesis.cloning.Cloner</code> possui um
+         método <code>clone(Object)</code> que retorna o valor que o genesis 
+         deve guardar como cópia do valor informado como parâmetro. A 
+         implementação padrão dessa interface - provida por 
+         <code>net.java.dev.genesis.cloning.DefaultCloner</code> - simplesmente 
+         retorna o valor passado como parâmetro, preservando assim a 
+         compatibilidade com a versão anterior.</p>
+         <p>Assim como no caso de <code>EqualityComparator</code>, existe um 
+         registro que associa as implementações de <code>Cloner</code> com a 
+         classe usada na propriedade, 
+         <code>net.java.dev.genesis.cloning.ClonerRegistry</code>, bem como uma
+         anotação que permite sobrescrever a implementação de 
+         <code>Cloner</code> a ser usada, <code>@Cloner</code>.</p>
+         <p>O código abaixo mostra como sobrescrever a implementação de 
+         <code>Cloner</code> usada tanto globalmente como para uma propriedade
+         específica de um bean:</p>
+<source>
+ClonerRegistry.getInstance().register(Usuario.class, new BeanUtilsCloner());
+</source>
+<source>
+@Form
+public class ExemploClonerForm {
+   @Cloner(net.java.dev.genesis.cloning.BeanUtilsCloner.class)
+   public Usuario getUsuario() {
+      // ...
+   }
+   
+   // ...
+}
+</source>
+         <p>A classe utilizada nos exemplos acima, 
+         <code>net.java.dev.genesis.cloning.BeanUtilsCloner</code>, é a outra 
+         implementação provida pelo genesis que clona o valor utilizando a API 
+         do Commons BeanUtils.</p>
+      </subsection>
+    </section>
   </body>
 </document>
