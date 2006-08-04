@@ -51,11 +51,11 @@
         algumas linguagens de script que podem ser utilizadas imediatamente -
         Para utilizá-las, basta fornecer um dos seguintes valores:
         <ul>
-          <li>jxpath (valor padrão - assumido mesmo que o parâmetro não
-          exista)</li>
-          <li>javascript</li>
-          <li>beanshell</li>
           <li>el</li>
+          <li>beanshell</li>
+          <li>javascript (valor padrão - assumido mesmo que o parâmetro não
+          exista)</li>
+          <li>jxpath</li>
         </ul>
         </p>
         <p>O parâmetro <code>scriptFactoryProperties</code> define as
@@ -70,14 +70,14 @@
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="net.java.dev.genesis.script.bsf.BSFScriptFactory" />
-   <param name="scriptFactoryProperties" value="lang=javascript" />
+   <param name="scriptFactoryProperties" value="lang=beanshell" />
 </mixin>
 ]]>
 </source>
 <source>
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
-   <param name="scriptFactory" value="javascript" />
+   <param name="scriptFactory" value="beanshell" />
 </mixin>
 ]]>
 </source>
@@ -146,7 +146,7 @@ public class MeuScript implements Script {
           <li><code>ScriptExpression</code> é a abstração de uma expressão
           qualquer de cada linguagem de script.</li>
         </ul>
-        <p>Apenas estes passos são necessários para que o genesis possa
+        <p>Estes são os únicos passos necessários para que o genesis possa
         suportar uma nova linguagem de script.</p>
       </subsection>
     </section>
