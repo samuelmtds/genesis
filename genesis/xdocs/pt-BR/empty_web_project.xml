@@ -21,6 +21,8 @@
       e este está presente na distribuição empty-web-project ou na distribuição completa do genesis.
       A estrutura se encontra no diretório
       <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-web-project/</b></code>.</p>
+
+      <p>Veja exemplos de configuração para diferentes cenários <a href="#Cenários">aqui</a></p>
     </section>
     <section name="O que é necessário?">
       <p>Além do genesis, é necessário ter instalado:</p>
@@ -41,31 +43,35 @@
       conteúdo inicial do arquivo <code>build.properties.sample</code> segue
       abaixo:</p>
 <source>
-## Build properties sample
+## Build properties sample ##
 
-# The following property must be defined in build.properties with an appropriate
-# value for the local environment
-jboss.home=/opt/jboss-3.2.6
+#################################################################################
+## The following property must be defined in build.properties with an           #
+## appropriate value for the local environment                                  #
+jboss.home=/opt/jboss-3.2.7
 genesisBasedApplication.name=empty-web-project
 genesisBasedApplication.prettyName=Empty Web Project
+#################################################################################
 
-# These properties already have a default value defined in build.xml and only
-# need to be defined in build.properties if their values are different in your 
-# local setup
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  #
+## need to be defined in build.properties if their values are different in your #
+## local setup                                                                  #
 #genesis.home=../../genesis
-#xdoclet.dist=../../xdoclet/dist
 #jboss.datasource.jndi.name=java:/DefaultDS
 #jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
 #hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
-#hibernate.version=2.1.6
+#hibernate.version=2.1.8
 #hibernate.show.sql=true
 #hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
 #hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+#################################################################################
 </source>
       <p>Pelo menos três propriedades necessitam ser definidas:</p>
       <ul>
         <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
-        servidor JBoss 3.2.x</li>
+        servidor JBoss 3.2.x ou 4.0.x</li>
         <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
         para seu projeto, de preferência sem espaços.</li>
         <li><code><b>genesisBasedApplication.prettyName</b></code>: Define um
@@ -78,9 +84,6 @@ genesisBasedApplication.prettyName=Empty Web Project
         <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
         do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
         ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
-        <li><code><b>xdoclet.dist</b></code>: Indica o diretório das bibliotecas
-        do XDoclet. A distribuição utilizada e recomendada encontra-se 
-        disponível <a href="download.html">aqui</a>.</li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -93,8 +96,8 @@ genesisBasedApplication.prettyName=Empty Web Project
       <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
       de um novo projeto utilizando o genesis.</p>
       <ul>
-        <li>Possuímos o JBoss 3.2.6 instalado no diretório
-        <code>C:\servidores\jboss-3.2.6</code></li>
+        <li>Possuímos o JBoss 4.0.4.GA instalado no diretório
+        <code>C:\servidores\jboss-4.0.4.GA</code></li>
         <li>Instalamos a distribuição do genesis no diretório
         <code>C:\projetos</code>, onde que criará o diretório
         <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
@@ -103,7 +106,7 @@ genesisBasedApplication.prettyName=Empty Web Project
       </ul>
       <p>O nosso <code><b>build.properties</b></code> poderá ser:</p>
 <source>
-jboss.home=c:/servidores/jboss-3.2.6
+jboss.home=c:/servidores/jboss-4.0.4.GA
 genesisBasedApplication.name=helloworld
 genesisBasedApplication.prettyName=Hello World
 
@@ -156,6 +159,83 @@ Depois, basta acessar a sua aplicação web no endereço correspondente, por exempl
 http://localhost:8080/&lt;genesisBasedApplication.name&gt;
 </source>
       </p>
+    </section>
+    <section name="Cenários">
+       <p>Abaixo temos exemplos de configuração do genesis para alguns cenários</p>
+       <subsection name="Aplicação WEB usando MySQL e Struts">
+<p>Arquivo <b>build.properties</b></p>
+<source>
+### Configurações gerais
+genesisBasedApplication.name=minhaaplicacao
+genesisBasedApplication.prettyName=Minha Aplicação
+  
+### Indique a pasta onde se encontra a distribuição do genesis
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### Indique a pasta de instalação do JBoss
+jboss.home=D:/servers/jboss-4.0.4.GA
+
+### Indique o local onde o jar do driver do MySQL se encontra
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## Configurações de seu Banco de Dados
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+</source>
+<p>Arquivo <b>conf/mysql-ds.xml</b></p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>MySqlDS</jndi-name>
+    <connection-url>jdbc:mysql://localhost:3306/meudatabase</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>meuusuario</user-name>
+    <password>minhasenha</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
+    <!-- should only be used on drivers after 3.22.1 with "ping" support
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+    -->
+    <!-- sql to call when connection is created
+    <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+]]>
+</source>
+<p>Arquivo <b>build.xml</b></p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+  <import file="web_build.xml" />
+
+  <target name="-pre-init">
+    <property file="build.properties" />
+
+    <!-- Não é necessário nenhuma outra configuração, basta colocar as bibliotecas do struts no diretório
+      modules/web/lib -->
+  </target>
+</project>
+]]>
+</source>
+       </subsection>
     </section>
   </body>
 </document>
