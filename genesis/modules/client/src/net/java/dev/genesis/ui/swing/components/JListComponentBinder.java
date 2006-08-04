@@ -23,10 +23,14 @@ import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.awt.Component;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +41,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class JListComponentBinder extends AbstractComponentBinder {
+   private static final Log log = LogFactory.getLog(JListComponentBinder.class);
    private final boolean useListModelAdapter;
 
    public JListComponentBinder() {
@@ -94,12 +99,26 @@ public class JListComponentBinder extends AbstractComponentBinder {
       }
 
       public void updateIndexes(int[] indexes) {
+         if (component.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION
+               && indexes.length > 1) {
+            throw new IllegalArgumentException("Component "
+                  + getBinder().getLookupStrategy().getName(component)
+                  + " is a single selection list. "
+                  + "It can't be updated with indexes "
+                  + Arrays.toString(indexes));
+         }
+         
+         boolean isBlank = isBlank(component);
+         indexes = getBinder().getIndexesFromController(indexes, isBlank);
+
          deactivateListeners();
 
          try {
-            component.setSelectedIndices(getBinder()
-                                               .getIndexesFromController(indexes,
-                     isBlank(component)));
+            if (indexes.length == 0 || (isBlank && indexes.length == 1 && indexes[0] < 0)) {
+               component.clearSelection();
+            } else {
+               component.setSelectedIndices(indexes);
+            }
          } finally {
             reactivateListeners();
          }
@@ -120,8 +139,14 @@ public class JListComponentBinder extends AbstractComponentBinder {
       }
 
       public void setValue(Object value) throws Exception {
-         if ((dataProviderMetadata.getObjectField() == null) ||
-               (component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION)) {
+         if (dataProviderMetadata.getObjectField() == null) {
+            return;
+         }
+
+         if (component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
+            log.warn("Cannot update "
+                  + getBinder().getLookupStrategy().getName(component)
+                  + " component because it's not a single selection list.");
             return;
          }
 
@@ -150,7 +175,11 @@ public class JListComponentBinder extends AbstractComponentBinder {
          deactivateListeners();
 
          try {
-            component.setSelectedIndex(found);
+            if (found < 0) {
+               component.clearSelection();
+            } else {
+               component.setSelectedIndex(found);   
+            }
          } finally {
             reactivateListeners();
          }
@@ -209,9 +238,9 @@ public class JListComponentBinder extends AbstractComponentBinder {
             return value.toString();
          }
 
-         return getBinder()
-                      .format(dataProviderMetadata.getObjectField()
-                                                     .getFieldName(), value);
+         throw new PropertyMisconfigurationException("Property 'key' "
+               + "must be configured for the component named "
+               + getBinder().getLookupStrategy().getName(component));
       }
 
       protected void deactivateListeners() {

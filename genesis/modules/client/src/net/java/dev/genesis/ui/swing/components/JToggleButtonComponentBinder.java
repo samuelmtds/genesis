@@ -24,6 +24,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JToggleButton;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
+
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
@@ -71,14 +73,42 @@ public class JToggleButtonComponentBinder extends AbstractComponentBinder {
       }
 
       protected Object getValue() {
-         return String.valueOf(component.isSelected());
+         return Boolean.valueOf(component.isSelected());
       }
 
-      public void setValue(Object value) {
-         Boolean b =
-            (Boolean) getBinder().getConverter(fieldMetadata)
-                            .convert(Boolean.TYPE, value);
-         component.setSelected((b != null) && b.booleanValue());
+      protected boolean toBoolean(Object value) throws Exception {
+         Boolean b = (Boolean) BeanUtilsBean.getInstance().getConvertUtils()
+               .lookup(Boolean.TYPE).convert(Boolean.TYPE, value);
+
+         return b.booleanValue();
+      }
+
+      public void setValue(Object value) throws Exception {
+         deactivateListeners();
+
+         try {
+            component.setSelected(toBoolean(value));
+         } finally {
+            reactivateListeners();
+         }
+      }
+
+      protected void deactivateListeners() {
+         if (listener != null) {
+            component.removeActionListener(listener);
+         }
+      }
+
+      protected void reactivateListeners() {
+         if (listener != null) {
+            component.addActionListener(listener);
+         }
+      }
+
+      public void unbind() {
+         if (listener != null) {
+            component.removeActionListener(listener);
+         }
       }
    }
 }

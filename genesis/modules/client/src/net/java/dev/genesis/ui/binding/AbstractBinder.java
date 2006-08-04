@@ -35,9 +35,11 @@ import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
+import org.apache.commons.beanutils.Converter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +54,9 @@ public abstract class AbstractBinder implements FormControllerListener {
    private final Object form;
    private final Object handler;
    private final FormController controller;
+   private ExceptionHandler exceptionHandler;
+   private final Map formatters = new HashMap();
+   private final Map converters = new HashMap();
 
    public AbstractBinder(Object form, Object handler) {
       this.form = form;
@@ -85,7 +90,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       return ((FormMetadataFactory) form).getFormMetadata(form.getClass());
    }
 
-   public void bind() throws Exception {
+   public void bind() {
       try {
          final FormMetadata formMetadata = getFormMetadata(form);
 
@@ -97,7 +102,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       } catch (Exception e) {
          unbind();
 
-         throw e;
+         handleException(e);
       }
    }
 
@@ -201,8 +206,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    public void dataProvidedListChanged(DataProviderMetadata metadata, List items)
             throws Exception {
       final String name = metadata.getWidgetName();
-      final BoundDataProvider boundDataProvider =
-         (BoundDataProvider) boundDataProviders.get(name);
+      final BoundDataProvider boundDataProvider = (BoundDataProvider) getBoundDataProvider(name);
 
       if (boundDataProvider == null) {
          log.warn(name + " could not be found while populating using " +
@@ -215,18 +219,13 @@ public abstract class AbstractBinder implements FormControllerListener {
          log.debug("Populating " + name + " with " + metadata.getName());
       }
 
-      if (!controller.isResetOnDataProviderChange()) {
-         resetSelectedFields(metadata);
-      }
-
       boundDataProvider.updateList(items);
    }
 
    public void dataProvidedIndexesChanged(DataProviderMetadata metadata,
       int[] selectedIndexes) {
       final String name = metadata.getWidgetName();
-      final BoundDataProvider boundDataProvider =
-         (BoundDataProvider) boundDataProviders.get(metadata.getName());
+      final BoundDataProvider boundDataProvider = (BoundDataProvider) getBoundDataProvider(name);
 
       if (boundDataProvider == null) {
          log.warn(name + " could not be found while updating indexes using " +
@@ -242,16 +241,11 @@ public abstract class AbstractBinder implements FormControllerListener {
       boundDataProvider.updateIndexes(selectedIndexes);
    }
 
-   protected void resetSelectedFields(DataProviderMetadata meta)
-            throws Exception {
-      meta.resetSelectedFields(form);
-   }
-
    public void valuesChanged(Map updatedValues) throws Exception {
       for (Iterator iter = updatedValues.entrySet().iterator(); iter.hasNext();) {
          Map.Entry entry = (Map.Entry) iter.next();
          BoundField boundField =
-            (BoundField) boundFields.get(entry.getKey().toString());
+            (BoundField) getBoundField(entry.getKey().toString());
 
          if (boundField == null) {
             continue;
@@ -294,13 +288,25 @@ public abstract class AbstractBinder implements FormControllerListener {
    }
 
    protected BoundMember getBoundMember(String name) {
-      BoundMember member = (BoundMember) boundFields.get(name);
+      BoundMember member = (BoundMember) getBoundField(name);
 
-      if (member == null) {
-         member = (BoundMember) boundActions.get(name);
+      if (member != null) {
+         return member;
       }
 
-      return member;
+      return (BoundMember) getBoundAction(name);
+   }
+
+   protected BoundField getBoundField(String name) {
+      return (BoundField) boundFields.get(name);
+   }
+
+   protected BoundAction getBoundAction(String name) {
+      return (BoundAction) boundActions.get(name);
+   }
+
+   protected BoundDataProvider getBoundDataProvider(String name) {
+      return (BoundDataProvider) boundDataProviders.get(name);
    }
 
    public void unbind() {
@@ -331,26 +337,34 @@ public abstract class AbstractBinder implements FormControllerListener {
       }
    }
 
-   public void refresh() throws Exception {
-      controller.update();
-   }
-
-   public void invokeAction(String name) throws Exception {
-      Map stringProperties = null;
-
-      if (name != null) {
-         final MethodMetadata methodMetadata = getMethodMetadata(name);
-
-         if ((methodMetadata != null) &&
-               (methodMetadata.getActionMetadata() != null) &&
-               methodMetadata.getActionMetadata().isValidateBefore()) {
-            stringProperties = getStringProperties();
-         }
+   public void refresh() {
+      try {
+         controller.update();
+      } catch (Exception e) {
+         handleException(e);
       }
-
-      controller.invokeAction(name, stringProperties);
    }
 
+   public void invokeAction(String name) {
+      try {
+         Map stringProperties = null;
+
+         if (name != null) {
+            final MethodMetadata methodMetadata = getMethodMetadata(name);
+
+            if ((methodMetadata != null) &&
+                  (methodMetadata.getActionMetadata() != null) &&
+                  methodMetadata.getActionMetadata().isValidateBefore()) {
+               stringProperties = getStringProperties();
+            }
+         }
+
+         controller.invokeAction(name, stringProperties);
+      } catch (Exception e) {
+         handleException(e);
+      }
+   }
+   
    protected MethodMetadata getMethodMetadata(String name) {
       return getFormMetadata(form)
                    .getMethodMetadata(new MethodEntry(name, new String[0]));
@@ -360,7 +374,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       return ValidationUtils.getInstance().getPropertiesMap(form);
    }
 
-   protected String format(Map formatters, String key, Object value) {
+   public String format(String key, Object value) {
       Formatter formatter = null;
 
       if (formatters != null) {
@@ -370,6 +384,91 @@ public abstract class AbstractBinder implements FormControllerListener {
       return (formatter == null)
       ? FormatterRegistry.getInstance().format(value) : formatter.format(value);
    }
+   
+   public Map getConverters() {
+      return converters;
+   }
+
+   public Map getFormatters() {
+      return formatters;
+   }
+
+   protected abstract ExceptionHandler createExceptionHandler();
+
+   public ExceptionHandler getExceptionHandler() {
+      return exceptionHandler;
+   }
+
+   public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+      this.exceptionHandler = exceptionHandler;
+   }
+
+   public void handleException(Throwable throwable) {
+      if (exceptionHandler == null) {
+         exceptionHandler = createExceptionHandler();
+      }
+
+      exceptionHandler.handleException(throwable);
+   }
+
+   public Formatter registerFormatter(String componentName,
+         Formatter formatter) {
+         return (Formatter) formatters.put(componentName, formatter);
+   }
+
+   public Converter registerConverter(String componentName,
+         Converter converter) {
+         return (Converter) converters.put(componentName, converter);
+   }
+
+   public Converter getConverter(FieldMetadata fieldMetadata) {
+      Converter converter = (Converter) converters.get(fieldMetadata.getName());
+
+      if (converter == null) {
+         converter = fieldMetadata.getConverter();
+      }
+
+      return converter;
+   }
+
+   public Formatter getFormatter(FieldMetadata fieldMetadata) {
+      Formatter formatter = (Formatter) formatters.get(fieldMetadata.getName());
+
+      if (formatter == null) {
+         formatter = FormatterRegistry.getInstance()
+                                         .get(fieldMetadata.getFieldClass(),
+                  true);
+      }
+
+      return formatter;
+   }
+
+   public void invokeFormAction(ActionMetadata actionMetadata) {
+      try {
+         invokeAction(actionMetadata.getName());
+      } catch (Exception e) {
+         handleException(e);
+      }
+   }
+   
+   public void updateFormSelection(DataProviderMetadata dataProviderMetadata,
+         int[] indexes) {
+      try {
+         getFormController().updateSelection(dataProviderMetadata, indexes);
+      } catch (Exception e) {
+         handleException(e);
+      }
+   }
+
+   public void populateForm(FieldMetadata fieldMetadata, Object value) {
+      try {
+         getFormController().populate(
+               Collections.singletonMap(fieldMetadata.getName(), value),
+               getConverters());
+      } catch (Exception e) {
+         handleException(e);
+      }
+   }
 
    public int[] getIndexesFromUI(int[] selected, boolean isBlank) {
       if ((selected.length >= 1) && isBlank) {
@@ -378,7 +477,7 @@ public abstract class AbstractBinder implements FormControllerListener {
          for (int i = 0; i < selected.length; i++) {
             selected[i] = selected[i] - 1;
 
-            if (selected[i] == -1) {
+            if (selected[i] < 0) {
                remove = true;
             }
          }
@@ -404,6 +503,11 @@ public abstract class AbstractBinder implements FormControllerListener {
          }
 
          for (int i = 0; i < selected.length; i++) {
+            if (selected[i] < 0) {
+               selected[i] = -1;
+               continue;
+            }
+
             selected[i] = selected[i] + 1;
          }
       }

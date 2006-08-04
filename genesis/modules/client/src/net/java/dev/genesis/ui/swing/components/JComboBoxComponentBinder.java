@@ -32,6 +32,7 @@ import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -93,14 +94,20 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          }
 
          deactivateListeners();
-         component.setSelectedIndex(indexes[0]);
-         reactivateListeners();
+         try {
+            component.setSelectedIndex(indexes[0]);
+         } finally {
+            reactivateListeners();
+         }
       }
 
       public void updateList(List list) throws Exception {
          deactivateListeners();
-         createComboBoxModelAdapter().setData(getData(list));
-         reactivateListeners();
+         try {
+            createComboBoxModelAdapter().setData(getData(list));
+         } finally {
+            reactivateListeners();
+         }
       }
 
       public void setValue(Object value) throws Exception {
@@ -131,8 +138,11 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          }
 
          deactivateListeners();
-         component.setSelectedIndex(found);
-         reactivateListeners();
+         try {
+            component.setSelectedIndex(found);
+         } finally {
+            reactivateListeners();
+         }
       }
 
       protected Object[] getData(List list) throws Exception {
@@ -157,17 +167,17 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
 
       protected ComboBoxModelAdapter createComboBoxModelAdapter() {
          return new ComboBoxModelAdapter() {
-               public void setData(Object[] data) {
-                  DefaultComboBoxModel model =
-                     (DefaultComboBoxModel) component.getModel();
+            public void setData(Object[] data) {
+               DefaultComboBoxModel model = (DefaultComboBoxModel) component
+                     .getModel();
 
-                  model.removeAllElements();
+               model.removeAllElements();
 
-                  for (int i = 0; i < data.length; i++) {
-                     model.addElement(data[i]);
-                  }
+               for (int i = 0; i < data.length; i++) {
+                  model.addElement(data[i]);
                }
-            };
+            }
+         };
       }
 
       protected String getKey(Object value) throws Exception {
@@ -184,9 +194,9 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
             return value.toString();
          }
 
-         return getBinder()
-                      .format(dataProviderMetadata.getObjectField()
-                                                     .getFieldName(), value);
+         throw new PropertyMisconfigurationException("Property 'key' "
+               + "must be configured for the component named "
+               + getBinder().getLookupStrategy().getName(component));
       }
 
       protected void deactivateListeners() {

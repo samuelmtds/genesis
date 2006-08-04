@@ -39,6 +39,10 @@ public abstract class RecursiveComponentLookupStrategy
    public Component lookup(Component component, String name) {
       Component result = super.lookup(component, name);
 
+      if (component == null) {
+         return null;
+      }
+
       if (result != null) {
          return result;
       }

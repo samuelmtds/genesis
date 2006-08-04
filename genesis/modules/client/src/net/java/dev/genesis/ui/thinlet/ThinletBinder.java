@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -499,22 +499,12 @@ public class ThinletBinder implements FormControllerListener {
       final String className = Thinlet.getClass(component);
 
       if (className.equals(BaseThinlet.TABLE)) {
-         if (!controller.isResetOnDataProviderChange()) {
-            resetSelectedFields(metadata);
-         }
-
          thinlet.populateFromCollection(component, items, formatters,
                widgetFactories);
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
          //TODO: This parsing shouldn't occur every time
          final String key = (String) thinlet.getProperty(component, "key");
-
-         if (key == null) {
-            throw new PropertyMisconfigurationException("Property 'key' "
-                  + "must be configured for the widget named " + name);
-         }
-
          final String value = (String)thinlet.getProperty(component, "value");
          final boolean virtual = isVirtual(component, name);
          final boolean blank = isBlank(component, name);

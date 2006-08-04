@@ -25,9 +25,11 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
 import net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer;
 
 public class SwingFactory {
@@ -79,7 +81,7 @@ public class SwingFactory {
       JComboBox combobox = createComboBox(keyProperty, valueProperty,
             blankLabelProperty);
       combobox.setName(name);
-      combobox.setRenderer(new KeyValueListCellRenderer(binder, combobox));
+      combobox.setRenderer(new KeyValueListCellRenderer(combobox));
 
       binder.getLookupStrategy().register(name, combobox);
 
@@ -132,7 +134,7 @@ public class SwingFactory {
          String keyProperty, String valueProperty, String blankLabelProperty) {
       JList list = createList(keyProperty, valueProperty, blankLabelProperty);
       list.setName(name);
-      list.setCellRenderer(new KeyValueListCellRenderer(binder, list));
+      list.setCellRenderer(new KeyValueListCellRenderer(list));
 
       binder.getLookupStrategy().register(name, list);
 
@@ -170,7 +172,7 @@ public class SwingFactory {
                "Column identifier and TableCellRenderer must have same length");
       }
 
-      DefaultTableColumnModel columnModel = new DefaultTableColumnModel();
+      TableColumnModel columnModel = new DefaultTableColumnModel();
       TableModel model = new DefaultTableModel() {
          public boolean isCellEditable(int row, int column) {
             return false;
@@ -188,6 +190,8 @@ public class SwingFactory {
 
          if (renderers != null && renderers[i] != null) {
             column.setCellRenderer(renderers[i]);
+         } else {
+            column.setCellRenderer(new FormatterTableCellRenderer());
          }
 
          columnModel.addColumn(column);

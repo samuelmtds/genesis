@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,24 +18,52 @@
  */
 package net.java.dev.genesis.mockobjects;
 
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.script.jxpath.JXPathScript;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.controller.MockFormController;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 
 public class MockForm implements FormMetadataFactory, FormControllerFactory {
-   private FormMetadata metadata = new FormMetadata(getClass(), new JXPathScript());
+   private FormMetadata metadata = new FormMetadata(getClass(),
+         new JXPathScript());
+
    private MockFormController controller = new MockFormController();
+
    private Map context;
+
+   public MockForm() {
+      Method someAction = getMethod("someAction");
+      Method someDataProvider = getMethod("someDataProvider");
+      metadata.addFieldMetadata("stringField", new FieldMetadata("stringField",
+            String.class, true));
+      metadata.addFieldMetadata("objectField", new FieldMetadata("objectField",
+            Object.class, true));
+      metadata.addFieldMetadata("intField", new FieldMetadata("intField",
+            Integer.TYPE, true));
+      metadata.addMethodMetadata(someAction, new MethodMetadata(someAction,
+            true, false));
+      
+      MethodMetadata methodMeta = new MethodMetadata(
+            someDataProvider, false, true);
+      metadata.addMethodMetadata(someDataProvider, methodMeta);
+      methodMeta.getDataProviderMetadata().setWidgetName("dataProviderField");
+      methodMeta.getDataProviderMetadata().setObjectField(new FieldEntry("objectField", Object.class));
+   }
 
    public FormMetadata getFormMetadata(Class formClass) {
       return metadata;
    }
-   
+
    public FormMetadata getFormMetadata() {
       return getFormMetadata(getClass());
    }
@@ -58,5 +86,20 @@ public class MockForm implements FormMetadataFactory, FormControllerFactory {
 
    public void setContext(Map context) {
       this.context = context;
+   }
+
+   public Method getMethod(String methodName) {
+      try {
+         return getClass().getMethod(methodName, new Class[0]);
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
+   }
+
+   public void someAction() {
+   }
+
+   public List someDataProvider() {
+      return Collections.EMPTY_LIST;
    }
 }

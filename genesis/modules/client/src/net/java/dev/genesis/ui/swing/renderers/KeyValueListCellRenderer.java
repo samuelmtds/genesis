@@ -18,76 +18,54 @@
  */
 package net.java.dev.genesis.ui.swing.renderers;
 
+import java.awt.Component;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
+import javax.swing.JList;
+
+import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-import java.awt.Component;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-
-public class KeyValueListCellRenderer extends JLabel implements ListCellRenderer,
-   Serializable {
-   protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
-   private final SwingBinder binder;
+public class KeyValueListCellRenderer extends DefaultListCellRenderer {
    private final JComponent component;
 
-   public KeyValueListCellRenderer(SwingBinder binder, JComponent component) {
-      setOpaque(true);
-      this.binder = binder;
+   public KeyValueListCellRenderer(JComponent component) {
       this.component = component;
    }
 
-   public Component getListCellRendererComponent(JList list, Object value,
-      int index, boolean isSelected, boolean cellHasFocus) {
-      String valueProperty = (String) component
-            .getClientProperty(SwingBinder.VALUE_PROPERTY);
+   protected SwingBinder getBinder() {
+      return (SwingBinder) component.getClientProperty(SwingBinder.BINDER_KEY);
+   }
 
-      setComponentOrientation(list.getComponentOrientation());
-
-      if (isSelected) {
-         setBackground(list.getSelectionBackground());
-         setForeground(list.getSelectionForeground());
-      } else {
-         setBackground(list.getBackground());
-         setForeground(list.getForeground());
+   protected String format(Object value) {
+      final SwingBinder binder = getBinder();
+      if (binder == null) {
+         return FormatterRegistry.getInstance().format(value);
       }
 
+      String valueProperty = (String) component
+            .getClientProperty(SwingBinder.VALUE_PROPERTY);
       String name = binder.getLookupStrategy().getName(component);
-      String text;
 
       if (value == null) {
          String blankLabel = (String) component
                .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
-         text = (blankLabel == null) ? "" : blankLabel;
+         return (blankLabel == null) ? "" : blankLabel;
       } else if (value instanceof String) {
-         text = (String) value;
+         return (String) value;
       } else if (valueProperty == null) {
-         text = binder.format(name + '.', value);
-      } else {
-         text = binder.format(name + '.' + valueProperty,
-               getProperty(value, valueProperty));
+         return binder.format(name + '.', value);
       }
 
-      setText(text);
-
-      setEnabled(list.isEnabled());
-      setFont(list.getFont());
-      setBorder((cellHasFocus)
-         ? UIManager.getBorder("List.focusCellHighlightBorder") : noFocusBorder);
-
-      return this;
+      return binder.format(name + '.' + valueProperty, getProperty(value,
+            valueProperty));
    }
 
-   private Object getProperty(Object object, String propertyName) {
+   protected Object getProperty(Object object, String propertyName) {
       try {
          return PropertyUtils.getProperty(object, propertyName);
       } catch (IllegalAccessException e) {
@@ -97,5 +75,11 @@ public class KeyValueListCellRenderer extends JLabel implements ListCellRenderer
       } catch (NoSuchMethodException e) {
          throw new RuntimeException(e);
       }
+   }
+
+   public Component getListCellRendererComponent(JList list, Object value,
+         int index, boolean isSelected, boolean cellHasFocus) {
+      return super.getListCellRendererComponent(list, format(value), index,
+            isSelected, cellHasFocus);
    }
 }

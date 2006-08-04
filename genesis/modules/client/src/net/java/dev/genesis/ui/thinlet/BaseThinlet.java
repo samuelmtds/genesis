@@ -825,8 +825,7 @@ public abstract class BaseThinlet extends Thinlet {
       for (final Iterator i = c.iterator(); i.hasNext(); ) {
          o = i.next();
 
-         key = format(formatters, componentName + '.' + keyProperty,
-               PropertyUtils.getProperty(o, keyProperty));
+         key = getKey(formatters, keyProperty, componentName, o);
          Object value = null;
          description = virtual ? virtualFormatter.format(value = o)
                : (valueProperty == null ? format(formatters,
@@ -839,6 +838,20 @@ public abstract class BaseThinlet extends Thinlet {
 
          add(component, item);
       }
+   }
+
+   protected String getKey(Map formatters, String keyProperty,
+         String componentName, Object o) throws InvocationTargetException,
+         IllegalAccessException, NoSuchMethodException {
+      if (keyProperty != null) {
+         return format(formatters, componentName + '.' + keyProperty,
+               PropertyUtils.getProperty(o, keyProperty));
+      } else if (EnumHelper.getInstance().isEnum(o)) {
+         return o.toString();
+      }
+
+      throw new PropertyMisconfigurationException("Property 'key' "
+            + "must be configured for the widget named " + componentName);
    }
 
    protected WidgetFactory getWidgetFactory(Map widgetFactories, 
@@ -1225,7 +1238,7 @@ public abstract class BaseThinlet extends Thinlet {
    }
 
    public void display() throws Exception {
-      this.getFrame().setVisible(true);
+      getFrame().setVisible(true);
    }
 
    protected String getErrorMessage() {

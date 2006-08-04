@@ -86,13 +86,30 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
       }
 
       protected Object getValue() {
-         return getBinder().getConverter(fieldMetadata).convert(String.class,
-               component.getValue());
+         return component.getValue();
       }
 
       public void setValue(Object value) throws Exception {
-         component.setValue(useFormatter
-            ? getBinder().getFormatter(fieldMetadata).format(value) : value);
+         deactivateListeners();
+
+         try {
+            component.setValue(useFormatter ? getBinder().getFormatter(
+                  fieldMetadata).format(value) : value);
+         } finally {
+            reactivateListeners();
+         }
+      }
+
+      protected void deactivateListeners() {
+         if (listener != null) {
+            component.removeChangeListener(listener);
+         }
+      }
+
+      protected void reactivateListeners() {
+         if (listener != null) {
+            component.addChangeListener(listener);
+         }
       }
 
       public void unbind() {

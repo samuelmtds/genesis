@@ -19,11 +19,10 @@
 package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JProgressBar;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
 
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
@@ -40,15 +39,12 @@ public class JProgressBarComponentBinder extends AbstractComponentBinder {
          implements BoundField {
       private final JProgressBar component;
       private final FieldMetadata fieldMetadata;
-      private final FocusListener listener;
 
       public JProgressBarBoundField(SwingBinder binder, JProgressBar component,
          FieldMetadata fieldMetadata) {
          super(binder, component);
          this.component = component;
          this.fieldMetadata = fieldMetadata;
-
-         component.addFocusListener(listener = createFocusListener());
       }
 
       protected JProgressBar getComponent() {
@@ -58,36 +54,17 @@ public class JProgressBarComponentBinder extends AbstractComponentBinder {
       protected FieldMetadata getFieldMetadata() {
          return fieldMetadata;
       }
+      
+      protected int toInt(Object value) throws Exception {
+         Integer integer = (Integer) BeanUtilsBean.getInstance()
+               .getConvertUtils().lookup(Integer.TYPE).convert(Integer.TYPE,
+                     value);
 
-      protected FocusListener getListener() {
-         return listener;
-      }
-
-      protected FocusListener createFocusListener() {
-         return new FocusAdapter() {
-            public void focusLost(FocusEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
-            }
-         };
-      }
-
-      protected Object getValue() {
-         return getBinder().getConverter(fieldMetadata).convert(String.class,
-               new Integer(component.getValue()));
+         return integer.intValue();
       }
 
       public void setValue(Object value) throws Exception {
-         Integer integer =
-            (Integer) getBinder().getConverter(fieldMetadata)
-                            .convert(Integer.class, value);
-
-         component.setValue((integer == null) ? 0 : integer.intValue());
-      }
-
-      public void unbind() {
-         if (listener != null) {
-            component.removeFocusListener(listener);
-         }
+         component.setValue(toInt(value));
       }
    }
 }

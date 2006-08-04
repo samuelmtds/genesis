@@ -38,7 +38,10 @@ public class MapComponentLookupStrategy implements ComponentLookupStrategy {
       }
 
       identityMap.put(component, name);
-      components.put(name, component);
+      final Object oldValue = components.put(name, component);
+      if (oldValue != null) {
+         identityMap.remove(oldValue);
+      }
 
       return component;
    }

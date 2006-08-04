@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 public class MockFormController implements FormController {
    private Map map = new HashMap();
+   private Map exceptions = new HashMap();
    
    public Object get(Object key) {
       return map.get(key);
@@ -36,6 +37,22 @@ public class MockFormController implements FormController {
 
    public void put(Object key, Object value) {
       map.put(key, value);
+   }
+
+   public Exception getException(Object key) {
+      return (Exception) exceptions.get(key);
+   }
+
+   public void putException(Object key, Exception value) {
+      exceptions.put(key, value);
+   }
+
+   public void clear() {
+      map.clear();
+   }
+   
+   public void clearExceptions() {
+      exceptions.clear();
    }
 
    public void addFormControllerListener(FormControllerListener listener) {
@@ -70,6 +87,11 @@ public class MockFormController implements FormController {
 
    public void invokeAction(String actionName, Map stringProperties)
          throws Exception {
+      Exception ex = getException("invokeAction(String,Map)");
+      if (ex != null) {
+         throw ex;
+      }
+      
       map.put("invokeAction(actionName)", actionName);
       map.put("invokeAction(stringProperties)", stringProperties);
    }
@@ -110,6 +132,11 @@ public class MockFormController implements FormController {
    }
 
    public void update() throws Exception {
+      Exception ex = (Exception) exceptions.get("update()");
+      if (ex != null) {
+         throw ex;
+      }
+
       map.put("update()", Boolean.TRUE);
    }
 

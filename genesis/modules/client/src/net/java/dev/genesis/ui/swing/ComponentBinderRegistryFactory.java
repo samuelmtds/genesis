@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.swing;
 
 import net.java.dev.genesis.registry.Registry;
 import net.java.dev.genesis.ui.swing.components.AbstractButtonComponentBinder;
+import net.java.dev.genesis.ui.swing.components.ButtonGroupBinder;
 import net.java.dev.genesis.ui.swing.components.JComboBoxComponentBinder;
 import net.java.dev.genesis.ui.swing.components.JLabelComponentBinder;
 import net.java.dev.genesis.ui.swing.components.JListComponentBinder;
@@ -44,7 +45,8 @@ import javax.swing.text.JTextComponent;
 public class ComponentBinderRegistryFactory {
    private static final ComponentBinderRegistryFactory instance =
       new ComponentBinderRegistryFactory();
-   private Registry registry = new Registry();
+   private final Registry registry = new Registry();
+   private GroupBinder groupBinder = new ButtonGroupBinder();
 
    private ComponentBinderRegistryFactory() {
       register(JTextComponent.class, new JTextComponentBinder());
@@ -64,6 +66,7 @@ public class ComponentBinderRegistryFactory {
    }
 
    public void deregister() {
+      deregisterButtonGroupBinder();
       registry.deregister();
    }
 
@@ -85,5 +88,17 @@ public class ComponentBinderRegistryFactory {
 
    public ComponentBinder get(Object o) {
       return (ComponentBinder) registry.get(o);
+   }
+
+   public GroupBinder registerButtonGroupBinder(GroupBinder groupBinder) {
+      return this.groupBinder = groupBinder;
+   }
+
+   public GroupBinder getButtonGroupBinder() {
+      return this.groupBinder;
+   }
+
+   public void deregisterButtonGroupBinder() {
+      this.groupBinder = null;
    }
 }

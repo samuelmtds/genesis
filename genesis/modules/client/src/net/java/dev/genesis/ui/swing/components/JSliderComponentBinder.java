@@ -19,11 +19,12 @@
 package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
 
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
@@ -39,7 +40,7 @@ public class JSliderComponentBinder extends AbstractComponentBinder {
          implements BoundField {
       private final JSlider component;
       private final FieldMetadata fieldMetadata;
-      private final FocusListener listener;
+      private final ChangeListener listener;
 
       public JSliderBoundField(SwingBinder binder, JSlider component,
          FieldMetadata fieldMetadata) {
@@ -47,7 +48,7 @@ public class JSliderComponentBinder extends AbstractComponentBinder {
          this.component = component;
          this.fieldMetadata = fieldMetadata;
 
-         component.addFocusListener(listener = createFocusListener());
+         component.addChangeListener(listener = createChangeListener());
       }
 
       protected JSlider getComponent() {
@@ -58,34 +59,54 @@ public class JSliderComponentBinder extends AbstractComponentBinder {
          return fieldMetadata;
       }
 
-      protected FocusListener getListener() {
+      protected ChangeListener getListener() {
          return listener;
       }
 
-      protected FocusListener createFocusListener() {
-         return new FocusAdapter() {
-            public void focusLost(FocusEvent event) {
+      protected ChangeListener createChangeListener() {
+         return new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
                getBinder().populateForm(getFieldMetadata(), getValue());
             }
          };
       }
 
       protected Object getValue() {
-         return getBinder().getConverter(fieldMetadata).convert(String.class,
-               new Integer(component.getValue()));
+         return new Integer(component.getValue());
+      }
+
+      protected int toInt(Object value) throws Exception {
+         Integer integer = (Integer) BeanUtilsBean.getInstance()
+               .getConvertUtils().lookup(Integer.TYPE).convert(Integer.TYPE,
+                     value);
+
+         return integer.intValue();
       }
 
       public void setValue(Object value) throws Exception {
-         Integer integer =
-            (Integer) getBinder().getConverter(fieldMetadata)
-                            .convert(Integer.class, value);
+         deactivateListeners();
+         try {
+            component.setValue(toInt(value));
+         } finally {
+            reactivateListeners();
+         }
+      }
+      
+      protected void deactivateListeners() {
+         if (listener != null) {
+            component.removeChangeListener(listener);
+         }
+      }
 
-         component.setValue((integer == null) ? 0 : integer.intValue());
+      protected void reactivateListeners() {
+         if (listener != null) {
+            component.addChangeListener(listener);
+         }
       }
 
       public void unbind() {
          if (listener != null) {
-            component.removeFocusListener(listener);
+            component.removeChangeListener(listener);
          }
       }
    }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -384,7 +384,13 @@ public class ThinletBinderTest extends GenesisTestCase {
       };
       binder = new ThinletBinder(thinlet, thinlet.getDesktop(), form) {    
          protected List findComponents(final String name) {
-            return (List)componentsMap.get(name);
+            List list = (List)componentsMap.get(name);
+
+            if (list == null) {
+               return Collections.EMPTY_LIST;
+            }
+
+            return list;
          }
          
          protected void createWidgetGroup(Object component, String name) {
@@ -926,29 +932,14 @@ public class ThinletBinderTest extends GenesisTestCase {
       // Table
       meta.setWidgetName("table");
       binder.dataProvidedListChanged(meta, someItems);
-      // Assert resetSelectedFields(..) wasn't called
-      assertNull(resetMap.get(meta.getWidgetName()));
       // Assert thinlet.populated was called with correct values
       assertSame(someItems, populateMap.get(table));
 
       form.getController().setResetOnDataProviderChange(false);
       binder.dataProvidedListChanged(meta, someItems);
-      // Assert resetSelectedFields(..) was called
-      assertEquals(Boolean.TRUE, resetMap.get(meta.getWidgetName()));
       // Assert thinlet.populated was called with correct values
       assertSame(someItems, populateMap.get(table));
 
-      // Combo without key property
-      ex = null;
-      meta.setWidgetName("combobox");
-      try {
-         binder.dataProvidedListChanged(meta, someItems);
-      } catch (Exception e) {
-         ex = e;
-      }
-      // Assert PropertyMisconfigurationException occured
-      assertTrue(ex instanceof PropertyMisconfigurationException);
-      
       // Combo with bogus blank property
       ex = null;
       meta.setWidgetName("combobox");

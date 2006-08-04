@@ -18,20 +18,34 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.GroupBinder;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swing.GroupBinder;
+import net.java.dev.genesis.ui.swing.SwingBinder;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class ButtonGroupBinder implements GroupBinder {
+   private static final Log log = LogFactory.getLog(ButtonGroupBinder.class);
+
+   private final boolean useActionCommandAsSelectedValue;
+
+   public ButtonGroupBinder() {
+      this(false);
+   }
+
+   public ButtonGroupBinder(boolean useActionCommandAsSelectedValue) {
+      this.useActionCommandAsSelectedValue = useActionCommandAsSelectedValue;
+   }
+
    public BoundField bind(SwingBinder binder, Object group,
       FieldMetadata fieldMetadata) {
       return new ButtonGroupBoundField(binder, (ButtonGroup) group,
@@ -64,27 +78,6 @@ public class ButtonGroupBinder implements GroupBinder {
          return fieldMetadata;
       }
 
-      protected ActionListener createActionListener() {
-         return new ActionListener() {
-               public void actionPerformed(ActionEvent event) {
-                  try {
-                     AbstractButton button = (AbstractButton) event.getSource();
-
-                     if (!button.isSelected()) {
-                        return;
-                     }
-
-                     getBinder().getFormController().populate(
-								Collections.singletonMap(fieldMetadata
-										.getName(), button.getActionCommand()),
-								getBinder().getConverters());
-                  } catch (Exception e) {
-                     getBinder().handleException(e);
-                  }
-               }
-            };
-      }
-
       protected void addActionListener(ActionListener listener) {
          Enumeration elements = buttonGroup.getElements();
 
@@ -94,22 +87,60 @@ public class ButtonGroupBinder implements GroupBinder {
          }
       }
 
+      protected ActionListener createActionListener() {
+         return new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+               AbstractButton button = (AbstractButton) event.getSource();
+
+               if (!button.isSelected()) {
+                  return;
+               }
+
+               getBinder().populateForm(getFieldMetadata(), getValue(button));
+            }
+         };
+      }
+
+      protected Object getValue(AbstractButton button) {
+         Object value = useActionCommandAsSelectedValue ? button
+               .getActionCommand() : button
+               .getClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE);
+
+         if (value == null) {
+            log.warn("No selected value configured for button " + button + ". Use " +
+                  (useActionCommandAsSelectedValue ?
+                        "button.setActionCommand(\"someValue\")" :
+                        "button.putClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE, someValue)" ));
+         }
+
+         return value;
+      }
+
+      protected boolean equals(Object newValue, Object currentButtonValue) {
+         if (newValue == null) {
+            return currentButtonValue == null;
+         }
+
+         return newValue.equals(currentButtonValue);
+      }
+
       public void setValue(Object value) throws Exception {
-    	 String actionName = value == null ? null : value.toString();
+         if (useActionCommandAsSelectedValue && value != null) {
+            value = getBinder().getFormatter(getFieldMetadata()).format(value);
+         }
 
-    	 Enumeration en = buttonGroup.getElements();
-    	 while(en.hasMoreElements()) {
-    		 AbstractButton button =
-    	            (AbstractButton) en.nextElement();
+         Enumeration en = buttonGroup.getElements();
+         while (en.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) en.nextElement();
 
-    		 if (actionName == null || !actionName.equals(button.getActionCommand())) {
-    			 buttonGroup.setSelected(button.getModel(), false);
-    			 continue;
-    		 }
-    		 
-    		 buttonGroup.setSelected(button.getModel(), true);
-    		 break;
-    	 }
+            if (!equals(value, getValue(button))) {
+               buttonGroup.setSelected(button.getModel(), false);
+               continue;
+            }
+
+            buttonGroup.setSelected(button.getModel(), true);
+            break;
+         }
       }
 
       public void setEnabled(boolean enabled) {

@@ -30,6 +30,7 @@ import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
 import java.awt.Component;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,7 +38,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
-public class AbstractComponentBinder implements ComponentBinder {
+public abstract class AbstractComponentBinder implements ComponentBinder {
    public BoundField bind(SwingBinder binder, Component component,
       FieldMetadata fieldMetadata) {
       return null;
@@ -64,6 +65,12 @@ public class AbstractComponentBinder implements ComponentBinder {
          this.binder = binder;
 
          createGroups();
+
+         storeBinder();
+      }
+
+      protected void storeBinder() {
+         component.putClientProperty(SwingBinder.BINDER_KEY, binder);
       }
 
       protected SwingBinder getBinder() {
@@ -137,8 +144,28 @@ public class AbstractComponentBinder implements ComponentBinder {
             if (visible) {
                visibleWidgetGroupSet.addAll(groupCollection);
             }
+         } else if (group instanceof Object[]) {
+            Object[] groupArray = (Object[]) group;
+
+            if (enabled) {
+               enabledWidgetGroupSet.addAll(Arrays.asList(groupArray));
+            }
+
+            if (visible) {
+               visibleWidgetGroupSet.addAll(Arrays.asList(groupArray));
+            }
+         } else if (group instanceof JComponent) {
+            JComponent jComponent = (JComponent) group;
+
+            if (enabled) {
+               enabledWidgetGroupSet.add(jComponent);
+            }
+
+            if (visible) {
+               visibleWidgetGroupSet.add(jComponent);
+            }
          } else {
-            throw new IllegalArgumentException("Group property must be a comma-separated string, array of strings or a collection of components");
+            throw new IllegalArgumentException("Group property must be a comma-separated string, array of strings, a collection of components, an array of components or a JComponent");
          }
       }
 
