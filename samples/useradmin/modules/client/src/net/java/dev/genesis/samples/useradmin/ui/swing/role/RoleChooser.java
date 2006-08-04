@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -135,10 +135,10 @@ public class RoleChooser extends JPanel {
       private JButton cancel;
 
       public RoleChooserDialog(JFrame owner) {
-         super(owner, getMessage("RoleListView.title"));
+         super(owner, getMessage("RoleListView.title"), true);
          binder = new SwingBinder(this, form = new RoleListForm());
          initialize();
-         bind();
+         binder.bind();
       }
 
       private void initialize() {
@@ -184,11 +184,7 @@ public class RoleChooser extends JPanel {
          roles.addMouseListener(new MouseAdapter() {
                public void mouseClicked(MouseEvent event) {
                   if (event.getClickCount() == 2) {
-                     try {
-                        binder.invokeAction("select");
-                     } catch (Exception e) {
-                        binder.handleException(e);
-                     }
+                     binder.invokeAction("select");
                   }
                }
             });
@@ -201,21 +197,17 @@ public class RoleChooser extends JPanel {
          JPanel buttonPanel = new JPanel();
          buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-         add = new JButton(getMessage("button.add"));
-         add.addActionListener(new ActionListener() {
-               public void actionPerformed(ActionEvent event) {
-                  try {
-                     create();
-                  } catch (Exception e) {
-                     binder.handleException(e);
-                  }
-               }
-            });
-         buttonPanel.add(add);
-
          remove = new JButton(getMessage("button.remove"));
          remove.setName("remove");
          buttonPanel.add(remove);
+
+         add = new JButton(getMessage("button.add"));
+         add.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent event) {
+                  create();
+               }
+            });
+         buttonPanel.add(add);
 
          cancel = new JButton(getMessage("button.cancel"));
          cancel.addActionListener(new ActionListener() {
@@ -236,15 +228,6 @@ public class RoleChooser extends JPanel {
          pack();
          setLocationRelativeTo(getParent());
          setResizable(false);
-         setModal(true);
-      }
-
-      private void bind() {
-         try {
-            binder.bind();
-         } catch (Exception e) {
-            binder.handleException(e);
-         }
       }
 
       public boolean showView() {
@@ -264,12 +247,12 @@ public class RoleChooser extends JPanel {
       /**
        * @AfterAction
        */
-      public void select() throws Exception {
+      public void select() {
          hasChanged = true;
          dispose();
       }
 
-      public void create() throws Exception {
+      public void create() {
          InsertRoleDialog dialog = new InsertRoleDialog(this);
 
          if (dialog.showView()) {
@@ -290,7 +273,7 @@ public class RoleChooser extends JPanel {
       private JButton cancel;
       private JButton save;
 
-      public InsertRoleDialog(Dialog owner) throws Exception {
+      public InsertRoleDialog(Dialog owner) {
          super(owner, getMessage("InsertRoleView.title"));
          initialize();
          new SwingBinder(this, new InsertRoleForm()).bind();
@@ -357,7 +340,7 @@ public class RoleChooser extends JPanel {
          setModal(true);
       }
 
-      public boolean showView() throws Exception {
+      public boolean showView() {
          setVisible(true);
 
          return hasChanged;
@@ -370,7 +353,7 @@ public class RoleChooser extends JPanel {
       /**
        * @AfterAction
        */
-      public void save() throws Exception {
+      public void save() {
          hasChanged = true;
          dispose();
       }

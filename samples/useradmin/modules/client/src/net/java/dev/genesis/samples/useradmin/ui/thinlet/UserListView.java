@@ -18,7 +18,11 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 
+import net.java.dev.genesis.samples.useradmin.UserAdmin;
 import net.java.dev.genesis.samples.useradmin.ui.UserListForm;
+import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.thinlet.OptionDialog;
+import net.java.dev.genesis.ui.thinlet.OptionDialog.Option;
 
 
 public class UserListView extends BaseView {
@@ -31,6 +35,7 @@ public class UserListView extends BaseView {
    
    protected void onClose() throws Exception {
       getFrame().dispose();
+      UserAdmin.showMainWindow();
    }
    
    public void create() throws Exception {
@@ -53,11 +58,21 @@ public class UserListView extends BaseView {
          runSearch();
       }
    }
-   
+
+   /**
+    * @BeforeAction("remove")
+    */
+   public boolean confirmRemove() throws Exception {
+      return OptionDialog.displayYesNo(this, UIUtils.getInstance().getBundle()
+            .getString("UserListView.deleteConfirmationTitle"), UIUtils
+            .getInstance().getBundle().getString(
+                  "UserListView.deleteConfirmation")) == Option.YES;
+   }
+
    /**
     * @AfterAction
     */
-   public void remove() throws Exception {
+   public void remove() {
       runSearch();
    }
 

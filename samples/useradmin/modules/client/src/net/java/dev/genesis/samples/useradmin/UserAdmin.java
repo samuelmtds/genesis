@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,14 +18,23 @@
  */
 package net.java.dev.genesis.samples.useradmin;
 
+import java.util.Locale;
+
+import javax.swing.UIManager;
+
 import net.java.dev.genesis.helpers.StartupHelper;
 import net.java.dev.genesis.samples.useradmin.ui.thinlet.ChooseView;
-
-import java.util.Locale;
 
 public class UserAdmin {
    public static void main(String[] args) throws Exception {
       new StartupHelper(Locale.ENGLISH, "MM/dd/yyyy").initialize();
+      
+      //System.setProperty("sun.awt.exception.handler", value);
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      showMainWindow();
+   }
+
+   public static void showMainWindow() throws Exception {
       new ChooseView().display();
    }
 }

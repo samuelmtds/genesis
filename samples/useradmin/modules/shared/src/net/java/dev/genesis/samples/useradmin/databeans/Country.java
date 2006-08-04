@@ -21,9 +21,9 @@ package net.java.dev.genesis.samples.useradmin.databeans;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 public class Country extends Enum {
-   public static final Country BRAZIL = new Country("Brazil");
-   public static final Country USA = new Country("United States");
-   public static final Country OTHER = new Country("Other");
+   public static final Country BRAZIL = new Country("BR");
+   public static final Country USA = new Country("US");
+   public static final Country OTHER = new Country("OTHER");
 
    private Country(String name) {
       super(name);

@@ -24,15 +24,15 @@ import java.util.Collection;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 public class State extends Enum {
-   public static final State BRASILIA = new State("Brasilia");
-   public static final State RIO_DE_JANEIRO = new State("Rio de Janeiro");
-   public static final State SAO_PAULO = new State("Sao Paulo");
+   public static final State DISTRITO_FEDERAL = new State("DF");
+   public static final State RIO_DE_JANEIRO = new State("RJ");
+   public static final State SAO_PAULO = new State("SP");
 
-   public static final State ALASKA = new State("Alaska");
-   public static final State FLORIDA = new State("Florida");
-   public static final State NEW_YORK = new State("New York");
+   public static final State ALASKA = new State("AL");
+   public static final State FLORIDA = new State("FL");
+   public static final State NEW_YORK = new State("NY");
 
-   public static final State OTHER = new State("Other");
+   public static final State OTHER = new State("OTHER");
 
    private State(String name) {
       super(name);
@@ -42,7 +42,7 @@ public class State extends Enum {
       final Collection states = new ArrayList();
 
       if (country == Country.BRAZIL) {
-         states.add(BRASILIA);
+         states.add(DISTRITO_FEDERAL);
          states.add(RIO_DE_JANEIRO);
          states.add(SAO_PAULO);
       } else if (country == Country.USA) {

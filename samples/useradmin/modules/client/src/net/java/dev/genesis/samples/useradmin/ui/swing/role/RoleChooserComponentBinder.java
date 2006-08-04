@@ -63,7 +63,7 @@ public class RoleChooserComponentBinder extends AbstractComponentBinder {
          return component.getRole();
       }
 
-      public void setValue(Object value) throws Exception {
+      public void setValue(Object value) {
          component.setRole((Role) value);
       }
 

@@ -18,13 +18,6 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui.swing;
 
-import net.java.dev.genesis.samples.useradmin.ui.UserListForm;
-import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-import net.java.dev.genesis.ui.swing.factory.SwingFactory;
-
-import org.apache.commons.logging.LogFactory;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -41,25 +34,23 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
+
+import net.java.dev.genesis.samples.useradmin.UserAdmin;
+import net.java.dev.genesis.samples.useradmin.ui.UserListForm;
+import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.factory.SwingFactory;
 
 /**
  * @ViewHandler
  */
 public class UserListView extends JFrame {
-   static {
-      try {
-         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      } catch (Exception e) {
-         LogFactory.getLog(UserListView.class).error(e.getMessage(), e);
-      }
-   }
-
    private final UserListForm form;
    private final SwingBinder binder;
    private JLabel nameLabel;
@@ -77,7 +68,7 @@ public class UserListView extends JFrame {
    private JButton updateUserButton;
    private JButton removeUserButton;
 
-   public UserListView() throws Exception {
+   public UserListView() {
       super(getMessage("UserListView.title"));
 
       binder = new SwingBinder(this, form = new UserListForm());
@@ -154,18 +145,14 @@ public class UserListView extends JFrame {
             new String[] { getMessage("User.name"), getMessage("User.login"),
                   getMessage("User.email"), getMessage("User.role"),
                   getMessage("User.country"), getMessage("User.state") });
-      usersTable.setPreferredSize(new Dimension(300, 210));
+      usersTable.setPreferredSize(new Dimension(300, 205));
       usersTable.setShowHorizontalLines(false);
       usersTable.setShowVerticalLines(false);
       usersTable.setColumnSelectionAllowed(false);
       usersTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
                if (event.getClickCount() == 2) {
-                  try {
-                     binder.invokeAction("update");
-                  } catch (Exception e) {
-                     binder.handleException(e);
-                  }
+                  binder.invokeAction("update");
                }
             }
          });
@@ -224,6 +211,11 @@ public class UserListView extends JFrame {
       addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
                dispose();
+               try {
+                  UserAdmin.showMainWindow();
+               } catch (Exception e) {
+                  binder.handleException(e);
+               }
             }
          });
 
@@ -235,7 +227,7 @@ public class UserListView extends JFrame {
       return UIUtils.getInstance().getBundle().getString(key);
    }
    
-   public void display() {
+   public void display() throws Exception {
       setVisible(true);
    }
 
@@ -260,9 +252,19 @@ public class UserListView extends JFrame {
    }
 
    /**
+    * @BeforeAction("remove")
+    */
+   public boolean confirmRemove() {
+      return JOptionPane.showConfirmDialog(this,
+            getMessage("UserListView.deleteConfirmation"),
+            getMessage("UserListView.deleteConfirmationTitle"),
+            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+   }
+
+   /**
     * @AfterAction
     */
-   public void remove() throws Exception {
+   public void remove() {
       runSearch();
    }
 

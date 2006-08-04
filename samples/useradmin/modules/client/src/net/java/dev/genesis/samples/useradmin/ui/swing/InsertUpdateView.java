@@ -26,6 +26,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -34,7 +35,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
 
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
@@ -101,8 +101,11 @@ public class InsertUpdateView extends JDialog {
 
    private void initialize() {
       JPanel panel = new JPanel();
-      setContentPane(panel);
-      panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+      panel.setBorder(BorderFactory.createEtchedBorder());
+      panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
+
+      getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
+      getContentPane().add(panel);
 
       GridBagConstraints c = new GridBagConstraints();
       c.insets = new Insets(5, 5, 5, 5);
@@ -118,6 +121,7 @@ public class InsertUpdateView extends JDialog {
 
       nameTextField = new JTextField();
       nameTextField.setName("name");
+      
       nameTextField.setPreferredSize(new Dimension(200, 20));
       c.gridx = 1;
       c.gridy = 0;
@@ -196,7 +200,7 @@ public class InsertUpdateView extends JDialog {
       c.gridy = 7;
       panel.add(countryLabel, c);
 
-      countryComboBox = SwingFactory.createComboBox(binder, "country", "name", "name");
+      countryComboBox = SwingFactory.createComboBox(binder, "country");
       c.gridx = 1;
       c.gridy = 7;
       panel.add(countryComboBox, c);
@@ -206,7 +210,7 @@ public class InsertUpdateView extends JDialog {
       c.gridy = 8;
       panel.add(stateLabel, c);
 
-      stateComboBox = SwingFactory.createComboBox(binder, "state", "name", "name");
+      stateComboBox = SwingFactory.createComboBox(binder, "state");
       c.gridx = 1;
       c.gridy = 8;
       panel.add(stateComboBox, c);
@@ -241,7 +245,7 @@ public class InsertUpdateView extends JDialog {
       return UIUtils.getInstance().getBundle().getString(key);
    }
 
-   public boolean showView() throws Exception {
+   public boolean showView() {
       setVisible(true);
 
       return hasChanged;
@@ -250,7 +254,7 @@ public class InsertUpdateView extends JDialog {
    /**
     * @AfterAction
     */
-   public void save() throws Exception {
+   public void save() {
       this.hasChanged = true;
       dispose();
    }
