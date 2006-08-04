@@ -354,6 +354,7 @@
       <javac destdir="${genesis.module.annotation}/${build5.dest}"
              debug="true"
              source="1.5"
+             target="1.5"
              fork="${javac.fork}"
              executable="${javac.compiler}">
          <src path="${genesis.module.annotation}/${src5.dir}" />
