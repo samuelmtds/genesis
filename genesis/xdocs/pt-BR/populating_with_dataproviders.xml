@@ -327,7 +327,6 @@ private JList estadoList;
   <p><b><a name="SwingTable">Table</a></b></p>
 <source>
 <![CDATA[
-private SwingBinder binder;
 private JTable estadoTable;
   ...
   private initComponents() {
@@ -336,17 +335,15 @@ private JTable estadoTable;
      TableColumnModel columnModel = new DefaultTableColumnModel();
      TableModel model = new DefaultTableModel();
 
-     TableCellRenderer renderer = new FormatterTableCellRenderer();
-  
      TableColumn siglaColumn = new TableColumn(0);
      siglaColumn.setIdentifier("sigla");
      siglaColumn.setHeaderValue("Sigla");
-     siglaColumn.setCellRenderer(renderer);
+     columnModel.addColumn(siglaColumn);
 
      TableColumn descricaoColumn = new TableColumn(1);
      descricaoColumn.setIdentifier("descricao");
      descricaoColumn.setHeaderValue("Descrição");
-     descricaoColumn.setCellRenderer(renderer);
+     columnModel.addColumn(descricaoColumn);
 
      estadoTable = new JTable(model, columnModel);
      estadoTable.setName("estado");
@@ -363,8 +360,20 @@ private JTable estadoTable;
       Cada linha da tabela representará uma instância e cada
       coluna será preenchida com a propriedade do bean cujo nome é o valor do
       <code>identifier</code> (e.g.: <code>descricaoColumn.setIdentifier("descricao")</code>)
-      em cada uma das TableColumn. Assim como no caso de ComboBox e List, a Table necessita
-      de um TableCellRenderer para formatar os valores para mostrar ao usuário</p>
+      em cada uma das TableColumn. É possível definir o identifier de cada coluna de outra forma
+      mais fácil, através do método <code>putClientProperty</code>:</p>
+<source>
+<![CDATA[
+private JTable estadoTable;
+  ...
+  private initComponents() {
+     ...
+     estadoTable = new JTable(new DefaultTableModel(new String[] {"Sigla", "Descrição"}), 0);
+     estadoTable.setName("estado");
+     estadoTable.putClientProperty(SwingBinder.COLUMN_NAMES, new String[] {"sigla", "descricao"});
+  }
+]]>
+</source>
       <p>Para facilitar a construção, pode-se utilizar métodos estáticos da classe
       <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code>. O código
       para criação e configuração da Table seria:</p>

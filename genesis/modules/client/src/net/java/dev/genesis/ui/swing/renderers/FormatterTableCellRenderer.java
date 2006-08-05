@@ -22,6 +22,7 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.swing.SwingBinder;
@@ -31,8 +32,15 @@ public class FormatterTableCellRenderer extends DefaultTableCellRenderer {
       return (SwingBinder) table.getClientProperty(SwingBinder.BINDER_KEY);
    }
 
-   protected String getColumnIdentifier(JTable table, int column) {
-      return (String) table.getColumnModel().getColumn(column).getIdentifier();
+   protected String getColumnIdentifier(JTable table, int index) {
+      TableColumn column = table.getColumnModel().getColumn(index);
+      String[] names = (String[]) table.getClientProperty(SwingBinder.COLUMN_NAMES);
+
+      if (names != null && names.length > column.getModelIndex()) {
+         return names[column.getModelIndex()];
+      }
+
+      return (String) column.getIdentifier();
    }
 
    protected Object format(JTable table, Object value, int column) {

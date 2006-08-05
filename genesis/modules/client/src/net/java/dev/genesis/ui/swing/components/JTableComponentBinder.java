@@ -21,11 +21,13 @@ package net.java.dev.genesis.ui.swing.components;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.awt.Component;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +36,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 
 public class JTableComponentBinder extends AbstractComponentBinder {
@@ -48,6 +52,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       private final JTable component;
       private final DataProviderMetadata dataProviderMetadata;
       private final ListSelectionListener listener;
+      private final TableCellRenderer renderer;
 
       public JTableComponentBoundDataProvider(SwingBinder binder,
          JTable component, DataProviderMetadata dataProviderMetadata) {
@@ -57,6 +62,9 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
          this.component.getSelectionModel()
                              .addListSelectionListener(listener = createListSelectionListener());
+         this.renderer = createCellRenderer();
+
+         configureTableCellRenderer();
       }
 
       protected JTable getComponent() {
@@ -69,6 +77,22 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
       protected ListSelectionListener getListener() {
          return listener;
+      }
+
+      protected TableCellRenderer createCellRenderer() {
+         return new FormatterTableCellRenderer();
+      }
+
+      protected void configureTableCellRenderer() {
+         Enumeration en = component.getColumnModel().getColumns();
+
+         while (en.hasMoreElements()) {
+            TableColumn column = (TableColumn) en.nextElement();
+
+            if (column.getCellRenderer() == null) {
+               column.setCellRenderer(renderer);
+            }
+         }
       }
 
       protected ListSelectionListener createListSelectionListener() {
@@ -103,44 +127,71 @@ public class JTableComponentBinder extends AbstractComponentBinder {
                DefaultTableModel model = (DefaultTableModel) component
                      .getModel();
 
-               String[] valueProperties = new String[component.getColumnModel()
-                     .getColumnCount()];
+               int dataSize = data.size();
+               if (model.getRowCount() != data.size()) {
+                  model.setRowCount(dataSize);
+               }
 
-               model.setRowCount(data.size());
-               model.setColumnCount(valueProperties.length);
-
-               for (int i = 0; i < valueProperties.length; i++) {
-                  valueProperties[i] = (String) component.getColumnModel()
-                        .getColumn(i).getIdentifier();
-
-                  if (valueProperties[i] == null) {
-                     throw new IllegalArgumentException("Column number "
-                           + i
-                           + " from Table "
-                           + getBinder().getLookupStrategy().getName(
-                                 getComponent())
-                           + " does not have an identifier");
-                  }
+               int columnCount = component.getColumnModel().getColumnCount();
+               if (model.getColumnCount() != columnCount) {
+                  model.setColumnCount(columnCount);
                }
 
                int i = 0;
-
+               TableColumn column;
                for (Iterator iter = data.iterator(); iter.hasNext(); i++) {
                   Object bean = iter.next();
 
-                  for (int j = 0; j < valueProperties.length; j++) {
-                     Object value = PropertyUtils.getProperty(bean,
-                           valueProperties[j]);
-                     model.setValueAt(value, i, j);
+                  for (int j = 0; j < model.getColumnCount(); j++) {
+                     column = component.getColumnModel().getColumn(j);
+                     int modelIndex = column.getModelIndex();
+
+                     Object value = PropertyUtils.getProperty(bean, getIdentifier(column));
+                     model.setValueAt(value, i, modelIndex);
                   }
                }
             }
          };
       }
 
+      protected String getIdentifier(TableColumn column) {
+         String identifier = null;
+         String[] names = (String[]) component.getClientProperty(SwingBinder.COLUMN_NAMES);
+
+         if (names != null && names.length > column.getModelIndex()) {
+            identifier = names[column.getModelIndex()];
+
+            if (identifier != null) {
+               return identifier;
+            }
+         }
+
+         identifier = (String) column.getIdentifier();
+         if (identifier == null) {
+            throw new IllegalArgumentException("Column number "
+                  + column.getModelIndex() + " from Table "
+                  + getBinder().getLookupStrategy().getName(getComponent())
+                  + " does not have an identifier");
+         }
+
+         return identifier;
+      }
+
       public void unbind() {
          if (listener != null) {
             component.getSelectionModel().removeListSelectionListener(listener);
+         }
+
+         if (renderer != null) {
+            Enumeration en = component.getColumnModel().getColumns();
+
+            while (en.hasMoreElements()) {
+               TableColumn column = (TableColumn) en.nextElement();
+
+               if (column.getCellRenderer() == renderer) {
+                  column.setCellRenderer(null);
+               }
+            }
          }
       }
    }

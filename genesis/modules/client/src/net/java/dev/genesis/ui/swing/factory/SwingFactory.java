@@ -29,7 +29,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.java.dev.genesis.ui.swing.SwingBinder;
-import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
 import net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer;
 
 public class SwingFactory {
@@ -173,7 +172,7 @@ public class SwingFactory {
       }
 
       TableColumnModel columnModel = new DefaultTableColumnModel();
-      TableModel model = new DefaultTableModel() {
+      TableModel model = new DefaultTableModel(columnDisplayName, 0) {
          public boolean isCellEditable(int row, int column) {
             return false;
          }
@@ -181,7 +180,7 @@ public class SwingFactory {
 
       for (int i = 0; i < columnIdentifiers.length; i++) {
          TableColumn column = new TableColumn(i);
-         column.setIdentifier(columnIdentifiers[i]);
+         //column.setIdentifier(columnIdentifiers[i]);
          column.setHeaderValue(columnDisplayName[i]);
 
          if (preferredWidth != null && preferredWidth[i] > 0) {
@@ -190,14 +189,15 @@ public class SwingFactory {
 
          if (renderers != null && renderers[i] != null) {
             column.setCellRenderer(renderers[i]);
-         } else {
-            column.setCellRenderer(new FormatterTableCellRenderer());
          }
 
          columnModel.addColumn(column);
       }
 
-      return new JTable(model, columnModel);
+      JTable table = new JTable(model, columnModel);
+      table.putClientProperty(SwingBinder.COLUMN_NAMES, columnIdentifiers);
+
+      return table;
    }
 
    public static JTable createTable(SwingBinder binder, String name,

@@ -67,6 +67,7 @@ public class SwingBinder extends AbstractBinder {
    public static final String VALUE_PROPERTY = "value";
    public static final String BUTTON_GROUP_SELECTION_VALUE = "buttonGroupSelectionValue";
    public static final String BINDER_KEY = "genesis:SwingBinder";
+   public static final String COLUMN_NAMES = "columnNames";
 
    private final ComponentBinderRegistryFactory factory =
       ComponentBinderRegistryFactory.getInstance();
