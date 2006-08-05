@@ -21,7 +21,7 @@ package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 public class ChooseView extends BaseView {
 
    public ChooseView() throws Exception {
-      super("ChooseView.title", "choose-view.xml", 210, 90, false);
+      super("ChooseView.title", "choose-view.xml", 160, 90, false);
    }
 
    protected void onClose() {
