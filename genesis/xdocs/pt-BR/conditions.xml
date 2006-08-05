@@ -33,7 +33,7 @@ public class ExemploEnabledWhenForm {
       this.casado = casado;
    }
 
-   @EnabledWhen("casado")
+   @EnabledWhen("form.casado")
    public String getNomeConjuge() {
       return nomeConjuge;
    }
@@ -68,7 +68,7 @@ public class ExemploVisibleWhenForm {
    }
 
    @Action
-   @VisibleWhen("numeroDependentes > 0")
+   @VisibleWhen("form.numeroDependentes > 0")
    public void calculaTaxasAdicionais() {
       // ...
    }
@@ -161,8 +161,7 @@ getContentPane().add(dataCorrenteLabel);
 
 JTextField dataCorrente = new javax.swing.JTextField();
 dataCorrente.setName("dataCorrente");
-dataCorrente.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, 
-    "dataCorrenteLabel");
+dataCorrente.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, "dataCorrenteLabel");
 getContentPane().add(dataCorrente);
 
 //..
@@ -171,7 +170,26 @@ getContentPane().add(dataCorrente);
         <p>Perceba que o valor da <code>clientProperty</code> é o 
         <code>name</code> do <code>JLabel</code>. Se houvesse mais de um 
         componente, seus nomes poderiam ser separados por vírgula ou poderia ser
-        utilizada uma array de <code>String</code> como valor da propriedade.</p>
+        utilizada uma array de <code>String</code> como valor da propriedade.
+        Pode-se ainda colocar o valor da <code>clientProperty</code> o próprio
+        componente, uma coleção de componentes ou um array de componentes, como
+        ilustrado abaixo:</p>
+<source>
+//..
+getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
+
+JLabel dataCorrenteLabel = dataCorrenteLabel = new JLabel();
+dataCorrenteLabel.setName("dataCorrenteLabel");
+dataCorrenteLabel.setText("Data Corrente:");
+getContentPane().add(dataCorrenteLabel);
+
+JTextField dataCorrente = new javax.swing.JTextField();
+dataCorrente.setName("dataCorrente");
+dataCorrente.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, <b>dataCorrenteLabel</b>);
+getContentPane().add(dataCorrente);
+
+//..
+</source>
         <p>Desse modo, todos os widgets referenciados irão obedecer à regra de 
         visibilidade anotada no <code>form</code> anteriormente.</p>
         <p>Além do agrupamento genérico <code>widgetGroup</code>, pode-se
@@ -225,8 +243,8 @@ public class ExemploClearOnForm {
       this.casado = casado;
    }
 
-   @EnabledWhen("casado")
-   @ClearOn("!casado")
+   @EnabledWhen("form.casado")
+   @ClearOn("!form.casado")
    public String getNomeConjuge() {
       return nomeConjuge;
    }
@@ -283,7 +301,7 @@ public class ExemploCallWhenForm {
    }
 
    @Action
-   @CallWhen("numeroDependentes > 0")
+   @CallWhen("form.numeroDependentes > 0")
    public void calculaTaxasAdicionais() {
       // ...
    }
