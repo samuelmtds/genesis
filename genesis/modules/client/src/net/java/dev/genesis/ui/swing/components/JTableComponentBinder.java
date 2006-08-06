@@ -18,15 +18,7 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundDataProvider;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
-import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import java.awt.Component;
-
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +30,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
+import org.apache.commons.beanutils.PropertyUtils;
+
+import net.java.dev.genesis.ui.binding.BoundDataProvider;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
 
 
 public class JTableComponentBinder extends AbstractComponentBinder {
@@ -139,6 +138,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
                int i = 0;
                TableColumn column;
+               String propertyName;
                for (Iterator iter = data.iterator(); iter.hasNext(); i++) {
                   Object bean = iter.next();
 
@@ -146,7 +146,9 @@ public class JTableComponentBinder extends AbstractComponentBinder {
                      column = component.getColumnModel().getColumn(j);
                      int modelIndex = column.getModelIndex();
 
-                     Object value = PropertyUtils.getProperty(bean, getIdentifier(column));
+                     Object value = getBinder().isVirtual(
+                           propertyName = getIdentifier(column)) ? bean
+                           : PropertyUtils.getProperty(bean, propertyName);
                      model.setValueAt(value, i, modelIndex);
                   }
                }
@@ -170,7 +172,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
          if (identifier == null) {
             throw new IllegalArgumentException("Column number "
                   + column.getModelIndex() + " from Table "
-                  + getBinder().getLookupStrategy().getName(getComponent())
+                  + getBinder().getName(getComponent())
                   + " does not have an identifier");
          }
 

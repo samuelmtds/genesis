@@ -25,10 +25,10 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.swing.SwingBinder;
-
-import org.apache.commons.beanutils.PropertyUtils;
 
 public class KeyValueListCellRenderer extends DefaultListCellRenderer {
    private final JComponent component;
@@ -49,7 +49,6 @@ public class KeyValueListCellRenderer extends DefaultListCellRenderer {
 
       String valueProperty = (String) component
             .getClientProperty(SwingBinder.VALUE_PROPERTY);
-      String name = binder.getLookupStrategy().getName(component);
 
       if (value == null) {
          String blankLabel = (String) component
@@ -58,16 +57,18 @@ public class KeyValueListCellRenderer extends DefaultListCellRenderer {
       } else if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
-         return binder.format(name + '.', value);
+         return binder.format(binder.getName(component), null, value);
       }
 
-      return binder.format(name + '.' + valueProperty, getProperty(value,
-            valueProperty));
+      boolean isVirtual = binder.isVirtual(component, valueProperty); 
+
+      return binder.format(binder.getName(component), valueProperty,
+            isVirtual ? value : getValue(value, valueProperty), isVirtual);
    }
 
-   protected Object getProperty(Object object, String propertyName) {
+   protected Object getValue(Object bean, String propertyName) {
       try {
-         return PropertyUtils.getProperty(object, propertyName);
+         return PropertyUtils.getProperty(bean, propertyName);
       } catch (IllegalAccessException e) {
          throw new RuntimeException(e);
       } catch (InvocationTargetException e) {

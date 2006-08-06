@@ -102,7 +102,7 @@ public class JListComponentBinder extends AbstractComponentBinder {
          if (component.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION
                && indexes.length > 1) {
             throw new IllegalArgumentException("Component "
-                  + getBinder().getLookupStrategy().getName(component)
+                  + getBinder().getName(component)
                   + " is a single selection list. "
                   + "It can't be updated with indexes "
                   + Arrays.toString(indexes));
@@ -144,8 +144,7 @@ public class JListComponentBinder extends AbstractComponentBinder {
          }
 
          if (component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
-            log.warn("Cannot update "
-                  + getBinder().getLookupStrategy().getName(component)
+            log.warn("Cannot update " + getBinder().getName(component)
                   + " component because it's not a single selection list.");
             return;
          }
@@ -233,14 +232,15 @@ public class JListComponentBinder extends AbstractComponentBinder {
                (value == null) ? null
                : PropertyUtils.getProperty(value, keyPropertyName);
 
-            return getBinder().format(keyPropertyName, o);
+            return getBinder().format(getBinder().getName(component),
+                  keyPropertyName, o);
          } else if (EnumHelper.getInstance().isEnum(value)) {
             return value.toString();
          }
 
          throw new PropertyMisconfigurationException("Property 'key' "
                + "must be configured for the component named "
-               + getBinder().getLookupStrategy().getName(component));
+               + getBinder().getName(component));
       }
 
       protected void deactivateListeners() {

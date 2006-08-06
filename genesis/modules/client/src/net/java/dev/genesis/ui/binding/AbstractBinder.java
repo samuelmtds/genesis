@@ -18,6 +18,12 @@
  */
 package net.java.dev.genesis.ui.binding;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.text.Formatter;
@@ -39,14 +45,9 @@ import org.apache.commons.beanutils.Converter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 public abstract class AbstractBinder implements FormControllerListener {
    private static final Log log = LogFactory.getLog(AbstractBinder.class);
+   public static final String VIRTUAL_PREFIX = "virtual:";
 
    private final Map boundFields = new HashMap();
    private final Map boundActions = new HashMap();
@@ -374,17 +375,55 @@ public abstract class AbstractBinder implements FormControllerListener {
       return ValidationUtils.getInstance().getPropertiesMap(form);
    }
 
-   public String format(String key, Object value) {
+   public boolean isVirtual(String propertyName) {
+      return propertyName.startsWith(VIRTUAL_PREFIX);
+   }
+
+   public abstract boolean isVirtual(Object widget);
+
+   public boolean isVirtual(Object widget, String propertyName) {
+      return isVirtual(propertyName) || isVirtual(widget);
+   }
+
+   protected Formatter getVirtualFormatter(String name, String propertyName) {
+      if (propertyName.startsWith(VIRTUAL_PREFIX)) {
+         propertyName = propertyName.substring(VIRTUAL_PREFIX.length());
+      }
+
+      Formatter virtualFormatter = (Formatter) formatters.get(name + '.'
+            + propertyName);
+
+      if (virtualFormatter == null) {
+         throw new IllegalArgumentException("There is no formatter "
+               + "registered for virtual property " + name + '.' + propertyName);
+      }
+
+      return virtualFormatter;
+   }
+
+   public abstract String getName(Object widget);
+
+   public String format(String name, String property, Object value) {
+      return format(name, property, value, false);
+   }
+
+   public String format(String name, String property, Object value, boolean isVirtual) {
+      if (isVirtual) {
+         return getVirtualFormatter(name, property).format(value);
+      }
+
       Formatter formatter = null;
 
       if (formatters != null) {
+         final String key = property == null ? name + '.' : name + '.'
+               + property;
          formatter = (Formatter) formatters.get(key);
       }
 
-      return (formatter == null)
-      ? FormatterRegistry.getInstance().format(value) : formatter.format(value);
+      return (formatter == null) ? FormatterRegistry.getInstance()
+            .format(value) : formatter.format(value);
    }
-   
+
    public Map getConverters() {
       return converters;
    }

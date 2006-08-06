@@ -79,4 +79,14 @@ public class MockAbstractBinder extends AbstractBinder {
       map.put("createExceptionHandler()", handler);
       return handler;
    }
+
+   public boolean isVirtual(Object widget) {
+      map.put("isVirtual(Object)", widget);
+      return false;
+   }
+
+   public String getName(Object object) {
+      map.put("getName(Object)", object);
+      return object == null ? "null" : object.toString();
+   }
 }

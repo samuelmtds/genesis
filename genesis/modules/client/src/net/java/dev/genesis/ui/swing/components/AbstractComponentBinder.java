@@ -211,7 +211,7 @@ public abstract class AbstractComponentBinder implements ComponentBinder {
       }
 
       public String getName() {
-         return binder.getLookupStrategy().getName(component);
+         return binder.getName(component);
       }
 
       public void unbind() {

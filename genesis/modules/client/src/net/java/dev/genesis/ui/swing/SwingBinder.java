@@ -68,6 +68,7 @@ public class SwingBinder extends AbstractBinder {
    public static final String BUTTON_GROUP_SELECTION_VALUE = "buttonGroupSelectionValue";
    public static final String BINDER_KEY = "genesis:SwingBinder";
    public static final String COLUMN_NAMES = "columnNames";
+   public static final String VIRTUAL = "virtual";
 
    private final ComponentBinderRegistryFactory factory =
       ComponentBinderRegistryFactory.getInstance();
@@ -140,8 +141,26 @@ public class SwingBinder extends AbstractBinder {
       return buttonGroup;
    }
 
+   public boolean isVirtual(Object widget) {
+      return widget instanceof JComponent && isVirtual((JComponent) widget);
+   }
+
+   public boolean isVirtual(JComponent component) {
+      return Boolean.TRUE.equals(component.getClientProperty(VIRTUAL));
+   }
+
+   public boolean isVirtual(Component component) {
+      return component instanceof JComponent
+            && Boolean.TRUE.equals(((JComponent) component)
+                  .getClientProperty(VIRTUAL));
+   }
+
    protected ComponentLookupStrategy createComponentLookupStrategy() {
       return new BreadthFirstComponentLookupStrategy();
+   }
+
+   public String getName(Object component) {
+      return getLookupStrategy().getName((Component) component);
    }
 
    protected ComponentBinder getComponentBinder(Component component) {

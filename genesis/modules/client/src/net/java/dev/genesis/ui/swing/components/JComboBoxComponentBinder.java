@@ -189,14 +189,15 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
                (value == null) ? null
                : PropertyUtils.getProperty(value, keyPropertyName);
 
-            return getBinder().format(keyPropertyName, o);
+            return getBinder().format(getBinder().getName(component),
+                  keyPropertyName, o);
          } else if (EnumHelper.getInstance().isEnum(value)) {
             return value.toString();
          }
 
          throw new PropertyMisconfigurationException("Property 'key' "
                + "must be configured for the component named "
-               + getBinder().getLookupStrategy().getName(component));
+               + getBinder().getName(component));
       }
 
       protected void deactivateListeners() {

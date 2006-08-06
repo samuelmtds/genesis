@@ -49,10 +49,10 @@ public class FormatterTableCellRenderer extends DefaultTableCellRenderer {
          return format(value);
       }
 
-      final String componentName = binder.getLookupStrategy().getName(table);
       final String property = getColumnIdentifier(table, column);
+      boolean isVirtual = binder.isVirtual(table, property);
 
-      return binder.format(componentName + '.' + property, value);
+      return binder.format(binder.getName(table), property, value, isVirtual);
    }
 
    protected Object format(Object value) {
