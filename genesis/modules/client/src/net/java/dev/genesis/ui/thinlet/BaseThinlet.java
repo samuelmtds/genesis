@@ -908,11 +908,6 @@ public abstract class BaseThinlet extends Thinlet {
             virtualPropertyNames.add(name);
          }
 
-         if (name.startsWith(virtualPrefix)) {
-            name = name.substring(virtualPrefix.length());
-            virtualPropertyNames.add(name);
-         }
-
          propertyNames.add(name);
       }
 
