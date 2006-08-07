@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Modelo de componentes de interface gráfica</title>
+    <title>Customizando a criação de componentes</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-    <section name="Funcionalidades adicionais de componentes de interface
-    gráfica">
-      <p>Os seguintes conceitos e/ou características são abordados abaixo:
-      <ul>
-        <li><a href="#Customizando a criação de componentes">Customizando a 
-        criação de componentes</a></li>
-      </ul>
-      </p>
-    </section>
+   <p>Esta é uma funcionalidade específica para quem usa Thinlet como API gráfica.</p>
    <section name="Customizando a criação de componentes">
       <p>A partir da versão 2.3, é possivel customizar a maneira com que os
-      componentes são criados através da interface 
+      componentes do Thinlet são criados através da interface 
       <code>net.java.dev.genesis.ui.thinlet.WidgetFactory</code> e de outras
       classes de suporte. É possível fazer isso tanto por classe do dado a ser 
       representado quanto por widget específico.</p>

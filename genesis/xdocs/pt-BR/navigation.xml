@@ -61,11 +61,8 @@
                 href="/pt-BR/configuring_messages.html" />
           <item name="Paginação e pesquisas dinâmicas" 
                 href="/pt-BR/paging_and_dynamic_search.html" />
-        </item>
-        <item name="Modelo de componentes de interface gráfica" collapse="true"
-              href="/pt-BR/ui_additional_features.html">
-          <item name="Funcionalidades adicionais"
-                href="/pt-BR/ui_additional_features.html" />
+          <item name="Customizando a criação de componentes" 
+                href="/pt-BR/customizing_widgets_creation.html" />
         </item>
         <item name="Modelo de componentes de negócio"
               href="/pt-BR/business_component_model.html" />
