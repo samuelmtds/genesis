@@ -54,13 +54,14 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       private final TableCellRenderer renderer;
 
       public JTableComponentBoundDataProvider(SwingBinder binder,
-         JTable component, DataProviderMetadata dataProviderMetadata) {
+            JTable component, DataProviderMetadata dataProviderMetadata) {
          super(binder, component);
          this.component = component;
          this.dataProviderMetadata = dataProviderMetadata;
 
-         this.component.getSelectionModel()
-                             .addListSelectionListener(listener = createListSelectionListener());
+         this.component.getSelectionModel().addListSelectionListener(
+               listener = createListSelectionListener());
+
          this.renderer = createCellRenderer();
 
          configureTableCellRenderer();
@@ -158,7 +159,8 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
       protected String getIdentifier(TableColumn column) {
          String identifier = null;
-         String[] names = (String[]) component.getClientProperty(SwingBinder.COLUMN_NAMES);
+         String[] names = (String[]) component.getClientProperty(
+               SwingBinder.COLUMN_NAMES);
 
          if (names != null && names.length > column.getModelIndex()) {
             identifier = names[column.getModelIndex()];
