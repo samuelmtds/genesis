@@ -101,11 +101,17 @@ public class JListComponentBinder extends AbstractComponentBinder {
       public void updateIndexes(int[] indexes) {
          if (component.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION
                && indexes.length > 1) {
-            throw new IllegalArgumentException("Component "
-                  + getBinder().getName(component)
-                  + " is a single selection list. "
-                  + "It can't be updated with indexes "
-                  + Arrays.toString(indexes));
+            StringBuffer sb = new StringBuffer('[');
+            
+            for (int i = 0; i < indexes.length; i++) {
+               sb.append(indexes[i]).append(", ");
+            }
+
+            sb.append(']');
+
+            throw new IllegalArgumentException("Component " + 
+                  getBinder().getName(component) + " is a single selection " +
+                  "list. It can't be updated with indexes " + sb.toString());
          }
          
          boolean isBlank = isBlank(component);
