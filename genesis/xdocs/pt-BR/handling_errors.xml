@@ -66,7 +66,7 @@
          e os exibe utilizando <code>JOptionPane.showMessageDialog(..)</code> 
          com <code>JOptionPane.WARNING_MESSAGE</code>. O título da janela
          será a String definida para <code>validation.errors.title</code> no
-         <a href="#Configurando as mensagens">arquivo de recursos</a>.
+         <a href="configuring_messages.html#Configurando as mensagens">arquivo de recursos</a>.
          </li>
          <li><code>handleUIException(UIException)</code> exibe o erro utilizando
          <code>JOptionPane.showMessageDialog(..)</code> com 
@@ -120,7 +120,7 @@
          deles com um <code>\n</code> - utilizado para quebra de linha em Java -
          e os exibe utilizando <code>MessageDialog</code>. O título da janela
          será a String definida para <code>validation.errors.title</code> no
-         <a href="#Configurando as mensagens">arquivo de recursos</a>.
+         <a href="configuring_messages.html#Configurando as mensagens">arquivo de recursos</a>.
          </li>
          <li><code>handleUIException(UIException)</code> exibe o erro utilizando
          <code>MessageDialog</code>. O título e a mensagem serão extraídos da

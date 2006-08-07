@@ -41,7 +41,8 @@
         6. Não é necessário adicionar todos os jars que
         você encontrar. Você pode escolher inicialmente os jars como mostrado
         na imagem. Se precisar de outro, você pode adicioná-lo
-        mais tarde.</p>
+        mais tarde. Se for usar Java 5, adicione também a biblioteca
+        <code>genesis-annotation-jdk5-&lt;versão&gt;.jar</code></p>
         <img src="../eclipse/06.JPG" border="0" alt="Eclipse - Passo 6"></img>
 
         <p>

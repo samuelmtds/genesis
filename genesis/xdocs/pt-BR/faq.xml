@@ -7,14 +7,14 @@
   </properties>
   <body>
     <section name="FAQ">
-      <p>Perguntas frequentes:
+      <p>Perguntas freqüentes:
       <ul>
         <li><a href="#Posso utilizar o genesis para criar uma aplicação web?">
         Posso utilizar o genesis para criar uma aplicação web?</a></li>
         <li><a href="#Como o genesis se compara ao Spring?">
         Como o genesis se compara ao Spring?</a></li>
-        <li><a href="#Quando o genesis irá suportar Swing?">
-        Quando o genesis irá suportar Swing?</a></li>
+        <li><a href="#Quando o genesis irá suportar SWT?">
+        Quando o genesis irá suportar SWT?</a></li>
         <li><a href="#Como posso usar genesis em aplicações J2ME?">
         Como posso usar genesis em aplicações J2ME?</a></li>
         <li><a href="#Por que estou obtendo uma NullPointerException ao chamar
@@ -45,13 +45,11 @@
         nível genérico mas não tão abrangente. No entanto, certas
         funcionalidades do genesis não são encontradas no Spring, como o
         <a href=
-        "ui_additional_features.html#Trabalhando_com_pesquisas_dinâmicas">suporte
+        "dynamic_search_and_paging.html#Trabalhando_com_pesquisas_dinâmicas">suporte
         a pesquisas dinâmicas</a>.</p>
       </subsection>
-      <subsection name="Quando o genesis irá suportar Swing?">
-        <p>Em futuras versões do genesis, Swing será suportado. Não existe
-        ainda uma data definitiva para este suporte, mas é provavél que ele
-        esteja disponível ainda este semestre.</p>
+      <subsection name="Quando o genesis irá suportar SWT?">
+        <p>Na próxima versão do genesis, SWT será suportado. No máximo, até o próximo mês.</p>
       </subsection>
       <subsection name="Como posso usar genesis em aplicações J2ME?">
         <p>Recomenda-se utilizar um subconjunto das funcionalidades providas no

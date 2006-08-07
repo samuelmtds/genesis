@@ -5,7 +5,6 @@
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
     <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
-    <!-- TODO: check links -->
   </properties>
   <body>
     <section name="Guia de referência rápida de anotações">
@@ -224,9 +223,8 @@
           </tr>
         </table>
       </subsection>
-    <p><a href=
-    "ui_additional_features.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">Mais informações...
-    </a></p>
+    <p><a href="conditions.html#Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais">
+      Mais informações...</a></p>
     </section>
     <section name="Referência">
       <subsection name="@Form">
@@ -254,7 +252,7 @@
 public class MeuForm {
 <b>...</b>
   </source>
-    <p><a href="ui_basic_concepts.html#Entendendo_os_forms">Mais informações...
+    <p><a href="binding.html#Binding">Mais informações...
     </a></p>
       </subsection>
       <subsection name="@Condition">
@@ -323,7 +321,7 @@ public class InsertUpdateForm {
    public void findRole() throws Exception {
    <b>...</b>
    </source>
-    <p><a href="ui_additional_features.html#Declarando_condições">Mais
+    <p><a href="conditions.html#Declarando_condições">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@DataProvider">
@@ -402,7 +400,7 @@ public class InsertUpdateForm {
    public List provideCountries() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">
+    <p><a href="populating_with_dataproviders.html#Populando_combos__listas_e_tabelas">
     Mais informações...</a></p>
       </subsection>
       <subsection name="@NotBound">
@@ -502,9 +500,8 @@ public class ExemploForm {
    public void remove() throws Exception {
    <b>...</b>
   </source>
-    <p><a href=
-    "ui_additional_features.html#Habilitando_e_desabilitando_componentes">Mais
-    informações...</a></p>
+    <p><a href="conditions.html#Habilitando_e_desabilitando_componentes">
+      Mais informações...</a></p>
       </subsection>
       <subsection name="@VisibleWhen">
         <p>Apresenta ou não um widget em função do resultado da avaliação de uma
@@ -556,7 +553,7 @@ public class ExemploForm {
    public void previousPage() {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Controlando_a_visibilidade">Mais
+    <p><a href="conditions.html#Controlando_a_visibilidade">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@CallWhen">
@@ -608,7 +605,7 @@ public class ExemploForm {
    public Collection provideState() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Invocando_métodos_automaticamente">
+    <p><a href="conditions.html#Invocando_métodos_automaticamente">
     Mais informações...</a></p>
       </subsection>
       <subsection name="@ClearOn">
@@ -674,7 +671,7 @@ public class ExemploForm {
 
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais
+    <p><a href="conditions.html#Limpando_o_conteúdo_dos_campos">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@ValidateBefore">
@@ -707,7 +704,7 @@ public class ExemploForm {
    public void save() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Validando_os_dados">Mais
+    <p><a href="validating_data.html#Validando_os_dados">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@EqualityComparator">
@@ -748,7 +745,7 @@ public class ExemploForm {
    }
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Comparando_valores">Mais
+    <p><a href="conditions.html#Comparando_valores">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@Cloner">
@@ -790,7 +787,7 @@ public class ExemploForm {
    }
    <b>...</b>
   </source>
-        <p><a href="ui_additional_features.html#Alterando_a_forma_como_os_valores_são_clonados">Mais
+        <p><a href="conditions.html#Alterando_a_forma_como_os_valores_são_clonados">Mais
         informações...</a></p>
       </subsection>
       <subsection name="@EmptyResolver">
@@ -833,7 +830,7 @@ public class ExemploForm {
    }
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Determinando_se_o_campo_está_vazio">
+    <p><a href="conditions.html#Determinando_se_o_campo_está_vazio">
     Mais informações...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
@@ -862,7 +859,7 @@ public class ExemploForm {
    }
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Limpando_o_conteúdo_dos_campos">Mais
+    <p><a href="conditions.html#Limpando_o_conteúdo_dos_campos">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@Action">
@@ -895,7 +892,7 @@ public class ExemploForm {
   </source>
         <p>define o método <b>save</b> como alvo do acionamento de um botão
         com nome "save" na interface gráfica.</p>
-    <p><a href="ui_basic_concepts.html#Implementando_ações_no_form_e_na_view">
+    <p><a href="actions.html#Implementando_ações_mistas">
     Mais informações...</a></p>
       </subsection>
       <subsection name="@BeforeAction">
@@ -930,7 +927,7 @@ public class ExemploForm {
    public void chooseRole() throws Exception {
    <b>...</b>
   </source>
-    <p><a href="ui_basic_concepts.html#Usando_@BeforeAction">Mais informações...
+    <p><a href="actions.html#Usando_@BeforeAction">Mais informações...
     </a></p>
       </subsection>
       <subsection name="@AfterAction">
@@ -965,7 +962,7 @@ public class ExemploForm {
    public void save() {
    <b>...</b>
   </source>
-    <p><a href="ui_basic_concepts.html#Usando_@AfterAction">Mais informações...
+    <p><a href="actions.html#Usando_@AfterAction">Mais informações...
     </a></p>
       </subsection>
       <subsection name="@ViewHandler">
@@ -997,7 +994,7 @@ public class ExemploViewHandler {
 <b>...</b>
 }
   </source>
-    <p><a href="ui_additional_features.html#Utilizando_POJOs_para_tratar_eventos">Mais
+    <p><a href="actions.html#Implementando_ações_mistas">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@Remotable">
@@ -1031,7 +1028,7 @@ public class ExemploViewHandler {
    }
    <b>...</b>
   </source>
-    <p><a href="business_component_model.html#Remotabilidade_transparente">Mais
+    <p><a href="remoting.html#Remotabilidade_transparente">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@Transactional">
@@ -1066,7 +1063,7 @@ public class ExemploViewHandler {
    public boolean removeRole(final Role role) throws Exception {
    <b>...</b>
   </source>
-    <p><a href="business_component_model.html#Suporte_a_transações">Mais
+    <p><a href="transactions.html#Suporte_a_transações">Mais
     informações...</a></p>
       </subsection>
       <subsection name="@Criteria">
@@ -1108,7 +1105,7 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    public Page getUsers(final int pageNumber)
    <b>...</b>
 </source>
-    <p><a href="business_component_model.html#Pesquisas_dinâmicas_com_Criteria">
+    <p><a href="dynamic_search_and_paging.html#Pesquisas_dinâmicas_com_Criteria">
     Mais informações...</a></p>
       </subsection>
     </section>

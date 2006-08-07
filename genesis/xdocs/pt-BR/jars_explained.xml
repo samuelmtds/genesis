@@ -72,8 +72,8 @@ public Object executeQuery(Object o, String methodName,
             Existe ainda uma outra classe chamada <code>
             net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector
             </code> que implementa
-            a interface <code>net.java.dev.genesis.command.TransactionalInjector
-            </code>. O genesis já está preparado para atuar
+            a interface <code>net.java.dev.genesis.command.TransactionalInjector</code>.
+            O genesis já está preparado para atuar
             junto com o <a href="http://www.hibernate.org/">Hibernate</a> na
             camada de persistência. Por esse motivo já disponibilizamos uma
             implementação padrão de <code>TransactionalInjector</code>
@@ -103,7 +103,8 @@ public Object executeQuery(Object o, String methodName,
             implementação da parte visual da aplicação. Na versão atual do
             genesis, estamos provendo toda base para o desenvolvimento da
             aplicação utilizando como interface o
-            <a href="http://thinlet.sourceforge.net/">Thinlet</a>.
+            <a href="http://thinlet.sourceforge.net/">Thinlet</a> ou
+            <a href="http://java.sun.com/products/jfc/">Swing</a>.
         </p>
         <p>
             O módulo apresenta classes para formatação de dados na tela,
@@ -162,8 +163,8 @@ genesis-aspect-annotated-&lt;versao&gt;.jar</source>
             entre outros aspectos.
         </p>
         <p>
-            Geralmente, utilizamos apenas o arquivo <code>genesis-aspect-
-            annotated-&lt;versao&gt;.jar</code> da
+            Geralmente, utilizamos apenas o arquivo
+            <code>genesis-aspect-annotated-&lt;versao&gt;.jar</code> da
             distribuição do genesis, pois esse arquivo possui todos seus
             aspectos previamente anotados, não
             necessitando uma configuração posterior definindo o comportamento de
@@ -189,62 +190,83 @@ genesis-aspect-annotated-&lt;versao&gt;.jar</source>
             genesis e suas características:
         </p>
         <table>
-            <tr>
-                <th>Arquivo JAR</th>
-                <th>Módulo do genesis</th>
-                <th>Lado cliente</th>
-                <th>Lado servidor</th>
-                <th>Manipulação de bytecode</th>
-            </tr>
-            <tr>
-                <td>genesis-server-&lt;version&gt;.jar</td>
-          <td>genesis-server</td>
+          <tr>
+            <th>Arquivo JAR</th>
+            <th>Módulo do genesis</th>
+            <th>Lado cliente</th>
+            <th>Lado servidor</th>
+            <th>Manipulação de bytecode</th>
+          </tr>
+          <tr>
+            <td>genesis-server-&lt;versão&gt;.jar</td>
+            <td>genesis-server</td>
             <td>Não</td>
-              <td>Sim</td>
-                <td>Não</td>
-        </tr>
-            <tr>
-                <td>genesis-client-&lt;version&gt;.jar</td>
-          <td>genesis-client</td>
             <td>Sim</td>
-              <td>Não</td>
-                <td>Não</td>
-        </tr>
-            <tr>
-                <td>genesis-shared-&lt;version&gt;.jar</td>
-          <td>genesis-shared</td>
             <td>Não</td>
-              <td>Sim</td>
-                <td>Não</td>
-        </tr>
-            <tr>
-                <td>genesis-shared-annotated-&lt;version&gt;.jar</td>
-          <td>genesis-shared</td>
+          </tr>
+          <tr>
+            <td>genesis-client-&lt;versão&gt;.jar</td>
+            <td>genesis-client</td>
             <td>Sim</td>
-              <td>Não</td>
-                <td>Sim</td>
-        </tr>
-            <tr>
-                <td>genesis-aspect-&lt;version&gt;.jar</td>
-          <td>genesis-aspect</td>
+            <td>Não</td>
+            <td>Não</td>
+          </tr>
+          <tr>
+            <td>genesis-shared-&lt;versão&gt;.jar</td>
+            <td>genesis-shared</td>
+            <td>Não</td>
             <td>Sim</td>
-              <td>Não</td>
-                <td>Não</td>
-        </tr>
-            <tr>
-                <td>genesis-aspect-annotated-&lt;version&gt;.jar</td>
-          <td>genesis-aspect</td>
+            <td>Não</td>
+          </tr>
+          <tr>
+            <td>genesis-shared-annotated-&lt;versão&gt;.jar</td>
+            <td>genesis-shared</td>
             <td>Sim</td>
-              <td>Não</td>
-                <td>Sim</td>
-        </tr>
+            <td>Não</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td>genesis-aspect-&lt;versão&gt;.jar</td>
+            <td>genesis-aspect</td>
+            <td>Sim</td>
+            <td>Não</td>
+            <td>Não</td>
+          </tr>
+          <tr>
+            <td>genesis-aspect-annotated-&lt;versão&gt;.jar</td>
+            <td>genesis-aspect</td>
+            <td>Sim</td>
+            <td>Não</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td>genesis-annotation-jdk5-&lt;versão&gt;.jar</td>
+            <td>genesis-annotation</td>
+            <td>Sim</td>
+            <td>Sim</td>
+            <td>Não</td>
+          </tr>
+          <tr>
+            <td>genesis-annotation-jdk14-&lt;versão&gt;.jar</td>
+            <td>genesis-annotation</td>
+            <td>Sim</td>
+            <td>Sim</td>
+            <td>Não</td>
+          </tr>
         </table>
-        <p>
-            Na distribuição do genesis ainda temos um arquivo chamado <code>
-            annotation.properties</code> que é
-            utilizado pelo compilador de anotações para identificar quais
-            anotações presentes no código fonte
-            devem ser inseridas no bytecode das classes.
+        <p>O pacote <code>genesis-annotation-jdk5-&lt;versão&gt;.jar</code>
+          possui as anotações utilizadas pelo genesis em padrão Java 5.
+          O pacote <code>genesis-annotation-jdk14-&lt;versão&gt;.jar</code>
+          possui as interfaces equivalentes para essas anotações, para compatibilidade
+          com Java 1.4. Em momento de execução, é utilizado o pacote
+          <code>genesis-annotation-jdk14-&lt;version&gt;.jar</code>
+          pois é compatível para ambas versões, mesmo utilizando anotações do Java 5
+          em seu código.</p>
+          <p>Na distribuição do genesis ainda temos um arquivo chamado <code>
+          annotation.properties</code> que é
+          utilizado pelo compilador de anotações para identificar quais
+          anotações presentes no código fonte
+          devem ser inseridas no bytecode das classes.
         </p>
       </section>
    </body>

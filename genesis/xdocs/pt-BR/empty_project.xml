@@ -41,7 +41,9 @@
     </section>
     <section name="Configurando um novo projeto">
       <p>Você pode copiar toda estrutura do <b>empty-project</b> para um
-      diretório de desenvolvimento de sua escolha. O primeiro passo para
+      diretório de desenvolvimento de sua escolha (Se você o fizer, não esqueça
+      de definir a propriedade <code>genesis.home</code> em seu arquivo
+      <code>build.properties</code>) O primeiro passo para
       configurar um novo projeto é copiar o arquivo
       <code>build.properties.sample</code> para outro arquivo com nome <code>
       build.properties</code>. O arquivo <code>build.properties</code> define
@@ -83,7 +85,7 @@ jboss.home=/opt/jboss-3.2.7
 
 
 #################################################################################
-##	If you want to turn off hibernate files generation, such as hibernate.cfg.xml,
+## If you want to turn off hibernate files generation, such as hibernate.cfg.xml,
 ## jboss-service.xml, and *.hbm.xml, uncomment the following property:
 #hibernate.generate.files=false
 
@@ -129,8 +131,8 @@ jboss.home=/opt/jboss-3.2.7
       delas:</p>
       <ul>
         <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
-        do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
-        ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
+        do genesis. Geralmente o diretório será algo do tipo
+        <code><b>&lt;ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -353,7 +355,7 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.16 2006-08-04 23:40:18 allanjones Exp $ -->
+<!-- $Id: empty_project.xml,v 1.17 2006-08-07 22:26:50 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -479,7 +481,7 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.16 2006-08-04 23:40:18 allanjones Exp $ -->
+<!-- $Id: empty_project.xml,v 1.17 2006-08-07 22:26:50 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->

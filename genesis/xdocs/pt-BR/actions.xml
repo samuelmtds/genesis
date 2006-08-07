@@ -17,14 +17,14 @@
       <p>Se uma ação modifica o form ou não está ligada a API gráfica, esta deve
       ser implementada no form com o uso de <code>@Action</code>. Se a resposta
       a determinado controle é simplesmente exibir uma nova tela, janela de
-      diálogo ou alguma tarefa específica da API gráfica sendo utilizada, deve-
-      se implementá-la na view e acioná-la com o recurso específico da API 
+      diálogo ou alguma tarefa específica da API gráfica sendo utilizada, deve-se
+      implementá-la na view e acioná-la com o recurso específico da API 
       gráfica. Porém, existem situações não tão simples e outras nas quais a 
       manipulação do form e da view se misturam. Estes casos são considerados 
       abaixo.</p>
       <subsection name="Usando @BeforeAction">
         <p>Consideremos o seguinte exemplo: deve-se implementar a exclusão de um
-        dado. Mas antes de exclui-lo o usuário deve confirmar a operação. Essa
+        dado. Mas antes de excluí-lo o usuário deve confirmar a operação. Essa
         confirmação poderia ser implementada exibindo uma
         <code>OptionDialog</code> (Thinlet) ou um <code>JOptionPane</code> 
         (Swing) para o usuário e prosseguindo com a operação somente se ele 
@@ -36,9 +36,9 @@
         no método da view que se deseja executar antes do método do form e pode
         tanto retornar <code>boolean</code> como <code>void</code>. Quando o
         método retorna <code>false</code> o método no form não é invocado.</p>
-        <p>Se o nome do método na view for o mesmo do método no form não é
+        <p>Se o nome do método na view tive o mesmo nome do método no form não é
         necessário utilizar nenhum parâmetro adicional para a anotação. Em
-        certos casos, porém, o nome do método na view não pode ser o mesmo
+        certos casos, porém, o nome do método na view pode não ser o mesmo
         utilizado no form. Para indicar a execução de qual método do form deve
         ser precedida da execução do método na view, coloca-se ao lado da
         anotação o nome do método no form. Um exemplo completo de uso encontra-
@@ -102,7 +102,7 @@ public class ExemploBeforeActionForm {
         for <code>true</code>. No exemplo específico, isso só acontecerá quando
         o usuário escolher a opção "Sim" na janela que será exibida. Quando a
         confirmação ocorre, o método <code>excluir()</code> é invocado pelo
-        framework e o tratamento do acionamento do botão, encerrado.</p>
+        framework e o tratamento do acionamento do botão é encerrado.</p>
         <p>Note o uso da anotação <code>@ViewHandler</code> na classe 
         <code>ExemploBeforeActionViewSwing</code>. Isso é necessário para todas
         as classes que são responsáveis pelo tratamento de eventos específicos 
@@ -117,7 +117,7 @@ public class ExemploBeforeActionForm {
       <subsection name="Usando @AfterAction">
         <p>Após a execução de um método do form pode ser necessário utilizar
         algum recurso da API gráfica, como, por exemplo, fechar a janela sendo
-        exibida. A fim de possibilitar isso o genesis suporta a anotação
+        exibida. A fim de possibilitar isso, o genesis suporta a anotação
         <code>@AfterAction</code>, que deve ser colocada no método da view a ser
         invocado. Sua sintaxe é muito similar a da anotação
         <code>@BeforeAction</code>, exceto que o método que possui a anotação
@@ -215,12 +215,42 @@ public class ExemploRefreshViewView extends BaseThinlet {
       if (entidade != null) {
          form.setEntidade(entidade);
 
-         /* Todas as chamadas abaixo sao equivalentes quando somente um form 
-         esta ligado a view. Somente uma delas e necessaria */
+         /* Todas as chamadas abaixo são equivalentes quando somente um form 
+         esta ligado a view. Somente uma delas é necessaria */
          ActionInvoker.refresh(form);
          refreshView();
          refreshView(getDesktop());
          refreshViewFromForm(form);
+      }
+   }
+
+   // ...
+}
+</source>
+        <p>Para uso específico de outro binder como Swing, existe o método
+        <code>refresh()</code> declarado em <code>AbstractBinder</code>.</p>
+<source>
+public class ExemploRefreshViewView extends JFrame {
+   private ExemploRefreshViewForm form;
+   private SwingBinder binder;
+
+   public ExemploRefreshViewView() {
+      // lógica de inicializacao
+      binder = new SwingBinder(this, form = new ExemploRefreshViewForm());
+      binder.bind();
+   }
+
+   public void selecionaEntidadeRelacionada() {
+      // exibe uma tela auxiliar de selecao de entidade e retorna
+      Entidade entidade = new ConsultaEntidadeView().getEntidade();
+
+      if (entidade != null) {
+         form.setEntidade(entidade);
+
+         /* Todas as chamadas abaixo são equivalentes.
+            Somente uma delas é necessaria */
+         ActionInvoker.refresh(form);
+         binder.refresh();
       }
    }
 
@@ -260,23 +290,30 @@ public class ExemploRefreshViewForm {
         possível também utilizar os métodos 
         <code>invokeFormAction(String)</code> ou 
         <code>invokeFormAction(Object,String)</code> de 
-        <code>BaseThinlet</code>. As ações também incluem 
+        <code>BaseThinlet</code>.
+        Para uso com Swing é possível utilizar o método
+        <code>invokeAction(String)</code>.
+        As ações também incluem 
         <code>@DataProvider</code>, que será explicado numa seção futura. Um 
         exemplo de uso da API genérica pode ser visto abaixo:</p>
 <source>
 public class ExemploInvokeFormActionView extends JFrame {
    private ExemploInvokeFormActionForm form;
+   private SwingBinder binder;
 
    public ExemploInvokeFormActionView() {
       // lógica de inicializacao
-      new SwingBinder.bind(this, form = new ExemploInvokeFormActionForm());
+      binder = new SwingBinder(this, form = new ExemploInvokeFormActionForm());
+      binder.bind();
    }
 
-   public void selecionaIndicesFinanceiros() {
+   public void selecionaIndicesFinanceiros() throws Exception {
       BigDecimal indice = //... obtem o indice a partir do input de outra
                           // janela, por exemplo
       form.setIndice(indice);
       ActionInvoker.invoke(form, "recalculaTotais");
+      // Ou, da mesma forma:
+      // binder.invokeAction("recalculaTotais");
    }
 
    // ...

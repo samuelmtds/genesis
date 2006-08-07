@@ -14,7 +14,7 @@
       funcionalidades. O framework possui suporte genérico a linguagens de
       script para realizar esta tarefa a partir da versão 3.0.</p>
       <p>Embora a linguagem de script padrão definido pelo genesis seja
-      <code>JXPath</code>, é possível modificar esse padrão de modo
+      <code>Javascript</code>, é possível modificar esse padrão de modo
       que todos os forms de uma aplicação tenham seus scripts expressados
       em uma determinada linguagem.</p>
       <p>

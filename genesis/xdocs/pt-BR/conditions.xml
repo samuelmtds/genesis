@@ -363,18 +363,18 @@ public class ExemploCallWhenForm {
       implementações padrão são mantidas inicialmente:</p>
       <ul>
         <li><code>MapEmptyResolver</code> é registrado para instâncias de
-        <code>java.util.Map</code>. Considera como vazias instâncias nulas ou
-        que retornem <code>true</code> para <code>isEmpty()</code>.</li>
+        <code>java.util.Map</code>. Retorna <code>true</code> quando a instância
+        é nula ou <code>java.util.Map.isEmpty()</code> retorne <code>true</code>.</li>
         <li><code>CollectionEmptyResolver</code> é a implementação padrão para
         <code>java.util.Collection</code>. Usa o mesmo princípio que
         <code>MapEmptyResolver</code> para determinar as instâncias vazias.</li>
         <li>A implementação registrada para <code>String</code> é
-        <code>StringEmptyResolver</code>. São consideradas vazias instâncias
-        nulas ou de tamanho zero após removidos os espaços, i.e.,
+        <code>StringEmptyResolver</code>. Retorna <code>true</code> quando a instância
+        é nula ou de tamanho zero após removidos os espaços, i.e.,
         <code>s == null || s.trim().length() == 0</code>.</li>
         <li>Para todos os casos restantes é registrada uma instância de
-        <code>DefaultEmptyResolver</code>. Esta implementação considera vazias
-        instâncias nulas ou arrays com zero elementos.</li>
+        <code>DefaultEmptyResolver</code>. Esta implementação retorna <code>true</code>
+        para instâncias nulas ou arrays com zero elementos.</li>
       </ul>
       <p>Estas implementações registradas como padrão devem ser suficientes para
       a maioria dos casos. Como exemplo de customização, consideremos o uso da
