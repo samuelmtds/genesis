@@ -57,18 +57,19 @@ import org.apache.commons.logging.LogFactory;
 public class SwingBinder extends AbstractBinder {
    private static final Log log = LogFactory.getLog(SwingBinder.class);
 
-   public static final String GENESIS_BOUND = "genesis:boundField";
-   public static final String WIDGET_GROUP_PROPERTY = "widgetGroup";
-   public static final String ENABLED_GROUP_PROPERTY = "enabledGroup";
-   public static final String VISIBLE_GROUP_PROPERTY = "visibleGroup";
-   public static final String BLANK_PROPERTY = "blank";
-   public static final String BLANK_LABEL_PROPERTY = "blankLabel";
-   public static final String KEY_PROPERTY = "key";
-   public static final String VALUE_PROPERTY = "value";
-   public static final String BUTTON_GROUP_SELECTION_VALUE = "buttonGroupSelectionValue";
    public static final String BINDER_KEY = "genesis:SwingBinder";
-   public static final String COLUMN_NAMES = "columnNames";
-   public static final String VIRTUAL = "virtual";
+   public static final String BLANK_LABEL_PROPERTY = "genesis:blankLabel";
+   public static final String BLANK_PROPERTY = "genesis:blank";
+   public static final String BUTTON_GROUP_SELECTION_VALUE = 
+         "genesis:buttonGroupSelectionValue";
+   public static final String COLUMN_NAMES = "genesis:columnNames";
+   public static final String ENABLED_GROUP_PROPERTY = "genesis:enabledGroup";
+   public static final String GENESIS_BOUND = "genesis:boundField";
+   public static final String KEY_PROPERTY = "genesis:key";
+   public static final String VALUE_PROPERTY = "genesis:value";
+   public static final String VIRTUAL = "genesis:virtual";
+   public static final String VISIBLE_GROUP_PROPERTY = "genesis:visibleGroup";
+   public static final String WIDGET_GROUP_PROPERTY = "genesis:widgetGroup";
 
    private final ComponentBinderRegistryFactory factory =
       ComponentBinderRegistryFactory.getInstance();
@@ -145,14 +146,13 @@ public class SwingBinder extends AbstractBinder {
       return widget instanceof JComponent && isVirtual((JComponent) widget);
    }
 
-   public boolean isVirtual(JComponent component) {
-      return Boolean.TRUE.equals(component.getClientProperty(VIRTUAL));
-   }
-
    public boolean isVirtual(Component component) {
       return component instanceof JComponent
-            && Boolean.TRUE.equals(((JComponent) component)
-                  .getClientProperty(VIRTUAL));
+            && isVirtual((JComponent) component);
+   }
+
+   public boolean isVirtual(JComponent component) {
+      return Boolean.TRUE.equals(component.getClientProperty(VIRTUAL));
    }
 
    protected ComponentLookupStrategy createComponentLookupStrategy() {
@@ -213,10 +213,12 @@ public class SwingBinder extends AbstractBinder {
             Component c = FocusManager.getCurrentManager().getFocusOwner();
 
             if (c != null) {
-               c.dispatchEvent(new FocusEvent(defaultButton, FocusEvent.FOCUS_LOST));
+               c.dispatchEvent(new FocusEvent(defaultButton, 
+                     FocusEvent.FOCUS_LOST));
             }
 
-            defaultButton.dispatchEvent(new FocusEvent(defaultButton, FocusEvent.FOCUS_GAINED));
+            defaultButton.dispatchEvent(new FocusEvent(defaultButton, 
+                  FocusEvent.FOCUS_GAINED));
          }
       };
    }
