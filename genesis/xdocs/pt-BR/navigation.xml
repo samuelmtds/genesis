@@ -57,6 +57,10 @@
               href="/pt-BR/conditions.html">
           <item name="Trabalhando com condições" 
                 href="/pt-BR/conditions.html" />
+          <item name="Populando combos, listas e tabelas"
+                href="/pt-BR/populating_with_dataprovider.html" />
+          <item name="Formatando os dados" 
+                href="/pt-BR/formatting.html" />
           <item name="Tratando erros" 
                 href="/pt-BR/handling_errors.html" />
         </item>
@@ -72,10 +76,13 @@
       </item>
       <item name="Entendendo os jars do genesis"
             href="/pt-BR/jars_explained.html" />
-      <item name="Desenvolvendo com o genesis"
-            href="/pt-BR/empty_project.html" />
-      <item name="Desenvolvendo com o genesis (WEB)"
-            href="/pt-BR/empty_web_project.html" />
+      <item name="Desenvolvendo com o genesis" collapse="true"
+            href="/pt-BR/empty_project.html">
+         <item name="Para desktops"
+               href="/pt-BR/empty_project.html" />
+         <item name="Para web"
+               href="/pt-BR/empty_web_project.html" />
+      </item>
       <item name="Usando o exemplo UserAdmin"
             href="/pt-BR/useradmin_sample.html" />
       <item name="Guia avançado" collapse="true"

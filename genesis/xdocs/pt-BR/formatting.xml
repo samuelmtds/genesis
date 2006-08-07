@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Formatando os dados</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Formatando os dados">
+      <p>Visto que formatar as informações para que sejam exibidas na tela é uma
+      parte importante de qualquer aplicação com interface gráfica, espera-se
+      que isto seja fácil de fazer e configurável. A API que é utilizada para
+      este propósito no genesis encontra-se implementada no pacote
+      <code>net.java.dev.genesis.text</code>.</p>
+      <p>Encontra-se neste pacote a interface <code>Formatter</code>, que define
+      o método <code>format(Object)</code>. Este método converte o objeto
+      passado em uma String formatada. Da mesma forma como outros componentes
+      comuns do framework, existe um registro padrão de implementações da
+      interface, a classe <code>FormatterRegistry</code>. As seguintes
+      implementações estão registradas por padrão nessa classe:</p>
+      <ul>
+        <li><code>EnumFormatter</code> converte instâncias de 
+        <code>java.lang.Enum</code> e 
+        <code>net.java.dev.reusablecomponents.lang.Enum</code> (para uso com 
+        Java 1.4) procurando no <a 
+        href="#Configurando as mensagens"><code>ResourceBundle</code></a> a
+        mensagem configurada para a chave formada pelo nome da classe sem pacote
+        + "." + nome da constante. Se esta não for encontrada, uma mensagem de
+        prioridade <code>INFO</code> será logada e a instância convertida com
+        <code>toString()</code>.</li>
+        <li><code>DefaultFormatter</code> é registrado para todos os outros
+        tipos e converte as instâncias utilizando <code>toString()</code> -
+        exceto se forem <code>null</code>, quando retorna uma String com tamanho
+        zero.</li>
+      </ul>
+      <p>Para registrar um novo formatador para uma classe basta utilizar o
+      método <code>register(Class,Formatter)</code> em
+      <code>FormatterRegistry</code>.</p>
+      <p>No entanto, o registro de um formatador por classe pode não ser
+      suficiente em algumas situações. Por exemplo, ao se exibir uma propriedade
+      booleana como texto, pode-se querer exibir determinado texto no lugar
+      das constantes <code>true</code> e <code>false</code>. O genesis possui
+      uma API que permite definir explicitamente o formatador de determinado
+      campo utilizado na tela. Alguns passos são necessários para isso:</p>
+      <ol>
+        <li>Se o binding Thinlet estiver sendo utilizado, ao invés de utilizar 
+        alguma versão do método <code>bind(..)</code>, deve-se preparar uma 
+        instância de <code>ThinletBinder</code> para ser ligada a view e a um 
+        widget utilizando-se os métodos <code>prepareBinder(form)</code> ou
+        <code>prepareBinder(widget, form)</code> de
+        <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
+        <li>O formatador deve ser registrado utilizando-se o método
+        <code>registerFormatter(String,Formatter)</code> em
+        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code> ou 
+        <code>net.java.dev.genesis.ui.swing.SwingBinder</code>, de acordo com a
+        API gráfica utilizada. O valor da <code>String</code> deverá ser o nome 
+        da propriedade cujo formatador será sobrescrito. Este nome de 
+        propriedade é determinado da seguinte forma:
+          <ul>
+            <li>Caso a propriedade seja uma propriedade simples, retornada
+            através de um método getter, deve ser usado apenas o nome simples
+            dessa propriedade.</li>
+            <li>Caso queira se mudar o formatador dos ítens de uma combobox ou
+            lista ou de uma das colunas de uma tabela, o nome da propriedade
+            deverá ser composto por
+            <code>nomeDoWidget.nomePropriedadeObjetoExibido</code>.</li>
+          </ul>
+        </li>
+        <li>Opcionalmente, caso a propriedade cujo formatador foi alterado
+        precise ser convertida pelo genesis para seu tipo original e o formato
+        gerado não for suportado pelo conversor, deve-se sobrescrever o
+        conversor através do método
+        <code>registerConverter(String,Converter)</code>.
+        <code>org.apache.commons.beanutils.Converter</code> faz parte do
+        Jakarta Commons BeanUtils e deve-se consultar a documentação deste
+        framework caso seja necessário implementar esta interface.</li>
+        <li>Finalmente, deve-se efetuar o binding chamando-se o método 
+        <code>bind()</code>.</li>
+      </ol>
+      <p>Um exemplo destes passos pode ser visto abaixo:</p>
+<source>
+Formatter f = new Formatter() {
+   public String format(Object o) {
+      return "Formato alterado";
+   }
+};
+</source>
+
+<source>
+//Exemplo Thinlet
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("propriedade", f);
+binder.bind();
+</source>
+
+<source>
+//Exemplo Swing
+SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("propriedade", f);
+binder.bind();
+</source>
+      <p>O valor de <code>propriedade</code> exibido na tela será sempre a
+      constante <code>Formato alterado</code>, independentemente do seu
+      valor no form.</p>
+      <subsection name="Propriedades virtuais">
+        <p>Desde a versão 2.2, é possível se trabalhar com propriedades
+        virtuais, ou seja, que não existem no objeto sendo exibido. Essas
+        propriedades tem seu valor de exibição determinado através em um
+        formatador específico.</p> 
+        <p>Caso a API gráfica utilizada seja o Thinlet, este formatador tem de 
+        estar obrigatoriamente registrado na instância de 
+        <code>ThinletBinder</code>. Caso esteja-se utilizando Swing, se o 
+        <code>TableCellRenderer</code> da <code>TableColumn</code> não tiver 
+        sido customizado, o formatador deverá ser registrado na instância de 
+        <code>SwingBinder</code>.</p>
+        <p>O processo de definição e exibição de uma propriedade virtual é
+        basicamente o mesmo de uma propriedade normal, exceto pelos pontos
+        abaixos:</p>
+        <ul>
+           <li>Apenas células de tabelas e valores exibidos em comboboxes e
+           listas podem ser propriedades virtuais.</li>
+           <li>Propriedades virtuais podem ser definidas de maneira dependente 
+           da API gráfica:
+             <ul>
+               <li>Caso esteja-se utilizando Thinlet, pode-se defini-las em 
+               comboboxes e listas colocando no elemento <code>property</code> 
+               do xml <code>virtual=true</code>. Visto que colunas de tabelas 
+               não possuem o atributo <code>property</code>, o valor de seu 
+               atributo <code>name</code> deve ser precedido do prefixo 
+               <code>virtual:</code>.</li>
+               <li>Caso esteja-se utilizando Swing, o <code>name</code> do 
+               widget deve ser precedido pela constante definida em 
+               <code>AbstractBinder.VIRTUAL_PREFIX</code> ou a 
+               <code>clientProperty SwingBinder.VIRTUAL</code> deve possuir como
+               valor <code>Boolean.TRUE</code></li>
+             </ul>
+           </li>
+           <li>A instância de <code>Formatter</code> receberá como parâmetro do
+           método <code>format(Object)</code> todo o bean sendo exibido, já que
+           a propriedade a ser exibida não existe fisicamente no objeto.</li>
+        </ul>
+        <p>Um exemplo de definição e uso de uma propriedade virtual é mostrado
+        abaixo, tanto para comboboxes como para tabelas. Primeiro vejamos a 
+        definição da interface gráfica com Thinlet:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <combobox name="widget"
+             property="key=propriedadeUnica;value=valorVirtual;virtual=true" />
+</panel>
+]]>
+</source>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="propriedadeUnica" text="#" />
+         <column name="virtual:valorVirtual" text="Virtual" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+        <p>Abaixo temos a mesma interface definida com Swing:</p>
+<source>
+//..
+getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
+
+JComboBox widget = new JComboBox();
+widget.setName("widget");
+widget.putClientProperty(SwingBinder.KEY_PROPERTY, "propriedadeUnica");
+widget.putClientProperty(SwingBinder.VALUE_PROPERTY, "valorVirtual");
+widget.putClientProperty(SwingBinder.VIRTUAL, Boolean.TRUE);
+getContentPane().add(widget);
+//..
+</source>
+<source>
+//..
+getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
+
+JTable widget = SwingFactory.createTable(binder, "widget", 
+      new String[] {"propriedadeUnica", AbstractBinder.VIRTUAL_PREFIX + "valorVirtual"},
+      new String[] {"#", "Virtual"});
+
+JScrollPane scrollPane = new JScrollPane();
+scrollPane.setViewportView(widget);
+getContentPane().add(scrollPane);
+
+//..
+</source>
+        <p>Abaixo temos a definição do formatador:</p>
+<source>
+Formatter virtual = new Formatter() {
+   public String format(Object o) {
+      return o == null ? "0" : String.valueOf(o.hashCode());
+   }
+}); 
+</source>
+        <p>Por fim, o código que mostra como usar o formatador em ambas APIs:</p>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.valorVirtual", virtual);
+binder.bind();
+</source>
+<source>
+SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("widget.valorVirtual", virtual);
+binder.bind();
+</source>
+        <p>É importante notar que, embora o nome da coluna seja precedido de
+        <code>virtual:</code>, isso não afeta a formação do nome da propriedade
+        na hora de registrar o formatador.</p>
+      </subsection>
+   </section>
+  </body>
+</document>
