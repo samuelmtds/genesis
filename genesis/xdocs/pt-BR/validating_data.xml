@@ -208,9 +208,9 @@
       transcrito abaixo:</p>
 <source>
 /**
- * @Form
  * @genesis.form
  */
+@Form
 public class InsertUpdateForm {
    /**
     * @genesis.validator type="required"
@@ -300,10 +300,8 @@ public class InsertUpdateForm {
       this.state = state;
    }
 
-   /**
-    * @Action
-    * @ValidateBefore
-    */
+   @Action
+   @ValidateBefore
    public void save() throws Exception {
       final User user = new User();
       PropertyUtils.copyProperties(user, this);

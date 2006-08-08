@@ -70,9 +70,7 @@ public class ExemploPaginacaoList {
         retornando uma página:</p>
         <source>
 public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
-   /**
-    * @Remotable
-    */
+   @Remotable
    public Page getTodos(int numeroPagina, int resultadosPorPagina)
          throws PagingException {
       return getPage(getSession().createQuery("from ClasseMapeada"),
@@ -143,9 +141,7 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
             MatchMode.START));
    }
 
-   /**
-    * @Criteria(value=meupacote.Pessoa.class, orderby={"nome", "sobrenome asc"})
-    */
+   @Criteria(value=meupacote.Pessoa.class, orderby={"nome", "sobrenome asc"})
    public Page getPessoas(int numeroPagina) throws PagingException {
       return getPage(numeroPagina);
    }
@@ -233,9 +229,7 @@ CriteriaPropertyHelper.fillCriteria(hibernateCriteria, form);
         Abaixo encontra-se um exemplo de seu uso extraído do useradmin. Primeiro,
         vemos o trecho de código relevante do form:</p>
 <source>
-/**
- * @Form
- */
+@Form
 public class UserListForm extends BaseCriteriaSearchForm {
    private final UserSearchCommand command = new UserSearchCommand();
 
@@ -261,11 +255,9 @@ public class UserListForm extends BaseCriteriaSearchForm {
       return command.getUsers(pageNumber);
    }
 
-   /**
-    * @Action
-    * @CallWhen("form.isRunSearch()")
-    * @DataProvider(objectField="users", callOnInit=false)
-    */
+   @Action
+   @CallWhen("form.runSearch")
+   @DataProvider(objectField="users", callOnInit=false)
    public List doSearch() throws Exception {
       search();
 
@@ -303,7 +295,6 @@ nextPage.setName("nextPage");
 </source>
         <p>E a classe de negócio:</p>
 <source>
-<![CDATA[
 public class UserSearchCommand extends AbstractHibernateCriteria {
    public void setEmail(String email) {
       getCriteria().add(Expression.ilike("email", email, MatchMode.START));
@@ -317,14 +308,11 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
       getCriteria().add(Expression.ilike("name", name, MatchMode.START));
    }
    
-   /**
-    * @Criteria(value=net.java.dev.genesis.samples.useradmin.databeans.User.class, orderby="name")
-    */
+   @Criteria(value=User.class, orderby="name")
    public Page getUsers(final int pageNumber) throws Exception {
       return getPage(pageNumber);
    }
 }
-]]>
 </source>
       </subsection>
     </section>
