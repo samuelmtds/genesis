@@ -34,18 +34,12 @@
       are inherited when the code element (class/method) is not overridden and
       ignored otherwise. An example makes it clear:</p>
 <source>
-/**
- * @Form
- */
+@Form
 public class ParentForm {
-  /**
-   * @EnabledWhen condition1
-   */
+  @EnabledWhen("condition1")
   public String getProperty1() { ... }
 
-  /**
-   * @EnabledWhen condition2
-   */
+  @EnabledWhen("condition2")
   public String getProperty2() { ... }
 
   // ...
