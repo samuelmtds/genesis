@@ -429,6 +429,16 @@ public interface FormControllerFactory {
             <td>None</td>
           </tr>
           <tr>
+            <td rowspan="2">LocalCommandExecutionAspect</td>
+            <td>transactionalInjector</td>
+            <td>Fully qualified class name</td>
+            <td>Name of a
+            <code>net.java.dev.genesis.command.TransactionalInjector</code>
+            implementation</td>
+            <td><b>Yes</b></td>
+            <td>None</td>
+          </tr>
+          <tr>
             <td>preLoadSessionFactory</td>
             <td>boolean</td>
             <td>Indicates whether the <code>SessionFactory</code> instance will
@@ -438,16 +448,6 @@ public interface FormControllerFactory {
             implementation</td>
             <td><b>No</b></td>
             <td><code>true</code></td>
-          </tr>
-          <tr>
-            <td>LocalCommandExecutionAspect</td>
-            <td>transactionalInjector</td>
-            <td>Fully qualified class name</td>
-            <td>Name of a
-            <code>net.java.dev.genesis.command.TransactionalInjector</code>
-            implementation</td>
-            <td><b>Yes</b></td>
-            <td>None</td>
           </tr>
           <tr>
             <td>LocalEJBCommandExecutionAspect</td>
@@ -606,32 +606,32 @@ public interface FormControllerFactory {
    <system id="useradmin" base-package="net.java.dev.genesis.aspect">
       <!-- helpers pointcuts -->
       <pointcut name="executeCommand"
-         expression="execution(@Remotable * ...*(..)) OR execution(@Transactional * ...*(..))" />
-      <pointcut name="form" expression="within(@Form ..)" />
+         expression="execution(@net.java.dev.genesis.annotation.Remotable * ...*(..)) 
+                  OR execution(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
+      <pointcut name="form" expression="within(@net.java.dev.genesis.annotation.Form ..)" />
 
       <!-- genesis pointcuts -->
       <pointcut name="formMetadataFactoryIntroduction" expression="form" />
       <pointcut name="formControllerFactoryIntroduction" expression="form" />
-      <pointcut name="thinletMetadataFactoryIntroduction"
-         expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
-      <pointcut name="viewMetadataFactoryIntroduction"
-         expression="thinletMetadataFactoryIntroduction OR within(@ViewHandler ..)" />
-      <pointcut name="criteriaResolverIntroduction"
-         expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
+      <pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" />
+      <pointcut name="viewMetadataFactoryIntroduction" expression="thinletMetadataFactoryIntroduction OR within(@net.java.dev.genesis.annotation.ViewHandler ..)" />
+      <pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" />
       <pointcut name="commandResolverIntroduction"
-         expression="hasmethod(@Remotable * ...*(..)) OR hasmethod(@Transactional * ...*(..))" />
+         expression="hasmethod(@net.java.dev.genesis.annotation.Remotable * ...*(..)) 
+                  OR hasmethod(@net.java.dev.genesis.annotation.Transactional * ...*(..))" />
       <pointcut name="timeout" expression="executeCommand" />
       <pointcut name="ejbCommandExecution" expression="executeCommand" />
-      <pointcut name="criteriaCommandExecution"
-         expression="execution(@Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
+      <pointcut name="criteriaCommandExecution" expression="execution(@net.java.dev.genesis.annotation.Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" />
       <pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" />
 
       <!-- genesis aspects -->
       <mixin class="CommandInvocationAspect$CommandResolverImpl" />
-      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory" />
       <mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" />
       <mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" />
       <mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" />
+      <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">      
+          <param name="scriptFactory" value="javascript" />
+      </mixin>
 
       <aspect class="TimeoutAspect">
          <param name="timeout" value="60000" />
