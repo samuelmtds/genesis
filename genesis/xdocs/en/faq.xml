@@ -13,8 +13,8 @@
         it possible to use genesis to build a web application?</a></li>
         <li><a href="#How does genesis compare to Spring?">
         How does genesis compare to Spring?</a></li>
-        <li><a href="#When will genesis provide Swing support?">
-        When will genesis provide Swing support?</a></li>
+        <li><a href="#When will genesis provide SWT support?">
+        When will genesis provide SWT support?</a></li>
         <li><a href="#How can I use genesis in J2ME applications?">
         How can I use genesis in J2ME applications?</a></li>
         <li><a href="#Why am I getting a NullPointerException in a getSession()
@@ -42,13 +42,11 @@
         for example, Spring has a more generic dependency injection mechanism
         while genesis has a generic one that is not so generic. However, some
         genesis functionalities are not provided by Spring, such as <a href=
-        "ui_additional_features.html#Working_with_dynamic_searches">support for
+        "dynamic_search_and_paging.html#Working_with_dynamic_searches">support for
         dynamic searches</a>.</p>
       </subsection>
-      <subsection name="When will genesis provide Swing support?">
-        <p>Swing will be supported in a future genesis release. There is no
-        certain date for this to happen, but it is likely it will be available
-        by mid year.</p>
+      <subsection name="When will genesis provide SWT support?">
+        <p>SWT will be supported in next release. Maybe, in a month.</p>
       </subsection>
       <subsection name="How can I use genesis in J2ME applications?">
         <p>It is recommended to only use a sub-set of the functionalities
