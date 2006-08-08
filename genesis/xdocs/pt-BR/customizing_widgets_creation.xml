@@ -58,7 +58,7 @@ WidgetFactoryRegistry.getInstance().register(Number.class, new NumberWidgetFacto
       algum widget específico, deve-se registrá-la na instância de 
       <code>ThinletBinder</code> com o método <code>registerWidgetFactory(String,
       WidgetFactory)</code>, utilizando-se a mesma regra de nomenclatura 
-      explicada na seção de <a href="#Formatação">Formatação</a>, conforme 
+      explicada na seção de <a href="formatting.html">Formatação</a>, conforme 
       exemplificado abaixo:</p>
 <source>
 <![CDATA[
@@ -74,7 +74,7 @@ WidgetFactoryRegistry.getInstance().register(Number.class, new NumberWidgetFacto
 </source>
 <source>
 ThinletBinder binder = prepareBinder(form);
-binder.registerFormatter("widget.propriedadeEspecifica", new NumberWidgetFactory());
+binder.registerWidgetFactory("widget.propriedadeEspecifica", new NumberWidgetFactory());
 binder.bind();
 </source>
     </section>

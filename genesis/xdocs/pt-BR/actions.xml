@@ -200,10 +200,10 @@ public class ExemploAfterActionForm {
         widget ligado ao form passado como parâmetro. Um exemplo de tais métodos 
         pode ser visto abaixo:</p>
 <source>
-public class ExemploRefreshViewView extends BaseThinlet {
+public class ExemploRefreshViewThinlet extends BaseThinlet {
    private ExemploRefreshViewForm form;
 
-   public ExemploRefreshViewView() {
+   public ExemploRefreshViewThinlet() {
       // lógica de inicializacao
       bind(form = new ExemploRefreshViewForm());
    }
@@ -230,11 +230,11 @@ public class ExemploRefreshViewView extends BaseThinlet {
         <p>Para uso específico de outro binder como Swing, existe o método
         <code>refresh()</code> declarado em <code>AbstractBinder</code>.</p>
 <source>
-public class ExemploRefreshViewView extends JFrame {
+public class ExemploRefreshViewSwing extends JFrame {
    private ExemploRefreshViewForm form;
    private SwingBinder binder;
 
-   public ExemploRefreshViewView() {
+   public ExemploRefreshViewSwing() {
       // lógica de inicializacao
       binder = new SwingBinder(this, form = new ExemploRefreshViewForm());
       binder.bind();
@@ -283,8 +283,8 @@ public class ExemploRefreshViewForm {
         método do form seja possível, ela ocorrerá sem que o framework seja
         notificado disso, o que terá diversas conseqüências como a não
         atualização da interface gráfica, por exemplo.</p>
-        <p>Para chamar um método do form e manter o sincronismo automático deve-
-        se utilizar o método 
+        <p>Para chamar um método do form e manter o sincronismo automático
+        deve-se utilizar o método 
         <code>ActionInvoker.invoke(form, nomeDeAcao)</code>. O segundo parâmetro
         é o nome do método do form a ser invocado. Para o uso com Thinlet é 
         possível também utilizar os métodos 
@@ -292,7 +292,7 @@ public class ExemploRefreshViewForm {
         <code>invokeFormAction(Object,String)</code> de 
         <code>BaseThinlet</code>.
         Para uso com Swing é possível utilizar o método
-        <code>invokeAction(String)</code>.
+        <code>invokeAction(String)</code> declarado em <code>AbstractBinder</code>.
         As ações também incluem 
         <code>@DataProvider</code>, que será explicado numa seção futura. Um 
         exemplo de uso da API genérica pode ser visto abaixo:</p>

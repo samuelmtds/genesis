@@ -102,7 +102,7 @@ public class ExemploVisibleWhenForm {
 //..
 getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
 
-JLabel dataCorrenteLabel = dataCorrenteLabel = new JLabel();
+JLabel dataCorrenteLabel = new JLabel();
 dataCorrenteLabel.setText("Data Corrente:");
 getContentPane().add(dataCorrenteLabel);
 
