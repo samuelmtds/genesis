@@ -79,9 +79,10 @@ public Object executeQuery(Object o, String methodName,
 genesis-client-&lt;version&gt;.jar
 </source>
       <p>In this module, we have all the implementation of the visual UI
-      infrastructure of the framework. In this version of genesis, the base for
-      the UI functionality is the
-      <a href="http://thinlet.sourceforge.net/">Thinlet</a> framework.</p>
+      infrastructure of the framework. In this version of genesis, we have 
+      UI functionality for
+      <a href="http://thinlet.sourceforge.net/">Thinlet</a> framework and
+      <a href="http://java.sun.com/products/jfc/">Swing</a>.</p>
       <p>This module includes classes for on screen data format, data conversion
       features, and other that are needed in the UI side of the application. </p
       >
@@ -186,7 +187,28 @@ genesis-aspect-annotated-&lt;version&gt;.jar
           <td>no</td>
           <td>yes</td>
         </tr>
+        <tr>
+          <td>genesis-annotation-jdk5-&lt;version&gt;.jar</td>
+          <td>genesis-annotation</td>
+          <td>Sim</td>
+          <td>Sim</td>
+          <td>Não</td>
+        </tr>
+        <tr>
+          <td>genesis-annotation-jdk14-&lt;version&gt;.jar</td>
+          <td>genesis-annotation</td>
+          <td>Sim</td>
+          <td>Sim</td>
+          <td>Não</td>
+        </tr>
       </table>
+        <p>The jar file <code>genesis-annotation-jdk5-&lt;version&gt;.jar</code>
+          contains Java 5 genesis annotations.
+          The jar file <code>genesis-annotation-jdk14-&lt;version&gt;.jar</code>
+          contains Java 1.4 equivalent interfaces for compatibility.
+          At runtime, the jar file
+          <code>genesis-annotation-jdk14-&lt;version&gt;.jar</code> is used
+          for better compatibility.</p>
       <p>In genesis distribution we also have a file
       <code>annotation.properties</code> that is used by the annotation compiler
       to identify which annotations in the source code need to be inserted in

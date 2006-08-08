@@ -40,7 +40,8 @@
         <p>
         6. You don't need to choose all jars, you can add initially the ones
         shown in the image. If later another one is needed, you can always
-        add it.
+        add it. If you're going to use Java 5, add
+        <code>genesis-annotation-jdk5-&lt;versão&gt;.jar</code> too.
         </p>
         <img src="../eclipse/06.JPG" border="0" alt="Eclipse - Step 6"></img>
 
