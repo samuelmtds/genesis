@@ -7,7 +7,7 @@
   </properties>
   <body>
     <section name="Configuring your project on Eclipse">
-       Learn how to configure your project on Eclipse <a href="ide_eclipse_empty_project.html">here</a>
+       <p>Learn how to configure your project on Eclipse <a href="ide_eclipse_empty_project.html">here</a></p>
     </section>
     <section name="How to start?">
       <p>genesis was conceived having as a goal to make development easier and
@@ -22,8 +22,8 @@
       <p>We call an empty project strutucture <code>empty-project</code> and it
       comes with genesis-empty-project distribution or genesis-all distribution.
       This structure can be found in dir
-      <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.
-      </p>
+      <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.</p>
+      <p>Take a look at some configuration samples <a href="#Scenarios">here</a></p>
     </section>
     <section name="What is needed?">
       <p>Besides genesis, it is necessary:</p>
@@ -37,38 +37,75 @@
     </section>
     <section name="Configuring a new project">
       <p>You can copy the whole <b>empty-project</b> structure to a development
-      directory of your choice. The first step to configure a new project is to
+      directory of your choice (If you do that, don't forget
+      to configure <code>genesis.home</code> properly in
+      <code>build.properties</code>). The first step to configure a new project is to
       copy the file named <code>build.properties.sample</code> to a new one
       named <code>build.properties</code>. File <code>build.properties</code>
       defines certain proprerties that are project or developer specific. The
       initial content for <code>build.properties.sample</code> is as follows:</p
       >
 <source>
-## Build properties sample
+## Build properties sample ##
 
-# The following property must be defined in build.properties with an appropriate
-# value for the local environment
-jboss.home=/opt/jboss-3.2.5
+#################################################################################
+## The following property must be defined in build.properties with an appropriate
+## value for the local environment
 genesisBasedApplication.name=empty-project
 genesisBasedApplication.mainClass=net.java.dev.genesis.emptyproject.MyGenesisApp
 genesisBasedApplication.prettyName=Empty Project
 
-# These properties already have a default value defined in build.xml and only
-# need to be defined in build.properties if their values are different in your
-# local setup
-genesis.home=../../genesis
-xdoclet.dist=../../xdoclet/dist
-generate.validation=true
-jboss.provider.url=jnp://localhost
-jboss.datasource.jndi.name=java:/DefaultDS
-jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
-webstart.server=localhost
-webstart.port=8080
-hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
-hibernate.version=2.1.6
-hibernate.show.sql=true
-hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
-hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+
+#################################################################################
+## Use these properties for running the sample in LOCAL or REMOTE MODE          
+jboss.home=/opt/jboss-3.2.7
+
+
+#################################################################################
+## Use these properties for running the sample in LOCAL MODE ONLY               
+#remote.mode=false
+#jdbc.driver=target/hsqldb.jar
+
+
+#################################################################################
+## Use these properties for running the sample in REMOTE MODE ONLY              
+#local.mode=false
+#jboss.home=/opt/jboss-3.2.7
+
+
+#################################################################################
+## If you want to turn off validation generation, uncomment the following 
+## property:
+#validation.generate.files=false
+
+
+#################################################################################
+## If you want to turn off hibernate files generation, such as hibernate.cfg.xml,
+## jboss-service.xml, and *.hbm.xml, uncomment the following property:
+#hibernate.generate.files=false
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  
+## need to be defined in build.properties if their values are different in your 
+## local setup                                                                  
+#genesis.home=../../genesis
+#jboss.provider.url=jnp://localhost
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#webstart.server=localhost
+#webstart.port=8080
+#build.dir=dist/useradmin.war/application
+#jdbc.driver=dist/useradmin.war/application/hsqldb.jar
+#jdbc.connection.url=jdbc:hsqldb:genesis/useradmin
+#jdbc.driver.class=org.hsqldb.jdbcDriver
+#jdbc.username=sa
+#jdbc.password=
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.8
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
 </source>
       <p>At least four properties must be defined:</p>
       <ul>
@@ -86,8 +123,8 @@ hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
       may be redefined. Some of them are:</p>
       <ul>
         <li><code><b>genesis.home</b></code>: Indicates where genesis is
-        located. Usually this directory will be something like <code><b>&lt;
-        SOME_DIRECTORY&gt;/genesis-&lt;version&gt;/genesis</b></code></li>
+        located. Usually this directory will be something like
+        <code><b>&lt;SOME_DIRECTORY&gt;/genesis-&lt;version&gt;/genesis</b></code></li>
         <li><code><b>xdoclet.dist</b></code>: Indicates the dir where XDoclet 
         libraries can be found. The distribution used by the build process is 
         available <a href="download.html">here</a>.</li>
@@ -191,6 +228,344 @@ ant all
 ant run:remote
 </source>
       </p>
+    </section>
+    <section name="Scenarios">
+       <p>We have some samples on how to configure an empty project in some scenarios. The samples are shown below:</p>
+       <subsection name="Local Application using MySQL and JGoodies">
+<p><b>build.properties</b> file</p>
+<source>
+### general configuration
+genesisBasedApplication.name=myapplication
+genesisBasedApplication.mainClass=mypackage.MyMainClass
+genesisBasedApplication.prettyName=My Application
+local.mode=true
+remote.mode=false
+  
+### configure genesis home directory
+genesis.home=D:/opensource/genesis-3.0/genesis
+
+### set up the location of mysql jdbc driver
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## configure your Database
+jdbc.connection.url=jdbc:mysql://localhost:3306/mydatabase
+jdbc.driver.class=com.mysql.jdbc.Driver
+jdbc.username=myuser
+jdbc.password=mypassword
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+</source>
+<p><b>build.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="myproject" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+  <import file="desktop_build.xml" />
+
+  <target name="-pre-init">
+    <property file="build.properties" />
+
+    <!-- A new property referencing JGoodies jars -->
+    <property name="jgoodies.lib" location="lib/jgoodies" />
+  </target>
+
+  <target name="client:pre-init">
+
+    <!-- JGoodies jars added to client compile classpath -->
+    <path id="client.additional.javac.classpath">
+      <fileset dir="${jgoodies.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <!-- JGoodies jars added to runtime classpath -->
+  <target name="run:pre-define-classpath">
+    <path id="run.additional.classpath">
+      <fileset dir="${jgoodies.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+</project>
+]]>
+</source>
+      <p>To run your project, type:
+<source>
+ant all
+ant run:local
+</source>
+      </p>
+       </subsection>
+       <subsection name="Remote Application using MySQL and JFreeReport">
+<p><b>build.properties</b> file</p>
+<source>
+### general configuration
+genesisBasedApplication.name=myapplication
+genesisBasedApplication.mainClass=mypackage.MyMainClass
+genesisBasedApplication.prettyName=My Application
+local.mode=false
+remote.mode=true
+  
+### configure genesis home directory
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### configure JBoss home directory
+jboss.home=D:/servers/jboss-4.0.4.GA
+
+### set up the location of mysql jdbc driver
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## configure your Database
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+</source>
+<p><b>conf/mysql-ds.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: empty_project.xml,v 1.15 2006-08-09 23:03:01 allanjones Exp $ -->
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>MySqlDS</jndi-name>
+    <connection-url>jdbc:mysql://localhost:3306/mydatabase</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>myuser</user-name>
+    <password>mypassword</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
+    <!-- should only be used on drivers after 3.22.1 with "ping" support
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+    -->
+    <!-- sql to call when connection is created
+    <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+]]>
+</source>
+<p><b>build.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="myproject" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+  <import file="desktop_build.xml" />
+
+  <target name="-pre-init">
+    <property file="build.properties" />
+
+    <!-- A new property referencing JFreeReport jars -->
+    <property name="jfreereport.lib" location="lib/jfreereport" />
+  </target>
+
+  <target name="client:pre-init">
+  
+    <!-- JFreeReport jars added to client compile classpath -->
+    <path id="client.additional.javac.classpath">
+      <fileset dir="${jfreereport.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <!-- JFreeReport added to runtime classpath -->
+  <target name="run:pre-define-classpath">
+    <path id="run.additional.classpath">
+      <fileset dir="${jfreereport.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <!-- JFreeReport jars added to Java Web Start sign task -->
+  <target name="-do-webstart-signjar">
+    <genesis:webstart-signjar>
+      <customize>
+        <fileset dir="${jfreereport.lib}">
+          <include name="*.jar" />
+        </fileset>
+      </customize>
+    </genesis:webstart-signjar>
+  </target>
+</project>
+]]>
+</source>
+      <p>To run your project, type:
+<source>
+ant all
+D:\servers\jboss-4.0.4.GA\bin\run -c myapplication
+ant run:remote
+</source>
+      </p>
+      <p>To run your project through Java Web Start:
+<source>
+ant all.with.webstart
+D:\servers\jboss-4.0.4.GA\bin\run -c myapplication
+Go to <a href="http://localhost:8080/minhaaplicacao">http://localhost:8080/myapplication</a>
+</source>
+      </p>
+       </subsection>
+       <subsection name="Local and Remote Application using MySQL, JGoodies and Joda">
+<p><b>build.properties</b> file</p>
+<source>
+### general configuration
+genesisBasedApplication.name=myapplication
+genesisBasedApplication.mainClass=mypackage.MyMainClass
+genesisBasedApplication.prettyName=My Application
+local.mode=true
+remote.mode=true
+  
+### configure genesis home directory
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### configure JBoss home directory
+jboss.home=D:/servers/jboss-4.0.4.GA
+
+### set up the location of mysql jdbc driver
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## configure your Database
+jdbc.connection.url=jdbc:mysql://localhost:3306/mydatabase
+jdbc.driver.class=com.mysql.jdbc.Driver
+jdbc.username=myuser
+jdbc.password=mypassword
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+</source>
+<p><b>conf/mysql-ds.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: empty_project.xml,v 1.15 2006-08-09 23:03:01 allanjones Exp $ -->
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>MySqlDS</jndi-name>
+    <connection-url>jdbc:mysql://localhost:3306/meudatabase</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>myuser</user-name>
+    <password>mypassword</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
+    <!-- should only be used on drivers after 3.22.1 with "ping" support
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+    -->
+    <!-- sql to call when connection is created
+    <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+]]>
+</source>
+<p><b>build.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+  <import file="desktop_build.xml" />
+
+  <target name="-pre-init">
+    <property file="build.properties" />
+
+    <!-- A new property referencing JGoodies jars -->
+    <property name="jgoodies.lib" location="lib/jgoodies" />
+
+    <!-- A new property referencing Joda jars -->
+    <property name="joda.lib" location="lib/joda" />
+  </target>
+
+  <target name="client:pre-init">
+    <path id="client.additional.javac.classpath">
+      <!-- JGoodies jars added to client compile classpath -->
+      <fileset dir="${jgoodies.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <target name="shared:pre-init">
+    <path id="shared.additional.javac.classpath">
+      <!-- Joda jars added to shared compile classpath -->
+      <fileset dir="${joda.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <!-- JGoodies and Joda jars added to runtime classpath -->
+  <target name="run:pre-define-classpath">
+    <path id="run.additional.classpath">
+      <fileset dir="${jgoodies.lib}">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="${joda.lib}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <!-- JGoodies and Joda jars added to Java Web Start sign task -->
+  <target name="-do-webstart-signjar">
+    <genesis:webstart-signjar>
+      <customize>
+        <fileset dir="${jgoodies.lib}">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${joda.lib}">
+          <include name="*.jar" />
+        </fileset>
+      </customize>
+    </genesis:webstart-signjar>
+  </target>
+</project>
+]]>
+</source>
+      <p>To run your project in local mode, type:
+<source>
+ant all
+ant run:local
+</source>
+      </p>
+      <p>To run your project in remote mode, type:
+<source>
+ant all
+D:\servers\jboss-4.0.4.GA\bin\run -c myapplication
+ant run:remote
+</source>
+      </p>
+      <p>To run your project through Java Web Start:
+<source>
+ant all.with.webstart
+D:\servers\jboss-4.0.4.GA\bin\run -c myapplication
+Go to <a href="http://localhost:8080/minhaaplicacao">http://localhost:8080/myapplication</a>
+</source>
+      </p>
+       </subsection>
     </section>
   </body>
 </document>

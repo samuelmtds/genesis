@@ -355,7 +355,7 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.17 2006-08-07 22:26:50 allanjones Exp $ -->
+<!-- $Id: empty_project.xml,v 1.18 2006-08-09 23:03:01 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -448,7 +448,7 @@ Entre no endereço <a href="http://localhost:8080/minhaaplicacao">http://localhos
 </source>
       </p>
        </subsection>
-       <subsection name="Aplicação Local e Remota usando MySQL e JGoodies e Joda">
+       <subsection name="Aplicação Local e Remota usando MySQL, JGoodies e Joda">
 <p>Arquivo <b>build.properties</b></p>
 <source>
 ### Configurações gerais
@@ -481,7 +481,7 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.17 2006-08-07 22:26:50 allanjones Exp $ -->
+<!-- $Id: empty_project.xml,v 1.18 2006-08-09 23:03:01 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
