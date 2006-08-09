@@ -143,7 +143,36 @@
       </condition>
    </target>
 
-   <target name="weaving:copy-files" depends="weaving:check-conditions,weaving:macrodefs" 
+   <target name="weaving:additional-macrodefs"
+           depends="define-optional-fileset-type">
+      <genesis:optional-fileset 
+            id="weaving.additional.macrodefs.default.client.copy.fileset"
+            dir="${default-client-copy-fileset}">
+         <include name="**/*.class" />
+      </genesis:optional-fileset>
+      <genesis:optional-fileset 
+            id="weaving.additional.macrodefs.default.shared.copy.fileset"
+            dir="${default-shared-copy-fileset}">
+         <include name="**/*.class" />
+      </genesis:optional-fileset> 
+
+      <presetdef name="weaving-copy"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:weaving-copy-macro>
+            <default-copy-fileset>
+               <fileset refid="weaving.additional.macrodefs.default.client.copy.fileset" />
+               <fileset refid="weaving.additional.macrodefs.default.shared.copy.fileset" />
+            </default-copy-fileset>
+            <default-unjar-fileset>
+               <fileset dir="${genesis.dist}"
+                        includes="genesis-shared-annotated-${genesis.version}.jar" />
+            </default-unjar-fileset>
+         </genesis:weaving-copy-macro>
+      </presetdef>
+   </target>
+
+   <target name="weaving:copy-files"
+           depends="define-call-task,weaving:check-conditions,weaving:macrodefs"
            if="weaving.needed">
       <genesis:call target="-do-weaving-copy-files" />
    </target>
