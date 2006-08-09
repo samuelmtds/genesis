@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Integração com o Hibernate</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Hibernate integration">
+      <p>genesis provides a great integration with Hibernate framework.
+      Currently, in order to take advantage of it, classes must implement the
+      <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code>
+      interface by definition or by AOP introduction. In the future this won't
+      be necessary anymore, when container will be integrated in genesis.</p>
+      <p>This interface exposes the <code>setSession(Session)</code> method
+      which is called by genesis (on the server-side) before the execution
+      of each remote method. genesis injects a valid Hibernate session before
+      the method call and sets the session reference to <code>null</code> at the
+      end of the call. To make this easier, another class is provided:
+      <code>net.java.dev.genesis.command.hibernate.AbstractHibernateCommand
+      </code>. This class implements the above interface and has useful methods
+      like <code>getSession()</code>.</p>
+      <p>Here is an example of how to use the hibernate integration in a
+      business component:</p>
+<source>
+public class HibernateIntegrationExample extends AbstractHibernateCommand {
+   @Remotable
+   public Collection getAll() throws HibernateException {
+      return getSession().createQuery("from MappedClass").list();
+   }
+}
+</source>
+      <p>As shown the use of Hibernate API within the business classes is quite
+      simple.</p>
+    </section>
+  </body>
+</document>
