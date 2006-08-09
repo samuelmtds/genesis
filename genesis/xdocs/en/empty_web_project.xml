@@ -19,17 +19,17 @@
       <p>We call an empty web project strutucture <code>empty-web-project</code> and it
       comes with genesis-empty-web-project distribution or genesis-all distribution.
       This structure can be found in dir
-      <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-web-project/</b></code>.
-      </p>
+      <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-web-project/</b></code>.</p>
+      <p>Take a look at some configuration samples <a href="#Scenarios">here</a></p>
     </section>
     <section name="What is needed?">
       <p>Besides genesis, it is necessary:</p>
       <ul>
         <li>genesis distribution along its dependency libraries.</li>
         <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
-        3.2.x release.</li>
-        <li>To compile and install the application we recommend <a href=
-        "http://ant.apache.org/">Apache Ant</a> 1.6.x.</li>
+        3.2.x or 4.0.x release.</li>
+        <li>To compile and install the application we recommend
+        <a href="http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
@@ -41,30 +41,34 @@
       initial content for <code>build.properties.sample</code> is as follows:</p
       >
 <source>
-## Build properties sample
+## Build properties sample ##
 
-# The following property must be defined in build.properties with an appropriate
-# value for the local environment
-jboss.home=/opt/jboss-3.2.6
+#################################################################################
+## The following property must be defined in build.properties with an           #
+## appropriate value for the local environment                                  #
+jboss.home=/opt/jboss-3.2.7
 genesisBasedApplication.name=empty-web-project
 genesisBasedApplication.prettyName=Empty Web Project
+#################################################################################
 
-# These properties already have a default value defined in build.xml and only
-# need to be defined in build.properties if their values are different in your 
-# local setup
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  #
+## need to be defined in build.properties if their values are different in your #
+## local setup                                                                  #
 #genesis.home=../../genesis
-#xdoclet.dist=../../xdoclet/dist
 #jboss.datasource.jndi.name=java:/DefaultDS
 #jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
 #hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
-#hibernate.version=2.1.6
+#hibernate.version=2.1.8
 #hibernate.show.sql=true
 #hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
 #hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+#################################################################################
 </source>
       <p>At least three properties must be defined:</p>
       <ul>
-        <li><code><b>jboss.home</b></code>: Indicates where JBoss 3.2.x is
+        <li><code><b>jboss.home</b></code>: Indicates where JBoss 3.2.x or 4.0.x is
         installed</li>
         <li><code><b>genesisBasedApplication.name</b></code>: Choose a name for
         your project, preferably with no spaces in it.</li>
@@ -90,7 +94,7 @@ genesisBasedApplication.prettyName=Empty Web Project
       <p>To make understanding easier, let's imagine a cenario for a new genesis
       based project creation:</p>
       <ul>
-        <li>We have JBoss 3.2.6 installed at <code>C:\servers\jboss-3.2.6</code>
+        <li>We have JBoss 4.0.4.GA installed at <code>C:\servers\jboss-4.0.4.GA</code>
         </li>
         <li>We install genesis dist at <code>C:\projects</code>, what creates a
         <code>C:\projects\genesis-&lt;version&gt;</code> dir.</li>
@@ -100,7 +104,7 @@ genesisBasedApplication.prettyName=Empty Web Project
       </ul>
       <p>Our <code><b>build.properties</b></code> file may look like:</p>
 <source>
-jboss.home=c:/servers/jboss-3.2.6
+jboss.home=c:/servers/jboss-4.0.4.GA
 genesisBasedApplication.name=helloworld
 genesisBasedApplication.prettyName=Hello World
 
@@ -150,6 +154,82 @@ So, go to your application url, i.e:
 http://localhost:8080/&lt;genesisBasedApplication.name&gt;
 </source>
       </p>
+    </section>
+    <section name="Scenarios">
+       <p>We have some samples on how to configure an empty project in some scenarios. The samples are shown below:</p>
+       <subsection name="WEB Application using MySQL and Struts">
+<p><b>build.properties</b> file</p>
+<source>
+### general configuration
+genesisBasedApplication.name=myapplication
+genesisBasedApplication.prettyName=My Application
+  
+### configure genesis home directory
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### configure JBoss home directory
+jboss.home=D:/servers/jboss-4.0.4.GA
+
+### set up the location of mysql jdbc driver
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## configure your Database
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+</source>
+<p><b>conf/mysql-ds.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>MySqlDS</jndi-name>
+    <connection-url>jdbc:mysql://localhost:3306/mydatabase</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>myuser</user-name>
+    <password>mypassword</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
+    <!-- should only be used on drivers after 3.22.1 with "ping" support
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+    -->
+    <!-- sql to call when connection is created
+    <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+]]>
+</source>
+<p><b>build.xml</b> file</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="myproject" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+  <import file="web_build.xml" />
+
+  <target name="-pre-init">
+    <property file="build.properties" />
+
+    <!-- It's not necessary any other configuration, you just have to put struts jar in modules/web/lib directory -->
+  </target>
+</project>
+]]>
+</source>
+       </subsection>
     </section>
   </body>
 </document>

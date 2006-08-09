@@ -31,6 +31,8 @@
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
         alguma das versões 3.2.x ou 4.x</li>
+        <li>Para compilar e instalar a aplicação, recomendamos 
+        <a href="http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
