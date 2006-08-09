@@ -1,93 +1,92 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Validando os dados</title>
+    <title>Validating data</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-    <section name="Validando os dados">
-      <p>A validação de dados é crítica para a integridade de um sistema,
-      especialmente quando esses dados são entrados pelo usuário, como no caso
-      de uma interface gráfica. O suporte a validação no genesis é implementado
-      utilizando-se de um dos componentes do projeto Jakarta, o <a href=
+    <section name="Validating data">
+      <p>Data validation is critical for system integrity, especially when data
+      is entered by users, as is the case for UI applications. Support for
+      validation in genesis is implemented by using one of Jakarta project's
+      components, <a href=
       "http://jakarta.apache.org/commons/validator/">commons-validator</a>.
-      Diversos outros softwares open-source utilizam o commons-validator como
-      componente de validação, incluindo o Struts, o que aumenta as chances de
-      já se estar familiarizado com ele. Caso contrário, recomendamos a leitura
-      da documentação no próprio site do projeto.</p>
-      <p>A anotação <code>@ValidateBefore</code> pode ser colocada em ações que
-      só podem ser executadas quando a validação for bem-sucedida. Caso ocorra
-      algum erro de validação será lançada uma
-      <code>net.java.dev.genesis.ui.ValidationException</code>, que já é <a
-      href="handling_errors.html">tratada por padrão</a> pelo framework de modo a
-      exibir os erros formatados para o usuário.</p>
-      <p>Diversos validadores padrão encontram-se implementados em
-      <code>BasicValidator</code>, do pacote <code>net.java.dev.genesis.ui</code>.
-      Estes validadores são, em grande parte, semelhantes aos providos com o
-      Struts, o que facilita sua compreensão. São eles:</p>
+      Several other open-source frameworks use commons-validator as a foundation
+      for their own validation components, including Struts, so it is likely you 
+      are already used to this API. Otherwise, we recommend reading the docs 
+      from their project site.</p>
+      <p>Annotation <code>@ValidateBefore</code> can be used in actions that are
+      only supposed to be executed when validation succeeds. If a validation 
+      error occurs, a <code>net.java.dev.genesis.ui.ValidationException</code> 
+      will be thrown - an exception that is <a 
+      href="handling_errors.html">handled by default</a> by genesis by 
+      displaying error information in an user-friendly way.</p>
+      <p>Several default validators are implemented by 
+      <code>BasicValidator</code>, which is contained in the
+      <code>net.java.dev.genesis.ui</code> package. Most of these validators are
+      similar to the ones provided with Struts, so it is easier for those 
+      familiar with this framework to understand them. They are:</p>
       <ul>
         <li><code><b>byte</b>, <b>short</b>, <b>int</b>, <b>long</b>,
-        <b>float</b> e <b>double</b></code>: verificam se o dado pode ser
-        convertido para um desses tipos sem estouro de faixa.</li>
-        <li><code><b>bigDecimal</b></code>: verifica se o dado pode ser
-        convertido para <code>java.math.BigDecimal</code> utilizando o conversor
-        padrão do <a href="http://jakarta.apache.org/commons/beanutils">
-        BeanUtils</a> registrado para ele. O genesis provê uma implementação
-        personalizada deste conversor, <code>BigDecimalConverter</code> em
-        <code>net.java.dev.genesis.commons.beanutils.converters</code>, visto
-        que as implementações que acompanham com o BeanUtils não funcionam da
-        maneira esperada para o Locale pt-BR.</li>
-        <li><code><b>date</b></code>: implementação de validação de datas. Pode
-        utilizar a variável <code>pattern</code> como padrão de data válido.
-        Este padrão é compatível com os especificados para a classe
-        <code>java.text.DateFormat</code>.</li>
-        <li><code><b>email</b></code>: somente aceita conteúdo que possa ser
-        considerado um email sintaticamente válido.</li>
-        <li><code><b>required</b></code>: assegura que o campo não esteja vazio.
-        </li>
-        <li><code><b>requiredif</b></code>: compatível com a versão que
-        acompanha o Struts, implementa um tipo de validação relativamente fraco.
-        Seu uso não é recomendado e é provido somente para facilitar a migração
-        de usuários do Struts. Utilize <a href="#jxpath">jxpath</a> 
-        ao invés deste.</li>
-        <li><code><b>mask</b></code>: implementa validação com base numa
-        expressão regular de máscara. Requer a definição da variável
-        <code>mask</code> contendo a expressão regular.</li>
-        <li><code><b>minlength</b> e <b>maxlength</b></code>: garantem que o
-        dado informado possui um número não inferior e não superior,
-        respectivamente, ao número máximo de caracteres definido através da
-        variável <code>minlength</code> e <code>maxlength</code>.</li>
-        <li><code><b>min</b></code>: verifica se o número informado é maior ou 
-        igual ao valor da variável <code>min</code>.</li>
-        <li><code><b>max</b></code>: verifica se o número informado é menor ou 
-        igual ao valor da variável <code>max</code>.</li>
-        <li><code><b>longRange</b>, <b>doubleRange</b> e <b>bigDecimalRange</b>
-        </code>: verificam se o número informado encontra-se dentro da faixa
-        esperada, definida através das variáveis <code>min</code> e
-        <code>max</code>.</li>
-        <li><a name="jxpath"><code><b>jxpath</b></code></a>: Considera o dado 
-        válido se a análise da expressão <a 
-        href="http://jakarta.apache.org/commons/jxpath">JXPath</a> definida pela
-        variável <code>jxpath</code> retornar um dado diferente de 
-        <code>java.lang.Boolean.FALSE</code>.</li>
+        <b>float</b> and <b>double</b></code>: check if data can be converted to
+        one of these types without any overflow.</li>
+        <li><code><b>bigDecimal</b></code>: checks if data can be converted to
+        <code>java.math.BigDecimal</code> using the default <a href=
+        "http://jakarta.apache.org/commons/beanutils">BeanUtils</a> converter
+        registered for this class. genesis provides a custom implementation of 
+        this converter, <code>BigDecimalConverter</code> in
+        <code>net.java.dev.genesis.commons.beanutils.converters</code>, since
+        implementations that ship with BeanUtils do not work as expected for the
+        pt-BR Locale.</li>
+        <li><code><b>date</b></code>: implements date validation. The
+        variable <code>pattern</code> can be used to set a valid data pattern to
+        be used for the process. This pattern should follow the 
+        <code>java.text.DateFormat</code> pattern specification.</li>
+        <li><code><b>email</b></code>: only accepts content that can be
+        considered a syntatically valid email.</li>
+        <li><code><b>required</b></code>: asserts the field is not empty.</li>
+        <li><code><b>requiredif</b></code>: compatible with the version that
+        comes with Struts, it implements a somewhat weak validation scheme. Its 
+        use is not recommended and it is provided just as a way to make it 
+        easier for Struts users to use genesis validation. Use the <a 
+        href="#jxpath">jxpath</a> validator instead.</li>
+        <li><code><b>mask</b></code>: implements validation based on a regular
+        expression. It requires the definition of a <code>mask</code>
+        variable containg the regular expression.</li>
+        <li><code><b>minlength</b> and <b>maxlength</b></code>: guarantee that
+        informed data has at least and at most, respectively, the number of 
+        characters defined by the <code>minlength</code> or 
+        <code>maxlength</code> variables.</li>
+        <li><code><b>min</b></code>: checks if the number is greater or equal to 
+        the value defined by the <code>min</code> variable.</li>
+        <li><code><b>max</b></code>: checks if the number is lesser or equal to 
+        the value defined by the <code>max</code> variable.</li>
+        <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
+        ></code>: check if the number is part of an expected interval, defined 
+        by variables <code>min</code> and <code>max</code>.</li>
+        <li><a name="jxpath"><code><b>jxpath</b></code></a>: it considers data 
+        as valid if evaluating the <a 
+        href="http://jakarta.apache.org/commons/jxpath">JXPath</a> expression 
+        defined by the variable named <code>jxpath</code> returns a value 
+        different from <code>java.lang.Boolean.FALSE</code>.</li>
       </ul>
-      <p>Assim como os validadores do Struts, todos os providos com o genesis,
-      exceto pelo <code>jxpath</code> só são acionados se o campo estiver
-      preenchido. Isso significa que <b>mesmo que você configure seu validador
-      corretamente, ele só será invocado quando o usuário preencher algo no
-      campo</b>. Se sua intenção é que o validador seja sempre executado,
-      <code>required</code> também deverá estar configurado para o campo.</p>
-      <p>Os dados a serem validados são passados ainda em formato String para os
-      validadores. É importante lembrar-se disso ao escrever expressões de script
-      ou quando se utiliza um validador customizado.</p>
-      <p>A classe que integra o commons-validator ao genesis,
-      <code>net.java.dev.genesis.ui.ValidationUtils</code>, espera que dois
-      arquivos de configuração estejam disponíveis no classpath:
-      <code>validation-rules.xml</code> e <code>validation.xml</code>. Estes
-      arquivos devem estar de acordo com o DTD para o commons-validator 1.1. Uma
-      configuração padrão para <code>validation-rules.xml</code> é provida no
-      jar do genesis-client, como abaixo:</p>
+      <p>As it is true for Struts validators, all the validators provided with 
+      genesis except for <code>jxpath</code> are only triggered if the field is 
+      not empty. This means that <b>even if you configure a validator properly, 
+      it will be invoked only when the user inputs something into the field</b>. 
+      If you would like your validator to always be run, <code>required</code> 
+      should also be configured for the field.</p>
+      <p>Validators receive the input in its "raw" String form. It's
+      important to keep that in mind when coding script expressions or using a
+      custom validator.</p>
+      <p>The class that integrates commons-validator with genesis,
+      <code>net.java.dev.genesis.ui.ValidationUtils</code>, expects two
+      configuration files to be available in the classpath:
+      <code>validation-rules.xml</code> and <code>validation.xml</code>. These
+      files must be comply with the commons-validator 1.1 DTD. A default
+      configuration for <code>validation-rules.xml</code> is provided with
+      genesis-client jar as shown below:</p>
 <source>
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -200,12 +199,12 @@
 </form-validation>
 ]]>
 </source>
-      <p>Na maioria dos casos, uma forma prática de se configurar a validação
-      por form é utilizar o <a href="http://xdoclet.sf.net">XDoclet</a>. Um
-      exemplo de configuração de validação do exemplo useradmin é a classe
-      <code>InsertUpdateForm</code>, do pacote
-      <code>net.java.dev.genesis.samples.useradmin.ui</code>, parcialmente
-      transcrito abaixo:</p>
+      <p>Usually, the most practical way to configure form validation is to use
+      <a href="http://xdoclet.sf.net">XDoclet</a>. An example of how to 
+      configure validation for a form from the useradmin sample is the 
+      <code>InsertUpdateForm</code> class, from package 
+      <code>net.java.dev.genesis.samples.useradmin.ui</code>, partially shown 
+      below:</p>
 <source>
 /**
  * @genesis.form
@@ -315,11 +314,11 @@ public class InsertUpdateForm {
    // ...
 }
 </source>
-      <p>Antes da chamada a <code>save()</code> ser executada, a validação é
-      realizada de acordo com as regras do arquivo gerado e eventuais erros
-      impedem a execução do método. Para aqueles que não estão familiarizados
-      com o XDoclet, encontra-se abaixo o arquivo <code>validation.xml</code>
-      gerado automaticamente durante a execução do build:</p>
+      <p>Before invoking <code>save()</code>, validation is executed based on
+      the rules defined by the generated file and eventual errors will prevent
+      the method from being executed. For those not used to XDoclet, here is a 
+      transcription from the <code>validation.xml</code> file generated during 
+      build execution:</p>
 <source>
 <![CDATA[
 <?xml version="1.0" encoding="ISO-8859-1" ?>
@@ -423,9 +422,9 @@ public class InsertUpdateForm {
 </form-validation>
 ]]>
 </source>
-      <p>É utilizado também um arquivo de recursos para configurar as mensagens,
-      descrito em <a href="configuring_messages.html">Configurando as 
-      mensagens</a>.</p>
+      <p>A resource file is used to configure messages, as described in <a 
+      href="configuring_messages.html">Configuring messages</a>.
+      </p>
     </section>
   </body>
 </document>
