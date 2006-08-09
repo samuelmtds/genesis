@@ -69,9 +69,7 @@
 <source>
 public class UserCreateCommand extends AbstractHibernateCommand {
 
-   /**
-    * @Transactional
-    */
+   @Transactional
    public Serializable createUser(final User user) throws Exception {
       return getSession().save(user);
    }
