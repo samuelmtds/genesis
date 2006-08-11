@@ -21,7 +21,7 @@
       <item name="Notas de versão" href="/pt-BR/release_notes.html" />
     </menu>
     <menu name="Documentação">
-      <item name="Manual do usuário" collapse="true"
+      <item name="Manual do usuário"
             href="/pt-BR/documentation_intro.html">
         <item name="Introdução"
               href="/pt-BR/documentation_intro.html" />
@@ -29,7 +29,7 @@
               href="/pt-BR/annotations.html" />
         <item name="Inicializando o genesis"
               href="/pt-BR/startup.html" />
-        <item name="Funcionalidades básicas" collapse="true"
+        <item name="Funcionalidades básicas"
               href="/pt-BR/remoting.html">
           <item name="Remotabilidade transparente" 
                 href="/pt-BR/remoting.html" />
@@ -38,14 +38,14 @@
           <item name="Integração com o Hibernate"
                 href="/pt-BR/hibernate_integration.html" />
           <item name="Binding"
-                href="/pt-BR/binding.html" collapse="true">
+                href="/pt-BR/binding.html">
              <item name="Binding Thinlet"
                    href="/pt-BR/thinlet_binding.html" />
           </item>
           <item name="Implementando ações mistas"
                 href="/pt-BR/actions.html" />
         </item>
-        <item name="Funcionalidades adicionais" collapse="true"
+        <item name="Funcionalidades adicionais"
               href="/pt-BR/conditions.html">
           <item name="Trabalhando com condições" 
                 href="/pt-BR/conditions.html" />
@@ -64,14 +64,12 @@
           <item name="Customizando a criação de componentes" 
                 href="/pt-BR/customizing_widgets_creation.html" />
         </item>
-        <item name="Modelo de componentes de negócio"
-              href="/pt-BR/business_component_model.html" />
         <item name="Guia de referência rápida de anotações"
               href="/pt-BR/quick_reference.html" />
       </item>
       <item name="Entendendo os jars do genesis"
             href="/pt-BR/jars_explained.html" />
-      <item name="Desenvolvendo com o genesis" collapse="true"
+      <item name="Desenvolvendo com o genesis"
             href="/pt-BR/empty_project.html">
          <item name="Para desktops"
                href="/pt-BR/empty_project.html" />
@@ -80,7 +78,7 @@
       </item>
       <item name="Usando o exemplo UserAdmin"
             href="/pt-BR/useradmin_sample.html" />
-      <item name="Guia avançado" collapse="true"
+      <item name="Guia avançado"
             href="/pt-BR/advanced_introduction.html">
         <item name="Extensões do XDoclet"
               href="/pt-BR/xdoclet_extensions.html" />

@@ -21,7 +21,7 @@
       <item name="Release notes" href="/en/release_notes.html" />
     </menu>
     <menu name="Documentation">
-      <item name="User manual" collapse="true"
+      <item name="User manual"
             href="/en/documentation_intro.html">
         <item name="Introduction"
               href="/en/documentation_intro.html" />
@@ -29,7 +29,7 @@
               href="/en/annotations.html" />
         <item name="Configuring genesis at startup"
               href="/en/startup.html" />
-        <item name="Basic concepts" collapse="true"
+        <item name="Basic concepts"
               href="/en/remoting.html">
           <item name="Transparent remoting" 
                 href="/en/remoting.html" />
@@ -38,14 +38,14 @@
           <item name="Hibernate integration"
                 href="/en/hibernate_integration.html" />
           <item name="Binding"
-                href="/en/binding.html" collapse="true">
+                href="/en/binding.html">
              <item name="Binding Thinlet"
                    href="/en/thinlet_binding.html" />
           </item>
           <item name="Implementing actions"
                 href="/en/actions.html" />
         </item>
-        <item name="Additional features" collapse="true"
+        <item name="Additional features"
               href="/en/conditions.html">
           <item name="Working with conditions" 
                 href="/en/conditions.html" />
@@ -64,14 +64,12 @@
           <item name="customizing widgets creation" 
                 href="/en/customizing_widgets_creation.html" />
         </item>
-        <item name="Business component model"
-              href="/en/business_component_model.html" />
         <item name="Annotation quick reference guide"
               href="/en/quick_reference.html" />
       </item>
       <item name="Understanding genesis jars"
             href="/en/jars_explained.html" />
-      <item name="Developing with genesis" collapse="true"
+      <item name="Developing with genesis"
             href="/en/empty_project.html">
          <item name="For desktops"
                href="/en/empty_project.html" />
@@ -80,7 +78,7 @@
       </item>
       <item name="Using the UserAdmin sample"
             href="/en/useradmin_sample.html" />
-      <item name="Advanced guide" collapse="true"
+      <item name="Advanced guide"
             href="/en/advanced_introduction.html">
         <item name="XDoclet Extensions"
               href="/en/xdoclet_extensions.html" />
