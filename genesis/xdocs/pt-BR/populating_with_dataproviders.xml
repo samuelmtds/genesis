@@ -242,17 +242,17 @@ private JComboBox estadoComboBox;
   ...
   private initComponents() {
      ...
-     stateComboBox = new JComboBox();
-     stateComboBox.setName("estado");
-     stateComboBox.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
-     stateComboBox.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
-     stateComboBox.setRenderer(new KeyValueListCellRenderer(stateComboBox));
+     estadoComboBox = new JComboBox();
+     estadoComboBox.setName("estado");
+     estadoComboBox.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
+     estadoComboBox.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
+     estadoComboBox.setRenderer(new KeyValueListCellRenderer(estadoComboBox));
   }
 ]]>
 </source>
       <p>Acima vemos o código da tela que exibe um <code>combobox</code>
       que conterá os estados em tempo de execução. O nome do componente
-      (<code>stateComboBox.setName("estado")</code>) possui o mesmo valor
+      (<code>estadoComboBox.setName("estado")</code>) possui o mesmo valor
       que o atributo <code>objectField</code> da anotação <code>@DataProvider</code>.
       Para que ao popular o ComboBox, os valores sejam mostrados corretamente
       ao usuário é necessário configurar algumas propriedades do componente e
@@ -298,7 +298,7 @@ private JComboBox estadoComboBox;
   ...
   private initComponents() {
      ...
-     stateComboBox = SwingFactory.createComboBox(binder, "estado", "sigla", "descricao");
+     estadoComboBox = SwingFactory.createComboBox(binder, "estado", "sigla", "descricao");
   }
 ]]>
 </source>
@@ -318,7 +318,7 @@ private JList estadoList;
      estadoList.setName("estado");
      estadoList.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
      estadoList.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
-     estadoList.setRenderer(new KeyValueListCellRenderer(stateComboBox));
+     estadoList.setRenderer(new KeyValueListCellRenderer(estadoList));
   }
 ]]>
 </source>
