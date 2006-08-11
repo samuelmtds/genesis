@@ -21,8 +21,8 @@
         <li><code>EnumFormatter</code> converte instâncias de 
         <code>java.lang.Enum</code> e 
         <code>net.java.dev.reusablecomponents.lang.Enum</code> (para uso com 
-        Java 1.4) procurando no <a 
-        href="#Configurando as mensagens"><code>ResourceBundle</code></a> a
+        Java 1.4) procurando no
+        <a href="configuring_messages.html#Configurando as mensagens"><code>ResourceBundle</code></a> a
         mensagem configurada para a chave formada pelo nome da classe sem pacote
         + "." + nome da constante. Se esta não for encontrada, uma mensagem de
         prioridade <code>INFO</code> será logada e a instância convertida com
