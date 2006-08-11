@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Handling errors</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Handling errors">
+      <p>genesis error handling is centralized, so all exceptions are passed
+      to one specific graphical API class. The following procedure is adopted by
+      supported genesis graphical APIs:</p>
+      <ul>
+        <li>If the exception is an <code>UIException</code>, a dialog is shown
+        with title and description extracted from the exception itself.</li>
+        <li>If the exception is a <code>ValidationException</code>, a warning
+        dialog is shown with an error per line.</li>
+        <li>Otherwise, it verifies whether an special treatment was defined by
+        the application; if not, the exception returned by <code>getCause()</code>
+        is verified, until that method returns <code>null</code>;
+        finally an message with stack trace is shown.</li>
+      </ul>
+      <p>Some detailed information about each graphical API is shown below:</p>
+      <ul>
+        <li><a href="#Handling errors with Swing">Handling errors with Swing</a></li>
+        <li><a href="#Handling errors with Thinlet">Handling errors with Thinlet</a></li>
+      </ul>
+    </section>
+    <section name="Handling errors with Swing">
+      <p>Swing doesn't have a default way to handling errors, so we provided
+      an interface called <code>net.java.dev.genesis.ui.binding.ExceptionHandler</code>
+      to centralize that task. The method <code>handleException(Throwable t)</code>
+      is the only method defined.</p>
+      <p>The default implementation used by <code>SwingBinder</code> is
+      <code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code>, which
+      handles errors as explained below:</p>
+      <ul>
+        <li>If a <code>ValidationException</code> has happened, it is handled by
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>When the error is a <code>UIException</code>, it's handled by <code>
+        handleUIException(UIException)</code>.</li>
+        <li>If all previous checks fail, the exception is passed to
+        <code>handleCustomException(Throwable)</code> that returns a
+        <code>boolean</code> indicating whether the error has been handled or
+        not.</li>
+        <li>When an error hasn't been handled,
+        <code>handleUnknownException(Throwable)</code> gets invoked, ending the
+        error handling chain.</li>
+      </ul>
+      <p>For most users, it's enough to know how each error will be handled by
+      the framework. However, any of the above described methods can be
+      overridden if there is a need to customize error handling. Each method's
+      default behaviour is described below:</p>
+      <ul>
+         <li><code>handleException(String, Throwable)</code> uses
+         <code>JOptionPane.showMessageDialog(..)</code> with 
+         <code>JOptionPane.ERROR_MESSAGE</code> to display the error. The message
+         returned by <code>getErrorMessage()</code> is used as the window title,
+         whose default is the constant "Error".</li>
+         <li><code>showValidationErrors(ValidationException)</code> extracts
+         errors from <code>ValidationException</code>, formats them by putting a
+         <code>\n</code> - used for breaking lines - between them and finally
+         displays them with a <code>JOptionPane.showMessageDialog(..)</code>
+         with <code>JOptionPane.WARNING_MESSAGE</code>. The window title will
+         be the String value for <code>validation.errors.title</code> in the
+         <a href="configuring_messages.html#Configuring messages">resource file</a>.</li>
+         <li><code>handleUIException(UIException)</code> displays the error
+         using a <code>JOptionPane.showMessageDialog(..)</code> with 
+         <code>JOptionPane.WARNING_MESSAGE</code>. Title and message will be extracted
+         from the exception itself.</li>
+         <li><code>handleCustomException(Throwable)</code> checks if the error
+         has another exception as its cause by invoking <code>getCause()</code>
+         in the exception instance. If it has got a cause, this cause will be
+         forwarded to <code>handleException(Throwable)</code>. Otherwise,
+         <code>false</code> will be returned to indicate the error cannot be
+         handled.</li>
+         <li><code>handleUnknownException(Throwable)</code> simply forwards the
+         error to <code>handleException(String, Throwable)</code> using the
+         constant "Unexpected error occurred" as the error message.</li> 
+      </ul>
+    </section>
+    <section name="Handling errors with Thinlet">
+      <p>Thinlet has got a method for handling errors, <code>
+      handleException(Throwable)</code>, so <code>BaseThinlet</code> overrides
+      this method in order to implement custom error handling. We've been
+      careful while developing genesis so that any error that happens get
+      redirected to this single point, centralizing error handling.</p>
+      <p>The default error handling implementation in genesis works in a case-
+      by-case basis, as explained below:</p>
+      <ul>
+        <li>If the error is an instance of <code>ScreenNotFoundException</code>
+        (that is thrown when a UI xml file is not found), the error is handled
+        using <code>handleException(String, Throwable)</code>.</li>
+        <li>If a <code>ValidationException</code> has happened, it is handled by
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>When the error is a <code>UIException</code>, it's handled by <code>
+        handleUIException(UIException)</code>.</li>
+        <li>If all previous checks fail, the exception is passed to
+        <code>handleCustomException(Throwable)</code> that returns a
+        <code>boolean</code> indicating whether the error has been handled or
+        not.</li>
+        <li>When an error hasn't been handled,
+        <code>handleUnknownException(Throwable)</code> gets invoked, ending the
+        error handling chain.</li>
+      </ul>
+      <p>For most users, it's enough to know how each error will be handled by
+      the framework. However, any of the above described methods can be
+      overridden if there is a need to customize error handling. Each method's
+      default behaviour is described below:</p>
+      <ul>
+         <li><code>handleException(String, Throwable)</code> uses
+         <code>ErrorReporterDialog</code> to display the error. The message
+         returned by <code>getErrorMessage()</code> is used as the window title,
+         whose default is the constant "Error".</li>
+         <li><code>showValidationErrors(ValidationException)</code> extracts
+         errors from <code>ValidationException</code>, formats them by putting a
+         <code>\n</code> - used for breaking lines - between them and finally
+         displays them with a <code>MessageDialog</code>. The window title will
+         be the String value for <code>validation.errors.title</code> in the
+         <a href="configuring_messages.html#Configuring messages">resource file</a>.</li>
+         <li><code>handleUIException(UIException)</code> displays the error
+         using a <code>MessageDialog</code>. Title and message will be extracted
+         from the exception itself.</li>
+         <li><code>handleCustomException(Throwable)</code> checks if the error
+         has another exception as its cause by invoking <code>getCause()</code>
+         in the exception instance. If it has got a cause, this cause will be
+         forwarded to <code>handleException(Throwable)</code>. Otherwise,
+         <code>false</code> will be returned to indicate the error cannot be
+         handled.</li>
+         <li><code>handleUnknownException(Throwable)</code> simply forwards the
+         error to <code>handleException(String, Throwable)</code> using the
+         constant "Unexpected error occurred" as the error message.</li>
+      </ul>
+    </section>
+  </body>
+</document>
