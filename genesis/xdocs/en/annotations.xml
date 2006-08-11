@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Using annotations</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Using annotations">
+      <p>Great part of genesis functionalities is accessible through the use
+      of <b>annotations</b> or metadatas. Annotations is part of Java language
+      since Java 5, but genesis also supports them in Java 1.4, with a very similar syntax.</p>
+      <p>For example, considers the example below using
+      Java 5 and Java 1.4:</p>
+<source>
+import net.java.dev.genesis.annotation.Form;
+
+@Form
+public class Java5AnnotationClassExample {
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class Java14AnnotationClassExample {
+   // ...
+}
+</source>
+      <p>Both declarations of <code>@Form</code> annotation have the same
+      efect on both environment. Take notice that on second case, known as
+      Javadoc annotation, it's not necessary to use the instruction
+      <code>import</code>.</p>
+      <p>In Javadoc annotations, it's allowed to use a less typed syntax,
+      as shown below:</p>
+<source>
+import net.java.dev.genesis.annotation.EnabledWhen;
+import net.java.dev.genesis.annotation.Form;
+
+@Form
+public class Java5AnnotationMethodExample {
+   @EnabledWhen("condition")
+   public String getProperty() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class Java14AnnotationClassExample {
+   /**
+    * @EnabledWhen condition
+    */
+   public String getProperty() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+      <p>It's not necessary any configuration to use the Javadoc syntax with
+      Java 1.4. It's possible, but not recommended, to use Javadoc syntax with
+      Java  5. That may be necessary if you're using some analysis or code processing tools
+      that doesn't support Java 5 annotations. To do that, just uncomment the following
+      part of <a href="empty_project.html">empty-project</a>'s 
+      <code>build.xml</code>:
+      </p>
+<source>
+<![CDATA[
+      <property name="force.annotation" value="true" />
+]]>
+</source>
+      <p>Our documentation we will use Java 5 syntax.
+      Only peculiarities of Javadoc syntax will be explained.</p>
+    </section>
+  </body>
+</document>
