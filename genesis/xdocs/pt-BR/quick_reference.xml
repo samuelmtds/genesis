@@ -815,9 +815,7 @@ public class ExemploForm {
           <tr>
             <td>nomeDePropriedade</td>
             <td>Nome de uma propriedade da classe especificada</td>
-            <td>Nome de um atributo da classe que implementa a interface
-            <code>EmptyResolver</code>. Podem haver vários desses
-            parâmetros.</td>
+            <td>Array de strings no formato 'chave=valor' de atributos da classe especificada em questão</td>
             <td><b>Não</b></td>
           </tr>
         </table>
@@ -1090,8 +1088,8 @@ public class ExemploViewHandler {
           <tr>
             <td>orderby</td>
             <td>propriedades de ordenação</td>
-            <td>Array de nome das propriedades a serem usadas numa ordenação separadas
-            por vírgula, ex: <code>@Criteria(value=meupacote.MinhaClasse.class, 
+            <td>Array de nome das propriedades a serem usadas numa ordenação,
+            ex: <code>@Criteria(value=meupacote.MinhaClasse.class, 
             orderby={"propriedade1", "propriedade2 DESC", "propriedade3 ASC"})</code></td>
             <td>Não</td>
           </tr>
