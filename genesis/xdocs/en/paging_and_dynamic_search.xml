@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Paging and dynamic search</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Paging">
+      <p>Data paging support is implemented in the
+      <code>net.java.dev.genesis.paging</code> package. The classes are <code>
+      Page</code>, which represents a result page and <code>Pager</code>, which
+      is responsible for pages generation.</p>
+      <p>The following properties are exposed in <code>Page</code> class by
+      getters and setters:
+        <ul>
+          <li><b>results</b>: a <code>java.util.List</code> with the results of
+          current page.</li>
+          <li><b>resultsPerPage</b>: the maximum results per page. <b>It is
+          not</b> the number of results from the current page; to obtain this
+          information one should use the <code>size()</code> method from
+          <code>results</code>.</li>
+          <li><b>pageNumber</b>: the current page number, starting from 0.</li>
+          <li><b>first</b>: indicates if the current page is the first one. Same
+          as <code>getPageNumber() == 0</code>.</li>
+          <li><b>last</b>: indicates if the current page is the last one. Some
+          <code>Pager</code> implementations might not return this property as
+          <code>true</code> when the last page has exactly the same number of
+          results as the results per page - i.e. when
+          <code>getResults().size() == getResultsPerPage()</code>.</li>
+        </ul>
+      </p>
+      <p>While there is a basic implementation for <code>Page</code>
+      (<code>PageImpl</code>), there is none available for <code>Pager</code>,
+      because the actual functionality of a pager is quite linked to the data
+      source that is being paged. User applications will not normally use
+      <code>PageImpl</code> direclty nor will have their own <code>Page</code>
+      implementation. Nevertheless the genesis implementation should prove quite
+      useful for specifics <code>Pager</code> implementations.</p>
+      <subsection name="Paging lists">
+        <p><code>net.java.dev.genesis.paging.ListPager</code> is a
+        <code>Pager</code> implementation that can be used to generate pages
+        from <code>java.util.List</code> instances.</p>
+        <p>There are two constructors for this class: one takes a single
+        <code>List</code> parameter and the other accepts an extra boolean
+        parameter that indicates whether property <code>results</code> of the
+        returned <code>Page</code> instance should reference the list
+        subsection directly - allowing the original list to be modified by
+        client coode - or if it should be a new instance. If the first
+        constructor is invoked, the value of this boolean property will be
+        <code>true</code>, meaning that it won't be possible to change the
+        original object used as an argument to the constructor by calling
+        methods in the returned instance.</p>
+        <p>This class can be used as shown below:</p>
+        <source>
+public class ListPagingExample {
+   public Page getSection(List list, int pageNumber, int resultsPerPage)
+         throws PagingException {
+      return new ListPager(list).getPage(pageNumber, resultsPerPage);
+   }
+}
+</source>
+      </subsection>
+      <subsection name="Paging with Hibernate">
+        <p>Two <code>Pager</code> implementations are provided with genesis in
+        order to integrate with Hibernate: <code>CriteriaPager</code> and
+        <code>QueryPager</code>. They are in the
+        <code>net.java.dev.genesis.paging.hibernate</code> package. These
+        classes can be used as is (the easier way) or by extending the
+        <code>AbstractHibernateCommand</code> class. As an example, let's
+        change our Hibernate example in such a way it will return only one page
+        of data:</p>
+<source>
+public class HibernatePagingExample extends AbstractHibernateCommand {
+   @Remotable
+   public Page getAll(int pageNumber, int resultsPerPage)
+         throws PagingException {
+      return getPage(getSession().createQuery("from MappedClass"),
+            pageNumber, resultsPerPage);
+   }
+}
+</source>
+        <p>In order to get the <code>MappedClass</code> instances from the
+        returned page, all we have to do is to call the <code>getResults()</code
+        > method on the returned <code>Page</code> object returned. This
+        <code>getResults()</code> method returns a <code>List</code
+        >, as explained in the <code>Page</code> properties in the section above
+        - will hold a list of objects with the same type as if they were
+        returned from a <code>query.list()</code> or <code>criteria.list()</code
+        > calls.</p>
+      </subsection>
+    </section>
+    <section name="Dynamic criteria searching">
+      <p>Although Hibernate provides support for dynamic searches, i.e., with
+      "built" clauses or defined at runtime through the <code>Criteria</code>
+      interface, the use of this feature leads to a hard to maintain code
+      because it tends to be very repetitive. The genesis framework has a
+      support for dynamic searches at a higher level of abstraction - this will
+      make those search implementations much easier. We will focus on the use of
+      this feature from the business tier point of view.</p>
+      <p>There is a sub interface from <code>HibernateCommand</code> called
+      <code>HibernateCriteria</code>. Similar to the manner in which the
+      Hibernate <code>Session</code> is injected into
+      <code>HibernateCommand</code> instances, an instance of
+      <code>Criteria</code> is attributed through the
+      <code>setCriteria(Criteria)</code> method to <code>HibernateCriteria</code
+      > implementations at appropriate times. In the same way the
+      <code>HibernateCommand</code> interface provides an easier way to the
+      developer, there is also a criteria class,
+      <code>AbstractHibernateCriteria</code>. This helper class defines the
+      <code>getCriteria()</code> method, besides other ones.</p>
+      <p>The business method that needs a <code>Criteria</code> instance in
+      order to be executed receives a
+      <code>@Criteria &lt;HibernateMappedClassName&gt; &lt;order-by=properties&gt;</code>
+      annotation. This annotation implies the method is also
+      <code>@Remotable</code>, keeping the transparent remoting. Before calling
+      this method and right after <code>setCriteria(Criteria)</code> execution,
+      the properties' setters (see
+      <a href="conditions.html#Determining_if_a_field_is_empty">Determining if a field is empty</a>)
+      from the business component will be called by the genesis
+      framework if the current property is filled,
+      so the recent injected <code>Criteria</code> instance will be
+      properly configured. Finally the business method will be executed and its
+      return forwarded to client-side code.</p>
+      <p>To better understand this concept, an example is provided. Assume there
+      is a <code>Person</code> class mapped with Hibernate. This class has,
+      among others, the following attributes: <code>name</code> and
+      <code>lastName</code>. These attributes will be use as parameters for a
+      search. We could code the following dynamic and paged search:</p>
+<source>
+public class PersonSearch extends AbstractHibernateCriteria {
+   public void setName(String name) {
+      getCriteria().add(Expression.ilike("name", name, MatchMode.START));
+   }
+
+   public void setLastName(String lastName) {
+      getCriteria().add(Expression.ilike("lastName", lastName,
+            MatchMode.START));
+   }
+
+   @Criteria(value=mypackage.Person.class, orderby={"name", "lastName asc"})
+   public Page getPeople(int pageNumber) throws PagingException {
+      return getPage(getCriteria(), pageNumber);
+   }
+}
+</source>
+      <p>Once the form properties are copied to the business object,
+      the following sequence of events will take place when the
+      <code>getPeople(int)</code> method is executed:
+        <ul>
+          <li>The instance is sent to the server by the transparent remoting.
+          </li>
+          <li>Hibernate session is injected through
+          <code>setSession(Session)</code> execution, defined in
+          <code>HibernateCommand</code>.</li>
+          <li>A <code>Criteria</code> is created by following
+          <code>Person</code> persisting class, as indicated by the
+          <code>@Criteria</code> annotation.</li>
+          <li>The <code>Criteria</code> instance is injected by a call to
+          <code>setCriteria(Criteria)</code>, defined in
+          <code>HibernateCriteria</code>.</li>
+          <li>The properties' setters of the form are executed. The
+          <code>PersonSearch</code> class has the ability to restrict the
+          <code>Criteria</code> to only use the search fields, without the
+          concern of a filled field or not. The genesis framework assures the
+          setters have been called - so they are filled.</li>
+          <li>At last, the <code>getPeople(int)</code> is executed and the
+          results are returned to the client-side in a transparent way.</li>
+        </ul>
+      </p>
+      <p>It is possible to use the annotation without declaring the name of a
+      Hibernate mapped class. In this case, the <code>Criteria</code> instance
+      will not be instantiated and the injected value will be <code>null</code>,
+      but besides that, the behaviour previously described still applies. This
+      may be useful when it is necessary to perform complex dynamic searches
+      that cannot be implemented using <code>Criteria</code>.</p>
+    <subsection name="Dynamic searches (client module)">
+      <p>genesis makes it easy to build dynamic searches - those in which
+      selection criteria change in runtime, not just values for them -
+      integrating this feature both in UI components and business components.</p>
+      <p>On the client-side, in order to use only filled properties in the
+      search, one just has to do:</p>
+<source>
+CriteriaPropertyHelper.fillCriteria(hibernateCriteria, form);
+</source>
+      <p>Classe <code>CriteriaPropertyHelper</code> is located at package
+      <code>net.java.dev.genesis.helpers</code>. <code>hibernateCriteria</code>
+      needs to be compliant with the <a href="#Dynamic criteria searching">requirements
+      for dynamic searching with business components</a> while <code>form</code>
+      must be a valid genesis form. Only properties that exist in both beans and
+      that are filled according the
+      <a href="conditions.html#Determining_if_a_field_is_empty">rules for determing if a field
+      is empty</a>. A call to
+      <code>fillCriteria(HibernateCriteria, Object)</code> must be done before
+      calling the method annotated with <code>@Criteria</code>.</p>
+      <p>To make it even simpler to buld dynamic searches with paged results, two
+      helper classes are defined in package
+      <code>net.java.dev.genesis.ui.paging</code>: <code>BaseSearchForm</code>
+      and <code>BaseCriteriaSearchForm</code>. These abstract classes can be
+      extended by forms, minimizing implementation efforts.</p>
+      <p><code>BaseSearchForm</code> contains paging-related logic, besides
+      abstracting how the query is actually performed. Some of its actions and
+      properties may be directly used to assemble the UI:</p>
+      <ul>
+        <li><code>previousPage()</code> and <code>nextPage()</code> are genesis
+        actions that can be bound to buttons that will perform navigation through
+        the results. They have <code>@VisibleWhen</code> annotations that will
+        hide the widgets whenever it is appropriate.</li>
+        <li><code>pageNumber</code> is a property that contains the number of
+        current page.</li>
+      </ul>
+      <p>This class also defines the abstract <code>performSearch()</code>
+      method, that returns a <code>net.java.dev.genesis.paging.Page</code>
+      instance, and exposes the <code>runSearch</code> property, that is
+      supposed to be used to define the conditional expression for performing
+      the search in subclasses. Most of the times it won't be necessary to use
+      it directly, since <code>BaseCriteriaSearchForm</code> provides a higher
+      abstraction level when the search is performed by a
+      <code>HibernateCriteria</code> implementation. In this case, it will only
+      be necessary to implement a couple of methods:
+      <code>getHibernateCriteria()</code>, that should return the business
+      object that will receive the criteria by calling
+      <code>CriteriaPropertyHelper</code> and
+      <code>performSearch(int pageNumber)</code>. Below there is an example of
+      how to use this class extracted from the useradmin sample. First, let's
+      see the relevant code snippet for the form:</p>
+<source>
+@Form
+public class UserListForm extends BaseCriteriaSearchForm {
+   private final UserSearchCommand command = new UserSearchCommand();
+
+   // getters and setters for search criteria omitted
+
+   public List getUsers() { /* ... */ }
+
+   public void setUsers(List users) { /* ... */ }
+
+   protected HibernateCriteria getHibernateCriteria() {
+      return command;
+   }
+
+   protected Page performSearch(int pageNumber) throws Exception {
+      return command.getUsers(pageNumber);
+   }
+
+   @Action
+   @CallWhen("form.runSearch")
+   @DataProvider(objectField="users", callOnInit=false)
+   public List doSearch() throws Exception {
+      search();
+
+      return getPage().getResults();
+   }
+
+   // more code
+</source>
+      <p>And now, how to use the built-in actions for the navigation buttons, as
+      defined in the Thinlet xml file:</p>
+<source>
+<![CDATA[
+<button name="previousPage" text="<<" font="bold" type="default" alignment="left"/>
+<button name="nextPage" text=">>" font="bold" type="default" alignment="right"/>
+]]>
+</source>
+        <p><b>Swing:</b></p>
+<source>
+<![CDATA[
+searchButton = new JButton(getMessage("button.search"));
+searchButton.setName("doSearch");
+
+...  
+previousPage = new JButton("<<");
+previousPage.setName("previousPage");
+
+...
+nextPage = new JButton(">>");
+nextPage.setName("nextPage");
+]]>
+</source>
+        <p>And the business class:</p>
+<source>
+public class UserSearchCommand extends AbstractHibernateCriteria {
+   public void setEmail(String email) {
+      getCriteria().add(Expression.ilike("email", email, MatchMode.START));
+   }
+
+   public void setLogin(String login) {
+      getCriteria().add(Expression.ilike("login", login, MatchMode.START));
+   }
+
+   public void setName(String name) {
+      getCriteria().add(Expression.ilike("name", name, MatchMode.START));
+   }
+   
+   @Criteria(value=User.class, orderby="name")
+   public Page getUsers(final int pageNumber) throws Exception {
+      return getPage(pageNumber);
+   }
+}
+</source>
+      </subsection>
+    </section>
+  </body>
+</document>
