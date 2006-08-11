@@ -224,6 +224,12 @@
          <version>2.7</version>
          <type>plugin</type>
       </dependency>
+      <dependency>
+         <groupId>maven</groupId>
+         <artifactId>maven-linkcheck-plugin</artifactId>
+         <version>1.4</version>
+         <type>plugin</type>
+      </dependency>
    </dependencies>
    <build>
       <unitTest/>
