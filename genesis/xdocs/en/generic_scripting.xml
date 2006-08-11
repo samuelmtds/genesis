@@ -12,7 +12,7 @@
       <p>Scripts are used in genesis to evaluate boolean conditions for
       enabling rules, field visibility etc. The framework has generic support
       for script languages since release 3.0.</p>
-      <p>Although the default script language is <code>JXPath</code>,
+      <p>Although the default script language is <code>Javascript</code>,
       it is possible to change this default in a way all forms of an
       application have their script expressions written in a certain script
       language.</p>
@@ -49,10 +49,10 @@
         script languages - in order to use them, all that is needed is to
         provide one of the following values for this parameter:
         <ul>
-          <li>jxpath (default value)</li>
-          <li>javascript</li>
-          <li>beanshell</li>
           <li>el</li>
+          <li>beanshell</li>
+          <li>javascript (default value)</li>
+          <li>jxpath</li>
         </ul>
         </p>
         <p>The <code>scriptFactoryProperties</code> parameter defines
@@ -67,14 +67,14 @@
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
    <param name="scriptFactory" value="net.java.dev.genesis.script.bsf.BSFScriptFactory" />
-   <param name="scriptFactoryProperties" value="lang=javascript" />
+   <param name="scriptFactoryProperties" value="lang=beanshell" />
 </mixin>
 ]]>
 </source>
 <source>
 <![CDATA[
 <mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory">
-   <param name="scriptFactory" value="javascript" />
+   <param name="scriptFactory" value="beanshell" />
 </mixin>
 ]]>
 </source>
