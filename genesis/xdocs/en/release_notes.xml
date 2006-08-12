@@ -7,6 +7,7 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#3.0-EA3">3.0-EA3</a></li>
         <li><a href="#3.0-EA2">3.0-EA2</a></li>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
         <li><a href="#2.3">2.3</a></li>
@@ -15,6 +16,61 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-EA3">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5774&amp;expandFolder=5774">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>Added Swing support. <a href="binding.html">SwingBinder</a> created.</li>
+          <li>Java 5 Enums support</li>
+          <li>Javascript is the default script language</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Several fixes on empty-project's build
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=326">Issue
+          # 316</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=322">Issue
+          # 322</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=323">Issue
+          # 323</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=326">Issue
+          # 326</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=339">Issue
+          # 339</a>)</li>
+        </ul>
+        <p>The full change log between 3.0-EA2 and 3.0-EA3 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA2&amp;target_milestone=3.0-EA3">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA3/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-EA2">
       <subsection name="Downloads">
