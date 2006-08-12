@@ -42,7 +42,7 @@
         for example, Spring has a more generic dependency injection mechanism
         while genesis has a generic one that is not so generic. However, some
         genesis functionalities are not provided by Spring, such as <a href=
-        "dynamic_search_and_paging.html#Working_with_dynamic_searches">support for
+        "paging_and_dynamic_search.html#Dynamic_criteria_searching">support for
         dynamic searches</a>.</p>
       </subsection>
       <subsection name="When will genesis provide SWT support?">

@@ -138,15 +138,15 @@
           com o nome de <code>empty-web-project</code></li>
           <li>Todos as bibliotecas necessárias do XDoclet estão disponíveis na distribuição do genesis,
           dispensando o download do XDoclet</li>
-          <li>Adicionado novos validadores: <a href="ui_additional_features.html#Tratando_erros">
+          <li>Adicionado novos validadores: <a href="validating_data.html">
           <code>min</code> e <code>max</code></a></li>
           <li>SessionFactory do hibernate é <a href="aspects.html#Referência_de_configuração">
           instanciado na inicialização no modo de execução local</a></li>
           <li>É possível customizar <a 
-          href="ui_additional_features.html#Customizando_a_criação_de_componentes">como 
+          href="customizing_widgets_creation.html">como 
           os componentes são criados</a> por um <code>@DataProvider</code></li>
           <li>Foi definida uma API que torna configurável a <a 
-          href="ui_additional_features.html#Alterando_a_forma_como_os_valores_são_clonados">clonagem
+          href="conditions.html#Alterando_a_forma_como_os_valores_são_clonados">clonagem
           de valores</a> pelo genesis</li>
         </ul>
         <p>Os seguintes bugs foram corrigidos nessa versão:</p>
@@ -211,10 +211,10 @@
           <li>As <a href="xdoclet_extensions.html">extensões do XDoclet</a>
           tiveram sua estrutura modificada e agora estão documentadas</li>
           <li>Foi adicionado suporte a <a
-          href="ui_additional_features.html#Propriedades_virtuais">propriedades
+          href="formatting.html#Propriedades_virtuais">propriedades
           virtuais</a></li>
           <li>Uma <a
-          href="business_component_model.html#Paginação_de_listas">implementação
+          href="paging_and_dynamic_search.html#Paginação_de_listas">implementação
           de paginação para listas</a> foi incluída</li>
           <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
           foi modificada para permitir o registro programático de instâncias de
@@ -296,7 +296,7 @@
       <subsection name="Funcionalidades e mudanças">
         <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
         <ul>
-          <li><a href="ui_additional_features.html#Utilizando_POJOs_para_tratar_eventos">POJOs</a>
+          <li>POJOs
           podem ser usados para tratar todos os tipos de eventos</li>
           <li>Os conversores do BeanUtils usam a mesma busca hierárquica dos
           outros componentes do genesis</li>

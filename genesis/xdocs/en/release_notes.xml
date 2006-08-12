@@ -130,15 +130,15 @@
           <li>A new modular, extensible and more efficient build process has been developed</li>
           <li>An empty-web-project sample was created</li>
           <li>All required XDoclet jars are now part of genesis distribution</li>
-          <li>Added two new validators: <a href="ui_additional_features.html#Validating_data">
+          <li>Added two new validators: <a href="validating_data.html">
           <code>min</code> and <code>max</code></a></li>
           <li>SessionFactory is <a href="aspects.html#Configuration_reference">
           instantiated on startup for local mode execution</a></li>
           <li>It is possible to customize <a 
-          href="ui_additional_features.html#Customizing_how_components_are_created">how 
+          href="customizing_widgets_creation.html">how 
           components are created</a> by a <code>@DataProvider</code></li>
           <li>A new API that makes <a 
-          href="ui_additional_features.html#Changing_the_way_values_are_cloned">the way
+          href="conditions.html#Changing_the_way_values_are_cloned">the way
           values are cloned</a> by genesis configurable has been defined</li>
         </ul>
         <p>The following bugs have been fixed on this release:</p>
@@ -199,10 +199,10 @@
           <li>The <a href="xdoclet_extensions.html">XDoclet extensions</a> had
           their structure reworked and are now properly documented</li>
           <li>Support for <a
-          href="ui_additional_features.html#Virtual_properties">virtual
+          href="formatting.html#Virtual_properties">virtual
           properties</a> has been added</li>
           <li>An <a
-          href="business_component_model.html#Paging_lists">implementation
+          href="paging_and_dynamic_search.html#Paging_lists">implementation
           of paging for lists</a> is now part of the framework</li>
           <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
           has been modified to allow 
@@ -282,7 +282,7 @@
       <subsection name="Features and changes">
         <p>Some of the most noteworthy new features and changes are:</p>
         <ul>
-          <li><a href="ui_additional_features.html#Using_POJOs_to_handle_events">POJOs</a>
+          <li>POJOs
           can be used to handle all types of events</li>
           <li>BeanUtils converters now use the same hierarchical search scheme
           other genesis components use</li>

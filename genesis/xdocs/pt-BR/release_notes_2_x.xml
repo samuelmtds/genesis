@@ -117,31 +117,30 @@
           <a href="quick_reference.html#@Criteria">order-by</a></li>
           <li>Suporte a agrupamentos específicos de widgets para regras de
           habilitação e visibilidade, através de
-          <a href="ui_additional_features.html#Controlando_a_interface_gr%E1fica_e_o_form_condicionalmente">enabledWidgetGroup e visibleWidgetGroup</a></li>
+          <a href="conditions.html#Agrupamento_de_widgets">enabledWidgetGroup e visibleWidgetGroup</a></li>
           <li>Suporte a
-          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">definição
+          <a href="populating_with_dataproviders.html">definição
           do texto para o elemento vazio</a> de comboboxes e listas</li>
           <li><code>@DataProvider</code> pode definir o nome do widget
           diretamente através da propriedade
-          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">widgetName</a>.
+          <a href="populating_with_dataproviders.html">widgetName</a>.
           Esta propriedade também permite usar <code>@DataProvider</code> para
           widgets somente leitura.</li>
           <li><code>@DataProvider</code> também pode atualizar o(s) índice(s)
           do(s) elemento(s) selecionado(s) através da utilização de
-          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">indexField</a>.
+          <a href="populating_with_dataproviders.html">indexField</a>.
           </li>
           <li><code>@DataProvider</code> também funciona em conjunto com a
           anotação
           <a href="quick_reference.html#@ClearOn"><code>@ClearOn</code></a>
           para limpar o conteúdo do widget correspondente.</li>
           <li>Suporte a utilização de
-          <a href="ui_additional_features.html#Populando_combos__listas_e_tabelas">listas</a>
+          <a href="populating_with_dataproviders.html">listas</a>
           com <code>@DataProvider</code></li>
-          <li>Pode-se invocar ações de dentro do form com as novas classes <a href=
-          "ui_additional_features.html#Invocando_ações_de_dentro_de_um_form"><code>ActionInvoker</code> e <code>BaseForm</code></a>
+          <li>Pode-se invocar ações de dentro do form com as novas classes
+          <a href="actions.html#Invocando_ações_do_form_diretamente"><code>ActionInvoker</code> e <code>BaseForm</code></a>
           </li>
-          <li>É possível definir <a href=
-          "ui_additional_features.html#Formatação">formatadores específicos</a>
+          <li>É possível definir <a href="formatting.html">formatadores específicos</a>
           para determinados campos</li>
         </ul>
         <p>Os seguintes bugs foram corrigidos nessa versão:</p>
@@ -213,21 +212,21 @@
         <ul>
           <li>Nova classe auxiliar para facilitar o processo de inicialização
           da aplicação, <a
-          href="ui_basic_concepts.html#Configurando_o_genesis_na_inicialização">StartupHelper</a>
+          href="startup.html">StartupHelper</a>
           </li>
           <li>Suporte a um novo atributo em <code>@DataProvider</code>, <a
-          href="ui_additional_features.html#Populando_combos_e_tabelas"><code>callOnInit</code></a>
+          href="populating_with_dataproviders.html"><code>callOnInit</code></a>
           </li>
           <li>Suporte a definição de <a
-          href="ui_additional_features.html#Agrupamento_de_widgets">grupos de
+          href="conditions.html#Agrupamento_de_widgets">grupos de
           widgets</a> para uso com as anotações <code>@EnabledWhen</code> /
           <code>@VisibleWhen</code></li>
           <li>Novas classes auxiliares para paginação e pesquisas dinâmicas, <a
-          href="ui_additional_features.html#Trabalhando_com_pesquisas_dinâmicas"><code>BaseSearchForm</code>
+          href="paging_and_dynamic_search.html#Trabalhando_com_pesquisas_dinâmicas"><code>BaseSearchForm</code>
           e <code>BaseCriteriaSearchForm</code></a></li>
           <li>Maior simplicidade no uso do binding, com <a
-          href="ui_basic_concepts.html#Usando_invokeFormAction____"><code>invokeFormAction(..)</code></a>,
-          <a href="ui_basic_concepts.html#Usando_refreshView_____e_refreshViewFromForm_Object_"><code>refreshView(..)</code> e
+          href="actions.html#Invocando_ações_do_form_diretamente"><code>invokeFormAction(..)</code></a>,
+          <a href="actions.html#Atualizando_a_tela_programaticamente"><code>refreshView(..)</code> e
           <code>refreshViewFromForm(Object)</code></a></li>
           <li><a href="aspects.html#Execução_em_EJB_com_chamada_local">Execução
           em EJB com chamada local</a></li>

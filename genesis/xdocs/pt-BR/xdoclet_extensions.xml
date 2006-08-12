@@ -6,7 +6,7 @@
   </properties>
   <body>
     <section name="Extensões do XDoclet">
-      <p>O <a href="http://xdoclet.sf.net/">XDoclet</a> é um framework que
+      <p>O <a href="http://xdoclet.sourceforge.net/">XDoclet</a> é um framework que
       possibilita a geração de código através de tags Javadoc especiais
       contidas no código fonte. O desenvolvimento do genesis iniciou-se quando
       a versão mais recente do XDoclet era a 1.2.0 e diversos recursos ainda
@@ -38,7 +38,7 @@
       nome das tags começa com <code>@genesis.validator</code> e funcionam com
       POJOs ao invés de requerer que a classe que possui as anotações estenda
       alguma classe do Struts. Um exemplo do uso das tags pode ser encontrado
-      na <a href="ui_additional_features.html#Validando_os_dados">documentação
+      na <a href="validating_data.html">documentação
       do suporte à validação</a>.</p>
     </section>
     <section name="Módulo hibernate">

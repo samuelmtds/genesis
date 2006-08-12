@@ -15,7 +15,7 @@
    <shortDescription>And during the seventh day, they reinvented client-server
       applications...</shortDescription>
    <url>https://genesis.dev.java.net/</url>
-   <issueTrackingUrl>https://genesis.dev.java.net/servlets/ProjectIssues/</issueTrackingUrl>
+   <issueTrackingUrl>https://genesis.dev.java.net/servlets/ProjectIssues</issueTrackingUrl>
    <siteAddress>https://genesis.dev.java.net/</siteAddress>
    <repository>
       <connection>

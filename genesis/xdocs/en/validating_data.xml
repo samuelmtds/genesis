@@ -33,7 +33,7 @@
         one of these types without any overflow.</li>
         <li><code><b>bigDecimal</b></code>: checks if data can be converted to
         <code>java.math.BigDecimal</code> using the default <a href=
-        "http://jakarta.apache.org/commons/beanutils">BeanUtils</a> converter
+        "http://jakarta.apache.org/commons/beanutils/">BeanUtils</a> converter
         registered for this class. genesis provides a custom implementation of 
         this converter, <code>BigDecimalConverter</code> in
         <code>net.java.dev.genesis.commons.beanutils.converters</code>, since
@@ -67,7 +67,7 @@
         by variables <code>min</code> and <code>max</code>.</li>
         <li><a name="jxpath"><code><b>jxpath</b></code></a>: it considers data 
         as valid if evaluating the <a 
-        href="http://jakarta.apache.org/commons/jxpath">JXPath</a> expression 
+        href="http://jakarta.apache.org/commons/jxpath/">JXPath</a> expression 
         defined by the variable named <code>jxpath</code> returns a value 
         different from <code>java.lang.Boolean.FALSE</code>.</li>
       </ul>
@@ -200,7 +200,7 @@
 ]]>
 </source>
       <p>Usually, the most practical way to configure form validation is to use
-      <a href="http://xdoclet.sf.net">XDoclet</a>. An example of how to 
+      <a href="http://xdoclet.sourceforge.net/">XDoclet</a>. An example of how to 
       configure validation for a form from the useradmin sample is the 
       <code>InsertUpdateForm</code> class, from package 
       <code>net.java.dev.genesis.samples.useradmin.ui</code>, partially shown 

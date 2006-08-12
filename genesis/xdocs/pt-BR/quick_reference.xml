@@ -1103,7 +1103,7 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    public Page getUsers(final int pageNumber)
    <b>...</b>
 </source>
-    <p><a href="dynamic_search_and_paging.html#Pesquisas_dinâmicas_com_Criteria">
+    <p><a href="paging_and_dynamic_search.html#Pesquisas_dinâmicas_com_Criteria">
     Mais informações...</a></p>
       </subsection>
     </section>

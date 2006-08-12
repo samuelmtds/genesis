@@ -169,7 +169,7 @@ public class AfterActionFormExample {
         <code>save()</code> it wouldn't be necessary to use it as an argument to
         the annotation.</p>
       </subsection>
-      <subsection name="Programatically  Screen Update">
+      <subsection name="Programatically Screen Update">
         <p>Sometimes form values may be updated by an external source or
         directly by the view - to coordinate multiple form iteraction, for
         example. However, since these changes are not managed by genesis, both

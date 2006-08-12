@@ -135,13 +135,11 @@
       JXPath functions don't use any prefix.</p>
       <subsection name="isEmpty(any), isNotEmpty(any)">
         <p>Checks whether a field is empty or not. When the argument is a form
-        property, the <code>EmptyResolver</code> instance configured for it is
+        property, the <a href="#@EmptyResolver">EmptyResolver</a> instance configured for it is
         used to determine the return value. If the argument is a variable or a constant,
         a default <code>EmptyResolver</code> instance for the expression type is
         obtained from <code>EmptyResolverRegistry</code> and used for
-        evaluation.
-        </p>
-        <p><a href="ui_additional_features.html#Verifying_if_a_field_is_empty_in_conditional_______expressions">More info...</a></p>
+        evaluation.</p>
         <p>Specific syntax for default supported script languages are shown
         bellow:</p>
         <table>
@@ -824,7 +822,7 @@ public class FormExample {
    }
    <b>...</b>
   </source>
-    <p><a href="ui_additional_features.html#Determining_if_a_field_is_empty">More info...</a></p>
+    <p><a href="conditions.html#Determining_if_a_field_is_empty">More info...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
         <p>It specifies the empty value of a field. It's used together with the <a href="#@ClearOn">@ClearOn</a> annotation.</p>
@@ -1095,7 +1093,7 @@ public class UserSearchCommand extends AbstractHibernateCriteria {
    public Page getUsers(final int pageNumber)
    <b>...</b>
   </source>
-    <p><a href="dynamic_search_and_paging.html#Dynamic_criteria_searching">More info...</a></p>
+    <p><a href="paging_and_dynamic_search.html#Dynamic_criteria_searching">More info...</a></p>
       </subsection>
     </section>
   </body>
