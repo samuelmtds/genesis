@@ -71,4 +71,5 @@
       <ant:ant dir="${basedir}" antfile="build_dist.xml" target="genesis:dist" />
    </goal>
 
+   <goal name="genesis:linkcheck" prereqs="maven-linkcheck-plugin:report-real" />
 </project>
