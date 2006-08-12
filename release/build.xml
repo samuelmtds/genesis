@@ -53,8 +53,9 @@ Fail!
 It was not possible to read java.net site
       </fail>
 
+	  
       <grep in="${release.page}"
-            regex="(href=&quot;)((.){80,100})&amp;folderID=(\d{1,5})&quot; title=&quot;view contents&quot;&gt;(\s)*${genesis.version}&lt;span class=&quot;alt&quot;&gt;"
+            regex="(href=&quot;)((.){80,120})&amp;amp;folderID=(\d{1,5})&quot; title=&quot;view contents&quot;&gt;\s*3.0-EA3&amp;nbsp;\(\d+\)&lt;span class=&quot;alt&quot;&gt;"
             group="2"
             property="download.url" />
 
@@ -63,9 +64,9 @@ Fail!
 You have forgotten to create a new version folder on java.net
       </fail>
 
-      <stringutil string="${download.url}" property="download.url">
+      <!-- stringutil string="${download.url}" property="download.url">
          <replace regex="&amp;" replacement="&amp;amp;" />
-      </stringutil>
+      </stringutil -->
    </target>
 
    <target name="step1:init" depends="init">
