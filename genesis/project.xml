@@ -143,7 +143,7 @@
          <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=users</archive>
       </mailingList>
       <mailingList>
-         <name>Lista dos usuários</name>
+         <name>Lista dos usu&aacute;rios</name>
          <subscribe>usuarios-subscribe@genesis.dev.java.net</subscribe>
          <unsubscribe>usuarios-unsubscribe@genesis.dev.java.net</unsubscribe>
          <archive>https://genesis.dev.java.net/servlets/SummarizeList?listName=usuarios</archive>
