@@ -7,9 +7,10 @@
   </properties>
   <body>
     <section name="Using annotations">
-      <p>Most genesis features is available by using <b>annotations</b> or 
-      metadata. Annotations are part of the Java language since Java 5, but 
-      genesis also supports them in Java 1.4, with a very similar syntax.</p>
+      <p>Most genesis features are available by using <b>annotations</b> or 
+      metadata. Annotations have been part of the Java language since Java 5, 
+      but genesis also supports using them in Java 1.4, with a very similar 
+      syntax.</p>
       <p>For example, consider the example below using Java 5 and Java 1.4:</p>
 <source>
 import net.java.dev.genesis.annotation.Form;
