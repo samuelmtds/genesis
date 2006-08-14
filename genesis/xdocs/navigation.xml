@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--
-/*
- * #foreach ($reactorProject in $multiprojects)
-      <item name="$reactorProject.name"
-      href="/${aggregateDir}${reactorProject.artifactId}/index.html"/>
-   #end
- */
- -->
 <project name="genesis">
   <title>genesis</title>
   <body>
@@ -19,8 +11,6 @@
       <item name="genesis-server" href="/multiproject/genesis-server/index.html"
       />
       <item name="genesis-shared" href="/multiproject/genesis-shared/index.html"
-      />
-      <item name="genesis-aspect" href="/multiproject/genesis-aspect/index.html"
       />
       <item name="genesis-xdoclet" href="/tags/genesis-tags.html" />
     </links>
