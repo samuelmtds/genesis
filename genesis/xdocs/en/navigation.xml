@@ -39,7 +39,7 @@
                 href="/en/hibernate_integration.html" />
           <item name="Binding"
                 href="/en/binding.html">
-             <item name="Binding Thinlet"
+             <item name="Thinlet Binding"
                    href="/en/thinlet_binding.html" />
           </item>
           <item name="Implementing actions"
