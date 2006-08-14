@@ -6,7 +6,7 @@
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-    <section name="Binding Thinlet">
+    <section name="Thinlet Binding">
       <p>The following sections are helpful only to those using the Thinlet 
       binding:
       <ul>
