@@ -25,13 +25,13 @@
       <subsection name="Features and changes">
         <p>Some of the most noteworthy new features and changes are:</p>
         <ul>
-          <li>Added Swing support. <a href="binding.html">SwingBinder</a> created.</li>
-          <li>Java 5 Enums support</li>
-          <li>Javascript is the default script language</li>
+          <li>Added <a href="binding.html">Swing support</a>.</li>
+          <li>Java 5 <code>enum</code>s are now supported.</li>
+          <li>Javascript is the default script language.</li>
         </ul>
         <p>The following bugs have been fixed on this release:</p>
         <ul>
-          <li>Several fixes on empty-project's build
+          <li>Several fixes related to empty-project's build
           (<a
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=326">Issue
           # 316</a>,
@@ -70,6 +70,8 @@
             <li>Gustavo Nalle</li>
             <li>José Geraldo</li>
           </ul>
+        <p>We also would like to thank to and to welcome a new commiter, Raphael
+        Winckler de Bettio.</p>
       </subsection>
     </section>
     <section name="3.0-EA2">
