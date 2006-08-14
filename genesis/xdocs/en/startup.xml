@@ -10,17 +10,18 @@
       genesis works properly. In order to make this process easier, genesis
       contains the class named
       <code>net.java.dev.genesis.helpers.StartupHelper</code>. This class
-      encapsulates the steps that would be manually performed, but that tend to
-      be very similar for most applications</p>
-      <p>Most of the times, the only thing required is to add the following line
-      to your application startup code (probably the
-      <code>main(String[] args)</code> method of one of the classes):</p>
+      encapsulates the steps that would have to be performed manually, but that 
+      tend to be very similar for most applications.</p>
+      <p>Most of the times, adding the following line to your application's 
+      startup code (probably the <code>main(String[] args)</code> method of one 
+      of the classes) is the only thing required:</p>
 <source>
 new StartupHelper().initialize();
 </source>
       <p>It is important to notice that this class needs to be executed before
       using any other genesis API in your application. The default
-      initialization process performed by this instruction is the following:</p>
+      initialization process performed by this instruction executes the 
+      following steps:</p>
       <ul>
         <li>commons-beanutils configuration, so it is consistent with genesis
         API</li>
@@ -32,11 +33,11 @@ new StartupHelper().initialize();
         <code>net.java.dev.genesis.command.NoopCommand</code>, in a background
         thread, just to initialize aspects and connect to the application server
         without blocking the application.</li>
-        <li>Validation rules are loaded by a background thread in order to have
-        them ready when they are needed.</li>
+        <li>Validation rules are loaded by a background thread so they are 
+        already available when needed.</li>
       </ul>
-      <p>All points in this process may be customized by calling method exposed
-      by <code>StartupHelper</code>, what allows this class to be useful in
+      <p>All the steps in this process may be customized by calling methods 
+      exposed by <code>StartupHelper</code>, making this class useful in
       almost all scenarios. For example, if an application does not communicate
       with a application server or will perform this anyway right after its
       initialization, <code>NoopCommand</code> execution can be turned off by
@@ -55,9 +56,9 @@ helper.initialize();
 <source>
 new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
 </source>
-      <p>By default, <code>StartupHelper</code> loads all validation rules
-      If validation is not being used by the application, this pre-loading
-      process should be turned off as showed below:</p>
+      <p>By default, <code>StartupHelper</code> loads the validation rules. If 
+      validation is not being used by the application, this pre-loading process 
+      can be turned off as shown below:</p>
 <source>
 StartupHelper helper = new StartupHelper();
 helper.setLoadValidatorRules(false);
