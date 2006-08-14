@@ -11,6 +11,7 @@
 
    <target name="client:pre-additional-init">
       <property name="client.dir" value="modules/web" />
+      <property name="client.lib.dir" value="${client.dir}/lib" />
    </target>
 
    <target name="client:additional-init">
@@ -28,6 +29,7 @@
             <include name="reusable-components*.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
+         <fileset dir="${client.lib.dir}" includes="*.jar" />
       </path>
    </target>
 
@@ -45,11 +47,13 @@
          <path path="${genesis.dist}/genesis-aspect-annotated-${genesis.version}.jar" />
          <path refid="shared.javac.classpath" />
          <path refid="j2ee.path" />
+         <fileset dir="${client.lib.dir}" includes="*.jar" />
       </path>
    </target>
 
    <target name="weaving:clean" if="weaving.clean" 
            depends="weaving:define-conditions">
+      <delete dir="${preweaving.dir}" />
       <delete dir="${weaving.dir}" />
       <delete dir="${weaving.timestamp.file}" />
    </target>
@@ -263,7 +267,6 @@
       <property name="server.client.artifact.location" 
                location="${build.dir}/${server.client.artifact.name}" />
 
-      <property name="client.lib.dir" value="${client.dir}/lib" />
       <property name="client.content.dir" value="${client.dir}/content" />
       <property name="client.webxml.location" location="${client.content.dir}/WEB-INF/web.xml" />
    </target>
