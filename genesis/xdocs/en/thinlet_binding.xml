@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Binding Thinlet</title>
+    <title>Thinlet Binding</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Binding Thinlet">
-      <p>The following sections are helpful to those who uses Thinlet binding.
+      <p>The following sections are helpful only to those using the Thinlet 
+      binding:
       <ul>
         <li><a href="#Writing Thinlet views">Writing Thinlet views</a></li>
         <li><a href="#Using auxiliary UI classes">Using auxiliary UI classes</a></li>
@@ -47,7 +48,7 @@
         </ul>
       </p>
       <p>When the model explained in this document is used, i.e., form binding,
-      only the last three characteristics are directly used by client code.
+      only the last three characteristics are used directly by client code.
       Therefore, just these ones will be explored from this point on.</p>
       <p><code>BaseDialogThinlet</code> is a specialization of
       <code>BaseThinlet</code> that makes it simpler to create dialogs. As a
@@ -70,9 +71,9 @@ public class FrameCreationExample extends BaseThinlet {
    }
 }
 </source>
-        <p>This trivial example may be sufficient for several situations, but in
-        a few others it might be necessary to change a frame's properties before
-        displaying it. If all frames in an application need to be changed in the
+        <p>This trivial example may work for several situations, but in some 
+        cases it is necessary to change a frame's properties before displaying 
+        it. If all frames in an application need to be configured in the
         same way, it's recommended to create an intermediate base class. This
         technique is used in the examples provided with genesis. The following
         class was extracted from the useradmin sample:</p>
@@ -104,10 +105,11 @@ public abstract class BaseView extends BaseThinlet {
 }
 </source>
         <p>The above class creates its own frame so it can be centered,
-        makes it resizable or not, defines its title using a
-        <code>ResourceBundle</code>, - which makes internationalization
-        possible) - configures the window to stop execution when it is closed
-        and configures UI internationalization before adding the xml file.</p>
+        be made resizable or not, have its title defined using a
+        <code>ResourceBundle</code> - which makes internationalization
+        possible) -, the window stops execution when it is closed
+        and UI internationalization is configured before adding the parsed xml 
+        file.</p>
         <p><code>BaseDialogThinlet</code> has constructors capable of
         instantiating a <code>Dialog</code> - using an existent
         <code>Frame</code> or a <code>BaseThinlet</code> instance or creating a
@@ -142,20 +144,20 @@ public abstract class BaseDialogView extends BaseDialogThinlet {
     </section>
     <section name="Using auxiliary UI classes">
       <p>Some auxiliary classes are provided together with genesis-client to
-      accelerate UI development process. They implement several common tasks,
-      such as displaying messages, asking for user confirmation and displaying
-      exceptions. All these classes belong to the package
-      <code>net.java.dev.genesis.ui.thinlet</code>.</p>
+      accelerate the UI development process. They implement several common 
+      tasks, such as displaying messages, asking for user confirmation and 
+      displaying exceptions. All these classes are contained in the
+      <code>net.java.dev.genesis.ui.thinlet</code> package.</p>
       <subsection name="MessageDialog">
         <p>The first of these auxiliary classes is <code>MessageDialog</code>,
         which displays a message to an user in a <code>Dialog</code> that also
         contains a "Close" button. Two static <code>show(..)</code> methods are
-        provided in order to make using this class even more convenient. Both
-        accept the window title as their second argument and the message to
+        provided in order to make using this class even more convenient to use. 
+        Both accept the window title as their second argument and the message to
         display as the third, whereas the first parameter might be an instance
         of <code>Frame</code> or <code>BaseThinlet</code>. The second version
-        makes it even easier to use inside a class that extends
-        <code>BaseThinlet</code> as the code below demonstrates:</p>
+        makes it especially easier to use this class inside a class that extends
+        <code>BaseThinlet</code>, as the code below demonstrates:</p>
 <source>
 public void displayMessage() {
    MessageDialog.show(this, "Title", "Message to be displayed");
@@ -164,14 +166,14 @@ public void displayMessage() {
       </subsection>
       <subsection name="OptionDialog">
         <p>To display a choice, the class <code>OptionDialog</code> might be
-        useful. Similarly to <code>MessageDialog</code>, two versions of a <code
-        >display(..)</code> method are provided, accepting either an instance of
-        <code>BaseThinlet</code> or <code>Frame</code>, the window title and the
-        question to be displayed. When one of these methods is used, a dialog
-        window is shown with three buttons (Yes/No/Cancel). There is a
-        <code>displayYesNo(BaseThinlet,String,String)</code> method for
+        helpful. Similarly to <code>MessageDialog</code>, two versions of the 
+        <code>display(..)</code> method are provided, accepting either an 
+        instance of <code>BaseThinlet</code> or <code>Frame</code>, the window 
+        title and the question to be displayed. When one of these methods is 
+        used, a dialog window is shown with three buttons (Yes/No/Cancel). There 
+        is a <code>displayYesNo(BaseThinlet,String,String)</code> method for
         occasions when just these options would be appropriate. All the three
-        methods return a value from the enumeration <code>Option</code>, so it's
+        methods return a value from the <code>Option</code> enum, so it's
         possible to know which option the user has selected.
         <code>OptionDialog</code> may be used in a class that extends
         <code>BaseThinlet</code> as shown below:</p>
@@ -187,8 +189,8 @@ public void performOperation() {
 </source>
       </subsection>
       <subsection name="ErrorReporterDialog">
-        <p><code>ErrorReporterDialog</code> allows one to display an exception
-        with a descriptive message, besides all the stack trace. As it is true
+        <p><code>ErrorReporterDialog</code> displays an exception with a 
+        descriptive message, as well as its stack trace. As it is true
         for <code>MessageDialog</code>, there are also two versions of
         <code>show(..)</code>: one for a <code>BaseThinlet</code> instance and
         another one for a <code>Frame</code>. The example below shows how to use
