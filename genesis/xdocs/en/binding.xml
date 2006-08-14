@@ -6,12 +6,12 @@
   </properties>
   <body>
     <section name="Binding">
-      <p>One of the most inovative genesis features is its <b>binding</b>. This
+      <p>One of the most innovative genesis features is its <b>binding</b>. This
       feature keeps the UI always in synch with a JavaBean, which is called a 
       <b>form</b>. Two graphical toolkits are currently supported for this 
       integration: Swing and Thinlet. Below there is a basic example of how to 
-      implement a login screen for these two APIs using the binding. First, 
-      there is the form class:</p>
+      implement a login screen using the binding for each APIs . First, there is 
+      the form class definition:</p>
 <source>
 @Form
 public class LoginForm {
@@ -155,7 +155,7 @@ public class LoginThinletView extends BaseDialogThinlet {
       things about how to define a form. A form class should be annotated with 
       <code>@Form</code>, which tells genesis that this class must be handled 
       in a special way so it provides all information required for binding.</p>
-      <p>All properties exposed by setters and getters - in this case,
+      <p>Properties exposed by setters and getters - in this case, 
       <code>user</code> and <code>password</code> - can be dynamically bound to
       several widgets in the UI, such as textfields, passwordfields, labels and
       others. For it to work, each component name must be equal to a property 
