@@ -76,7 +76,7 @@ public class ExemploAnotacaoClasseJava14 {
 ]]>
 </source>
       <p>Nesta documentação, os exemplos usarão a sintaxe do Java 5 por padrão e 
-      será explicado quaisquer peculariedades que existam no uso das anotações 
+      serão explicadas quaisquer peculariedades que existam no uso das anotações 
       Javadoc.</p>
     </section>
   </body>

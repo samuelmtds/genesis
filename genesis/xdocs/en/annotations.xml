@@ -7,16 +7,15 @@
   </properties>
   <body>
     <section name="Using annotations">
-      <p>Great part of genesis functionalities is accessible through the use
-      of <b>annotations</b> or metadatas. Annotations is part of Java language
-      since Java 5, but genesis also supports them in Java 1.4, with a very similar syntax.</p>
-      <p>For example, considers the example below using
-      Java 5 and Java 1.4:</p>
+      <p>Most genesis features is available by using <b>annotations</b> or 
+      metadata. Annotations are part of the Java language since Java 5, but 
+      genesis also supports them in Java 1.4, with a very similar syntax.</p>
+      <p>For example, consider the example below using Java 5 and Java 1.4:</p>
 <source>
 import net.java.dev.genesis.annotation.Form;
 
 @Form
-public class Java5AnnotationClassExample {
+public class Java5ClassAnnotationExample {
    // ...
 }
 </source>
@@ -24,22 +23,22 @@ public class Java5AnnotationClassExample {
 /**
  * @Form
  */
-public class Java14AnnotationClassExample {
+public class Java14ClassAnnotationExample {
    // ...
 }
 </source>
-      <p>Both declarations of <code>@Form</code> annotation have the same
-      efect on both environment. Take notice that on second case, known as
-      Javadoc annotation, it's not necessary to use the instruction
-      <code>import</code>.</p>
-      <p>In Javadoc annotations, it's allowed to use a less typed syntax,
-      as shown below:</p>
+      <p>Both declarations of the <code>@Form</code> annotation will have the 
+      same effect on both environments. Notice that in the second case, known as
+      Javadoc-style annotation, it's not necessary to use the 
+      <code>import</code> instruction.</p>
+      <p>Javadoc annotations allow a more loosely-typed syntax, as shown 
+      below:</p>
 <source>
 import net.java.dev.genesis.annotation.EnabledWhen;
 import net.java.dev.genesis.annotation.Form;
 
 @Form
-public class Java5AnnotationMethodExample {
+public class Java5MethodAnnotationExample {
    @EnabledWhen("condition")
    public String getProperty() {
       // ...
@@ -52,7 +51,7 @@ public class Java5AnnotationMethodExample {
 /**
  * @Form
  */
-public class Java14AnnotationClassExample {
+public class Java14MethodAnnotationExample {
    /**
     * @EnabledWhen condition
     */
@@ -63,11 +62,11 @@ public class Java14AnnotationClassExample {
    // ...
 }
 </source>
-      <p>It's not necessary any configuration to use the Javadoc syntax with
-      Java 1.4. It's possible, but not recommended, to use Javadoc syntax with
-      Java  5. That may be necessary if you're using some analysis or code processing tools
-      that doesn't support Java 5 annotations. To do that, just uncomment the following
-      part of <a href="empty_project.html">empty-project</a>'s 
+      <p>No configuration is required to use the Javadoc syntax with Java 1.4. 
+      It's possible, but not recommended, to use the Javadoc syntax with Java 5. 
+      That may be necessary if you're using some analysis or code processing 
+      tool that doesn't support Java 5 annotations. To do that, just uncomment 
+      the following section of <a href="empty_project.html">empty-project</a>'s 
       <code>build.xml</code>:
       </p>
 <source>
@@ -75,8 +74,8 @@ public class Java14AnnotationClassExample {
       <property name="force.annotation" value="true" />
 ]]>
 </source>
-      <p>Our documentation we will use Java 5 syntax.
-      Only peculiarities of Javadoc syntax will be explained.</p>
+      <p>Our documentation we will use Java 5 syntax by default and only details
+      specific to the Javadoc syntax will be explained as needed.</p>
     </section>
   </body>
 </document>
