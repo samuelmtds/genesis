@@ -58,42 +58,43 @@ a + b = 4
 18.    }
 19. }
 </source>
-      <p>Running the new code inside a JBoss Application Server, we notice a
-      decrease in the output lines:</p>
+      <p>By running the new code after starting JBoss, we notice a decrease in 
+      the output lines:</p>
 <source>
 4
 </source>
-      <p>By watching the JBoss console, one will notice that some messages
-      were printed at the server-side. Why is that?</p>
+      <p>By watching the JBoss console, it is possible to notice that some 
+      messages were printed at the server-side. Why that happened?</p>
       <p>The output seen at the local console is due to the execution of 17th
       line. However, other <code>System.out.println</code> calls from the 6th,
       7th and 11th lines took place inside an annotated method with
       <code>@Remotable</code> and that's why they were executed in a different
       way. Actually the whole <code>sum(int,int)</code> method was executed
       at the server-side. How?</p>
-      <p>Annotated methods with the <code>@Remotable</code> tag will be
-      intercepted by an aspect (genesis-aspect) that will send the instance in
-      which the method was called to the server-side, and then this method will
-      be executed there. The result will be sent back to the client-side.
-      This characteristic is called <b>transparent remoting</b>.</p>
+      <p>Methods annotated with <code>@Remotable</code> are intercepted by an 
+      aspect (genesis-aspect) that will transport the instance in which the 
+      method was called to the server-side, and then this method will be 
+      executed there. The result will be sent back to the client-side. This 
+      feature is called <b>transparent remoting</b>.</p>
       <subsection name="Restrictions and limitations">
-        <p>There are some restrictions on the methods that can be remotable
+        <p>There are some restrictions on which methods that can be made remote
         in genesis:
           <ul>
             <li>It cannot be abstract</li>
             <li>It cannot be a static method nor manipulate static members</li>
             <li>It cannot be native</li>
-            <li>It must be <code>public</code> and be inside a
+            <li>It must be <code>public</code> and declared in a
             <code>public</code> class</li>
           </ul>
         </p>
         <p>The first restriction exists because an abstract method cannot be
-        called (however it might be abstract in a superclass). The method cannot
-        be static because static values differ between different JVMs. The last
-        two restrictions are for EJB specification compliance.</p>
-        <p>A last side effect to be noted is that remote methods do not change
-        the value of local instances variables. We can see an example of this:
-        </p>
+        called (however it might be declared as abstract in a superclass). The 
+        method cannot be static because static values differ between different 
+        JVMs. The last two restrictions are imposed to comply with the EJB 
+        specification.</p>
+        <p>One last side effect to be aware of is that remote methods do not 
+        change the value of local instances variables. We can see an example 
+        below:</p>
 <source>
  1. import net.java.dev.genesis.annotation.Remotable;
  2.
@@ -138,19 +139,19 @@ value: 2
 <source>
 value in remote(): 2
 </source>
-        <p>By running the 23rd line, the <code>value</code> variable is locally
-        modified and its content are both in <code>local()</code> method and
-        in 24th line output the same. However, by running the 25th line, the
+        <p>When the 23rd line is reached, the <code>value</code> variable is 
+        locally modified and its content in both the <code>local()</code> method 
+        and the 24th line output the same. However, by running the 25th line, the
         <code>lvr</code> instance is sent to the server and the
         <code>remote()</code> method is executed there, modifying the remote
         copy of <code>value</code> from 1 to 2, as shown at the remote console
          - but the local copy is kept unmodified as we can see with the 26th
         line output (local console).</p>
-        <p>This way local values are sent to the server but not the other way
+        <p>Therefore, local values are sent to the server but not the other way
         around. The same restriction applies to object references in parameters.
-        If a copy of the modified instance is desirable it must be returned
-        from the annotated method itself.</p>
-        <p>To correct the problem above, we can change it to return the new
+        If it is necessary to get a reference to the modified instance, it must 
+        be returned from the annotated method itself.</p>
+        <p>To fix the problem above, we can change it to return the modified
         value:</p>
 <source>
     @Remotable
@@ -175,11 +176,11 @@ value in remote(): 2
         <p>This might intimidate some developers at first, but this is exactly
         how a Stateless Session Bean (SSB) works, for example. And the behavior
         of non-remote parameters sent through a RMI call is also the same. A
-        stateful component model will be implemented in the near future -
-        probably in a future release, although experience show us that's not
-        necessary for desktop and web clients, it's good enough to deal with
-        the problem the same way you deal with it when using SSBs or RMI components:
-        returning the modified data in the method call.</p>
+        stateful component model will be implemented in the near future, 
+        although experience has shown us that it's not necessary for desktop and 
+        web clients, and that the problem can be handled the same way you deal 
+        with it when using SSBs or RMI components: returning the modified data 
+        in the method call.</p>
       </subsection>
     </section>
   </body>
