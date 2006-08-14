@@ -176,7 +176,7 @@ public class LoginThinletView extends BaseDialogThinlet {
       botões com valor da propriedade <code>name</code> igual ao deles na 
       interface gráfica. Assim, quando o botão é acionado o método com nome 
       equivalente é invocado no form. No exemplo dado, ao clicar em Login o 
-      valor dos campos Usuário e Senha é impresso na saída padrão enquanto 
+      valor dos campos Usuário e Senha é impresso na saída padrão, enquanto 
       acionar o botão Limpar exclui o conteúdo dos campos tanto na tela quanto 
       no form.</p>
       <p>A maneira de fazer o binding é dependente da API gráfica. Em todos os
