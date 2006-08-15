@@ -120,7 +120,7 @@
         </table>
       </subsection>
     </section>
-    <section name="genesis scripting auxiliary functions">
+    <section name="genesis script functions">
       <p>genesis add these functions as extensions to JXPath:</p>
       <ul>
         <li>isEmpty(any), isNotEmpty(any)</li>

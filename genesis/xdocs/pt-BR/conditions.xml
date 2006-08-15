@@ -171,9 +171,9 @@ getContentPane().add(dataCorrente);
         <code>name</code> do <code>JLabel</code>. Se houvesse mais de um 
         componente, seus nomes poderiam ser separados por vírgula ou poderia ser
         utilizada uma array de <code>String</code> como valor da propriedade.
-        Pode-se ainda colocar o valor da <code>clientProperty</code> o próprio
-        componente, uma coleção de componentes ou um array de componentes, como
-        ilustrado abaixo:</p>
+        Pode-se ainda utilizar como valor da <code>clientProperty</code> o 
+        próprio componente, uma coleção de componentes ou um array de 
+        componentes, como ilustrado abaixo:</p>
 <source>
 //..
 getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
