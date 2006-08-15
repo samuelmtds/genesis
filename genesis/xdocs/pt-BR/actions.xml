@@ -182,7 +182,7 @@ public class ExemploAfterActionForm {
         diversos forms, por exemplo. Contudo, visto que estas alterações não
         foram gerenciadas pelo genesis, tanto o cache interno do framework como
         as informações exibidas ficam fora de sincronia, causando uma série de
-        problemas. Há opções na API do genesis permitem contornar esse
+        problemas. Há opções na API do genesis que permitem contornar esse
         cenário.</p>
         <p>A classe <code>ActionInvoker</code> possui métodos que podem ser 
         usados independente da API gráfica. O método estático 
@@ -227,7 +227,7 @@ public class ExemploRefreshViewThinlet extends BaseThinlet {
    // ...
 }
 </source>
-        <p>Para uso específico de outro binder como Swing, existe o método
+        <p>Para uso de outro bindings como Swing, existe o método 
         <code>refresh()</code> declarado em <code>AbstractBinder</code>.</p>
 <source>
 public class ExemploRefreshViewSwing extends JFrame {
