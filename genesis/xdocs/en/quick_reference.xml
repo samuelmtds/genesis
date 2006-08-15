@@ -16,7 +16,7 @@
       <p>genesis annotations are classified by the place they should be used at:</p>
       <ul>
         <li><b>Class</b>: use before a class definition</li>
-        <li><b>Atribute</b>: use before an attribute getter</li>
+        <li><b>Attribute</b>: use before an attribute getter</li>
         <li><b>Method</b>: use before a method definition</li>
       </ul>
       <p>Some annotations are valid in more than one scope.</p>
@@ -36,7 +36,7 @@
             </td>
           </tr>
           <tr>
-            <td>Atribute</td>
+            <td>Attribute</td>
             <td>
               <ul>
                 <li><a href="#@ClearOn">@ClearOn</a></li>
