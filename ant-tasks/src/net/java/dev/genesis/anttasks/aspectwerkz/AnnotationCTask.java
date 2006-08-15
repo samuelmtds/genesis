@@ -18,6 +18,13 @@
  */
 package net.java.dev.genesis.anttasks.aspectwerkz;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import net.java.dev.genesis.anttasks.aspectwerkz.annotation.AnnotationPreprocessor;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.taskdefs.MatchingTask;
@@ -31,10 +38,6 @@ import org.apache.tools.ant.util.SourceFileScanner;
 import org.codehaus.backport175.compiler.CompilerException;
 import org.codehaus.backport175.compiler.MessageHandler;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 public class AnnotationCTask extends MatchingTask {
    private static final String[] EMPTY_STRING_ARRAY = new String[0];
    private final FileUtils fileUtils = FileUtils.newFileUtils();
@@ -42,9 +45,10 @@ public class AnnotationCTask extends MatchingTask {
    private boolean verbose;
    private Path classpath;
    private Path src;
-   private File properties;
+   private Path properties;
    private File destDir;
    private List filesets = new ArrayList();
+   private List preprocessors = new ArrayList();
 
    public Path createSrc() {
       if (src == null) {
@@ -66,8 +70,16 @@ public class AnnotationCTask extends MatchingTask {
       }
    }
 
-   public void setProperties(File annotationFile) {
-      properties = annotationFile;
+   public Path createProperties() {
+      if (properties == null) {
+         properties = new Path(getProject());
+      }
+
+      return properties;
+   }
+
+   public void setProperties(Path annotationFile) {
+      createProperties().append(annotationFile);
    }
 
    public void setVerbose(boolean isVerbose) {
@@ -126,6 +138,10 @@ public class AnnotationCTask extends MatchingTask {
       filesets.add(fileset);
    }
 
+   public void addPreprocessor(Preprocessor preprocessor) {
+      preprocessors.add(preprocessor);
+   }
+
    protected void scanDir(File srcDir, final File destDir, String[] files,
          final long propertiesLastModified) {
       GlobPatternMapper m = new GlobPatternMapper();
@@ -166,8 +182,19 @@ public class AnnotationCTask extends MatchingTask {
 
       String[] list = src.list();
 
-      long propertiesLastModified = (properties == null) ? 0 : properties
-            .lastModified();
+      String[] props = properties.list();
+      String[] allProps = new String[props.length];
+      long propertiesLastModified = 0;
+
+      for (int i = 0; i < props.length; i++) {
+         File property = getProject().resolveFile(props[i]);
+         allProps[i] = property.getAbsolutePath();
+         long lastModified = property.lastModified();
+         
+         if (propertiesLastModified < lastModified) {
+            propertiesLastModified = lastModified;
+         }
+      }
 
       for (int i = 0; i < list.length; i++) {
          File srcDir = getProject().resolveFile(list[i]);
@@ -177,7 +204,7 @@ public class AnnotationCTask extends MatchingTask {
                   + "\" does not exist!", getLocation());
          }
 
-         DirectoryScanner ds = this.getDirectoryScanner(srcDir);
+         DirectoryScanner ds = getDirectoryScanner(srcDir);
          String[] files = ds.getIncludedFiles();
 
          scanDir(srcDir, (destDir != null) ? destDir : srcDir, files,
@@ -193,16 +220,24 @@ public class AnnotationCTask extends MatchingTask {
             + ((destDir != null) ? (" to " + destDir) : ""));
 
       try {
-         AnnotationC.compile(EMPTY_STRING_ARRAY, compileList, classpath.list(),
-               (destDir == null) ? null : destDir.getAbsolutePath(),
-               (properties == null) ? EMPTY_STRING_ARRAY
-                     : new String[] { properties.getAbsolutePath() },
+         AnnotationC compiler = new AnnotationC(EMPTY_STRING_ARRAY,
+               compileList, classpath.list(), (destDir == null) ? null
+                     : destDir.getAbsolutePath(), allProps,
                new MessageHandler.PrintWriter(verbose) {
                   public void error(CompilerException ex) {
                      super.error(ex);
                      throw ex;
                   }
                }, true);
+         for (Iterator iter = preprocessors.iterator(); iter.hasNext();) {
+            Preprocessor preProc = (Preprocessor) iter.next();
+            preProc.validate();
+            Class preProcClass = Class.forName(preProc.getPreprocessor());
+
+            compiler.register(preProc.getAnnotation(), (AnnotationPreprocessor) preProcClass.newInstance());
+         }
+
+         compiler.compile();
       } catch (Exception ex) {
          throw new BuildException("Annotation failed: " + ex.getMessage(), ex,
                getLocation());
@@ -236,11 +271,37 @@ public class AnnotationCTask extends MatchingTask {
                "No source specified [<include, <sourcepath, srcdir=..]",
                getLocation());
       }
+   }
 
-      if ((properties != null) && !properties.isFile()) {
-         throw new BuildException(
-               "properties file specified but not a valid file [" + properties
-                     + "]", getLocation());
+   public static class Preprocessor {
+      private String annotation;
+      private String preprocessor;
+
+      public String getAnnotation() {
+         return annotation;
       }
+
+      public void setAnnotation(String annotation) {
+         this.annotation = annotation;
+      }
+
+      public String getPreprocessor() {
+         return preprocessor;
+      }
+
+      public void setPreprocessor(String preprocessor) {
+         this.preprocessor = preprocessor;
+      }
+      
+      public void validate() throws BuildException {
+         if (annotation == null) {
+            throw new BuildException("Missing annotation attribute for preprocessor");
+         }
+
+         if (preprocessor == null) {
+            throw new BuildException("Missing preprocessor attribute for preprocessor");
+         }
+      }
+
    }
 }
