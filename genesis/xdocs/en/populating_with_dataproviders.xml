@@ -7,44 +7,48 @@
   </properties>
   <body>
     <section name="Populating comboboxes, lists and tables">
-      <p>Options available in a combobox may vary depending on data inputted by
-      the user or other business rules. A table's content may need to be
-      dynamically filled in response to a user-specified filter criteria, for
-      example. To cope with these situations, there is an annotation called
+      <p>Options available in a combobox may change depending on the input or
+      other business rules. A table's content might need to be dynamically 
+      filled in response to a user-specified filter criteria, for example. To 
+      cope with these situations, there is an annotation called
       <code>@DataProvider</code>, whose syntax is:</p>
 <source>
-@DataProvider(objectField="nameObjectField",
-              indexField="nameIndexField",
-              widgetName="nameWidget",
+@DataProvider(objectField="objectFieldName",
+              indexField="indexFieldName",
+              widgetName="widgetName",
               callOnInit=booleanValue
               resetSelection=booleanValue)
 </source>
       <p>This annotation may be used in methods returning either a
       <code>java.util.List</code> or an array of <code>Object</code>s. Values
-      returned by the method will be used to populate a combobox, list or table.
-      <code>objectField</code>, if specified, should receive as a parameter the
-      name of a property that will hold the instance selected on the widget
-      (or widgets selected, in multi selection).
-      This property should be of the same type or a superclass of the type
-      returned by the annotated method, an array of this type or a
-      <code>Collection</code>. <code>indexField</code> is the property that
-      will hold indexes for the selected elements on the widget. It must be an
+      returned by the method will be used to populate the widget, whether it is
+      a combobox, a list or a table.</p>
+      <p><code>objectField</code>, if specified, should receive as a parameter 
+      the name of a property that will hold the widget's selected instance (or 
+      instances, if multiple selection mode is enabled). This property should be 
+      of the same type or a superclass of the type returned by the annotated 
+      method, an array of this type or a <code>Collection</code>.</p>
+      <p><code>indexField</code> is the name of the property that will hold the 
+      indexes for the selected elements on the widget. It must be an 
       <code>int</code> or an <code>Integer</code>, an array of one of these
-      types or a <code>Collection</code>.
-      In case <code>widgetName</code> is used, its value must be the name of a
-      widget that represents a table, combobox or list. This widget will be the one to receive
-      the data provided by the annotated method.
-      <b>At least one of these three parameters must be
-      informed</b>.</p>
-      <p>The widget <code>name</code> is equal to the value specified for
-      <code>widgetName</code>, <code>objectField</code> or <code>indexField</code>
-      in that order.</p>
+      types or a <code>Collection</code>.</p>
+      <p>If <code>widgetName</code> is used, its value must be the name of the
+      widget - table, combobox or list - that will receive the data provided by 
+      the annotated method. For Thinlet, <code>widgetName</code> must be the
+      value of the <code>name</code> property of a widget defined by the view
+      xml. For Swing, <code>widgetName</code> must be equal to the value 
+      returned by the <code>getName()</code> method of the target 
+      <code>Component</code> instance.</p>
+      <p><b>At least one of these three properties must be informed</b>.</p>
+      <p>The <code>name</code> of the widget that will populated by a 
+      <code>@DataProvider</code> is equal to the value of the first property 
+      that has been informed, in the following order: <code>widgetName</code>, 
+      <code>objectField</code>, <code>indexField</code>.</p>
       <p>As mentioned earlier, both <code>objectField</code> and
-      <code>indexField</code> receive as parameter the name of a property that
-      might be a bean, an array or a <code>Collection</code>. Let's
-      examine when to use each type:</p>
-      
-      <subsection name="Seleção Única">
+      <code>indexField</code> take as a parameter the name of a property whose
+      type might be a bean, an array or a <code>Collection</code>. Let's
+      examine when to use each type in relation to the selection mode:</p>
+      <subsection name="Single selection mode">
         <table>
           <tr>
             <th>Return type</th>
@@ -54,12 +58,11 @@
           <tr>
             <td><code>java.util.List</code> or object array</td>
             <td>Any class (primitive types not allowed)</td>
-            <td>Only <code>Integer</code> or <code>int</code></td>
+            <td><code>Integer</code> or <code>int</code></td>
           </tr>
         </table>
       </subsection>
-
-      <subsection name="Seleção Múltipla">
+      <subsection name="Multiple selection">
         <table>
           <tr>
             <th>Return type</th>
@@ -70,13 +73,13 @@
             <td><code>java.util.List</code> or object array</td>
             <td>Array or <code>Collection</code> of any class
             (primitive types not allowed)</td>
-            <td>Only array of <code>Integer</code>s (or
-            <code>int</code>) or <code>Collection</code> of
+            <td>Array of <code>Integer</code>s (or
+            <code>int</code>s) or <code>Collection</code> of
             <code>Integer</code>s</td>
           </tr>
         </table>
       </subsection>
-    <p>An example of how to use this annotation is shown below:</p>
+      <p>An example of how to use this annotation is shown below:</p>
 <source>
 public class State {
    private String acronym;
@@ -106,27 +109,25 @@ public class DataProviderFormExample {
    // ...
 }
 </source>
-
-<p>Considering the source code above, let's see some examples with
-  some UI technologies and different components:
-</p>
-  <p><b>Thinlet</b>
-    <ul>
-      <li><a href="#ThinletComboBox">ComboBox</a></li>
-      <li><a href="#ThinletList">List</a></li>
-      <li><a href="#ThinletTable">Table</a></li>
-    </ul>
-  </p>
-  <p><b>Swing</b>
-    <ul>
-      <li><a href="#SwingComboBox">ComboBox</a></li>
-      <li><a href="#SwingList">List</a></li>
-      <li><a href="#SwingTable">Table</a></li>
-    </ul>
-  </p>
-
-<subsection name="Thinlet">
-  <p><b><a name="ThinletComboBox">ComboBox</a></b></p>
+      <p>Considering the source code above for the form class, let's see a few 
+      examples using the UI technologies supported by genesis and a few 
+      widgets:</p>
+      <p><b>Thinlet</b>
+        <ul>
+          <li><a href="#ThinletComboBox">ComboBox</a></li>
+          <li><a href="#ThinletList">List</a></li>
+          <li><a href="#ThinletTable">Table</a></li>
+        </ul>
+      </p>
+      <p><b>Swing</b>
+        <ul>
+          <li><a href="#SwingComboBox">ComboBox</a></li>
+          <li><a href="#SwingList">List</a></li>
+          <li><a href="#SwingTable">Table</a></li>
+        </ul>
+      </p>
+      <subsection name="Thinlet">
+        <h5><a name="ThinletComboBox">ComboBox</a></h5>
 <source>
 <![CDATA[
 <panel gap="5">
@@ -135,33 +136,36 @@ public class DataProviderFormExample {
 </panel>
 ]]>
 </source>
-      <p>Above we can see the interface xml that displays a
-      <code>label</code> and a <code>combobox</code> that will hold states in
-      runtime. The combobox <code>name</code> property is equal to the value for
-      <code>objectField</code> in annotation <code>@DataProvider</code>.
-      A few values are configured for combobox <code>property</code>.
-      The following values may be used for this kind of widget:</p>
-      <ul>
-        <li><b>key</b>: name of the property bean that will be used for
-        populating the component, whose value is unique per instance. It
-        is required, except when using enums (<code>java.lang.Enum</code> or
-        <code>net.java.dev.reusablecomponents.lang.Enum</code>).
-        When using enums, if that property isn't defined,
-        the value of <code>toString()</code> is used.</li>
-        <li><b>value</b>: name of the property used for displaying the bean. It
-        is required when the bean is not an enum (<code>java.lang.Enum</code> or
-        <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
-        <li><b>blank</b>: includes a blank line as the first combobox option.
-        It's not required and its default value is <code>false</code>.</li>
-        <li><b>blankLabel</b>: defines the text to be displayed for the blank
-        line. It's not required, its default value is an empty
-        <code>String</code> and it's only meaningful when
-        <code>blank=true</code>.</li>
-      </ul>
-      <p>As indicated by <code>objectField</code> value, property
-      <code>state</code> will contain the selected <code>State</code> instance
-      that corresponds to the combox option choosen by the user.</p>
-  <p><b><a name="ThinletList">List</a></b></p>
+          <p>Above we can see the interface xml that displays a
+          <code>label</code> and a <code>combobox</code> that will hold states 
+          at runtime. The combobox <code>name</code> property is equal to the 
+          value of the <code>objectField</code> property in the 
+          <code>@DataProvider</code> annotation. A few values can be configured 
+          for the combobox <code>property</code> attribute. They are:</p>
+          <ul>
+            <li><b>key</b>: name of the property of the bean that will be used 
+            for populating the component, whose value is unique per instance. It
+            is required, unless enums are used (<code>java.lang.Enum</code> or 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>). For enums, 
+            if that property isn't defined, the value returned by 
+            <code>toString()</code> will be used instead.</li>
+            <li><b>value</b>: name of the property used for displaying the bean. 
+            It is required when the bean is not an enum (
+            <code>java.lang.Enum</code> or 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>blank</b>: includes a blank line as the first combobox 
+            option. It's not required and its default value is 
+            <code>false</code>.</li>
+            <li><b>blankLabel</b>: defines the text to be displayed for the 
+            blank line. It's not required, its default value is an empty
+            <code>String</code> and it's only meaningful when 
+            <code>blank=true</code>.</li>
+          </ul>
+          <p>As defined by <code>objectField</code> value, the
+          <code>state</code> property will hold the selected <code>State</code> 
+          instance that corresponds to the combobox option chosen by the 
+          user.</p>
+        <h5><a name="ThinletList">List</a></h5>
 <source>
 <![CDATA[
 <panel gap="5">
@@ -170,8 +174,9 @@ public class DataProviderFormExample {
 </panel>
 ]]>
 </source>
-    <p><code>List</code> is quite similar to <a href="#ThinletComboBox">ComboBox</a>.</p>
-  <p><b><a name="ThinletTable">Table</a></b></p>
+          <p><code>list</code> configuration requirements and functionality are 
+          similar to the <a href="#ThinletComboBox">combobox</a>'s ones.</p>
+        <h5><a name="ThinletTable">Table</a></h5>
 <source>
 <![CDATA[
 <panel gap="5">
@@ -184,49 +189,15 @@ public class DataProviderFormExample {
 </panel>
 ]]>
 </source>
-      <p>Requirements for populating a table are slightly different.</p>
-      <p>As shown above, we can observe that table <code>name</code> must be
-      equal to <code>objectField</code> value (except when
-      <code>widgetName</code>is specified). Each row will represent an
-      instance and each column will be filled with a bean property whose name is
-      their <code>name</code>.</p>
-      <p>There is a variation for this annotation which happens with the use
-      of the <code>callOnInit</code> property. Imagine the above
-      <code>combobox</code> or the <code>table</code> widgets <b> are not
-      supposed</b> to be filled at the dialog startup. In this case, to
-      accomplish this requirement in a easier way, we only have to rewrite
-      the annotation as the following code indicates:</p>
-<source>
-   // ...
-
-   @DataProvider(objectField="state", callOnInit=false)
-   public List populateStates() {
-      // returns a Collection containing State instances
-   }
-
-   // ...
-</source>
-      <p>This way, at dialog startup, the <code>combobox</code>
-      or <code>list</code> or
-      <code>table</code> widgets will be empty. In order to populate them
-      a <code>@CallWhen</code> annotation can be added and used together.
-      That is, <code>@CallWhen</code> annotation may be used together with
-      <code>@DataProvider</code> to indicate when a table/list/combo will be
-      automatically populate again. <code>@Action</code> may also be used in
-      these methods if they need to be triggered by a button (such as Search,
-      for example) and, when that is true, using <code>@EnabledWhen</code> and
-      <code>@VisibleWhen</code> is also allowed.</p>
-      <p><code>resetSelection</code> determines whether selected elements will
-      be unselected when the method is invoked. This is the default behaviour,
-      i.e., if this property has no value, it is considered <code>true</code>.
-      When the value informed is <code>false</code>, the selection is kept
-      relative to the <b>position</b> of the itens, what makes this feature
-      more useful when something is being added to the end of the
-      <code>java.util.List</code> instance or array each time the method gets
-      executed.</p>
-</subsection>
-<subsection name="Swing">
-  <p><b><a name="SwingComboBox">ComboBox</a></b></p>
+          <p>Requirements for populating a table are slightly different.</p>
+          <p>As shown above, we can notice that the table <code>name</code> must 
+          be equal to the <code>objectField</code> value (unless
+          <code>widgetName</code> is specified). Each row will represent an 
+          instance and each column will be filled with the value of the bean 
+          property whose name is equal to the column <code>name</code>.</p>
+      </subsection>
+      <subsection name="Swing">
+        <h5><a name="SwingComboBox">ComboBox</a></h5>
 <source>
 <![CDATA[
 private JComboBox stateComboBox;
@@ -241,45 +212,47 @@ private JComboBox stateComboBox;
   }
 ]]>
 </source>
-      <p>Above we can see the source code of an interface that displays a
-      <code>combobox</code> that will hold states in
-      runtime. The combobox <code>name</code> (<code>stateComboBox.setName("estado")</code>)
-      property is equal to the value for
-      <code>objectField</code> in annotation <code>@DataProvider</code>.
-      It's needed to use the class
-      <code>net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer</code>
-      as a combobox renderer, to display states properly to the user.
-      That renderer, lookup for <code>properties</code> in combobox to guess
-      what bean properties should be used as a key and as a label. The properties
-      values are specified throught the method
-      <code>JComponent.putClientProperty(Object key, Object value)</code>.
-      The following values may be used for this kind of widget:</p>
-      <ul>
-        <li><b>SwingBinder.KEY_PROPERTY</b>: 
-        name of the property bean that will be used for
-        populating the component, whose value is unique per instance. It
-        is required, except when using enums (<code>java.lang.Enum</code> or
-        <code>net.java.dev.reusablecomponents.lang.Enum</code>).
-        When using enums, if that property isn't defined,
-        the value of <code>toString()</code> is used.</li>
-        <li><b>SwingBinder.VALUE_PROPERTY</b>:
-        name of the property used for displaying the bean. It
-        is required when the bean is not an enum (<code>java.lang.Enum</code> or
-        <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
-        <li><b>SwingBinder.BLANK_PROPERTY</b>:
-        includes a blank line as the first combobox option.
-        It's not required and its default value is <code>false</code>.</li>
-        <li><b>SwingBinder.BLANK_LABEL_PROPERTY</b>: defines the text to be displayed for the blank
-        line. It's not required, its default value is an empty
-        <code>String</code> and it's only meaningful when
-        <code>SwingBinder.BLANK_PROPERTY</code> is <code>true</code>.</li>
-      </ul>
-      <p>As indicated by <code>objectField</code> value, property
-      <code>state</code> will contain the selected <code>State</code> instance
-      that corresponds to the combox option choosen by the user.</p>
-      <p>To make your life easier, you can use static methods from
-      <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code>. The 
-      same code using the factory:</p>
+          <p>Above we can see the source code of an interface that displays a
+          <code>combobox</code> that will hold states at runtime. The combobox 
+          <code>name</code> (<code>stateComboBox.setName("state")</code>)
+          property is equal to the value for the <code>objectField</code> 
+          property in annotation <code>@DataProvider</code>. In order to display
+          data in the <code>JComboBox</code> correctly, some properties must be
+          configured for the component and the renderer should be set to
+          <code>net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer</code>.
+          This class checks the values configured as properties for this 
+          component to determine which bean property should be made visible to 
+          users. The properties values can be specified using the 
+          <code>JComponent.putClientProperty(Object key, Object value)</code> 
+          method. The following values may be used for this kind of widget:</p>
+          <ul>
+            <li><b>SwingBinder.KEY_PROPERTY</b>: name of the property of the 
+            bean that will be used for populating the component, whose value is 
+            unique per instance. It is required, unless enums are used (
+            <code>java.lang.Enum</code> or 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>). For enums, 
+            if that property isn't defined, the value returned by 
+            <code>toString()</code> will be used instead.</li>
+            <li><b>SwingBinder.VALUE_PROPERTY</b>: name of the property used for displaying the bean. 
+            It is required when the bean is not an enum (
+            <code>java.lang.Enum</code> or 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>SwingBinder.BLANK_PROPERTY</b>: includes a blank line as the 
+            first combobox option. It's not required and its default value is 
+            <code>false</code>.</li>
+            <li><b>SwingBinder.BLANK_LABEL_PROPERTY</b>: defines the text to be 
+            displayed for the blank line. It's not required, its default value 
+            is an empty <code>String</code> and it's only meaningful when 
+            <code>blank=true</code>.</li>
+          </ul>
+          <p>As defined by <code>objectField</code> value, the
+          <code>state</code> property will hold the selected <code>State</code> 
+          instance that corresponds to the combobox option chosen by the 
+          user.</p>
+          <p>To make it easier to build the widget, the static methods exposed
+          by <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code> may
+          be used. The equivalent code for building and configuring the 
+          <code>JComboBox</code> instance would be:</p>
 <source>
 <![CDATA[
 private SwingBinder binder;
@@ -291,11 +264,11 @@ private JComboBox stateComboBox;
   }
 ]]>
 </source>
-      <p>A ComboBox is built passing the parameters:
-      the binder, the component name, the key property name
-      (<code>SwingBinder.KEY_PROPERTY</code>) and the 
-      value property name (<code>SwingBinder.VALUE_PROPERTY</code>).</p>
-      <p><b><a name="SwingList">List</a></b></p>
+          <p>In the above snippet, a <code>JComboBox</code> is built supplying 
+          as parameters the binder instance, the component name, the key 
+          property name (<code>SwingBinder.KEY_PROPERTY</code>) and the 
+          value property name (<code>SwingBinder.VALUE_PROPERTY</code>).</p>
+        <h5><a name="SwingList">List</a></h5>
 <source>
 <![CDATA[
 private JList stateList;
@@ -310,9 +283,9 @@ private JList stateList;
   }
 ]]>
 </source>
-      <p><code>List</code> is quite similar to <a href="#SwingComboBox">ComboBox</a>.</p>
-      
-  <p><b><a name="SwingTable">Table</a></b></p>
+          <p><code>JList</code> configuration requirements and functionality are 
+          similar to the <a href="#SwingComboBox">JComboBox</a>'s ones.</p>
+        <h5><a name="SwingTable">Table</a></h5>
 <source>
 <![CDATA[
 private JTable stateTable;
@@ -338,16 +311,16 @@ private JTable stateTable;
   }
 ]]>
 </source>
-      <p>Requirements for populating a table are slightly different.</p>
-      <p>As shown above, we can observe that table <code>name</code>
-      (<code>stateTable.setName("state")</code>) must be
-      equal to <code>objectField</code> value (except when
-      <code>widgetName</code>is specified). Each row will represent an
-      instance and each column will be filled with a bean property whose name is
-      the TableColumn <code>identifier</code>
-      (e.g.: <code>descriptionColumn.setIdentifier("description")</code>).
-      It's possible to define column identifiers in another way, using the
-      method <code>putClientProperty</code>:</p>
+          <p>Requirements for populating a table are slightly different.</p>
+          <p>As shown above, we can notice that the table name 
+          (<code>stateTable.setName("state")</code>) must 
+          be equal to the <code>objectField</code> value (unless
+          <code>widgetName</code> is specified). Each row will represent an 
+          instance and each column will be filled with the value of the bean 
+          property whose name is equal to the column <code>identifier</code>
+          (eg: <code>descriptionColumn.setIdentifier("description")</code>). 
+          It's possible to define column identifiers easier using the
+          <code>putClientProperty</code> method:</p>
 <source>
 <![CDATA[
 private JTable stateTable;
@@ -360,9 +333,10 @@ private JTable stateTable;
   }
 ]]>
 </source>
-      <p>To make your life easier, you can use static methods from
-      <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code>. The 
-      same code using the factory:</p>
+          <p>To make it easier to build the widget, the static methods exposed
+          by <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code> may
+          be used. The equivalent code for building and configuring the 
+          <code>JTable</code> instance would be:</p>
 <source>
 <![CDATA[
 private SwingBinder binder;
@@ -376,13 +350,46 @@ private JTable stateTable;
   }
 ]]>
 </source>
-      <p>A Table is built passing the parameters:
-      the binder, the component name, an <code>identifier</code>s array and
-      the visible text array for each column.</p>
-  </subsection>
-</section>
-<section name="References">
-      <p><a href="quick_reference.html#@DataProvider">@DataProvider</a> annotation.</p>
-</section>
+          <p>In the above snippet, a <code>JTable</code> is built supplying 
+          as parameters the binder instance, the component name, an array of
+          each column's <code>identifier</code> and an array of each column's 
+          display name.</p>
+      </subsection>
+    </section>
+    <section name="Understanding callOnInit and resetSelection">
+      <p>A variation in the way this annotation behaves happens when the 
+      <code>callOnInit</code> property is used. Imagine that the previously 
+      shown combobox and table should not be filled at the dialog startup. In 
+      this case, the annotation should be rewritten as follows:</p>
+<source>
+   // ...
+
+   @DataProvider(objectField="state", callOnInit=false)
+   public List populateStates() {
+      // returns a Collection containing State instances
+   }
+
+   // ...
+</source>
+      <p>This way, at dialog startup, the combobox, list and table
+      widgets will be empty. In order to populate them, the <code>@CallWhen</code> 
+      annotation could be used together with <code>@DataProvider</code> to 
+      indicate when a table/list/combo will be automatically populated. 
+      <code>@Action</code> can also be used in these methods if they need to be 
+      invoked when a button (such as a Search button) is pressed and, when it is
+      used, <code>@EnabledWhen</code> and <code>@VisibleWhen</code> are allowed
+      as well.</p>
+      <p><code>resetSelection</code> determines whether selected elements will
+      be unselected when the method is invoked. This is the default behaviour,
+      i.e., if this property has no value, it is considered to be 
+      <code>true</code>. When its value is <code>false</code>, the selection is 
+      kept relative to the <b>position</b> of the itens, what makes this feature
+      more useful when something is being added to the end of the
+      <code>java.util.List</code> instance or array each time the method gets
+      executed.</p>
+      <p>For more information, please take a look at <a 
+      href="quick_reference.html#@DataProvider">@DataProvider</a>'s annotation 
+      reference.</p>
+    </section>
   </body>
 </document>
