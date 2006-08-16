@@ -30,9 +30,9 @@
       <ul>
         <li>genesis distribution along its dependency libraries.</li>
         <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
-        3.2.x release.</li>
+        3.2.x or 4.0.x release.</li>
         <li>To compile and install the application we recommend <a href=
-        "http://ant.apache.org/">Apache Ant</a> 1.6.x.</li>
+        "http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
@@ -326,7 +326,7 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.16 2006-08-12 15:58:54 allanjones Exp $ -->
+<!-- $Id: empty_project.xml,v 1.17 2006-08-16 11:00:38 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -451,7 +451,7 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.16 2006-08-12 15:58:54 allanjones Exp $ -->
+<!-- $Id: empty_project.xml,v 1.17 2006-08-16 11:00:38 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->

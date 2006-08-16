@@ -20,7 +20,7 @@
       easier to use both features that are part of the original XDoclet as well
       as the ones made available by genesis.</p>
       <p>The current version of the extensions contains all features that are
-      part of XDoclet 1.2.2 and some modifications as explained below.</p>
+      part of XDoclet 1.2.3 and some modifications as explained below.</p>
     </section>
     <section name="genesis module">
       <p><a href="http://jakarta.apache.org/commons/validator/">Commons
