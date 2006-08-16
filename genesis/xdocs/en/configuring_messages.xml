@@ -23,7 +23,7 @@
       </p>
       <ul>
         <li>Validation</li>
-        <li>Disply values for <code>Enum</code> constants (in a
+        <li>Display values for <code>Enum</code> constants (in a
         <code>ClassName.CONSTANT=Display value</code> format)</li>
         <li>Messages for the default views provided with genesis, such as the
         one used for <code>OptionDialog</code></li>
