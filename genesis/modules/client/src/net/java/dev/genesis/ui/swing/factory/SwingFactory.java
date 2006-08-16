@@ -57,6 +57,8 @@ public class SwingFactory {
                blankLabelProperty);
       }
 
+      combobox.setRenderer(new KeyValueListCellRenderer(combobox));
+
       return combobox;
    }
 
@@ -80,7 +82,6 @@ public class SwingFactory {
       JComboBox combobox = createComboBox(keyProperty, valueProperty,
             blankLabelProperty);
       combobox.setName(name);
-      combobox.setRenderer(new KeyValueListCellRenderer(combobox));
 
       binder.getLookupStrategy().register(name, combobox);
 
