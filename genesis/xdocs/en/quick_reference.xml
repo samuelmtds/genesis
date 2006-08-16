@@ -678,7 +678,7 @@ public class FormExample {
         href="http://jakarta.apache.org/commons/validator/">Commons Validator</a>.</p>
         <p>Annotation <code>@ValidateBefore</code> may be used in actions that
         can only be executed when validation succeeds. May be only used for
-        actions (methods with <a href="#@Action">@Action</a>annotation) and not
+        actions (methods with <a href="#@Action">@Action</a> annotation) and not
         for attributes.</p>
         <table>
           <tr>
