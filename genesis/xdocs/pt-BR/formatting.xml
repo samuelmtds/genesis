@@ -13,10 +13,10 @@
       <code>net.java.dev.genesis.text</code>.</p>
       <p>Encontra-se neste pacote a interface <code>Formatter</code>, que define
       o método <code>format(Object)</code>. Este método converte o objeto
-      passado em uma String formatada. Da mesma forma como outros componentes
-      comuns do framework, existe um registro padrão de implementações da
-      interface, a classe <code>FormatterRegistry</code>. As seguintes
-      implementações estão registradas por padrão nessa classe:</p>
+      passado em uma String formatada. Da mesma forma como outros componentes do 
+      framework, existe um registro padrão de implementações da interface, a 
+      classe <code>FormatterRegistry</code>. As seguintes implementações estão 
+      registradas por padrão nessa classe:</p>
       <ul>
         <li><code>EnumFormatter</code> converte instâncias de 
         <code>java.lang.Enum</code> e 

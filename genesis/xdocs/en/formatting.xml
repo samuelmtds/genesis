@@ -1,51 +1,52 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Formatting</title>
+    <title>Formatting data</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-    <section name="Formatting">
+    <section name="Formatting data">
       <p>Since formatting information so it can be displayed on the screen is a
-      very important part of any graphic application, it's expected doing so is
-      easy and also configurable. The API used for this purpose on genesis is
+      very important part of any graphical application, it's expected doing so 
+      is easy and configurable. The API used for this purpose on genesis is
       implemented in <code>net.java.dev.genesis.text</code>.</p>
-      <p>In this package resides an interface called <code>Formatter</code>,
-      that defines a <code>format(Object)</code> method. This methods converts
+      <p>This package contains an interface called <code>Formatter</code>,
+      that defines a <code>format(Object)</code> method. This method converts
       its argument to a formatted String. Similarly to what happens to other
-      common framework components, there's a registry of default interface
+      framework components, there's a registry of default interface
       implementations per class, the <code>FormatterRegistry</code> class. The
       following implementations are initially registered in this class:</p>
       <ul>
-        <li><code>EnumFormatter</code> converts
+        <li><code>EnumFormatter</code> converts <code>java.lang.Enum</code> and
         <code>net.java.dev.reusablecomponents.lang.Enum</code> instances by
-        looking up in the
-        <a href="configuring_messages.html#Configuring messages"><code>ResourceBundle</code></a> the
-        message configured by a key formed by class name without package + '.' +
-        constant name. If this message is not found, a message will be logged as
-        INFO and the instance converted by using <code>toString()</code>.</li>
+        looking up in the <a 
+        href="configuring_messages.html#Configuring messages"><code>ResourceBundle</code></a>
+        the message configured by the key composed by class name without 
+        package + '.' + constant name. If this message is not found, a INFO 
+        message will be logged and the instance converted by using 
+        <code>toString()</code>.</li>
         <li><code>DefaultFormatter</code> is registered for all remaining types
         and converts instances using <code>toString()</code> - except when they
         are <code>null</code>, when it returns a zero-length String.</li>
       </ul>
       <p>To register a new formatter for a class the method
       <code>register(Class,Formatter)</code> from <code>FormatterRegistry</code>
-      may be used.</p>
+      can be used.</p>
       <p>However, the ability of registering a formatter instance per class
-      may not be enough for some situations. For example, when a
+      may not work in some situations. For example, when a
       <code>boolean</code> property is displayed as text, it may be necessary
       to display a custom text instead of the <code>true</code> and
       <code>false</code> constants. genesis has an API that allows a specific
       formatter instance to be used to display a field. Some steps are required
       to use this feature:</p>
       <ol>
-        <li>If using Thinlet binding, instead of calling some version of the <code>bind(..)</code>
-        method, a <code>ThinletBinder</code> instance should be prepared by
-        calling either <code>prepareBinder(form)</code> or
+        <li>If Thinlet binding is being used, instead of calling some version of 
+        the <code>bind(..)</code> method, a <code>ThinletBinder</code> instance 
+        should be prepared by calling either <code>prepareBinder(form)</code> or
         <code>prepareBinder(widget,form)</code>, both methods defined in
         <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
-        <li>The formatter instance can be registered using the
+        <li>The formatter instance should be registered using the
         <code>registerFormatter(String,Formatter)</code> method specified by
         <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code> or
         <code>net.java.dev.genesis.ui.swing.SwingBinder</code>, according to
@@ -54,7 +55,7 @@
         whose formatter will be overridden. The property name should be:
           <ul>
             <li>If it is a simple property, returned by a getter method, it is
-            a simple property name.</li>
+            the simple property name.</li>
             <li>If the formatter instance should be used for combobox or list
             items or for a column in a table, the property name should be
             composed as
@@ -68,9 +69,9 @@
         converter must be overriden by calling the
         <code>registerConverter(String,Converter)</code> method.
         <code>org.apache.commons.beanutils.Converter</code> is part of
-        Jakarta Commons BeanUtils. Please refer to this framework documentation
-        if this interface must be overridden.</li>
-        <li>Finally, the binding should be manually performed by calling the
+        Jakarta Commons BeanUtils and you should refer to this framework's 
+        documentation if this interface must be implemented.</li>
+        <li>Finally, the binding should be performed by calling the
         <code>bind()</code> method.</li>
       </ol>
       <p>A short example of these steps can be seen below:</p>
@@ -101,12 +102,13 @@ binder.bind();
       <subsection name="Virtual properties">
         <p>Since release 2.2, it is possible to work with virtual properties,
         i.e., properties that don't exist in the object being displayed. These
-        properties have their display value determined by a specific formatter.
-        If you're using Thinlet, the formatter must be registered
-        in the <code>ThinletBinder</code> instance. If you're using Swing, and the 
-        <code>TableCellRenderer</code> of <code>TableColumn</code> has not been
-        customized, the formatter must be registered in the
-        <code>SwingBinder</code> instance.</p>
+        properties have their display value determined by a specific 
+        formatter.</p>
+        <p>If you're using Thinlet, the formatter must be registered
+        in the <code>ThinletBinder</code> instance. If you're using Swing, and 
+        the <code>TableCellRenderer</code> instance for the 
+        <code>TableColumn</code> has not been customized, the formatter must be 
+        registered in the <code>SwingBinder</code> instance.</p>
         <p>The process for defining and displaying a virtual property is
         basically the same of a regular property, except for the following
         things:</p>
@@ -208,8 +210,8 @@ binder.registerFormatter("widget.virtualValue", virtual);
 binder.bind();
 </source>
         <p>It is important to notice that although the name of the column is
-        prefixed with <code>virtual:</code>, this does not affect how the
-        property name is composed for registering the formatter.</p>
+        prefixed with <code>virtual:</code>, the way the property name is 
+        composed for registering the formatter is not affected.</p>
       </subsection>
    </section>
   </body>
