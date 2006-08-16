@@ -190,16 +190,16 @@ genesis-aspect-annotated-&lt;version&gt;.jar
         <tr>
           <td>genesis-annotation-jdk5-&lt;version&gt;.jar</td>
           <td>genesis-annotation</td>
-          <td>Sim</td>
-          <td>Sim</td>
-          <td>Não</td>
+          <td>yes</td>
+          <td>yes</td>
+          <td>no</td>
         </tr>
         <tr>
           <td>genesis-annotation-jdk14-&lt;version&gt;.jar</td>
           <td>genesis-annotation</td>
-          <td>Sim</td>
-          <td>Sim</td>
-          <td>Não</td>
+          <td>yes</td>
+          <td>yes</td>
+          <td>no</td>
         </tr>
       </table>
         <p>The jar file <code>genesis-annotation-jdk5-&lt;version&gt;.jar</code>
