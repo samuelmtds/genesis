@@ -711,7 +711,7 @@
          run.additional.classpath-->
    </target>
 
-   <target name="run:init" depends="run:pre-init,-do-run-init,run:post-init" />
+   <target name="run:init" depends="init-paths,run:pre-init,-do-run-init,run:post-init" />
 
    <target name="run:check-classpath-conditions" depends="run:init">
       <condition property="run.set.custom.classpath">
