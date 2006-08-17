@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Paginação e Pesquisas dinâmicas e </title>
+    <title>Paginação e pesquisas dinâmicas</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
@@ -92,8 +92,8 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
       critérios de seleção mudam em tempo de execução, não os valores passados
       para estes - integrando essa funcionalidade tanto com os componentes de
       interface gráfica como com os componentes de negócio. Abaixo, mostraremos
-      o suporte a pesquisas dinâmicas com hibernate, e logo mais, como é o suporte
-      na parte cliente.</p>
+      o suporte a pesquisas dinâmicas com Hibernate, e na seqüência, como é o 
+      suporte na parte cliente.</p>
       <subsection name="Pesquisas dinâmicas com Criteria">
         <p>Embora o Hibernate possua suporte a pesquisas dinâmicas, isto é, com
         cláusulas "montadas" ou definidas em tempo de execução através da
@@ -110,11 +110,12 @@ public class ExemploPaginacaoHibernate extends AbstractHibernateCommand {
         <code>HibernateCriteria</code> nos momentos apropriados. Da mesma forma
         que ocorre com a primeira interface, existe uma classe base para facilitar
         a implementação de <code>HibernateCriteria</code>,
-        <code>AbstractHibernateCriteria</code>. Esta classe auxiliar define o
+        <code>AbstractHibernateCritcodeeria</code>. Esta classe auxiliar define o
         método <code>getCriteria()</code>, além de outros métodos utilitários.</p>
         <p>O método de negócio que precisa da instância de <code>Criteria</code>
-        para sua execução recebe a anotação <code>@Criteria
-        &lt;NomeDaClasseMapeadaNoHibernate&gt; &lt;order-by=propriedades&gt;</code>.
+        para sua execução recebe a anotação <code>@Criteria(value=
+        &lt;ClasseMapeadaNoHibernate&gt;.class,
+        order-by={&lt;propriedades&gt;})</code>.
         Essa anotação implica que o método também é <code>@Remotable</code>,
         mantendo assim a remotabilidade transparente. Antes de invocar este
         método e depois de ter invocado <code>setCriteria(Criteria)</code>, os
@@ -172,14 +173,14 @@ public class PesquisaPessoa extends AbstractHibernateCriteria {
           resultado retornado para o cliente de forma transparente.</li>
         </ul>
         </p>
-        <p>É possível utilizar a anotação sem informar o nome da classe mapeada no
-        Hibernate. Neste caso, a instância de <code>Criteria</code> não será
-        criada e o valor injetado na classe será <code>null</code>, mas o resto do
-        comportamento descrito acima será mantido. Isto é útil quando é necessário
-        realizar pesquisas dinâmicas complexas que não podem ser implementadas com
-        <code>Criteria</code>.</p>
+        <p>Para casos específicos, é possível utilizar a anotação sem informar o 
+        nome da classe mapeada no Hibernate. Neste caso, a instância de 
+        <code>Criteria</code> não será criada e o valor injetado na classe será 
+        <code>null</code>, mas o resto do comportamento descrito acima será 
+        mantido. Isto é útil quando é necessário realizar pesquisas dinâmicas 
+        complexas que não podem ser implementadas com <code>Criteria</code>.</p>
       </subsection>
-      <subsection name="Pesquisas dinâmicas (parte cliente)">
+      <subsection name="Pesquisas dinâmicas no codigo cliente">
         <p>Na parte cliente, para permitir que somente as propriedades prenchidas
         sejam utilizadas na busca, basta fazer:</p>
 <source>
