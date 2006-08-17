@@ -327,7 +327,7 @@ private JTable stateTable;
   ...
   private initComponents() {
      ...
-     stateTable = new JTable(new DefaultTableModel(new String[] {"Acronym", "Description"}), 0);
+     stateTable = new JTable(new DefaultTableModel(new String[] {"Acronym", "Description"}, 0));
      stateTable.setName("state");
      stateTable.putClientProperty(SwingBinder.COLUMN_NAMES, new String[] {"acronym", "description"});
   }

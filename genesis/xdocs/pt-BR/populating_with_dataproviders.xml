@@ -341,7 +341,7 @@ private JTable estadoTable;
   ...
   private initComponents() {
      ...
-     estadoTable = new JTable(new DefaultTableModel(new String[] {"Sigla", "Descrição"}), 0);
+     estadoTable = new JTable(new DefaultTableModel(new String[] {"Sigla", "Descrição"}, 0));
      estadoTable.setName("estado");
      estadoTable.putClientProperty(SwingBinder.COLUMN_NAMES, new String[] {"sigla", "descricao"});
   }
