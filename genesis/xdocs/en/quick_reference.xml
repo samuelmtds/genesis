@@ -8,12 +8,13 @@
   </properties>
   <body>
     <section name="Annotation quick reference guide">
-      <p>This quick reference guide documents the annotations used by genesis.
-      This includes annotations for UI and server components. Some examples
-      provided to ilustrate the annotation usage.</p>
+      <p>Most genesis features only require annotations to be used. This quick
+      reference guide explain how these annotations work and provide some usage
+      examples.</p>
     </section>
-    <section name="genesis Annotations">
-      <p>genesis annotations are classified by the place they should be used at:</p>
+    <section name="genesis annotations">
+      <p>genesis annotations are classified by the element (scope) they should 
+      be placed at:</p>
       <ul>
         <li><b>Class</b>: use before a class definition</li>
         <li><b>Attribute</b>: use before an attribute getter</li>
@@ -24,7 +25,7 @@
         <table>
           <tr>
             <th>Scope</th>
-            <th>Annotation Tag</th>
+            <th>Annotation</th>
           </tr>
           <tr>
             <td>Class</td>
@@ -72,7 +73,7 @@
         <table>
           <tr>
             <th>Scope</th>
-            <th>Annotation Tag</th>
+            <th>Annotation</th>
           </tr>
           <tr>
             <td>Method</td>
@@ -89,7 +90,7 @@
         <table>
           <tr>
             <th>Scope</th>
-            <th>Annotation Tag</th>
+            <th>Annotation</th>
           </tr>
           <tr>
             <td>Class</td>
@@ -121,7 +122,7 @@
       </subsection>
     </section>
     <section name="genesis script functions">
-      <p>genesis add these functions as extensions to JXPath:</p>
+      <p>genesis add these functions as extensions to script languages:</p>
       <ul>
         <li>isEmpty(any), isNotEmpty(any)</li>
         <li>equals(any,any), notEquals(any,any)</li>
@@ -129,22 +130,21 @@
         </li>
       </ul>
       <p>These functions may be applied to all annotations that accept boolean
-      scripting expressions as parameters.
-      With <a href="generic_scripting.html">JXPath</a>
-      the <b>g:</b> prefix identifies the genesis functions' namespace. Core
-      JXPath functions don't use any prefix.</p>
+      scripting expressions as parameters. With JXPath and EL, the <b>g:</b> 
+      prefix identifies genesis functions namespace. For JavaScript and 
+      Beanshell, a variable named <code>genesis</code> is exposed.</p>
       <subsection name="isEmpty(any), isNotEmpty(any)">
         <p>Checks whether a field is empty or not. When the argument is a form
-        property, the <a href="#@EmptyResolver">EmptyResolver</a> instance configured for it is
-        used to determine the return value. If the argument is a variable or a constant,
-        a default <code>EmptyResolver</code> instance for the expression type is
-        obtained from <code>EmptyResolverRegistry</code> and used for
-        evaluation.</p>
-        <p>Specific syntax for default supported script languages are shown
-        bellow:</p>
+        property, the <a href="#@EmptyResolver">EmptyResolver</a> instance 
+        configured for it is used to determine the return value. If the argument 
+        is a variable or a constant, a default <code>EmptyResolver</code> 
+        instance for the expression type is obtained from 
+        <code>EmptyResolverRegistry</code> and used for evaluation.</p>
+        <p>The table below shows which syntax to use for each supported script 
+        language:</p>
         <table>
           <tr>
-            <th>Script</th>
+            <th>Language</th>
             <th>isEmpty</th>
             <th>isNotEmpty</th>
           </tr>
@@ -167,14 +167,15 @@
       </subsection>
       <subsection name="equals(any,any), notEquals(any,any)">
         <p>Checks if a field value is equal to some constant or another field
-        value. Uses any <code>@EqualityComparator</code> defined class available
-        or a default implementation to make this decision. Accepts numbers,
+        value. Uses the configured <a href=
+        "#@EqualityComparator">@EqualityComparator</a>s instances if available
+        or a default implementation to evaluate the result. Accepts numbers,
         strings, fields or script functions as arguments.</p>
-        <p>Specific syntax for default supported script languages are shown
-        bellow:</p>
+        <p>The table below shows which syntax to use for each supported script 
+        language:</p>
         <table>
           <tr>
-            <th>Linguagem</th>
+            <th>Language</th>
             <th>equals</th>
             <th>notEquals</th>
           </tr>
@@ -200,41 +201,41 @@
         <p>Checks whether a field value has been changed or not. genesis
         internally keeps control of fields that have their value changed in the
         current iteraction using the <code>EqualityComparator</code> instance
-        configured for the property.
-        </p>
-        <p>Specific syntax for default supported script languages are shown
-        bellow:</p>
+        configured for the property.</p>
+        <p>The table below shows which syntax to use for each supported script 
+        language:</p>
         <table>
           <tr>
-            <th>Linguagem</th>
+            <th>Language</th>
             <th>hasChanged</th>
             <th>hasNotChanged</th>
           </tr>
           <tr>
             <th>JXPath</th>
-            <td>g:hasChanged(campoDoForm)</td>
-            <td>g:hasNotChanged(campoDoForm)</td>
+            <td>g:hasChanged(formField)</td>
+            <td>g:hasNotChanged(formField)</td>
           </tr>
           <tr>
-            <th>javascript ou Beanshell</th>
-            <td>genesis.hasChanged("form:campoDoForm")</td>
-            <td>genesis.hasNotChanged("form:campoDoForm")</td>
+            <th>JavaScript/Beanshell</th>
+            <td>genesis.hasChanged("form:formField")</td>
+            <td>genesis.hasNotChanged("form:formField")</td>
           </tr>
           <tr>
             <th>EL</th>
-            <td>g:hasChanged("form:campoDoForm")</td>
-            <td>g:hasNotChanged("form:campoDoForm")</td>
+            <td>g:hasChanged("form:formField")</td>
+            <td>g:hasNotChanged("form:formField")</td>
           </tr>
         </table>
       </subsection>
         <p><a href="conditions.html#Verifying_field_value_changes_and_doing_comparisson_in___________conditional_expressions">More info...</a></p>
     </section>
-    <section name="Tag Reference">
+    <section name="Reference">
       <subsection name="@Form">
-        <p>Mark this class as a genesis form. genesis forms contain UI logic and
-        are not coupled to the graphical API used to display screens. A form is
-        just a JavaBean that has annotations that indicate how its properties
-        and methods should be handled by a UI.</p>
+        <p>Mark this class as a genesis form and allows other UI-related 
+        annotations to be used in this class (<code>@Action</code>,
+        <code>@EnabledWhen</code>, etc). genesis default implementation uses 
+        this annotation as an indication that form support infrastructure 
+        objects should be generated for this class.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -249,18 +250,18 @@
             <td></td>
           </tr>
         </table>
-  <p>Example:</p>
-  <source>
+        <p>Example:</p>
+<source>
 <b>@Form</b>
 public class MyForm {
-<b>...</b>
-  </source>
+// ...
+</source>
     <p><a href="binding.html#Binding">More info...</a></p>
       </subsection>
       <subsection name="@Condition">
         <p>Declares a variable in current script language context. The variable
-        has a name and represents a conditional expression.
-        This annotation may be used at class level, field level or method level.</p>
+        has a name and represents a conditional expression. This annotation may 
+        be used at class level, attribute level or method level.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -275,75 +276,64 @@ public class MyForm {
             <td><b>Yes</b></td>
           </tr>
         </table>
-  <p>Example (Javascript):</p>
+        <p>Example (Javascript):</p>
 <source>
 @Form
 <b>@Condition("findRoleCondition=genesis.isNotEmpty('form:roleCode') &amp;&amp; genesis.hasChanged('form:roleCode')")</b>
 public class InsertUpdateForm {
-<b>...</b>
    @Action
    @CallWhen("<b>findRoleCondition</b>")
    public void findRole() throws Exception {
-   <b>...</b>
-   </source>
-
-  <p>Example (Beanshell):</p>
-  <source>
+     // ...
+</source>
+         <p>Example (Beanshell):</p>
+<source>
 @Form
 <b>@Condition("findRoleCondition=genesis.isNotEmpty(\"form:roleCode\") &amp;&amp; genesis.hasChanged(\"form:roleCode\")")</b>
 public class InsertUpdateForm {
-<b>...</b>
    @Action
    @CallWhen("<b>findRoleCondition</b>")
    public void findRole() throws Exception {
-   <b>...</b>
-   </source>
+      // ...
+</source>
 
-  <p>Example (EL):</p>
-  <source>
+         <p>Example (EL):</p>
+<source>
 @Form
 <b>@Condition("findRoleCondition=g:isNotEmpty('form:roleCode') &amp;&amp; g:hasChanged('form:roleCode')")</b>
 public class InsertUpdateForm {
-<b>...</b>
    @Action
    @CallWhen("<b>${findRoleCondition}</b>")
    public void findRole() throws Exception {
-   <b>...</b>
-   </source>
+      // ...
+</source>
         
-  <p>Example (JXPath):</p>
-  <source>
+        <p>Example (JXPath):</p>
+<source>
 @Form
 <b>@Condition("findRoleCondition=g:isNotEmpty(roleCode) and g:hasChanged(roleCode)")</b>
 public class InsertUpdateForm {
-<b>...</b>
    @Action
    @CallWhen("<b>$findRoleCondition</b>")
    public void findRole() throws Exception {
-   <b>...</b>
-   </source>
-    <p><a href="conditions.html#Declaring_conditions">More Info...</a></p>
+      // ...
+</source>
+        <p><a href="conditions.html#Declaring_conditions">More Info...</a></p>
       </subsection>
       <subsection name="@DataProvider">
-      <p>This annotation may be used in methods returning either a
-      <code>java.util.List</code> or an array. Values returned by the method
-      will be used to populate a combo or a list or a table widget.
-      <code>objectField</code>, if specified, should receive as a parameter
-      the name of a property that will hold the instance selected on the
-      widget. This property should be of the same type or a superclass of the
-      type returned by the annotated method, an array of this type or a
-      <code>List</code>.
-      <code>indexField</code> is the property that will hold indexes for the
-      selected elements on the widget. It must be an <code>int</code> or an
-      <code>Integer</code>, an array of one of these types or a
-      <code>List</code>. At least one of these two parameters or
-      <code>widgetName</code> must be informed.</p>
-      <p>The widget <code>name</code> is equal to the value specified for
-      <code>objectField</code> or <code>indexField</code>, if
-      <code>widgetName</code> is not specified. When both are specified,
-      <code>objectField</code> value must be equal to the widget
-      <code>name</code>.
-      </p>
+        <p>This annotation may be used in methods returning either a
+        <code>java.util.List</code> or an array. Values returned by the method
+        will be used to populate a combo or a list or a table widget.
+        <code>objectField</code>, if specified, should receive as a parameter
+        the name of a property that will hold the instance selected on the
+        widget. <code>indexField</code> is the property that will hold indexes 
+        for the selected elements on the widget.</p>
+        <p>Both <code>objectField</code> and <code>indexField</code> should be
+        the names form attributes. While <code>objectField</code> must either be
+        a <code>java.util.List</code> or a JavaBean - <code>User</code>, for 
+        instance -, <code>indexField</code> must either be a 
+        <code>java.util.List</code> of <code>Integer</code>s or an 
+        <code>int</code>/<code>Integer</code> array.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -353,32 +343,33 @@ public class InsertUpdateForm {
           </tr>
           <tr>
             <td>objectField</td>
-            <td>form's property name (which is also a widgetName, if
+            <td>name of a form property  (also the widget name if
             <code>widgetName</code> is not specified)</td>
-            <td>Property to be set whenever some content is selected
-            and also the name of widget that will be populated with method's
-            return if <code>widgetName</code> is not specified</td>
-            <td>just in case there is neither <code>indexField</code>
-            nor <code>widgetName</code> specified</td>
+            <td>Property to be set whenever selction changes and also the name 
+            of widget that will be populated by the method return if 
+            <code>widgetName</code> is not specified</td>
+            <td>if neither <code>indexField</code> nor <code>widgetName</code> 
+            are specified</td>
           </tr>
           <tr>
             <td>indexField</td>
-            <td>name of a form's property.
-             (also widget's name if neither <code>objectField</code> nor
-             <code>widgetName</code> are specified)</td>
+            <td>name of a form property (also the widget name if neither 
+            <code>objectField</code> nor <code>widgetName</code> are 
+            specified)</td>
             <td>name of a form's property that holds indexes of the selected
             elements on the widget. It must be an <code>int</code> or an
             <code>Integer</code>, an array of one of these types or a
             <code>List</code></td>
-            <td>just in case there is neither <code>objectField</code>
-            nor <code>widgetName</code> specified</td>
+            <td>if neither <code>objectField</code> nor <code>widgetName</code> 
+            are specified</td>
           </tr>
           <tr>
             <td>widgetName</td>
-            <td>simply widgetName</td>
-            <td>Widget that will be filled with method's data</td>
-            <td>just in case there is neither <code>objectField</code>
-            nor <code>indexField</code> specified</td>
+            <td>widget name</td>
+            <td>Name of the widget that will be populated by this data 
+            provider</td>
+            <td>if neither <code>objectField</code> nor <code>indexField</code> 
+            are specified</td>
           </tr>
           <tr>
             <td>callOnInit</td>
@@ -395,14 +386,14 @@ public class InsertUpdateForm {
             <td>No, default: <code>true</code></td>
           </tr>
         </table>
-  <p>Example (InsertUpdateForm.java):</p>
-  <source>
+        <p>Example (InsertUpdateForm.java):</p>
+ <source>
    <b>@DataProvider(objectField="country")</b>
    public List provideCountries() throws Exception {
-   <b>...</b>
-  </source>
-    <p><a href="populating_with_dataproviders.html#Populating_comboboxes__lists_and_tables">
-    More info...</a></p>
+      // ...
+</source>
+        <p><a href="populating_with_dataproviders.html#Populating_comboboxes__lists_and_tables">
+More info...</a></p>
       </subsection>
       <subsection name="@NotBound">
         <p>Makes a property unmodifiable and undisplayable by genesis. It may
@@ -421,21 +412,19 @@ public class InsertUpdateForm {
             <td></td>
           </tr>
         </table>
-  <p>Example:</p>
+        <p>Example:</p>
   <source>
 @Form
 public class FormExample {
-<b>...</b>
    <b>@NotBound</b>
    public String getProperty() {
-   <b>...</b>
-  </source>
+      // ...
+</source>
       </subsection>
       <subsection name="@EnabledWhen">
-        <p>Enables a widget upon a certain condition (some script expression)
-        is true. This annotation may
-        be used in attributes and actions.
-        Variables defined with <a href="#@Condition">@Condition</a> can be used.</p>
+        <p>Enables a widget when a condition script expression is true. This 
+        annotation may be used in attributes and actions. Variables defined by 
+        <a href="#@Condition">@Condition</a> may be used.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -444,68 +433,69 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>conditional script expression</td>
             <td>condition upon which widget is enabled</td>
             <td><b>Yes</b></td>
           </tr>
         </table>
-  <p>Example (Javascript):</p>
-  <source>
+        <p>Example (Javascript):</p>
+<source>
    @Condition("usersSelected=genesis.isNotEmpty('form:users')")
    public List getUsers() {
       return users;
    }
-   ... 
+
    @Action
    <b>@EnabledWhen("usersSelected")</b>
    public void remove() throws Exception {
-   <b>...</b>
-  </source>
+      //  ...
+</source>
 
-  <p>Example (Beanshell):</p>
-  <source>
+        <p>Example (Beanshell):</p>
+<source>
    @Condition("usersSelected=genesis.isNotEmpty(\"form:users\")")
    public List getUsers() {
       return users;
    }
-   ... 
+
    @Action
    <b>@EnabledWhen("usersSelected")</b>
    public void remove() throws Exception {
-   <b>...</b>
-  </source>
+      // ...
+</source>
 
-  <p>Example (EL):</p>
-  <source>
+        <p>Example (EL):</p>
+<source>
    @Condition("usersSelected=g:isNotEmpty('form:users')")
    public List getUsers() {
       return users;
    }
-   ... 
+
    @Action
    <b>@EnabledWhen("${usersSelected}")</b>
    public void remove() throws Exception {
-   <b>...</b>
-  </source>
+      // ...
+</source>
         
-  <p>Example (JXPath):</p>
-  <source>
+        <p>Example (JXPath):</p>
+<source>
    @Condition("usersSelected=g:isNotEmpty(users)")
    public List getUsers() {
       return users;
    }
-   ... 
+
    @Action
    <b>@EnabledWhen("$usersSelected")</b>
    public void remove() throws Exception {
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Enabling_and_disabling_components">More info...</a></p>
+      // ...
+</source>
+        <p><a href="conditions.html#Enabling_and_disabling_components">
+More info...</a></p>
       </subsection>
       <subsection name="@VisibleWhen">
-        <p>Show or hide widgets as result from evaluating a boolean script
-        expression. Its syntax is similar to the one for
+        <p>Show or hide widgets depending on the evaluation of a boolean script
+        expression. Its syntax is similar to the one for 
         <code>@EnabledWhen</code> and it also may be used to annotate attributes
         and actions.</p>
         <table>
@@ -516,51 +506,50 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>conditional script expression</td>
             <td>condition to show or hide the widget</td>
             <td><b>Yes</b></td>
           </tr>
         </table>
-  <p>Example (Javascript):</p>
-  <source>
+        <p>Example (Javascript):</p>
+<source>
    @Action
    <b>@VisibleWhen("form.pageNumber &gt; 0")</b>
    public void previousPage() {
-   <b>...</b>
-  </source>
+      // ...
+</source>
         
-  <p>Example (Beanshell):</p>
-  <source>
+        <p>Example (Beanshell):</p>
+<source>
    @Action
    <b>@VisibleWhen("form.getPageNumber() &gt; 0")</b>
    public void previousPage() {
-   <b>...</b>
-  </source>
+      // ...
+</source>
         
-  <p>Example (EL):</p>
-  <source>
+        <p>Example (EL):</p>
+<source>
    @Action
    <b>@VisibleWhen("${form.pageNumber &gt; 0}")</b>
    public void previousPage() {
-   <b>...</b>
-  </source>
+      // ...
+</source>
         
-  <p>Example (JXPath):</p>
-  <source>
+        <p>Example (JXPath):</p>
+<source>
    @Action
    <b>@VisibleWhen("pageNumber &gt; 0")</b>
    public void previousPage() {
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Controlling_visibility">More info...</a></p>
+      // ...
+</source>
+        <p><a href="conditions.html#Controlling_visibility">More info...</a></p>
       </subsection>
       <subsection name="@CallWhen">
-        <p>Call the action when the boolean script expression evaluates to true. It can
-        only be used for actions (methods with
-        <a href="#@Action">@Action</a> or <a href="#@DataProvider">@DataProvider</a>
-        annotation) and not for attributes.
-        </p>
+        <p>Calls the annotated action when a boolean script expression evaluates 
+        to true. It can only be used for actions (methods annotated with <a 
+        href="#@Action">@Action</a> or <a href="#@DataProvider">@DataProvider</a>
+        ).</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -569,51 +558,52 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>boolean script expression</td>
-            <td>if condition evaluates true, call method</td>
+            <td>if condition evaluates true, calls method</td>
             <td><b>Yes</b></td>
           </tr>
         </table>
-  <p>Example (Javascript):</p>
-  <source>
+        <p>Example (Javascript):</p>
+<source>
    @DataProvider(objectField="state")
    <b>@CallWhen("genesis.hasChanged('form:country')")</b>
    public Collection provideState() throws Exception {
-   <b>...</b>
-  </source>
+      // ...
+</source>
 
-  <p>Example (Beanshell):</p>
-  <source>
+        <p>Example (Beanshell):</p>
+<source>
    @DataProvider(objectField="state")
    <b>@CallWhen("genesis.hasChanged(\"form:country\")")</b>
    public Collection provideState() throws Exception {
-   <b>...</b>
-  </source>
+      // ...
+</source>
         
-  <p>Example (EL):</p>
-  <source>
+        <p>Example (EL):</p>
+<source>
    @DataProvider(objectField="state")
    <b>@CallWhen("g:hasChanged('form:country')")</b>
    public Collection provideState() throws Exception {
-   <b>...</b>
-  </source>
+      // ...
+</source>
         
-  <p>Example (JXPath):</p>
-  <source>
+        <p>Example (JXPath):</p>
+<source>
    @DataProvider(objectField="state")
    <b>@CallWhen("g:hasChanged(country)")</b>
    public Collection provideState() throws Exception {
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Automatically_invoking_methods">More info...</a></p>
+      // ...
+</source>
+        <p><a href="conditions.html#Automatically_invoking_methods">More info...</a></p>
       </subsection>
       <subsection name="@ClearOn">
-        <p>Cleans field content or DataProvider widget upon a true condition
-        (boolean script expression). This annotation may
-        only be used for attributes or DataProviders, and not for actions (since actions do not
-        have content).</p>
-        <p>The value used for resetting the field is defined by the <a href="#@EmptyValue">@EmptyValue</a> annotation.</p>
+        <p>Cleans a field or a widget populated by a <a
+        href="#@DataProvider">@DataProvider</a> when a condition is true. This 
+        annotation can only be used for attributes or 
+        <code>DataProvider</code>s.</p>
+        <p>The value used for resetting the field is defined by the <a 
+        href="#@EmptyValue">@EmptyValue</a> annotation.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -622,64 +612,49 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>boolean script expression</td>
             <td>clean condition</td>
             <td><b>Yes</b></td>
           </tr>
         </table>
-  <p>Example (Javascript):</p>
-  <source>
-   <b>...</b>
+        <p>Example (Javascript):</p>
+<source>
    <b>@ClearOn("genesis.isEmpty('form:roleCode')")</b>
    public Role getRole() {
       return role;
    }
-
-   <b>...</b>
-  </source>
+</source>
         
-  <p>Example (Beanshell):</p>
-  <source>
-   <b>...</b>
+        <p>Example (Beanshell):</p>
+<source>
    <b>@ClearOn("genesis.isEmpty(\"form:roleCode\")")</b>
    public Role getRole() {
       return role;
    }
-
-   <b>...</b>
-  </source>
+</source>
         
-  <p>Example (EL):</p>
-  <source>
-   <b>...</b>
+        <p>Example (EL):</p>
+<source>
    <b>@ClearOn("g:isEmpty('form:roleCode')")</b>
    public Role getRole() {
       return role;
    }
-
-   <b>...</b>
-  </source>
+</source>
         
-  <p>Example (JXPath):</p>
-  <source>
-   <b>...</b>
+        <p>Example (JXPath):</p>
+<source>
    <b>@ClearOn("g:isEmpty(roleCode)")</b>
    public Role getRole() {
       return role;
    }
-
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Clearing_field_content">More info...</a></p>
+</source>
+        <p><a href="conditions.html#Clearing_field_content">More info...</a></p>
       </subsection>
       <subsection name="@ValidateBefore">
-        <p>Support for validation in genesis is implemented using <a
-        href="http://jakarta.apache.org/commons/validator/">Commons Validator</a>.</p>
         <p>Annotation <code>@ValidateBefore</code> may be used in actions that
-        can only be executed when validation succeeds. May be only used for
-        actions (methods with <a href="#@Action">@Action</a> annotation) and not
-        for attributes.</p>
+        should only be executed when validation succeeds. Can be only used for
+        actions (methods annotated with <a href="#@Action">@Action</a>).</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -694,24 +669,22 @@ public class FormExample {
             <td></td>
           </tr>
         </table>
-  <p>Example (InsertUpdateForm.java):</p>
-  <source>
-   <b>...</b>
+        <p>Example (InsertUpdateForm.java):</p>
+<source>
    @Action
    <b>@ValidateBefore</b>
    public void save() throws Exception {
-   <b>...</b>
-  </source>
-    <p><a href="validating_data.html#Validating_data">More info...</a></p>
+      // ...
+</source>
+        <p><a href="validating_data.html#Validating_data">More info...</a></p>
       </subsection>
       <subsection name="@EqualityComparator">
-        <p>Annotation may be used before form property getters. It identifies
-        a class that knows how to compare form element of the same type.
-        Its main parameter is the fully qualified class name (package.class)
-        that implements the interface
+        <p>Annotation used before form property getters. It identifies a class 
+        that knows how to compare elements whose type is the form property's 
+        type. Its main parameter is the class that implements
         <code>net.java.dev.genesis.equality.EqualityComparator</code>.
-        That class is internally used by <code>g:equals(any,any)</code>
-        and <code>g:notEquals(any,any)</code> functions .</p>
+        That class is internally used by the <code>equals(any,any)</code>
+        and <code>notEquals(any,any)</code> functions.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -720,36 +693,33 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
-            <td>Fully qualified class name</td>
-            <td>Class name that implements the interface
-            <code>EqualityComparator</code>.</td>
+            <td>value</td>
+            <td><code>Class</code></td>
+            <td>Class that implements the <code>EqualityComparator</code> 
+            interface.</td>
             <td><b>Yes, except when properties exist</b></td>
           </tr>
           <tr>
-            <td>PropertyName</td>
-            <td>A property name of the specified class</td>
+            <td>properties</td>
+            <td>A property of the specified class</td>
             <td>Attributes of the comparator class defined in a string array (key=value)</td>
             <td><b>No</b></td>
           </tr>
         </table>
-  <p>Example</p>
-  <source>
-   <b>...</b>
+        <p>Example</p>
+<source>
    <b>@EqualityComparator(value=net.java.dev.genesis.equality.StringEqualityComparator.class, properties="trim=false")</b>
    public String getName() {
       return name;
    }
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Comparing_values">More info...</a></p>
+</source>
+        <p><a href="conditions.html#Comparing_values">More info...</a></p>
       </subsection>
       <subsection name="@Cloner">
         <p>Makes it possible to configure the class used for copying the 
-        previous state of a form property. Its main parameter is the fully 
-        qualified name of a class (package.Class) that implements
-        <code>net.java.dev.genesis.cloning.Cloner</code>. It can be used only in
-        form attributes.</p>
+        previous state of a form property. Its main parameter is a class that 
+        implements <code>net.java.dev.genesis.cloning.Cloner</code>. It can be 
+        used only in form attributes.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -758,38 +728,35 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
-            <td>Fully qualified class name</td>
-            <td>Name of a class that implements <code>Cloner</code>.</td>
+            <td>value</td>
+            <td><code>Class</code></td>
+            <td>Class that implements <code>Cloner</code>.</td>
             <td><b>Yes, unless properties are used</b></td>
           </tr>
           <tr>
-            <td>propertyName</td>
+            <td>properties</td>
             <td>Name of a property of the specified class</td>
-            <td>Attributes of the comparator class defined in a string array (key=value)</td>
+            <td>Attributes of the cloner class defined in a string array (key=value)</td>
             <td><b>No</b></td>
           </tr>
         </table>
-  <p>Example</p>
-  <source>
-   <b>...</b>
+        <p>Example</p>
+<source>
    <b>@Cloner(value=mypackage.MyCloner.class, properties="acceptNull=true")</b>
    public MyBean getBean() {
       return bean;
    }
-   <b>...</b>
-  </source>
+</source>
         <p><a href="conditions.html#Changing_the_way_values_are_cloned">More 
         info...</a></p>
       </subsection>
       <subsection name="@EmptyResolver">
-        <p>Annotation may be used before form property getters. It identifies a
-        class that knows how to compare elements of the same type. Its main
-        parameter is the fully qualified class name (package.class) that
-        implements the interface
+        <p>Annotation that can be used before form property getters. It 
+        identifies a class that knows how to determine if the annotated element 
+        is empty. Its main parameter is a class that implements
         <code>net.java.dev.genesis.resolvers.EmptyResolver</code>.
-        That class is used internally by <code>g:isEmpty(any)</code> and
-        <code>g:isNotEmpty(any)</code> functions.</p>
+        That class is used internally by the <code>isEmpty(any)</code> and
+        <code>isNotEmpty(any)</code> functions.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -798,34 +765,33 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
-            <td>Fully qualified class name</td>
-            <td>Class name that implements the
-            <code>EmptyResolver</code> interface.</td>
+            <td>value</td>
+            <td><code>Class</code></td>
+            <td>Class that implements the <code>EmptyResolver</code> 
+            interface.</td>
             <td><b>Yes, except when properties exist</b></td>
           </tr>
           <tr>
-            <td>propertyName</td>
-            <td>Property name of the specified class</td>
-            <td>Property name of the class that implements
-            <code>EmptyResolver</code> interface. Might have many parameters.
-            </td>
+            <td>properties</td>
+            <td>Name of a property of the specified class</td>
+            <td>Attributes of the <code>EmptyResolver</code> class defined in a 
+            String array (key=value)</td>
             <td><b>No</b></td>
           </tr>
         </table>
-  <p>Example</p>
-  <source>
-   <b>...</b>
+        <p>Example:</p>
+<source>
    <b>@EmptyResolver(value=net.java.dev.genesis.resolvers.StringEmptyResolver.class, properties="trim=false")</b>
    public String getName() {
       return name;
    }
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Determining_if_a_field_is_empty">More info...</a></p>
+</source>
+        <p><a href="conditions.html#Determining_if_a_field_is_empty">More 
+        info...</a></p>
       </subsection>
       <subsection name="@EmptyValue">
-        <p>It specifies the empty value of a field. It's used together with the <a href="#@ClearOn">@ClearOn</a> annotation.</p>
+        <p>Specifies the empty value dor a field. It's used together with the <a 
+        href="#@ClearOn">@ClearOn</a> annotation.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -834,28 +800,26 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>Literal value</td>
             <td>The value for an empty field</td>
             <td><b>Yes</b></td>
           </tr>
         </table>
-  <p>Exemplo de uso</p>
-  <source>
-   <b>...</b>
+        <p>Example:</p>
+<source>
    <b>@EmptyValue("-1")</b>
    public int getAge() {
       return age;
    }
-   <b>...</b>
-  </source>
-    <p><a href="conditions.html#Clearing_field_content">More info...</a></p>
+</source>
+        <p><a href="conditions.html#Clearing_field_content">More info...</a></p>
       </subsection>
       <subsection name="@Action">
         <p>It defines a method as a target of the graphical interface binding.
         The action may represent a button and/or simply a method that is called
         whenever a condition is satisfied. The widget name has to be the same
-        as the form method name in order to occur the dynamic binding.</p>
+        as the form method name so that dynamic binding work.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -870,28 +834,25 @@ public class FormExample {
             <td></td>
           </tr>
         </table>
-  <p>Usage example (InsertUpdateForm.java):</p>
-  <source>
-   <b>...</b>
+        <p>Usage example (InsertUpdateForm.java):</p>
+<source>
    <b>@Action</b>
    @ValidateBefore
    public void save() throws Exception {
-   <b>...</b>
-  </source>
-        <p>defines the <b>save</b> method as the target of a button action that
+      // ...
+</source>
+        <p>defines the <b>save</b> method as the target of a button action named
         has a "save" as the its name in the graphical interface.</p>
-        <p><a href="actions.html#Implementing_actions_in_forms_and_views">More info...</a></p>
+        <p><a href="binding.html">More info...</a></p>
       </subsection>
       <subsection name="@BeforeAction">
-        <p>It may be applied to a view method. Views are classes that extend
-        one of the supported graphical interface classes. Currently, a view
-        is a class that inherits the <code>BaseThinlet</code> class
-        (or <code>BaseDialogThinlet</code> class) or annotated with
-          <a href="#@ViewHandler">@ViewHandler</a>. The <code>@BeforeAction</code>
-        annotation applies to a view method that needs to be executed <b>
-        before</b> the <code>@Action</code> annotated method. The method name
-        must match the @Action name or this name must be indicated by an
-        anonymous parameter.</p>
+        <p>It can be applied to a view method. A view is a class that extends 
+        <code>BaseThinlet</code> (or <code>BaseDialogThinlet</code> class) or 
+        that is annotated with <a href="#@ViewHandler">@ViewHandler</a>. The 
+        <code>@BeforeAction</code> annotation should be applied to a view method 
+        that should be executed <b>before</b> an <code>@Action</code> method. The 
+        method name must match the <code>@Action</code>'s name or this name must 
+        be supplied as a parameter.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -900,7 +861,7 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>String</td>
             <td>Name of the form method whose execution will be preceeded
             by this method execution</td>
@@ -908,25 +869,22 @@ public class FormExample {
             the form method name</td>
           </tr>
         </table>
-  <p>Usage example (InsertUpdateView.java):</p>
-  <source>
-   <b>...</b>
+        <p>Usage example (InsertUpdateView.java):</p>
+<source>
    <b>@BeforeAction</b>
    public void chooseRole() throws Exception {
-   <b>...</b>
-  </source>
-    <p><a href="actions.html#Using_@BeforeAction">More info...</a></p>
+      // ...
+</source>
+        <p><a href="actions.html#Using_@BeforeAction">More info...</a></p>
       </subsection>
       <subsection name="@AfterAction">
-        <p>It may be applied to a view method. Views are classes that extend
-        one of the supported graphical interface classes. Currently, a view
-        is a class that inherits the <code>BaseThinlet</code> class
-        (or <code>BaseDialogThinlet</code> class) or annotated with
-          <a href="#@ViewHandler">@ViewHandler</a>. The <code>@AfterAction</code>
-        annotation applies to a view method that needs to be executed <b>after
-        </b> the <code>@Action</code> annotated method. The method name must
-        match the @Action name or this name must be indicated by an anonymous
-        parameter.</p>
+        <p>It may be applied to a view method. A view is a class that extends 
+        <code>BaseThinlet</code> (or <code>BaseDialogThinlet</code> class) or 
+        that is annotated with <a href="#@ViewHandler">@ViewHandler</a>. The 
+        <code>@AfterAction</code> annotation should be applied to a view method 
+        that should be executed <b>before</b> an <code>@Action</code> method. The 
+        method name must match the <code>@Action</code>'s name or this name must 
+        be supplied as a parameter.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -935,7 +893,7 @@ public class FormExample {
             <th>Required</th>
           </tr>
           <tr>
-            <td>anonymous</td>
+            <td>value</td>
             <td>String</td>
             <td>Name of the form method whose execution will be followed
             by this method execution</td>
@@ -943,14 +901,13 @@ public class FormExample {
             the form method name</td>
           </tr>
         </table>
-  <p>Usage example (InsertUpdateView.java):</p>
-  <source>
-   <b>...</b>
-   @AfterAction
+        <p>Usage example (InsertUpdateView.java):</p>
+<source>
+   <b>@AfterAction</b>
    public void save() {
-   <b>...</b>
-  </source>
-    <p><a href="actions.html#using_@AfterAction">More info...</a></p>
+      // ...
+</source>
+        <p><a href="actions.html#using_@AfterAction">More info...</a></p>
       </subsection>
       <subsection name="@ViewHandler">
         <p>Used in POJOs (Plain Old Java Objects) that contain methods
@@ -970,28 +927,27 @@ public class FormExample {
             <td></td>
           </tr>
         </table>
-  <p>Usage sample</p>
-  <source>
+        <p>Usage sample</p>
+<source>
 <b>@ViewHandler</b>
 public class ViewHandlerExample {
    @BeforeAction
    public boolean remove() {
-      <b>...</b>
+      // ...
    }
-<b>...</b>
 }
   </source>
-    <p><a href="actions.html#Using_POJOs_to_handle_events">More
-    info...</a></p>
+        <p><a href="actions.html#Using_POJOs_to_handle_events">More 
+info...</a></p>
       </subsection>
       <subsection name="@Remotable">
-        <p>It may be used to annotate business class methods. Methods annotated
+        <p>It can be used to annotate business class methods. Methods annotated
         as <code>@Remotable</code> are intercepted by an aspect that transfers
         the instance in which the method has been invoked to the server,
         executing it there and returning the result back to the client. This
         feature is called <b>transparent remoting</b>.</p>
-        <p>Only concrete, non-static, non-native public methods can be annotated
-        as <code>@Remotable</code>.</p>
+        <p>Only non-abstract, non-static, non-native public methods can be 
+        annotated as <code>@Remotable</code>.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -1006,32 +962,26 @@ public class ViewHandlerExample {
             <td></td>
           </tr>
         </table>
-  <p>Usage example (RoleSearchCommand.java):</p>
-  <source>
-   <b>...</b>
+        <p>Usage example (RoleSearchCommand.java):</p>
+<source>
    <b>@Remotable</b>
    public List getRoles() throws Exception {
       return getSession().createQuery("from Role").list();
    }
-   <b>...</b>
-  </source>
-    <p><a href="remoting.html#Transparent_remoting">More info...</a></p>
+</source>
+        <p><a href="remoting.html#Transparent_remoting">More info...</a></p>
       </subsection>
       <subsection name="@Transactional">
-        <p>The use of <code>@Transactional</code> automatically applies a
-        <code>@Remotable</code> annotation to the method. This way the use of
-        only one of these annotation above in a given method is needed. Besides
-        maintaining transparent remoting characteristics,
-        <code>@Transactional</code> forces the method to be executed inside a
-        JTA transaction.</p>
-        <p>Any other JTA resources accessed inside its execution will be
-        automatically included in the same transaction. The transaction context
-        will be propagated to any other method or component invoked by the first
-        one <code>@Transactional</code> annotation, without the need of any
-        additional coding.</p><p>If the method execution runs as expected, the
-        transaction will be committed at the end of the method. In case a
-        exception is launched a rollback command will be given and the exception
-        will be forwarded to the client-side's code.</p>
+        <p>It can be used to annotate business class methods. Methods annotated
+        as <code>@Transactional</code> are intercepted by an aspect that 
+        transfersthe instance in which the method has been invoked to the 
+        server, executing it there and returning the result back to the client. 
+        It is executed inside a JTA transaction, and a rollback will be used if 
+        any exception is thrown.</p>
+        <p>The use of <code>@Transactional</code> implies the same behaviour of a <a 
+        href="#@Remotable">@Remotable</a> method</p>
+        <p>Only non-abstract, non-static, non-native public methods can be 
+        annotated as <code>@Transactional</code>.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -1046,22 +996,21 @@ public class ViewHandlerExample {
             <td></td>
           </tr>
         </table>
-  <p>Example (RoleRemoveCommand.java):</p>
-  <source>
-   <b>...</b>
+        <p>Example (RoleRemoveCommand.java):</p>
+<source>
    <b>@Transactional</b>
    public boolean removeRole(final Role role) throws Exception {
-   <b>...</b>
-  </source>
-    <p><a href="transactions.html#Transaction_support">More info...</a></p>
+      // ...
+</source>
+        <p><a href="transactions.html#Transaction_support">More info...</a></p>
       </subsection>
       <subsection name="@Criteria">
-        <p>Used in methods that perform dynamic searches, which usually need a
+        <p>Used in methods that perform dynamic queries which usually need a
         <code>Criteria</code> instance in order to perform their work. This
-        annotation implies that the method is also
-        <a href="#@Remotable">@Remotable</a>, keeping transparent remoting
-        characteristics. It may only be applied to public, concrete, non-static
-        and non-native methods.</p>
+        annotation implies that the method is also<a 
+        href="#@Remotable">@Remotable</a>, keeping transparent remoting
+        characteristics. It may only be applied to public, non-abstract, 
+        non-static and non-native methods.</p>
         <table>
           <tr>
             <th>Parameters</th>
@@ -1071,29 +1020,27 @@ public class ViewHandlerExample {
           </tr>
           <tr>
             <td>value</td>
-            <td>Fully qualified class name</td>
-            <td>Hibernate mapped class name</td>
-            <td>Required if order-by properties are supplied</td>
+            <td><code>Class</code></td>
+            <td>Hibernate mapped class</td>
+            <td>Required if orderby properties are supplied</td>
           </tr>
           <tr>
             <td>orderby</td>
             <td>order-by properties</td>
             <td>String array with order-by properties<code>, e.g.:
-            @Criteria(value=meupacote.MinhaClasse.class, 
+            @Criteria(value=mypackage.MyClass.class, 
             orderby={"property1", "property2 DESC", "property3 ASC"})</code></td>
             <td>No</td>
           </tr>
         </table>
-<p>Example (UserSearchCommand.java):</p>
-  <source>
-   <b>...</b>
+        <p>Example (UserSearchCommand.java):</p>
+<source>
 public class UserSearchCommand extends AbstractHibernateCriteria {
-   <b>...</b>
    <b>@Criteria(value=net.java.dev.genesis.samples.useradmin.databeans.User.class, orderby="name")</b>
-   public Page getUsers(final int pageNumber)
-   <b>...</b>
-  </source>
-    <p><a href="paging_and_dynamic_search.html#Dynamic_criteria_searching">More info...</a></p>
+   public Page getUsers(final int pageNumber) {
+      // ...
+</source>
+        <p><a href="paging_and_dynamic_search.html#Dynamic_queries_using_Criteria">More info...</a></p>
       </subsection>
     </section>
   </body>
