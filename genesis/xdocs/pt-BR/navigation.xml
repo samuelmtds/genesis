@@ -38,12 +38,16 @@
           <item name="Integração com o Hibernate"
                 href="/pt-BR/hibernate_integration.html" />
           <item name="Binding"
-                href="/pt-BR/binding.html">
-             <item name="Binding Thinlet"
-                   href="/pt-BR/thinlet_binding.html" />
-          </item>
+                href="/pt-BR/binding.html" />
           <item name="Implementando ações mistas"
                 href="/pt-BR/actions.html" />
+        </item>
+        <item name="Funcionalidades específicas para Thinlet"
+              href="/pt-BR/thinlet_binding.html">
+           <item name="Binding Thinlet"
+                 href="/pt-BR/thinlet_binding.html" />
+           <item name="Customizando a criação de componentes"
+                 href="/pt-BR/customizing_widgets_creation.html" />
         </item>
         <item name="Funcionalidades adicionais"
               href="/pt-BR/conditions.html">
@@ -61,8 +65,6 @@
                 href="/pt-BR/configuring_messages.html" />
           <item name="Paginação e pesquisas dinâmicas" 
                 href="/pt-BR/paging_and_dynamic_search.html" />
-          <item name="Customizando a criação de componentes" 
-                href="/pt-BR/customizing_widgets_creation.html" />
         </item>
         <item name="Guia de referência rápida de anotações"
               href="/pt-BR/quick_reference.html" />

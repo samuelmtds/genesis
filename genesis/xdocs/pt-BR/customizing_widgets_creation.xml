@@ -6,7 +6,6 @@
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-   <p>Esta é uma funcionalidade específica para quem usa Thinlet como API gráfica.</p>
    <section name="Customizando a criação de componentes">
       <p>A partir da versão 2.3, é possivel customizar a maneira com que os
       componentes do Thinlet são criados através da interface 

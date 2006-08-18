@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Customizing how components are created</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-   <p>This is a Thinlet specific functionality.</p>
     <section name="Customizing how components are created">
       <p>Starting from release 2.3, it is possible to customize how componentes
       are created by using the 
@@ -14,9 +12,10 @@
       its related support classes. It is possible to do so based on either the
       class of the data for which the widget will be created or for a specific
       widget.</p>
-      <p>For instance, in order to make both table cells and list and comboboxes 
-      itens right-aligned when their content is a <code>java.lang.Number</code>
-      class, an instance of <code>WidgetFactory</code> should be registered in
+      <p>For instance, in order to make table cells, list and comboboxes 
+      itens right-aligned when their content type is 
+      <code>java.lang.Number</code>, an instance of <code>WidgetFactory</code> 
+      should be registered in
       <code>net.java.dev.genesis.ui.thinlet.WidgetFactoryRegistry</code> 
       before any code that creates widgets is executed. This can be done as 
       shown below:</p>
