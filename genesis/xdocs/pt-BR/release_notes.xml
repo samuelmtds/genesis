@@ -35,7 +35,7 @@
         <ul>
           <li>Correções de diversos problemas no build do empty-project
           (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=326">Issue
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=316">Issue
           # 316</a>,
           <a
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=322">Issue
@@ -48,7 +48,10 @@
           # 326</a>,
           <a
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=339">Issue
-          # 339</a>)</li>
+          # 339</a>, 
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=352">Issue
+          # 352</a>)</li>
         </ul>
         <p>Uma lista completa das alterações ocorridas entre a 3.0-EA2 e a 3.0-EA3
         pode ser obtida <a
