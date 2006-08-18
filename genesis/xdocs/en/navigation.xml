@@ -69,8 +69,6 @@
         <item name="Annotation quick reference guide"
               href="/en/quick_reference.html" />
       </item>
-      <item name="Understanding genesis jars"
-            href="/en/jars_explained.html" />
       <item name="Developing with genesis"
             href="/en/empty_project.html">
          <item name="For desktops"
