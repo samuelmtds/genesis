@@ -1191,23 +1191,26 @@
       <property name="webstart.jnlp.remote.name" value="remote.jnlp" />
       <property name="webstart.jnlp.single.name" value="webstart.jnlp" />
 
-      <condition property="webstart.local.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.single.name}">
+      <condition property="webstart.local.jnlp.filename" 
+                 value="${webstart.jnlp.single.name}">
          <istrue value="${local.mode.only}" />
       </condition>
-      <condition property="webstart.local.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.local.name}">
+      <condition property="webstart.local.jnlp.filename" 
+                 value="${webstart.jnlp.local.name}">
          <istrue value="${local.and.remote}" />
       </condition>
 
-      <condition property="webstart.remote.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.single.name}">
+      <condition property="webstart.remote.jnlp.filename" 
+                 value="${webstart.jnlp.single.name}">
          <istrue value="${remote.mode.only}" />
       </condition>
-      <condition property="webstart.remote.jnlp.location" 
-                 value="${webstart.jnlp.location.dir}/${webstart.jnlp.remote.name}">
+      <condition property="webstart.remote.jnlp.filename" 
+                 value="${webstart.jnlp.remote.name}">
          <istrue value="${local.and.remote}" />
       </condition>
+
+      <property name="webstart.local.jnlp.location" value="${webstart.jnlp.location.dir}/${webstart.local.jnlp.filename}" />
+      <property name="webstart.remote.jnlp.location" value="${webstart.jnlp.location.dir}/${webstart.remote.jnlp.filename}" />
    </target>
 
    <target name="webstart:clean" depends="webstart:init">
@@ -1428,6 +1431,10 @@
                        value="${genesisBasedApplication.mainClass}"/>
                <filter token="pretty.name" 
                        value="${genesisBasedApplication.prettyName}"/>
+               <filter token="local.jnlp.name" 
+                       value="${webstart.local.jnlp.filename}"/>
+               <filter token="remote.jnlp.name" 
+                       value="${webstart.remote.jnlp.filename}"/>
             </filter-tokens>
             <includes>
                <include name="**/*.html"/>
