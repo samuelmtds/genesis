@@ -16,33 +16,32 @@
       code your own classes. All compilation and installations process are
       already configured in this empty project.</p>
       <p>It's extremely important you have already read genesis docs and
-      understood its concepts and features. Before starting to code, read the <a
-      href="documentation_intro.html">User Manual</a> and <a href=
-      "jars_explained.html">understand genesis distribution jars</a>.</p>
-      <p>We call an empty project strutucture <code>empty-project</code> and it
-      comes with genesis-empty-project distribution or genesis-all distribution.
-      This structure can be found in dir
+      understood its concepts and features. Before start coding, please read the 
+      <a href="documentation_intro.html">User Manual</a>.</p>
+      <p>The empty project strutucture is called <code>empty-project</code> and 
+      it comes with genesis-empty-project distribution or genesis-all 
+      distribution. This structure can be found in dir
       <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.</p>
       <p>Take a look at some configuration samples <a href="#Scenarios">here</a></p>
     </section>
     <section name="What is needed?">
-      <p>Besides genesis, it is necessary:</p>
+      <p>For creating your project, you must have installed:</p>
       <ul>
         <li>genesis distribution along its dependency libraries.</li>
-        <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
-        3.2.x or 4.0.x release.</li>
+        <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend some
+        release in the 3.2.x or 4.0.x series.</li>
         <li>To compile and install the application we recommend <a href=
         "http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
       </ul>
     </section>
     <section name="Configuring a new project">
       <p>You can copy the whole <b>empty-project</b> structure to a development
-      directory of your choice (If you do that, don't forget
-      to configure <code>genesis.home</code> properly in
-      <code>build.properties</code>). The first step to configure a new project is to
-      copy the file named <code>build.properties.sample</code> to a new one
-      named <code>build.properties</code>. File <code>build.properties</code>
-      defines certain proprerties that are project or developer specific. The
+      directory of your choice (if you do that, don't forget to configure 
+      <code>genesis.home</code> properly in <code>build.properties</code> to 
+      point to this new location). The first step to configure a new project is 
+      copying the file named <code>build.properties.sample</code> to a new one
+      named <code>build.properties</code>. <code>build.properties</code>
+      defines certain properties that are project or developer specific. The
       initial content for <code>build.properties.sample</code> is as follows:</p
       >
 <source>
@@ -107,10 +106,11 @@ jboss.home=/opt/jboss-3.2.7
 #hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
 #hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
 </source>
-      <p>At least four properties must be defined:</p>
+      <p>There are four main properties in the file:</p>
       <ul>
-        <li><code><b>jboss.home</b></code>: Indicates where JBoss 3.2.x is
-        installed</li>
+        <li><code><b>jboss.home</b></code>: Points to the location where JBoss
+        is installed. It is required only if your application will be run 
+        remotely. To run in local mode, this property is ignored.</li>
         <li><code><b>genesisBasedApplication.name</b></code>: Choose a name for
         your project, preferably with no spaces in it.</li>
         <li><code><b>genesisBasedApplication.mainClass</b></code>: Defines the
@@ -125,9 +125,6 @@ jboss.home=/opt/jboss-3.2.7
         <li><code><b>genesis.home</b></code>: Indicates where genesis is
         located. Usually this directory will be something like
         <code><b>&lt;SOME_DIRECTORY&gt;/genesis-&lt;version&gt;/genesis</b></code></li>
-        <li><code><b>xdoclet.dist</b></code>: Indicates the dir where XDoclet 
-        libraries can be found. The distribution used by the build process is 
-        available <a href="download.html">here</a>.</li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indicates the JBoss 
         datasource config file location. You can supply another config file that 
         matches your database configuration.</li>
@@ -138,10 +135,10 @@ jboss.home=/opt/jboss-3.2.7
         href="http://www.hibernate.org/">Hibernate site</a>.
         </li>
       </ul>
-      <p>To make understanding easier, let's imagine a cenario for a new genesis
-      based project creation:</p>
+      <p>To make understanding easier, let's imagine a 'scenario for creating a
+      new  genesis-based project:</p>
       <ul>
-        <li>We have JBoss 3.2.6 installed at <code>C:\servers\jboss-3.2.6</code>
+        <li>We have JBoss 3.2.7 installed at <code>C:\servers\jboss-3.2.7</code>
         </li>
         <li>We install genesis dist at <code>C:\projects</code>, what creates a
         <code>C:\projects\genesis-&lt;version&gt;</code> dir.</li>
@@ -151,7 +148,7 @@ jboss.home=/opt/jboss-3.2.7
       </ul>
       <p>Our <code><b>build.properties</b></code> file may look like:</p>
 <source>
-jboss.home=c:/servers/jboss-3.2.6
+jboss.home=c:/servers/jboss-3.2.7
 genesisBasedApplication.name=helloworld
 genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
@@ -169,9 +166,7 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
         source files that both the client side and the server side will need.
         Generally classes that represent business logic and have
         transactional/remotable methods (<b>Commands</b>) are put there.
-        Together with them, we have what we call <b>Databeans</b>, i.e.,
-        Hibernate mapped objects, named that way since they go from the view
-        layer to the persistence layer.</li>
+        Together with them, we should put all Hibernate mapped classes.</li>
       </ul>
       <p>In the client side source dir, a few source files are already available
       to make development easier. They are:</p>
@@ -184,17 +179,18 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
         project, as the Struts <code>validator</code> does. It is not necessary
         to change this file, unless your project needs new validators - whose
         implementation should be available on this same source dir.</li>
-        <li><b>META-INF/aop.xml</b>: File defining all aspects applied to the
-        system. In practice, it's not necessary to change this file, unless you
-        need/want to tune some aspects' parameters or add brand new aspects to
-        the application.</li>
+        <li><b>META-INF/local-aop.xml</b> and <b>META-INF/remote-aop.xml</b>: 
+        Files defining all aspects applied to the system (the first for local
+        execution and the second one for remote execution). In practice, it's 
+        not necessary to change this file, unless you
+        need/want to tune some aspects' parameters or add new aspects to the 
+        application.</li>
         <li><b>net/java/dev/genesis/emptyproject/MyGenesisApp.java</b>: A file
         that does nothing besides using <code>StartupHelper</code> for initialization.
-        This is your project's main file and you should
-        implement your project by initially adding code to it. As mentioned
-        before, you can define which main class to use by just changing
-        <code>build.properties</code>. Therefore, you can delete this file if
-        you want to use another one.</li>
+        This is your project's main file and you should implement your project 
+        by adding code to it. As mentioned before, you can define which main 
+        class to use by just changing <code>build.properties</code>. Therefore, 
+        you can delete this file if you want to use another one.</li>
       </ul>
       <p>We have a few sample projects that show how genesis development is done
       and use the same structure proposed by this empty project. Analyzing these
@@ -217,11 +213,26 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
         <li><b>all.with.webstart</b>: The same as running
         <code>all</code> plus some required tasks to run your application
         using Java WebStart.</li>
-        <li><b>run:remote</b>: Starts your application. It is necessary that
-        your application is compiled, packaged in jars and installed on JBoss.
-        Obviously, the server must be running.</li>
+        <li><b>run:local</b>: Starts your application in local mode. Your 
+        application must be already compiled (use <code>all</code> to compile 
+        it).</li>
+        <li><b>run:debug-local</b>: Does the same as <code>run:local</code>, but
+        also open a debug port for your application, so it is possible to debug
+        your code inside your IDE by connecting to it. The default debug port is
+        defined by the <code>debug.port</code> property and its default value is
+        10000</li>
+        <li><b>run:remote</b>: Starts your application in remote mode. It is 
+        necessary that your application is compiled and jars have been built and 
+        deployed on JBoss. Obviously, the server must be running.</li>
+        <li><b>run:debug-remote</b>: Does the same as <code>run:remote</code>, 
+        but also open a debug port for your application. The explanation for 
+        <code>run:debug-local</code> also applies to it. Keep in mind that the
+        application also makes remote calls to the server, so remote methods
+        execute there. Therefore, breakpoints will not be hit if they are 
+        located in a remote call stack. To stop at them, you must run your 
+        application server in debug mode and connect to it.</li>
       </ul>
-      <p>The faster way to put your project to run is:
+      <p>The fastest way to run your project is:
 <source>
 ant all
 &lt;JBOSS_DIR&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
@@ -230,7 +241,8 @@ ant run:remote
       </p>
     </section>
     <section name="Scenarios">
-       <p>We have some samples on how to configure an empty project in some scenarios. The samples are shown below:</p>
+       <p>Let's examine some samples of how to configure an empty project in 
+       common scenarios. The samples are shown below:</p>
        <subsection name="Local Application using MySQL and JGoodies">
 <p><b>build.properties</b> file</p>
 <source>
@@ -268,9 +280,8 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
     <property name="jgoodies.lib" location="lib/jgoodies" />
   </target>
 
+  <!-- JGoodies jars added to client compile classpath -->
   <target name="client:pre-init">
-
-    <!-- JGoodies jars added to client compile classpath -->
     <path id="client.additional.javac.classpath">
       <fileset dir="${jgoodies.lib}">
         <include name="*.jar" />
@@ -326,7 +337,6 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.17 2006-08-16 11:00:38 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -371,9 +381,8 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <property name="jfreereport.lib" location="lib/jfreereport" />
   </target>
 
+  <!-- JFreeReport jars added to client compile classpath -->
   <target name="client:pre-init">
-  
-    <!-- JFreeReport jars added to client compile classpath -->
     <path id="client.additional.javac.classpath">
       <fileset dir="${jfreereport.lib}">
         <include name="*.jar" />
@@ -451,7 +460,6 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.17 2006-08-16 11:00:38 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -499,18 +507,18 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <property name="joda.lib" location="lib/joda" />
   </target>
 
+  <!-- JGoodies jars added to client compile classpath -->
   <target name="client:pre-init">
     <path id="client.additional.javac.classpath">
-      <!-- JGoodies jars added to client compile classpath -->
       <fileset dir="${jgoodies.lib}">
         <include name="*.jar" />
       </fileset>
     </path>
   </target>
 
+  <!-- Joda jars added to shared compile classpath -->
   <target name="shared:pre-init">
     <path id="shared.additional.javac.classpath">
-      <!-- Joda jars added to shared compile classpath -->
       <fileset dir="${joda.lib}">
         <include name="*.jar" />
       </fileset>
@@ -569,4 +577,3 @@ Go to <a href="http://localhost:8080/minhaaplicacao">http://localhost:8080/myapp
     </section>
   </body>
 </document>
-

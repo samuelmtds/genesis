@@ -2,12 +2,13 @@
 <document>
   <properties>
     <title>Estrutura de um projeto vazio</title>
-    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
-    </author>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Configurando seu projeto no Eclipse">
-      <p>Aprenda a configurar o seu projeto no Eclipse <a href="ide_eclipse_empty_project.html">aqui</a></p>
+      <p>Aprenda a configurar o seu projeto no Eclipse <a 
+      href="ide_eclipse_empty_project.html">aqui</a></p>
     </section>
     <section name="Como começar?">
       <p>O genesis foi criado com o intuito de sempre facilitar e agilizar o
@@ -17,18 +18,17 @@
       compilação e instalação já estão configurados nesse projeto vazio.</p>
       <p>É de extrema importância que você já tenha lido a documentação do
       genesis e compreenda seus conceitos e funcionalidades. Antes de começar a
-      codificar, leia o <a href="documentation_intro.html">Manual do Usuário</a>
-      e <a href="jars_explained.html">entenda os jars da distribuição do genesis
-      </a>.</p>
+      codificar, por favor leia o <a href="documentation_intro.html">Manual do 
+      Usuário</a>.</p>
       <p>À estrutura de um projeto vazio chamamos de <code>empty-project</code>
-      e este está presente na distribuição empty-project ou na distribuição completa do genesis.
-      A estrutura se encontra no diretório
+      e este está presente na distribuição empty-project ou na distribuição 
+      completa do genesis. A estrutura se encontra no diretório
       <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-project/</b></code>.</p>
 
 <p>Veja exemplos de configuração para diferentes cenários <a href="#Cenários">aqui</a></p>
     </section>
     <section name="O que é necessário?">
-      <p>Além do genesis, é necessário ter instalado:</p>
+      <p>É necessário ter instalado:</p>
       <ul>
         <li>Distribuição do genesis juntamente com as suas bibliotecas de
         dependências.</li>
@@ -43,13 +43,12 @@
       <p>Você pode copiar toda estrutura do <b>empty-project</b> para um
       diretório de desenvolvimento de sua escolha (Se você o fizer, não esqueça
       de definir a propriedade <code>genesis.home</code> em seu arquivo
-      <code>build.properties</code>) O primeiro passo para
-      configurar um novo projeto é copiar o arquivo
-      <code>build.properties.sample</code> para outro arquivo com nome <code>
-      build.properties</code>. O arquivo <code>build.properties</code> define
-      certas propriedades que são específicas do projeto ou do desenvolvedor. O
-      conteúdo inicial do arquivo <code>build.properties.sample</code> segue
-      abaixo:</p>
+      <code>build.properties</code>) O primeiro passo para configurar um novo 
+      projeto é copiar o arquivo <code>build.properties.sample</code> para outro 
+      arquivo com nome <code>build.properties</code>. O arquivo 
+      <code>build.properties</code> define certas propriedades que são 
+      específicas do projeto ou do desenvolvedor. O conteúdo inicial do arquivo 
+      <code>build.properties.sample</code> segue abaixo:</p>
 <source>
 ## Build properties sample ##
 
@@ -112,12 +111,12 @@ jboss.home=/opt/jboss-3.2.7
 #hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
 #hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
 </source>
-      <p>Pelo menos quatro propriedades necessitam ser definidas:</p>
+      <p>Existem quatro propriedades principais no arquivo:</p>
       <ul>
         <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
         servidor JBoss. Só é necessário definir essa propriedade se sua aplicação
         será executada dentro do servidor de aplicação JBoss. Para rodar em modo
-        local apenas, essa propriedade é descartada</li>
+        local apenas, essa propriedade é descartada.</li>
         <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
         para seu projeto, de preferência sem espaços.</li>
         <li><code><b>genesisBasedApplication.mainClass</b></code>: Define o nome
@@ -176,10 +175,8 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
         aplicação quanto a parte servidora da aplicação. Geralmente são
         colocados nesse diretório de fontes as classes que representam a lógica
         de negócio e possuem os métodos remotos/transacionais da aplicação
-        (<b>Commands</b>). Juntamente com os Commands, temos aquilo que chamamos
-        de <b>Databeans</b>, ou seja, os objetos que são mapeados do Hibernate,
-        pois estes objetos são passados desde a camada de visualização até a
-        camada de persistência.</li>
+        (<b>Commands</b>). Juntamente com os Commands, temos as classes mapeadas 
+        do Hibernate.</li>
       </ul>
       <p>No diretório de código fonte da parte cliente da aplicação, alguns
       arquivos fontes já estão disponíveis no projeto vazio para facilitar o
@@ -222,35 +219,37 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
       <p>Para compilar e instalar a sua aplicação temos as seguintes tarefas
       básicas do Ant:</p>
       <ul>
-        <li><b>all</b>: Compila sua aplicação, gera os pacotes jar, sar e war além
-        de fazer o deploy da sua aplicação</li>
+        <li><b>all</b>: Compila sua aplicação, gera os pacotes jar, sar e war 
+        além de fazer o deploy da sua aplicação</li>
         <li><b>clean</b>: Apaga todos os arquivos gerados numa compilação.</li>
-        <li><b>clean-build</b>: Equivalente a chamar as tarefas <code>clean</code> e 
-        <code>all</code> em seqüência</li>
-        <li><b>all.with.webstart</b>: Equivalente a tarefa <code>all</code> com a adição
-        dos arquivos necessários para utilizar sua aplicação com Java Web Start</li>
-        <li><b>clean-webstart</b>: Equivalente a chamar as tarefas <code>clean</code> e 
-        <code>all.with.webstart</code> em seqüência</li>
+        <li><b>clean-build</b>: Equivalente a chamar as tarefas 
+        <code>clean</code> e <code>all</code> em seqüência</li>
+        <li><b>all.with.webstart</b>: Equivalente a tarefa <code>all</code> com 
+        a adição dos arquivos necessários para utilizar sua aplicação com Java 
+        WebStart.</li>
+        <li><b>clean-webstart</b>: Equivalente a chamar as tarefas 
+        <code>clean</code> e <code>all.with.webstart</code> em seqüência</li>
         <li><b>run:local</b>: Inicia sua aplicação em modo local. É necessário
-        que sua aplicação esteja compilada (Utilize a tarefa <code>all</code> para compilar).</li>
-        <li><b>run:debug-local</b>: Equivalente a tarefa<code>run:local</code>, porém
-        sua aplicação abre portas para debug, sendo possível você depurar seu código
-        de dentro de sua IDE conectando na porta de debug. A porta padrão de debug
-        é definida pela propriedade <code>debug.port</code> e seu valor padrão
-        é 10000</li>
+        que sua aplicação esteja compilada (utilize a tarefa <code>all</code>
+        para compila-la).</li>
+        <li><b>run:debug-local</b>: Equivalente a tarefa <code>run:local</code>, 
+        porém abre uma porta para debug da sua aplicação, sendo possível você 
+        depurar seu código de dentro de sua IDE conectando na porta de debug. A 
+        porta padrão de debug é definida pela propriedade 
+        <code>debug.port</code> e seu valor padrão é 10000.</li>
         <li><b>run:remote</b>: Inicia sua aplicação em modo remoto. É necessário
-        que sua aplicação esteja compilada, empacotada em jars e instalada no JBoss.
-        Obviamente, o servidor deve estar iniciado.</li>
-        <li><b>run:debug-remote</b>: Equivalente a tarefa<code>run:remote</code>, porém
-        sua aplicação abre portas para debug. Mesma explicação de <code>run:debug-local</code>
-        serve para essa tarefa. Lembre-se que a aplicação faz chamadas remotas ao
-        servidor, logo, método remotos executam no servidor. Não estranhe se algum
-        breakpoint não for chamado se este estiver num método remoto. Para tal,
-        você deve executar o seu servidor com uma porta para debug aberta e conectar
-        nessa porta.
-        </li>
+        que sua aplicação esteja compilada, empacotada em jars e instalada no 
+        JBoss. Obviamente, o servidor deve estar iniciado.</li>
+        <li><b>run:debug-remote</b>: Equivalente a tarefa 
+        <code>run:remote</code>, porém sua aplicação abre portas para debug. 
+        A mesma explicação de <code>run:debug-local</code> serve para essa 
+        tarefa. Lembre-se que a aplicação faz chamadas remotas ao servidor, 
+        logo, método remotos executam no servidor. Desta forma, breakpoints não 
+        serão chamados se estes estiverem num método remoto. Para tal, você deve 
+        executar o seu servidor com uma porta para debug aberta e conectar-se a 
+        essa porta.</li>
       </ul>
-      <p>A maneira rápida de colocar seu projeto para rodar:
+      <p>A maneira rápida de colocar seu projeto para rodar é:
 <source>
 ant all
 &lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
@@ -297,9 +296,8 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
     <property name="jgoodies.lib" location="lib/jgoodies" />
   </target>
 
+  <!-- Adicionamos as bibliotecas do JGoodies no classpath de compilação da parte client -->
   <target name="client:pre-init">
-
-    <!-- Adicionamos as bibliotecas do JGoodies no classpath de compilação da parte client -->
     <path id="client.additional.javac.classpath">
       <fileset dir="${jgoodies.lib}">
         <include name="*.jar" />
@@ -355,7 +353,6 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.18 2006-08-09 23:03:01 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -400,9 +397,8 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <property name="jfreereport.lib" location="lib/jfreereport" />
   </target>
 
+  <!-- Adicionamos as bibliotecas do JFreeReport no classpath de compilação da parte client -->
   <target name="client:pre-init">
-  
-    <!-- Adicionamos as bibliotecas do JFreeReport no classpath de compilação da parte client -->
     <path id="client.additional.javac.classpath">
       <fileset dir="${jfreereport.lib}">
         <include name="*.jar" />
@@ -481,7 +477,6 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: empty_project.xml,v 1.18 2006-08-09 23:03:01 allanjones Exp $ -->
 <!--  Datasource config for MySQL using 3.0.9 available from:
 http://www.mysql.com/downloads/api-jdbc-stable.html
 -->
@@ -529,18 +524,18 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <property name="joda.lib" location="lib/joda" />
   </target>
 
+  <!-- Adicionamos as bibliotecas do JGoodies no classpath de compilação da parte client -->
   <target name="client:pre-init">
     <path id="client.additional.javac.classpath">
-      <!-- Adicionamos as bibliotecas do JGoodies no classpath de compilação da parte client -->
       <fileset dir="${jgoodies.lib}">
         <include name="*.jar" />
       </fileset>
     </path>
   </target>
 
+  <!-- Adicionamos as bibliotecas do Joda no classpath de compilação da parte shared -->
   <target name="shared:pre-init">
     <path id="shared.additional.javac.classpath">
-      <!-- Adicionamos as bibliotecas do Joda no classpath de compilação da parte shared -->
       <fileset dir="${joda.lib}">
         <include name="*.jar" />
       </fileset>
