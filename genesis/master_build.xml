@@ -50,7 +50,7 @@
    </target>
 
    <target name="-do-master-init-paths">
-      <property name="genesis.version" value="3.0-EA3" />
+      <property name="genesis.version" value="3.0-EA4-dev" />
       <property name="genesis.home" value="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
       <property name="annotation.properties" 
