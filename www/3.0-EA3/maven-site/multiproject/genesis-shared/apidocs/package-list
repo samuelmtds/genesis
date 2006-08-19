@@ -1,0 +1,10 @@
+net.java.dev.genesis.command
+net.java.dev.genesis.command.hibernate
+net.java.dev.genesis.exception
+net.java.dev.genesis.helpers
+net.java.dev.genesis.hibernate
+net.java.dev.genesis.hibernate.type
+net.java.dev.genesis.paging
+net.java.dev.genesis.paging.hibernate
+net.java.dev.genesis.reflection
+net.java.dev.genesis.util
