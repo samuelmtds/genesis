@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="empty-project" default="all" basedir="."
+         xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+   <import file="desktop_build.xml" />
+   
+   <target name="-pre-init">
+      <property file="build.properties" />
+
+      <property name="local.mode" value="true" />
+      <!-- If you're using Java 5 and needs to compile
+      javadoc annotations, uncomment the following line -->
+      <!--
+      <property name="force.annotation" value="true" />
+      -->
+   </target>
+
+<!--
+   Uncomment this section only if you need to customize the build process
+
+   <target name="shared:pre-init">
+     If you need additional jars to compile the shared module, add them here as 
+     follows:
+     <path id="shared.additional.javac.classpath">
+         <fileset dir="additional_jars_directory">
+            <include name="one.jar" />
+            <include name="two.jar" />
+            ...
+            <include name="another.jar" />
+         </fileset>
+         <fileset dir="another_jars_directory">
+            <include name="some.jar" />
+            <include name="foo.jar" />
+            ...
+            <include name="killer.jar" />
+         </fileset>
+      </path>
+   </target>
+-->
+
+<!--
+   Uncomment this section only if you need to customize the build process
+
+   <target name="client:pre-init">
+     If you need additional jars to compile the client module, add them here as 
+     follows:
+     <path id="client.additional.javac.classpath">
+         <fileset dir="additional_jars_directory">
+            <include name="one.jar" />
+            <include name="two.jar" />
+            ...
+            <include name="another.jar" />
+         </fileset>
+         <fileset dir="another_jars_directory">
+            <include name="some.jar" />
+            <include name="foo.jar" />
+            ...
+            <include name="killer.jar" />
+         </fileset>
+      </path>
+   </target>
+-->
+
+<!--
+   Uncomment this section only if you need to customize the build process
+
+   <target name="run:pre-init">
+     If you need additional jars to run your application, add them 
+     here as follows:
+     <path id="run.additional.classpath">
+         <fileset dir="additional_jars_directory">
+            <include name="one.jar" />
+            <include name="two.jar" />
+            ...
+            <include name="another.jar" />
+         </fileset>
+         <fileset dir="another_jars_directory">
+            <include name="some.jar" />
+            <include name="foo.jar" />
+            ...
+            <include name="killer.jar" />
+         </fileset>
+      </path>
+
+     If you need additional jars to run your application _only in local mode_, 
+     add them here as follows:
+     <path id="run.additional.local.classpath">
+         <fileset dir="additional_jars_directory">
+            <include name="one.jar" />
+            <include name="two.jar" />
+            ...
+            <include name="another.jar" />
+         </fileset>
+         <fileset dir="another_jars_directory">
+            <include name="some.jar" />
+            <include name="foo.jar" />
+            ...
+            <include name="killer.jar" />
+         </fileset>
+      </path>
+
+     If you need additional jars to run your application _only in remote mode_, 
+     add them here as follows:
+     <path id="run.additional.remote.classpath">
+         <fileset dir="additional_jars_directory">
+            <include name="one.jar" />
+            <include name="two.jar" />
+            ...
+            <include name="another.jar" />
+         </fileset>
+         <fileset dir="another_jars_directory">
+            <include name="some.jar" />
+            <include name="foo.jar" />
+            ...
+            <include name="killer.jar" />
+         </fileset>
+      </path>
+   </target>
+-->
+
+<!--
+   Uncomment this section if you need additional jars to be added to your 
+   server-side deploy-unit
+
+   <target name="-do-server-artifact">
+      <genesis:sar>
+         <customize>
+            <fileset dir="additional_jars_directory">
+               <include name="one.jar" />
+               <include name="two.jar" />
+               ...
+               <include name="another.jar" />
+            </fileset>
+            <fileset dir="another_jars_directory">
+               <include name="some.jar" />
+               <include name="foo.jar" />
+               ...
+               <include name="killer.jar" />
+            </fileset>
+         </customize>
+      </genesis:sar>
+   </target>
+-->
+
+
+<!--
+   Uncomment this section if you need additional jars to be added to your 
+   webstart war
+
+   <target name="-do-webstart-signjar">
+      <genesis:webstart-signjar>
+         <customize>
+            <fileset dir="additional_jars_directory">
+               <include name="one.jar" />
+               <include name="two.jar" />
+               ...
+               <include name="another.jar" />
+            </fileset>
+            <fileset dir="another_jars_directory">
+               <include name="some.jar" />
+               <include name="foo.jar" />
+               ...
+               <include name="killer.jar" />
+            </fileset>
+         </customize>
+      </genesis:webstart-signjar>
+   </target>
+-->
+
+</project>

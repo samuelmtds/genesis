@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Formatting data</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Formatting data">
+      <p>Since formatting information so it can be displayed on the screen is a
+      very important part of any graphical application, it's expected doing so 
+      is easy and configurable. The API used for this purpose on genesis is
+      implemented in <code>net.java.dev.genesis.text</code>.</p>
+      <p>This package contains an interface called <code>Formatter</code>,
+      that defines a <code>format(Object)</code> method. This method converts
+      its argument to a formatted String. Similarly to what happens to other
+      framework components, there's a registry of default interface
+      implementations per class, the <code>FormatterRegistry</code> class. The
+      following implementations are initially registered in this class:</p>
+      <ul>
+        <li><code>EnumFormatter</code> converts <code>java.lang.Enum</code> and
+        <code>net.java.dev.reusablecomponents.lang.Enum</code> instances by
+        looking up in the <a 
+        href="configuring_messages.html#Configuring messages"><code>ResourceBundle</code></a>
+        the message configured by the key composed by class name without 
+        package + '.' + constant name. If this message is not found, a INFO 
+        message will be logged and the instance converted by using 
+        <code>toString()</code>.</li>
+        <li><code>DefaultFormatter</code> is registered for all remaining types
+        and converts instances using <code>toString()</code> - except when they
+        are <code>null</code>, when it returns a zero-length String.</li>
+      </ul>
+      <p>To register a new formatter for a class the method
+      <code>register(Class,Formatter)</code> from <code>FormatterRegistry</code>
+      can be used.</p>
+      <p>However, the ability of registering a formatter instance per class
+      may not work in some situations. For example, when a
+      <code>boolean</code> property is displayed as text, it may be necessary
+      to display a custom text instead of the <code>true</code> and
+      <code>false</code> constants. genesis has an API that allows a specific
+      formatter instance to be used to display a field. Some steps are required
+      to use this feature:</p>
+      <ol>
+        <li>If Thinlet binding is being used, instead of calling some version of 
+        the <code>bind(..)</code> method, a <code>ThinletBinder</code> instance 
+        should be prepared by calling either <code>prepareBinder(form)</code> or
+        <code>prepareBinder(widget,form)</code>, both methods defined in
+        <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
+        <li>The formatter instance should be registered using the
+        <code>registerFormatter(String,Formatter)</code> method specified by
+        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code> or
+        <code>net.java.dev.genesis.ui.swing.SwingBinder</code>, according to
+        which UI technology you're using. The
+        <code>String</code> argument value should be the name of the property
+        whose formatter will be overridden. The property name should be:
+          <ul>
+            <li>If it is a simple property, returned by a getter method, it is
+            the simple property name.</li>
+            <li>If the formatter instance should be used for combobox or list
+            items or for a column in a table, the property name should be
+            composed as
+            <code>widgetName.nameOfThePropertyOfTheObjectBeingDisplayed</code>.
+            </li>
+          </ul>
+        </li>
+        <li>Optionally, if the property whose formatter has been overridden
+        needs to be converted by genesis to its original type and the custom
+        generated format is not supported by the default converter, the
+        converter must be overriden by calling the
+        <code>registerConverter(String,Converter)</code> method.
+        <code>org.apache.commons.beanutils.Converter</code> is part of
+        Jakarta Commons BeanUtils and you should refer to this framework's 
+        documentation if this interface must be implemented.</li>
+        <li>Finally, the binding should be performed by calling the
+        <code>bind()</code> method.</li>
+      </ol>
+      <p>A short example of these steps can be seen below:</p>
+<source>
+Formatter f = new Formatter() {
+   public String format(Object o) {
+      return "Custom format";
+   }
+};
+</source>
+
+<source>
+// Thinlet sample
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("property", f);
+binder.bind();
+</source>
+
+<source>
+// Swing sample
+SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("property", f);
+binder.bind();
+</source>
+      <p>The value of <code>property</code> to be displayed on the screen
+      will be <code>Custom format</code> constant, no matter what its
+      value on the form is.</p>
+      <subsection name="Virtual properties">
+        <p>Since release 2.2, it is possible to work with virtual properties,
+        i.e., properties that don't exist in the object being displayed. These
+        properties have their display value determined by a specific 
+        formatter.</p>
+        <p>If you're using Thinlet, the formatter must be registered
+        in the <code>ThinletBinder</code> instance. If you're using Swing, and 
+        the <code>TableCellRenderer</code> instance for the 
+        <code>TableColumn</code> has not been customized, the formatter must be 
+        registered in the <code>SwingBinder</code> instance.</p>
+        <p>The process for defining and displaying a virtual property is
+        basically the same of a regular property, except for the following
+        things:</p>
+        <ul>
+           <li>Only table cells and values displayed in comboboxes or lists can
+           be virtual properties.</li>
+           <li>Virtual properties can be defined in different ways, depending on which
+           UI technology is used:
+             <ul>
+               <li>If you're using Thinlet, they can be defined for comboboxes and lists by
+               adding to the <code>property</code> element in the xml definition a
+               <code>virtual=true</code> token. Since table columns do not have
+               a <code>property</code> attribute, the value of its attribute
+               <code>name</code> must be prefixed with <code>virtual:</code>.</li>
+               <li>If you're using Swing, the widget <code>name</code>
+               must be prefixed with 
+               <code>AbstractBinder.VIRTUAL_PREFIX</code> constant or 
+               <code>clientProperty SwingBinder.VIRTUAL</code> must be
+               <code>Boolean.TRUE</code></li>
+             </ul>
+           </li>
+           <li>Virtual properties can be defined for comboboxes and lists by
+           adding to the <code>property</code> element in the xml definition a
+           <code>virtual=true</code> token. Since table columns do not have
+           a <code>property</code> attribute, the value of its attribute
+           <code>name</code> must be prefixed with <code>virtual:</code>
+           .</li>
+           <li>The <code>Formatter</code> instance will receive the whole bean
+           being displayed as a parameter to the <code>format(Object)</code>,
+           since the property being displayed does not actually exist in the
+           instance.</li>
+        </ul>
+        <p>An example of how to define and use a virtual property is shown
+        below, both for comboboxes and tables:</p>
+<source>
+<![CDATA[
+<panel gap="5">
+   <combobox name="widget"
+             property="key=uniqueProperty;value=virtualValue;virtual=true" />
+</panel>
+]]>
+</source>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="widget">
+      <header>
+         <column name="uniqueProperty" text="#" />
+         <column name="virtual:virtualValue" text="Virtual" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+        <p>The same UI using Swing:</p>
+<source>
+//..
+getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
+
+JComboBox widget = new JComboBox();
+widget.setName("widget");
+widget.putClientProperty(SwingBinder.KEY_PROPERTY, "uniqueProperty");
+widget.putClientProperty(SwingBinder.VALUE_PROPERTY, "virtualValue");
+widget.putClientProperty(SwingBinder.VIRTUAL, Boolean.TRUE);
+getContentPane().add(widget);
+//..
+</source>
+<source>
+//..
+getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
+
+JTable widget = SwingFactory.createTable(binder, "widget", 
+      new String[] {"uniqueProperty", AbstractBinder.VIRTUAL_PREFIX + "virtualValue"},
+      new String[] {"#", "Virtual"});
+
+JScrollPane scrollPane = new JScrollPane();
+scrollPane.setViewportView(widget);
+getContentPane().add(scrollPane);
+
+//..
+</source>
+        <p>The formatter definition:</p>
+<source>
+Formatter virtual = new Formatter() {
+   public String format(Object o) {
+      return o == null ? "0" : String.valueOf(o.hashCode());
+   }
+}); 
+</source>
+        <p>At last, the code showing how to use the formatter on both APIs:</p>
+<source>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.virtualValue", virtual);
+binder.bind();
+</source>
+<source>
+SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("widget.virtualValue", virtual);
+binder.bind();
+</source>
+        <p>It is important to notice that although the name of the column is
+        prefixed with <code>virtual:</code>, the way the property name is 
+        composed for registering the formatter is not affected.</p>
+      </subsection>
+   </section>
+  </body>
+</document>

@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Notas de Versão</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Downloads e notas de versão">
+      <ul>
+        <li><a href="#3.0-EA3">3.0-EA3</a></li>
+        <li><a href="#3.0-EA2">3.0-EA2</a></li>
+        <li><a href="#3.0-EA1">3.0-EA1</a></li>
+        <li><a href="#2.3">2.3</a></li>
+        <li><a href="#2.2">2.2</a></li>
+        <li><a href="#2.1">2.1</a></li>
+        <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
+        <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
+      </ul>
+    </section>
+    <section name="3.0-EA3">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5774&amp;expandFolder=5774">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Adicionado <a href="binding.html">suporte a Swing</a>.</li>
+          <li>Suporte a <code>enum</code>s do Java 5.</li>
+          <li>A linguagem padrão de scripts agora é Javascript.</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>Correções de diversos problemas no build do empty-project
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=316">Issue
+          # 316</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=322">Issue
+          # 322</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=323">Issue
+          # 323</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=326">Issue
+          # 326</a>,
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=339">Issue
+          # 339</a>, 
+          <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=352">Issue
+          # 352</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA2 e a 3.0-EA3
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA2&amp;target_milestone=3.0-EA3">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA3/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+        <p>Agradecemos e damos boas-vindas ao novo commiter, Raphael Winckler de 
+        Bettio.</p>
+      </subsection>
+    </section>
+    <section name="3.0-EA2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4588&amp;expandFolder=4588&amp;folderID=1756">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Novo parâmetro usado em ViewMetadataFactoryAspect chamado 
+          <a href="aspects.html#Referência de configuração">skipSystemClasses</a></li>
+          <li>Upgrade para o commons-validator 1.2.0.</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>Problema ao ler anotações do Java 5
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=242">Issue
+          # 242</a>)</li>
+          <li>LocalCommandExecutionAspect não funciona corretamente, devido a alterações
+          no AspectWerkz 2.0
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=256">Issue
+          # 256</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA1 e a 3.0-EA2
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;target_milestone=3.0-EA2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA2/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+        <p>Agradecemos especialmente a Alexandre Vasseur, Alexandru Popescu e
+        Jonas Boner pelo suporte e modificações feitas para que completássemos
+        a migração para o <a href="http://aspectwerkz.codehaus.org">AspectWerkz</a>
+        2.</p>
+      </subsection>
+    </section>
+    <section name="3.0-EA1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2932&amp;expandFolder=2932&amp;folderID=0">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li><a href="generic_scripting.html">Suporte genérico a linguagens de
+          script</a>: expandindo o suporte JXPath, o framework suporta
+          diretamente  BeanShell, JavaScript e EL, e ainda provê um mecanismo
+          para suporte de outras linguagens</li>
+          <li>Upgrade para o AspectWerkz 2.0. Os <a
+          href="aspects.html">aspectos</a> do genesis sofreram pequenas
+          alterações do ponto de vista do usuário e o arquivo
+          <code>aop.xml</code> precisa ser atualizado</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 3.0-EA1
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=3.0-EA1">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA1/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+        <p>Agradecemos especialmente a Alexandre Vasseur, Alexandru Popescu e
+        Jonas Boner pelo suporte e modificações feitas para que completássemos
+        a migração para o <a href="http://aspectwerkz.codehaus.org">AspectWerkz</a>
+        2.</p>
+      </subsection>
+    </section>
+    <section name="2.3">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+          <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4595&amp;expandFolder=4595&amp;folderID=4595">aqui</a>. 
+          </p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>O genesis e os exemplos funcionam no JBoss 4.x, sem necessitar qualquer configuração</li>
+          <li>Algumas tarefas do Ant foram trocadas por outras mais eficientes, resultando num build ainda mais
+          otimizado</li>
+          <li>Nova documentação de como criar um projeto WEB</li>
+          <li>Foi criado um novo processo de compilação com um build.xml modular e extensível, mais
+          rápido e inteligente</li>
+          <li>Um novo esqueleto de um projeto web foi criado e disponibilizado junto com os exemplos
+          com o nome de <code>empty-web-project</code></li>
+          <li>Todos as bibliotecas necessárias do XDoclet estão disponíveis na distribuição do genesis,
+          dispensando o download do XDoclet</li>
+          <li>Adicionado novos validadores: <a href="validating_data.html">
+          <code>min</code> e <code>max</code></a></li>
+          <li>SessionFactory do hibernate é <a href="aspects.html#Referência_de_configuração">
+          instanciado na inicialização no modo de execução local</a></li>
+          <li>É possível customizar <a 
+          href="customizing_widgets_creation.html">como 
+          os componentes são criados</a> por um <code>@DataProvider</code></li>
+          <li>Foi definida uma API que torna configurável a <a 
+          href="conditions.html#Alterando_a_forma_como_os_valores_são_clonados">clonagem
+          de valores</a> pelo genesis</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>O exemplo useradmin não funciona com uma instalação limpa do genesis
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=263">Issue
+          # 263</a>)</li>
+          <li>CriteriaResolverImpl não funciona corretamente
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=281">Issue
+          # 281</a>)</li>
+          <li><code>CriteriaPropertyHelper</code> lança uma 
+          <code>NullPointerException</code> se o form contiver uma propriedade
+          <code>@NotBound</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=252">Issue
+          # 252</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 2.2 e a 2.3
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;version=2.3-RC1&amp;version=2.3-RC2&amp;version=2.3-RC3&amp;target_milestone=2.3">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/2.3/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.3&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniel Gonçalves</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Rodrigo Santos</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="2.2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos 
+          <a 
+          href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=3762&amp;expandFolder=3762&amp;folderID=3533">aqui</a>. 
+          </p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>As <a href="xdoclet_extensions.html">extensões do XDoclet</a>
+          tiveram sua estrutura modificada e agora estão documentadas</li>
+          <li>Foi adicionado suporte a <a
+          href="formatting.html#Propriedades_virtuais">propriedades
+          virtuais</a></li>
+          <li>Uma <a
+          href="paging_and_dynamic_search.html#Paginação_de_listas">implementação
+          de paginação para listas</a> foi incluída</li>
+          <li><code>net.java.dev.genesis.resolvers.EmptyResolverRegistry</code>
+          foi modificada para permitir o registro programático de instâncias de
+          <code>net.java.dev.genesis.resolvers.EmptyResolver</code></li>
+          <li>O método <code>onClose()</code> de 
+          <code>net.java.dev.genesis.ui.thinlet.BaseDialogThinlet</code> foi
+          modificado a fim de melhorar a liberação de memória (mais informações
+          nos issues <a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=243">243</a>
+          e <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=244">244</a>
+          )</li>
+          <li><code>textarea</code>s se tornam não-editáveis ao invés de serem 
+          desabilitadas de modo a ser possível utilizar a barra de rolagem (mais
+          informações no issue <a 
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=248">248</a>
+          )</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li><code>SessionContext.setRollbackOnly()</code> deveria ser chamado
+          somente dentro de uma transação (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=213">Issue
+          # 213</a>)</li>
+          <li>O construtor <code>DefaultConverter(boolean)</code> não funciona
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=193">Issue
+          # 218</a>)</li>
+          <li><code>@VisibleWhen</code>/<code>@EnabledWhen</code> não funcionam
+          para propriedades somente leitura (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=225">Issue
+          # 225</a>)</li>
+          <li>O ciclo de vida de <code>WorkerThread</code> deveria estar ligado
+          ao ciclo de vida de <code>TimeoutAspect</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=245">Issue
+          # 245</a>)</li>
+          <li>A seleção falha para combos e listas populados com 
+          <code>@DataProvider</code> e contendo valores diferentes para 
+          <code>key</code> e <code>value</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=246">Issue
+          # 246</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 2.2
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;version=2.2-RC1&amp;version=2.2-RC2&amp;target_milestone=2.2-RC1&amp;target_milestone=2.2-RC2&amp;target_milestone=2.2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/2.2/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniel Gonçalves</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Ohashi</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="2.1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2913&amp;expandFolder=2913&amp;folderID=0">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>POJOs
+          podem ser usados para tratar todos os tipos de eventos</li>
+          <li>Os conversores do BeanUtils usam a mesma busca hierárquica dos
+          outros componentes do genesis</li>
+          <li>A versão do Hibernate que acompanha o genesis agora é a 2.1.8</li>
+          <li>As referências diretas a classes do Commons JXPath foram
+          deprecated. A próxima versão do genesis conterá suporte genérico a
+          linguagens de script</li>
+          <li>Uma seção de <a href="faq.html">FAQ</a> foi adicionada à
+          documentação</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>Uma exceção é lançada quando um item numa <code>list</code>
+          ligada a uma <code>Collection</code> ou array é selecionado
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=192">Issue
+          # 192</a>)</li>
+          <li>O reset do estado do form pode lançar uma
+          <code>NullPointerException</code> sob condições específicas
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=193">Issue
+          # 193</a>)</li>
+          <li>Uma exceção é lançada se o <code>objectField</code> de um
+          <code>@DataProvider</code> for uma array de qualquer subclasse de
+          <code>Object</code>
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=194">Issue
+          # 194</a>)</li>
+          <li>O conversor padrão registrado para <code>Object</code> está errado
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=202">Issue
+          # 202</a>)</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 0.2 e a 2.1
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;target_milestone=2.1">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/2.1/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="0.2 (2.0)">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Diversas mudanças e funcionalidades novas fazem parte desta versão,
+        entre outras podendo-se destacar:</p>
+        <ul>
+          <li>Métodos remotos e transacionais são definidos através de anotações
+          e não mais com marker interfaces + convenção de nomes para métodos</li
+          >
+          <li>Implementação de <code>@Criteria</code></li>
+          <li>Modo de execução local</li>
+          <li>Modelo de interface gráfica totalmente reformulado e muito mais
+          expressivo e poderoso</li>
+        </ul>
+        <p>Para obter a lista detalhada de mudanças nas versões intermediárias
+        do 0.2.x (betas e RCs), clique <a href="release_notes_2_x.html">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/0.2/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Rossetto</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Clebert Suconic</li>
+            <li>Daniel Amadei</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Handerson Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Marcelo Módolo</li>
+            <li>Marcos Caldeira</li>
+            <li>Paulo Pacheco</li>
+            <li>Pedro Barelli</li>
+            <li>Richard Nill</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+            <li>Vivian Fiales</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="0.1 (1.0)">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2301&amp;expandFolder=2301&amp;folderID=2342">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Versão inicial do genesis, não-documentada.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Nenhum</p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>Agradecimentos especiais às seguintes pessoas envolvidas no uso,
+        testes do framework ou que contribuíram para seu lançamento:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Eduardo Ito</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+      </subsection>
+    </section>
+  </body>
+</document>

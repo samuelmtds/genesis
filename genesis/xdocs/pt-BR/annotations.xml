@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Usando anotações</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Usando anotações">
+      <p>Grande parte das funcionalidades do genesis é acessível através do uso
+      de <b>anotações</b> ou metadados. Estas anotações são parte integrante da
+      linguagem Java a partir do Java 5, mas o genesis suporta seu uso também 
+      com Java 1.4, com uma sintaxe bastante similar.</p>
+      <p>Por exemplo, considere o exemplo abaixo de uso da mesma anotação com 
+      Java 5 e Java 1.4:</p>
+<source>
+import net.java.dev.genesis.annotation.Form;
+
+@Form
+public class ExemploAnotacaoClasseJava5 {
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploAnotacaoClasseJava14 {
+   // ...
+}
+</source>
+      <p>Ambas as declarações da anotação <code>@Form</code> terão o mesmo 
+      efeito nos dois ambientes. Note que no segundo caso, conhecido como 
+      anotações Javadoc, não é necessário utilizar a instrução 
+      <code>import</code> para o uso da anotação.</p>
+      <p>No caso de anotações Javadoc, é permitido utilizar uma sintaxe mais
+      livre para anotações que recebam parâmetros, conforme mostrado abaixo:</p>
+<source>
+import net.java.dev.genesis.annotation.EnabledWhen;
+import net.java.dev.genesis.annotation.Form;
+
+@Form
+public class ExemploAnotacaoMetodoJava5 {
+   @EnabledWhen("condicao")
+   public String getPropriedade() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+<source>
+/**
+ * @Form
+ */
+public class ExemploAnotacaoClasseJava14 {
+   /**
+    * @EnabledWhen condicao
+    */
+   public String getPropriedade() {
+      // ...
+   }
+
+   // ...
+}
+</source>
+      <p>Não é necessária nenhuma configuração para usar a sintaxe Javadoc com
+      Java 1.4. É possível, mas não recomendado, usar a sintaxe Javadoc mesmo 
+      com Java  5. Isso pode ser necessário devido ao uso de outras ferramentas 
+      de análise ou processamento de código que não suportem anotações Java 5. 
+      Para fazer isto, basta descomentar o seguinte trecho no arquivo 
+      <code>build.xml</code> do <a href="empty_project.html">projeto vazio</a>:
+      </p>
+<source>
+<![CDATA[
+      <property name="force.annotation" value="true" />
+]]>
+</source>
+      <p>Nesta documentação, os exemplos usarão a sintaxe do Java 5 por padrão e 
+      serão explicadas quaisquer peculariedades que existam no uso das anotações 
+      Javadoc.</p>
+    </section>
+  </body>
+</document>

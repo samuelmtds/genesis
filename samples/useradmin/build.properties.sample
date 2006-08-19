@@ -1,0 +1,40 @@
+## Build properties sample ##
+
+#################################################################################
+## Use these properties for running the sample in LOCAL or REMOTE MODE          
+jboss.home=/opt/jboss-3.2.7
+
+
+#################################################################################
+## Use these properties for running the sample in LOCAL MODE ONLY               
+#remote.mode=false
+#jdbc.driver=target/hsqldb.jar
+
+
+#################################################################################
+## Use these properties for running the sample in REMOTE MODE ONLY              
+#local.mode=false
+#jboss.home=/opt/jboss-3.2.7
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  
+## need to be defined in build.properties if their values are different in your 
+## local setup                                                                  
+#genesis.home=../../genesis
+#jboss.provider.url=jnp://localhost
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#webstart.server=localhost
+#webstart.port=8080
+#build.dir=dist/useradmin.war/application
+#jdbc.driver=dist/useradmin.war/application/hsqldb.jar
+#jdbc.connection.url=jdbc:hsqldb:genesis/useradmin
+#jdbc.driver.class=org.hsqldb.jdbcDriver
+#jdbc.username=sa
+#jdbc.password=
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.8
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory

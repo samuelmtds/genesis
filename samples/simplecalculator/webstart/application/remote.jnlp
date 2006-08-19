@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://@webstart.server@:@webstart.port@/@webstart.context@/application">
+
+   <information>
+      <title>@pretty.name@</title>
+      <vendor>Summa Technologies do Brasil Ltda.</vendor>
+      <description>Genesis @pretty.name@ Sample</description>
+      <description kind="tooltip">@pretty.name@</description>
+      <homepage href="http://@webstart.server@:@webstart.port@/@webstart.context@"/>
+      <icon href="icon.gif"/>
+   </information>
+
+   <security>
+      <all-permissions/>
+   </security>
+
+   <resources>
+      <j2se version="1.4+" initial-heap-size="32m" />
+
+      <jar href="@webstart.context@-remote-weaved.jar" download="eager" main="true"/>
+      <jar href="genesis-aspect-annotated-@genesis.version@.jar" download="eager" />
+      <jar href="genesis-client-@genesis.version@.jar" download="eager" />
+      <jar href="aspectwerkz-1.1.jar" download="eager" />
+      <jar href="aspectwerkz-core-1.1.jar" download="eager" />
+      <jar href="commons-beanutils-1.7.jar" download="eager"/>
+      <jar href="commons-collections-2.1.1.jar" download="eager"/>
+      <jar href="commons-digester-1.5.jar" download="eager"/>
+      <jar href="commons-jxpath-1.2.jar" download="eager"/>
+      <jar href="commons-logging-1.0.3.jar" download="eager"/>
+      <jar href="commons-validator-1.1.4.jar" download="eager"/>
+      <jar href="dom4j-1.4.jar" download="eager" />
+      <jar href="hibernate2.jar" download="eager"/>
+      <jar href="jakarta-oro-2.0.8.jar" download="eager"/>
+      <jar href="jboss-client.jar" download="eager"/>
+      <jar href="jboss-common-client.jar" download="eager"/>
+      <jar href="jboss-j2ee.jar" download="eager"/>
+      <jar href="jboss-transaction-client.jar" download="eager"/>
+      <jar href="jbosssx-client.jar" download="eager"/>
+      <jar href="jnp-client.jar" download="eager"/>
+      <jar href="jrexx-1.1.1.jar" download="eager" />
+      <jar href="reusable-components-20040406.jar" download="eager"/>
+      <jar href="trove-1.0.2.jar" download="eager" />
+
+      <property name="java.naming.provider.url" value="@jboss.provider.url@"/>
+      <property name="java.naming.factory.initial" value="@jboss.factory.initial@"/>
+   </resources>
+   
+	 <application-desc main-class="@app.main@" />
+
+</jnlp>

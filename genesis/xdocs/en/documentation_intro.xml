@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Introduction</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <p>genesis is a framework that aims to simplify application development, 
+      providing a productive environment without killing scalability and 
+      performance of your application.</p>
+      <p>Its main features are:</p>
+      <ul>
+         <li><b>Transparent remoting:</b> It makes it possible to implement 
+         remote calls to methods of classes that do not implement nor extend any
+         class/interface (POJOs) by annotating them with 
+         <code>@Remotable</code>. Client-side code can instantiate objects by
+         using <code>new</code> and do not need to do anything special with 
+         them.</li>
+         <li><b>Transaction support:</b> Like transparent remoting, using the 
+         <code>@Transactional</code> annotation allows method calls to be 
+         executed in a transactional context, with automatic rollback support
+         in case an exception is thrown.</li>
+         <li><b>Hibernate integrations:</b> Working with Hibernate is made 
+         easier, without any need for extra configuration and with transparent
+         remoting and transactional support.</li>
+         <li><b>Swing and Thinlet binding:</b> genesis binding makes it possible
+         to display JavaBeans and keep them in synch with UI state without using 
+         listeners, event APIs or special interfaces. In addition, methods can 
+         be bound to buttons by using an annotation.</li>
+         <li><b>Support for conditional UI control:</b> By using annotations 
+         <code>@EnabledWhen</code> and <code>@VisibleWhen</code>, it is possible
+         to enable/disable components and show/hide them in the UI in a 
+         declarative way, using conditions: genesis tracks condition changes and
+         automatically updates the UI when required. It is also possible to 
+         clear fields with <code>@ClearOn</code> and to invoke methods 
+         conditionally by using <code>@CallWhen</code>.</li>
+         <li><b>Simple model for populating combos, lists and tables:</b> A 
+         method that returns either a <code>java.util.List</code> or an
+         array is the only thing required to populate combos, lists and tables, 
+         without using any interface.</li>
+         <li><b>Validation</b>: Validation rules are declared on the JavaBean 
+         class that keeps UI data and are executed and handled by the framework
+         before invoking an action annotated with 
+         <code>@ValidateBefore</code>.</li>
+         <li><b>Paging:</b> genesis provides several classes for paging support,
+         making it easier to implement both in client-side and in business 
+         components. Implementations that support Hibernate and in-memory lists 
+         are available.</li>
+         <li><b>Dynamic queries:</b> genesis has APIs that reduces the 
+         complexity required for implementing dynamic queries, i.e., those where 
+         the user can fill in any field of several available as criteria.</li>
+      </ul>
+      <p>This documentation objective is to present genesis main features and 
+      concepts so they can be applied to development. Examples for each feature
+      are available in the same place where they are explained.</p>
+      <p>It is important to mention that, although framework samples are 
+      configured to be run with JBoss out-of-the-box and that docs refer to this
+      application server, all framework features are not dependent on any 
+      specific product and are J2EE-compatible.</p>
+    </section>
+  </body>
+</document>

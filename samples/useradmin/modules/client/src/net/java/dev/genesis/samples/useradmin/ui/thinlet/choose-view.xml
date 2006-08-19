@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE panel PUBLIC '-//Thinlets 1.0//EN' 'https://thinlet.dev.java.net/thinlet.dtd'>
+<panel weightx="1" columns="1" gap="5" top="5" left="5" bottom="5" right="5">
+    <panel gap="5" columns="1">
+        <label text="i18n.ChooseView.choose" font="bold" alignment="center"/>
+        <panel gap="5" columns="3" halign="center" valign="center">
+            <button text="i18n.ChooseView.thinlet" font="bold" mnemonic="0" action="onThinlet()"/>
+            <button text="i18n.ChooseView.swing" font="bold" mnemonic="0" action="onSwing()"/>
+            <button text="i18n.ChooseView.exit" font="bold" mnemonic="1" action="onExit()"/>
+        </panel>
+    </panel>
+</panel>

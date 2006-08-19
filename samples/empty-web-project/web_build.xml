@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="master-build-copy" default="all" basedir=".">
+   <import file="../../genesis/web_build.xml" />
+</project>

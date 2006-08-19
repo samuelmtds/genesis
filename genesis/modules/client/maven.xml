@@ -1,0 +1,17 @@
+<project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" 
+   xmlns:ant="jelly:ant" xmlns:u="jelly:util" xmlns:maven="jelly:maven">
+
+   <goal name="java:compile">
+      <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="client:compile"/>
+   </goal>
+
+   <goal name="jar:jar">
+      <ant:ant dir="${genesis.basedir}" antfile="build.xml" target="client:jar"/>
+   </goal>
+
+   <postGoal name="test:compile">
+      <ant:copy todir="target/test-classes">
+         <fileset dir="test-src" includes="**/*.properties" />
+      </ant:copy>
+   </postGoal>
+</project>

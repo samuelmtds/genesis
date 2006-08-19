@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Downloads do genesis</title>
+    <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Downloads do genesis">
+      <p>Para fazer o download do genesis, há várias opções disponíveis. São
+      elas:</p>
+      <ul>
+        <li><b>genesis-dist-{versão}.tar.gz</b> e
+        <b>genesis-dist-{versão}.zip</b>: apenas os jars de distribuição e o 
+        arquivo annotation.properties.</li>
+        <li><b>genesis-dependencies-{versão}.tar.gz</b> e
+        <b>genesis-dependencies-{versão}.zip</b>: as bibliotecas 
+        referentes às dependências do genesis, como AspectWerkz, Hibernate,
+        Jakarta Commons e Thinlet.</li>
+        <li><b>genesis-empty-project-{versão}.tar.gz</b> e
+        <b>genesis-empty-project-{versão}.zip</b>: contém a estrutura de
+        um projeto para início de desenvolvimento.</li>
+        <li><b>genesis-empty-web-project-{versão}.zip</b>: contém a estrutura de
+        um projeto WEB para início de desenvolvimento.</li>
+        <li><b>genesis-useradmin-sample-{versão}.tar.gz</b> e
+        <b>genesis-useradmin-sample-{versão}.zip</b>: contém o exemplo
+        <code>useradmin</code> de utilização do genesis.</li>
+        <li><b>genesis-src-{versão}.tar.gz</b> e
+        <b>genesis-src-{versão}.zip</b>: contém somente o código fonte do
+        genesis, sem nenhum jar adicional.</li>
+        <li><b>genesis-docs-{versão}.tar.gz</b> e
+        <b>genesis-docs-{versão}.zip</b>: apenas a documentação
+        do genesis.</li>
+        <li><b>genesis-xdoclet-extensions.tar.gz</b> e
+        <b>genesis-xdoclet-extensions.zip</b>: apenas modificações do xdoclet
+        para executar tarefas adicionais.</li>
+        <li><b>genesis-all-{versão}.tar.gz</b> e
+        <b>genesis-all-{versão}.zip</b>: contém todos os arquivos binários,
+        exemplos, código e documentação mencionados acima.</li>
+      </ul>
+      <p>Os arquivos de download acima podem ser encontrados
+      <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5774&amp;expandFolder=5774">aqui</a>.</p>
+    </section>
+  </body>
+</document>

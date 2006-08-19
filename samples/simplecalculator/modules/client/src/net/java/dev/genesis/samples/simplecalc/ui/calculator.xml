@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE panel PUBLIC '-//Thinlets 1.0//EN' 'https://thinlet.dev.java.net/thinlet.dtd'>
+<panel border="true" bottom="4" columns="6" gap="4" halign="fill" left="4" right="4" top="4">
+  <textfield name="number1" columns="4" />
+  <label alignment="center" text="+"/>
+  <textfield name="number2" columns="4" />
+  <button name="compute" text="=" />
+  <textfield name="result" editable="false" weightx="1"/>
+  <button name="store" weightx="1" colspan="2"  text="->M" tooltip="Store in Memory"/>
+  <button name="recall" weightx="1" colspan="2"  text="M->" tooltip="Recall from Memory"/>
+  <button name="clear" weightx="1" colspan="2"  text="MC" tooltip="Memory Clear"/>
+</panel>
+

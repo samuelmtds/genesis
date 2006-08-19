@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>XDoclet extensions</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="XDoclet extensions">
+      <p><a href="http://xdoclet.sourceforge.net/">XDoclet</a> is a framework that
+      makes it possible to generate code from special Javadoc tags present in
+      source code. genesis' development started when the most recent XDoclet
+      version available was 1.2.0 and several resources were still not part of
+      it, especially when it came to its Hibernate integration.</p>
+      <p>To work around those limitations, genesis' distribution contained some
+      modified XDoclet modules for a while. As XDoclet itself evolved, some
+      new features eventually became part of it, but the way the extensions
+      present in genesis were being distributed prevented features from the
+      overridden modules to be used - both from the validation and hibernate
+      modules. Since genesis 2.2, this distribution has been modified so it is
+      easier to use both features that are part of the original XDoclet as well
+      as the ones made available by genesis.</p>
+      <p>The current version of the extensions contains all features that are
+      part of XDoclet 1.2.3 and some modifications as explained below.</p>
+    </section>
+    <section name="genesis module">
+      <p><a href="http://jakarta.apache.org/commons/validator/">Commons
+      Validator</a> was originally part of <a
+      href="http://struts.apache.org">Struts</a> and that is why the support
+      provided by XDoclet is limited to using Commons Validator with this web
+      framework. That is the reason tags that generate the Commons Validator
+      xml file are prefixed by <code>@struts.</code> and have an explicit
+      dependency on Struts classes.</p>
+      <p>The XDoclet extension module named genesis provides tags with the same
+      semantics as the <code>@struts.validator*</code> tags, except the tags'
+      names begin with <code>@genesis.validator</code> and they work with POJOs
+      instead of requiring the annotated classes to extend a Struts class. An
+      example of how to use these tags can be found in the <a
+      href="validating_data.html">documentation about
+      validation support</a>.</p>
+    </section>
+    <section name="hibernate module">
+      <p>The hibernate module supports some new features that are not available
+      in the original module bundled with XDoclet. The main ones are support
+      for generating the <code>meta</code> element by using the
+      <code>@hibernate.meta</code> tag, definition of many-to-one relationships
+      with tables with composite keys, external queries merging and also
+      component mapping merging. For more infomation, please refer to the <a
+      href="http://opensource.atlassian.com/projects/xdoclet/browse/XDT-1312">issue</a>
+      submitted to the XDoclet project that describes the changes made by the
+      genesis team.</p>
+    </section>
+  </body>
+</document>
