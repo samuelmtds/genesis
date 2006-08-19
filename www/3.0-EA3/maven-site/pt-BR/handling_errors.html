@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Tratando erros - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 18 August 2006
+                <span class="separator">|</span> Doc for  3.0-EA3
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/screenshots.html">Screenshots</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><a href="../pt-BR/transactions.html">Suporte a transações</a></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a><ul><li class="none"><a href="../pt-BR/conditions.html">Trabalhando com condições</a></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><strong><a href="../pt-BR/handling_errors.html">Tratando erros</a></strong></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Para web</a></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></li><li class="none"><a href="../pt-BR/aspects.html">Aspectos do genesis</a></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Tratando_erros"></a><h2>Tratando erros</h2>
+      <p>O tratamento de erros no genesis é centralizado, de modo que todas as 
+      exceções geradas são repassadas para uma única classe específica da API
+      gráfica. Para as APIs atualmente suportadas pelo genesis, o seguinte 
+      procedimento padrão é aplicado:</p>
+      <ul>
+        <li>Se a exceção for uma <code>UIException</code>, é exibida uma janela 
+        de diálogo de erro com o título e descrição contidos na instância.</li>
+        <li>Se a exceção for uma <code>ValidationException</code>, é exibida uma
+        janela de alerta tendo como conteúdo um erro por linha.</li>
+        <li>Caso contrário, verifica-se foi definida pela aplicação tratamento 
+        especifico para este tipo de exceção; se não foi, verifica-se a 
+        exceção retornada por <code>getCause()</code> até que este método 
+        retorne <code>null</code>; por fim é exibida uma mensagem com o stack
+        trace da exceção.</li>
+      </ul>
+      <p>Abaixo há informações mais detalhadas para cada API gráfica:</p>
+      <ul>
+        <li><a href="#Tratando_erros_com_Swing">Tratando erros com Swing</a></li>
+        <li><a href="#Tratando_erros_com_Thinlet">Tratando erros com 
+        Thinlet</a></li>
+      </ul>
+    </div><div class="section"><a name="Tratando_erros_com_Swing"></a><h2>Tratando erros com Swing</h2>
+      <p>Visto que em Swing não existe uma maneira padrão de tratar os erros, 
+      a interface <code>net.java.dev.genesis.ui.binding.ExceptionHandler</code>
+      foi criada para centralizar esta tarefa. O único método definido por essa
+      interface é <code>handleException(Throwable t)</code>, permitindo qualquer
+      tipo de tratamento da exceção.</p>
+      <p>A implementação padrão utilizada pelo <code>SwingBinder</code> é a 
+      classe <code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code>. 
+      Esta classe trata os erros da seguinte forma:</p>
+      <ul>
+        <li>Se o erro for uma <code>ValidationException</code>, este é 
+        redirecionado para 
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>Quando o erro é uma <code>UIException</code>, este é repassado para
+        <code>handleUIException(UIException)</code>.</li>
+        <li>Se todas as checagens anteriores falharem, o erro é passado para
+        <code>handleCustomException(Throwable)</code> que retorna um
+        <code>boolean</code> indicando se o erro foi tratado ou não.</li>
+        <li>Quando o erro não é tratado, o método
+        <code>handleUnknownException(Throwable)</code> é invocado, terminando a
+        cadeia de tratamento de erros.</li>
+      </ul>
+      <p>Para a maioria dos usuários, basta saber como cada erro será tratado
+      pelo framework. No entanto, qualquer um dos métodos descritos acima pode
+      ser sobrescrito se for necessário customizar o tratamento de erros. O
+      comportamento padrão de cada um deles é descrito abaixo:</p>
+      <ul>
+         <li><code>handleException(String, Throwable)</code> utiliza
+         <code>JOptionPane.showMessageDialog(..)</code> com 
+         <code>JOptionPane.ERROR_MESSAGE</code> para exibir o erro. O título da 
+         janela é a mensagem retornada por <code>getErrorMessage()</code>, que 
+         por padrão é a constante "Error".</li>
+         <li><code>showValidationErrors(ValidationException)</code> extrai os
+         erros de <code>ValidationException</code>, formata-os separando cada um
+         deles com um <code>\n</code> - utilizado para quebra de linha em Java -
+         e os exibe utilizando <code>JOptionPane.showMessageDialog(..)</code> 
+         com <code>JOptionPane.WARNING_MESSAGE</code>. O título da janela
+         será a String definida para <code>validation.errors.title</code> no
+         <a href="configuring_messages.html#Configurando as mensagens">arquivo de recursos</a>.
+         </li>
+         <li><code>handleUIException(UIException)</code> exibe o erro utilizando
+         <code>JOptionPane.showMessageDialog(..)</code> com 
+         <code>JOptionPane.WARNING_MESSAGE</code>. O título e a mensagem serão 
+         extraídos da própria exceção.</li>
+         <li><code>handleCustomException(Throwable)</code> verifica se o erro
+         lançado possui alguma outra exceção como causa invocando nele o método
+         <code>getCause()</code>. Se possuir, esta causa será repassada para
+         <code>handleException(Throwable)</code>. Caso contrário, será retornado
+         <code>false</code> indicando que o erro não pôde ser tratado.</li>
+         <li><code>handleUnknownException(Throwable)</code> simplesmente repassa
+         o erro para <code>handleException(String, Throwable)</code> utilizando
+         como mensagem a constante "Unexpected error occurred".</li>
+      </ul>
+    </div><div class="section"><a name="Tratando_erros_com_Thinlet"></a><h2>Tratando erros com Thinlet</h2>
+      <p>O Thinlet já possui um método para tratamento de erros,
+      <code>handleException(Throwable)</code>, de modo que
+      <code>BaseThinlet</code> sobrescreve este método para tratar os erros de
+      forma customizada.</p>
+      <p>A implementação padrão trata os erros de forma diferenciada, conforme
+      descrito abaixo:</p>
+      <ul>
+        <li>Caso o erro seja uma <code>ScreenNotFoundException</code> (que
+        ocorre quando um dos arquivos xml da interface gráfica não é
+        encontrado), o erro é tratado através de
+        <code>handleException(String, Throwable)</code>.</li>
+        <li>Se o erro for uma <code>ValidationException</code>, este é
+        redirecionado para
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>Quando o erro é uma <code>UIException</code>, este é repassado para
+        <code>handleUIException(UIException)</code>.</li>
+        <li>Se todas as checagens anteriores falharem, o erro é passado para
+        <code>handleCustomException(Throwable)</code> que retorna um
+        <code>boolean</code> indicando se o erro foi tratado ou não.</li>
+        <li>Quando o erro não é tratado, o método
+        <code>handleUnknownException(Throwable)</code> é invocado, terminando a
+        cadeia de tratamento de erros.</li>
+      </ul>
+      <p>Para a maioria dos usuários, basta saber como cada erro será tratado
+      pelo framework. No entanto, qualquer um dos métodos descritos acima pode
+      ser sobrescrito se for necessário customizar o tratamento de erros. O
+      comportamento padrão de cada um deles é descrito abaixo:</p>
+      <ul>
+         <li><code>handleException(String, Throwable)</code> utiliza
+         <code>ErrorReporterDialog</code> para exibir o erro. O título da janela
+         é a mensagem retornada por <code>getErrorMessage()</code>, que por
+         padrão é a constante "Error".</li>
+         <li><code>showValidationErrors(ValidationException)</code> extrai os
+         erros de <code>ValidationException</code>, formata-os separando cada um
+         deles com um <code>\n</code> - utilizado para quebra de linha em Java -
+         e os exibe utilizando <code>MessageDialog</code>. O título da janela
+         será a String definida para <code>validation.errors.title</code> no
+         <a href="configuring_messages.html#Configurando as mensagens">arquivo de recursos</a>.
+         </li>
+         <li><code>handleUIException(UIException)</code> exibe o erro utilizando
+         <code>MessageDialog</code>. O título e a mensagem serão extraídos da
+         própria exceção.</li>
+         <li><code>handleCustomException(Throwable)</code> verifica se o erro
+         lançado possui alguma outra exceção como causa invocando nele o método
+         <code>getCause()</code>. Se possuir, esta causa será repassada para
+         <code>handleException(Throwable)</code>. Caso contrário, será retornado
+         <code>false</code> indicando que o erro não pôde ser tratado.</li>
+         <li><code>handleUnknownException(Throwable)</code> simplesmente repassa
+         o erro para <code>handleException(String, Throwable)</code> utilizando
+         como mensagem a constante "Unexpected error occurred".</li>
+      </ul>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2006, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
