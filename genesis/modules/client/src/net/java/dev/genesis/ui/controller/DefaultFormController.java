@@ -578,7 +578,8 @@ public class DefaultFormController implements FormController {
             methodMetadata.getCallCondition());
 
       if (satisfied) {
-         if (dataProviderMeta == null && !beforeInvokingMethod(methodMetadata)) {
+         if (methodMetadata.getActionMetadata() != null && 
+               !beforeInvokingMethod(methodMetadata)) {
             return false;
          }
 
