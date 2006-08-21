@@ -16,7 +16,6 @@
     </links>
     <menu name="genesis">
       <item name="Overview" href="/en/index.html" />
-      <item name="Screenshots" href="/en/screenshots.html" />
       <item name="Downloads" href="/en/download.html" />
       <item name="Release notes" href="/en/release_notes.html" />
     </menu>
