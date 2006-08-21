@@ -18,12 +18,16 @@
  */
 package net.java.dev.genesis.ui.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.ui.thinlet.ThinletBinder;
 
 public class DefaultFormControllerTest extends GenesisTestCase {
@@ -102,5 +106,49 @@ public class DefaultFormControllerTest extends GenesisTestCase {
       assertTrue(!controller.getFormControllerListeners().contains(listener));
       assertEquals(0, controller.getFormControllerListeners().size());
       
+   }
+
+   public void testBeforeActionDataProvider() throws Exception {
+      controller.setup();
+
+      final String dataProviderName = "someDataProvider";
+      final Boolean called[] = new Boolean[1];
+
+      controller.addFormControllerListener(new FormControllerListener() {
+         public void enabledConditionsChanged(Map updatedEnabledConditions) {
+         }
+
+         public void visibleConditionsChanged(Map updatedVisibleConditions) {
+         }
+
+         public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
+               throws Exception {
+            if (dataProviderName.equals(methodMetadata.getName())) {
+               called[0] = Boolean.TRUE;
+            }
+
+            return true;
+         }
+
+         public void afterInvokingMethod(MethodMetadata methodMetadata) 
+               throws Exception {
+         }
+
+         public void dataProvidedListChanged(DataProviderMetadata metadata, 
+               List items) throws Exception {
+         }
+
+         public void dataProvidedIndexesChanged(DataProviderMetadata metadata, 
+               int[] selectedIndexes) {
+         }
+
+         public void valuesChanged(Map updatedValues) throws Exception {
+         }
+      });
+
+      controller.invokeAction(dataProviderName, Collections.EMPTY_MAP);
+
+      assertEquals("@BeforeAction was not called for @DataProvider", 
+            Boolean.TRUE, called[0]);
    }
 }

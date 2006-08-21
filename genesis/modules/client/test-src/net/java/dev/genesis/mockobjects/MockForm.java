@@ -40,6 +40,11 @@ public class MockForm implements FormMetadataFactory, FormControllerFactory {
    private MockFormController controller = new MockFormController();
 
    private Map context;
+   
+   // Dummy properties
+   private Object objectField;
+   private String stringField;
+   private int intField;
 
    public MockForm() {
       Method someAction = getMethod("someAction");
@@ -54,7 +59,7 @@ public class MockForm implements FormMetadataFactory, FormControllerFactory {
             true, false));
       
       MethodMetadata methodMeta = new MethodMetadata(
-            someDataProvider, false, true);
+            someDataProvider, true, true);
       metadata.addMethodMetadata(someDataProvider, methodMeta);
       methodMeta.getDataProviderMetadata().setWidgetName("dataProviderField");
       methodMeta.getDataProviderMetadata().setObjectField(new FieldEntry("objectField", Object.class));
@@ -101,5 +106,29 @@ public class MockForm implements FormMetadataFactory, FormControllerFactory {
 
    public List someDataProvider() {
       return Collections.EMPTY_LIST;
+   }
+
+   public Object getObjectField() {
+      return objectField;
+   }
+
+   public void setObjectField(Object objectField) {
+      this.objectField = objectField;
+   }
+
+   public String getStringField() {
+      return stringField;
+   }
+
+   public void setStringField(String stringField) {
+      this.stringField = stringField;
+   }
+
+   public int getIntField() {
+      return intField;
+   }
+
+   public void setIntField(int intField) {
+      this.intField = intField;
    }
 }
