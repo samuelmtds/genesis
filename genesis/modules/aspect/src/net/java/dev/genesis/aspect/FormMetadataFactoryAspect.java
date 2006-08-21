@@ -736,6 +736,12 @@ public class FormMetadataFactoryAspect {
                continue;
             }
 
+            if (formMetadata.getFieldMetadata(methods[i].getName()) != null) {
+               throw new IllegalArgumentException("An @Action/@DataProvider " +
+                     "cannot have the same name of a property: " + 
+                     methods[i].getName());
+            }
+
             methodMetadata = new MethodMetadata(methods[i], isAction, isProvider);
             formMetadata.addMethodMetadata(methods[i], methodMetadata);
             processMethodAnnotations(formMetadata, methodMetadata, methods[i]);
