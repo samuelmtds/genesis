@@ -255,6 +255,16 @@ public class FormMetadataFactoryTest extends TestCase {
 
    }
 
+   public void testNameClash() {
+      try {
+         getFormMetadata(new NameClashForm());
+         fail("An IllegalArgumentException should be thrown when name " +
+               "clashes occur");
+      } catch (IllegalArgumentException iae) {
+         //Expected
+      }
+   }
+
    /**
     * @Form
     */
@@ -424,6 +434,21 @@ public class FormMetadataFactoryTest extends TestCase {
 
       public void setIds(Long[] ids) {
          this.ids = ids;
+      }
+   }
+   
+   /**
+    * @Form
+    */
+   public static class NameClashForm {
+      public Object getName() {
+         return null;
+      }
+
+      /**
+       * @Action
+       */
+      public void name() {
       }
    }
 }
