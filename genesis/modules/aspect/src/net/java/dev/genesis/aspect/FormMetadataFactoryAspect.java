@@ -690,19 +690,21 @@ public class FormMetadataFactoryAspect {
             propDesc = propertyDescriptors[i];
 
             // Ignoring java.lang.Object.getClass()
-            if (propDesc.getName().equals("class")
-                  || propDesc.getReadMethod() == null
-                  || Annotations.getAnnotation(NotBound.class, propDesc
-                        .getReadMethod()) != null) {
+            if (propDesc.getName().equals("class")) {
+               continue;
+            }
+
+            final Method readMethod = getReadMethod(clazz, propDesc);
+
+            if (readMethod == null || Annotations.getAnnotation(NotBound.class, 
+                  readMethod) != null) {
                continue;
             }
 
             fieldMetadata = new FieldMetadata(propDesc.getName(), propDesc
                   .getPropertyType(), propDesc.getWriteMethod() != null);
             formMetadata.addFieldMetadata(propDesc.getName(), fieldMetadata);
-            processFieldAnnotations(formMetadata, fieldMetadata, getReadMethod(
-                  clazz, propDesc));
-
+            processFieldAnnotations(formMetadata, fieldMetadata, readMethod);
          }
       }
 
@@ -768,7 +770,7 @@ public class FormMetadataFactoryAspect {
       private Method getReadMethod(Class clazz, PropertyDescriptor pd) {
          Method method = pd.getReadMethod();
 
-         if (clazz.equals(method.getDeclaringClass())) {
+         if (method == null || clazz.equals(method.getDeclaringClass())) {
             return method;
          }
 
