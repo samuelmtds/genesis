@@ -376,7 +376,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    }
 
    public boolean isVirtual(String propertyName) {
-      return propertyName.startsWith(VIRTUAL_PREFIX);
+      return propertyName != null && propertyName.startsWith(VIRTUAL_PREFIX);
    }
 
    public abstract boolean isVirtual(Object widget);
@@ -386,16 +386,16 @@ public abstract class AbstractBinder implements FormControllerListener {
    }
 
    protected Formatter getVirtualFormatter(String name, String propertyName) {
-      if (propertyName.startsWith(VIRTUAL_PREFIX)) {
+      if (propertyName != null && propertyName.startsWith(VIRTUAL_PREFIX)) {
          propertyName = propertyName.substring(VIRTUAL_PREFIX.length());
       }
 
-      Formatter virtualFormatter = (Formatter) formatters.get(name + '.'
-            + propertyName);
+      String key = propertyName == null ? name : name + '.' + propertyName;
+      Formatter virtualFormatter = (Formatter) formatters.get(key);
 
       if (virtualFormatter == null) {
          throw new IllegalArgumentException("There is no formatter "
-               + "registered for virtual property " + name + '.' + propertyName);
+               + "registered for virtual property " + key);
       }
 
       return virtualFormatter;
@@ -404,7 +404,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    public abstract String getName(Object widget);
 
    public String format(String name, String property, Object value) {
-      return format(name, property, value, false);
+      return format(name, property, value, isVirtual(property));
    }
 
    public String format(String name, String property, Object value, boolean isVirtual) {

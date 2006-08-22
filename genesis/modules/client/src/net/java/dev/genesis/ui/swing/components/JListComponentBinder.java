@@ -18,6 +18,16 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
+import java.awt.Component;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
@@ -28,17 +38,6 @@ import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.awt.Component;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class JListComponentBinder extends AbstractComponentBinder {
    private static final Log log = LogFactory.getLog(JListComponentBinder.class);
@@ -238,15 +237,13 @@ public class JListComponentBinder extends AbstractComponentBinder {
                (value == null) ? null
                : PropertyUtils.getProperty(value, keyPropertyName);
 
-            return getBinder().format(getBinder().getName(component),
-                  keyPropertyName, o);
+            return getBinder().format(getName(), keyPropertyName, o);
          } else if (EnumHelper.getInstance().isEnum(value)) {
             return value.toString();
          }
 
          throw new PropertyMisconfigurationException("Property 'key' "
-               + "must be configured for the component named "
-               + getBinder().getName(component));
+               + "must be configured for the component named " + getName());
       }
 
       protected void deactivateListeners() {

@@ -57,7 +57,8 @@ public class KeyValueListCellRenderer extends DefaultListCellRenderer {
       } else if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
-         return binder.format(binder.getName(component), null, value);
+         return binder.format(binder.getName(component), null, value,
+               getBinder().isVirtual(component));
       }
 
       boolean isVirtual = binder.isVirtual(component, valueProperty); 
