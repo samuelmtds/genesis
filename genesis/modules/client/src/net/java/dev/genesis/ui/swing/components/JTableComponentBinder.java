@@ -124,6 +124,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       protected TableModelAdapter createTableModelAdapter() {
          return new TableModelAdapter() {
             public void setData(List data) throws Exception {
+               component.getSelectionModel().clearSelection();
                DefaultTableModel model = (DefaultTableModel) component
                      .getModel();
 
