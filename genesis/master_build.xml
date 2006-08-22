@@ -423,6 +423,17 @@
                      <mapper type="merge" to="${shared.hibernate.timestamp.file}" />
                   </uptodate>
                </not>
+               <and>
+                  <available file="${shared.hibernate.merge.dir}" type="dir" />
+                  <not>
+                     <uptodate>
+                        <srcfiles dir="${shared.hibernate.merge.dir}" 
+                                  includes="**/hibernate-*.xml" />
+                        <mapper type="merge" 
+                                to="${shared.hibernate.timestamp.file}" />
+                     </uptodate>
+                  </not>
+               </and>
             </or>
          </and>
       </condition>

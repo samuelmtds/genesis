@@ -196,7 +196,13 @@
                            touchfile="${client.annotated.timestamp.file}" />
    </target>
 
-   <target name="client:check-validation-conditions" depends="client:init">
+   <target name="client:pre-check-validation-conditions">
+      <!-- Override to check for additional conditions that should make 
+           validation run. Set validation.force.generation as true if 
+           required -->
+   </target>
+
+   <target name="-do-client-check-validation-conditions">
       <condition property="client.validation.needed">
          <and>
             <istrue value="${has.client.sources}" />
@@ -216,6 +222,10 @@
          </and>
       </condition>
    </target>
+
+   <target name="client:check-validation-conditions"
+           depends="client:init,client:pre-check-validation-conditions,
+                   -do-client-check-validation-conditions" />
 
    <target name="validation-macrodefs" if="client.validation.needed"
            depends="client:check-validation-conditions">
