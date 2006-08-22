@@ -37,6 +37,11 @@
          <fileset dir="${orangevolt.dist}" includes="*.jar" />
       </path>
 
+      <taskdef name="nativeproperty" 
+               classname="net.java.dev.genesis.anttasks.ant.NativeProperty"
+               classpathref="anttasks.path" />
+
+      <nativeproperty name="swt.specific.dir" location="${swt.dist}" />
    </target>
 
    <target name="shared:additional-check-hibernate-conditions">
@@ -120,8 +125,8 @@
            depends="shared:hibernate-doclet-local,
                     shared:hibernate-doclet-remote,
                     shared:hibernate-doclet-both" />
-
-   <target name="client:additional-init">
+   
+   <target name="client:additional-init" depends="define-optional-fileset-type">
       <property name="client.annotated.dir" value="${client.dir}/${annotated.dir}" />
       <property name="client.annotated.timestamp.file" 
                 location="${client.annotated.dir}/${timestamp.file}" />
@@ -131,7 +136,11 @@
                 location="${client.validation.dir}/${timestamp.file}" />
 
       <property name="validation.generate.files" value="true" />
-      
+
+      <genesis:optional-fileset dir="${client.lib.dir}" id="client.lib.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
       <path id="client.standard.javac.classpath">
          <path location="${shared.classes.dir}" />
          <path refid="aspectwerkz.path" />
@@ -151,6 +160,9 @@
          </fileset>
          <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
          <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
+         <fileset dir="${swt.specific.dir}" includes="*.jar" />
+         <fileset refid="lib.fileset" />
+         <fileset refid="client.lib.fileset" />
       </path>
    </target>
 
@@ -636,7 +648,8 @@
          the run:init target -->
    </target>
 
-   <target name="-do-run-init" depends="init-paths,run:pre-init">
+   <target name="-do-run-init"
+           depends="init-paths,run:pre-init,define-optional-fileset-type,client:init">
       <property name="jar.local.name"
                value="${genesisBasedApplication.name}-local-weaved.jar" />
       <property name="jar.local.location" 
@@ -655,6 +668,9 @@
       <property name="debug.port" value="10000" />
       <property name="debug.suspend" value="n" />
 
+      <genesis:optional-fileset id="jdbc.driver.file" 
+                        file="${jdbc.driver}" />
+      
       <path id="run.standard.classpath">
          <path refid="backport175.path" />
          <fileset dir="${genesis.dist}">
@@ -683,11 +699,17 @@
             <include name="reusable-components-*.jar" />
          </fileset>
          <fileset dir="${script.dist}" includes="*.jar" />
+         <fileset dir="${swt.specific.dir}">
+            <include name="*.jar" />
+         </fileset>
+         <fileset refid="lib.fileset" />
+         <fileset refid="shared.lib.fileset" />
+         <fileset refid="client.lib.fileset" />
       </path>
 
       <path id="run.standard.local.classpath">
          <fileset file="${jar.local.location}" />
-         <fileset file="${jdbc.driver}" />
+         <fileset refid="jdbc.driver.file" />
          <fileset dir="${hibernate.dist}">
             <include name="cglib-full-*.jar"/>
             <include name="ehcache-*.jar"/>
@@ -895,13 +917,20 @@
 
       <presetdef name="java-local"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <genesis:java-macro classpathref="run.local.classpath" />
+         <genesis:java-macro classpathref="run.local.classpath">
+            <sysproperties>
+               <sysproperty key="java.library.path"
+                            value="${swt.specific.dir}" />
+            </sysproperties>
+         </genesis:java-macro>
       </presetdef>
 
       <presetdef name="java-remote"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:java-macro classpathref="run.remote.classpath">
             <sysproperties>
+               <sysproperty key="java.library.path"
+                            value="${swt.specific.dir}" />
                <sysproperty key="java.naming.factory.initial"
                             value="${jboss.factory.initial}" />
                <sysproperty key="java.naming.provider.url"
@@ -961,7 +990,9 @@
 
    <target name="jar:additional-init" depends="run:define-classpath">
       <path id="jar.standard.local.classpath">
-         <pathelement path="${jdbc.driver}" />
+         <path>
+            <fileset refid="jdbc.driver.file" />
+         </path>
          <fileset dir="${hibernate.dist}">
             <include name="cglib-full-*.jar"/>
             <include name="ehcache-*.jar"/>
@@ -1242,18 +1273,26 @@
          <element name="customize" optional="true" />
          <element name="jar-fileset" optional="false" />
          <element name="before-signjar" optional="true" />
+         <element name="native-dirset" optional="true" />
          <sequential>
+            <taskdef name="nativejar"
+                     classname="net.java.dev.genesis.anttasks.ant.NativeJar"
+                     classpathref="anttasks.path" />
             <copy todir="${webstart.jars.dir}">
                <jar-fileset />
                <customize />
             </copy>
+            <nativejar destdir="${webstart.jars.dir}">
+               <dirset dir="${swt.dist}" />
+               <native-dirset />
+            </nativejar>
             <before-signjar />
             <signjar alias="${webstart.signjar.alias}"
                   keystore="${webstart.signjar.keystore}"
                   storepass="${webstart.signjar.storepass}" 
                   keypass="${webstart.signjar.keypass}"
                   lazy="@{lazy}">
-               <fileset dir="${webstart.jars.dir}" includes="*.jar" />
+               <fileset dir="${webstart.jars.dir}" includes="**/*.jar" />
             </signjar>
          </sequential>
       </macrodef>
@@ -1310,6 +1349,12 @@
                   <include name="jboss-remoting.jar" />
                   <include name="jboss-serialization.jar" />
                </fileset>
+               <fileset dir="${swt.dist}">
+                  <include name="**/*.jar" />
+               </fileset>
+               <fileset refid="lib.fileset" />
+               <fileset refid="shared.lib.fileset" />
+               <fileset refid="client.lib.fileset" />
             </jar-fileset>
          </genesis:webstart-signjar-macro>
       </presetdef>
@@ -1319,15 +1364,19 @@
          <attribute name="tofile" />
          <element name="customize-fileset" optional="true" />
          <element name="default-excludes" optional="true" />
+         <element name="customize-native-fileset" optional="true" />
+         <element name="default-native-excludes" optional="true" />
          <element name="customize-information" optional="true" />
          <element name="customize-resources" optional="true" />
          <element name="customize-extensions" optional="true" />
          <element name="customize-security" optional="true" />
          <element name="default-properties" optional="true" />
          <element name="properties" optional="true" />
+         <element name="customize-native-resources" optional="true" />
          <sequential>
-            <taskdef classpathref="orangevolt.path" 
-                     resource="com/orangevolt/tools/ant/taskdefs.properties" />
+            <taskdef name="jnlp"
+                     classname="net.java.dev.genesis.anttasks.jnlp.JNLPTask"
+                     classpathref="anttasks.path" />
             <jnlp codebase="${webstart.jnlp.codebase}" tofile="@{tofile}">
                <information>
                   <title>${webstart.jnlp.title}</title>
@@ -1345,7 +1394,7 @@
                         max_heap_size="${webstart.jnlp.j2se.max.heap.size}" />
                   <customize-resources />
                   <jar download="eager">
-                     <fileset dir="${webstart.jars.dir}" includes="**/*.jar">
+                     <fileset dir="${webstart.jars.dir}" includes="*.jar">
                         <default-excludes />
                         <customize-fileset />
                      </fileset>
@@ -1354,6 +1403,12 @@
                   <default-properties />
                   <properties />
                </resources>
+               <nativeresources download="eager">
+                  <fileset dir="${webstart.jars.dir}" includes="*/**/*.jar">
+                     <default-native-excludes />
+                     <customize-native-fileset />
+                  </fileset>
+               </nativeresources>
                <application_desc main_class="${genesisBasedApplication.mainClass}" />
             </jnlp>
          </sequential>

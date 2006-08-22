@@ -21,7 +21,7 @@ package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 public class ChooseView extends BaseView {
 
    public ChooseView() throws Exception {
-      super("ChooseView.title", "choose-view.xml", 160, 90, false);
+      super("ChooseView.title", "choose-view.xml", 210, 90, false);
    }
 
    protected void onClose() {
@@ -37,6 +37,12 @@ public class ChooseView extends BaseView {
    public void onSwing() throws Exception {
       getFrame().dispose();
       new net.java.dev.genesis.samples.useradmin.ui.swing.UserListView()
+            .display();
+   }
+
+   public void onSWT() throws Exception {
+      getFrame().dispose();
+      new net.java.dev.genesis.samples.useradmin.ui.swt.UserListView()
             .display();
    }
 

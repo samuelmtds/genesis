@@ -120,6 +120,14 @@
             <jar>jsp-api.jar</jar>
             <properties/>
         </dependency>
+        <dependency>
+            <groupId>swt</groupId>
+            <artifactId>swt</artifactId>
+            <version>3.2</version>
+            <type>jar</type>
+            <url>http://www.eclipse.org/swt/</url>
+            <properties/>
+        </dependency>
         <!-- Unit test dependency -->
         <dependency>
             <groupId>hibernate</groupId>

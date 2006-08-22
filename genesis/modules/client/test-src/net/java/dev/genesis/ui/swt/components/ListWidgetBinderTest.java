@@ -1,0 +1,407 @@
+/*
+ * The Genesis Project
+ * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+package net.java.dev.genesis.ui.swt.components;
+
+import java.util.Arrays;
+
+import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.helpers.EnumHelper;
+import net.java.dev.genesis.mockobjects.MockBean;
+import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.ui.binding.BoundDataProvider;
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swt.MockSwtBinder;
+import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.widgets.ListWidgetBinder;
+import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
+
+public class ListWidgetBinderTest extends GenesisTestCase {
+   private Shell root;
+   private List list;
+   private MockSwtBinder binder;
+   private WidgetBinder widgetBinder;
+   private BoundDataProvider boundDataProvider;
+   private BoundField boundField;
+   private MockForm form;
+   private DataProviderMetadata dataMeta;
+   private MockBean[] beans;
+
+   public ListWidgetBinderTest() {
+      super("JList Component Binder Unit Test");
+   }
+
+   protected void setUp() throws Exception {
+      list = new List(root = new Shell(), SWT.MULTI);
+      list.setData(SwtBinder.KEY_PROPERTY, "key");
+      list.setData(SwtBinder.VALUE_PROPERTY, "value");
+      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      dataMeta = (DataProviderMetadata) form.getFormMetadata()
+            .getDataProviderMetadatas().get(
+                  new MethodEntry(form.getMethod("someDataProvider")));
+      beans = new MockBean[] { new MockBean("one", "One"),
+            new MockBean("two", "Two"), new MockBean("three", "Three"),
+            new MockBean("four", "Four"), new MockBean("five", "Five") };
+      
+      String[] values = new String[beans.length];
+
+      for (int i = 0; i < beans.length; i++) {
+         values[i] = beans[i].getValue();
+         setKey(i, getKey(beans[i]));
+      }
+
+      list.setItems(values);
+      
+      widgetBinder = binder.getWidgetBinder(list);
+   }
+   
+   protected void setKey(int index, String key) throws Exception {
+      list.setData(SwtBinder.KEY_PROPERTY + '-' + index, key);
+   }
+
+   protected String getKey(Object value) throws Exception {
+      String keyPropertyName = (String) list.getData(SwtBinder.KEY_PROPERTY);
+
+      if (keyPropertyName != null) {
+         Object o = (value == null) ? null : PropertyUtils.getProperty(value,
+               keyPropertyName);
+
+         return binder.format(getName(), keyPropertyName, o);
+      } else if (EnumHelper.getInstance().isEnum(value)) {
+         return value.toString();
+      }
+
+      throw new PropertyMisconfigurationException("Property 'key' "
+            + "must be configured for the widget named " + getName());
+   }
+
+   protected String getValue(Widget widget, Object value) throws Exception {
+      String valueProperty = (String) widget.getData(SwtBinder.VALUE_PROPERTY);
+      if (value instanceof String) {
+         return (String) value;
+      } else if (valueProperty == null) {
+         return binder.format(binder.getLookupStrategy().getName(widget), null,
+               value);
+      }
+
+      return binder.format(binder.getLookupStrategy().getName(widget),
+            valueProperty, PropertyUtils.getProperty(value, valueProperty));
+   }
+
+   public void testSelectIndexes() {
+      assertTrue(widgetBinder instanceof ListWidgetBinder);
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(widgetBinder.bind(binder, list, dataMeta));
+
+      simulateSelect(2);
+      int[] indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] { 2 }, indexes));
+
+      simulateSelect(0);
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      System.out.println(Arrays.toString(indexes));
+      assertTrue(Arrays.equals(new int[] { 0 }, indexes));
+
+      simulateSelect(1);
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] { 1 }, indexes));
+
+      simulateSelect(-1);
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] {}, indexes));
+
+      simulateSelect(new int[] {2, 3});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      System.out.println(Arrays.toString(indexes));
+      assertTrue(Arrays.equals(new int[] { 2, 3 }, indexes));
+
+      simulateSelect(new int[] {});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] {}, indexes));
+
+      simulateSelect(new int[] {-1});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] {}, indexes));
+   }
+
+   public void testSelectIndexesWithBlank() {
+      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(widgetBinder.bind(binder, list, dataMeta));
+
+      simulateSelect(2);
+      int[] indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] { 1 }, indexes));
+
+      simulateSelect(1);
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] { 0 }, indexes));
+
+      simulateSelect(0);
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[0], indexes));
+
+      simulateSelect(-1);
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[0], indexes));
+
+      simulateSelect(new int[] {2, 3});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] { 1, 2 }, indexes));
+      
+      simulateSelect(new int[] {0});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] {}, indexes));
+
+      simulateSelect(new int[] {});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] {}, indexes));
+
+      simulateSelect(new int[] {-1});
+      indexes = (int[]) binder
+            .get("updateFormSelection(DataProviderMetadata,int[])");
+      assertNotNull(indexes);
+      assertTrue(Arrays.equals(new int[] {}, indexes));
+   }
+
+   public void testUpdateIndexes() {
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundDataProvider = widgetBinder.bind(binder, list,
+            dataMeta));
+
+      boundDataProvider.updateIndexes(new int[] { 2 });
+      assertEquals(2, list.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { 1 });
+      assertEquals(1, list.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { -1 });
+      assertEquals(-1, list.getSelectionIndex());
+      
+      boundDataProvider.updateIndexes(new int[] { 2, 4 });
+      assertTrue(Arrays.equals(new int[] { 2, 4 }, list.getSelectionIndices()));
+      
+      boundDataProvider.updateIndexes(new int[] {});
+      assertTrue(Arrays.equals(new int[] {}, list.getSelectionIndices()));
+      
+      boundDataProvider.updateIndexes(new int[] {-1});
+      assertTrue(Arrays.equals(new int[] {}, list.getSelectionIndices()));
+   }
+
+   public void testUpdateIndexesWithBlank() {
+      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundDataProvider = widgetBinder.bind(binder, list,
+            dataMeta));
+
+      boundDataProvider.updateIndexes(new int[] { 2 });
+      assertEquals(3, list.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { 1 });
+      assertEquals(2, list.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { 0 });
+      assertEquals(1, list.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { -1 });
+      assertEquals(-1, list.getSelectionIndex());
+      
+      boundDataProvider.updateIndexes(new int[] { 1, 3 });
+      assertTrue(Arrays.equals(new int[] { 2, 4 }, list.getSelectionIndices()));
+      
+      boundDataProvider.updateIndexes(new int[] {});
+      assertTrue(Arrays.equals(new int[] {}, list.getSelectionIndices()));
+      
+      boundDataProvider.updateIndexes(new int[] {-1});
+      assertTrue(Arrays.equals(new int[] {}, list.getSelectionIndices()));
+   }
+
+   public void testUpdateList() throws Exception {
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+
+      boundDataProvider = widgetBinder.bind(binder, list, dataMeta);
+      assertNotNull(boundDataProvider);
+
+      MockBean[] newList = new MockBean[] { new MockBean("newOne", "NewOne"),
+            new MockBean("newTwo", "NewTwo"),
+            new MockBean("newThree", "NewThree") };
+      boundDataProvider.updateList(Arrays.asList(newList));
+      assertEquals(list.getItemCount(), newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i), getValue(list, newList[i]));
+      }
+
+      newList = new MockBean[] { new MockBean("other", "Other") };
+      boundDataProvider.updateList(Arrays.asList(newList));
+      assertEquals(list.getItemCount(), newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i), getValue(list, newList[i]));
+      }
+
+      newList = new MockBean[0];
+      boundDataProvider.updateList(Arrays.asList(newList));
+      assertEquals(list.getItemCount(), newList.length);
+   }
+
+   public void testUpdateListWithBlank() throws Exception {
+      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+
+      boundDataProvider = widgetBinder.bind(binder, list, dataMeta);
+      assertNotNull(boundDataProvider);
+
+      MockBean[] newList = new MockBean[] { new MockBean("newOne", "NewOne"),
+            new MockBean("newTwo", "NewTwo"),
+            new MockBean("newThree", "NewThree") };
+      boundDataProvider.updateList(Arrays.asList(newList));
+      int count = list.getItemCount();
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i + 1), getValue(list, newList[i]));
+      }
+
+      newList = new MockBean[] { new MockBean("other", "Other") };
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getItemCount();
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i + 1), getValue(list, newList[i]));
+      }
+
+      newList = new MockBean[0];
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getItemCount();
+      assertEquals(count, newList.length + 1);
+   }
+
+   public void testSetValue() throws Exception {
+      list.setData(SwtBinder.KEY_PROPERTY, "key");
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder,
+            list, dataMeta));
+
+      Object value = beans[3];
+      boundField.setValue(value);
+      assertEquals(getValue(list, value), list.getSelection()[0]);
+      assertEquals(3, list.getSelectionIndex());
+
+      value = beans[0];
+      boundField.setValue(value);
+      assertEquals(getValue(list, value), list.getSelection()[0]);
+      assertEquals(0, list.getSelectionIndex());
+
+      value = new MockBean("none", "None");
+      boundField.setValue(value);
+      assertEquals(-1, list.getSelectionIndex());
+   }
+
+   public void testSetValueWithBlank() throws Exception {
+      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.setData(SwtBinder.KEY_PROPERTY, "key");
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder,
+            list, dataMeta));
+
+      Object value = beans[3];
+      boundField.setValue(value);
+      assertEquals(getValue(list, value), list.getSelection()[0]);
+      assertEquals(3, list.getSelectionIndex());
+
+      value = beans[1];
+      boundField.setValue(value);
+      assertEquals(getValue(list, value), list.getSelection()[0]);
+      assertEquals(1, list.getSelectionIndex());
+
+      value = new MockBean("none", "None");
+      boundField.setValue(value);
+      assertEquals(-1, list.getSelectionIndex());
+   }
+   
+   private void simulateSelect(int index) {
+      simulateSelect(new int[] {index});
+   }
+   
+   private void simulateSelect(int[] indexes) {
+      list.deselectAll();
+
+      if (indexes != null && indexes.length > 0
+            && (indexes.length != 1 || indexes[0] > -1)) {
+         list.select(indexes);
+      }
+      
+      Event event = new Event();
+      event.widget = list;
+      event.button = 1;
+      event.type = SWT.Selection;
+      list.notifyListeners(event.type, event);
+   }
+}

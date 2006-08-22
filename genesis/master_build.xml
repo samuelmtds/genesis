@@ -14,6 +14,7 @@
       <property name="build.dir" value="target" />
       <property name="classes.dir" value="${build.dir}/classes" />
       <property name="annotated.dir" value="${build.dir}/annotated" />
+      <property name="lib.dir" value="lib" />
       <property name="timestamp.file" value=".timestamp" />
       <property name="verbose" value="true" />
       <property name="genjp" value="true" />
@@ -66,6 +67,7 @@
       <property name="anttasks.dist" location="${genesis.home}/../ant-tasks/dist" />
       <property name="backport175.dist" location="${genesis.home}/lib/backport175" />
       <property name="script.dist" location="${genesis.home}/lib/script" />
+      <property name="swt.dist" location="${genesis.home}/lib/swt" />
 
       <property name="jboss.app" 
                 location="${jboss.home}/server/${genesisBasedApplication.serverName}" />
@@ -133,7 +135,7 @@
       <taskdef name="succeededtargets" 
                classname="net.java.dev.genesis.anttasks.SucceededTasksListener"
                classpathref="anttasks.path" />
-       <succeededtargets alreadyexecuted="init,-pre-init-paths" />
+      <succeededtargets alreadyexecuted="init,-pre-init-paths" />
    </target>
 
    <target name="-do-additional-init-paths" />
@@ -161,7 +163,7 @@
                classname="net.java.dev.genesis.anttasks.ant.types.OptionalFileSet"
                classpathref="anttasks.path" />
    </target>
-   
+
    <target name="define-aw-macros" depends="init-paths">
       <macrodef name="annotationc"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
@@ -231,7 +233,8 @@
          the -shared:init target -->
    </target>
 
-   <target name="shared:init" depends="init-paths,shared:pre-init">
+   <target name="shared:init"
+           depends="init-paths,define-optional-fileset-type,shared:pre-init">
       <property name="has.shared.sources" value="true" />
 
       <property name="shared.dir" value="modules/shared" />
@@ -249,6 +252,7 @@
                 location="${shared.hibernate.dir}/${timestamp.file}" />
       <property name="shared.hibernate.merge.dir"
                 value="${shared.sources.dir}" />
+      <property name="shared.lib.dir" value="${shared.dir}/${lib.dir}" />
 
       <property name="hibernate.generate.files" value="true" />
       <property name="hibernate.session.factory.jndi.name" 
@@ -268,6 +272,14 @@
 
       <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
 
+      <genesis:optional-fileset dir="${lib.dir}" id="lib.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
+      <genesis:optional-fileset dir="${shared.lib.dir}" id="shared.lib.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
       <path id="shared.standard.javac.classpath">
          <fileset dir="${genesis.dist}">
             <include name="${genesis-annotation.jar}" />
@@ -279,6 +291,8 @@
             <include name="commons-logging*.jar" />
             <include name="reusable-components*.jar" />
          </fileset>
+         <fileset refid="lib.fileset" />
+         <fileset refid="shared.lib.fileset" />
       </path>
    </target>
 
@@ -538,6 +552,7 @@
       <property name="client.dir" value="modules/client" />
       <property name="client.sources.dir" value="${client.dir}/${sources.dir}" />
       <property name="client.classes.dir" value="${client.dir}/${classes.dir}" />
+      <property name="client.lib.dir" value="${client.dir}/${lib.dir}" />
    </target>
 
    <target name="client:additional-init" />
@@ -910,6 +925,8 @@
                   <include name="commons-beanutils*.jar" />
                   <include name="reusable-components*.jar" />
                </fileset>
+               <fileset refid="lib.fileset" />
+               <fileset refid="shared.lib.fileset" />
                <additional-fileset />
                <customize />
             </zip>

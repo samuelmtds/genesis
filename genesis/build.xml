@@ -17,13 +17,12 @@
 	<property name="test.dest" value="${build.dir}/test-classes" />
 	<property name="test.reportsDirectory" value="${build.dir}/test-reports" />
 
-   <path id="xdoclet.path">
-      <fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
-		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
-	</path>
+   <path id="backport175.path">
+      <fileset dir="${genesis.backport175.dist}" />
+   </path>
 
-	<path id="aspectwerkz.path">
-		<fileset dir="${genesis.aspectwerkz.dist}">
+   <path id="aspectwerkz.path">
+      <fileset dir="${genesis.aspectwerkz.dist}">
          <include name="aspectwerkz*.jar"/>
          <exclude name="aspectwerkz-extensions-*.jar" />
          <include name="ant*.jar"/>
@@ -38,11 +37,24 @@
          <include name="qdox*.jar"/>
          <include name="trove*.jar"/>
       </fileset>
-	</path>
-
-   <path id="backport175.path">
-      <fileset dir="${genesis.backport175.dist}" />
    </path>
+
+   <path id="anttasks.path">
+      <path refid="backport175.path" />
+      <path refid="aspectwerkz.path" />
+      <fileset dir="${genesis.anttasks.dist}" />
+   </path>
+
+   <taskdef name="nativeproperty"
+            classname="net.java.dev.genesis.anttasks.ant.NativeProperty"
+            classpathref="anttasks.path" />
+   
+   <nativeproperty name="swt.specific.dir" location="${genesis.swt.dist}" />
+   
+   <path id="xdoclet.path">
+      <fileset dir="${genesis.j2ee.dist}" includes="*.jar" />
+		<fileset dir="${genesis.xdoclet.dist}" includes="*.jar" />
+	</path>
 
 	<path id="commons.path">
 		<fileset dir="${genesis.commons.dist}" includes="*.jar" />
@@ -84,6 +96,7 @@
       <fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
       <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+      <fileset dir="${swt.specific.dir}" includes="*.jar" />
 	</path>
 
    <path id="client.tests.dependency.classpath">
@@ -128,12 +141,6 @@
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
 	</path>
 
-   <path id="anttasks.path">
-      <path refid="backport175.path" />
-      <path refid="aspectwerkz.path" />
-      <fileset dir="${genesis.anttasks.dist}" />
-   </path>
-   
    <available classname="java.lang.annotation.Annotation" property="supports.annotation" />
    
    <condition property="needs.java5.home">
@@ -609,6 +616,7 @@
       <mkdir dir="${genesis.module.client}/${test.reportsDirectory}" />
       <junit printsummary="yes" fork="yes">
          <formatter type="xml" />
+         <sysproperty key="java.library.path" value="${swt.specific.dir}" />
          <classpath>
             <path refid="commons.path" />
             <path refid="thinlet.path" />
@@ -616,6 +624,7 @@
             <path location="${genesis.module.shared}/${build.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
             <fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
+            <fileset dir="${swt.specific.dir}" includes="*.jar" />
          </classpath>
          <batchtest todir="${genesis.module.client}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.client}/${test.src.dir}">

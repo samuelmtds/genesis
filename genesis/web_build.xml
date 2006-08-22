@@ -14,7 +14,11 @@
       <property name="client.lib.dir" value="${client.dir}/lib" />
    </target>
 
-   <target name="client:additional-init">
+   <target name="client:additional-init" depends="define-optional-fileset-type">
+      <genesis:optional-fileset dir="${client.lib.dir}" id="client.lib.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
       <path id="client.standard.javac.classpath">
          <path location="${shared.classes.dir}" />
          <path refid="j2ee.path" />
@@ -29,7 +33,7 @@
             <include name="reusable-components*.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
-         <fileset dir="${client.lib.dir}" includes="*.jar" />
+         <fileset refid="client.lib.fileset" />
       </path>
    </target>
 
@@ -306,7 +310,7 @@
             <war destfile="${server.client.artifact.location}" webxml="${client.webxml.location}">
                <zipfileset dir="${client.content.dir}" excludesfile="${client.webxml.location}" />
                <lib file="${jar.client.location}" />
-               <lib dir="${client.lib.dir}" />
+               <lib refid="client.lib.fileset" />
                <customize />
             </war>
          </sequential>
