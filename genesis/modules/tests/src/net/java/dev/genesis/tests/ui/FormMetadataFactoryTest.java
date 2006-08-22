@@ -245,7 +245,7 @@ public class FormMetadataFactoryTest extends TestCase {
       assertNotNull(numberField.getConverter());
       assertEquals(numberField.getConverter().getClass(),
             IntegerConverter.class);
-
+ 
       assertNotNull(fieldField.getConverter());
       assertEquals(fieldField.getConverter().getClass(), DefaultConverter.class);
 
@@ -263,6 +263,11 @@ public class FormMetadataFactoryTest extends TestCase {
       } catch (IllegalArgumentException iae) {
          //Expected
       }
+   }
+
+   public void testOverriddenProperty() {
+      assertNull("@NotBound property isn't ignored", getFormMetadata(
+            new OverriddenForm()).getFieldMetadata("code"));
    }
 
    /**
@@ -449,6 +454,18 @@ public class FormMetadataFactoryTest extends TestCase {
        * @Action
        */
       public void name() {
+      }
+   }
+   
+   /**
+    * @Form
+    */
+   public static class OverriddenForm extends FooForm {
+      /**
+       * @NotBound
+       */
+      public String getCode() {
+         return super.getCode();
       }
    }
 }
