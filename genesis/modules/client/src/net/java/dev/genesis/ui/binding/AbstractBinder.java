@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.binding;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -47,26 +48,105 @@ import org.apache.commons.logging.LogFactory;
 
 public abstract class AbstractBinder implements FormControllerListener {
    private static final Log log = LogFactory.getLog(AbstractBinder.class);
+
+   /**
+    * The key used to store whether or not the widget is bound
+    */   
+   public static final String GENESIS_BOUND = "genesis:boundField";
+
+   /**
+    * The key used to store values for the widget group
+    */   
+   public static final String WIDGET_GROUP_PROPERTY = "genesis:widgetGroup";
+
+   /**
+    * The key used to store values for the enabled group
+    */
+   public static final String ENABLED_GROUP_PROPERTY = "genesis:enabledGroup";
+
+   /**
+    * The key used to store values for the visible group
+    */
+   public static final String VISIBLE_GROUP_PROPERTY = "genesis:visibleGroup";
+
+   /**
+    * The key used to store the property name used in a blank label
+    */
+   public static final String BLANK_LABEL_PROPERTY = "genesis:blankLabel";
+
+   /**
+    * The key used to store whether or not the widget has blank label
+    */
+   public static final String BLANK_PROPERTY = "genesis:blank";
+
+   /**
+    * The key used to store the property used as a key in a combo or list
+    */
+   public static final String KEY_PROPERTY = "genesis:key";
+
+   /**
+    * The key used to store the value property in a combo or list
+    */   
+   public static final String VALUE_PROPERTY = "genesis:value";
+
+   /**
+    * The key used to store the column names of a table
+    */
+   public static final String COLUMN_NAMES = "genesis:columnNames";
+
+   /**
+    * The key used to store whether or not the widget is associated with
+    * a virtual property
+    */
+   public static final String VIRTUAL = "genesis:virtual";
+
+   /**
+    * The prefix for virtual properties
+    */
    public static final String VIRTUAL_PREFIX = "virtual:";
+
+   /**
+    * The key used to store the value of the button in a button group
+    */
+   public static final String BUTTON_GROUP_SELECTION_VALUE = 
+         "genesis:buttonGroupSelectionValue";
 
    private final Map boundFields = new HashMap();
    private final Map boundActions = new HashMap();
    private final Map boundDataProviders = new HashMap();
+   private final Object root;
    private final Object form;
    private final Object handler;
    private final FormController controller;
    private ExceptionHandler exceptionHandler;
+   private final LookupStrategy lookupStrategy;
    private final Map formatters = new HashMap();
    private final Map converters = new HashMap();
+   private final Map buttonGroupsMap = new HashMap();
+   private final Map componentBinders = new HashMap();
+   private final Map groupBinders = new IdentityHashMap();
 
-   public AbstractBinder(Object form, Object handler) {
+   public AbstractBinder(Object root, Object form, Object handler,
+         LookupStrategy lookupStrategy) {
+      this.root = root;
       this.form = form;
       this.handler = handler;
       this.controller = getFormController(form);
+      this.lookupStrategy = (lookupStrategy == null) ? createLookupStrategy()
+            : lookupStrategy;
    }
 
    public Object getForm() {
       return form;
+   }
+
+   /**
+    * Retrieves the root widget of the binder
+    *
+    * @return the root widget of the binder
+    */
+   public Object getRoot() {
+      return root;
    }
 
    public FormController getFormController() {
@@ -91,6 +171,40 @@ public abstract class AbstractBinder implements FormControllerListener {
       return ((FormMetadataFactory) form).getFormMetadata(form.getClass());
    }
 
+   /**
+    * Retrieves the lookup strategy in use by the binder
+    *
+    * @return the lookup strategy in use by the binder
+    */
+   public LookupStrategy getLookupStrategy() {
+      return lookupStrategy;
+   }
+
+   /**
+    * Creates and returns a new instance of LookupStrategy.
+    * Override to change the default LookupStrategy to use.
+    *
+    * @return a new instance of a LookupStrategy
+    */
+   protected abstract LookupStrategy createLookupStrategy();
+
+   public Object lookup(String name) {
+      return getLookupStrategy().lookup(root, name);
+   }
+
+   public Object lookupButtonGroup(String name) {
+      return buttonGroupsMap.get(name);
+   }
+
+   /**
+    * Returns the widget name
+    *
+    * @return the widget name
+    */
+   public String getName(Object object) {
+      return getLookupStrategy().getName(object);
+   }
+
    public void bind() {
       try {
          final FormMetadata formMetadata = getFormMetadata(form);
@@ -100,12 +214,15 @@ public abstract class AbstractBinder implements FormControllerListener {
          bindDataProviders(formMetadata);
 
          setupController();
+         markBound();
       } catch (Exception e) {
          unbind();
 
          handleException(e);
       }
    }
+
+   protected abstract void markBound();
 
    protected void bindFieldMetadatas(final FormMetadata formMetadata) {
       for (final Iterator i =
@@ -169,14 +286,85 @@ public abstract class AbstractBinder implements FormControllerListener {
       }
    }
 
-   protected abstract BoundField bindFieldMetadata(String name,
-      FormMetadata formMetadata, FieldMetadata fieldMetadata);
+   protected BoundField bindFieldMetadata(String name,
+         FormMetadata formMetadata, FieldMetadata fieldMetadata) {
+      final Object widget = lookup(name);
 
-   protected abstract BoundAction bindActionMetadata(String name,
-      FormMetadata formMetadata, ActionMetadata actionMetadata);
+      if (widget == null) {
+         final Object group = lookupButtonGroup(name);
 
-   protected abstract BoundDataProvider bindDataProvider(String name,
-      FormMetadata formMetadata, DataProviderMetadata dataProviderMetadata);
+         if (group == null) {
+            log.warn(name + " could not be found while binding "
+                  + getForm().getClass());
+
+            return null;
+         }
+
+         GroupBinder binder = getGroupBinder(group);
+
+         if (binder == null) {
+            log.warn("No Binder registered for " + group.getClass());
+
+            return null;
+         }
+
+         return binder.bind(this, group, fieldMetadata);
+      }
+
+      WidgetBinder binder = getWidgetBinder(widget);
+
+      if (binder == null) {
+         log.warn("No Binder registered for " + widget.getClass());
+
+         return null;
+      }
+
+      return binder.bind(this, widget, fieldMetadata);
+   }
+
+   protected BoundAction bindActionMetadata(String name,
+         FormMetadata formMetadata, ActionMetadata actionMetadata) {
+      final Object widget = lookup(name);
+
+      if (widget == null) {
+         log.warn(name + " could not be found while binding "
+               + getForm().getClass());
+
+         return null;
+      }
+
+      WidgetBinder binder = getWidgetBinder(widget);
+
+      if (binder == null) {
+         log.warn("No Binder registered for " + widget.getClass());
+
+         return null;
+      }
+
+      return binder.bind(this, widget, actionMetadata);
+   }
+
+   protected BoundDataProvider bindDataProvider(String name,
+         FormMetadata formMetadata, DataProviderMetadata dataProviderMetadata) {
+      final Object widget = lookup(name);
+
+      if (widget == null) {
+         log.warn(name + " could not be found while binding "
+               + getForm().getClass());
+
+         return null;
+      }
+
+      WidgetBinder binder = getWidgetBinder(widget);
+
+      if (binder == null) {
+         log.warn("No Binder registered for " + widget.getClass());
+
+         return null;
+      }
+
+      return binder.bind(this, widget, dataProviderMetadata);
+   }
 
    protected void setupController() throws Exception {
       if (!controller.isSetup()) {
@@ -207,7 +395,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    public void dataProvidedListChanged(DataProviderMetadata metadata, List items)
             throws Exception {
       final String name = metadata.getWidgetName();
-      final BoundDataProvider boundDataProvider = (BoundDataProvider) getBoundDataProvider(name);
+      final BoundDataProvider boundDataProvider = getBoundDataProvider(name);
 
       if (boundDataProvider == null) {
          log.warn(name + " could not be found while populating using " +
@@ -226,7 +414,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    public void dataProvidedIndexesChanged(DataProviderMetadata metadata,
       int[] selectedIndexes) {
       final String name = metadata.getWidgetName();
-      final BoundDataProvider boundDataProvider = (BoundDataProvider) getBoundDataProvider(name);
+      final BoundDataProvider boundDataProvider = getBoundDataProvider(name);
 
       if (boundDataProvider == null) {
          log.warn(name + " could not be found while updating indexes using " +
@@ -245,8 +433,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    public void valuesChanged(Map updatedValues) throws Exception {
       for (Iterator iter = updatedValues.entrySet().iterator(); iter.hasNext();) {
          Map.Entry entry = (Map.Entry) iter.next();
-         BoundField boundField =
-            (BoundField) getBoundField(entry.getKey().toString());
+         BoundField boundField = getBoundField(entry.getKey().toString());
 
          if (boundField == null) {
             continue;
@@ -289,13 +476,13 @@ public abstract class AbstractBinder implements FormControllerListener {
    }
 
    protected BoundMember getBoundMember(String name) {
-      BoundMember member = (BoundMember) getBoundField(name);
+      BoundMember member = getBoundField(name);
 
       if (member != null) {
          return member;
       }
 
-      return (BoundMember) getBoundAction(name);
+      return getBoundAction(name);
    }
 
    protected BoundField getBoundField(String name) {
@@ -401,8 +588,6 @@ public abstract class AbstractBinder implements FormControllerListener {
       return virtualFormatter;
    }
 
-   public abstract String getName(Object widget);
-
    public String format(String name, String property, Object value) {
       return format(name, property, value, isVirtual(property));
    }
@@ -481,6 +666,47 @@ public abstract class AbstractBinder implements FormControllerListener {
 
       return formatter;
    }
+
+   protected WidgetBinder registerWidgetBinder(String name,
+      Object binder) {
+      return (WidgetBinder) componentBinders.put(name, binder);
+   }
+
+   protected Object registerGroup(String name, Object buttonGroup) {
+      buttonGroupsMap.put(name, buttonGroup);
+
+      return buttonGroup;
+   }
+
+   protected Object registerGroup(String name, Object buttonGroup, Object groupBinder) {
+      registerGroup(name, buttonGroup);
+      groupBinders.put(buttonGroup, groupBinder);
+
+      return buttonGroup;
+   }
+
+   protected WidgetBinder getWidgetBinder(Object widget) {
+      WidgetBinder binder = (WidgetBinder) componentBinders.get(getName(widget));
+
+      if (binder != null) {
+         return binder;
+      }
+
+      return getDefaultWidgetBinderFor(widget);
+   }
+
+   protected abstract WidgetBinder getDefaultWidgetBinderFor(Object widget);
+
+   protected GroupBinder getGroupBinder(Object group) {
+      GroupBinder binder = (GroupBinder) groupBinders.get(group);
+
+      if (binder != null) {
+         return binder;
+      }
+      return getDefaultGroupBinderFor(group);
+   }
+
+   protected abstract GroupBinder getDefaultGroupBinderFor(Object group);
 
    public void invokeFormAction(ActionMetadata actionMetadata) {
       try {

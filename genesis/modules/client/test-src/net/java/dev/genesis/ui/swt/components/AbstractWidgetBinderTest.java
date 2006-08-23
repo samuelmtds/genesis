@@ -20,8 +20,8 @@ package net.java.dev.genesis.ui.swt.components;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.AbstractWidgetBinder;
 import net.java.dev.genesis.ui.swt.widgets.AbstractWidgetBinder.AbstractBoundMember;
 
@@ -33,7 +33,7 @@ public class AbstractWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private Text comp1;
    private Text comp2;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private AbstractBoundMember boundMember;
 
    public AbstractWidgetBinderTest() {
@@ -69,9 +69,9 @@ public class AbstractWidgetBinderTest extends GenesisTestCase {
          protected void checkSubclass() {
          }
       };
-      binder = new MockSwtBinder(root, new MockForm(), null);
-      comp1.setData(SwtBinder.ENABLED_GROUP_PROPERTY, comp2);
-      comp1.setData(SwtBinder.VISIBLE_GROUP_PROPERTY, comp2);
+      binder = new MockSWTBinder(root, new MockForm(), null);
+      comp1.setData(SWTBinder.ENABLED_GROUP_PROPERTY, comp2);
+      comp1.setData(SWTBinder.VISIBLE_GROUP_PROPERTY, comp2);
       boundMember = new AbstractWidgetBinder() {
       }.new AbstractBoundMember(binder, comp1) {
       };

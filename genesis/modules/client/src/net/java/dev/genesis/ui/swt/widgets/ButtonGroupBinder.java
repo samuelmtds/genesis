@@ -18,10 +18,11 @@
  */
 package net.java.dev.genesis.ui.swt.widgets;
 
+import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.GroupBinder;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.GroupBinder;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,18 +34,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 public class ButtonGroupBinder implements GroupBinder {
-   public BoundField bind(SwtBinder binder, Object group,
+   public BoundField bind(AbstractBinder binder, Object group,
          FieldMetadata fieldMetadata) {
       return new ButtonGroupBoundField(binder, (Composite) group, fieldMetadata);
    }
 
    public class ButtonGroupBoundField implements BoundField {
-      private final SwtBinder binder;
+      private final AbstractBinder binder;
       private final Composite buttonGroup;
       private final FieldMetadata fieldMetadata;
       private final SelectionListener listener;
 
-      public ButtonGroupBoundField(SwtBinder binder, Composite buttonGroup,
+      public ButtonGroupBoundField(AbstractBinder binder, Composite buttonGroup,
             FieldMetadata fieldMetadata) {
          this.binder = binder;
          this.buttonGroup = buttonGroup;
@@ -52,7 +53,7 @@ public class ButtonGroupBinder implements GroupBinder {
          addSelectionListener(listener = createSelectionListener());
       }
 
-      protected SwtBinder getBinder() {
+      protected AbstractBinder getBinder() {
          return binder;
       }
 
@@ -110,7 +111,7 @@ public class ButtonGroupBinder implements GroupBinder {
       }
 
       protected Object getValue(Button button) {
-         return button.getData(SwtBinder.BUTTON_GROUP_SELECTION_VALUE);
+         return button.getData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE);
       }
 
       public void setValue(Object value) throws Exception {

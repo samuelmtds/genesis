@@ -19,6 +19,8 @@
 package net.java.dev.genesis.ui.swing;
 
 import net.java.dev.genesis.registry.Registry;
+import net.java.dev.genesis.ui.binding.GroupBinder;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.swing.components.AbstractButtonComponentBinder;
 import net.java.dev.genesis.ui.swing.components.ButtonGroupBinder;
 import net.java.dev.genesis.ui.swing.components.JComboBoxComponentBinder;
@@ -74,20 +76,20 @@ public class ComponentBinderRegistryFactory {
       registry.deregister(clazz);
    }
 
-   public ComponentBinder register(Class clazz, ComponentBinder binder) {
-      return (ComponentBinder) registry.register(clazz, binder);
+   public WidgetBinder register(Class clazz, WidgetBinder binder) {
+      return (WidgetBinder) registry.register(clazz, binder);
    }
 
-   public ComponentBinder get(Class clazz) {
-      return (ComponentBinder) registry.get(clazz);
+   public WidgetBinder get(Class clazz) {
+      return (WidgetBinder) registry.get(clazz);
    }
 
-   public ComponentBinder get(Class clazz, boolean superClass) {
-      return (ComponentBinder) registry.get(clazz, superClass);
+   public WidgetBinder get(Class clazz, boolean superClass) {
+      return (WidgetBinder) registry.get(clazz, superClass);
    }
 
-   public ComponentBinder get(Object o) {
-      return (ComponentBinder) registry.get(o);
+   public WidgetBinder get(Object o) {
+      return (WidgetBinder) registry.get(o);
    }
 
    public GroupBinder registerButtonGroupBinder(GroupBinder groupBinder) {

@@ -16,12 +16,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swt;
+package net.java.dev.genesis.ui.binding;
 
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
 
-public interface GroupBinder {
-   public BoundField bind(SwtBinder binder, Object group,
-      FieldMetadata fieldMetadata);
+public interface LookupStrategy {
+   public Object register(String name, Object object);
+   public Object lookup(Object root, String name);
+   public String getName(Object object);
 }

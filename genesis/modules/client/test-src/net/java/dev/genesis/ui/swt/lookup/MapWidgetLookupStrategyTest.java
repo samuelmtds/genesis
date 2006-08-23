@@ -18,51 +18,57 @@
  */
 package net.java.dev.genesis.ui.swt.lookup;
 
-import javax.swing.JPanel;
-
 import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.ui.swing.lookup.MapComponentLookupStrategy;
+import net.java.dev.genesis.ui.binding.MapLookupStrategy;
+import net.java.dev.genesis.ui.swt.SWTBinder;
+
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 
 public class MapWidgetLookupStrategyTest extends GenesisTestCase {
-   private MapComponentLookupStrategy strategy;
-   private JPanel panel;
-   private JPanel anotherPanel;
+   private MapLookupStrategy strategy;
+   private Shell shell;
+   private Shell anotherShell;
 
    public MapWidgetLookupStrategyTest() {
       super("Map Widget LookupStrategy Unit Test");
    }
 
    protected void setUp() {
-      strategy = new MapComponentLookupStrategy();
-      panel = new JPanel();
-      anotherPanel = new JPanel();
+      strategy = new MapWidgetLookupStrategy() {
+         public String getRealName(Object object) {
+            return (String) ((Widget)object).getData(SWTBinder.NAME_PROPERTY);
+         }
+      };
+      shell = new Shell();
+      anotherShell = new Shell();
    }
 
    public void testAll() {
-      strategy.register("someName", panel);
+      strategy.register("someName", shell);
 
-      assertSame(panel, strategy.lookup(null, "someName"));
-      assertEquals("someName", strategy.getName(panel));
+      assertSame(shell, strategy.lookup(null, "someName"));
+      assertEquals("someName", strategy.getName(shell));
 
       assertNull(strategy.lookup(null, "none"));
-      assertNull(strategy.getName(anotherPanel));
+      assertNull(strategy.getName(anotherShell));
       
       Exception ex = null;
       try {
-         strategy.register("someOtherName", panel);
+         strategy.register("someOtherName", shell);
       } catch(Exception e) {
          ex = e;
       }
 
       assertTrue(ex instanceof IllegalArgumentException);
 
-      assertSame(panel, strategy.lookup(null, "someName"));
-      assertEquals("someName", strategy.getName(panel));
+      assertSame(shell, strategy.lookup(null, "someName"));
+      assertEquals("someName", strategy.getName(shell));
       assertNull(strategy.lookup(null, "someOtherName"));
 
-      strategy.register("someName", anotherPanel);
-      assertSame(anotherPanel, strategy.lookup(null, "someName"));
-      assertEquals("someName", strategy.getName(anotherPanel));
-      assertNull(strategy.getName(panel));
+      strategy.register("someName", anotherShell);
+      assertSame(anotherShell, strategy.lookup(null, "someName"));
+      assertEquals("someName", strategy.getName(anotherShell));
+      assertNull(strategy.getName(shell));
    }
 }

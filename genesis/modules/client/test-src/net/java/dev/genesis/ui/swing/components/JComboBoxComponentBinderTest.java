@@ -30,17 +30,17 @@ import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class JComboBoxComponentBinderTest extends GenesisTestCase {
    private JComboBox combo;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundDataProvider boundDataProvider;
    private BoundField boundField;
    private MockForm form;
@@ -56,7 +56,7 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
-      componentBinder = binder.getComponentBinder(combo);
+      componentBinder = binder.getWidgetBinder(combo);
    }
 
    public void testSelectIndexes() {

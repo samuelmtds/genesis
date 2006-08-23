@@ -18,24 +18,24 @@
  */
 package net.java.dev.genesis.ui.swt.components;
 
+import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.widgets.ProgressBarWidgetBinder;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
-import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.mockobjects.MockForm;
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
-import net.java.dev.genesis.ui.swt.widgets.ProgressBarWidgetBinder;
-
 public class ProgressBarWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private ProgressBar progress;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundField boundField;
    private MockForm form;
@@ -48,7 +48,7 @@ public class ProgressBarWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       progress = new ProgressBar(root = new Shell(), SWT.NONE);
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       widgetBinder = binder.getWidgetBinder(progress);
       fieldMeta = form.getFormMetadata().getFieldMetadata("intField");
    }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -48,7 +48,7 @@ public class BreadthFirstWidgetLookupStrategy
          while (!queue.isEmpty()) {
             Widget first = (Widget) queue.remove(0);
 
-            if (name.equals(first.getData(SwtBinder.NAME_PROPERTY))) {
+            if (name.equals(first.getData(SWTBinder.NAME_PROPERTY))) {
                return first;
             }
 

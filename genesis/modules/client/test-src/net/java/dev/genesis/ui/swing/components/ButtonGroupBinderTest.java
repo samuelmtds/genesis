@@ -25,8 +25,8 @@ import javax.swing.JPanel;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.GroupBinder;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.GroupBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 

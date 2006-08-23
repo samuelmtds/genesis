@@ -24,50 +24,66 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundAction;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.BoundMember;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 public class AbstractWidgetBinder implements WidgetBinder {
-   public BoundField bind(SwtBinder binder, Widget widget,
+   public BoundField bind(AbstractBinder binder, Object widget,
+         FieldMetadata fieldMetadata) {
+      return bind((SWTBinder) binder, (Widget) widget, fieldMetadata);
+   }
+
+   public BoundAction bind(AbstractBinder binder, Object widget,
+         ActionMetadata actionMetatada) {
+      return bind((SWTBinder) binder, (Widget) widget, actionMetatada);
+   }
+
+   public BoundDataProvider bind(AbstractBinder binder, Object widget,
+         DataProviderMetadata dataProviderMetadata) {
+      return bind((SWTBinder) binder, (Widget) widget, dataProviderMetadata);
+   }
+
+   public BoundField bind(SWTBinder binder, Widget widget,
       FieldMetadata fieldMetadata) {
       return null;
    }
 
-   public BoundAction bind(SwtBinder binder, Widget widget,
+   public BoundAction bind(SWTBinder binder, Widget widget,
       ActionMetadata actionMetatada) {
       return null;
    }
 
-   public BoundDataProvider bind(SwtBinder binder, Widget widget,
+   public BoundDataProvider bind(SWTBinder binder, Widget widget,
       DataProviderMetadata dataProviderMetadata) {
       return null;
    }
 
    public abstract class AbstractBoundMember implements BoundMember {
       private final Widget widget;
-      private final SwtBinder binder;
+      private final SWTBinder binder;
       private final Set enabledWidgetGroupSet = new HashSet();
       private final Set visibleWidgetGroupSet = new HashSet();
 
-      public AbstractBoundMember(SwtBinder binder, Widget widget) {
+      public AbstractBoundMember(SWTBinder binder, Widget widget) {
          this.widget = widget;
          this.binder = binder;
 
          createGroups();
       }
 
-      protected SwtBinder getBinder() {
+      protected SWTBinder getBinder() {
          return binder;
       }
 
@@ -87,18 +103,18 @@ public class AbstractWidgetBinder implements WidgetBinder {
 
       protected void createWidgetGroup() {
          createGroup(widget
-               .getData(SwtBinder.WIDGET_GROUP_PROPERTY), true, true);
+               .getData(SWTBinder.WIDGET_GROUP_PROPERTY), true, true);
       }
 
       protected void createEnabledGroup() {
          createGroup(widget
-               .getData(SwtBinder.ENABLED_GROUP_PROPERTY), true,
+               .getData(SWTBinder.ENABLED_GROUP_PROPERTY), true,
                false);
       }
 
       protected void createVisibleGroup() {
          createGroup(widget
-               .getData(SwtBinder.VISIBLE_GROUP_PROPERTY), false,
+               .getData(SWTBinder.VISIBLE_GROUP_PROPERTY), false,
                true);
       }
 
@@ -114,9 +130,7 @@ public class AbstractWidgetBinder implements WidgetBinder {
             		((String) group).split("\\s*,\\s*") : (String[]) group;
 
             for (int i = 0; i < widgetNames.length; i++) {
-               Widget w =
-                  binder.getLookupStrategy()
-                           .lookup(binder.getRoot(), widgetNames[i]);
+               Widget w = (Widget) binder.lookup(widgetNames[i]);
 
                if (w != null) {
                   if (enabled) {
@@ -164,7 +178,7 @@ public class AbstractWidgetBinder implements WidgetBinder {
       }
 
       protected boolean isBlank(Widget widget) {
-         return isBoolean(widget, SwtBinder.BLANK_PROPERTY);
+         return isBoolean(widget, SWTBinder.BLANK_PROPERTY);
       }
 
       protected boolean isBoolean(Widget widget, String propertyName) {

@@ -23,16 +23,16 @@ import javax.swing.JPanel;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 public class AbstractButtonComponentBinderTest extends GenesisTestCase {
    private AbstractButton button;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private MockForm form;
    private ActionMetadata actionMeta;
    
@@ -44,7 +44,7 @@ public class AbstractButtonComponentBinderTest extends GenesisTestCase {
       button = SwingUtils.newButton();
       binder = new MockSwingBinder(new JPanel(), form = new MockForm());
       actionMeta = (ActionMetadata) form.getFormMetadata().getActionMetadatas().get("someAction");
-      componentBinder = binder.getComponentBinder(button);
+      componentBinder = binder.getWidgetBinder(button);
    }
 
    public void testButtonClick() {

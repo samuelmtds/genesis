@@ -20,13 +20,6 @@ package net.java.dev.genesis.ui.swt.components;
 
 import java.util.Arrays;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Widget;
-
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.mockobjects.MockBean;
@@ -34,19 +27,26 @@ import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.SwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.ComboWidgetBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 
 public class ComboWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private Combo combo;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundDataProvider boundDataProvider;
    private BoundField boundField;
@@ -60,9 +60,9 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       combo = new Combo(root = new Shell(), SWT.NONE);
-      combo.setData(SwtBinder.KEY_PROPERTY, "key");
-      combo.setData(SwtBinder.VALUE_PROPERTY, "value");
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      combo.setData(SWTBinder.KEY_PROPERTY, "key");
+      combo.setData(SWTBinder.VALUE_PROPERTY, "value");
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
@@ -84,11 +84,11 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
    }
 
    protected void setKey(int index, String key) throws Exception {
-      combo.setData(SwtBinder.KEY_PROPERTY + '-' + index, key);
+      combo.setData(SWTBinder.KEY_PROPERTY + '-' + index, key);
    }
 
    protected String getKey(Object value) throws Exception {
-      String keyPropertyName = (String) combo.getData(SwtBinder.KEY_PROPERTY);
+      String keyPropertyName = (String) combo.getData(SWTBinder.KEY_PROPERTY);
 
       if (keyPropertyName != null) {
          Object o = (value == null) ? null : PropertyUtils.getProperty(value,
@@ -104,7 +104,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
    }
 
    protected String getValue(Widget widget, Object value) throws Exception {
-      String valueProperty = (String) widget.getData(SwtBinder.VALUE_PROPERTY);
+      String valueProperty = (String) widget.getData(SWTBinder.VALUE_PROPERTY);
       if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
@@ -143,7 +143,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSelectIndexesWithBlank() {
-      combo.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      combo.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
 
       assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));
@@ -191,7 +191,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateIndexesWithBlank() {
-      combo.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      combo.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
 
       assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));
@@ -244,7 +244,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateListWithBlank() throws Exception {
-      combo.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      combo.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
       assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));
 
@@ -299,8 +299,8 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSetValueWithBlank() throws Exception {
-      combo.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
-      combo.setData(SwtBinder.KEY_PROPERTY, "key");
+      combo.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
+      combo.setData(SWTBinder.KEY_PROPERTY, "key");
 
       assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));

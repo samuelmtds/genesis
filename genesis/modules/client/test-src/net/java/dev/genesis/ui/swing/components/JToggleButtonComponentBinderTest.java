@@ -24,16 +24,16 @@ import javax.swing.JToggleButton;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 public class JToggleButtonComponentBinderTest extends GenesisTestCase {
    private JToggleButton toggle;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundField boundField;
    private MockForm form;
    private FieldMetadata fieldMeta;
@@ -45,7 +45,7 @@ public class JToggleButtonComponentBinderTest extends GenesisTestCase {
    protected void setUp() throws Exception {
       toggle = new JToggleButton();
       binder = new MockSwingBinder(new JPanel(), form = new MockForm());
-      componentBinder = binder.getComponentBinder(toggle);
+      componentBinder = binder.getWidgetBinder(toggle);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
 

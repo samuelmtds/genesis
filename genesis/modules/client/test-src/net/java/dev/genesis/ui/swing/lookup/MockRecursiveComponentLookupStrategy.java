@@ -22,8 +22,10 @@ import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.java.dev.genesis.ui.binding.RecursiveLookupStrategy;
+
 public class MockRecursiveComponentLookupStrategy extends
-      RecursiveComponentLookupStrategy {
+      RecursiveLookupStrategy {
    private final Map map = new HashMap();
 
    public Object get(Object key) {
@@ -38,8 +40,18 @@ public class MockRecursiveComponentLookupStrategy extends
       map.clear();
    }
 
-   protected Component lookupImpl(Component component, String name) {
-      put("lookupImpl(Component,String)", name);
-      return component;
+   protected Object lookupImpl(Object object, String name) {
+      put("lookupImpl(Object,String)", name);
+      return object;
+   }
+
+   protected boolean isAlreadyBound(Object object) {
+      put("isAlreadyBound(Object)", object);
+      return false;
+   }
+
+   protected String getRealName(Object object) {
+      put("getRealName(Object)", object);
+      return ((Component)object).getName();
    }
 }

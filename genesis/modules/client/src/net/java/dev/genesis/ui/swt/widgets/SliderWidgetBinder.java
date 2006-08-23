@@ -20,7 +20,7 @@ package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Widget;
 
 public class SliderWidgetBinder extends AbstractWidgetBinder {
-   public BoundField bind(SwtBinder binder, Widget widget,
+   public BoundField bind(SWTBinder binder, Widget widget,
       FieldMetadata fieldMetadata) {
       return new SliderBoundField(binder, (Slider) widget, fieldMetadata);
    }
@@ -41,7 +41,7 @@ public class SliderWidgetBinder extends AbstractWidgetBinder {
       private final FieldMetadata fieldMetadata;
       private final SelectionListener listener;
 
-      public SliderBoundField(SwtBinder binder, Slider widget,
+      public SliderBoundField(SWTBinder binder, Slider widget,
          FieldMetadata fieldMetadata) {
          super(binder, widget);
          this.widget = widget;

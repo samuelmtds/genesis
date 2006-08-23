@@ -20,7 +20,7 @@ package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -43,7 +43,7 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
 	   return trim;
    }
 
-   public BoundField bind(SwtBinder binder, Widget widget,
+   public BoundField bind(SWTBinder binder, Widget widget,
       FieldMetadata fieldMetadata) {
       return new TextWidgetBoundField(binder, (Text) widget,
          fieldMetadata);
@@ -55,7 +55,7 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
       private final FieldMetadata fieldMetadata;
       private final FocusListener listener;
 
-      public TextWidgetBoundField(SwtBinder binder,
+      public TextWidgetBoundField(SWTBinder binder,
          Text widget, FieldMetadata fieldMetadata) {
          super(binder, widget);
          this.widget = widget;

@@ -21,10 +21,10 @@ package net.java.dev.genesis.ui.swt.components;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.GroupBinder;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.GroupBinder;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.ButtonGroupBinder;
 
 import org.eclipse.swt.SWT;
@@ -38,7 +38,7 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
    private Shell root;
    private Button button1;
    private Button button2;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private MockForm form;
    private Composite group;
    private GroupBinder groupBinder;
@@ -78,7 +78,7 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
          protected void checkSubclass() {
          }
       };
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
 
@@ -89,10 +89,10 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
       groupBinder.bind(binder, group, fieldMeta);
 
       Object value1 = new Object();
-      button1.setData(SwtBinder.BUTTON_GROUP_SELECTION_VALUE, value1);
+      button1.setData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE, value1);
 
       Object value2 = new Object();
-      button2.setData(SwtBinder.BUTTON_GROUP_SELECTION_VALUE, value2);
+      button2.setData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE, value2);
 
       assertFalse(button1.getSelection());
       assertFalse(button2.getSelection());
@@ -115,10 +115,10 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
       BoundField boundField = groupBinder.bind(binder, group, fieldMeta);
 
       Object value1 = new Object();
-      button1.setData(SwtBinder.BUTTON_GROUP_SELECTION_VALUE, value1);
+      button1.setData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE, value1);
 
       Object value2 = new Object();
-      button2.setData(SwtBinder.BUTTON_GROUP_SELECTION_VALUE, value2);
+      button2.setData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE, value2);
 
       assertNotNull(boundField);
 

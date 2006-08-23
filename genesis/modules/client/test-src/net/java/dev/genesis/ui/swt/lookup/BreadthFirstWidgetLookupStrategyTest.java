@@ -19,7 +19,7 @@
 package net.java.dev.genesis.ui.swt.lookup;
 
 import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -51,23 +51,23 @@ public class BreadthFirstWidgetLookupStrategyTest extends GenesisTestCase {
    }
 
    public void testSimpleLookup() {
-      panelLevel1Position1.setData(SwtBinder.NAME_PROPERTY, "someName");
+      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "someName");
 
       assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
 
-      panelLevel1Position1.setData(SwtBinder.NAME_PROPERTY, "anotherName");
+      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "anotherName");
       assertSame(panelLevel1Position1, strategy.lookup(root, "anotherName"));
 
-      panelLevel2Position0.setData(SwtBinder.NAME_PROPERTY, "theName");
+      panelLevel2Position0.setData(SWTBinder.NAME_PROPERTY, "theName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "theName"));
    }
 
    public void testBreadthFirstLookup() {
-      panelLevel1Position1.setData(SwtBinder.NAME_PROPERTY, "someName");
-      panelLevel2Position0.setData(SwtBinder.NAME_PROPERTY, "someName");
+      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "someName");
+      panelLevel2Position0.setData(SWTBinder.NAME_PROPERTY, "someName");
       assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
 
-      panelLevel1Position1.setData(SwtBinder.NAME_PROPERTY, "changeName");
+      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "changeName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
    }
 }

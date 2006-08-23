@@ -18,14 +18,15 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
+import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundAction;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.BoundMember;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
@@ -38,7 +39,22 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
-public abstract class AbstractComponentBinder implements ComponentBinder {
+public abstract class AbstractComponentBinder implements WidgetBinder {
+   public BoundField bind(AbstractBinder binder, Object widget,
+         FieldMetadata fieldMetadata) {
+      return bind((SwingBinder) binder, (Component) widget, fieldMetadata);
+   }
+
+   public BoundAction bind(AbstractBinder binder, Object widget,
+         ActionMetadata actionMetatada) {
+      return bind((SwingBinder) binder, (Component) widget, actionMetatada);
+   }
+
+   public BoundDataProvider bind(AbstractBinder binder, Object widget,
+         DataProviderMetadata dataProviderMetadata) {
+      return bind((SwingBinder) binder, (Component) widget, dataProviderMetadata);
+   }
+
    public BoundField bind(SwingBinder binder, Component component,
       FieldMetadata fieldMetadata) {
       return null;
@@ -120,9 +136,7 @@ public abstract class AbstractComponentBinder implements ComponentBinder {
             		((String) group).split("\\s*,\\s*") : (String[]) group;
 
             for (int i = 0; i < componentNames.length; i++) {
-               Component c =
-                  binder.getLookupStrategy()
-                           .lookup(binder.getRoot(), componentNames[i]);
+               Component c = (Component) binder.lookup(componentNames[i]);
 
                if (c != null) {
                   if (enabled) {

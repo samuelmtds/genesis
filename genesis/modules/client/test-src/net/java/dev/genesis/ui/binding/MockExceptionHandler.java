@@ -21,7 +21,7 @@ package net.java.dev.genesis.ui.binding;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MockExceptionHandler implements ExceptionHandler {
+public class MockExceptionHandler extends AbstractDispatcherExceptionHandler {
    private Map map = new HashMap();
 
    public Object get(Object key) {
@@ -38,5 +38,12 @@ public class MockExceptionHandler implements ExceptionHandler {
 
    public void handleException(Throwable t) {
       put("handleException(Throwable)", t);
+   }
+
+   protected void showErrorMessageDialog(String message, String title,
+         Throwable throwable) {
+   }
+
+   protected void showWarningMessageDialog(String message, String title) {
    }
 }

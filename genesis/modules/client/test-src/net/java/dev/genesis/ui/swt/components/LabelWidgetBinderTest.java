@@ -18,24 +18,24 @@
  */
 package net.java.dev.genesis.ui.swt.components;
 
+import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.widgets.LabelWidgetBinder;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.mockobjects.MockForm;
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
-import net.java.dev.genesis.ui.swt.widgets.LabelWidgetBinder;
-
 public class LabelWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private Label label;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundField boundField;
    private MockForm form;
@@ -47,7 +47,7 @@ public class LabelWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       label = new Label(root = new Shell(), SWT.NONE);
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       widgetBinder = binder.getWidgetBinder(label);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }

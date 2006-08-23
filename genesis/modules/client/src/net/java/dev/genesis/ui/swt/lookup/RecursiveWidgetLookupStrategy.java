@@ -18,43 +18,32 @@
  */
 package net.java.dev.genesis.ui.swt.lookup;
 
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.binding.RecursiveLookupStrategy;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.widgets.Widget;
 
 public abstract class RecursiveWidgetLookupStrategy
-      extends MapWidgetLookupStrategy {
-   private boolean skipLookupInBoundComponent = true;
-
-   public boolean isSkipLookupInBoundComponent() {
-      return skipLookupInBoundComponent;
-   }
-
-   public void setSkipLookupInBoundComponent(boolean skipGenesisBoundComponents) {
-      this.skipLookupInBoundComponent = skipGenesisBoundComponents;
-   }
-
-   public Widget lookup(Widget widget, String name) {
-      Widget result = super.lookup(widget, name);
-
-      if (result != null) {
-         return result;
+      extends RecursiveLookupStrategy {
+   protected String getRealName(Object object) {
+      if (object instanceof Widget) {
+         return (String) ((Widget)object).getData(SWTBinder.NAME_PROPERTY);
       }
 
-      if (name.equals(widget.getData(SwtBinder.NAME_PROPERTY))) {
-         return widget;
-      }
-
-      if (doSkip(widget)) {
-         return null;
-      }
-
-      return lookupImpl(widget, name);
+      return null;
    }
 
-   protected boolean doSkip(Widget widget) {
-      return skipLookupInBoundComponent
-            && widget.getData(SwtBinder.GENESIS_BOUND) != null;
+   protected boolean isAlreadyBound(Object object) {
+      return object instanceof Widget
+            && ((Widget) object).getData(SWTBinder.GENESIS_BOUND) != null;
+   }
+
+   protected Object lookupImpl(Object object, String name) {
+      if (object instanceof Widget) {
+         return lookupImpl((Widget) object, name);
+      }
+
+      return null;
    }
 
    protected abstract Widget lookupImpl(Widget widget, String name);

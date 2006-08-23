@@ -35,6 +35,7 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 public class AbstractBinderTest extends GenesisTestCase {
+   private Object root;
    private MockForm form;
    private MockViewHandler handler;
 
@@ -43,12 +44,13 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    protected void setUp() throws Exception {
+      root = new Object();
       form = new MockForm();
       handler = new MockViewHandler();
    }
 
    public void testBind() {
-      MockAbstractBinder binder = new MockAbstractBinder(form, handler) {
+      MockAbstractBinder binder = new MockAbstractBinder(root, form, handler) {
          protected void setupController() throws Exception {
             put("setupController()", Boolean.TRUE);
          }
@@ -66,7 +68,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testBindWithException() {
-      MockAbstractBinder binder = new MockAbstractBinder(form, handler) {
+      MockAbstractBinder binder = new MockAbstractBinder(root, form, handler) {
          protected BoundField bindFieldMetadata(String name,
                FormMetadata formMetadata, FieldMetadata fieldMetadata) {
             throw new IllegalArgumentException();
@@ -88,7 +90,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testSetupController() throws Exception {
-      MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       // Assert that controller has not been setup
       assertNull(form.getController().get("setup()"));
@@ -125,7 +127,7 @@ public class AbstractBinderTest extends GenesisTestCase {
             .getFormMetadata().getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
 
-      MockAbstractBinder binder = new MockAbstractBinder(form, handler) {
+      MockAbstractBinder binder = new MockAbstractBinder(root, form, handler) {
          protected void resetSelectedFields(DataProviderMetadata meta)
                throws Exception {
             put("resetSelectedFields(DataProviderMetadata)", meta);
@@ -157,7 +159,7 @@ public class AbstractBinderTest extends GenesisTestCase {
             .getFormMetadata().getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
 
-      MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       binder.bind();
 
@@ -172,7 +174,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testValuesChanged() throws Exception {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       binder.bind();
 
@@ -186,7 +188,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testEnabledConditionsChanged() throws Exception {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       binder.bind();
 
@@ -204,7 +206,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testUnbind() throws Exception {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       binder.bind();
 
@@ -220,7 +222,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testRefresh() throws Exception {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       binder.bind();
       binder.refresh();
@@ -229,7 +231,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testRefreshWithException() throws Exception {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
       final Exception ex = new IllegalArgumentException();
       form.getController().putException("update()", ex);
 
@@ -241,7 +243,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testInvokeAction() throws Exception {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       binder.bind();
       binder.invokeAction("someAction");
@@ -261,7 +263,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testGetIndexesFromController() {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       int[] indexes = new int[] { 1, 2, 3 };
       int[] expected = indexes;
@@ -289,7 +291,7 @@ public class AbstractBinderTest extends GenesisTestCase {
    }
 
    public void testGetIndexesFromUI() {
-      final MockAbstractBinder binder = new MockAbstractBinder(form, handler);
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, handler);
 
       int[] indexes = new int[] { 1, 2, 3 };
       int[] expected = indexes;

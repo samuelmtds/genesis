@@ -19,6 +19,8 @@
 package net.java.dev.genesis.ui.swt;
 
 import net.java.dev.genesis.registry.Registry;
+import net.java.dev.genesis.ui.binding.GroupBinder;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.swt.widgets.ButtonGroupBinder;
 import net.java.dev.genesis.ui.swt.widgets.ButtonWidgetBinder;
 import net.java.dev.genesis.ui.swt.widgets.ComboWidgetBinder;

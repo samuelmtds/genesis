@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,49 +18,33 @@
  */
 package net.java.dev.genesis.ui.swing.lookup;
 
-import net.java.dev.genesis.ui.swing.SwingBinder;
-
 import java.awt.Component;
 
 import javax.swing.JComponent;
 
-public abstract class RecursiveComponentLookupStrategy
-      extends MapComponentLookupStrategy {
-   private boolean skipLookupInBoundComponent = true;
+import net.java.dev.genesis.ui.binding.RecursiveLookupStrategy;
+import net.java.dev.genesis.ui.swing.SwingBinder;
 
-   public boolean isSkipLookupInBoundComponent() {
-      return skipLookupInBoundComponent;
+public abstract class RecursiveComponentLookupStrategy extends RecursiveLookupStrategy {
+   protected String getRealName(Object object) {
+      if (object instanceof Component) {
+         return ((Component)object).getName();
+      }
+
+      return null;
+   }
+   
+   protected boolean isAlreadyBound(Object object) {
+      return object instanceof JComponent &&
+      (((JComponent) object).getClientProperty(SwingBinder.GENESIS_BOUND) != null);
    }
 
-   public void setSkipLookupInBoundComponent(boolean skipGenesisBoundComponents) {
-      this.skipLookupInBoundComponent = skipGenesisBoundComponents;
-   }
-
-   public Component lookup(Component component, String name) {
-      Component result = super.lookup(component, name);
-
-      if (component == null) {
-         return null;
+   protected Object lookupImpl(Object object, String name) {
+      if (object instanceof Component) {
+         return lookupImpl((Component) object, name);
       }
 
-      if (result != null) {
-         return result;
-      }
-
-      if (name.equals(component.getName())) {
-         return component;
-      }
-
-      if (doSkip(component)) {
-         return null;
-      }
-
-      return lookupImpl(component, name);
-   }
-
-   protected boolean doSkip(Component component) {
-      return skipLookupInBoundComponent && component instanceof JComponent &&
-         (((JComponent) component).getClientProperty(SwingBinder.GENESIS_BOUND) != null);
+      return null;
    }
 
    protected abstract Component lookupImpl(Component component, String name);

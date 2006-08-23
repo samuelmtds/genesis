@@ -28,10 +28,10 @@ import net.java.dev.genesis.mockobjects.MockBean;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -39,7 +39,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 public class JTableComponentBinderTest extends GenesisTestCase {
    private JTable table;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundDataProvider boundDataProvider;
    private MockForm form;
    private DataProviderMetadata dataMeta;
@@ -54,7 +54,7 @@ public class JTableComponentBinderTest extends GenesisTestCase {
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
-      componentBinder = binder.getComponentBinder(table);
+      componentBinder = binder.getWidgetBinder(table);
    }
 
    public void testSelectIndexes() {

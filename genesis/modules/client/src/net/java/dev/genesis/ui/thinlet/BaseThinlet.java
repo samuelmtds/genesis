@@ -40,6 +40,8 @@ import net.java.dev.genesis.ui.UIException;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
+import net.java.dev.genesis.ui.binding.DispatcherExceptionHandler;
+import net.java.dev.genesis.ui.binding.ExceptionHandler;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -49,7 +51,8 @@ import org.apache.commons.validator.ValidatorException;
 
 import thinlet.Thinlet;
 
-public abstract class BaseThinlet extends Thinlet {
+public abstract class BaseThinlet extends Thinlet implements
+      DispatcherExceptionHandler {
    public static final String ACTION = "action";
    public static final String ALIGNMENT = "alignment";
    public static final String BUTTON = "button";
@@ -107,6 +110,11 @@ public abstract class BaseThinlet extends Thinlet {
 
    private final Map formPerClassPerComponent = new IdentityHashMap();
    private final Map binderPerForm = new IdentityHashMap();
+   private ExceptionHandler exceptionHandler = createExceptionHandler();
+
+   protected ExceptionHandler createExceptionHandler() {
+      return new ThinletExceptionHandler(this);
+   }
 
    /**
     * @deprecated
@@ -1151,81 +1159,31 @@ public abstract class BaseThinlet extends Thinlet {
       repaint(component);
    }
 
-   protected void handleException(String message, Throwable throwable) {
-      try {
-         ErrorReporterDialog.show(this, getErrorMessage(), message, throwable);
-      } catch (ScreenNotFoundException scnfe) {
-         System.out.println("The error screen file could not be found");
-         scnfe.printStackTrace();
-      }
-      
-      LogFactory.getLog(getClass()).error(message, throwable);
+   public void handleException(String message, Throwable throwable) {
+      ((DispatcherExceptionHandler) exceptionHandler).handleException(message,
+            throwable);
    }
 
    public void handleException(Throwable throwable) {
-      if (throwable instanceof ScreenNotFoundException) {
-         handleException("The error screen file could not be found", throwable);
-
-         return;
-      } else if (throwable instanceof ValidationException) {
-         showValidationErrors((ValidationException)throwable);
-         return;
-      } else if (throwable instanceof UIException) {
-         handleUIException((UIException)throwable);
-         return;
-      }
-
-      try {
-         if (handleCustomException(throwable)) {
-            return;
-         }
-      } catch (Throwable t) {
-         LogFactory.getLog(getClass()).error("Unknown exception", t);
-      }
-
-      handleUnknownException(throwable);
+      exceptionHandler.handleException(throwable);
    }
 
-   protected void handleUIException(UIException uiException) {
-      try {
-         MessageDialog.show(this, uiException.getTitle(), 
-               uiException.getDescription());
-      } catch (Throwable t) {
-         LogFactory.getLog(getClass()).error("Unknown exception", t);
-      }
+   public void handleUIException(UIException uiException) {
+      ((DispatcherExceptionHandler) exceptionHandler)
+            .handleUIException(uiException);
    }
 
-   protected void handleUnknownException(Throwable t) {
-      handleException("Unexpected error occurred", t);
+   public void handleUnknownException(Throwable t) {
+      ((DispatcherExceptionHandler) exceptionHandler).handleUnknownException(t);
    }
 
-   protected boolean handleCustomException(Throwable t) throws Exception {
-      if (t.getCause() != null) {
-         handleException(t.getCause());
-         return true;
-      }
-
-      return false;
+   public boolean handleCustomException(Throwable t) throws Exception {
+      return ((DispatcherExceptionHandler) exceptionHandler)
+            .handleCustomException(t);
    }
 
-   protected void showValidationErrors(final ValidationException ve) {
-      final StringBuffer displayMessage = new StringBuffer();
-
-      for (final Iterator messages = ve.getValidationErrors().values()
-                                          .iterator(); messages.hasNext(); ) {
-         if (displayMessage.length() != 0) {
-            displayMessage.append('\n');
-         }
-
-         displayMessage.append(messages.next().toString());
-      }
-
-      try {
-         MessageDialog.show(this, UIUtils.getInstance().getBundle().getString(
-               "validation.errors.title"), displayMessage.toString());
-      } catch (ScreenNotFoundException snfe) {
-         handleException(snfe);
-      }
+   public void showValidationErrors(final ValidationException ve) {
+      ((DispatcherExceptionHandler) exceptionHandler).showValidationErrors(ve);
    }
 
    public Frame getFrame() {
@@ -1236,8 +1194,8 @@ public abstract class BaseThinlet extends Thinlet {
       getFrame().setVisible(true);
    }
 
-   protected String getErrorMessage() {
-      return "Error";
+   public String getErrorMessage() {
+      return ((DispatcherExceptionHandler) exceptionHandler).getErrorMessage();
    }
 
    // Workaround for a Thinlet bug that prevents garbage collection (# 243)

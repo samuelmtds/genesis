@@ -32,8 +32,8 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 public class MockAbstractBinder extends AbstractBinder {
    private Map map = new HashMap();
 
-   public MockAbstractBinder(Object form, Object handler) {
-      super(form, handler);
+   public MockAbstractBinder(Object root, Object form, Object handler) {
+      super(root, form, handler, null);
    }
 
    public Object get(Object key) {
@@ -88,5 +88,20 @@ public class MockAbstractBinder extends AbstractBinder {
    public String getName(Object object) {
       map.put("getName(Object)", object);
       return object == null ? "null" : object.toString();
+   }
+
+   protected LookupStrategy createLookupStrategy() {
+      return null;
+   }
+
+   protected GroupBinder getDefaultGroupBinderFor(Object group) {
+      return null;
+   }
+
+   protected WidgetBinder getDefaultWidgetBinderFor(Object widget) {
+      return null;
+   }
+
+   protected void markBound() {
    }
 }

@@ -22,7 +22,7 @@ import net.java.dev.genesis.ui.binding.BoundAction;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.eclipse.swt.SWT;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Widget;
 
 public class ButtonWidgetBinder extends AbstractWidgetBinder {
-   public BoundAction bind(SwtBinder binder, Widget widget,
+   public BoundAction bind(SWTBinder binder, Widget widget,
          ActionMetadata actionMetadata) {
       if (isToggleStyle(widget)) {
          return null;
@@ -43,7 +43,7 @@ public class ButtonWidgetBinder extends AbstractWidgetBinder {
             actionMetadata);
    }
 
-   public BoundField bind(SwtBinder binder, Widget widget,
+   public BoundField bind(SWTBinder binder, Widget widget,
          FieldMetadata fieldMetadata) {
       if (!isToggleStyle(widget)) {
          return null;
@@ -62,7 +62,7 @@ public class ButtonWidgetBinder extends AbstractWidgetBinder {
       private final ActionMetadata actionMetadata;
       private final SelectionListener listener;
 
-      public ButtonWidgetBoundAction(SwtBinder binder, Button widget,
+      public ButtonWidgetBoundAction(SWTBinder binder, Button widget,
             ActionMetadata actionMetadata) {
          super(binder, widget);
          this.widget = widget;
@@ -103,7 +103,7 @@ public class ButtonWidgetBinder extends AbstractWidgetBinder {
       private final FieldMetadata fieldMetadata;
       private final SelectionListener listener;
 
-      public ButtonWidgetBoundField(SwtBinder binder, Button widget,
+      public ButtonWidgetBoundField(SWTBinder binder, Button widget,
             FieldMetadata fieldMetadata) {
          super(binder, widget);
          this.widget = widget;

@@ -16,24 +16,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swt;
+package net.java.dev.genesis.ui.binding;
 
-import net.java.dev.genesis.ui.binding.BoundAction;
-import net.java.dev.genesis.ui.binding.BoundDataProvider;
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 
-import org.eclipse.swt.widgets.Widget;
-
-public interface WidgetBinder {
-   public BoundField bind(SwtBinder binder, Widget component,
+public interface GroupBinder {
+   public BoundField bind(AbstractBinder binder, Object group,
       FieldMetadata fieldMetadata);
-
-   public BoundAction bind(SwtBinder binder, Widget component,
-      ActionMetadata actionMetatada);
-
-   public BoundDataProvider bind(SwtBinder binder, Widget component,
-      DataProviderMetadata dataProviderMetadata);
 }

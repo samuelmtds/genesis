@@ -18,9 +18,8 @@
  */
 package net.java.dev.genesis.ui.swt;
 
-import javax.swing.JButton;
-
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.swt.widgets.ButtonGroupBinder;
 import net.java.dev.genesis.ui.swt.widgets.ButtonWidgetBinder;
 import net.java.dev.genesis.ui.swt.widgets.ComboWidgetBinder;
@@ -101,8 +100,8 @@ public class WidgetBinderRegistryFactoryTest extends GenesisTestCase {
       assertSame(binderInstance, registry.get(Comparable.class, true));
 
       // Test for already registered type
-      registry.register(JButton.class, binderInstance);
-      assertSame(binderInstance, registry.get(JButton.class, true));
+      registry.register(Button.class, binderInstance);
+      assertSame(binderInstance, registry.get(Button.class, true));
 
       final ButtonGroupBinder groupBinder = new ButtonGroupBinder();
       Object binder = registry.registerButtonGroupBinder(groupBinder);

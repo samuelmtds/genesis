@@ -23,7 +23,7 @@ import java.util.List;
 
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 public class TableWidgetBinder extends AbstractWidgetBinder {
-   public BoundDataProvider bind(SwtBinder binder, Widget widget,
+   public BoundDataProvider bind(SWTBinder binder, Widget widget,
       DataProviderMetadata dataProviderMetadata) {
       return new TableWidgetBoundDataProvider(binder, (Table) widget,
          dataProviderMetadata);
@@ -46,7 +46,7 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
       private final DataProviderMetadata dataProviderMetadata;
       private final SelectionListener listener;
 
-      public TableWidgetBoundDataProvider(SwtBinder binder,
+      public TableWidgetBoundDataProvider(SWTBinder binder,
          Table widget, DataProviderMetadata dataProviderMetadata) {
          super(binder, widget);
          this.widget = widget;
@@ -125,7 +125,7 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
       protected String getIdentifier(int modelIndex) {
          String identifier = null;
          String[] names = (String[]) widget.getData(
-               SwtBinder.COLUMN_NAMES);
+               SWTBinder.COLUMN_NAMES);
 
          if (names != null) {
             identifier = names[modelIndex];
@@ -136,7 +136,7 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
          }
 
          identifier = (String) widget.getColumn(modelIndex).getData(
-               SwtBinder.TABLE_COLUMN_IDENTIFIER);
+               SWTBinder.TABLE_COLUMN_IDENTIFIER);
          if (identifier == null) {
             throw new IllegalArgumentException("Column number " + modelIndex
                   + " from Table " + getName() + " does not have an identifier");

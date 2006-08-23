@@ -21,29 +21,31 @@ package net.java.dev.genesis.ui.swt;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.java.dev.genesis.ui.binding.GroupBinder;
+import net.java.dev.genesis.ui.binding.LookupStrategy;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.lookup.WidgetLookupStrategy;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
-public class MockSwtBinder extends SwtBinder {
+public class MockSWTBinder extends SWTBinder {
    private Map map = new HashMap();
 
-   public MockSwtBinder(Composite composite, Object form, Object handler) {
+   public MockSWTBinder(Composite composite, Object form, Object handler) {
       super(composite, form, handler);
    }
 
-   public MockSwtBinder(Composite composite,
-         WidgetLookupStrategy lookupStrategy, Object form, Object handler,
+   public MockSWTBinder(Composite composite,
+         LookupStrategy lookupStrategy, Object form, Object handler,
          boolean bindDefaultButton) {
       super(composite, lookupStrategy, form, handler, bindDefaultButton);
    }
 
-   public MockSwtBinder(Composite composite,
-         WidgetLookupStrategy lookupStrategy, Object form, Object handler) {
+   public MockSWTBinder(Composite composite,
+         LookupStrategy lookupStrategy, Object form, Object handler) {
       super(composite, lookupStrategy, form, handler);
    }
 
@@ -57,6 +59,10 @@ public class MockSwtBinder extends SwtBinder {
 
    public void clear() {
       map.clear();
+   }
+   
+   public WidgetBinder registerWidgetBinder(String name, Object binder) {
+      return super.registerWidgetBinder(name, binder);
    }
 
    public WidgetBinder getWidgetBinder(Widget widget) {

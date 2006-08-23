@@ -18,7 +18,7 @@
  */
 package net.java.dev.genesis.ui.swt.lookup;
 
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -60,7 +60,7 @@ public class DepthFirstWidgetLookupStrategy extends
    }
 
    protected Widget find(Control control, String name) {
-      if (name.equals(control.getData(SwtBinder.NAME_PROPERTY))) {
+      if (name.equals(control.getData(SWTBinder.NAME_PROPERTY))) {
          return control;
       }
 

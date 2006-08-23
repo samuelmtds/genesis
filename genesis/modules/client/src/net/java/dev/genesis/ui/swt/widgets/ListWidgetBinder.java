@@ -25,7 +25,7 @@ import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -36,7 +36,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Widget;
 
 public class ListWidgetBinder extends AbstractWidgetBinder {
-   public BoundDataProvider bind(SwtBinder binder, Widget widget,
+   public BoundDataProvider bind(SWTBinder binder, Widget widget,
          DataProviderMetadata dataProviderMetadata) {
       return new ListBoundMember(binder, (org.eclipse.swt.widgets.List) widget,
             dataProviderMetadata);
@@ -48,7 +48,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
       private final DataProviderMetadata dataProviderMetadata;
       private final SelectionListener listener;
 
-      public ListBoundMember(SwtBinder binder,
+      public ListBoundMember(SWTBinder binder,
             org.eclipse.swt.widgets.List widget,
             DataProviderMetadata dataProviderMetadata) {
          super(binder, widget);
@@ -145,7 +145,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
 
          if (isBlank) {
             String blankLabel = (String) widget
-                  .getData(SwtBinder.BLANK_LABEL_PROPERTY);
+                  .getData(SWTBinder.BLANK_LABEL_PROPERTY);
             values[i] = (blankLabel == null) ? "" : blankLabel;
             i++;
          }
@@ -160,20 +160,20 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
       }
 
       protected void setKey(int index, String key) throws Exception {
-         widget.setData(SwtBinder.KEY_PROPERTY + '-' + index, key);
+         widget.setData(SWTBinder.KEY_PROPERTY + '-' + index, key);
       }
 
       protected String getKey(int index) throws Exception {
-         return (String) widget.getData(SwtBinder.KEY_PROPERTY + '-' + index);
+         return (String) widget.getData(SWTBinder.KEY_PROPERTY + '-' + index);
       }
 
       protected String getValue(Widget widget, Object value) throws Exception {
          String valueProperty = (String) widget
-               .getData(SwtBinder.VALUE_PROPERTY);
+               .getData(SWTBinder.VALUE_PROPERTY);
 
          if (value == null) {
             String blankLabel = (String) widget
-                  .getData(SwtBinder.BLANK_LABEL_PROPERTY);
+                  .getData(SWTBinder.BLANK_LABEL_PROPERTY);
             return (blankLabel == null) ? "" : blankLabel;
          } else if (value instanceof String) {
             return (String) value;
@@ -189,7 +189,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
 
       protected String getKey(Object value) throws Exception {
          String keyPropertyName = (String) widget
-               .getData(SwtBinder.KEY_PROPERTY);
+               .getData(SWTBinder.KEY_PROPERTY);
 
          if (keyPropertyName != null) {
             Object o = (value == null) ? null : PropertyUtils.getProperty(

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swt;
+package net.java.dev.genesis.ui.binding;
 
-import net.java.dev.genesis.GenesisTestCase;
 
-public class SwtBinderTest extends GenesisTestCase {
-   public SwtBinderTest() {
-      super("Swing Binder Unit Test");
-   }
-   
-   public void test() {
-      
-   }
+import net.java.dev.genesis.ui.metadata.ActionMetadata;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
+
+public interface WidgetBinder {
+   public BoundField bind(AbstractBinder binder, Object widget,
+         FieldMetadata fieldMetadata);
+
+   public BoundAction bind(AbstractBinder binder, Object widget,
+         ActionMetadata actionMetatada);
+
+   public BoundDataProvider bind(AbstractBinder binder, Object widget,
+         DataProviderMetadata dataProviderMetadata);
 }

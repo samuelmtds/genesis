@@ -25,12 +25,12 @@ import net.java.dev.genesis.mockobjects.MockBean;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.SwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.TableWidgetBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -39,12 +39,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 
 public class TableWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private Table table;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundDataProvider boundDataProvider;
    private MockForm form;
@@ -82,11 +81,11 @@ public class TableWidgetBinderTest extends GenesisTestCase {
          }
       };
       TableColumn column1 = new TableColumn(table, SWT.NONE);
-      column1.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "key");
+      column1.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "key");
       TableColumn column2 = new TableColumn(table, SWT.NONE);
-      column2.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "value");
+      column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "value");
       
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));

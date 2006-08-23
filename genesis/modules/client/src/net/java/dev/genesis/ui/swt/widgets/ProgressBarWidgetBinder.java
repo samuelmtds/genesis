@@ -20,14 +20,14 @@ package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Widget;
 
 public class ProgressBarWidgetBinder extends AbstractWidgetBinder {
-   public BoundField bind(SwtBinder binder, Widget widget,
+   public BoundField bind(SWTBinder binder, Widget widget,
       FieldMetadata fieldMetadata) {
       return new ProgressBarBoundField(binder, (ProgressBar) widget,
          fieldMetadata);
@@ -38,7 +38,7 @@ public class ProgressBarWidgetBinder extends AbstractWidgetBinder {
       private final ProgressBar widget;
       private final FieldMetadata fieldMetadata;
 
-      public ProgressBarBoundField(SwtBinder binder, ProgressBar widget,
+      public ProgressBarBoundField(SWTBinder binder, ProgressBar widget,
          FieldMetadata fieldMetadata) {
          super(binder, widget);
          this.widget = widget;

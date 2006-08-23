@@ -21,11 +21,11 @@ package net.java.dev.genesis.ui.swt.components;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.ButtonWidgetBinder;
 
 import org.eclipse.swt.SWT;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Shell;
 public class ToggleButtonWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private Button button;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private MockForm form;
    private BoundField boundField;
@@ -48,7 +48,7 @@ public class ToggleButtonWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       button = new Button(root = new Shell(), SWT.CHECK);
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       widgetBinder = binder.getWidgetBinder(button);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }

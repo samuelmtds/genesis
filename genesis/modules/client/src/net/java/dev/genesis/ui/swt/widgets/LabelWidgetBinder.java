@@ -20,13 +20,13 @@ package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
 
 public class LabelWidgetBinder extends AbstractWidgetBinder {
-   public BoundField bind(SwtBinder binder, Widget widget,
+   public BoundField bind(SWTBinder binder, Widget widget,
       FieldMetadata fieldMetadata) {
       return new LabelWidgetBoundField(binder, (Label) widget,
          fieldMetadata);
@@ -37,7 +37,7 @@ public class LabelWidgetBinder extends AbstractWidgetBinder {
       private final Label widget;
       private final FieldMetadata fieldMetadata;
 
-      public LabelWidgetBoundField(SwtBinder binder, Label widget,
+      public LabelWidgetBoundField(SWTBinder binder, Label widget,
          FieldMetadata fieldMetadata) {
          super(binder, widget);
          this.widget = widget;

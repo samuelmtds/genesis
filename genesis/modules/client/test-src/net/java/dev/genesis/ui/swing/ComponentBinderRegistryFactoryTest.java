@@ -31,6 +31,7 @@ import javax.swing.JToggleButton;
 import javax.swing.text.JTextComponent;
 
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.swing.components.AbstractButtonComponentBinder;
 import net.java.dev.genesis.ui.swing.components.ButtonGroupBinder;
 import net.java.dev.genesis.ui.swing.components.JComboBoxComponentBinder;
@@ -102,7 +103,7 @@ public class ComponentBinderRegistryFactoryTest extends GenesisTestCase {
    }
 
    public void testRegister() {
-      final ComponentBinder binderInstance = new AbstractButtonComponentBinder();
+      final WidgetBinder binderInstance = new AbstractButtonComponentBinder();
 
       // Test for non-registered type
       registry.register(Comparable.class, binderInstance);
@@ -118,7 +119,7 @@ public class ComponentBinderRegistryFactoryTest extends GenesisTestCase {
    }
 
    public void testDeregister() {
-      final ComponentBinder binderInstance = new AbstractButtonComponentBinder();
+      final WidgetBinder binderInstance = new AbstractButtonComponentBinder();
 
       assertNotNull(registry.get(JButton.class, true));
       registry.deregister(AbstractButton.class);

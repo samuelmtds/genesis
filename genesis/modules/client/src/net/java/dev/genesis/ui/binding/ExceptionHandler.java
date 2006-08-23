@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.binding;
 
+
 public interface ExceptionHandler {
    public void handleException(Throwable t);
 }

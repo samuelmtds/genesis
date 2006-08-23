@@ -24,27 +24,29 @@ import java.util.Map;
 
 import javax.swing.ButtonGroup;
 
+import net.java.dev.genesis.ui.binding.GroupBinder;
+import net.java.dev.genesis.ui.binding.LookupStrategy;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.lookup.ComponentLookupStrategy;
 
 public class MockSwingBinder extends SwingBinder {
    private Map map = new HashMap();
 
    public MockSwingBinder(Component component,
-         ComponentLookupStrategy lookupStrategy, Object form, Object handler,
+         LookupStrategy lookupStrategy, Object form, Object handler,
          boolean bindDefaultButton) {
       super(component, lookupStrategy, form, handler, bindDefaultButton);
    }
 
    public MockSwingBinder(Component component,
-         ComponentLookupStrategy lookupStrategy, Object form, Object handler) {
+         LookupStrategy lookupStrategy, Object form, Object handler) {
       super(component, lookupStrategy, form, handler);
    }
 
    public MockSwingBinder(Component component,
-         ComponentLookupStrategy lookupStrategy, Object form) {
+         LookupStrategy lookupStrategy, Object form) {
       super(component, lookupStrategy, form);
    }
 
@@ -68,8 +70,8 @@ public class MockSwingBinder extends SwingBinder {
       map.clear();
    }
 
-   public ComponentBinder getComponentBinder(Component component) {
-      return super.getComponentBinder(component);
+   public WidgetBinder getWidgetBinder(Component component) {
+      return super.getWidgetBinder(component);
    }
 
    public GroupBinder getGroupBinder(ButtonGroup group) {

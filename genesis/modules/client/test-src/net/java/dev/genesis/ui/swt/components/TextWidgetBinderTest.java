@@ -21,11 +21,11 @@ package net.java.dev.genesis.ui.swt.components;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.TextWidgetBinder;
 
 import org.eclipse.swt.SWT;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Widget;
 public class TextWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private Text text;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundField boundField;
    private MockForm form;
@@ -49,7 +49,7 @@ public class TextWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       text = new Text(root = new Shell(), SWT.NONE);
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       binder.register("text", text);
       widgetBinder = binder.getWidgetBinder(text);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");

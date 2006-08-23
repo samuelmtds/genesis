@@ -18,44 +18,17 @@
  */
 package net.java.dev.genesis.ui.swt.lookup;
 
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
-
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.binding.MapLookupStrategy;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.widgets.Widget;
 
-public class MapWidgetLookupStrategy implements WidgetLookupStrategy {
-   private Map widgets = new HashMap();
-   private Map identityMap = new IdentityHashMap();
-
-   public Widget lookup(Widget widget, String name) {
-      return (Widget) widgets.get(name);
-   }
-
-   public Widget register(String name, Widget widget) {
-      if (identityMap.containsKey(widget)) {
-         throw new IllegalArgumentException("Widget " + widget +
-            " is already bound");
+public class MapWidgetLookupStrategy extends MapLookupStrategy {
+   public String getRealName(Object object) {
+      if (object instanceof Widget) {
+         return (String) ((Widget)object).getData(SWTBinder.NAME_PROPERTY);
       }
 
-      identityMap.put(widget, name);
-      final Object oldValue = widgets.put(name, widget);
-      if (oldValue != null) {
-         identityMap.remove(oldValue);
-      }
-
-      return widget;
-   }
-
-   public String getName(Widget widget) {
-      String name = (String) identityMap.get(widget);
-
-      if (name == null) {
-         return (String) widget.getData(SwtBinder.NAME_PROPERTY);
-      }
-
-      return name;
+      return null;
    }
 }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,40 +19,15 @@
 package net.java.dev.genesis.ui.swing.lookup;
 
 import java.awt.Component;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
-public class MapComponentLookupStrategy implements ComponentLookupStrategy {
-   private Map components = new HashMap();
-   private Map identityMap = new IdentityHashMap();
+import net.java.dev.genesis.ui.binding.MapLookupStrategy;
 
-   public Component lookup(Component component, String name) {
-      return (Component) components.get(name);
-   }
-
-   public Component register(String name, Component component) {
-      if (identityMap.containsKey(component)) {
-         throw new IllegalArgumentException("Component " + component +
-            " is already bound");
+public class MapComponentLookupStrategy extends MapLookupStrategy {
+   protected String getRealName(Object object) {
+      if (object instanceof Component) {
+         return ((Component)object).getName();
       }
 
-      identityMap.put(component, name);
-      final Object oldValue = components.put(name, component);
-      if (oldValue != null) {
-         identityMap.remove(oldValue);
-      }
-
-      return component;
-   }
-
-   public String getName(Component component) {
-      String name = (String) identityMap.get(component);
-
-      if (name == null) {
-         name = component.getName();
-      }
-
-      return name;
+      return null;
    }
 }

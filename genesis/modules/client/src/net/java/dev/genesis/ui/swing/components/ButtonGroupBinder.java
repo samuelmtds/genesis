@@ -25,9 +25,10 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
+import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.GroupBinder;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.GroupBinder;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 import org.apache.commons.logging.Log;
@@ -46,19 +47,19 @@ public class ButtonGroupBinder implements GroupBinder {
       this.useActionCommandAsSelectedValue = useActionCommandAsSelectedValue;
    }
 
-   public BoundField bind(SwingBinder binder, Object group,
+   public BoundField bind(AbstractBinder binder, Object group,
       FieldMetadata fieldMetadata) {
       return new ButtonGroupBoundField(binder, (ButtonGroup) group,
          fieldMetadata);
    }
 
    public class ButtonGroupBoundField implements BoundField {
-      private final SwingBinder binder;
+      private final AbstractBinder binder;
       private final ButtonGroup buttonGroup;
       private final FieldMetadata fieldMetadata;
       private final ActionListener listener;
 
-      public ButtonGroupBoundField(SwingBinder binder, ButtonGroup buttonGroup,
+      public ButtonGroupBoundField(AbstractBinder binder, ButtonGroup buttonGroup,
          FieldMetadata fieldMetadata) {
          this.binder = binder;
          this.buttonGroup = buttonGroup;
@@ -66,7 +67,7 @@ public class ButtonGroupBinder implements GroupBinder {
          addActionListener(listener = createActionListener());
       }
 
-      protected SwingBinder getBinder() {
+      protected AbstractBinder getBinder() {
          return binder;
       }
 

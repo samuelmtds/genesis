@@ -24,16 +24,16 @@ import javax.swing.JProgressBar;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 public class JProgressBarComponentBinderTest extends GenesisTestCase {
    private JProgressBar progress;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundField boundField;
    private MockForm form;
    private FieldMetadata fieldMeta;
@@ -46,7 +46,7 @@ public class JProgressBarComponentBinderTest extends GenesisTestCase {
    protected void setUp() throws Exception {
       progress = new JProgressBar();
       binder = new MockSwingBinder(new JPanel(), form = new MockForm());
-      componentBinder = binder.getComponentBinder(progress);
+      componentBinder = binder.getWidgetBinder(progress);
       fieldMeta = form.getFormMetadata().getFieldMetadata("intField");
    }
    

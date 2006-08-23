@@ -16,59 +16,55 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swing.lookup;
-
-import java.awt.Component;
-
-import javax.swing.JPanel;
+package net.java.dev.genesis.ui.binding;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.ui.binding.MapLookupStrategy;
 
-public class MapComponentLookupStrategyTest extends GenesisTestCase {
+public class MapLookupStrategyTest extends GenesisTestCase {
    private MapLookupStrategy strategy;
-   private JPanel panel;
-   private JPanel anotherPanel;
+   private Object object1;
+   private Object object2;
 
-   public MapComponentLookupStrategyTest() {
-      super("Map Component LookupStrategy Unit Test");
+   public MapLookupStrategyTest() {
+      super("Map LookupStrategy Unit Test");
    }
 
    protected void setUp() {
-      strategy = new MapComponentLookupStrategy() {
+      strategy = new MapLookupStrategy() {
          protected String getRealName(Object object) {
-            return ((Component)object).getName();
+            return null;
          }
       };
-      panel = new JPanel();
-      anotherPanel = new JPanel();
+      object1 = new Object();
+      object2 = new Object();
    }
 
    public void testAll() {
-      strategy.register("someName", panel);
+      strategy.register("someName", object1);
 
-      assertSame(panel, strategy.lookup(null, "someName"));
-      assertEquals("someName", strategy.getName(panel));
+      assertSame(object1, strategy.lookup(null, "someName"));
+      assertEquals("someName", strategy.getName(object1));
 
       assertNull(strategy.lookup(null, "none"));
-      assertNull(strategy.getName(anotherPanel));
+      assertNull(strategy.getName(object2));
       
       Exception ex = null;
       try {
-         strategy.register("someOtherName", panel);
+         strategy.register("someOtherName", object1);
       } catch(Exception e) {
          ex = e;
       }
 
       assertTrue(ex instanceof IllegalArgumentException);
 
-      assertSame(panel, strategy.lookup(null, "someName"));
-      assertEquals("someName", strategy.getName(panel));
+      assertSame(object1, strategy.lookup(null, "someName"));
+      assertEquals("someName", strategy.getName(object1));
       assertNull(strategy.lookup(null, "someOtherName"));
 
-      strategy.register("someName", anotherPanel);
-      assertSame(anotherPanel, strategy.lookup(null, "someName"));
-      assertEquals("someName", strategy.getName(anotherPanel));
-      assertNull(strategy.getName(panel));
+      strategy.register("someName", object2);
+      assertSame(object2, strategy.lookup(null, "someName"));
+      assertEquals("someName", strategy.getName(object2));
+      assertNull(strategy.getName(object1));
    }
 }

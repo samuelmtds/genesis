@@ -28,16 +28,16 @@ import javax.swing.text.JTextComponent;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 public class JTextComponentBinderTest extends GenesisTestCase {
    private JTextField text;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundField boundField;
    private MockForm form;
    private FieldMetadata fieldMeta;
@@ -50,7 +50,7 @@ public class JTextComponentBinderTest extends GenesisTestCase {
       text = new JTextField();
       binder = new MockSwingBinder(new JPanel(), form = new MockForm());
       binder.register("text", text);
-      componentBinder = binder.getComponentBinder(text);
+      componentBinder = binder.getWidgetBinder(text);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
 
@@ -94,7 +94,7 @@ public class JTextComponentBinderTest extends GenesisTestCase {
 
    public void testUpdateValueWithoutTrim() throws Exception {
       binder.registerComponentBinder("text", new JTextComponentBinder(false));
-      componentBinder = binder.getComponentBinder(text);
+      componentBinder = binder.getWidgetBinder(text);
       
       assertNull(componentBinder.bind(binder, text,
             (DataProviderMetadata) null));

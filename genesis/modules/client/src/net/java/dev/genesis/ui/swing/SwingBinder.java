@@ -27,9 +27,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
@@ -38,21 +35,12 @@ import javax.swing.JComponent;
 import javax.swing.RootPaneContainer;
 
 import net.java.dev.genesis.ui.binding.AbstractBinder;
-import net.java.dev.genesis.ui.binding.BoundAction;
-import net.java.dev.genesis.ui.binding.BoundDataProvider;
-import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.binding.BoundMember;
 import net.java.dev.genesis.ui.binding.ExceptionHandler;
+import net.java.dev.genesis.ui.binding.GroupBinder;
+import net.java.dev.genesis.ui.binding.LookupStrategy;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.controller.FormControllerListener;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
-import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.swing.lookup.BreadthFirstComponentLookupStrategy;
-import net.java.dev.genesis.ui.swing.lookup.ComponentLookupStrategy;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * <code>SwingBinder</code> is the default implementation of
@@ -64,77 +52,13 @@ import org.apache.commons.logging.LogFactory;
  * reflect that in <code>Component</code>.
  */
 public class SwingBinder extends AbstractBinder {
-   private static final Log log = LogFactory.getLog(SwingBinder.class);
-
    /**
     * The key used to store the binder in a component client property.
     */
    public static final String BINDER_KEY = "genesis:SwingBinder";
 
-   /**
-    * The key used to store the property name used in a blank label
-    */
-   public static final String BLANK_LABEL_PROPERTY = "genesis:blankLabel";
-
-   /**
-    * The key used to store whether or not the component has blank label
-    */
-   public static final String BLANK_PROPERTY = "genesis:blank";
-
-   /**
-    * The key used to store the value of the button in a button group
-    */
-   public static final String BUTTON_GROUP_SELECTION_VALUE = 
-         "genesis:buttonGroupSelectionValue";
-
-   /**
-    * The key used to store the column names of a JTable
-    */
-   public static final String COLUMN_NAMES = "genesis:columnNames";
-
-   /**
-    * The key used to store values for the enabled group
-    */
-   public static final String ENABLED_GROUP_PROPERTY = "genesis:enabledGroup";
-
-   /**
-    * The key used to store whether or not the component is bound
-    */   
-   public static final String GENESIS_BOUND = "genesis:boundField";
-
-   /**
-    * The key used to store the property used as a key in a JComboBox or JList
-    */
-   public static final String KEY_PROPERTY = "genesis:key";
-
-   /**
-    * The key used to store the value property in a JComboBox or JList
-    */   
-   public static final String VALUE_PROPERTY = "genesis:value";
-
-   /**
-    * The key used to store whether or not the component is associated with
-    * a virtual property
-    */
-   public static final String VIRTUAL = "genesis:virtual";
-
-   /**
-    * The key used to store values for the visible group
-    */
-   public static final String VISIBLE_GROUP_PROPERTY = "genesis:visibleGroup";
-
-   /**
-    * The key used to store values for the widget group
-    */   
-   public static final String WIDGET_GROUP_PROPERTY = "genesis:widgetGroup";
-
    private final ComponentBinderRegistryFactory factory =
       ComponentBinderRegistryFactory.getInstance();
-   private final Component root;
-   private final ComponentLookupStrategy lookupStrategy;
-   private final Map buttonGroupsMap = new HashMap();
-   private final Map componentBinders = new HashMap();
-   private final Map groupBinders = new IdentityHashMap();
    private final ActionListener defaultButtonListener;
 
    /**
@@ -148,7 +72,7 @@ public class SwingBinder extends AbstractBinder {
     * @see AbstractBinder
     */
    public SwingBinder(Component component, Object form) {
-      this(component, (ComponentLookupStrategy) null, form, component, true);
+      this(component, (LookupStrategy) null, form, component, true);
    }
 
    /**
@@ -163,7 +87,7 @@ public class SwingBinder extends AbstractBinder {
     * @see AbstractBinder
     */
    public SwingBinder(Component component,
-      ComponentLookupStrategy lookupStrategy, Object form) {
+      LookupStrategy lookupStrategy, Object form) {
       this(component, lookupStrategy, form, component, true);
    }
 
@@ -179,7 +103,7 @@ public class SwingBinder extends AbstractBinder {
     * @see AbstractBinder
     */
    public SwingBinder(Component component, Object form, Object handler) {
-      this(component, (ComponentLookupStrategy) null, form, handler, true);
+      this(component, (LookupStrategy) null, form, handler, true);
    }
 
    /**
@@ -195,7 +119,7 @@ public class SwingBinder extends AbstractBinder {
     * @see AbstractBinder
     */
    public SwingBinder(Component component,
-         ComponentLookupStrategy lookupStrategy, Object form, Object handler) {
+         LookupStrategy lookupStrategy, Object form, Object handler) {
       this(component, lookupStrategy, form, handler, true);
    }
 
@@ -213,31 +137,10 @@ public class SwingBinder extends AbstractBinder {
     * @see AbstractBinder
     */
    public SwingBinder(Component component,
-      ComponentLookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
-      super(form, handler);
-      this.root = component;
-      this.lookupStrategy = (lookupStrategy == null)
-         ? createComponentLookupStrategy() : lookupStrategy;
+      LookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
+      super(component, form, handler, lookupStrategy);
       this.defaultButtonListener = bindDefaultButton ? createDefautButtonListener()
             : null;
-   }
-
-   /**
-    * Retrieves the lookup strategy in use by the binder
-    *
-    * @return the lookup strategy in use by the binder
-    */
-   public ComponentLookupStrategy getLookupStrategy() {
-      return lookupStrategy;
-   }
-
-   /**
-    * Retrieves the root Component of the binder
-    *
-    * @return the root Component of the binder
-    */
-   public Component getRoot() {
-      return root;
    }
 
    /**
@@ -247,7 +150,17 @@ public class SwingBinder extends AbstractBinder {
     * @return a new instance of an ExceptionHandler
     */
    protected ExceptionHandler createExceptionHandler() {
-      return new SwingExceptionHandler(getRoot());
+      return new SwingExceptionHandler((Component) getRoot());
+   }
+
+   /**
+    * Creates and returns a new instance of BreadthFirstComponentLookupStrategy.
+    * Override to change the default ComponentLookupStrategy to use.
+    *
+    * @return a new instance of a ComponentLookupStrategy
+    */
+   protected LookupStrategy createLookupStrategy() {
+      return new BreadthFirstComponentLookupStrategy();
    }
 
    /**
@@ -259,7 +172,7 @@ public class SwingBinder extends AbstractBinder {
     *          if none.
     */
    public Component register(String name, Component component) {
-      return getLookupStrategy().register(name, component);
+      return (Component) getLookupStrategy().register(name, component);
    }
 
    /**
@@ -271,9 +184,9 @@ public class SwingBinder extends AbstractBinder {
     * @return previous component associated with specified name, or <tt>null</tt>
     *          if none.
     */
-   public ComponentBinder registerComponentBinder(String componentName,
-      ComponentBinder binder) {
-      return (ComponentBinder) componentBinders.put(componentName, binder);
+   public WidgetBinder registerComponentBinder(String componentName,
+         WidgetBinder binder) {
+      return registerWidgetBinder(componentName, binder);
    }
 
    /**
@@ -285,9 +198,7 @@ public class SwingBinder extends AbstractBinder {
     * @return the buttonGroup.
     */
    public ButtonGroup registerButtonGroup(String name, ButtonGroup buttonGroup) {
-      buttonGroupsMap.put(name, buttonGroup);
-
-      return buttonGroup;
+      return (ButtonGroup) registerGroup(name, buttonGroup);
    }
 
    /**
@@ -300,10 +211,7 @@ public class SwingBinder extends AbstractBinder {
     * @return the buttonGroup.
     */
    public ButtonGroup registerButtonGroup(String name, ButtonGroup buttonGroup, GroupBinder groupBinder) {
-      registerButtonGroup(name, buttonGroup);
-      groupBinders.put(buttonGroup, groupBinder);
-
-      return buttonGroup;
+      return (ButtonGroup) registerGroup(name, buttonGroup, groupBinder);
    }
 
    public boolean isVirtual(Object widget) {
@@ -319,43 +227,11 @@ public class SwingBinder extends AbstractBinder {
       return Boolean.TRUE.equals(component.getClientProperty(VIRTUAL));
    }
 
-   /**
-    * Creates and returns a new instance of BreadthFirstComponentLookupStrategy.
-    * Override to change the default ComponentLookupStrategy to use.
-    *
-    * @return a new instance of a ComponentLookupStrategy
-    */
-   protected ComponentLookupStrategy createComponentLookupStrategy() {
-      return new BreadthFirstComponentLookupStrategy();
+   protected WidgetBinder getDefaultWidgetBinderFor(Object object) {
+      return factory.get(object.getClass(), true);
    }
 
-   /**
-    * Returns the component name
-    *
-    * @return the component name
-    */
-   public String getName(Object component) {
-      return getLookupStrategy().getName((Component) component);
-   }
-
-   protected ComponentBinder getComponentBinder(Component component) {
-      ComponentBinder binder =
-         (ComponentBinder) componentBinders.get(getLookupStrategy().getName(component));
-
-      if (binder != null) {
-         return binder;
-      }
-
-      return factory.get(component.getClass(), true);
-   }
-
-   protected GroupBinder getGroupBinder(ButtonGroup group) {
-      GroupBinder binder = (GroupBinder) groupBinders.get(group);
-
-      if (binder != null) {
-         return binder;
-      }
-
+   protected GroupBinder getDefaultGroupBinderFor(Object group) {
       return factory.getButtonGroupBinder();
    }
 
@@ -368,15 +244,20 @@ public class SwingBinder extends AbstractBinder {
       super.bind();
 
       bindDefaultButton();
-      markBound();
+   }
+
+   protected void markBound() {
+      if (getRoot() instanceof JComponent) {
+         ((JComponent) getRoot()).putClientProperty(GENESIS_BOUND, Boolean.TRUE);
+      }
    }
 
    protected void bindDefaultButton() {
-      if (defaultButtonListener == null || !(root instanceof RootPaneContainer)) {
+      if (defaultButtonListener == null || !(getRoot() instanceof RootPaneContainer)) {
          return;
       }
 
-      final JButton defaultButton = ((RootPaneContainer) root).getRootPane()
+      final JButton defaultButton = ((RootPaneContainer) getRoot()).getRootPane()
             .getDefaultButton();
 
       if (defaultButton == null) {
@@ -385,7 +266,7 @@ public class SwingBinder extends AbstractBinder {
 
       defaultButton.addActionListener(defaultButtonListener);
    }
-   
+
    protected ActionListener createDefautButtonListener() {
       return new ActionListener() {
          public void actionPerformed(ActionEvent event) {
@@ -401,102 +282,6 @@ public class SwingBinder extends AbstractBinder {
                   FocusEvent.FOCUS_GAINED));
          }
       };
-   }
-
-   protected void markBound() {
-      if (root instanceof JComponent) {
-         ((JComponent) root).putClientProperty(GENESIS_BOUND, Boolean.TRUE);
-      }
-   }
-
-   protected BoundField bindFieldMetadata(String name,
-      FormMetadata formMetadata, FieldMetadata fieldMetadata) {
-      final Component component = lookupStrategy.lookup(root, name);
-
-      if (component == null) {
-         final ButtonGroup group = (ButtonGroup) buttonGroupsMap.get(name);
-
-         if (group == null) {
-            log.warn(name + " could not be found while binding " +
-               getForm().getClass());
-
-            return null;
-         }
-
-         GroupBinder binder = getGroupBinder(group);
-
-         if (binder == null) {
-            log.warn("No GroupBinder registered for " + group.getClass());
-
-            return null;
-         }
-
-         return binder.bind(this, group, fieldMetadata);
-      }
-
-      ComponentBinder binder = getComponentBinder(component);
-
-      if (binder == null) {
-         log.warn("No ComponentBinder registered for " + component.getClass());
-
-         return null;
-      }
-
-      return binder.bind(this, component, fieldMetadata);
-   }
-
-   protected BoundAction bindActionMetadata(String name,
-      FormMetadata formMetadata, ActionMetadata actionMetadata) {
-      final Component component = lookupStrategy.lookup(root, name);
-
-      if (component == null) {
-         log.warn(name + " could not be found while binding " +
-            getForm().getClass());
-
-         return null;
-      }
-
-      ComponentBinder binder = getComponentBinder(component);
-
-      if (binder == null) {
-         log.warn("No ComponentBinder registered for " + component.getClass());
-
-         return null;
-      }
-
-      return binder.bind(this, component, actionMetadata);
-   }
-
-   protected BoundDataProvider bindDataProvider(String name,
-      FormMetadata formMetadata, DataProviderMetadata dataProviderMetadata) {
-      final Component component = lookupStrategy.lookup(root, name);
-
-      if (component == null) {
-         log.warn(name + " could not be found while binding " +
-            getForm().getClass());
-
-         return null;
-      }
-
-      ComponentBinder binder = getComponentBinder(component);
-
-      if (binder == null) {
-         log.warn("No ComponentBinder registered for " + component.getClass());
-
-         return null;
-      }
-
-      return binder.bind(this, component, dataProviderMetadata);
-   }
-
-   public BoundMember getBoundMember(String name) {
-      BoundMember member = super.getBoundMember(name);
-
-      if (member == null) {
-         member = (BoundMember) buttonGroupsMap.get(name);
-      }
-
-      return member;
    }
 
    protected FormControllerListener getFormControllerListener() {

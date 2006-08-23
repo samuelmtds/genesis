@@ -31,17 +31,17 @@ import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class JListComponentBinderTest extends GenesisTestCase {
    private JList list;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundDataProvider boundDataProvider;
    private BoundField boundField;
    private MockForm form;
@@ -57,7 +57,7 @@ public class JListComponentBinderTest extends GenesisTestCase {
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
-      componentBinder = binder.getComponentBinder(list);
+      componentBinder = binder.getWidgetBinder(list);
    }
 
    public void testSelectIndexes() {

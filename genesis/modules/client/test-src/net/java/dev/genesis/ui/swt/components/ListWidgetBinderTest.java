@@ -27,12 +27,12 @@ import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swt.MockSwtBinder;
-import net.java.dev.genesis.ui.swt.SwtBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinder;
+import net.java.dev.genesis.ui.swt.MockSWTBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.ListWidgetBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Widget;
 public class ListWidgetBinderTest extends GenesisTestCase {
    private Shell root;
    private List list;
-   private MockSwtBinder binder;
+   private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundDataProvider boundDataProvider;
    private BoundField boundField;
@@ -60,9 +60,9 @@ public class ListWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       list = new List(root = new Shell(), SWT.MULTI);
-      list.setData(SwtBinder.KEY_PROPERTY, "key");
-      list.setData(SwtBinder.VALUE_PROPERTY, "value");
-      binder = new MockSwtBinder(root, form = new MockForm(), null);
+      list.setData(SWTBinder.KEY_PROPERTY, "key");
+      list.setData(SWTBinder.VALUE_PROPERTY, "value");
+      binder = new MockSWTBinder(root, form = new MockForm(), null);
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
@@ -83,11 +83,11 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
    
    protected void setKey(int index, String key) throws Exception {
-      list.setData(SwtBinder.KEY_PROPERTY + '-' + index, key);
+      list.setData(SWTBinder.KEY_PROPERTY + '-' + index, key);
    }
 
    protected String getKey(Object value) throws Exception {
-      String keyPropertyName = (String) list.getData(SwtBinder.KEY_PROPERTY);
+      String keyPropertyName = (String) list.getData(SWTBinder.KEY_PROPERTY);
 
       if (keyPropertyName != null) {
          Object o = (value == null) ? null : PropertyUtils.getProperty(value,
@@ -103,7 +103,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    protected String getValue(Widget widget, Object value) throws Exception {
-      String valueProperty = (String) widget.getData(SwtBinder.VALUE_PROPERTY);
+      String valueProperty = (String) widget.getData(SWTBinder.VALUE_PROPERTY);
       if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
@@ -168,7 +168,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSelectIndexesWithBlank() {
-      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
 
       assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
@@ -249,7 +249,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateIndexesWithBlank() {
-      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
 
       assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
@@ -307,7 +307,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateListWithBlank() throws Exception {
-      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
 
       assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
@@ -340,7 +340,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSetValue() throws Exception {
-      list.setData(SwtBinder.KEY_PROPERTY, "key");
+      list.setData(SWTBinder.KEY_PROPERTY, "key");
 
       assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
@@ -363,8 +363,8 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSetValueWithBlank() throws Exception {
-      list.setData(SwtBinder.BLANK_PROPERTY, Boolean.TRUE);
-      list.setData(SwtBinder.KEY_PROPERTY, "key");
+      list.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.setData(SWTBinder.KEY_PROPERTY, "key");
 
       assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));

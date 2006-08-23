@@ -24,16 +24,16 @@ import javax.swing.JPanel;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
-import net.java.dev.genesis.ui.swing.ComponentBinder;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 public class JLabelComponentBinderTest extends GenesisTestCase {
    private JLabel label;
    private MockSwingBinder binder;
-   private ComponentBinder componentBinder;
+   private WidgetBinder componentBinder;
    private BoundField boundField;
    private MockForm form;
    private FieldMetadata fieldMeta;
@@ -45,7 +45,7 @@ public class JLabelComponentBinderTest extends GenesisTestCase {
    protected void setUp() throws Exception {
       label = new JLabel();
       binder = new MockSwingBinder(new JPanel(), form = new MockForm());
-      componentBinder = binder.getComponentBinder(label);
+      componentBinder = binder.getWidgetBinder(label);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
 
