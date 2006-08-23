@@ -68,7 +68,6 @@ public class NativeJar extends Task {
             File osDir = fu.resolveFile(currentDir, directories[i]);
 
             if (currentDir.equals(osDir)) {
-               doJar(currentDir);
                continue;
             }
             
