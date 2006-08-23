@@ -19,13 +19,15 @@
 package net.java.dev.genesis.anttasks.ant.types;
 
 import java.io.File;
+
 import net.java.dev.genesis.anttasks.ant.EmptyDirectoryScanner;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.ZipFileSet;
 
-public class OptionalFileSet extends FileSet {
+public class OptionalFileSet extends ZipFileSet {
    public DirectoryScanner getDirectoryScanner(Project p) {
       if (isReference()) {
          return getRef(p).getDirectoryScanner(p);

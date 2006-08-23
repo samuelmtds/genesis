@@ -280,57 +280,61 @@
    </target>
 
    <target name="server-artifact:additional-macrodefs" if="server.artifact.needed">
-      <presetdef name="sar"
-                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <genesis:sar-macro>
-            <additional-fileset>
-               <fileset dir="${genesis.dist}">
-                  <include name="genesis-annotation-jdk14-${genesis.version}.jar" />
-                  <include name="genesis-aspect-annotated-${genesis.version}.jar" />
-               </fileset>
-               <fileset dir="${aspectwerkz.dist}">
-                  <include name="aspectwerkz-*.jar" />
-                  <include name="dom4j*.jar" />
-                  <include name="jrexx*.jar" />
-                  <include name="qdox*.jar" />
-                  <include name="trove*.jar" />
-               </fileset>
-               <fileset dir="${backport175.dist}">
-                  <include name="backport175-*.jar" />
-               </fileset>
-               <zipfileset src="${jar.shared.location}" />
-            </additional-fileset>
-         </genesis:sar-macro>
-      </presetdef>
-
-      <macrodef name="war"
-                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <element name="customize" optional="true"/>
+      <macrodef name="war" uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="customize" optional="true" />
          <sequential>
             <war destfile="${server.client.artifact.location}" webxml="${client.webxml.location}">
                <zipfileset dir="${client.content.dir}" excludesfile="${client.webxml.location}" />
                <lib file="${jar.client.location}" />
                <lib refid="client.lib.fileset" />
-               <customize />
+               <customize/>
             </war>
          </sequential>
       </macrodef>
+      <presetdef name="ear"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:ear-macro>
+            <additional-fileset>
+               <lib dir="${genesis.dist}">
+                  <include name="genesis-annotation-jdk14-${genesis.version}.jar" />
+                  <include name="genesis-aspect-annotated-${genesis.version}.jar" />
+                  <include name="genesis-shared-${genesis.version}.jar" />
+               </lib>
+               <lib dir="${aspectwerkz.dist}">
+                  <include name="aspectwerkz-*.jar" />
+                  <include name="dom4j*.jar" />
+                  <include name="jrexx*.jar" />
+                  <include name="qdox*.jar" />
+                  <include name="trove*.jar" />
+               </lib>
+               <lib dir="${backport175.dist}">
+                  <include name="backport175-*.jar" />
+               </lib>
+               <lib dir="${commons.dist}">
+                  <include name="commons-beanutils-*.jar" />
+                  <include name="commons-digester-*.jar" />
+                  <include name="commons-jxpath-*.jar" />
+                  <include name="commons-logging-*.jar" />
+                  <include name="commons-validator-*.jar" />
+                  <include name="jakarta-oro-*.jar" />
+                  <include name="reusable-components-*.jar" />
+               </lib>
+               <lib refid="client.lib.fileset" />
+               <lib file="${jar.shared.location}" />
+               <web file="${server.client.artifact.location}" />
+            </additional-fileset>
+         </genesis:ear-macro>
+      </presetdef>
    </target>
 
    <target name="-do-server-artifact">
-      <genesis:sar />
+      <genesis:sar-macro />
       <genesis:war />
+      <genesis:ear />
    </target>
 
    <target name="deploy:additional-init">
       <property name="needs.deploy" value="true" />
    </target>
 
-   <target name="-do-deploy-server-artifact">
-      <genesis:deploy-server-artifact>
-         <filesets>
-            <fileset file="${server.client.artifact.location}" />
-         </filesets>
-      </genesis:deploy-server-artifact>
-   </target>
 </project>

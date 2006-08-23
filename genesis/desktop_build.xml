@@ -1159,21 +1159,22 @@
    <target name="jar" depends="jar:local,jar:remote,jar:shared,-do-custom-jar" />
 
    <target name="server-artifact:additional-macrodefs" if="server.artifact.needed">
-      <presetdef name="sar"
+      <presetdef name="ear"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <genesis:sar-macro>
+         <genesis:ear-macro>
             <additional-fileset>
-               <fileset dir="${genesis.dist}">
+               <lib dir="${genesis.dist}">
                   <include name="genesis-shared-${genesis.version}.jar" />
-               </fileset>
-               <fileset file="${jar.shared.location}" />
+               </lib>
+               <lib file="${jar.shared.location}" />
             </additional-fileset>
-         </genesis:sar-macro>
+         </genesis:ear-macro>
       </presetdef>
    </target>
 
    <target name="-do-server-artifact">
-      <genesis:sar />
+      <genesis:sar-macro />
+      <genesis:ear />
    </target>
 
    <target name="webstart:pre-init">
