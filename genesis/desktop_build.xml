@@ -137,8 +137,52 @@
 
       <property name="validation.generate.files" value="true" />
 
+      <property name="use.javascript" value="true" />
+      <property name="use.beanshell" value="true" />
+      <property name="use.el" value="true" />
+      <property name="use.bsf" value="true" />
+
+      <property name="use.swing" value="true" />
+      <property name="use.swt" value="true" />
+      <property name="use.thinlet" value="true" />
+
+      <condition property="javascript.needed">
+         <and>
+            <istrue value="${use.javascript}" />
+            <istrue value="${use.bsf}" />
+         </and>
+      </condition>
+
+      <condition property="beanshell.needed">
+         <istrue value="${use.beanshell}" />
+      </condition>
+
+      <condition property="bsf.needed">
+         <istrue value="${use.bsf}" />
+      </condition>
+
+      <condition property="el.needed">
+         <istrue value="${use.el}" />
+      </condition>
+
+      <condition property="swing.needed">
+         <istrue value="${use.swing}" />
+      </condition>
+
+      <condition property="thinlet.needed">
+         <istrue value="${use.thinlet}" />
+      </condition>
+
+      <condition property="swt.needed">
+         <istrue value="${use.swt}" />
+      </condition>
+      
       <genesis:optional-fileset dir="${client.lib.dir}" id="client.lib.fileset">
          <include name="*.jar" />
+      </genesis:optional-fileset>
+
+      <genesis:optional-fileset dir="${swt.specific.dir}" id="swt.lib.fileset">
+         <include name="*.jar" unless="skip.swt" />
       </genesis:optional-fileset>
 
       <path id="client.standard.javac.classpath">
@@ -148,6 +192,9 @@
             <include name="${genesis-annotation.jar}" />
             <include name="genesis-shared-${genesis.version}.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
+            <include name="genesis-client-swing-${genesis.version}.jar" if="swing.needed" />
+            <include name="genesis-client-swt-${genesis.version}.jar" if="swt.needed" />
+            <include name="genesis-client-thinlet-${genesis.version}.jar" if="thinlet.needed" />
          </fileset>
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
@@ -158,9 +205,11 @@
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components*.jar" />
          </fileset>
-         <fileset dir="${thinlet.dist}" includes="thinlet*.jar" />
+         <fileset dir="${thinlet.dist}">
+            <include name="*.jar" unless="skip.thinlet" />
+         </fileset>
          <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
-         <fileset dir="${swt.specific.dir}" includes="*.jar" />
+         <fileset refid="swt.lib.fileset" />
          <fileset refid="lib.fileset" />
          <fileset refid="client.lib.fileset" />
       </path>
@@ -676,7 +725,10 @@
          <fileset dir="${genesis.dist}">
             <include name="genesis-annotation-jdk14-${genesis.version}.jar" />
             <include name="genesis-aspect-annotated-*.jar" />
-            <include name="genesis-client-*.jar" />
+            <include name="genesis-client-${genesis.version}.jar" if="swing.needed" />
+            <include name="genesis-client-swing-${genesis.version}.jar" if="swing.needed" />
+            <include name="genesis-client-swt-${genesis.version}.jar" if="swt.needed" />
+            <include name="genesis-client-thinlet-${genesis.version}.jar" if="thinlet.needed" />
          </fileset>
          <fileset dir="${aspectwerkz.dist}">
             <include name="aspectwerkz-*.jar" />
@@ -698,10 +750,15 @@
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components-*.jar" />
          </fileset>
-         <fileset dir="${script.dist}" includes="*.jar" />
-         <fileset dir="${swt.specific.dir}">
-            <include name="*.jar" />
+         <fileset dir="${script.dist}">
+            <include name="bsf-*.jar" if="bsf.needed" />
+            <include name="bsh-*.jar" if="beanshell.needed" />
+            <include name="js.jar" if="javascript.needed" />
+            <include name="commons-el-*.jar" if="el.needed" />
+            <include name="jakarta-taglibs-standard-*.jar" if="el.needed" />
+            <include name="jsp-api.jar" if="el.needed" />
          </fileset>
+         <fileset refid="swt.lib.fileset" />
          <fileset refid="lib.fileset" />
          <fileset refid="shared.lib.fileset" />
          <fileset refid="client.lib.fileset" />
@@ -1313,7 +1370,10 @@
                </fileset>
                <fileset dir="${genesis.dist}">
                   <include name="genesis-annotation-jdk14-${genesis.version}.jar"/>
-                  <include name="genesis-client-${genesis.version}.jar"/>
+                  <include name="genesis-client-${genesis.version}.jar" if="swing.needed" />
+                  <include name="genesis-client-swing-${genesis.version}.jar" if="swing.needed" />
+                  <include name="genesis-client-swt-${genesis.version}.jar" if="swt.needed" />
+                  <include name="genesis-client-thinlet-${genesis.version}.jar" if="thinlet.needed" />
                   <include name="genesis-aspect-annotated-${genesis.version}.jar" />
                </fileset>
                <fileset dir="${commons.dist}">
@@ -1334,7 +1394,14 @@
                <fileset dir="${backport175.dist}">
                   <include name="backport175-*.jar" />
                </fileset>
-               <fileset dir="${script.dist}" includes="*.jar" />
+               <fileset dir="${script.dist}">
+                  <include name="bsf-*.jar" if="bsf.needed" />
+                  <include name="bsh-*.jar" if="beanshell.needed" />
+                  <include name="js.jar" if="javascript.needed" />
+                  <include name="commons-el-*.jar" if="el.needed" />
+                  <include name="jakarta-taglibs-standard-*.jar" if="el.needed" />
+                  <include name="jsp-api.jar" if="el.needed" />
+               </fileset>
                <fileset file="${jdbc.driver}" />
                <fileset dir="${jboss.client}">
                   <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->

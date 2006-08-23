@@ -296,8 +296,33 @@
 	<target name="client:jar">
 		<mkdir dir="${genesis.dist.dir}" />
 		<jar destfile="${genesis.dist.dir}/genesis-client-${genesis.version}.jar">
-			<fileset dir="${genesis.module.client}/${genesis.annotation.dest}" />
+			<fileset dir="${genesis.module.client}/${genesis.annotation.dest}">
+            <exclude name="net/java/dev/genesis/ui/swing/**" />
+            <exclude name="net/java/dev/genesis/ui/swt/**" />
+            <exclude name="net/java/dev/genesis/ui/thinlet/**" />
+            <exclude name="error_reporter.xml" />
+            <exclude name="message.xml" />
+            <exclude name="option.xml" />
+         </fileset>
 		</jar>
+      <jar destfile="${genesis.dist.dir}/genesis-client-swing-${genesis.version}.jar">
+         <fileset dir="${genesis.module.client}/${genesis.annotation.dest}">
+            <include name="net/java/dev/genesis/ui/swing/**" />
+         </fileset>
+      </jar>
+      <jar destfile="${genesis.dist.dir}/genesis-client-swt-${genesis.version}.jar">
+         <fileset dir="${genesis.module.client}/${genesis.annotation.dest}">
+            <include name="net/java/dev/genesis/ui/swt/**" />
+         </fileset>
+      </jar>
+      <jar destfile="${genesis.dist.dir}/genesis-client-thinlet-${genesis.version}.jar">
+         <fileset dir="${genesis.module.client}/${genesis.annotation.dest}">
+            <include name="error_reporter.xml" />
+            <include name="message.xml" />
+            <include name="option.xml" />
+            <include name="net/java/dev/genesis/ui/thinlet/**" />
+         </fileset>
+      </jar>
 	</target>
 
 	<target name="aspect:compile">
