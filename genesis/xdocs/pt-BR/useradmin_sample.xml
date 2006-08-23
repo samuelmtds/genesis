@@ -39,9 +39,11 @@
       </code> que correspondem respectivamente ao módulo cliente da aplicação e
       ao módulo comum entre cliente e servidor. </p>
       <p>No diretório de fontes do módulo cliente encontramos classes relativas
-      à interface gráfica. Temos duas possibilidades de interface gráfica nesse
-      exemplo: O <a href="http://www.thinlet.com/">Thinlet</a> e o
-      <a href="http://java.sun.com/products/jfc/">Swing</a></p>
+      à interface gráfica. Temos três possibilidades de interface gráfica nesse
+      exemplo: O <a href="http://www.thinlet.com/">Thinlet</a>, o
+      <a href="http://java.sun.com/products/jfc/">Swing</a> e o
+      <a href="http://www.eclipse.org/swt">SWT</a>. Para utilizar o SWT
+      veja as instruções <a href="faq.html#Como_utilizo_SWT_em_diferentes_Ambientes">aqui</a>.</p>
       
       <p>No pacote <code>net.java.dev.genesis.samples.useradmin.ui</code> 
       encontramos arquivos que definem a lógica da tela,
@@ -74,6 +76,19 @@
       <ul>
          <li><code><b>UserListView.java</b></code>: classe Java responsável pela
          tela e codificada utilizando Swing. Nela definimos a aparência da tela,
+         como tamanho, componentes gráficos. Nela também fazemos o <code>binding</code>
+         da tela para um determinado form, ou seja, qual será o form utilizado
+         para tratar os eventos da tela. Outros métodos auxiliares podem existir nessa classe para possibilitar
+         que essa tela possa abrir outras telas ou programaticamente executar
+         ações dessa tela.</li>
+      </ul>
+
+      <p>Na parte SWT (pacote <code>net.java.dev.genesis.samples.useradmin.ui.swt</code>
+      e sub-pacotes) temos o esqueto da tela codificado em SWT. Para exemplificar, 
+      consideremos a tela de pesquisa do useradmin:</p>
+      <ul>
+         <li><code><b>UserListView.java</b></code>: classe Java responsável pela
+         tela e codificada utilizando SWT. Nela definimos a aparência da tela,
          como tamanho, componentes gráficos. Nela também fazemos o <code>binding</code>
          da tela para um determinado form, ou seja, qual será o form utilizado
          para tratar os eventos da tela. Outros métodos auxiliares podem existir nessa classe para possibilitar

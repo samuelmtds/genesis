@@ -16,7 +16,7 @@
         <li>Se a exceção for uma <code>ValidationException</code>, é exibida uma
         janela de alerta tendo como conteúdo um erro por linha.</li>
         <li>Caso contrário, verifica-se foi definida pela aplicação tratamento 
-        especifico para este tipo de exceção; se não foi, verifica-se a 
+        específico para este tipo de exceção; se não foi, verifica-se a 
         exceção retornada por <code>getCause()</code> até que este método 
         retorne <code>null</code>; por fim é exibida uma mensagem com o stack
         trace da exceção.</li>
@@ -24,6 +24,7 @@
       <p>Abaixo há informações mais detalhadas para cada API gráfica:</p>
       <ul>
         <li><a href="#Tratando erros com Swing">Tratando erros com Swing</a></li>
+        <li><a href="#Tratando erros com SWT">Tratando erros com SWT</a></li>
         <li><a href="#Tratando erros com Thinlet">Tratando erros com 
         Thinlet</a></li>
       </ul>

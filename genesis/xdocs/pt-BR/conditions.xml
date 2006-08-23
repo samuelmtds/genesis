@@ -85,8 +85,8 @@ public class ExemploVisibleWhenForm {
         grupo de controles visuais (widgets). Um exemplo desta situação é tornar
         invisível ou habilitado um grupo de controles como um todo. Para 
         explicar como fazer isso, vamos considerar um exemplo prático. Abaixo 
-        temos o código resumido da construção de uma mesma interface tanto em 
-        Thinlet como em Swing:
+        temos o código resumido da construção de uma mesma interface em 
+        Thinlet, Swing e SWT:
         </p>
 <source>
 <![CDATA[
@@ -113,6 +113,20 @@ getContentPane().add(dataCorrente);
 //..
 ]]>
 </source>
+<source>
+<![CDATA[
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label dataCorrenteLabel = new Label(shell, SWT.NONE);
+dataCorrenteLabel.setText("Data Corrente:");
+
+Text dataCorrente = new Text(shell, SWT.BORDER);
+dataCorrente.setData(SWTBinder.NAME_PROPERTY, "dataCorrente");
+
+//..
+]]>
+</source>
         <p>Nas interfaces acima, o desenvolvedor tem a intenção de
         mostrar o campo "Data Corrente" mediante certas condições. Para isso,
         utiliza-se a anotação <code>@VisibleWhen</code> conforme o
@@ -124,9 +138,11 @@ public Date getDataCorrente() {
 }
 </source>
         <p>Porém, neste caso, o que ocorre é que apenas o campo texto 
-        (<code>textfield</code>/<code>JTextField</code>) fica invisível (caso as 
+        (<code>textfield</code>/<code>JTextField</code>/<code>Text</code>)
+        fica invisível (caso as 
         referidas condições não sejam satisfeitas). Atente para o fato de que o 
-        <code>label</code>/<code>JLabel</code> e o <code>panel</code> 
+        <code>label</code>/<code>JLabel</code>/<code>Label</code>
+        e o <code>panel</code> 
         (necessário para espaçamento no Thinlet) não ficam invisíveis - isto 
         claramente não é o que deve ocorrer nestas situações. O desejável é que 
         esses três controles sigam a mesma regra de visibilidade.</p>
@@ -147,7 +163,9 @@ public Date getDataCorrente() {
         <code>panel</code> agora estão nomeados e referenciados dentro do
         <code>widgetGroup</code>, separados por vírgula.</p>
         <p>Para o Swing, deve-se definir a <code>clientProperty</code> 
-        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code> conforme demonstrado 
+        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code>e para SWT, deve-se definir
+         o metadado (<code>data</code>)
+        <code>SWTBinder.WIDGET_GROUP_PROPERTY</code> conforme demonstrado 
         abaixo:</p>
 <source>
 <![CDATA[
@@ -167,11 +185,25 @@ getContentPane().add(dataCorrente);
 //..
 ]]>
 </source>
-        <p>Perceba que o valor da <code>clientProperty</code> é o 
-        <code>name</code> do <code>JLabel</code>. Se houvesse mais de um 
+<source>
+<![CDATA[
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label dataCorrenteLabel = new Label(shell, SWT.NONE);
+dataCorrenteLabel.setText("Data Corrente:");
+
+Text dataCorrente = new Text(shell, SWT.BORDER);
+dataCorrente.setData(SWTBinder.NAME_PROPERTY, "dataCorrente");
+dataCorrente.setData(SWTBinder.WIDGET_GROUP_PROPERTY, "dataCorrenteLabel");
+//..
+]]>
+</source>
+        <p>Perceba que o valor da <code>clientProperty</code>/<code>data</code> é o 
+        <code>name</code> do <code>JLabel</code>/<code>Label</code>. Se houvesse mais de um 
         componente, seus nomes poderiam ser separados por vírgula ou poderia ser
         utilizada uma array de <code>String</code> como valor da propriedade.
-        Pode-se ainda utilizar como valor da <code>clientProperty</code> o 
+        Pode-se ainda utilizar como valor da <code>clientProperty</code>/<code>data</code> o 
         próprio componente, uma coleção de componentes ou um array de 
         componentes, como ilustrado abaixo:</p>
 <source>
@@ -188,6 +220,18 @@ dataCorrente.setName("dataCorrente");
 dataCorrente.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, <b>dataCorrenteLabel</b>);
 getContentPane().add(dataCorrente);
 
+//..
+</source>
+<source>
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label dataCorrenteLabel = new Label(shell, SWT.NONE);
+dataCorrenteLabel.setText("Data Corrente:");
+
+Text dataCorrente = new Text(shell, SWT.BORDER);
+dataCorrente.setData(SWTBinder.NAME_PROPERTY, "dataCorrente");
+dataCorrente.setData(SWTBinder.WIDGET_GROUP_PROPERTY, <b>dataCorrenteLabel</b>);
 //..
 </source>
         <p>Desse modo, todos os widgets referenciados irão obedecer à regra de 
@@ -219,7 +263,10 @@ getContentPane().add(dataCorrente);
         conjunto completo, incluindo o label e os espaçamentos.</p>
         <p>Para o Swing, utiliza-se as <code>clientProperty</code>s 
         <code>SwingBinder.ENABLED_GROUP_PROPERTY</code> e 
-        <code>SwingBinder.VISIBLE_GROUP_PROPERTY</code>.</p>
+        <code>SwingBinder.VISIBLE_GROUP_PROPERTY</code>.
+        Para o SWT, utiliza-se os metadados (<code>data</code>) 
+        <code>SWTBinder.ENABLED_GROUP_PROPERTY</code> e 
+        <code>SWTBinder.VISIBLE_GROUP_PROPERTY</code>.</p>
       </subsection>
       <subsection name="Limpando o conteúdo dos campos">
         <p>Sob diversas condições é necessário limpar o conteúdo de certos

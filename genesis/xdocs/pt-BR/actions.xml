@@ -9,7 +9,7 @@
       <p>Embora o genesis possibilite que seja feito o binding de ações do form
       com controles na tela, nada impede o uso do recursos específicos da API 
       gráfica utilizada, como invocar métodos configurando-os no xml da tela 
-      para o Thinlet ou usar listeners com Swing. Desta forma, uma
+      para o Thinlet ou usar listeners com Swing e SWT. Desta forma, uma
       questão recorrente na mente dos desenvolvedores é quando usar
       <code>@Action</code> e quando utilizar os recursos "nativos" diretamente 
       na classe da view. Alguns princípios básicos podem ser usados para se 
@@ -26,8 +26,9 @@
         <p>Consideremos o seguinte exemplo: deve-se implementar a exclusão de um
         dado. Mas antes de excluí-lo o usuário deve confirmar a operação. Essa
         confirmação poderia ser implementada exibindo uma
-        <code>OptionDialog</code> (Thinlet) ou um <code>JOptionPane</code> 
-        (Swing) para o usuário e prosseguindo com a operação somente se ele 
+        <code>OptionDialog</code> (Thinlet), um <code>JOptionPane</code> 
+        (Swing) ou um <code>MessageBox</code> (SWT)
+        para o usuário e prosseguindo com a operação somente se ele 
         concordasse. A operação de exclusão não é específica da API gráfica e, 
         portanto, deve ser implementada no form. Como implementar isso?</p>
         <p>A fim de se executar um método na interface gráfica antes de invocar
@@ -36,7 +37,7 @@
         no método da view que se deseja executar antes do método do form e pode
         tanto retornar <code>boolean</code> como <code>void</code>. Quando o
         método retorna <code>false</code> o método no form não é invocado.</p>
-        <p>Se o nome do método na view tive o mesmo nome do método no form não é
+        <p>Se o nome do método na view tiver o mesmo nome do método no form não é
         necessário utilizar nenhum parâmetro adicional para a anotação. Em
         certos casos, porém, o nome do método na view pode não ser o mesmo
         utilizado no form. Para indicar a execução de qual método do form deve
@@ -78,6 +79,31 @@ public class ExemploBeforeActionViewSwing extends JFrame {
    // ...
 }
 </source>
+        <p>O código equivalente usando-se o SWT:</p>
+<source>
+@ViewHandler
+public class ExemploBeforeActionViewSWT {
+   private Shell shell;
+
+   public ExemploBeforeActionViewSwing() {
+      // lógica de inicializacao
+      shell = new Shell(SWT.TITLE | SWT.CLOSE);
+      new SWTBinder(shell, new ExemploBeforeActionForm(), this).bind();
+   }
+
+   @BeforeAction("excluir")
+   public boolean confirmaExclusao() {
+      MessageBox box = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES
+            | SWT.NO | SWT.CANCEL);
+      box.setText("Excluindo registro...");
+      box.setMessage("Deseja realmente excluir o registro?");
+
+      return box.open() == SWT.YES;
+   }
+
+   // ...
+}
+</source>
         <p>Abaixo temos o form:</p>
 <source>
 @Form
@@ -92,8 +118,9 @@ public class ExemploBeforeActionForm {
 </source>
         <p>Quando o botão com o nome <code>excluir</code> é acionado, o genesis
         invoca o método <code>confirmaExclusao()</code> em
-        <code>ExemploBeforeActionViewThinlet</code> e/ou 
-        <code>ExemploBeforeActionViewSwing</code> visto que este está 
+        <code>ExemploBeforeActionViewThinlet</code>, 
+        <code>ExemploBeforeActionViewSwing</code> e/ou
+        <code>ExemploBeforeActionViewSWT</code> visto que este está 
         configurado com a anotação <code>@BeforeAction("excluir")</code>. Caso o 
         nome do método na view fosse <code>excluir</code> não seria necessário 
         passar o nome do método como parâmetro para a anotação.</p>
@@ -104,13 +131,15 @@ public class ExemploBeforeActionForm {
         confirmação ocorre, o método <code>excluir()</code> é invocado pelo
         framework e o tratamento do acionamento do botão é encerrado.</p>
         <p>Note o uso da anotação <code>@ViewHandler</code> na classe 
-        <code>ExemploBeforeActionViewSwing</code>. Isso é necessário para todas
+        <code>ExemploBeforeActionViewSwing</code> e <code>ExemploBeforeActionViewSWT</code>.
+        Isso é necessário para todas
         as classes que são responsáveis pelo tratamento de eventos específicos 
         da API de interface gráfica, exceto pelas classes que herdam de 
         <code>BaseThinlet</code>. Podemos simplificar a regra do seu uso da 
-        seguinte forma: quando se usa Swing, deve-se utilizá-la na 
+        seguinte forma: quando se usa Swing ou SWT, deve-se utilizá-la na 
         classe do componente gráfico ou do objeto utilizado como handler no 
-        construtor do <code>SwingBinder</code>; quando se usa Thinlet, só é 
+        construtor do <code>SwingBinder</code> ou <code>SWTBinder</code>;
+        quando se usa Thinlet, só é 
         necessário utilizar essa anotação se o objeto que trata os eventos for
         um POJO.</p>
       </subsection>
@@ -151,6 +180,26 @@ public class ExemploAfterActionViewSwing extends JDialog {
    @AfterAction("salvar")
    public void fechaJanela() {
       dispose();
+   }
+
+   // ...
+}
+</source>
+        <p>A view equivalente em SWT:</p> 
+<source>
+@ViewHandler
+public class ExemploAfterActionViewSWT {
+   private Shell shell;
+
+   public ExemploAfterActionView() {
+      // lógica de inicializacao
+      shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+      new SWTBinder(this, new ExemploAfterActionForm(), this).bind();
+   }
+
+   @AfterAction("salvar")
+   public void fechaJanela() {
+      shell.dispose();
    }
 
    // ...
@@ -227,7 +276,7 @@ public class ExemploRefreshViewThinlet extends BaseThinlet {
    // ...
 }
 </source>
-        <p>Para uso de outro bindings como Swing, existe o método 
+        <p>Para uso de outro bindings como Swing ou SWT, existe o método 
         <code>refresh()</code> declarado em <code>AbstractBinder</code>.</p>
 <source>
 public class ExemploRefreshViewSwing extends JFrame {
@@ -237,6 +286,36 @@ public class ExemploRefreshViewSwing extends JFrame {
    public ExemploRefreshViewSwing() {
       // lógica de inicializacao
       binder = new SwingBinder(this, form = new ExemploRefreshViewForm());
+      binder.bind();
+   }
+
+   public void selecionaEntidadeRelacionada() {
+      // exibe uma tela auxiliar de selecao de entidade e retorna
+      Entidade entidade = new ConsultaEntidadeView().getEntidade();
+
+      if (entidade != null) {
+         form.setEntidade(entidade);
+
+         /* Todas as chamadas abaixo são equivalentes.
+            Somente uma delas é necessaria */
+         ActionInvoker.refresh(form);
+         binder.refresh();
+      }
+   }
+
+   // ...
+}
+</source>
+<source>
+public class ExemploRefreshViewSWT {
+   private Shell shell;
+   private ExemploRefreshViewForm form;
+   private SWTBinder binder;
+
+   public ExemploRefreshViewSwing() {
+      // lógica de inicializacao
+      shell = new Shell(SWT.TITLE | SWT.CLOSE);
+      binder = new SWTBinder(shell, form = new ExemploRefreshViewForm(), this);
       binder.bind();
    }
 
@@ -291,7 +370,7 @@ public class ExemploRefreshViewForm {
         <code>invokeFormAction(String)</code> ou 
         <code>invokeFormAction(Object,String)</code> de 
         <code>BaseThinlet</code>.
-        Para uso com Swing é possível utilizar o método
+        Para uso com Swing SWT é possível utilizar o método
         <code>invokeAction(String)</code> declarado em <code>AbstractBinder</code>.
         As ações também incluem 
         <code>@DataProvider</code>, que será explicado numa seção futura. Um 

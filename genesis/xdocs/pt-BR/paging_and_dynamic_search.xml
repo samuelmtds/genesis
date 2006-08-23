@@ -294,6 +294,24 @@ nextPage = new JButton(">>");
 nextPage.setName("nextPage");
 ]]>
 </source>
+        <p><b>SWT:</b></p>
+<source>
+<![CDATA[
+searchButton = new Button(shell, SWT.NONE);
+searchButton.setText(getMessage("button.search"));
+searchButton.setData(SWTBinder.NAME_PROPERTY, "doSearch");
+
+...  
+previousPage = new Button(shell, SWT.NONE);
+previousPage.setText("<<");
+previousPage.setData(SWTBinder.NAME_PROPERTY, "previousPage");
+
+...
+nextPage = new Button(shell, SWT.NONE);
+nextPage.setText(">>");
+nextPage.setData(SWTBinder.NAME_PROPERTY, "nextPage");
+]]>
+</source>
         <p>E a classe de negócio:</p>
 <source>
 public class UserSearchCommand extends AbstractHibernateCriteria {

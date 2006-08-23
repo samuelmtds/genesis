@@ -50,8 +50,9 @@
         <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
         <li>O formatador deve ser registrado utilizando-se o método
         <code>registerFormatter(String,Formatter)</code> em
-        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code> ou 
-        <code>net.java.dev.genesis.ui.swing.SwingBinder</code>, de acordo com a
+        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code> ou
+        <code>net.java.dev.genesis.ui.binding.AbstractBinder</code>
+        (para <code>Swing</code> e <code>SWT</code>) de acordo com a
         API gráfica utilizada. O valor da <code>String</code> deverá ser o nome 
         da propriedade cujo formatador será sobrescrito. Este nome de 
         propriedade é determinado da seguinte forma:
@@ -98,6 +99,13 @@ SwingBinder binder = new SwingBinder(this, form);
 binder.registerFormatter("propriedade", f);
 binder.bind();
 </source>
+
+<source>
+//Exemplo SWT
+SWTBinder binder = new SWTBinder(shell, form, this);
+binder.registerFormatter("propriedade", f);
+binder.bind();
+</source>
       <p>O valor de <code>propriedade</code> exibido na tela será sempre a
       constante <code>Formato alterado</code>, independentemente do seu
       valor no form.</p>
@@ -106,7 +114,8 @@ binder.bind();
         virtuais, ou seja, que não existem no objeto sendo exibido. Essas
         propriedades tem seu valor de exibição determinado através em um
         formatador específico.</p> 
-        <p>Caso a API gráfica utilizada seja o Thinlet, este formatador tem de 
+        <p>Caso a API gráfica utilizada seja o Thinlet ou SWT,
+        este formatador tem de 
         estar obrigatoriamente registrado na instância de 
         <code>ThinletBinder</code>. Caso esteja-se utilizando Swing, se o 
         <code>TableCellRenderer</code> da <code>TableColumn</code> não tiver 
@@ -127,10 +136,11 @@ binder.bind();
                não possuem o atributo <code>property</code>, o valor de seu 
                atributo <code>name</code> deve ser precedido do prefixo 
                <code>virtual:</code>.</li>
-               <li>Caso esteja-se utilizando Swing, o <code>name</code> do 
+               <li>Caso esteja-se utilizando Swing ou SWT, o <code>name</code> do 
                widget deve ser precedido pela constante definida em 
                <code>AbstractBinder.VIRTUAL_PREFIX</code> ou a 
-               <code>clientProperty SwingBinder.VIRTUAL</code> deve possuir como
+               <code>clientProperty SwingBinder.VIRTUAL</code>/<code>data SWTBinder.VIRTUAL</code>
+               deve possuir como
                valor <code>Boolean.TRUE</code></li>
              </ul>
            </li>
@@ -188,6 +198,37 @@ getContentPane().add(scrollPane);
 
 //..
 </source>
+        <p>Abaixo temos a mesma interface definida com SWT:</p>
+<source>
+//..
+Shell shell = new Shell();
+
+Combo widget = new Combo(shell, SWT.NONE);
+widget.setData(SWTBinder.NAME_PROPERTY, "widget");
+widget.setData(SWTBinder.KEY_PROPERTY, "propriedadeUnica");
+widget.setData(SWTBinder.VALUE_PROPERTY, "valorVirtual");
+widget.setData(SWTBinder.VIRTUAL, Boolean.TRUE);
+//..
+</source>
+<source>
+//..
+Shell shell = new Shell();
+
+Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL| SWT.BORDER);
+widget.setData(SWTBinder.NAME_PROPERTY, "widget");
+widget.setHeaderVisible(true);
+
+TableColumn column1 = new TableColumn(widget, SWT.NONE);
+column1.setText("#");
+column1.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "propriedadeUnica");
+column1.setWidth(50);
+
+TableColumn column2 = new TableColumn(widget, SWT.NONE);
+column2.setText("Virtual");
+column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, AbstractBinder.VIRTUAL_PREFIX + "valorVirtual");
+column2.setWidth(200);
+//..
+</source>
         <p>Abaixo temos a definição do formatador:</p>
 <source>
 Formatter virtual = new Formatter() {
@@ -204,6 +245,11 @@ binder.bind();
 </source>
 <source>
 SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("widget.valorVirtual", virtual);
+binder.bind();
+</source>
+<source>
+SWTBinder binder = new SWTBinder(shell, form, this);
 binder.registerFormatter("widget.valorVirtual", virtual);
 binder.bind();
 </source>

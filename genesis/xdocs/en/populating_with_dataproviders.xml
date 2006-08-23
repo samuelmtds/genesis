@@ -38,7 +38,10 @@
       value of the <code>name</code> property of a widget defined by the view
       xml. For Swing, <code>widgetName</code> must be equal to the value 
       returned by the <code>getName()</code> method of the target 
-      <code>Component</code> instance.</p>
+      <code>Component</code> instance. For SWT, <code>widgetName</code>
+      must be equal to the value returned by the
+      <code>getData(SWTBinder.NAME_PROPERTY)</code> method of the target 
+      <code>Widget</code> instance.</p>
       <p><b>At least one of these three properties must be informed</b>.</p>
       <p>The <code>name</code> of the widget that will populated by a 
       <code>@DataProvider</code> is equal to the value of the first property 
@@ -124,6 +127,13 @@ public class DataProviderFormExample {
           <li><a href="#SwingComboBox">ComboBox</a></li>
           <li><a href="#SwingList">List</a></li>
           <li><a href="#SwingTable">Table</a></li>
+        </ul>
+      </p>
+      <p><b>SWT</b>
+        <ul>
+          <li><a href="#SWTComboBox">ComboBox</a></li>
+          <li><a href="#SWTList">List</a></li>
+          <li><a href="#SWTTable">Table</a></li>
         </ul>
       </p>
       <subsection name="Thinlet">
@@ -354,6 +364,130 @@ private JTable stateTable;
           as parameters the binder instance, the component name, an array of
           each column's <code>identifier</code> and an array of each column's 
           display name.</p>
+      </subsection>
+      <subsection name="SWT">
+        <h5><a name="SWTComboBox">ComboBox</a></h5>
+<source>
+<![CDATA[
+private Combo stateComboBox;
+  ...
+  private initComponents() {
+     ...
+     stateComboBox = new Combo(shell, SWT.NONE);
+     stateComboBox.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateComboBox.setData(SWTBinder.KEY_PROPERTY, "acronym");
+     stateComboBox.setData(SWTBinder.VALUE_PROPERTY, "description");
+  }
+]]>
+</source>
+          <p>Above we can see the source code of an interface that displays a
+          <code>combobox</code> that will hold states at runtime. The combobox 
+          <code>name</code> (<code>stateComboBox.setData(SWTBinder.NAME_PROPERTY, "state")</code>)
+          property is equal to the value for the <code>objectField</code> 
+          property in annotation <code>@DataProvider</code>. In order to display
+          data in the <code>Combo</code> correctly, some properties must be
+          configured for the component.
+          Values configured as properties for this 
+          component are checked to determine which bean property should be made visible to 
+          users. The properties values can be specified using the 
+          <code>Widget.setData(Object key, Object value)</code> 
+          method. The following values may be used for this kind of widget:</p>
+          <ul>
+            <li><b>SWTBinder.KEY_PROPERTY</b>: name of the property of the 
+            bean that will be used for populating the component, whose value is 
+            unique per instance. It is required, unless enums are used (
+            <code>java.lang.Enum</code> or 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>). For enums, 
+            if that property isn't defined, the value returned by 
+            <code>toString()</code> will be used instead.</li>
+            <li><b>SWTBinder.VALUE_PROPERTY</b>: name of the property used for displaying the bean. 
+            It is required when the bean is not an enum (
+            <code>java.lang.Enum</code> or 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>SWTBinder.BLANK_PROPERTY</b>: includes a blank line as the 
+            first combobox option. It's not required and its default value is 
+            <code>false</code>.</li>
+            <li><b>SWTBinder.BLANK_LABEL_PROPERTY</b>: defines the text to be 
+            displayed for the blank line. It's not required, its default value 
+            is an empty <code>String</code> and it's only meaningful when 
+            <code>blank=true</code>.</li>
+          </ul>
+          <p>As defined by <code>objectField</code> value, the
+          <code>state</code> property will hold the selected <code>State</code> 
+          instance that corresponds to the combobox option chosen by the 
+          user.</p>
+        <h5><a name="SWTList">List</a></h5>
+<source>
+<![CDATA[
+private List stateList;
+  ...
+  private initComponents() {
+     ...
+     stateList = new List(shell, SWT.NONE);
+     stateList.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateList.setData(SwingBinder.KEY_PROPERTY, "acronym");
+     stateList.setData(SwingBinder.VALUE_PROPERTY, "description");
+  }
+]]>
+</source>
+          <p><code>List</code> configuration requirements and functionality are 
+          similar to the <a href="#SWTComboBox">ComboBox</a>'s ones.</p>
+        <h5><a name="SWTTable">Table</a></h5>
+<source>
+<![CDATA[
+private Table stateTable;
+  ...
+  private initComponents() {
+     ...
+
+     Table stateTable = new Table(shell, SWT.NONE);
+     stateTable.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateTable.setHeaderVisible(true);
+
+     TableColumn acronymColumn = new TableColumn(stateTable, SWT.NONE);
+     acronymColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "acronym");
+     acronymColumn.setText("Acronym");
+     acronymColumn.setWidth(100);
+
+     TableColumn descriptionColumn = new TableColumn(stateTable, SWT.NONE);
+     descriptionColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "description");
+     descriptionColumn.setText("Description");
+     descriptionColumn.setWidth(200);
+  }
+]]>
+</source>
+          <p>Requirements for populating a table are slightly different.</p>
+          <p>As shown above, we can notice that the table name 
+          (<code>stateTable.setData(SWTBinder.NAME_PROPERTY, "state")</code>)
+          must 
+          be equal to the <code>objectField</code> value (unless
+          <code>widgetName</code> is specified). Each row will represent an 
+          instance and each column will be filled with the value of the bean 
+          property whose name is equal to the column <code>identifier</code>
+          (eg: <code>descriptionColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "description")</code>). 
+          It's possible to define column identifiers easier using the
+          <code>setData</code> method of the table:</p>
+<source>
+<![CDATA[
+private Table stateTable;
+  ...
+  private initComponents() {
+     ...
+     Table stateTable = new Table(shell, SWT.NONE);
+     stateTable.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateTable.setData(SWTBinder.COLUMN_NAMES, new String[] {"acronym", "description"});
+     stateTable.setHeaderVisible(true);
+
+     TableColumn acronymColumn = new TableColumn(stateTable, SWT.NONE);
+     acronymColumn.setText("Acronym");
+     acronymColumn.setWidth(100);
+
+     TableColumn descriptionColumn = new TableColumn(stateTable, SWT.NONE);
+     descriptionColumn.setText("Description");
+     descriptionColumn.setWidth(200);
+  }
+]]>
+</source>
       </subsection>
     </section>
     <section name="Understanding callOnInit and resetSelection">

@@ -83,7 +83,7 @@ public class VisibleWhenFormExample {
         widgets. For example, it might be necessary to make a whole group 
         visible or enabled at once. In order to understand how to achieve that, 
         let's examine a pratical example. Below, we have the same user interface 
-        coded in Thinlet and Swing:</p>
+        coded in Thinlet, Swing and SWT:</p>
 <source>
 <![CDATA[
 ...
@@ -109,8 +109,21 @@ getContentPane().add(currentDate);
 //..
 ]]>
 </source>
+<source>
+<![CDATA[
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
 
-        <p>For both interfaces above, the developer's intention is to show the 
+Label currentDateLabel = new Label(shell, SWT.NONE);
+currentDateLabel.setText("Current Date:");
+
+Text currentDate = new Text(shell, SWT.BORDER);
+currentDate.setData(SWTBinder.NAME_PROPERTY, "currentDate");
+
+//..
+]]>
+</source>
+        <p>For all interfaces above, the developer's intention is to show the 
         field "Current Date" only if certain conditions are matched. To make 
         this happen, the <code>@VisibleWhen</code> annotation is used as the 
         following code snippet shows:</p>
@@ -121,9 +134,11 @@ public Date getCurrentDate() {
 }
 </source>
         <p>However, what actually happens is that only the text field
-        (<code>textfield</code>/<code>JTextField</code>) will become invisible 
+        (<code>textfield</code>/<code>JTextField</code>/<code>Text</code>)
+        will become invisible 
         (if conditions are not satisfied). Notice that the
-        <code>label</code>/<code>JLabel</code> and the <code>panel</code> (used 
+        <code>label</code>/<code>JLabel</code>/<code>Label</code>
+        and the <code>panel</code> (used 
         for spacing in Thinlet) will not become invisible - clearly, this is not 
         what was originally intented. All three controls should follow the same
         visibility rules.</p>
@@ -144,7 +159,9 @@ public Date getCurrentDate() {
         are now named and referred by the <code>widgetGroup</code> property,
         separated by a comma.</p>
         <p>For Swing, we must define a <code>clientProperty</code> named
-        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code> as shown below:</p>
+        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code>and for SWT,
+        we must define a metadata (<code>data</code>)
+        <code>SWTBinder.WIDGET_GROUP_PROPERTY</code>) as shown below:</p>
 <source>
 <![CDATA[
 //..
@@ -163,11 +180,25 @@ getContentPane().add(currentDate);
 //..
 ]]>
 </source>
-        <p>Notice that the value of the <code>clientProperty</code> is the 
-        <code>name</code> of the <code>JLabel</code> instance. If there were
+<source>
+<![CDATA[
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label currentDateLabel = new Label(shell, SWT.NONE);
+currentDateLabel.setText("Data Corrente:");
+
+Text currentDate = new Text(shell, SWT.BORDER);
+currentDate.setData(SWTBinder.NAME_PROPERTY, "dataCorrente");
+currentDate.setData(SWTBinder.WIDGET_GROUP_PROPERTY, "currentDateLabel");
+//..
+]]>
+</source>
+        <p>Notice that the value of the <code>clientProperty</code>/<code>data</code> is the 
+        <code>name</code> of the <code>JLabel</code>/<code>Label</code> instance. If there were
         additional components, their names should be comma-separated or a 
         <code>String</code> array could be used instead. Other valid values for
-        <code>clientProperty</code> would be the component itself or a 
+        <code>clientProperty</code>/<code>data</code> would be the component itself or a 
         collection/array of components, as shown below:</p>
 <source>
 //..
@@ -183,6 +214,18 @@ currentDate.setName("currentDate");
 currentDate.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, <b>currentDateLabel</b>);
 getContentPane().add(currentDate);
 
+//..
+</source>
+<source>
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label currentDateLabel = new Label(shell, SWT.NONE);
+currentDateLabel.setText("Data Corrente:");
+
+Text currentDate = new Text(shell, SWT.BORDER);
+currentDate.setData(SWTBinder.NAME_PROPERTY, "currentDate");
+currentDate.setData(SWTBinder.WIDGET_GROUP_PROPERTY, <b>currentDateLabel</b>);
 //..
 </source>
         <p>By defining this property, all widgets will follow the visibility 
@@ -213,7 +256,11 @@ getContentPane().add(currentDate);
         whole group, including the label and all panels for spacing.</p>
         <p>For Swing, <code>SwingBinder.ENABLED_GROUP_PROPERTY</code> and
         <code>SwingBinder.VISIBLE_GROUP_PROPERTY</code> can be used as 
-        <code>clientProperty</code>s.</p>
+        <code>clientProperty</code>s.
+        For SWT,
+        <code>SWTBinder.ENABLED_GROUP_PROPERTY</code> and
+        <code>SWTBinder.VISIBLE_GROUP_PROPERTY</code>
+        can be used as metadata (<code>data</code>).</p>
       </subsection>
       <subsection name="Clearing field content">
         <p>Under many conditions it is necessary to clear the content of some 

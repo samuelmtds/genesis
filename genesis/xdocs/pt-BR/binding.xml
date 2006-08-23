@@ -9,8 +9,8 @@
       <p>Uma das funcionalidades mais inovadoras do genesis é o <b>binding</b>.
       O binding mantém a interface gráfica sincronizada automaticamente com um
       JavaBean, a que chamamos de <b>form</b>. Dois toolkits gráficos são 
-      suportados atualmente para esta integração: Swing e Thinlet. Abaixo temos
-      um exemplo básico de como o binding funciona com essas duas APIs para
+      suportados atualmente para esta integração: Swing, SWT e Thinlet. Abaixo temos
+      um exemplo básico de como o binding funciona com essas três APIs para
       implementar uma tela de login. Primeiro, temos o form:</p>
 <source>
 @Form
@@ -118,6 +118,106 @@ public class LoginSwingView extends JDialog {
    }
 }
 </source>
+      <p>A mesma tela em SWT:</p>
+<source>
+@ViewHandler
+public class LoginSWTView {
+   private Shell shell = null;
+   private Composite composite = null;
+   private Label labelUsuario = null;
+   private Text usuario = null;
+   private Label labelSenha = null;
+   private Text senha = null;
+   private Composite compositeBotoes = null;
+   private Button limpar = null;
+   private Button login = null;
+
+   public LoginSWTView() {
+      createShell();
+      SWTBinder binder = new SWTBinder(shell, new LoginForm(), this);
+      binder.bind();
+   }
+
+   private void createShell() {
+      shell = new Shell();
+      shell.setText("Login");
+      createComposite();
+      createCompositeBotoes();
+      shell.setLayout(new GridLayout());
+      
+      shell.pack();
+   }
+
+   private void createComposite() {
+      GridLayout gridLayout = new GridLayout();
+      gridLayout.numColumns = 2;
+
+      GridData gridData = new GridData();
+      gridData.horizontalAlignment = GridData.FILL;
+      gridData.verticalAlignment = GridData.FILL;
+
+      composite = new Composite(shell, SWT.NONE);
+      composite.setLayoutData(gridData);
+      composite.setLayout(gridLayout);
+
+      labelUsuario = new Label(composite, SWT.NONE);
+      labelUsuario.setText("Usuário");
+
+      usuario = new Text(composite, SWT.BORDER);
+      usuario.setData(SWTBinder.NAME_PROPERTY, "usuario");
+
+      labelSenha = new Label(composite, SWT.NONE);
+      labelSenha.setText("Senha");
+
+      senha = new Text(composite, SWT.BORDER | SWT.PASSWORD);
+      senha.setData(SWTBinder.NAME_PROPERTY, "senha");
+   }
+
+   private void createCompositeBotoes() {
+      RowLayout rowLayout = new RowLayout();
+      rowLayout.fill = true;
+      
+      GridData gridData = new GridData();
+      gridData.horizontalAlignment = GridData.END;
+      gridData.verticalAlignment = GridData.FILL;
+
+      compositeBotoes = new Composite(shell, SWT.NONE);
+      compositeBotoes.setLayoutData(gridData);
+      compositeBotoes.setLayout(rowLayout);
+      
+      limpar = new Button(compositeBotoes, SWT.NONE);
+      limpar.setText("Limpar");
+      limpar.setData(SWTBinder.NAME_PROPERTY, "limpar");
+
+      login = new Button(compositeBotoes, SWT.NONE);
+      login.setText("Login");
+      login.setData(SWTBinder.NAME_PROPERTY, "login");
+   }
+
+   public void display() throws Exception {
+      final Display display = Display.getDefault();
+      Rectangle bounds = display.getBounds();
+      shell.setLocation(bounds.x
+            + (bounds.width - shell.getBounds().width) / 2, bounds.y
+            + (bounds.height - shell.getBounds().height) / 2);
+
+      shell.open();
+      shell.forceActive();
+      
+      while (!shell.isDisposed()) {
+         if (!display.readAndDispatch()) {
+            display.sleep();
+         }
+      }
+
+      display.dispose();
+   }
+
+   public static void main(String[] args) throws Exception {
+      new LoginSWTView().display();
+   }
+}
+</source>
       <p>Por fim, temos o xml e o código necessário para exibir o mesmo form com
       Thinlet:</p>
 <source>
@@ -161,7 +261,8 @@ public class LoginThinletView extends BaseDialogThinlet {
       dinamicamente a diversos widgets da interface gráfica, como textfields, 
       passwordfields, labels e outros. Para que isto aconteça, os nomes dos 
       componentes têm que ser iguais aos nomes das propriedades. Com Swing, 
-      deve-se usar o método <code>setName(String)</code> dos componentes. Usando 
+      deve-se usar o método <code>setName(String)</code> dos componentes. Com SWT,
+      use o método <code>setData(SWTBinder.NAME_PROPERTY, String)</code>. Usando 
       Thinlet, conforme mostrado no exemplo acima, isso é feito por definir a 
       propriedade <code>name</code> dos widgets no xml com o nome das 
       propriedades.</p>
@@ -182,10 +283,11 @@ public class LoginThinletView extends BaseDialogThinlet {
       <p>A maneira de fazer o binding é dependente da API gráfica. Em todos os
       casos, existe uma classe a que chamamos de <b>view</b>, ou seja, a classe
       que define a interface gráfica e que chama os métodos necessários para 
-      efetuar o binding. Para o Swing, a view sempre deve ser anotada com 
+      efetuar o binding. Para o Swing e SWT, a view sempre deve ser anotada com 
       <code>@ViewHandler</code>. Conforme mostrado acima, o binding no 
-      Swing é feito através da classe auxiliar <code>SwingBinder</code>. Através 
-      desta classe é possível fazer diversas customizações no processo de 
+      Swing e SWT é feito através da classe auxiliar <code>SwingBinder</code> e
+      <code>SWTBinder</code> respectivamente. Através 
+      destas classes é possível fazer diversas customizações no processo de 
       binding, mas o código mostrado no exemplo atende a maioria dos casos. Para 
       o Thinlet, o genesis possui duas classes auxiliares, 
       <code>BaseThinlet</code> e <code>BaseDialogThinlet</code>, que são usadas
