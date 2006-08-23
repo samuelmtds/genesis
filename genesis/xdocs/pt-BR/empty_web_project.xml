@@ -167,10 +167,6 @@ http://localhost:8080/&lt;genesisBasedApplication.name&gt;
        <subsection name="Aplicação WEB usando MySQL e Struts">
 <p>Arquivo <b>build.properties</b></p>
 <source>
-### Configurações gerais
-genesisBasedApplication.name=minhaaplicacao
-genesisBasedApplication.prettyName=Minha Aplicação
-  
 ### Indique a pasta onde se encontra a distribuição do genesis
 genesis.home=D:/opensource/genesis-3.0/genesis
   
@@ -231,8 +227,15 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
+    <property name="genesisBasedApplication.name" value="minhaaplicacao" />
+    <property name="genesisBasedApplication.prettyName" value="Minha Aplicação" />
+
     <!-- Não é necessário nenhuma outra configuração, basta colocar as bibliotecas do struts no diretório
       modules/web/lib -->
+
+    <!-- Bibliotecas necessárias ao módulo shared, colocar no diretório modules/shared/lib -->
+
+    <!-- Bibliotecas necessárias tanto ao módulo shared quanto client, colocar no diretório lib -->
   </target>
 </project>
 ]]>

@@ -291,29 +291,18 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 
   <target name="-pre-init">
     <property file="build.properties" />
+    
+    <!-- IMPORTANTE: Adicione os jars do JGoodies no diretório modules/client/lib -->
 
-    <!-- Criamos uma propriedade com o diretório das bibliotecas do JGoodies -->
-    <property name="jgoodies.lib" location="lib/jgoodies" />
+    <!-- Thinlet e SWT não são necessários ao seu projeto: -->
+    <property name="use.thinlet" value="false" />
+    <property name="use.swt" value="false" />
+
+    <!-- Se estiver usando Javascript como linguagem de script,
+         Beanshell e EL não são necessários ao seu projeto: -->
+    <property name="use.beanshell" value="false" />
+    <property name="use.el" value="false" />
   </target>
-
-  <!-- Adicionamos as bibliotecas do JGoodies no classpath de compilação da parte client -->
-  <target name="client:pre-init">
-    <path id="client.additional.javac.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Adicionamos as bibliotecas do JGoodies no classpath de execução da aplicação -->
-  <target name="run:pre-define-classpath">
-    <path id="run.additional.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
 </project>
 ]]>
 </source>
@@ -393,38 +382,12 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- Criamos uma propriedade com o diretório das bibliotecas do JFreeReport -->
-    <property name="jfreereport.lib" location="lib/jfreereport" />
-  </target>
+    <!-- IMPORTANTE: Adicione os jars do JFreeReport no diretório modules/client/lib -->
 
-  <!-- Adicionamos as bibliotecas do JFreeReport no classpath de compilação da parte client -->
-  <target name="client:pre-init">
-    <path id="client.additional.javac.classpath">
-      <fileset dir="${jfreereport.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Adicionamos as bibliotecas do JFreeReport no classpath de execução da aplicação -->
-  <target name="run:pre-define-classpath">
-    <path id="run.additional.classpath">
-      <fileset dir="${jfreereport.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Adicionamos as bibliotecas do JFreeReport para serem assinadas e distribuídas
-  via Java Web Start -->
-  <target name="-do-webstart-signjar">
-    <genesis:webstart-signjar>
-      <customize>
-        <fileset dir="${jfreereport.lib}">
-          <include name="*.jar" />
-        </fileset>
-      </customize>
-    </genesis:webstart-signjar>
+    <!-- Se estiver usando Javascript como linguagem de script,
+         Beanshell e EL não são necessários ao seu projeto: -->
+    <property name="use.beanshell" value="false" />
+    <property name="use.el" value="false" />
   </target>
 </project>
 ]]>
@@ -517,57 +480,20 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- Criamos uma propriedade com o diretório das bibliotecas do JGoodies -->
-    <property name="jgoodies.lib" location="lib/jgoodies" />
+    <!-- IMPORTANTE: Adicione os jars do JGoodies no diretório modules/client/lib -->
+    <!-- IMPORTANTE: Adicione os jars do Joda no diretório lib
+        (Supondo que este é necessário tanto ao módulo shared quanto client) -->
 
-    <!-- Criamos uma propriedade com o diretório das bibliotecas do Joda -->
-    <property name="joda.lib" location="lib/joda" />
+    <!-- Thinlet e SWT não são necessários ao seu projeto: -->
+    <property name="use.thinlet" value="false" />
+    <property name="use.swt" value="false" />
+
+    <!-- Se estiver usando Javascript como linguagem de script,
+         Beanshell e EL não são necessários ao seu projeto: -->
+    <property name="use.beanshell" value="false" />
+    <property name="use.el" value="false" />
   </target>
 
-  <!-- Adicionamos as bibliotecas do JGoodies no classpath de compilação da parte client -->
-  <target name="client:pre-init">
-    <path id="client.additional.javac.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Adicionamos as bibliotecas do Joda no classpath de compilação da parte shared -->
-  <target name="shared:pre-init">
-    <path id="shared.additional.javac.classpath">
-      <fileset dir="${joda.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Adicionamos as bibliotecas do JGoodies e do Joda no classpath de execução da aplicação -->
-  <target name="run:pre-define-classpath">
-    <path id="run.additional.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-      <fileset dir="${joda.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Adicionamos as bibliotecas do JGoodies e do Joda para serem
-  assinadas e distribuídas via Java Web Start -->
-  <target name="-do-webstart-signjar">
-    <genesis:webstart-signjar>
-      <customize>
-        <fileset dir="${jgoodies.lib}">
-          <include name="*.jar" />
-        </fileset>
-        <fileset dir="${joda.lib}">
-          <include name="*.jar" />
-        </fileset>
-      </customize>
-    </genesis:webstart-signjar>
-  </target>
 </project>
 ]]>
 </source>

@@ -276,26 +276,16 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- A new property referencing JGoodies jars -->
-    <property name="jgoodies.lib" location="lib/jgoodies" />
-  </target>
+    <!-- IMPORTANT: Put JGoodies jars in modules/client/lib folder -->
 
-  <!-- JGoodies jars added to client compile classpath -->
-  <target name="client:pre-init">
-    <path id="client.additional.javac.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
+    <!-- Thinlet and SWT are not necessary to your project: -->
+    <property name="use.thinlet" value="false" />
+    <property name="use.swt" value="false" />
 
-  <!-- JGoodies jars added to runtime classpath -->
-  <target name="run:pre-define-classpath">
-    <path id="run.additional.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
+    <!-- If you're not using Javascript as script language,
+         Beanshell and EL are not necessary to your project: -->
+    <property name="use.beanshell" value="false" />
+    <property name="use.el" value="false" />
   </target>
 
 </project>
@@ -377,37 +367,12 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- A new property referencing JFreeReport jars -->
-    <property name="jfreereport.lib" location="lib/jfreereport" />
-  </target>
+    <!-- IMPORTANT: Put JFreeReport jars in modules/client/lib folder -->
 
-  <!-- JFreeReport jars added to client compile classpath -->
-  <target name="client:pre-init">
-    <path id="client.additional.javac.classpath">
-      <fileset dir="${jfreereport.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- JFreeReport added to runtime classpath -->
-  <target name="run:pre-define-classpath">
-    <path id="run.additional.classpath">
-      <fileset dir="${jfreereport.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- JFreeReport jars added to Java Web Start sign task -->
-  <target name="-do-webstart-signjar">
-    <genesis:webstart-signjar>
-      <customize>
-        <fileset dir="${jfreereport.lib}">
-          <include name="*.jar" />
-        </fileset>
-      </customize>
-    </genesis:webstart-signjar>
+    <!-- If you're not using Javascript as script language,
+         Beanshell and EL are not necessary to your project: -->
+    <property name="use.beanshell" value="false" />
+    <property name="use.el" value="false" />
   </target>
 </project>
 ]]>
@@ -500,55 +465,18 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- A new property referencing JGoodies jars -->
-    <property name="jgoodies.lib" location="lib/jgoodies" />
+    <!-- IMPORTANT: Put JGoodies jars in modules/client/lib folder -->
+    <!-- IMPORTANT: Put Joda jars in lib folder
+         (It will be available to shared and client module) -->
 
-    <!-- A new property referencing Joda jars -->
-    <property name="joda.lib" location="lib/joda" />
-  </target>
+    <!-- Thinlet and SWT are not necessary to your project: -->
+    <property name="use.thinlet" value="false" />
+    <property name="use.swt" value="false" />
 
-  <!-- JGoodies jars added to client compile classpath -->
-  <target name="client:pre-init">
-    <path id="client.additional.javac.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- Joda jars added to shared compile classpath -->
-  <target name="shared:pre-init">
-    <path id="shared.additional.javac.classpath">
-      <fileset dir="${joda.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- JGoodies and Joda jars added to runtime classpath -->
-  <target name="run:pre-define-classpath">
-    <path id="run.additional.classpath">
-      <fileset dir="${jgoodies.lib}">
-        <include name="*.jar" />
-      </fileset>
-      <fileset dir="${joda.lib}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-  </target>
-
-  <!-- JGoodies and Joda jars added to Java Web Start sign task -->
-  <target name="-do-webstart-signjar">
-    <genesis:webstart-signjar>
-      <customize>
-        <fileset dir="${jgoodies.lib}">
-          <include name="*.jar" />
-        </fileset>
-        <fileset dir="${joda.lib}">
-          <include name="*.jar" />
-        </fileset>
-      </customize>
-    </genesis:webstart-signjar>
+    <!-- If you're not using Javascript as script language,
+         Beanshell and EL are not necessary to your project: -->
+    <property name="use.beanshell" value="false" />
+    <property name="use.el" value="false" />
   </target>
 </project>
 ]]>

@@ -225,6 +225,10 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <property file="build.properties" />
 
     <!-- It's not necessary any other configuration, you just have to put struts jar in modules/web/lib directory -->
+
+    <!-- Put jars needed by shared module in modules/shared/lib folder -->
+
+    <!-- Put jars needed by shared and client module in lib folder -->
   </target>
 </project>
 ]]>
