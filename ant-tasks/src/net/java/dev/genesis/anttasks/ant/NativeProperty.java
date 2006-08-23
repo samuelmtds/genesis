@@ -20,11 +20,21 @@ package net.java.dev.genesis.anttasks.ant;
 
 import java.io.File;
 
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.Property;
 
 public class NativeProperty extends Property {
+   private boolean dirExists;
+   
    public void setLocation(File location) {
-      super.setLocation(getRealDir(location));
+      File realDir = getRealDir(location);
+
+      if (realDir == null) {
+         return;
+      }
+
+      dirExists = true;
+      super.setLocation(realDir);
    }
 
    protected String getOs() {
@@ -41,6 +51,10 @@ public class NativeProperty extends Property {
    }
 
    protected File getRealDir(File dir) {
+      if (!dir.isDirectory()) {
+         return null;
+      }
+      
       File osDir = new File(dir, getOs());
       File archDir = new File(osDir, getArch());
 
@@ -53,5 +67,11 @@ public class NativeProperty extends Property {
       }
 
       return dir;
+   }
+
+   public void execute() throws BuildException {
+      if (dirExists) {
+         super.execute();
+      }
    }
 }
