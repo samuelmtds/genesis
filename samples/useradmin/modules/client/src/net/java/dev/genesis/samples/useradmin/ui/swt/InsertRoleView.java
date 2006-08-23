@@ -2,7 +2,7 @@ package net.java.dev.genesis.samples.useradmin.ui.swt;
 
 import net.java.dev.genesis.samples.useradmin.ui.InsertRoleForm;
 import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class InsertRoleView extends Dialog {
 
-   private SwtBinder binder;
+   private SWTBinder binder;
    private boolean hasChanged;
    
    private Shell shell = null;
@@ -40,7 +40,7 @@ public class InsertRoleView extends Dialog {
       super(parent);
       shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
       shell.setText(getMessage("InsertRoleView.title"));
-      binder = new SwtBinder(shell, new InsertRoleForm(), this);
+      binder = new SWTBinder(shell, new InsertRoleForm(), this);
       createShell();
       binder.bind();
    }
@@ -84,14 +84,14 @@ public class InsertRoleView extends Dialog {
 
       code = new Text(composite, SWT.BORDER);
       code.setLayoutData(gridData1);
-      binder.register("code", code);
+      code.setData(SWTBinder.NAME_PROPERTY, "code");
 
       labelLabel = new Label(composite, SWT.NONE);
       labelLabel.setText("Label");
 
       label = new Text(composite, SWT.BORDER);
       label.setLayoutData(gridData2);
-      binder.register("label", label);
+      label.setData(SWTBinder.NAME_PROPERTY, "label");
    }
 
    /**
@@ -116,7 +116,7 @@ public class InsertRoleView extends Dialog {
       });
       save = new Button(buttonsContainer, SWT.NONE);
       save.setText("Save");
-      binder.register("save", save);
+      save.setData(SWTBinder.NAME_PROPERTY, "save");
    }
 
    private static String getMessage(String key) {

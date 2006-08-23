@@ -11,6 +11,10 @@
       <property name="genesisBasedApplication.mainClass" 
                 value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
 
+      <!-- Script languages that's not used -->
+      <property name="use.beanshell" value="false" />
+      <property name="use.el" value="false" />
+
       <!-- Properties defined to make useradmin jdk1.4 compatible, even when compiling with jdk 5.0 -->
       <property name="java.source.level" value="1.4" />
       <property name="genjp" value="false" />

@@ -3,7 +3,7 @@ package net.java.dev.genesis.samples.useradmin.ui.swt;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
 import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;
@@ -29,7 +29,7 @@ public class InsertUpdateView extends Dialog {
 
    private final InsertUpdateForm form;
    private boolean hasChanged;
-   private final SwtBinder binder;
+   private final SWTBinder binder;
 
    private Shell shell = null;  //  @jve:decl-index=0:visual-constraint="10,10"
    private Composite composite = null;
@@ -72,7 +72,7 @@ public class InsertUpdateView extends Dialog {
 
       shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
       shell.setText(getMessage(user == null ? "InsertView.title" : "UpdateView.title"));
-      binder = new SwtBinder(shell, form, this);
+      binder = new SWTBinder(shell, form, this);
       createShell();
       binder.bind();
    }
@@ -141,13 +141,13 @@ public class InsertUpdateView extends Dialog {
 
       name = new Text(composite, SWT.BORDER);
       name.setLayoutData(gridData1);
-      binder.register("name", name);
+      name.setData(SWTBinder.NAME_PROPERTY, "name");
 
       roleLabel = new Label(composite, SWT.NONE);
       roleLabel.setText(getMessage("User.role"));
 
       roleCode = new Text(composite, SWT.BORDER);
-      binder.register("roleCode", roleCode);
+      roleCode.setData(SWTBinder.NAME_PROPERTY, "roleCode");
 
       findRole = new Button(composite, SWT.NONE);
       findRole.setText("...");
@@ -164,42 +164,42 @@ public class InsertUpdateView extends Dialog {
       role = new Label(composite, SWT.NONE);
       role.setText("");
       role.setLayoutData(gridData9);
-      binder.register("roleLabel", role);
+      role.setData(SWTBinder.NAME_PROPERTY, "roleLabel");
 
       loginLabel = new Label(composite, SWT.NONE);
       loginLabel.setText(getMessage("User.login"));
 
       login = new Text(composite, SWT.BORDER);
       login.setLayoutData(gridData8);
-      binder.register("login", login);
+      login.setData(SWTBinder.NAME_PROPERTY, "login");
 
       passwordLabel = new Label(composite, SWT.NONE);
       passwordLabel.setText(getMessage("User.password"));
 
       password = new Text(composite, SWT.PASSWORD | SWT.BORDER);
       password.setLayoutData(gridData7);
-      binder.register("password", password);
+      password.setData(SWTBinder.NAME_PROPERTY, "password");
 
       emailLabel = new Label(composite, SWT.NONE);
       emailLabel.setText(getMessage("User.email"));
 
       email = new Text(composite, SWT.BORDER);
       email.setLayoutData(gridData6);
-      binder.register("email", email);
+      email.setData(SWTBinder.NAME_PROPERTY, "email");
 
       birthdayLabel = new Label(composite, SWT.NONE);
       birthdayLabel.setText(getMessage("User.birthday"));
 
       birthday = new Text(composite, SWT.BORDER);
       birthday.setLayoutData(gridData5);
-      binder.register("birthday", birthday);
+      birthday.setData(SWTBinder.NAME_PROPERTY, "birthday");
 
       addressLabel = new Label(composite, SWT.NONE);
       addressLabel.setText(getMessage("User.address"));
 
       address = new Text(composite, SWT.BORDER);
       address.setLayoutData(gridData4);
-      binder.register("address", address);
+      address.setData(SWTBinder.NAME_PROPERTY, "address");
 
       countryLabel = new Label(composite, SWT.NONE);
       countryLabel.setText(getMessage("User.country"));
@@ -224,7 +224,7 @@ public class InsertUpdateView extends Dialog {
       gridData3.horizontalAlignment = GridData.FILL;
       country = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
       country.setLayoutData(gridData3);
-      binder.register("country", country);
+      country.setData(SWTBinder.NAME_PROPERTY, "country");
    }
 
    /**
@@ -239,7 +239,7 @@ public class InsertUpdateView extends Dialog {
       gridData2.horizontalAlignment = GridData.FILL;
       state = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
       state.setLayoutData(gridData2);
-      binder.register("state", state);
+      state.setData(SWTBinder.NAME_PROPERTY, "state");
    }
 
    /**
@@ -265,7 +265,7 @@ public class InsertUpdateView extends Dialog {
       });
       save = new Button(buttonsContainer, SWT.NONE);
       save.setText(getMessage("button.save"));
-      binder.register("save", save);
+      save.setData(SWTBinder.NAME_PROPERTY, "save");
    }
 
    private static String getMessage(String key) {

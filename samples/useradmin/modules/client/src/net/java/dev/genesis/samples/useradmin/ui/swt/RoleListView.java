@@ -3,7 +3,7 @@ package net.java.dev.genesis.samples.useradmin.ui.swt;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.java.dev.genesis.samples.useradmin.ui.RoleListForm;
 import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Dialog;
@@ -27,7 +27,7 @@ import org.eclipse.swt.layout.GridData;
 public class RoleListView extends Dialog {
 
    private final RoleListForm form;
-   private SwtBinder binder;
+   private SWTBinder binder;
    private boolean hasChanged;
    
    private Shell shell = null;
@@ -43,7 +43,7 @@ public class RoleListView extends Dialog {
       super(parent);
       shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
       shell.setText(getMessage("RoleListView.title"));
-      binder = new SwtBinder(shell, form = new RoleListForm(), this);
+      binder = new SWTBinder(shell, form = new RoleListForm(), this);
       createShell();
       
       binder.bind();
@@ -58,7 +58,7 @@ public class RoleListView extends Dialog {
 
       if (shell == null) {
          shell = new Shell();
-         shell.setText("Shell");
+         shell.setText(getMessage("RoleListView.title"));
       }
       shell.setLayout(gridLayout);
 
@@ -95,16 +95,16 @@ public class RoleListView extends Dialog {
             binder.invokeAction("select");
          }
       });
-      binder.register("role", roles);
+      roles.setData(SWTBinder.NAME_PROPERTY, "role");
       
       TableColumn columnCode = new TableColumn(roles, SWT.NONE);
       columnCode.setText(getMessage("Role.code"));
-      columnCode.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "code");
+      columnCode.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "code");
       columnCode.setWidth(100);
       
       TableColumn columnLabel = new TableColumn(roles, SWT.NONE);
       columnLabel.setText(getMessage("Role.label"));
-      columnLabel.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "label");
+      columnLabel.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "label");
       columnLabel.setWidth(200);
    }
 
@@ -120,7 +120,7 @@ public class RoleListView extends Dialog {
       buttonsContainer.setLayoutData(gridData2);
       remove = new Button(buttonsContainer, SWT.NONE);
       remove.setText("Remove");
-      binder.register("remove", remove);
+      remove.setData(SWTBinder.NAME_PROPERTY, "remove");
 
       add = new Button(buttonsContainer, SWT.NONE);
       add.setText("Add");
@@ -142,7 +142,7 @@ public class RoleListView extends Dialog {
 
       ok = new Button(buttonsContainer, SWT.NONE);
       ok.setText("Ok");
-      binder.register("select", ok);
+      ok.setData(SWTBinder.NAME_PROPERTY, "ok");
    }
 
    private static String getMessage(String key) {
@@ -160,7 +160,7 @@ public class RoleListView extends Dialog {
             shell.getDisplay().sleep();
          }
       }
-      
+
       return hasChanged;
    }
 

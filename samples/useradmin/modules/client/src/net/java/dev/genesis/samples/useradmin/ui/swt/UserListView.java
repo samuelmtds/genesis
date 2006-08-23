@@ -3,7 +3,7 @@ package net.java.dev.genesis.samples.useradmin.ui.swt;
 import net.java.dev.genesis.samples.useradmin.UserAdmin;
 import net.java.dev.genesis.samples.useradmin.ui.UserListForm;
 import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swt.SwtBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Text;
  * @ViewHandler
  */
 public class UserListView {
-   private SwtBinder binder;
+   private SWTBinder binder;
    private UserListForm form;
    
    private Shell shell = null;  //  @jve:decl-index=0:visual-constraint="10,2"
@@ -59,7 +59,7 @@ public class UserListView {
    public UserListView() {
       shell = new Shell(SWT.TITLE | SWT.CLOSE);
       shell.setText(getMessage("UserListView.title"));
-      binder = new SwtBinder(shell, form = new UserListForm(), this);
+      binder = new SWTBinder(shell, form = new UserListForm(), this);
       createShell();
       binder.bind();
    }
@@ -122,7 +122,7 @@ public class UserListView {
       
       name = new Text(nameComposite, SWT.BORDER);
       name.setLayoutData(gridData3);
-      binder.register("name", name);
+      name.setData(SWTBinder.NAME_PROPERTY, "name");
    }
 
    /**
@@ -144,7 +144,7 @@ public class UserListView {
 
       login = new Text(loginComposite, SWT.BORDER);
       login.setLayoutData(gridData4);
-      binder.register("login", login);
+      login.setData(SWTBinder.NAME_PROPERTY, "login");
    }
 
    /**
@@ -166,7 +166,7 @@ public class UserListView {
 
       email = new Text(emailComposite, SWT.BORDER);
       email.setLayoutData(gridData5);
-      binder.register("email", email);
+      email.setData(SWTBinder.NAME_PROPERTY, "email");
    }
 
    /**
@@ -184,11 +184,11 @@ public class UserListView {
 
       search = new Button(searchResetComposite, SWT.NONE);
       search.setText(getMessage("button.search"));
-      binder.register("doSearch", search);
+      search.setData(SWTBinder.NAME_PROPERTY, "doSearch");
 
       reset = new Button(searchResetComposite, SWT.NONE);
       reset.setText(getMessage("button.reset"));
-      binder.register("reset", reset);
+      reset.setData(SWTBinder.NAME_PROPERTY, "reset");
    }
 
    /**
@@ -213,42 +213,42 @@ public class UserListView {
             binder.invokeAction("update");
          }
       });
-      binder.register("users", users);
-      
+      users.setData(SWTBinder.NAME_PROPERTY, "users");
+
       TableColumn columnName = new TableColumn(users, SWT.NONE);
       columnName.setText(getMessage("User.name"));
       columnName.setMoveable(true);
-      columnName.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "name");
+      columnName.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "name");
       columnName.setWidth(200);
-      
+
       TableColumn columnLogin = new TableColumn(users, SWT.NONE);
       columnLogin.setText(getMessage("User.login"));
       columnLogin.setMoveable(true);
-      columnLogin.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "login");
+      columnLogin.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "login");
       columnLogin.setWidth(100);
-      
+
       TableColumn columnEmail = new TableColumn(users, SWT.NONE);
       columnEmail.setText(getMessage("User.email"));
       columnEmail.setMoveable(true);
-      columnEmail.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "email");
+      columnEmail.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "email");
       columnEmail.setWidth(140);
-      
+
       TableColumn columnRole = new TableColumn(users, SWT.NONE);
       columnRole.setText(getMessage("User.role"));
       columnRole.setMoveable(true);
-      columnRole.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "role");
+      columnRole.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "role");
       columnRole.setWidth(110);
-      
+
       TableColumn columnCountry = new TableColumn(users, SWT.NONE);
       columnCountry.setText(getMessage("User.country"));
       columnCountry.setMoveable(true);
-      columnCountry.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "country");
+      columnCountry.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "country");
       columnCountry.setWidth(100);
 
       TableColumn columnState = new TableColumn(users, SWT.NONE);
       columnState.setText(getMessage("User.state"));
       columnState.setMoveable(true);
-      columnState.setData(SwtBinder.TABLE_COLUMN_IDENTIFIER, "state");
+      columnState.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "state");
       columnState.setWidth(100);
 
       createPagingComposite();
@@ -267,11 +267,11 @@ public class UserListView {
 
       previousPage = new Button(pagingComposite, SWT.NONE);
       previousPage.setText("<<");
-      binder.register("previousPage", previousPage);
+      previousPage.setData(SWTBinder.NAME_PROPERTY, "previousPage");
 
       nextPage = new Button(pagingComposite, SWT.NONE);
       nextPage.setText(">>");
-      binder.register("nextPage", nextPage);
+      nextPage.setData(SWTBinder.NAME_PROPERTY, "nextPage");
    }
 
    /**
@@ -307,11 +307,11 @@ public class UserListView {
 
       update = new Button(bottomComposite, SWT.NONE);
       update.setText(getMessage("button.updateUser"));
-      binder.register("update", update);
+      update.setData(SWTBinder.NAME_PROPERTY, "update");
 
       remove = new Button(bottomComposite, SWT.NONE);
       remove.setText(getMessage("button.removeUser"));
-      binder.register("remove", remove);
+      remove.setData(SWTBinder.NAME_PROPERTY, "remove");
    }
 
    public void display() throws Exception {
