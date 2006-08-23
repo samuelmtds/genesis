@@ -18,7 +18,6 @@
  */
 package net.java.dev.genesis.ui.swt.lookup;
 
-import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swt.SwtBinder;
 
 import org.eclipse.swt.widgets.Widget;
@@ -55,7 +54,7 @@ public abstract class RecursiveWidgetLookupStrategy
 
    protected boolean doSkip(Widget widget) {
       return skipLookupInBoundComponent
-            && widget.getData(SwingBinder.GENESIS_BOUND) != null;
+            && widget.getData(SwtBinder.GENESIS_BOUND) != null;
    }
 
    protected abstract Widget lookupImpl(Widget widget, String name);

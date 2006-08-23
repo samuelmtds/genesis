@@ -33,7 +33,6 @@ import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swt.lookup.BreadthFirstWidgetLookupStrategy;
 import net.java.dev.genesis.ui.swt.lookup.WidgetLookupStrategy;
 
@@ -44,7 +43,7 @@ import org.eclipse.swt.widgets.Widget;
 
 
 public class SwtBinder extends AbstractBinder {
-   private static final Log log = LogFactory.getLog(SwingBinder.class);
+   private static final Log log = LogFactory.getLog(SwtBinder.class);
    
    public static final String GENESIS_BOUND = "genesis:boundField";
    public static final String NAME_PROPERTY = "genesis:widgetName";

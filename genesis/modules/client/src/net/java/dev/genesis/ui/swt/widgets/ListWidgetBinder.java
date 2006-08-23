@@ -25,7 +25,6 @@ import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
-import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swt.SwtBinder;
 import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
@@ -170,11 +169,11 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
 
       protected String getValue(Widget widget, Object value) throws Exception {
          String valueProperty = (String) widget
-               .getData(SwingBinder.VALUE_PROPERTY);
+               .getData(SwtBinder.VALUE_PROPERTY);
 
          if (value == null) {
             String blankLabel = (String) widget
-                  .getData(SwingBinder.BLANK_LABEL_PROPERTY);
+                  .getData(SwtBinder.BLANK_LABEL_PROPERTY);
             return (blankLabel == null) ? "" : blankLabel;
          } else if (value instanceof String) {
             return (String) value;
