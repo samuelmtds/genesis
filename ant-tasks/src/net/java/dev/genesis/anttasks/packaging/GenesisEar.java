@@ -40,6 +40,7 @@ import org.apache.tools.ant.taskdefs.Manifest;
 import org.apache.tools.ant.taskdefs.ManifestException;
 import org.apache.tools.ant.taskdefs.War;
 import org.apache.tools.ant.types.EnumeratedAttribute;
+import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.types.ZipFileSet;
 import org.apache.tools.ant.util.FileUtils;
@@ -100,8 +101,7 @@ public class GenesisEar extends Jar {
    /**
     * add lib files
     */
-   public void addLib(ZipFileSet fs) {
-      // We just set the prefix for this fileset, and pass it up.
+   public void addLib(FileSet fs) {
       libs.add(fs);
       super.addFileset(fs);
    }
@@ -180,7 +180,7 @@ public class GenesisEar extends Jar {
    protected String getFlattenClasspath() {
       StringBuffer buffer = new StringBuffer();
       
-      ZipFileSet[] fs = (ZipFileSet[]) libs.toArray(new ZipFileSet[libs.size()]);
+      FileSet[] fs = (FileSet[]) libs.toArray(new FileSet[libs.size()]);
 
       Resource[][] resources = grabResources(fs);
 
@@ -202,17 +202,8 @@ public class GenesisEar extends Jar {
       return buffer.toString();
    }
 
-   protected String getResourceName(ZipFileSet fs, Resource resource) {
-      String fullpath = fs.getFullpath(getProject());
-      String name = null;
-
-      if (fullpath.length() > 0) {
-         name = fullpath;
-      } else {
-         name = resource.getName();
-      }
-
-      name = name.replace(File.separatorChar, '/');
+   protected String getResourceName(FileSet fs, Resource resource) {
+      String name = resource.getName().replace(File.separatorChar, '/');
 
       if ("".equals(name)) {
          return null;
