@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+   <properties>
+     <title>Estratégias de Lookup de componentes gráficos</title>
+     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+   </properties>
+   <body>
+     <section name="Estratégias de Lookup de componentes gráficos">
+       <p>Uma das funcionalidades mais inovadoras do genesis é o <b>binding</b>.
+         O binding mantém a interface gráfica sincronizada automaticamente com um
+         JavaBean, a que chamamos de <b>form</b>. O binding faz a ligação
+         automática de componentes gráficos com campos e ações definidos no form.
+         Para isso, é necessário definir nomes para cada componente da interface
+         gráfica que se deseja ligar ao form. Dessa forma, a interface gráfica
+         possuirá componentes identificados por nome que deverão ser acessíveis
+         às classes de binding de alguma forma. A maneira utilizada pelo binding
+         para procurar tais componentes chamamos de <b>Estratégia de Lookup</b>.
+       </p>
+       <p>A Estratégia de Lookup de componentes gráficos é específica da tecnologia
+         gráfica utilizada. No momento, existe o suporte a três tecnologias gráficas:
+         Thinlet, Swing e SWT. Como o Thinlet já possui um suporte nativo a
+         busca de componentes pelo nome, o genesis define APIs de Lookup de
+         componentes para Swing e SWT, como veremos abaixo.
+       </p>
+       <subsection name="Swing">
+         <p>É definida uma interface chamada
+           <code>net.java.dev.genesis.ui.swing.lookup.ComponentLookupStrategy</code>.
+           Esta interface expõe os métodos:
+           <ul>
+             <li><code>Component register(String name, Component component)</code>:
+             Registra um componente com um determinado nome. Dessa forma, o componente
+             estará acessível às classes de binding através do nome aqui registrado.</li>
+             <li><code>Component lookup(Component component, String name)</code>:
+             Procura dentro de um componente, outro componente com um determinado nome.</li>
+             <li><code>String getName(Component component)</code>:
+             Retorna o nome registrado de um determinado componente.</li>
+           </ul>
+         </p>
+         <p>Existem três implementações de <code>ComponentLookupStrategy</code>
+           providas pelo genesis:
+           <ul>
+             <li><code>MapComponentLookupStrategy</code>: Utiliza
+               <code>java.util.Map</code> para registro e busca dos componentes.
+             </li>
+             <li><code>BreadthFirstComponentLookupStrategy</code>: Não é necessário
+               utilizar o método <code>register</code> para registrar componentes,
+               pois é utilizado o próprio nome do componente para a sua busca
+               (<code>Component.getName()</code>). A implementação de seu método
+               <code>lookup</code>, recebe o componente <i>pai</i> e inicia uma
+               busca em largura em todos os componentes que o componente <i>pai</i>
+               possui.
+             </li>
+             <li><code>DepthFirstComponentLookupStrategy</code>: Semelhante ao
+               <code>BreadthFirstComponentLookupStrategy</code>, exceto pelo
+               algoritmo de busca, que nesse caso é o algoritmo de busca em
+               profundidade.
+             </li>
+           </ul>
+         </p>
+         <p>A implementação padrão utilizada pelo genesis é
+           <code>BreadthFirstComponentLookupStrategy</code>. É possível
+           mudar a implementação utilizada pelo binding apenas sobrescrevendo o método
+           <code>ComponentLookupStrategy createComponentLookupStrategy()</code> da
+           classe <code>net.java.dev.genesis.ui.swing.SwingBinder</code> ou definindo
+           a implementação desejada no construtor de <code>SwingBinder</code>.
+         </p>
+       </subsection>
+       <subsection name="SWT">
+         <p>É definida uma interface chamada
+           <code>net.java.dev.genesis.ui.swt.lookup.WidgetLookupStrategy</code>.
+           Esta interface expõe os métodos:
+           <ul>
+             <li><code>Widget register(String name, Widget widget)</code>:
+             Registra um componente (widget) com um determinado nome.
+             Dessa forma, o componente
+             estará acessível às classes de binding através do nome aqui registrado.</li>
+             <li><code>Widget lookup(Widget widget, String name)</code>:
+             Procura dentro de um componente, outro componente com um determinado nome.</li>
+             <li><code>String getName(Widget widget)</code>:
+             Retorna o nome registrado de um determinado componente gráfico.</li>
+           </ul>
+         </p>
+         <p>Existem três implementações de <code>WidgetLookupStrategy</code>
+           providas pelo genesis:
+           <ul>
+             <li><code>MapWidgetLookupStrategy</code>: Utiliza
+               <code>java.util.Map</code> para registro e busca dos componentes.
+             </li>
+             <li><code>BreadthFirstWidgetLookupStrategy</code>: Não é necessário
+               utilizar o método <code>register</code> para registrar componentes,
+               pois é utilizado o próprio nome do componente para a sua busca
+               (<code>Widget.getData(SwtBinder.NAME_PROPERTY)</code>).
+               A implementação de seu método
+               <code>lookup</code>, recebe o componente <i>pai</i> e inicia uma
+               busca em largura em todos os componentes que o componente <i>pai</i>
+               possui.
+             </li>
+             <li><code>DepthFirstWidgetLookupStrategy</code>: Semelhante ao
+               <code>BreadthFirstWidgetLookupStrategy</code>, exceto pelo
+               algoritmo de busca, que nesse caso é o algoritmo de busca em
+               profundidade.
+             </li>
+           </ul>
+         </p>
+         <p>Observer que diferentemente do Swing, o SWT não possui um método
+           para definir nome para seus componentes. Para definir nomes para
+           componentes SWT, utilize
+           <code>Widget.setData(SwtBinder.NAME_PROPERTY, "nomeDesejado")</code>.
+         </p>
+         <p>A implementação padrão utilizada pelo genesis é
+           <code>BreadthFirstWidgetLookupStrategy</code>. É possível
+           mudar a implementação utilizada pelo binding apenas sobrescrevendo o método
+           <code>WidgetLookupStrategy createWidgetLookupStrategy()</code> da
+           classe <code>net.java.dev.genesis.ui.swt.SwtBinder</code> ou definindo
+           a implementação desejada no construtor de <code>SwtBinder</code>.
+         </p>
+       </subsection>
+     </section>
+   </body>
+</document>
