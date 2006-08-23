@@ -1063,8 +1063,15 @@
          See build.properties.sample for details.
       </fail>
    </target>
-   
-   <target name="deploy:create-server" if="deploy.create.server.needed"
+
+   <target name="deploy:additional-create-server">
+   </target>
+
+   <target name="deploy:create-server"
+           depends="deploy:master-create-server,
+                    deploy:additional-create-server"/>
+
+   <target name="deploy:master-create-server" if="deploy.create.server.needed"
            depends="deploy:check-conditions,server:check-conditions">
       <mkdir dir="${jboss.app}" />
       <copy todir="${jboss.app}">
