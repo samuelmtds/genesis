@@ -11,7 +11,7 @@
       <property name="genesisBasedApplication.mainClass" 
                 value="net.java.dev.genesis.samples.useradmin.UserAdmin" />
 
-      <!-- Script languages that's not used -->
+      <!-- Script languages that are not used -->
       <property name="use.beanshell" value="false" />
       <property name="use.el" value="false" />
 
