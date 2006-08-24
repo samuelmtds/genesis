@@ -9,12 +9,12 @@
 
 <!--
      If you need additional jars to compile/run the shared module,
-     add them in modules/shared/lib folder
+     add them to the modules/shared/lib folder
 
      If you need additional jars to compile/run the client module,
-     add them in modules/web/lib folder
+     add them to the modules/web/lib folder
 
      If you need additional jars to compile/run both the shared and client module,
-     add them in lib folder
+     add them to the lib folder
 -->
 </project>
