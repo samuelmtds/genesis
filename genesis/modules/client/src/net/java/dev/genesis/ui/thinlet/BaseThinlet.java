@@ -110,11 +110,7 @@ public abstract class BaseThinlet extends Thinlet implements
 
    private final Map formPerClassPerComponent = new IdentityHashMap();
    private final Map binderPerForm = new IdentityHashMap();
-   private ExceptionHandler exceptionHandler = createExceptionHandler();
-
-   protected ExceptionHandler createExceptionHandler() {
-      return new ThinletExceptionHandler(this);
-   }
+   private final ExceptionHandler exceptionHandler = createExceptionHandler();
 
    /**
     * @deprecated
@@ -1212,5 +1208,9 @@ public abstract class BaseThinlet extends Thinlet implements
       }
 
       return true;
+   }
+
+   protected ExceptionHandler createExceptionHandler() {
+      return new ThinletExceptionHandler(this);
    }
 }
