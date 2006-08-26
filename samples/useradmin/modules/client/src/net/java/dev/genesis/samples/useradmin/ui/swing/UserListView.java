@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 
 import net.java.dev.genesis.samples.useradmin.UserAdmin;
@@ -51,8 +52,8 @@ import net.java.dev.genesis.ui.swing.factory.SwingFactory;
  * @ViewHandler
  */
 public class UserListView extends JFrame {
-   private final UserListForm form;
-   private final SwingBinder binder;
+   private UserListForm form;
+   private SwingBinder binder;
    private JLabel nameLabel;
    private JLabel loginLabel;
    private JLabel emailLabel;
@@ -209,18 +210,18 @@ public class UserListView extends JFrame {
       panel.add(middlePanel, c);
 
       addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent event) {
-               dispose();
-               try {
-                  UserAdmin.showMainWindow();
-               } catch (Exception e) {
-                  binder.handleException(e);
-               }
+         public void windowClosed(WindowEvent event) {
+            try {
+               UserAdmin.showMainWindow();
+            } catch (Exception e) {
+               binder.handleException(e);
             }
-         });
+         }
+      });
 
       pack();
       setLocationRelativeTo(null);
+      setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
    }
 
    private static String getMessage(String key) {

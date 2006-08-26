@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
@@ -239,6 +240,7 @@ public class InsertUpdateView extends JDialog {
       pack();
       setLocationRelativeTo(getParent());
       setModal(true);
+      setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
    }
 
    private static String getMessage(String key) {

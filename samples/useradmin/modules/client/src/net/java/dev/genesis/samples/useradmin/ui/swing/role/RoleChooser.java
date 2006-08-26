@@ -43,6 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
@@ -228,6 +229,7 @@ public class RoleChooser extends JPanel {
          pack();
          setLocationRelativeTo(getParent());
          setResizable(false);
+         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       }
 
       public boolean showView() {
@@ -265,6 +267,7 @@ public class RoleChooser extends JPanel {
     * @ViewHandler
     */
    public static class InsertRoleDialog extends JDialog {
+      private final SwingBinder binder;
       private boolean hasChanged;
       private JLabel codeLabel;
       private JLabel labelLabel;
@@ -275,8 +278,9 @@ public class RoleChooser extends JPanel {
 
       public InsertRoleDialog(Dialog owner) {
          super(owner, getMessage("InsertRoleView.title"));
+         binder = new SwingBinder(this, new InsertRoleForm());
          initialize();
-         new SwingBinder(this, new InsertRoleForm()).bind();
+         binder.bind();
       }
 
       private void initialize() {
@@ -338,6 +342,7 @@ public class RoleChooser extends JPanel {
          setLocationRelativeTo(getParent());
          setResizable(false);
          setModal(true);
+         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       }
 
       public boolean showView() {
