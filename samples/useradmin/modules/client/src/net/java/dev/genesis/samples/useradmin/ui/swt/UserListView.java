@@ -10,6 +10,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -59,6 +61,12 @@ public class UserListView {
    public UserListView() {
       shell = new Shell(SWT.TITLE | SWT.CLOSE);
       shell.setText(getMessage("UserListView.title"));
+      shell.addShellListener(new ShellAdapter() {
+         public void shellClosed(ShellEvent event) {
+            dispose();
+         }
+      });
+
       binder = new SWTBinder(shell, form = new UserListForm(), this);
       createShell();
       binder.bind();
@@ -122,7 +130,7 @@ public class UserListView {
       
       name = new Text(nameComposite, SWT.BORDER);
       name.setLayoutData(gridData3);
-      name.setData(SWTBinder.NAME_PROPERTY, "name");
+      name.setData("name");
    }
 
    /**
@@ -144,7 +152,7 @@ public class UserListView {
 
       login = new Text(loginComposite, SWT.BORDER);
       login.setLayoutData(gridData4);
-      login.setData(SWTBinder.NAME_PROPERTY, "login");
+      login.setData("login");
    }
 
    /**
@@ -166,7 +174,7 @@ public class UserListView {
 
       email = new Text(emailComposite, SWT.BORDER);
       email.setLayoutData(gridData5);
-      email.setData(SWTBinder.NAME_PROPERTY, "email");
+      email.setData("email");
    }
 
    /**
@@ -184,11 +192,12 @@ public class UserListView {
 
       search = new Button(searchResetComposite, SWT.NONE);
       search.setText(getMessage("button.search"));
-      search.setData(SWTBinder.NAME_PROPERTY, "doSearch");
+      search.setData("doSearch");
+      search.setData("doSearch");
 
       reset = new Button(searchResetComposite, SWT.NONE);
       reset.setText(getMessage("button.reset"));
-      reset.setData(SWTBinder.NAME_PROPERTY, "reset");
+      reset.setData("reset");
    }
 
    /**
@@ -213,7 +222,7 @@ public class UserListView {
             binder.invokeAction("update");
          }
       });
-      users.setData(SWTBinder.NAME_PROPERTY, "users");
+      users.setData("users");
 
       TableColumn columnName = new TableColumn(users, SWT.NONE);
       columnName.setText(getMessage("User.name"));
@@ -267,11 +276,11 @@ public class UserListView {
 
       previousPage = new Button(pagingComposite, SWT.NONE);
       previousPage.setText("<<");
-      previousPage.setData(SWTBinder.NAME_PROPERTY, "previousPage");
+      previousPage.setData("previousPage");
 
       nextPage = new Button(pagingComposite, SWT.NONE);
       nextPage.setText(">>");
-      nextPage.setData(SWTBinder.NAME_PROPERTY, "nextPage");
+      nextPage.setData("nextPage");
    }
 
    /**
@@ -307,11 +316,11 @@ public class UserListView {
 
       update = new Button(bottomComposite, SWT.NONE);
       update.setText(getMessage("button.updateUser"));
-      update.setData(SWTBinder.NAME_PROPERTY, "update");
+      update.setData("update");
 
       remove = new Button(bottomComposite, SWT.NONE);
       remove.setText(getMessage("button.removeUser"));
-      remove.setData(SWTBinder.NAME_PROPERTY, "remove");
+      remove.setData("remove");
    }
 
    public void display() throws Exception {
@@ -373,5 +382,9 @@ public class UserListView {
       form.reset();
       form.setResetSearch(true);
       form.setRunSearch(true);
+   }
+
+   private void dispose() {
+      binder.unbind();
    }
 }

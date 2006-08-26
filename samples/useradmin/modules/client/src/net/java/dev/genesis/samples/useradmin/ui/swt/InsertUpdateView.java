@@ -141,13 +141,13 @@ public class InsertUpdateView extends Dialog {
 
       name = new Text(composite, SWT.BORDER);
       name.setLayoutData(gridData1);
-      name.setData(SWTBinder.NAME_PROPERTY, "name");
+      name.setData("name");
 
       roleLabel = new Label(composite, SWT.NONE);
       roleLabel.setText(getMessage("User.role"));
 
       roleCode = new Text(composite, SWT.BORDER);
-      roleCode.setData(SWTBinder.NAME_PROPERTY, "roleCode");
+      roleCode.setData("roleCode");
 
       findRole = new Button(composite, SWT.NONE);
       findRole.setText("...");
@@ -164,42 +164,42 @@ public class InsertUpdateView extends Dialog {
       role = new Label(composite, SWT.NONE);
       role.setText("");
       role.setLayoutData(gridData9);
-      role.setData(SWTBinder.NAME_PROPERTY, "roleLabel");
+      role.setData("roleLabel");
 
       loginLabel = new Label(composite, SWT.NONE);
       loginLabel.setText(getMessage("User.login"));
 
       login = new Text(composite, SWT.BORDER);
       login.setLayoutData(gridData8);
-      login.setData(SWTBinder.NAME_PROPERTY, "login");
+      login.setData("login");
 
       passwordLabel = new Label(composite, SWT.NONE);
       passwordLabel.setText(getMessage("User.password"));
 
       password = new Text(composite, SWT.PASSWORD | SWT.BORDER);
       password.setLayoutData(gridData7);
-      password.setData(SWTBinder.NAME_PROPERTY, "password");
+      password.setData("password");
 
       emailLabel = new Label(composite, SWT.NONE);
       emailLabel.setText(getMessage("User.email"));
 
       email = new Text(composite, SWT.BORDER);
       email.setLayoutData(gridData6);
-      email.setData(SWTBinder.NAME_PROPERTY, "email");
+      email.setData("email");
 
       birthdayLabel = new Label(composite, SWT.NONE);
       birthdayLabel.setText(getMessage("User.birthday"));
 
       birthday = new Text(composite, SWT.BORDER);
       birthday.setLayoutData(gridData5);
-      birthday.setData(SWTBinder.NAME_PROPERTY, "birthday");
+      birthday.setData("birthday");
 
       addressLabel = new Label(composite, SWT.NONE);
       addressLabel.setText(getMessage("User.address"));
 
       address = new Text(composite, SWT.BORDER);
       address.setLayoutData(gridData4);
-      address.setData(SWTBinder.NAME_PROPERTY, "address");
+      address.setData("address");
 
       countryLabel = new Label(composite, SWT.NONE);
       countryLabel.setText(getMessage("User.country"));
@@ -224,7 +224,7 @@ public class InsertUpdateView extends Dialog {
       gridData3.horizontalAlignment = GridData.FILL;
       country = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
       country.setLayoutData(gridData3);
-      country.setData(SWTBinder.NAME_PROPERTY, "country");
+      country.setData("country");
    }
 
    /**
@@ -239,7 +239,7 @@ public class InsertUpdateView extends Dialog {
       gridData2.horizontalAlignment = GridData.FILL;
       state = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
       state.setLayoutData(gridData2);
-      state.setData(SWTBinder.NAME_PROPERTY, "state");
+      state.setData("state");
    }
 
    /**
@@ -258,14 +258,14 @@ public class InsertUpdateView extends Dialog {
       cancel = new Button(buttonsContainer, SWT.NONE);
       cancel.setText(getMessage("button.cancel"));
 
-      cancel.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-         public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            shell.dispose();
+      cancel.addSelectionListener(new SelectionAdapter() {
+         public void widgetSelected(SelectionEvent e) {
+            dispose();
          }
       });
       save = new Button(buttonsContainer, SWT.NONE);
       save.setText(getMessage("button.save"));
-      save.setData(SWTBinder.NAME_PROPERTY, "save");
+      save.setData("save");
    }
 
    private static String getMessage(String key) {
@@ -292,6 +292,11 @@ public class InsertUpdateView extends Dialog {
     */
    public void save() {
       hasChanged = true;
+      dispose();
+   }
+
+   private void dispose() {
+      binder.unbind();
       shell.dispose();
    }
 }

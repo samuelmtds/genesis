@@ -95,7 +95,7 @@ public class RoleListView extends Dialog {
             binder.invokeAction("select");
          }
       });
-      roles.setData(SWTBinder.NAME_PROPERTY, "role");
+      roles.setData("role");
       
       TableColumn columnCode = new TableColumn(roles, SWT.NONE);
       columnCode.setText(getMessage("Role.code"));
@@ -120,7 +120,7 @@ public class RoleListView extends Dialog {
       buttonsContainer.setLayoutData(gridData2);
       remove = new Button(buttonsContainer, SWT.NONE);
       remove.setText("Remove");
-      remove.setData(SWTBinder.NAME_PROPERTY, "remove");
+      remove.setData("remove");
 
       add = new Button(buttonsContainer, SWT.NONE);
       add.setText("Add");
@@ -142,7 +142,7 @@ public class RoleListView extends Dialog {
 
       ok = new Button(buttonsContainer, SWT.NONE);
       ok.setText("Ok");
-      ok.setData(SWTBinder.NAME_PROPERTY, "ok");
+      ok.setData("ok");
    }
 
    private static String getMessage(String key) {
@@ -168,12 +168,17 @@ public class RoleListView extends Dialog {
     * @AfterAction
     */
    public void select() throws Exception {
-      shell.dispose();
+      dispose();
 
       hasChanged = true;
    }
 
    public Role getRole() {
       return form.getRole();
+   }
+   
+   private void dispose() {
+      binder.unbind();
+      shell.dispose();
    }
 }

@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Text;
  * @ViewHandler
  */
 public class InsertRoleView extends Dialog {
-
    private SWTBinder binder;
    private boolean hasChanged;
    
@@ -84,14 +83,14 @@ public class InsertRoleView extends Dialog {
 
       code = new Text(composite, SWT.BORDER);
       code.setLayoutData(gridData1);
-      code.setData(SWTBinder.NAME_PROPERTY, "code");
+      code.setData("code");
 
       labelLabel = new Label(composite, SWT.NONE);
       labelLabel.setText("Label");
 
       label = new Text(composite, SWT.BORDER);
       label.setLayoutData(gridData2);
-      label.setData(SWTBinder.NAME_PROPERTY, "label");
+      label.setData("label");
    }
 
    /**
@@ -111,12 +110,12 @@ public class InsertRoleView extends Dialog {
 
       cancel.addSelectionListener(new SelectionAdapter() {
          public void widgetSelected(SelectionEvent event) {
-            shell.dispose();
+            dispose();
          }
       });
       save = new Button(buttonsContainer, SWT.NONE);
       save.setText("Save");
-      save.setData(SWTBinder.NAME_PROPERTY, "save");
+      save.setData("save");
    }
 
    private static String getMessage(String key) {
@@ -142,7 +141,11 @@ public class InsertRoleView extends Dialog {
     * @AfterAction
     */
    public void save() throws Exception {
-      shell.dispose();
       hasChanged = true;
+   }
+
+   private void dispose() {
+      binder.unbind();
+      shell.dispose();
    }
 }
