@@ -90,6 +90,8 @@
 	<path id="client.dependency.classpath">
       <path location="${genesis.module.shared}/${build.dest}" />
       <path refid="script.path" />
+      <path refid="backport175.path" />  
+      <path location="${genesis.module.annotation}/${build.dest}" />  
       <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />

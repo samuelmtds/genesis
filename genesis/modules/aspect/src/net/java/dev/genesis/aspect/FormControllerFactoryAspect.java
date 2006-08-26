@@ -18,57 +18,26 @@
  */
 package net.java.dev.genesis.aspect;
 
-import net.java.dev.genesis.helpers.TypeChecker;
-import net.java.dev.genesis.ui.controller.DefaultFormController;
-import net.java.dev.genesis.ui.controller.FormController;
-import net.java.dev.genesis.ui.controller.FormControllerFactory;
-import net.java.dev.genesis.ui.metadata.FormMetadata;
-import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
+
 import org.codehaus.aspectwerkz.aspect.management.Mixins;
 
 public class FormControllerFactoryAspect {
    /**
-    * @Mixin(pointcut="formControllerFactoryIntroduction", isTransient=true, deploymentModel="perInstance")
+    * @Mixin(pointcut="formControllerFactoryIntroduction", isTransient=true, deploymentModel="perJVM")
     */
-   public static class AspectFormControllerFactory implements FormControllerFactory {
-      private FormController controller;
-      private int maximumEvaluationTimes = 1;
-      private boolean resetOnDataProviderChange;
-
+   public static class AspectFormControllerFactory extends DefaultFormControllerFactory {
       public AspectFormControllerFactory() {
-         String timesAsString = (String)Mixins.getParameters(getClass(),
+         String timesAsString = (String) Mixins.getParameters(getClass(),
                getClass().getClassLoader()).get("maximumEvaluationTimes");
 
          if (timesAsString != null) {
-            maximumEvaluationTimes = Integer.parseInt(timesAsString);
+            setMaximumEvaluationTimes(Integer.parseInt(timesAsString));
          }
 
-         resetOnDataProviderChange = !"false".equals(Mixins.getParameters(
+         setResetOnDataProviderChange(!"false".equals(Mixins.getParameters(
                getClass(), getClass().getClassLoader()).get(
-               "resetOnDataProviderChange"));
-      }
-
-      public FormController getFormController(Object form) {
-         if (controller == null) {
-            controller = createFormController(form);
-
-            controller.setForm(form);
-            controller.setFormMetadata(getFormMetadata(form));
-            controller.setMaximumEvaluationTimes(maximumEvaluationTimes);
-            controller.setResetOnDataProviderChange(resetOnDataProviderChange);
-         }
-
-         return controller;
-      }
-
-      protected FormController createFormController(Object form) {
-         return new DefaultFormController();
-      }
-
-      protected FormMetadata getFormMetadata(final Object form) {
-         TypeChecker.checkFormMetadataFactory(form);
-
-         return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+               "resetOnDataProviderChange")));
       }
    }
 }

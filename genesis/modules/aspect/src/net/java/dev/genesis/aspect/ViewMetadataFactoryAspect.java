@@ -18,115 +18,21 @@
  */
 package net.java.dev.genesis.aspect;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.java.dev.genesis.annotation.AfterAction;
-import net.java.dev.genesis.annotation.BeforeAction;
-import net.java.dev.genesis.ui.metadata.ViewMetadata;
-import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
+import net.java.dev.genesis.ui.metadata.DefaultViewMetadataFactory;
 
 import org.codehaus.aspectwerkz.aspect.management.Mixins;
-import org.codehaus.backport175.reader.Annotation;
-import org.codehaus.backport175.reader.Annotations;
 
 public class ViewMetadataFactoryAspect {
    /**
-    * @Mixin(pointcut="viewMetadataFactoryIntroduction", isTransient=true, 
-    *        deploymentModel="perJVM")
+    * @Mixin(pointcut="viewMetadataFactoryIntroduction", isTransient=true,
+    *                                                    deploymentModel="perJVM")
     */
-   public static class AspectViewMetadataFactory implements
-         ViewMetadataFactory {
-      private final Map cache = new HashMap();
-      private final boolean skipSystemClasses;
-      
+   public static class AspectViewMetadataFactory extends
+         DefaultViewMetadataFactory {
+
       public AspectViewMetadataFactory() {
-         skipSystemClasses = !"false".equals(Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("skipSystemClasses"));
-      }
-
-      public ViewMetadata getViewMetadata(final Class viewClass) {
-         ViewMetadata viewMetadata = (ViewMetadata)cache
-               .get(viewClass);
-
-         if (viewMetadata == null) {
-            viewMetadata = createViewMetadata(viewClass);
-            processAnnotations(viewMetadata);
-            cache.put(viewClass, viewMetadata);
-         }
-
-         return viewMetadata;
-      }
-
-      protected ViewMetadata createViewMetadata(Class viewClass) {
-         return new ViewMetadata(viewClass);
-      }
-
-      private void processAnnotations(final ViewMetadata viewMetadata) {
-         processMethodsAnnotations(viewMetadata);
-      }
-
-      private void processMethodsAnnotations(
-            final ViewMetadata viewMetadata) {
-         final Method[] methods = viewMetadata.getViewClass().getMethods();
-
-
-         for (int i = 0; i < methods.length; i++) {
-            if (skipSystemClasses
-                  && methods[i].getDeclaringClass().getClassLoader() == null) {
-               continue;
-            }
-
-            processMethodAnnotation(viewMetadata, methods[i]);
-         }
-      }
-      
-      private void processMethodAnnotation(final ViewMetadata viewMetadata,
-            Method method) {
-         Annotation[] annotations = Annotations.getAnnotations(method);
-         
-         for (int i = 0; i < annotations.length; i++) {
-            if (BeforeAction.class.equals(annotations[i].annotationType())) {
-               if (method.getParameterTypes().length != 0) {
-                  throw new IllegalArgumentException("@BeforeAction cannot " +
-                        "be used in a method with parameters: " + 
-                        method.toString());
-               }
-
-               BeforeAction annon = (BeforeAction)annotations[i];
-               final String[] actionNames = annon.value();
-               final String methodName = method.getName();
-               
-               if (actionNames == null || actionNames.length == 0) {
-                  viewMetadata.addBeforeAction(methodName, methodName);
-                  continue;
-               }
-
-               for (int j = 0; j < actionNames.length; j++) {
-                  viewMetadata.addBeforeAction(actionNames[j], methodName);
-               }
-            } else if (AfterAction.class.equals(annotations[i].annotationType())) {
-               if (method.getParameterTypes().length != 0) {
-                  throw new IllegalArgumentException("@AfterAction cannot " +
-                        "be used in a method with parameters: " + 
-                        method.toString());
-               }
-
-               AfterAction annon = (AfterAction)annotations[i];
-               final String[] actionNames = annon.value();
-               final String methodName = method.getName();
-               
-               if (actionNames == null || actionNames.length == 0) {
-                  viewMetadata.addAfterAction(methodName, methodName);
-                  continue;
-               }
-
-               for (int j = 0; j < actionNames.length; j++) {
-                  viewMetadata.addAfterAction(actionNames[j], methodName);
-               }
-            }
-         }
+         setSkipSystemClasses(!"false".equals(Mixins.getParameters(getClass(),
+               getClass().getClassLoader()).get("skipSystemClasses")));
       }
    }
 }
