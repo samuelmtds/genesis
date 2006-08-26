@@ -14,8 +14,7 @@
       already configured in this empty web project.</p>
       <p>It's extremely important you have already read genesis docs and
       understood its concepts and features. Before starting to code, read the <a
-      href="documentation_intro.html">User Manual</a> and <a href=
-      "jars_explained.html">understand genesis distribution jars</a>.</p>
+      href="documentation_intro.html">User Manual</a>.</p>
       <p>We call an empty web project strutucture <code>empty-web-project</code> and it
       comes with genesis-empty-web-project distribution or genesis-all distribution.
       This structure can be found in dir

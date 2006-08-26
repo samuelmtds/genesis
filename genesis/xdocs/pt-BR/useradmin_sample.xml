@@ -26,6 +26,8 @@
       aplicações.</p>
       <p>Aprenda <a href="#Execução em modo remoto">aqui</a> como executar o
       exemplo em modo remoto, ou seja, utilizando o servidor de aplicações.</p>
+      <p>Para usar a parte SWT do exemplo, leia as instruções leia as instruções
+        <a href="configuring_swt.html">aqui</a></p>
     </section>
     <section name="Propósito do exemplo useradmin">
       <p>O exemplo useradmin tem como propósito mostrar ao usuário a maioria das
@@ -43,7 +45,7 @@
       exemplo: O <a href="http://www.thinlet.com/">Thinlet</a>, o
       <a href="http://java.sun.com/products/jfc/">Swing</a> e o
       <a href="http://www.eclipse.org/swt">SWT</a>. Para utilizar o SWT
-      veja as instruções <a href="faq.html#Como_utilizo_SWT_em_diferentes_Ambientes">aqui</a>.</p>
+      veja as instruções <a href="configuring_swt.html">aqui</a>.</p>
       
       <p>No pacote <code>net.java.dev.genesis.samples.useradmin.ui</code> 
       encontramos arquivos que definem a lógica da tela,

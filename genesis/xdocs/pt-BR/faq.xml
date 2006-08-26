@@ -13,8 +13,8 @@
         Posso utilizar o genesis para criar uma aplicação web?</a></li>
         <li><a href="#Como o genesis se compara ao Spring?">
         Como o genesis se compara ao Spring?</a></li>
-        <li><a href="#Como utilizo SWT em diferentes Ambientes">
-        Como utilizo SWT em diferentes Ambientes?</a></li>
+        <li><a href="#Como utilizo SWT em diferentes Plataformas?">
+        Como utilizo SWT em diferentes Plataformas?</a></li>
         <li><a href="#Como posso usar genesis em aplicações J2ME?">
         Como posso usar genesis em aplicações J2ME?</a></li>
         <li><a href="#Por que estou obtendo uma NullPointerException ao chamar
@@ -48,29 +48,9 @@
         "paging_and_dynamic_search.html#Trabalhando_com_pesquisas_dinâmicas">suporte
         a pesquisas dinâmicas</a>.</p>
       </subsection>
-      <subsection name="Como utilizo SWT em diferentes Ambientes?">
-        <p>Visite o <a href="http://www.eclipse.org/swt/">site</a> do Eclipse
-        e faça o download da distribuição SWT desejada. Crie no diretório
-        &lt;genesis.home&gt;/genesis/lib/swt
-        um diretório com o nome do Sistema Operacional (sem espaços) e um
-        sub-diretório com a arquitetura do processador (se necessário).
-        Por exemplo:</p>
-        <ul>
-          <li>&lt;genesis.home&gt;/genesis/lib/swt/Windows/x86:
-            Para sistema operacional Windows em processador x86</li>
-          <li>&lt;genesis.home&gt;/genesis/lib/swt/Linux:
-            Para sistema operacional Linux em geral</li>
-          <li>&lt;genesis.home&gt;/genesis/lib/swt/Linux/x86_64:
-            Para sistema operacional Linux em processador x86 64 bits</li>
-          <li>&lt;genesis.home&gt;/genesis/lib/swt/Mac:
-            Para sistema operacional Mac OS em geral</li>
-          <li>&lt;genesis.home&gt;/genesis/lib/swt/Solaris/sparc:
-            Para sistema operacional Solaries em processador sparc</li>
-        </ul>
-        <p>
-          Extraia os arquivos na pasta específica do ambiente desejado. Nenhuma
-          outra configuração é necessária.
-        </p>
+      <subsection name="Como utilizo SWT em diferentes Plataformas?">
+        <p>Leia as instruções leia as instruções 
+          <a href="configuring_swt.html">aqui</a></p>
       </subsection>
       <subsection name="Como posso usar genesis em aplicações J2ME?">
         <p>Recomenda-se utilizar um subconjunto das funcionalidades providas no

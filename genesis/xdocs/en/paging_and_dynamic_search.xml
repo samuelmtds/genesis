@@ -280,17 +280,17 @@ nextPage.setName("nextPage");
 <![CDATA[
 searchButton = new Button(shell, SWT.NONE);
 searchButton.setText(getMessage("button.search"));
-searchButton.setData(SWTBinder.NAME_PROPERTY, "doSearch");
+searchButton.setData("doSearch");
 
 ...  
 previousPage = new Button(shell, SWT.NONE);
 previousPage.setText("<<");
-previousPage.setData(SWTBinder.NAME_PROPERTY, "previousPage");
+previousPage.setData("previousPage");
 
 ...
 nextPage = new Button(shell, SWT.NONE);
 nextPage.setText(">>");
-nextPage.setData(SWTBinder.NAME_PROPERTY, "nextPage");
+nextPage.setData("nextPage");
 ]]>
 </source>
         <p>And the business class:</p>

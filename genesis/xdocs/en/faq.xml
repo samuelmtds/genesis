@@ -13,8 +13,8 @@
         it possible to use genesis to build a web application?</a></li>
         <li><a href="#How does genesis compare to Spring?">
         How does genesis compare to Spring?</a></li>
-        <li><a href="#When will genesis provide SWT support?">
-        When will genesis provide SWT support?</a></li>
+        <li><a href="#How can I use SWT in different Platforms?">
+        How can I use SWT in different Platforms?</a></li>
         <li><a href="#How can I use genesis in J2ME applications?">
         How can I use genesis in J2ME applications?</a></li>
         <li><a href="#Why am I getting a NullPointerException in a getSession()
@@ -45,8 +45,8 @@
         "paging_and_dynamic_search.html#Dynamic_criteria_searching">support for
         dynamic searches</a>.</p>
       </subsection>
-      <subsection name="When will genesis provide SWT support?">
-        <p>SWT will be supported in next release. Maybe, in a month.</p>
+      <subsection name="How can I use SWT in different Platforms?">
+        <p>Read the instructions <a href="configuring_swt.html">here</a>.</p>
       </subsection>
       <subsection name="How can I use genesis in J2ME applications?">
         <p>It is recommended to only use a sub-set of the functionalities

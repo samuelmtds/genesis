@@ -2,14 +2,27 @@
 <document>
   <properties>
     <title>Tratando erros</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Tratando erros">
       <p>O tratamento de erros no genesis é centralizado, de modo que todas as 
       exceções geradas são repassadas para uma única classe específica da API
-      gráfica. Para as APIs atualmente suportadas pelo genesis, o seguinte 
-      procedimento padrão é aplicado:</p>
+      gráfica.</p>
+      <p>O genesis define duas interfaces para tratamento de erros:</p>
+      <ul>
+        <li><b><code>net.java.dev.genesis.ui.binding.ExceptionHandler</code></b>: Interface
+        mais genérica que define apenas um método, <code>handleException(Throwable)</code> que
+        é chamado para tratar exceções lançadas. É possível implementar essa interface
+        para definir uma lógica de tratamento de erros customizada pela sua aplicação.</li>
+        <li><b><code>net.java.dev.genesis.ui.binding.DispatcherExceptionHandler</code></b>:
+        Estende a interface anterior (<code>ExceptionHandler</code>) e define 
+        um procedimento padrão para tratamento de erros com métodos mais específicos
+        para tratamento de erros de validação, erros conhecidos
+        e não conhecidos. O procedimento padrão para tratamento de erros é explicado a seguir.</li>
+      </ul>
+      <p>O procedimento padrão para tratamento de erros utilizado pelo genesis é:</p>
       <ul>
         <li>Se a exceção for uma <code>UIException</code>, é exibida uma janela 
         de diálogo de erro com o título e descrição contidos na instância.</li>
@@ -21,23 +34,8 @@
         retorne <code>null</code>; por fim é exibida uma mensagem com o stack
         trace da exceção.</li>
       </ul>
-      <p>Abaixo há informações mais detalhadas para cada API gráfica:</p>
-      <ul>
-        <li><a href="#Tratando erros com Swing">Tratando erros com Swing</a></li>
-        <li><a href="#Tratando erros com SWT">Tratando erros com SWT</a></li>
-        <li><a href="#Tratando erros com Thinlet">Tratando erros com 
-        Thinlet</a></li>
-      </ul>
-    </section>
-    <section name="Tratando erros com Swing">
-      <p>Visto que em Swing não existe uma maneira padrão de tratar os erros, 
-      a interface <code>net.java.dev.genesis.ui.binding.ExceptionHandler</code>
-      foi criada para centralizar esta tarefa. O único método definido por essa
-      interface é <code>handleException(Throwable t)</code>, permitindo qualquer
-      tipo de tratamento da exceção.</p>
-      <p>A implementação padrão utilizada pelo <code>SwingBinder</code> é a 
-      classe <code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code>. 
-      Esta classe trata os erros da seguinte forma:</p>
+      <p>A classe abstrata <code>net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler</code>
+      implementa tal procedimento da seguinte forma:</p>
       <ul>
         <li>Se o erro for uma <code>ValidationException</code>, este é 
         redirecionado para 
@@ -51,90 +49,37 @@
         <code>handleUnknownException(Throwable)</code> é invocado, terminando a
         cadeia de tratamento de erros.</li>
       </ul>
-      <p>Para a maioria dos usuários, basta saber como cada erro será tratado
-      pelo framework. No entanto, qualquer um dos métodos descritos acima pode
-      ser sobrescrito se for necessário customizar o tratamento de erros. O
-      comportamento padrão de cada um deles é descrito abaixo:</p>
+      <p>Tal classe define ainda, dois métodos abstratos:</p>
       <ul>
-         <li><code>handleException(String, Throwable)</code> utiliza
-         <code>JOptionPane.showMessageDialog(..)</code> com 
-         <code>JOptionPane.ERROR_MESSAGE</code> para exibir o erro. O título da 
-         janela é a mensagem retornada por <code>getErrorMessage()</code>, que 
-         por padrão é a constante "Error".</li>
-         <li><code>showValidationErrors(ValidationException)</code> extrai os
-         erros de <code>ValidationException</code>, formata-os separando cada um
-         deles com um <code>\n</code> - utilizado para quebra de linha em Java -
-         e os exibe utilizando <code>JOptionPane.showMessageDialog(..)</code> 
-         com <code>JOptionPane.WARNING_MESSAGE</code>. O título da janela
-         será a String definida para <code>validation.errors.title</code> no
-         <a href="configuring_messages.html#Configurando as mensagens">arquivo de recursos</a>.
-         </li>
-         <li><code>handleUIException(UIException)</code> exibe o erro utilizando
-         <code>JOptionPane.showMessageDialog(..)</code> com 
-         <code>JOptionPane.WARNING_MESSAGE</code>. O título e a mensagem serão 
-         extraídos da própria exceção.</li>
-         <li><code>handleCustomException(Throwable)</code> verifica se o erro
-         lançado possui alguma outra exceção como causa invocando nele o método
-         <code>getCause()</code>. Se possuir, esta causa será repassada para
-         <code>handleException(Throwable)</code>. Caso contrário, será retornado
-         <code>false</code> indicando que o erro não pôde ser tratado.</li>
-         <li><code>handleUnknownException(Throwable)</code> simplesmente repassa
-         o erro para <code>handleException(String, Throwable)</code> utilizando
-         como mensagem a constante "Unexpected error occurred".</li>
-      </ul>
-    </section>
-    <section name="Tratando erros com Thinlet">
-      <p>O Thinlet já possui um método para tratamento de erros,
-      <code>handleException(Throwable)</code>, de modo que
-      <code>BaseThinlet</code> sobrescreve este método para tratar os erros de
-      forma customizada.</p>
-      <p>A implementação padrão trata os erros de forma diferenciada, conforme
-      descrito abaixo:</p>
-      <ul>
-        <li>Caso o erro seja uma <code>ScreenNotFoundException</code> (que
-        ocorre quando um dos arquivos xml da interface gráfica não é
-        encontrado), o erro é tratado através de
-        <code>handleException(String, Throwable)</code>.</li>
-        <li>Se o erro for uma <code>ValidationException</code>, este é
-        redirecionado para
-        <code>showValidationErrors(ValidationException)</code>.</li>
-        <li>Quando o erro é uma <code>UIException</code>, este é repassado para
-        <code>handleUIException(UIException)</code>.</li>
-        <li>Se todas as checagens anteriores falharem, o erro é passado para
-        <code>handleCustomException(Throwable)</code> que retorna um
-        <code>boolean</code> indicando se o erro foi tratado ou não.</li>
-        <li>Quando o erro não é tratado, o método
-        <code>handleUnknownException(Throwable)</code> é invocado, terminando a
-        cadeia de tratamento de erros.</li>
+        <li><b><code>showWarningMessageDialog(title,message)</code></b>:
+          Sua implementação deve mostrar ao usuário um janela de alerta com
+          o título e a mensagem passadas como parâmetro.</li>
+        <li><b><code>showErrorMessageDialog(title,message,throwable)</code></b>:
+          Sua implementação deve mostrar ao usuário um janela de erro com
+          o título, a mensagem e quando necessário, informações da exceção.
+        </li>
       </ul>
       <p>Para a maioria dos usuários, basta saber como cada erro será tratado
       pelo framework. No entanto, qualquer um dos métodos descritos acima pode
-      ser sobrescrito se for necessário customizar o tratamento de erros. O
-      comportamento padrão de cada um deles é descrito abaixo:</p>
+      ser sobrescrito se for necessário customizar o tratamento de erros. Geralmente
+      é necessário sobrescrever apenas o método <code>handleCustomException(Throwable)</code>
+      para definir como cada erro de sua aplicação é tratado.</p>
+      <p>Cada API gráfica contém uma implementacão de <code>AbstractDispatcherExceptionHandler</code>,
+        como mostrado abaixo:</p>
       <ul>
-         <li><code>handleException(String, Throwable)</code> utiliza
-         <code>ErrorReporterDialog</code> para exibir o erro. O título da janela
-         é a mensagem retornada por <code>getErrorMessage()</code>, que por
-         padrão é a constante "Error".</li>
-         <li><code>showValidationErrors(ValidationException)</code> extrai os
-         erros de <code>ValidationException</code>, formata-os separando cada um
-         deles com um <code>\n</code> - utilizado para quebra de linha em Java -
-         e os exibe utilizando <code>MessageDialog</code>. O título da janela
-         será a String definida para <code>validation.errors.title</code> no
-         <a href="configuring_messages.html#Configurando as mensagens">arquivo de recursos</a>.
-         </li>
-         <li><code>handleUIException(UIException)</code> exibe o erro utilizando
-         <code>MessageDialog</code>. O título e a mensagem serão extraídos da
-         própria exceção.</li>
-         <li><code>handleCustomException(Throwable)</code> verifica se o erro
-         lançado possui alguma outra exceção como causa invocando nele o método
-         <code>getCause()</code>. Se possuir, esta causa será repassada para
-         <code>handleException(Throwable)</code>. Caso contrário, será retornado
-         <code>false</code> indicando que o erro não pôde ser tratado.</li>
-         <li><code>handleUnknownException(Throwable)</code> simplesmente repassa
-         o erro para <code>handleException(String, Throwable)</code> utilizando
-         como mensagem a constante "Unexpected error occurred".</li>
+        <li><b><code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code></b>: Utiliza
+        <code>JOptionPane</code> para mostrar a mensagem de alerta/erro ao usuário.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.SWTExceptionHandler</code></b>: Utiliza
+        <code>MessageBox</code> para mostrar a mensagem de alerta/erro ao usuário.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.ThinletExceptionHandler</code></b>: Utiliza
+        <code>MessageDialog</code> e <code>ErrorReporterDialog</code>
+        para mostrar a mensagem de alerta/erro ao usuário.</li>
       </ul>
+      <p>Utilize o método <code>setExceptionHandler</code> definido na classe
+      <code>AbstractBinder</code> (para Swing/SWT)
+      para utilizar sua própria implementação de <code>ExceptionHandler</code>, ou sobrescreva
+      o método <code>createExceptionHandler</code> de modo a
+      retornar uma nova instância de sua própria implementação de <code>ExceptionHandler</code>.</p>
     </section>
   </body>
 </document>

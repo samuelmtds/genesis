@@ -40,7 +40,7 @@
       xml da view. No caso do Swing, o <code>widgetName</code> deve ser igual ao 
       valor retornado por <code>getName()</code> para o <code>Component</code>
       desejado. No caso do SWT, o <code>widgetName</code> deve ser igual ao 
-      valor retornado por <code>getData(SWTBinder.NAME_PROPERTY)</code>
+      valor retornado por <code>getData()</code>
       para o <code>Widget</code> desejado.</p>
       <p><b>Pelo menos uma dessas três propriedades deve ser informada</b>.</p>
       <p>O <code>name</code> do widget que será populado pelo 
@@ -387,7 +387,7 @@ private Combo estadoComboBox;
   private initComponents() {
      ...
      estadoComboBox = new Combo(shell, SWT.NONE);
-     estadoComboBox.setData(SWTBinder.NAME_PROPERTY, "estado");
+     estadoComboBox.setData("estado");
      estadoComboBox.setData(SWTBinder.KEY_PROPERTY, "sigla");
      estadoComboBox.setData(SWTBinder.VALUE_PROPERTY, "descricao");
   }
@@ -395,7 +395,7 @@ private Combo estadoComboBox;
 </source>
           <p>Acima vemos o código da tela que exibe um <code>combobox</code>
           que conterá os estados em tempo de execução. O nome do componente
-          (<code>estadoComboBox.setData(SWTBinder.NAME_PROPERTY, "estado")</code>)
+          (<code>estadoComboBox.setData("estado")</code>)
           possui o mesmo valor
           que o atributo <code>objectField</code> da anotação 
           <code>@DataProvider</code>. Para que os valores sejam mostrados 
@@ -440,7 +440,7 @@ private List estadoList;
   private initComponents() {
      ...
      estadoList = new List(shell, SWT.NONE);
-     estadoList.setData(SWTBinder.NAME_PROPERTY, "estado");
+     estadoList.setData("estado");
      estadoList.setData(SwingBinder.KEY_PROPERTY, "sigla");
      estadoList.setData(SwingBinder.VALUE_PROPERTY, "descricao");
   }
@@ -457,7 +457,7 @@ private Table estadoTable;
      ...
 
      Table estadoTable = new Table(shell, SWT.NONE);
-     estadoTable.setData(SWTBinder.NAME_PROPERTY, "estado");
+     estadoTable.setData("estado");
      estadoTable.setHeaderVisible(true);
 
      TableColumn siglaColumn = new TableColumn(estadoTable, SWT.NONE);
@@ -475,7 +475,7 @@ private Table estadoTable;
           <p>Os requerimentos para popular uma table são um pouco 
           diferentes.</p>
           <p>Com base no exemplo acima, podemos observar que o valor do nome
-          do componente (<code>estadoTable.setData(SWTBinder.NAME_PROPERTY, "estado")</code>)
+          do componente (<code>estadoTable.setData("estado")</code>)
           na tabela 
           precisa ser igual ao valor do atributo <code>objectField</code>, 
           exceto quando for especificado o atributo <code>widgetName</code> na 
@@ -493,7 +493,7 @@ private Table estadoTable;
   private initComponents() {
      ...
      Table estadoTable = new Table(shell, SWT.NONE);
-     estadoTable.setData(SWTBinder.NAME_PROPERTY, "estado");
+     estadoTable.setData("estado");
      estadoTable.setData(SWTBinder.COLUMN_NAMES, new String[] {"sigla", "descricao"});
      estadoTable.setHeaderVisible(true);
 

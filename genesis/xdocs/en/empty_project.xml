@@ -168,6 +168,15 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
         transactional/remotable methods (<b>Commands</b>) are put there.
         Together with them, we should put all Hibernate mapped classes.</li>
       </ul>
+      <p>It's possible to create folders with libraries required by each module:</p>
+      <ul>
+        <li><b>&lt;PROJECT_DIR&gt;/modules/client/lib</b>: Dir that contains all
+        necessary jars to compile and run the client module</li>
+        <li><b>&lt;PROJECT_DIR&gt;/modules/shared/lib</b>: Dir that contains all
+        necessary jars to compile and run the shared module</li>
+        <li><b>&lt;PROJECT_DIR&gt;/lib</b>: Dir that contains all
+        necessary jars to compile and run all modules</li>
+      </ul>
       <p>In the client side source dir, a few source files are already available
       to make development easier. They are:</p>
       <ul>
@@ -232,13 +241,14 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
         located in a remote call stack. To stop at them, you must run your 
         application server in debug mode and connect to it.</li>
       </ul>
-      <p>The fastest way to run your project is:
+      <p>The fastest way to run your project is:</p>
 <source>
 ant all
 &lt;JBOSS_DIR&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
 ant run:remote
 </source>
-      </p>
+      <p>To configure SWT in your project, read instructions
+        <a href="configuring_swt.html">here</a></p>
     </section>
     <section name="Scenarios">
        <p>Let's examine some samples of how to configure an empty project in 

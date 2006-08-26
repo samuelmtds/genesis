@@ -118,7 +118,7 @@ Label currentDateLabel = new Label(shell, SWT.NONE);
 currentDateLabel.setText("Current Date:");
 
 Text currentDate = new Text(shell, SWT.BORDER);
-currentDate.setData(SWTBinder.NAME_PROPERTY, "currentDate");
+currentDate.setData("currentDate");
 
 //..
 ]]>
@@ -189,7 +189,7 @@ Label currentDateLabel = new Label(shell, SWT.NONE);
 currentDateLabel.setText("Data Corrente:");
 
 Text currentDate = new Text(shell, SWT.BORDER);
-currentDate.setData(SWTBinder.NAME_PROPERTY, "dataCorrente");
+currentDate.setData("dataCorrente");
 currentDate.setData(SWTBinder.WIDGET_GROUP_PROPERTY, "currentDateLabel");
 //..
 ]]>
@@ -224,7 +224,7 @@ Label currentDateLabel = new Label(shell, SWT.NONE);
 currentDateLabel.setText("Data Corrente:");
 
 Text currentDate = new Text(shell, SWT.BORDER);
-currentDate.setData(SWTBinder.NAME_PROPERTY, "currentDate");
+currentDate.setData("currentDate");
 currentDate.setData(SWTBinder.WIDGET_GROUP_PROPERTY, <b>currentDateLabel</b>);
 //..
 </source>

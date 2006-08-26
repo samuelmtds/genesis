@@ -40,7 +40,7 @@
       returned by the <code>getName()</code> method of the target 
       <code>Component</code> instance. For SWT, <code>widgetName</code>
       must be equal to the value returned by the
-      <code>getData(SWTBinder.NAME_PROPERTY)</code> method of the target 
+      <code>getData()</code> method of the target 
       <code>Widget</code> instance.</p>
       <p><b>At least one of these three properties must be informed</b>.</p>
       <p>The <code>name</code> of the widget that will populated by a 
@@ -374,7 +374,7 @@ private Combo stateComboBox;
   private initComponents() {
      ...
      stateComboBox = new Combo(shell, SWT.NONE);
-     stateComboBox.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateComboBox.setData("state");
      stateComboBox.setData(SWTBinder.KEY_PROPERTY, "acronym");
      stateComboBox.setData(SWTBinder.VALUE_PROPERTY, "description");
   }
@@ -382,7 +382,7 @@ private Combo stateComboBox;
 </source>
           <p>Above we can see the source code of an interface that displays a
           <code>combobox</code> that will hold states at runtime. The combobox 
-          <code>name</code> (<code>stateComboBox.setData(SWTBinder.NAME_PROPERTY, "state")</code>)
+          <code>name</code> (<code>stateComboBox.setData("state")</code>)
           property is equal to the value for the <code>objectField</code> 
           property in annotation <code>@DataProvider</code>. In order to display
           data in the <code>Combo</code> correctly, some properties must be
@@ -424,7 +424,7 @@ private List stateList;
   private initComponents() {
      ...
      stateList = new List(shell, SWT.NONE);
-     stateList.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateList.setData("state");
      stateList.setData(SwingBinder.KEY_PROPERTY, "acronym");
      stateList.setData(SwingBinder.VALUE_PROPERTY, "description");
   }
@@ -441,7 +441,7 @@ private Table stateTable;
      ...
 
      Table stateTable = new Table(shell, SWT.NONE);
-     stateTable.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateTable.setData("state");
      stateTable.setHeaderVisible(true);
 
      TableColumn acronymColumn = new TableColumn(stateTable, SWT.NONE);
@@ -458,7 +458,7 @@ private Table stateTable;
 </source>
           <p>Requirements for populating a table are slightly different.</p>
           <p>As shown above, we can notice that the table name 
-          (<code>stateTable.setData(SWTBinder.NAME_PROPERTY, "state")</code>)
+          (<code>stateTable.setData("state")</code>)
           must 
           be equal to the <code>objectField</code> value (unless
           <code>widgetName</code> is specified). Each row will represent an 
@@ -474,7 +474,7 @@ private Table stateTable;
   private initComponents() {
      ...
      Table stateTable = new Table(shell, SWT.NONE);
-     stateTable.setData(SWTBinder.NAME_PROPERTY, "state");
+     stateTable.setData("state");
      stateTable.setData(SWTBinder.COLUMN_NAMES, new String[] {"acronym", "description"});
      stateTable.setHeaderVisible(true);
 

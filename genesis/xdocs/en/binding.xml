@@ -164,13 +164,13 @@ public class LoginSWTView {
       labelUser.setText("User");
 
       user = new Text(composite, SWT.BORDER);
-      user.setData(SWTBinder.NAME_PROPERTY, "user");
+      user.setData("user");
 
       labelPassword = new Label(composite, SWT.NONE);
       labelPassword.setText("Password");
 
       password = new Text(composite, SWT.BORDER | SWT.PASSWORD);
-      password.setData(SWTBinder.NAME_PROPERTY, "password");
+      password.setData("password");
    }
 
    private void createCompositeButtons() {
@@ -187,11 +187,11 @@ public class LoginSWTView {
       
       clear = new Button(compositeButtons, SWT.NONE);
       clear.setText("Clear");
-      clear.setData(SWTBinder.NAME_PROPERTY, "clear");
+      clear.setData("clear");
 
       login = new Button(compositeButtons, SWT.NONE);
       login.setText("Login");
-      login.setData(SWTBinder.NAME_PROPERTY, "login");
+      login.setData("login");
    }
 
    public void display() throws Exception {
@@ -261,7 +261,7 @@ public class LoginThinletView extends BaseDialogThinlet {
       others. For it to work, each component name must be equal to a property 
       name. If you are using Swing, the <code>setName(String)</code> method of
       each component should be used for that. If you are using SWT, 
-      the <code>setData(SWTBinder.NAME_PROPERTY, String)</code> method of
+      the <code>setData(Object)</code> method of
       each component should be used for that. If Thinlet is being used, an
       easy way to configure a widget name is by defining its <code>name</code> 
       property in the xml file as shown above.</p>

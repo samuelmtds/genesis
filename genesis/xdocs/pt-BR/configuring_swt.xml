@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Configurando as bibliotecas do SWT</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+  </properties>
+  <body>
+    <section name="Configurando as bibliotecas do SWT">
+      <p>Como sabemos, o <a href="http://www.eclipse.org/swt/">SWT</a>
+        (Standard Widget Toolkit) possui diferentes distribuições para
+        diversas plataformas. Usuários que usam Windows, devem baixar a
+        distribuição específica para Windows, assim como usuários Linux, Solaris
+        ou Mac OS, devem utilizar a distribuição de sua plataforma. Estaremos
+        explicando abaixo, como deve ser configurado uma ou mais distribuições
+        para ser utilizado num projeto utilizando genesis.
+      </p>
+      <p>A distribuição do genesis não acompanha nenhuma distribuição do SWT,
+        logo, para criar um projeto SWT ou rodar a parte SWT do exemplo
+        <a href="useradmin_sample.html">useradmin</a> é necessário baixar
+        a distribuição SWT correspondente para sua plataforma. Os arquivos
+        podem ser encontrados no
+        <a href="http://www.eclipse.org/swt/">site oficial do SWT</a>.
+      </p>
+      <p>Os arquivos da distribuição desejada devem ser descompactados
+        na pasta <b>&lt;genesis.home&gt;/genesis/lib/swt</b>
+        e organizados hierarquicamente por Sistema Operacional e Arquitetura
+        do Processador. A arquitetura do processador é opcional e só deve ser
+        definida quando necessário. Por exemplo, não existe distribuição SWT, no
+        momento, que suporte Windows em processadores 64 bits. Logo, é recomendável
+        que para o Sistema Operacional Windows, seja definido também a arquitetura
+        do processador.
+      </p>
+      <p>Imagine um projeto onde estaremos utilizando SWT em máquinas Windows
+        (processador x86 - 32 bits),
+        Linux (usando GTK e processadores x86 - 32 e 64 bits),
+        Solaris (processador SPARC) e Mac OS (processador PPC). A estrutura criada
+        em <b>&lt;genesis.home&gt;/genesis/lib/swt</b> será:
+      </p>
+<source>
+Diretório &lt;genesis.home&gt;/genesis/lib/swt
+  
+Windows
+  + x86
+    - swt.jar
+    - swt.jar
+    - swt.jar
+    - swt.jar
+    - swt.jar
+
+Linux
+  + x86_64
+    - swt.jar
+  - swt.jar
+
+Solaris
+  + sparc
+    - swt.jar
+  
+Mac
+  - swt.jar
+</source>
+      <p>O nome da pasta correspondente ao Sistema Operacional corresponde ao
+        nome da propriedade de sistema da JVM <code>os.name</code>. É possível
+        utilizar apenas a parte inicial do valor de <code>os.name</code>.</p>
+      <p>O nome da pasta correspondente a arquitetura do processador corresponde ao
+        nome da propriedade de sistema da JVM <code>os.arch</code>.</p>
+      <p>Para conhecer os valores das propriedades <code>os.name</code> e 
+        <code>os.arch</code>, compile e rode o programa abaixo:</p>
+<source>
+public class OsAndArch {
+  public static void main(String[] args) {
+     System.out.println("Sistema Operacional: " + System.getProperty("os.name"));
+     System.out.println("Arquitetura Processador: " + System.getProperty("os.arch"));
+  }  
+}
+</source>
+      <p>Em meu sistema operacional, a seguinte saída é visualizada:</p>
+<source>
+Sistema Operacional: Windows XP
+Arquitetura Processador: x86
+</source>
+      <p>Logo, posso disponibilizar os <code>jar</code>s e <code>dll</code>s do SWT para
+        Windows, arquitetura x86 no diretório <code>Windows/x86</code>.
+      </p>
+    </section>
+  </body>
+</document>

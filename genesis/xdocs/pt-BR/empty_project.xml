@@ -178,6 +178,18 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
         (<b>Commands</b>). Juntamente com os Commands, temos as classes mapeadas 
         do Hibernate.</li>
       </ul>
+      <p>É possível criar diretórios com bibliotecas específicas para cada módulo:</p>
+      <ul>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/client/lib</b>: Diretório
+        que deve conter todos os jars necessários para compilação e execução
+        do módulo cliente da aplicação</li>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/shared/lib</b>: Diretório
+        que deve conter todos os jars necessários para compilação e execução
+        do módulo shared da aplicação</li>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/lib</b>: Diretório
+        que deve conter todos os jars necessários para compilação e execução
+        de todos os módulos da aplicação</li>
+      </ul>
       <p>No diretório de código fonte da parte cliente da aplicação, alguns
       arquivos fontes já estão disponíveis no projeto vazio para facilitar o
       desenvolvimento. São eles:</p>
@@ -249,13 +261,14 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
         executar o seu servidor com uma porta para debug aberta e conectar-se a 
         essa porta.</li>
       </ul>
-      <p>A maneira rápida de colocar seu projeto para rodar é:
+      <p>A maneira rápida de colocar seu projeto para rodar é:</p>
 <source>
 ant all
 &lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
 ant run:remote
 </source>
-      </p>
+      <p>Para configurar o SWT em seu projeto, leia as instruções
+        <a href="configuring_swt.html">aqui</a></p>
     </section>
     <section name="Cenários">
        <p>Abaixo temos exemplos de configuração do genesis para diferentes cenários</p>

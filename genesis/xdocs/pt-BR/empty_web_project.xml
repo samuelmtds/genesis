@@ -14,9 +14,7 @@
       compilação e instalação já estão configurados nesse projeto vazio.</p>
       <p>É de extrema importância que você já tenha lido a documentação do
       genesis e compreenda seus conceitos e funcionalidades. Antes de começar a
-      codificar, leia o <a href="documentation_intro.html">Manual do Usuário</a>
-      e <a href="jars_explained.html">entenda os jars da distribuição do genesis
-      </a>.</p>
+      codificar, leia o <a href="documentation_intro.html">Manual do Usuário</a>.</p>
       <p>À estrutura de um projeto vazio chamamos de <code>empty-web-project</code>
       e este está presente na distribuição empty-web-project ou na distribuição completa do genesis.
       A estrutura se encontra no diretório

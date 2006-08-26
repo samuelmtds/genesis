@@ -164,13 +164,13 @@ public class LoginSWTView {
       labelUsuario.setText("Usuário");
 
       usuario = new Text(composite, SWT.BORDER);
-      usuario.setData(SWTBinder.NAME_PROPERTY, "usuario");
+      usuario.setData("usuario");
 
       labelSenha = new Label(composite, SWT.NONE);
       labelSenha.setText("Senha");
 
       senha = new Text(composite, SWT.BORDER | SWT.PASSWORD);
-      senha.setData(SWTBinder.NAME_PROPERTY, "senha");
+      senha.setData("senha");
    }
 
    private void createCompositeBotoes() {
@@ -187,11 +187,11 @@ public class LoginSWTView {
       
       limpar = new Button(compositeBotoes, SWT.NONE);
       limpar.setText("Limpar");
-      limpar.setData(SWTBinder.NAME_PROPERTY, "limpar");
+      limpar.setData("limpar");
 
       login = new Button(compositeBotoes, SWT.NONE);
       login.setText("Login");
-      login.setData(SWTBinder.NAME_PROPERTY, "login");
+      login.setData("login");
    }
 
    public void display() throws Exception {
@@ -262,7 +262,7 @@ public class LoginThinletView extends BaseDialogThinlet {
       passwordfields, labels e outros. Para que isto aconteça, os nomes dos 
       componentes têm que ser iguais aos nomes das propriedades. Com Swing, 
       deve-se usar o método <code>setName(String)</code> dos componentes. Com SWT,
-      use o método <code>setData(SWTBinder.NAME_PROPERTY, String)</code>. Usando 
+      use o método <code>setData(Object)</code>. Usando 
       Thinlet, conforme mostrado no exemplo acima, isso é feito por definir a 
       propriedade <code>name</code> dos widgets no xml com o nome das 
       propriedades.</p>

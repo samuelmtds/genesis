@@ -205,7 +205,7 @@ getContentPane().add(scrollPane);
 Shell shell = new Shell();
 
 Combo widget = new Combo(shell, SWT.NONE);
-widget.setData(SWTBinder.NAME_PROPERTY, "widget");
+widget.setData("widget");
 widget.setData(SWTBinder.KEY_PROPERTY, "uniqueProperty");
 widget.setData(SWTBinder.VALUE_PROPERTY, "virtualValue");
 widget.setData(SWTBinder.VIRTUAL, Boolean.TRUE);
@@ -216,7 +216,7 @@ widget.setData(SWTBinder.VIRTUAL, Boolean.TRUE);
 Shell shell = new Shell();
 
 Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL| SWT.BORDER);
-widget.setData(SWTBinder.NAME_PROPERTY, "widget");
+widget.setData("widget");
 widget.setHeaderVisible(true);
 
 TableColumn column1 = new TableColumn(widget, SWT.NONE);
