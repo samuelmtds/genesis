@@ -45,6 +45,7 @@ public abstract class BaseView extends BaseThinlet {
       f.addWindowListener(new WindowAdapter() {
          public void windowClosing(WindowEvent event) {
             try {
+               dispose();
                onClose();
             } catch (Exception e) {
                throw new RuntimeException(e);
@@ -54,6 +55,11 @@ public abstract class BaseView extends BaseThinlet {
       setAllI18n(true);
       setResourceBundle(UIUtils.getInstance().getBundle());
       add(parse(xmlFile));
+   }
+
+   protected void dispose() throws Exception {
+      getFrame().dispose();
+      releaseThinletThread();
    }
 
    protected abstract void onClose() throws Exception;

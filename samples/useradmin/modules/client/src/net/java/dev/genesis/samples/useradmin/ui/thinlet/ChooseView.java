@@ -29,19 +29,19 @@ public class ChooseView extends BaseView {
    }
 
    public void onThinlet() throws Exception {
-      getFrame().dispose();
+      dispose();
       new net.java.dev.genesis.samples.useradmin.ui.thinlet.UserListView()
             .display();
    }
 
    public void onSwing() throws Exception {
-      getFrame().dispose();
+      dispose();
       new net.java.dev.genesis.samples.useradmin.ui.swing.UserListView()
             .display();
    }
 
    public void onSWT() throws Exception {
-      getFrame().dispose();
+      dispose();
       new net.java.dev.genesis.samples.useradmin.ui.swt.UserListView()
             .display();
    }
