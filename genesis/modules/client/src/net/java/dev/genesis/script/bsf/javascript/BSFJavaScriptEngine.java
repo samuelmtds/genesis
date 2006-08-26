@@ -127,7 +127,7 @@ public class BSFJavaScriptEngine extends BSFEngineImpl {
 
    private void handleError(Throwable t) throws BSFException {
       if (t instanceof WrappedException) {
-         t = (Throwable) ((WrappedException) t).getWrappedException();
+         t = ((WrappedException) t).getWrappedException();
       }
 
       String message = null;
