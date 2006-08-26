@@ -51,23 +51,23 @@ public class BreadthFirstWidgetLookupStrategyTest extends GenesisTestCase {
    }
 
    public void testSimpleLookup() {
-      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "someName");
+      panelLevel1Position1.setData("someName");
 
       assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
 
-      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "anotherName");
+      panelLevel1Position1.setData("anotherName");
       assertSame(panelLevel1Position1, strategy.lookup(root, "anotherName"));
 
-      panelLevel2Position0.setData(SWTBinder.NAME_PROPERTY, "theName");
+      panelLevel2Position0.setData("theName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "theName"));
    }
 
    public void testBreadthFirstLookup() {
-      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "someName");
-      panelLevel2Position0.setData(SWTBinder.NAME_PROPERTY, "someName");
+      panelLevel1Position1.setData("someName");
+      panelLevel2Position0.setData("someName");
       assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
 
-      panelLevel1Position1.setData(SWTBinder.NAME_PROPERTY, "changeName");
+      panelLevel1Position1.setData("changeName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
    }
 }

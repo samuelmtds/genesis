@@ -48,7 +48,7 @@ public class SpinnerWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       spinner = new Spinner(root = new Shell(), SWT.NONE);
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       widgetBinder = binder.getWidgetBinder(spinner);
       fieldMeta = form.getFormMetadata().getFieldMetadata("intField");
    }

@@ -588,9 +588,9 @@ public class DefaultFormController implements FormController {
          if (dataProviderMeta != null) {
             if (ret == null) {
                throw new IllegalStateException("DataProvider " + 
-                     methodMetadata.getName() + " in " + form + " returned " +
+                     methodMetadata.getName() + " in " + getForm() + " returned " +
                      "null; it should return an empty " + 
-                     ReflectionInvoker.getInstance().getMethod(form, 
+                     ReflectionInvoker.getInstance().getMethod(getForm(), 
                      methodMetadata.getName(), methodMetadata.getMethodEntry()
                      .getArgsClassesNames()).getReturnType().getName() + 
                      " instead");

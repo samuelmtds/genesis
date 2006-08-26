@@ -49,7 +49,7 @@ public class TextWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       text = new Text(root = new Shell(), SWT.NONE);
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       binder.register("text", text);
       widgetBinder = binder.getWidgetBinder(text);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");

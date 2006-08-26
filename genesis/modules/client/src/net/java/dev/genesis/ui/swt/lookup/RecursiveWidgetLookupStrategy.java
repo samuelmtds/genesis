@@ -25,9 +25,19 @@ import org.eclipse.swt.widgets.Widget;
 
 public abstract class RecursiveWidgetLookupStrategy
       extends RecursiveLookupStrategy {
+   public String getName(Object object) {
+      String name = super.getName(object);
+
+      if (name != null) {
+         return name;
+      }
+
+      return getRealName(object);
+   }
+
    protected String getRealName(Object object) {
       if (object instanceof Widget) {
-         return (String) ((Widget)object).getData(SWTBinder.NAME_PROPERTY);
+         return (String) ((Widget)object).getData();
       }
 
       return null;
@@ -35,7 +45,8 @@ public abstract class RecursiveWidgetLookupStrategy
 
    protected boolean isAlreadyBound(Object object) {
       return object instanceof Widget
-            && ((Widget) object).getData(SWTBinder.GENESIS_BOUND) != null;
+            && Boolean.TRUE.equals(((Widget) object)
+                  .getData(SWTBinder.GENESIS_BOUND));
    }
 
    protected Object lookupImpl(Object object, String name) {

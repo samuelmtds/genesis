@@ -31,11 +31,7 @@ public class MapLookupStrategyTest extends GenesisTestCase {
    }
 
    protected void setUp() {
-      strategy = new MapLookupStrategy() {
-         protected String getRealName(Object object) {
-            return null;
-         }
-      };
+      strategy = new MapLookupStrategy() {};
       object1 = new Object();
       object2 = new Object();
    }

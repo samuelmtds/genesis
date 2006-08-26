@@ -28,6 +28,7 @@ import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
+import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 import net.java.dev.genesis.ui.thinlet.ThinletBinder;
 
 public class DefaultFormControllerTest extends GenesisTestCase {
@@ -93,7 +94,7 @@ public class DefaultFormControllerTest extends GenesisTestCase {
    }
 
    public void testFormControllerListeners() {
-      FormControllerListener listener = new ThinletBinder(null, null, form);
+      FormControllerListener listener = new ThinletBinder(new BaseThinlet() {}, null, form);
       
       // Assert no listeners
       assertEquals(0, controller.getFormControllerListeners().size());

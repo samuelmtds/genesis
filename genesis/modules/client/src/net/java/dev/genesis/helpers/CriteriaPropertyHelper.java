@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import net.java.dev.genesis.command.hibernate.CriteriaResolver;
 import net.java.dev.genesis.command.hibernate.HibernateCriteria;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
+import net.java.dev.genesis.ui.metadata.DefaultFormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
@@ -47,7 +48,13 @@ public class CriteriaPropertyHelper {
          throws Exception {
       final CriteriaResolver critResolver = (CriteriaResolver) hibCriteria;
 
-      final FormMetadata formMeta = ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+      final FormMetadata formMeta;
+      if (form instanceof FormMetadataFactory) {
+         formMeta = ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+      } else {
+         formMeta = new DefaultFormMetadataFactory().getFormMetadata(form.getClass());
+      }
+
       final Map propertiesMap = PropertyUtils.describe(form);
       GenesisUtils.normalizeMap(propertiesMap);
 

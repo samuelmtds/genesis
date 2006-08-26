@@ -19,7 +19,6 @@
 package net.java.dev.genesis.ui.swt.lookup;
 
 import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -74,7 +73,7 @@ public class RecursiveWidgetLookupStrategyTest extends GenesisTestCase {
    }
    
    public void testWithComponentName() {
-      panel.setData(SWTBinder.NAME_PROPERTY, "someName");
+      panel.setData("someName");
 
       // Mock object will return root. So we ensure that lookupImpl was called
       assertSame(root, strategy.lookup(root, "someName"));
@@ -104,7 +103,7 @@ public class RecursiveWidgetLookupStrategyTest extends GenesisTestCase {
       assertSame(root, strategy.lookup(root, "someOtherName"));
       assertEquals("someOtherName", strategy.get("lookupImpl(Widget,String)"));
 
-      anotherPanel.setData(SWTBinder.NAME_PROPERTY, "someName");
+      anotherPanel.setData("someName");
       assertSame(panel, strategy.lookup(root, "someName"));
       assertEquals("someName", strategy.getName(anotherPanel));
       assertEquals("someName", strategy.getName(panel));

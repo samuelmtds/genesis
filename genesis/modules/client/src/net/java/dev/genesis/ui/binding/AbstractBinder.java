@@ -25,16 +25,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.ValidationUtils;
+import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.DefaultFormMetadataFactory;
+import net.java.dev.genesis.ui.metadata.DefaultViewMetadataFactory;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
@@ -118,6 +120,8 @@ public abstract class AbstractBinder implements FormControllerListener {
    private final Object form;
    private final Object handler;
    private final FormController controller;
+   private final FormMetadata formMetadata;
+   private final ViewMetadata viewMetadata;
    private ExceptionHandler exceptionHandler;
    private final LookupStrategy lookupStrategy;
    private final Map formatters = new HashMap();
@@ -132,6 +136,8 @@ public abstract class AbstractBinder implements FormControllerListener {
       this.form = form;
       this.handler = handler;
       this.controller = getFormController(form);
+      this.formMetadata = getFormMetadata(form);
+      this.viewMetadata = getViewMetadata(handler);
       this.lookupStrategy = (lookupStrategy == null) ? createLookupStrategy()
             : lookupStrategy;
    }
@@ -149,26 +155,32 @@ public abstract class AbstractBinder implements FormControllerListener {
       return root;
    }
 
-   public FormController getFormController() {
+   protected FormController getFormController() {
       return controller;
    }
 
    protected ViewMetadata getViewMetadata(final Object handler) {
-      TypeChecker.checkViewMetadataFactory(handler);
+      if (handler instanceof ViewMetadataFactory) {
+         return ((ViewMetadataFactory) handler).getViewMetadata(handler.getClass());
+      }
 
-      return ((ViewMetadataFactory) handler).getViewMetadata(handler.getClass());
+      return new DefaultViewMetadataFactory().getViewMetadata(handler.getClass());
    }
 
    protected FormController getFormController(final Object form) {
-      TypeChecker.checkFormControllerFactory(form);
+      if (form instanceof FormControllerFactory) {
+         return ((FormControllerFactory) form).getFormController(form);   
+      }
 
-      return ((FormControllerFactory) form).getFormController(form);
+      return new DefaultFormControllerFactory().getFormController(form);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
-      TypeChecker.checkFormMetadataFactory(form);
+      if (form instanceof FormMetadataFactory) {
+         return ((FormMetadataFactory) form).getFormMetadata(form.getClass());
+      }
 
-      return ((FormMetadataFactory) form).getFormMetadata(form.getClass());
+      return new DefaultFormMetadataFactory().getFormMetadata(form.getClass());
    }
 
    /**
@@ -182,7 +194,6 @@ public abstract class AbstractBinder implements FormControllerListener {
 
    /**
     * Creates and returns a new instance of LookupStrategy.
-    * Override to change the default LookupStrategy to use.
     *
     * @return a new instance of a LookupStrategy
     */
@@ -207,8 +218,6 @@ public abstract class AbstractBinder implements FormControllerListener {
 
    public void bind() {
       try {
-         final FormMetadata formMetadata = getFormMetadata(form);
-
          bindFieldMetadatas(formMetadata);
          bindActionMetadatas(formMetadata);
          bindDataProviders(formMetadata);
@@ -223,6 +232,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    }
 
    protected abstract void markBound();
+   protected abstract void markUnbound();
 
    protected void bindFieldMetadatas(final FormMetadata formMetadata) {
       for (final Iterator i =
@@ -382,14 +392,12 @@ public abstract class AbstractBinder implements FormControllerListener {
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata)
             throws Exception {
-      return getViewMetadata(handler)
-                   .invokeBeforeAction(handler, methodMetadata.getName());
+      return viewMetadata.invokeBeforeAction(handler, methodMetadata.getName());
    }
 
    public void afterInvokingMethod(MethodMetadata methodMetadata)
             throws Exception {
-      getViewMetadata(handler)
-            .invokeAfterAction(handler, methodMetadata.getName());
+      viewMetadata.invokeAfterAction(handler, methodMetadata.getName());
    }
 
    public void dataProvidedListChanged(DataProviderMetadata metadata, List items)
@@ -501,6 +509,9 @@ public abstract class AbstractBinder implements FormControllerListener {
       unbindFields();
       unbindActions();
       unbindDataProviders();
+
+      controller.removeFormControllerListener(getFormControllerListener());
+      markUnbound();
    }
 
    protected void unbindFields() {
@@ -554,8 +565,7 @@ public abstract class AbstractBinder implements FormControllerListener {
    }
    
    protected MethodMetadata getMethodMetadata(String name) {
-      return getFormMetadata(form)
-                   .getMethodMetadata(new MethodEntry(name, new String[0]));
+      return formMetadata.getMethodMetadata(new MethodEntry(name, new String[0]));
    }
 
    protected Map getStringProperties() throws Exception {
@@ -667,8 +677,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       return formatter;
    }
 
-   protected WidgetBinder registerWidgetBinder(String name,
-      Object binder) {
+   protected WidgetBinder registerWidgetBinder(String name, WidgetBinder binder) {
       return (WidgetBinder) componentBinders.put(name, binder);
    }
 
@@ -708,6 +717,12 @@ public abstract class AbstractBinder implements FormControllerListener {
 
    protected abstract GroupBinder getDefaultGroupBinderFor(Object group);
 
+   /**
+    * Invokes the specified action defined by <code>actionMetadata</code>.
+    * All exceptions are handled by the method itself
+    * 
+    * @param actionMetadata the ActionMetadata that represents an action
+    */
    public void invokeFormAction(ActionMetadata actionMetadata) {
       try {
          invokeAction(actionMetadata.getName());
@@ -715,7 +730,15 @@ public abstract class AbstractBinder implements FormControllerListener {
          handleException(e);
       }
    }
-   
+
+   /**
+    * Updates the form selection of the DataProvider 
+    * defined by <code>dataProviderMetadata</code>.
+    * All exceptions are handled by the method itself
+    * 
+    * @param dataProviderMetadata the DataProviderMetadata that represents a DataProvider
+    * @param indexes the indexes used to update form selection
+    */
    public void updateFormSelection(DataProviderMetadata dataProviderMetadata,
          int[] indexes) {
       try {
@@ -725,6 +748,13 @@ public abstract class AbstractBinder implements FormControllerListener {
       }
    }
 
+   /**
+    * Updates the form field defined by <code>fieldMetadata</code>.
+    * All exceptions are handled by the method itself
+    * 
+    * @param fieldMetadata the FieldMetadata that represents a form field
+    * @param value the value to be set
+    */
    public void populateForm(FieldMetadata fieldMetadata, Object value) {
       try {
          getFormController().populate(
@@ -735,6 +765,15 @@ public abstract class AbstractBinder implements FormControllerListener {
       }
    }
 
+   /**
+    * Converts the UI selected indexes to be used in the form. If the widget
+    * uses a blank label, 1 is subtracted from all indexes. If any
+    * index is less than zero, the index is removed.
+    * 
+    * @param selected the selected indexes
+    * @param isBlank true if the widget uses a blank label
+    * @return the converted indexes to be used in the form
+    */
    public int[] getIndexesFromUI(int[] selected, boolean isBlank) {
       if ((selected.length >= 1) && isBlank) {
          boolean remove = false;
@@ -761,6 +800,15 @@ public abstract class AbstractBinder implements FormControllerListener {
       return selected;
    }
 
+   /**
+    * Converts the form selected indexes to be used in UI. If the widget
+    * uses a blank label, 1 is added to all indexes. If any
+    * index is less than zero, -1 is assigned to it.
+    * 
+    * @param selected the selected indexes
+    * @param isBlank true if the widget uses a blank label
+    * @return the converted indexes to be used in the UI
+    */
    public int[] getIndexesFromController(int[] selected, boolean isBlank) {
       if (isBlank) {
          if (selected.length == 0) {

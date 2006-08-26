@@ -104,4 +104,7 @@ public class MockAbstractBinder extends AbstractBinder {
 
    protected void markBound() {
    }
+   
+   protected void markUnbound() {
+   }
 }

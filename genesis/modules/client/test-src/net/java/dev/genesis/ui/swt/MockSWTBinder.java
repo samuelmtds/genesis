@@ -61,7 +61,7 @@ public class MockSWTBinder extends SWTBinder {
       map.clear();
    }
    
-   public WidgetBinder registerWidgetBinder(String name, Object binder) {
+   public WidgetBinder registerWidgetBinder(String name, WidgetBinder binder) {
       return super.registerWidgetBinder(name, binder);
    }
 

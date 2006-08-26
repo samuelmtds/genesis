@@ -85,7 +85,7 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       TableColumn column2 = new TableColumn(table, SWT.NONE);
       column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "value");
       
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));

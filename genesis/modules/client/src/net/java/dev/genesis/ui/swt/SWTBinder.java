@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Widget;
 
 
 public class SWTBinder extends AbstractBinder {
-   public static final String NAME_PROPERTY = "genesis:widgetName";
    public static final String TABLE_COLUMN_IDENTIFIER = "genesis:tableColumnIdentifier";
 
    private final WidgetBinderRegistryFactory factory =
@@ -77,6 +76,12 @@ public class SWTBinder extends AbstractBinder {
    protected void markBound() {
       if (getRoot() instanceof Widget) {
          ((Widget) getRoot()).setData(GENESIS_BOUND, Boolean.TRUE);
+      }
+   }
+
+   protected void markUnbound() {
+      if (getRoot() instanceof Widget) {
+         ((Widget) getRoot()).setData(GENESIS_BOUND, Boolean.FALSE);
       }
    }
 

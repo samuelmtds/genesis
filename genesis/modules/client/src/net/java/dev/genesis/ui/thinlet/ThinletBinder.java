@@ -28,14 +28,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.java.dev.genesis.helpers.TypeChecker;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.ui.ValidationUtils;
+import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.DefaultFormMetadataFactory;
+import net.java.dev.genesis.ui.metadata.DefaultViewMetadataFactory;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
@@ -67,6 +69,8 @@ public class ThinletBinder implements FormControllerListener {
    private final Object form;
    private final Object handler;
    private final FormController controller;
+   private final FormMetadata formMetadata;
+   private final ViewMetadata viewMetadata;
 
    private int componentSearchDepth = 0;
    private List groupComponents;
@@ -93,28 +97,35 @@ public class ThinletBinder implements FormControllerListener {
       this.form = form;
       this.handler = handler;
       this.controller = getFormController(form);
+      this.formMetadata = getFormMetadata(form);
+      this.viewMetadata = getViewMetadata(handler);
    }
    
    protected ViewMetadata getViewMetadata(final Object handler) {
-      TypeChecker.checkViewMetadataFactory(handler);
+      if (handler instanceof ViewMetadataFactory) {
+         return ((ViewMetadataFactory) handler).getViewMetadata(handler.getClass());
+      }
 
-      return ((ViewMetadataFactory)handler).getViewMetadata(handler.getClass());
+      return new DefaultViewMetadataFactory().getViewMetadata(handler.getClass());
    }
 
    protected FormController getFormController(final Object form) {
-      TypeChecker.checkFormControllerFactory(form);
+      if (form instanceof FormControllerFactory) {
+         return ((FormControllerFactory) form).getFormController(form);   
+      }
 
-      return ((FormControllerFactory)form).getFormController(form);
+      return new DefaultFormControllerFactory().getFormController(form);
    }
 
    protected FormMetadata getFormMetadata(final Object form) {
-      TypeChecker.checkFormMetadataFactory(form);
+      if (form instanceof FormMetadataFactory) {
+         return ((FormMetadataFactory) form).getFormMetadata(form.getClass());
+      }
 
-      return ((FormMetadataFactory)form).getFormMetadata(form.getClass());
+      return new DefaultFormMetadataFactory().getFormMetadata(form.getClass());
    }
 
    public void bind() throws Exception {
-      final FormMetadata formMetadata = getFormMetadata(form);
       final Collection dataProviders = new ArrayList(formMetadata
             .getDataProviderMetadatas().values());
 
@@ -441,7 +452,7 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    protected MethodMetadata getMethodMetadata(String name) {
-      return getFormMetadata(form).getMethodMetadata(
+      return formMetadata.getMethodMetadata(
             new MethodEntry(name, new String[0]));
    }
 
@@ -471,13 +482,13 @@ public class ThinletBinder implements FormControllerListener {
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
          throws Exception {
-      return getViewMetadata(handler).invokeBeforeAction(handler, 
+      return viewMetadata.invokeBeforeAction(handler, 
             methodMetadata.getName());
    }
 
    public void afterInvokingMethod(MethodMetadata methodMetadata) 
          throws Exception {
-      getViewMetadata(handler).invokeAfterAction(handler, 
+      viewMetadata.invokeAfterAction(handler, 
             methodMetadata.getName());
    }
    

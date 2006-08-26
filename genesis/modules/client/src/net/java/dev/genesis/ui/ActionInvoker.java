@@ -18,7 +18,7 @@
  */
 package net.java.dev.genesis.ui;
 
-import net.java.dev.genesis.helpers.TypeChecker;
+import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;
 
@@ -34,10 +34,15 @@ public class ActionInvoker {
 
    private static FormController getFormController(final Object target) 
          throws Exception {
-      TypeChecker.checkFormControllerFactory(target);
-
-      final FormController controller = ((FormControllerFactory)target)
-            .getFormController(target);
+      
+      final FormController controller;
+      if (target instanceof FormControllerFactory) {
+         controller = ((FormControllerFactory) target)
+               .getFormController(target);
+      } else {
+         controller = new DefaultFormControllerFactory()
+               .getFormController(target);
+      }
 
       if (!controller.isSetup()) {
          controller.setup();

@@ -47,7 +47,7 @@ public class RecursiveComponentLookupStrategyTest extends GenesisTestCase {
       assertEquals("someName", strategy.getName(panel));
 
       assertSame(root, strategy.lookup(root, "none"));
-      assertEquals("none", strategy.get("lookupImpl(Object,String)"));
+      assertEquals("none", strategy.get("lookupImpl(Component,String)"));
       assertNull(strategy.getName(anotherPanel));
       
       Exception ex = null;
@@ -62,7 +62,7 @@ public class RecursiveComponentLookupStrategyTest extends GenesisTestCase {
       assertSame(panel, strategy.lookup(root, "someName"));
       assertEquals("someName", strategy.getName(panel));
       assertSame(root, strategy.lookup(root, "someOtherName"));
-      assertEquals("someOtherName", strategy.get("lookupImpl(Object,String)"));
+      assertEquals("someOtherName", strategy.get("lookupImpl(Component,String)"));
 
       strategy.register("someName", anotherPanel);
       assertSame(anotherPanel, strategy.lookup(root, "someName"));
@@ -76,10 +76,10 @@ public class RecursiveComponentLookupStrategyTest extends GenesisTestCase {
       // Mock object will return root. So we ensure that lookupImpl was called
       assertSame(root, strategy.lookup(root, "someName"));
       assertEquals("someName", strategy.getName(panel));
-      assertEquals("someName", strategy.get("lookupImpl(Object,String)"));
+      assertEquals("someName", strategy.get("lookupImpl(Component,String)"));
 
       assertEquals(root, strategy.lookup(root, "none"));
-      assertEquals("none", strategy.get("lookupImpl(Object,String)"));
+      assertEquals("none", strategy.get("lookupImpl(Component,String)"));
       assertNull(strategy.getName(anotherPanel));
       
       strategy.register("someName", panel);
@@ -99,7 +99,7 @@ public class RecursiveComponentLookupStrategyTest extends GenesisTestCase {
       assertSame(panel, strategy.lookup(root, "someName"));
       assertEquals("someName", strategy.getName(panel));
       assertSame(root, strategy.lookup(root, "someOtherName"));
-      assertEquals("someOtherName", strategy.get("lookupImpl(Object,String)"));
+      assertEquals("someOtherName", strategy.get("lookupImpl(Component,String)"));
 
       anotherPanel.setName("someName");
       assertSame(panel, strategy.lookup(root, "someName"));

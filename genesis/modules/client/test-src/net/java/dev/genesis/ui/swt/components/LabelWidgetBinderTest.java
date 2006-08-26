@@ -47,7 +47,7 @@ public class LabelWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       label = new Label(root = new Shell(), SWT.NONE);
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       widgetBinder = binder.getWidgetBinder(label);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }

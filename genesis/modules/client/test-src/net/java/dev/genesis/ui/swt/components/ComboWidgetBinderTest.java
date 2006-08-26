@@ -62,7 +62,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       combo = new Combo(root = new Shell(), SWT.NONE);
       combo.setData(SWTBinder.KEY_PROPERTY, "key");
       combo.setData(SWTBinder.VALUE_PROPERTY, "value");
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));

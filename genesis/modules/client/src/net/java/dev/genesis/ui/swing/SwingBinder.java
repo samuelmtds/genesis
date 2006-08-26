@@ -20,9 +20,13 @@ package net.java.dev.genesis.ui.swing;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -60,6 +64,8 @@ public class SwingBinder extends AbstractBinder {
    private final ComponentBinderRegistryFactory factory =
       ComponentBinderRegistryFactory.getInstance();
    private final ActionListener defaultButtonListener;
+   private final WindowListener windowListener;
+   private final FormControllerListener listener;
 
    /**
     * Constructs a new <code>SwingBinder</code> initialized with the
@@ -139,8 +145,10 @@ public class SwingBinder extends AbstractBinder {
    public SwingBinder(Component component,
       LookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
       super(component, form, handler, lookupStrategy);
-      this.defaultButtonListener = bindDefaultButton ? createDefautButtonListener()
+      this.listener = createFormControllerListener();
+      this.defaultButtonListener = bindDefaultButton && hasDefaultButton() ? createDefautButtonListener()
             : null;
+      this.windowListener = isWindow() ? createWindowListener() : null;
    }
 
    /**
@@ -183,6 +191,8 @@ public class SwingBinder extends AbstractBinder {
     * @param binder the component binder to be associated with the specified name.
     * @return previous component associated with specified name, or <tt>null</tt>
     *          if none.
+    *
+    * @deprecated Use <code>registerWidgetBinder(String,WidgetBinder)</code> instead
     */
    public WidgetBinder registerComponentBinder(String componentName,
          WidgetBinder binder) {
@@ -244,6 +254,14 @@ public class SwingBinder extends AbstractBinder {
       super.bind();
 
       bindDefaultButton();
+      bindWindowListener();
+   }
+
+   public void unbind() {
+      unbindWindowListener();
+      unbindDefaultButton();
+
+      super.unbind();
    }
 
    protected void markBound() {
@@ -252,19 +270,68 @@ public class SwingBinder extends AbstractBinder {
       }
    }
 
+   protected void markUnbound() {
+      if (getRoot() instanceof JComponent) {
+         ((JComponent) getRoot()).putClientProperty(GENESIS_BOUND, Boolean.FALSE);
+      }
+   }
+
+   protected boolean isWindow() {
+      return getRoot() instanceof Window;
+   }
+
+   protected WindowListener createWindowListener() {
+      return new WindowAdapter() {
+         public void windowClosed(WindowEvent event) {
+            unbind();
+         }
+      };
+   }
+   
+   protected void unbindWindowListener() {
+      if (windowListener == null) {
+         return;
+      }
+
+      ((Window) getRoot()).removeWindowListener(windowListener);
+   }
+
+   protected void bindWindowListener() {
+      if (windowListener == null) {
+         return;
+      }
+
+      ((Window) getRoot()).addWindowListener(windowListener);
+   }
+
+
+   protected void unbindDefaultButton() {
+      if (defaultButtonListener == null) {
+         return;
+      }
+
+      final JButton defaultButton = ((RootPaneContainer) getRoot())
+            .getRootPane().getDefaultButton();
+
+      if (defaultButton != null) {
+         defaultButton.removeActionListener(defaultButtonListener);
+      }
+   }
+
    protected void bindDefaultButton() {
-      if (defaultButtonListener == null || !(getRoot() instanceof RootPaneContainer)) {
+      if (defaultButtonListener == null) {
          return;
       }
 
-      final JButton defaultButton = ((RootPaneContainer) getRoot()).getRootPane()
-            .getDefaultButton();
-
-      if (defaultButton == null) {
-         return;
-      }
+      final JButton defaultButton = ((RootPaneContainer) getRoot())
+            .getRootPane().getDefaultButton();
 
       defaultButton.addActionListener(defaultButtonListener);
+   }
+
+   protected boolean hasDefaultButton() {
+      return getRoot() instanceof RootPaneContainer
+            && ((RootPaneContainer) getRoot()).getRootPane().getDefaultButton() != null;
    }
 
    protected ActionListener createDefautButtonListener() {
@@ -285,13 +352,26 @@ public class SwingBinder extends AbstractBinder {
    }
 
    protected FormControllerListener getFormControllerListener() {
-      return (FormControllerListener) Proxy.newProxyInstance(
-            Thread.currentThread().getContextClassLoader(),
-            new Class[] {FormControllerListener.class}, new InvocationHandler() {
-               public Object invoke(Object proxy, final Method method, 
+      return listener;
+   }
+
+   protected FormControllerListener createFormControllerListener() {
+      return (FormControllerListener) Proxy.newProxyInstance(Thread
+            .currentThread().getContextClassLoader(),
+            new Class[] { FormControllerListener.class },
+            new InvocationHandler() {
+               public Object invoke(Object proxy, final Method method,
                      final Object[] args) throws Throwable {
-                  if (method.getDeclaringClass() != FormControllerListener.class || 
-                        EventQueue.isDispatchThread()) {
+
+                  if (method.getDeclaringClass() != FormControllerListener.class
+                        || EventQueue.isDispatchThread()) {
+                     if (isHashCode(method)) {
+                        return new Integer(SwingBinder.this.listener.hashCode());
+                     } else if (isEqualMethod(method)) {
+                        return Boolean
+                              .valueOf(SwingBinder.this.listener == args[0]);
+                     }
+
                      return method.invoke(SwingBinder.this, args);
                   }
 
@@ -317,6 +397,17 @@ public class SwingBinder extends AbstractBinder {
                   }
 
                   return result[0];
+               }
+
+               private boolean isEqualMethod(Method method) {
+                  return "equals".equals(method.getName())
+                        && method.getParameterTypes().length == 1
+                        && method.getParameterTypes()[0] == Object.class;
+               }
+
+               private boolean isHashCode(Method method) {
+                  return "hashCode".equals(method.getName())
+                        && method.getParameterTypes().length == 0;
                }
             });
    }

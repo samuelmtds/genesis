@@ -46,7 +46,7 @@ public class ButtonWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       button = new Button(root = new Shell(), SWT.NONE);
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       actionMeta = (ActionMetadata) form.getFormMetadata().getActionMetadatas()
             .get("someAction");
       widgetBinder = binder.getWidgetBinder(button);

@@ -52,7 +52,7 @@ public class WidgetFactoryRegistryTest extends GenesisTestCase {
       Integer number = new Integer(0);
 
       assertSame(factory, registry.get(number));
-      assertSame(WIDGET, ((WidgetFactory)registry.get(number)).create(null,
+      assertSame(WIDGET, (registry.get(number)).create(null,
             null, null, null, null));
 
       registry.deregister(Number.class);

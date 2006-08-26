@@ -844,6 +844,7 @@ public class ThinletBinderTest extends GenesisTestCase {
          }
       };
       viewHandler.setViewMetadata(viewMeta);
+      binder = new ThinletBinder(thinlet, thinlet.getDesktop(), form, viewHandler);
 
       binder.beforeInvokingMethod(new MethodMetadata(getMethod(beforeAction), true, false));
       binder.afterInvokingMethod(new MethodMetadata(getMethod(afterAction), true, false));

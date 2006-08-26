@@ -23,7 +23,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 
-public abstract class MapLookupStrategy implements LookupStrategy {
+public class MapLookupStrategy implements LookupStrategy {
    private Map components = new HashMap();
    private Map identityMap = new IdentityHashMap();
 
@@ -47,14 +47,6 @@ public abstract class MapLookupStrategy implements LookupStrategy {
    }
 
    public String getName(Object object) {
-      String name = (String) identityMap.get(object);
-
-      if (name == null) {
-         name = getRealName(object);
-      }
-
-      return name;
+      return (String) identityMap.get(object);
    }
-
-   protected abstract String getRealName(Object object);
 }

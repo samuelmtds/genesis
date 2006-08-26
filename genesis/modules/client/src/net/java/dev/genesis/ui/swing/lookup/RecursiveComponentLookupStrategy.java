@@ -26,6 +26,16 @@ import net.java.dev.genesis.ui.binding.RecursiveLookupStrategy;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public abstract class RecursiveComponentLookupStrategy extends RecursiveLookupStrategy {
+   public String getName(Object object) {
+      String name = super.getName(object);
+
+      if (name != null) {
+         return name;
+      }
+
+      return getRealName(object);
+   }
+
    protected String getRealName(Object object) {
       if (object instanceof Component) {
          return ((Component)object).getName();
@@ -33,10 +43,11 @@ public abstract class RecursiveComponentLookupStrategy extends RecursiveLookupSt
 
       return null;
    }
-   
+
    protected boolean isAlreadyBound(Object object) {
-      return object instanceof JComponent &&
-      (((JComponent) object).getClientProperty(SwingBinder.GENESIS_BOUND) != null);
+      return object instanceof JComponent
+            && (Boolean.TRUE.equals(((JComponent) object)
+                  .getClientProperty(SwingBinder.GENESIS_BOUND)));
    }
 
    protected Object lookupImpl(Object object, String name) {

@@ -31,11 +31,15 @@ public abstract class RecursiveLookupStrategy extends MapLookupStrategy {
    }
 
    public Object lookup(Object object, String name) {
-      Object result = super.lookup(object, name);
-
       if (object == null) {
          return null;
       }
+
+      if (doSkip(object)) {
+         return null;
+      }
+
+      Object result = super.lookup(object, name);
 
       if (result != null) {
          return result;
@@ -45,10 +49,6 @@ public abstract class RecursiveLookupStrategy extends MapLookupStrategy {
          return object;
       }
 
-      if (doSkip(object)) {
-         return null;
-      }
-
       return lookupImpl(object, name);
    }
 
@@ -56,6 +56,7 @@ public abstract class RecursiveLookupStrategy extends MapLookupStrategy {
       return skipLookupInBoundComponent && isAlreadyBound(object);
    }
 
+   protected abstract String getRealName(Object object);
    protected abstract boolean isAlreadyBound(Object object);
    protected abstract Object lookupImpl(Object object, String name);
 }

@@ -21,6 +21,21 @@ package net.java.dev.genesis.ui.binding;
 import java.util.List;
 
 public interface BoundDataProvider extends BoundElement {
+   /**
+    * This method is responsible to update data of the
+    * current widget.
+    *
+    * @param data the data
+    * @throws Exception
+    */
    public void updateList(List data) throws Exception;
+
+   /**
+    * This method is responsible to update the selection
+    * of the current widget.
+    *
+    * @param data the data
+    * @throws Exception
+    */
    public void updateIndexes(int[] indexes);
 }

@@ -78,7 +78,7 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
          protected void checkSubclass() {
          }
       };
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
 

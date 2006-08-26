@@ -19,5 +19,12 @@
 package net.java.dev.genesis.ui.binding;
 
 public interface BoundField extends BoundMember {
+   /**
+    * This method is responsible to set the value passed as parameter
+    * to the widget itself.
+    * 
+    * @param value the value to be set
+    * @throws Exception
+    */
    public void setValue(Object value) throws Exception;
 }

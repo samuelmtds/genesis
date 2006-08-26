@@ -69,7 +69,7 @@ public class AbstractWidgetBinderTest extends GenesisTestCase {
          protected void checkSubclass() {
          }
       };
-      binder = new MockSWTBinder(root, new MockForm(), null);
+      binder = new MockSWTBinder(root, new MockForm(), new Object());
       comp1.setData(SWTBinder.ENABLED_GROUP_PROPERTY, comp2);
       comp1.setData(SWTBinder.VISIBLE_GROUP_PROPERTY, comp2);
       boundMember = new AbstractWidgetBinder() {

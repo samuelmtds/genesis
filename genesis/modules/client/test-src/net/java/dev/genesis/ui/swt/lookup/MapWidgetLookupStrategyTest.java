@@ -37,7 +37,7 @@ public class MapWidgetLookupStrategyTest extends GenesisTestCase {
    protected void setUp() {
       strategy = new MapWidgetLookupStrategy() {
          public String getRealName(Object object) {
-            return (String) ((Widget)object).getData(SWTBinder.NAME_PROPERTY);
+            return (String) ((Widget)object).getData();
          }
       };
       shell = new Shell();

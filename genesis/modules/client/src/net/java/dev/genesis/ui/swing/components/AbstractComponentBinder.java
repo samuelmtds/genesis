@@ -136,7 +136,7 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
             		((String) group).split("\\s*,\\s*") : (String[]) group;
 
             for (int i = 0; i < componentNames.length; i++) {
-               Component c = (Component) binder.lookup(componentNames[i]);
+               Component c = (Component) getBinder().lookup(componentNames[i]);
 
                if (c != null) {
                   if (enabled) {
@@ -179,7 +179,8 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
                visibleWidgetGroupSet.add(jComponent);
             }
          } else {
-            throw new IllegalArgumentException("Group property must be a comma-separated string, array of strings, a collection of components, an array of components or a JComponent");
+            throw new IllegalArgumentException("Group property must be a comma-separated string, " +
+                  "array of strings, a collection of components, an array of components or a JComponent");
          }
       }
 
@@ -225,7 +226,7 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
       }
 
       public String getName() {
-         return binder.getName(component);
+         return getBinder().getName(component);
       }
 
       public void unbind() {

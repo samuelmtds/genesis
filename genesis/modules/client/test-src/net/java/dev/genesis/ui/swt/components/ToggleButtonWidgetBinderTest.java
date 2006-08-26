@@ -48,7 +48,7 @@ public class ToggleButtonWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       button = new Button(root = new Shell(), SWT.CHECK);
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       widgetBinder = binder.getWidgetBinder(button);
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }

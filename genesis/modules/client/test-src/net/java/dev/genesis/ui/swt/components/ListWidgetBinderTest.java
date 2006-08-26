@@ -62,7 +62,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       list = new List(root = new Shell(), SWT.MULTI);
       list.setData(SWTBinder.KEY_PROPERTY, "key");
       list.setData(SWTBinder.VALUE_PROPERTY, "value");
-      binder = new MockSWTBinder(root, form = new MockForm(), null);
+      binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
