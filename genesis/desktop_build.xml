@@ -30,13 +30,6 @@
    </target>
 
    <target name="-do-additional-init-paths">
-      <property name="orangevolt.dist" 
-                location="${genesis.home}/lib/orangevolt-ant-tasks" />
-
-      <path id="orangevolt.path">
-         <fileset dir="${orangevolt.dist}" includes="*.jar" />
-      </path>
-
       <taskdef name="nativeproperty" 
                classname="net.java.dev.genesis.anttasks.ant.NativeProperty"
                classpathref="anttasks.path" />
