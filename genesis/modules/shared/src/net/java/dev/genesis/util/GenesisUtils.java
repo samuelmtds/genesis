@@ -19,7 +19,6 @@
 package net.java.dev.genesis.util;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 

@@ -18,12 +18,8 @@
  */
 package net.java.dev.genesis.tests.script;
 
-import java.beans.PropertyDescriptor;
-
 import net.java.dev.genesis.script.ScriptFactory;
 import net.java.dev.genesis.script.bsf.BSFScriptFactory;
-
-import org.apache.commons.beanutils.PropertyUtils;
 
 public class BeanShellFunctionsTest extends ScriptFunctionsTest {
    protected ScriptFactory newScriptFactory() {
