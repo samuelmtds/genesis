@@ -32,12 +32,11 @@ public class UserListView extends BaseView {
       super("UserListView.title", "user-list.xml", 800, 360, false);
       bind(form = new UserListForm());
    }
-   
+
    protected void onClose() throws Exception {
-      getFrame().dispose();
       UserAdmin.showMainWindow();
    }
-   
+
    public void create() throws Exception {
       final InsertUpdateView view = new InsertUpdateView(getFrame());
 

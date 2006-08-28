@@ -52,6 +52,7 @@ public abstract class BaseView extends BaseThinlet {
             }
          }
       });
+
       setAllI18n(true);
       setResourceBundle(UIUtils.getInstance().getBundle());
       add(parse(xmlFile));
@@ -59,6 +60,8 @@ public abstract class BaseView extends BaseThinlet {
 
    protected void dispose() throws Exception {
       getFrame().dispose();
+      getFrame().remove(this);
+
       releaseThinletThread();
    }
 
