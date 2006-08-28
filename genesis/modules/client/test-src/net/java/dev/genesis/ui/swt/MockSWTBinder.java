@@ -38,15 +38,9 @@ public class MockSWTBinder extends SWTBinder {
       super(composite, form, handler);
    }
 
-   public MockSWTBinder(Composite composite,
-         LookupStrategy lookupStrategy, Object form, Object handler,
-         boolean bindDefaultButton) {
-      super(composite, lookupStrategy, form, handler, bindDefaultButton);
-   }
-
-   public MockSWTBinder(Composite composite,
-         LookupStrategy lookupStrategy, Object form, Object handler) {
-      super(composite, lookupStrategy, form, handler);
+   public MockSWTBinder(Composite composite, Object form, Object handler,
+         LookupStrategy lookupStrategy) {
+      super(composite, form, handler, lookupStrategy);
    }
 
    public Object get(Object key) {
@@ -60,7 +54,7 @@ public class MockSWTBinder extends SWTBinder {
    public void clear() {
       map.clear();
    }
-   
+
    public WidgetBinder registerWidgetBinder(String name, WidgetBinder binder) {
       return super.registerWidgetBinder(name, binder);
    }

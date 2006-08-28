@@ -36,16 +36,11 @@ public class SWTBinder extends AbstractBinder {
       WidgetBinderRegistryFactory.getInstance();
 
    public SWTBinder(Composite composite, Object form, Object handler) {
-      this(composite, (LookupStrategy) null, form, handler);
+      this(composite, form, handler, (LookupStrategy) null);
    }
 
-   public SWTBinder(Composite composite, 
-         LookupStrategy lookupStrategy, Object form, Object handler) {
-      this(composite, lookupStrategy, form, handler, true);
-   }
-
-   public SWTBinder(Composite composite, 
-         LookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
+   public SWTBinder(Composite composite, Object form, Object handler,
+         LookupStrategy lookupStrategy) {
       super(composite, form, handler, lookupStrategy);
    }
 
