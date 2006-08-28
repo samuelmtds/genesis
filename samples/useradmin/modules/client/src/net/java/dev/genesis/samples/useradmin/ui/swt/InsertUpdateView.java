@@ -296,7 +296,6 @@ public class InsertUpdateView extends Dialog {
    }
 
    private void dispose() {
-      binder.unbind();
       shell.dispose();
    }
 }

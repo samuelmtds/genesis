@@ -142,10 +142,11 @@ public class InsertRoleView extends Dialog {
     */
    public void save() throws Exception {
       hasChanged = true;
+
+      dispose();
    }
 
    private void dispose() {
-      binder.unbind();
       shell.dispose();
    }
 }

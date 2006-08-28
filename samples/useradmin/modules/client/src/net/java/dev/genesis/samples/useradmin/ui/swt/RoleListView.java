@@ -178,7 +178,6 @@ public class RoleListView extends Dialog {
    }
    
    private void dispose() {
-      binder.unbind();
       shell.dispose();
    }
 }

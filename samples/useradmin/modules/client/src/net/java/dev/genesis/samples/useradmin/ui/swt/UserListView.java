@@ -10,8 +10,6 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -61,11 +59,6 @@ public class UserListView {
    public UserListView() {
       shell = new Shell(SWT.TITLE | SWT.CLOSE);
       shell.setText(getMessage("UserListView.title"));
-      shell.addShellListener(new ShellAdapter() {
-         public void shellClosed(ShellEvent event) {
-            dispose();
-         }
-      });
 
       binder = new SWTBinder(shell, form = new UserListForm(), this);
       createShell();
@@ -382,9 +375,5 @@ public class UserListView {
       form.reset();
       form.setResetSearch(true);
       form.setRunSearch(true);
-   }
-
-   private void dispose() {
-      binder.unbind();
    }
 }
