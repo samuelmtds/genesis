@@ -52,8 +52,9 @@ import net.java.dev.genesis.ui.swing.factory.SwingFactory;
  * @ViewHandler
  */
 public class UserListView extends JFrame {
-   private UserListForm form;
-   private SwingBinder binder;
+   private final SwingBinder binder;
+   private final UserListForm form;
+
    private JLabel nameLabel;
    private JLabel loginLabel;
    private JLabel emailLabel;
