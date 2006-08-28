@@ -223,11 +223,11 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- It's not necessary any other configuration, you just have to put struts jar in modules/web/lib directory -->
+    <!-- It's not necessary any other configuration, you just have to add struts jar to the modules/web/lib folder -->
 
-    <!-- Put jars needed by shared module in modules/shared/lib folder -->
+    <!-- Add jars needed by shared module to the modules/shared/lib folder -->
 
-    <!-- Put jars needed by shared and client module in lib folder -->
+    <!-- Add jars needed by shared and client module to the lib folder -->
   </target>
 </project>
 ]]>

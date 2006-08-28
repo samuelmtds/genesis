@@ -101,7 +101,7 @@
              profundidade.
            </li>
          </ul>
-         <p>Observer que diferentemente do Swing, o SWT não possui um método
+         <p>Observe que diferentemente do Swing, o SWT não possui um método
            para definir nome para seus componentes. Para definir nomes para
            componentes SWT, utilize
            <code>Widget.setData("nomeDesejado")</code>.

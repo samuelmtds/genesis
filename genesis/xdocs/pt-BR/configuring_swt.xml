@@ -14,7 +14,7 @@
         explicando abaixo, como deve ser configurado uma ou mais distribuições
         para ser utilizado num projeto utilizando genesis.
       </p>
-      <p>A distribuição do genesis não acompanha nenhuma distribuição do SWT,
+      <p><b>A distribuição do genesis não acompanha nenhuma distribuição do SWT</b>,
         logo, para criar um projeto SWT ou rodar a parte SWT do exemplo
         <a href="useradmin_sample.html">useradmin</a> é necessário baixar
         a distribuição SWT correspondente para sua plataforma. Os arquivos
@@ -22,7 +22,7 @@
         <a href="http://www.eclipse.org/swt/">site oficial do SWT</a>.
       </p>
       <p>Os arquivos da distribuição desejada devem ser descompactados
-        na pasta <b>&lt;genesis.home&gt;/genesis/lib/swt</b>
+        na pasta <b><code>&lt;genesis.home&gt;/genesis/lib/swt</code></b>
         e organizados hierarquicamente por Sistema Operacional e Arquitetura
         do Processador. A arquitetura do processador é opcional e só deve ser
         definida quando necessário. Por exemplo, não existe distribuição SWT, no
@@ -34,7 +34,7 @@
         (processador x86 - 32 bits),
         Linux (usando GTK e processadores x86 - 32 e 64 bits),
         Solaris (processador SPARC) e Mac OS (processador PPC). A estrutura criada
-        em <b>&lt;genesis.home&gt;/genesis/lib/swt</b> será:
+        em <b><code>&lt;genesis.home&gt;/genesis/lib/swt</code></b> será:
       </p>
 <source>
 Diretório &lt;genesis.home&gt;/genesis/lib/swt
@@ -42,22 +42,33 @@ Diretório &lt;genesis.home&gt;/genesis/lib/swt
 Windows
   + x86
     - swt.jar
-    - swt.jar
-    - swt.jar
-    - swt.jar
-    - swt.jar
+    - swt1.dll
+    - swt2.dll
+    - etc...
 
 Linux
   + x86_64
     - swt.jar
+    - swt1.so
+    - swt2.so
+    - etc...  
   - swt.jar
+  - swt1.so
+  - swt2.so
+  - etc...
 
 Solaris
   + sparc
     - swt.jar
+    - swt1.so
+    - swt2.so
+    - etc...
   
 Mac
   - swt.jar
+  - swt1.jnilib
+  - swt2.jnilib
+  - etc...
 </source>
       <p>O nome da pasta correspondente ao Sistema Operacional corresponde ao
         nome da propriedade de sistema da JVM <code>os.name</code>. É possível
@@ -79,8 +90,7 @@ public class OsAndArch {
 Sistema Operacional: Windows XP
 Arquitetura Processador: x86
 </source>
-      <p>Logo, posso disponibilizar os <code>jar</code>s e <code>dll</code>s do SWT para
-        Windows, arquitetura x86 no diretório <code>Windows/x86</code>.
+      <p>Logo, posso disponibilizar os <code>jar</code>s e <code>dll</code>s do SWT no diretório <code>Windows/x86</code>.
       </p>
     </section>
   </body>

@@ -48,6 +48,11 @@
            <item name="Customizando a criação de componentes"
                  href="/pt-BR/customizing_widgets_creation.html" />
         </item>
+        <item name="Funcionalidades específicas para SWT"
+              href="/pt-BR/configuring_swt.html">
+           <item name="Configurando as bibliotecas do SWT"
+                 href="/pt-BR/configuring_swt.html" />
+        </item>
         <item name="Funcionalidades adicionais"
               href="/pt-BR/conditions.html">
           <item name="Trabalhando com condições" 
@@ -64,6 +69,10 @@
                 href="/pt-BR/configuring_messages.html" />
           <item name="Paginação e pesquisas dinâmicas" 
                 href="/pt-BR/paging_and_dynamic_search.html" />
+          <item name="Estratégias de Lookup de componentes gráficos" 
+                href="/pt-BR/lookup_strategy.html" />
+          <item name="Customizando o binding de componentes gráficos" 
+                href="/pt-BR/widget_binder.html" />
         </item>
         <item name="Guia de referência rápida de anotações"
               href="/pt-BR/quick_reference.html" />

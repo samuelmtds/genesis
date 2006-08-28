@@ -18,7 +18,7 @@
       <p>It's extremely important you have already read genesis docs and
       understood its concepts and features. Before start coding, please read the 
       <a href="documentation_intro.html">User Manual</a>.</p>
-      <p>The empty project strutucture is called <code>empty-project</code> and 
+      <p>The empty project structure is called <code>empty-project</code> and 
       it comes with genesis-empty-project distribution or genesis-all 
       distribution. This structure can be found in dir
       <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.</p>
@@ -33,6 +33,9 @@
         <li>To compile and install the application we recommend <a href=
         "http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
       </ul>
+      <p><b>It's not necessary to use the empty-project structure if you're planning to use only
+      the genesis' <code>binding</code> feature. Just import <code>genesis-client</code>
+      jars and its dependencies as part of your own project.</b></p>
     </section>
     <section name="Configuring a new project">
       <p>You can copy the whole <b>empty-project</b> structure to a development
@@ -286,13 +289,13 @@ hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- IMPORTANT: Put JGoodies jars in modules/client/lib folder -->
+    <!-- IMPORTANT: Add JGoodies jars to the modules/client/lib folder -->
 
     <!-- Thinlet and SWT are not necessary to your project: -->
     <property name="use.thinlet" value="false" />
     <property name="use.swt" value="false" />
 
-    <!-- If you're not using Javascript as script language,
+    <!-- If you're using Javascript as script language,
          Beanshell and EL are not necessary to your project: -->
     <property name="use.beanshell" value="false" />
     <property name="use.el" value="false" />
@@ -377,9 +380,9 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- IMPORTANT: Put JFreeReport jars in modules/client/lib folder -->
+    <!-- IMPORTANT: Add JFreeReport jars to the modules/client/lib folder -->
 
-    <!-- If you're not using Javascript as script language,
+    <!-- If you're using Javascript as script language,
          Beanshell and EL are not necessary to your project: -->
     <property name="use.beanshell" value="false" />
     <property name="use.el" value="false" />
@@ -475,15 +478,15 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- IMPORTANT: Put JGoodies jars in modules/client/lib folder -->
-    <!-- IMPORTANT: Put Joda jars in lib folder
-         (It will be available to shared and client module) -->
+    <!-- IMPORTANT: Add JGoodies jars to the modules/client/lib folder -->
+    <!-- IMPORTANT: Add Joda jars to the lib folder
+         (It will be available both to shared and client module) -->
 
     <!-- Thinlet and SWT are not necessary to your project: -->
     <property name="use.thinlet" value="false" />
     <property name="use.swt" value="false" />
 
-    <!-- If you're not using Javascript as script language,
+    <!-- If you're using Javascript as script language,
          Beanshell and EL are not necessary to your project: -->
     <property name="use.beanshell" value="false" />
     <property name="use.el" value="false" />
