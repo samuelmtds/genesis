@@ -21,9 +21,6 @@ package net.java.dev.genesis.anttasks.jnlp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.orangevolt.tools.ant.JNLPTask.Security;
-
-
 public class OrangeJNLPTask extends com.orangevolt.tools.ant.JNLPTask {
    private static final String NEW_LINE = "\r\n";
    private String encoding = "UTF-8";
