@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,12 +16,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.thinlet;
+package net.java.dev.genesis.ui.binding;
 
-/**
- * @deprecated Use net.java.dev.genesis.ui.binding.PropertyMisconfigurationException instead
- */
-public class PropertyMisconfigurationException extends net.java.dev.genesis.ui.binding.PropertyMisconfigurationException {
+public class PropertyMisconfigurationException extends RuntimeException {
    public PropertyMisconfigurationException(final String message) {
       super(message);
    }

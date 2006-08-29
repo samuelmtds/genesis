@@ -27,6 +27,7 @@ import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -34,7 +35,6 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.MockSWTBinder;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 import net.java.dev.genesis.ui.swt.widgets.ListWidgetBinder;
-import net.java.dev.genesis.ui.thinlet.PropertyMisconfigurationException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;

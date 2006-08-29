@@ -31,6 +31,7 @@ import java.util.Map;
 import net.java.dev.genesis.reflection.MethodEntry;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.ui.ValidationUtils;
+import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerFactory;

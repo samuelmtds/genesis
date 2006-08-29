@@ -32,6 +32,7 @@ import java.util.Map;
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.mockobjects.MockViewHandler;
+import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
