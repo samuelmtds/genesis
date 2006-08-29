@@ -9,6 +9,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#3.0-EA4">3.0-EA4</a></li>
         <li><a href="#3.0-EA3">3.0-EA3</a></li>
         <li><a href="#3.0-EA2">3.0-EA2</a></li>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
@@ -18,6 +19,43 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-EA4">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5774&amp;expandFolder=5774">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Adicionado <a href="binding.html">suporte a SWT</a>.</li>
+          <li>É possível utilizar genesis-client em projetos sem o uso de AOP</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA3 e a 3.0-EA4
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;target_milestone=3.0-EA4">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA4/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA4&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-EA3">
       <subsection name="Downloads">

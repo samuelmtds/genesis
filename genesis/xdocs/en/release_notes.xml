@@ -7,6 +7,7 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#3.0-EA4">3.0-EA4</a></li>
         <li><a href="#3.0-EA3">3.0-EA3</a></li>
         <li><a href="#3.0-EA2">3.0-EA2</a></li>
         <li><a href="#3.0-EA1">3.0-EA1</a></li>
@@ -16,6 +17,41 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-EA4">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5774&amp;expandFolder=5774">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>Added <a href="binding.html">SWT support</a>.</li>
+          <li>It's possible to use genesis-client in regular Java Projects, without the use of AOP.</li>
+        </ul>
+        <p>The full change log between 3.0-EA3 and 3.0-EA4 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;target_milestone=3.0-EA4">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA4/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA4&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-EA3">
       <subsection name="Downloads">
