@@ -38,7 +38,7 @@
         "http://ant.apache.org/">Apache Ant</a>. Prefira sempre a última
         versão disponível (no momento, Ant 1.6.5)</li>
       </ul>
-      <p><b>Não é necessário utilizar a estrutura do projeto vazio se planejar em utilizar apenas a
+      <p><b>Não é necessário utilizar a estrutura do projeto vazio se utilizar apenas a
       funcionalidade de <code>binding</code> do genesis. Basta importar as bibliotecas
       do <code>genesis-client</code> e suas dependências como parte de seu próprio projeto.</b></p>
     </section>

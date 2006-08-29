@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+   <properties>
+     <title>Widget Lookup Strategy</title>
+     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+   </properties>
+   <body>
+     <section name="Widget Lookup Strategy">
+       <p>One of the most innovative genesis features is its <b>binding</b>. This
+         feature keeps the UI always in synch with a JavaBean, which is called a 
+         <b>form</b>. The binding process connects widgets with fields and actions
+         defined in the form. To accomplish that, it's necessary to define names
+         for each widget that should be connected to the form. 
+         So, the UI will be composed by widgets identified by their names and will be
+         accessible to the binding classes. The way that binding classes will lookup
+         those widgets is called <b>Lookup Strategy</b>.
+       </p>
+       <p>genesis defines the interface <code>net.java.dev.genesis.ui.binding.LookupStrategy</code>
+         that declares the following methods:</p>
+       <ul>
+         <li><code>Object register(String name, Object object)</code>: Register an object
+           with the specified name.</li>
+         <li><code>Object lookup(Object root, String name)</code>: Lookup for an object
+           registered with the specified name within the <code>root</code> object's scope.</li>
+         <li><code>String getName(Object object)</code>: Returns the object's name.</li>
+       </ul>
+       <p>There is a basic and generic implementation that uses <code>java.util.Map</code>
+         as data structure. The implementation is localized in
+         <code>net.java.dev.genesis.ui.binding.MapLookupStrategy</code> and can be used
+         independently of UI technology.
+       </p>
+       <p>There are specific Lookup Strategies for each UI technology. 
+         Until now, genesis supports three UI technologies:
+         Thinlet, Swing and SWT. Thinlet has its own widget lookup strategy, so
+         genesis defines specific lookup strategies for
+         Swing and SWT. These implementations are covered in the following sections.
+       </p>
+       <subsection name="Swing">
+         <p>genesis' Swing support defines three classes that implements <code>LookupStrategy</code>.
+           Each lookup strategy is based on the component name (<code>java.awt.Component.getName()</code>):
+         </p>
+         <ul>
+           <li><code>MapComponentLookupStrategy</code>: Uses the same logic defined by
+             <code>MapLookupStrategy</code>. The only difference is that the method 
+             <code>String getName(Object object)</code> returns the
+             component name (<code>component.getName()</code>) if the component
+             has not been registered.
+           </li>
+           <li><code>BreadthFirstComponentLookupStrategy</code>: The use of
+             <code>register</code> method is not necessary to register components,
+             because the component name (<code>Component.getName()</code>)
+             is used in lookup logic. The <code>lookup</code> method
+             starts a breadth first search in all components that belongs to the
+             root component passed as parameter in <code>lookup</code> method.
+           </li>
+           <li><code>DepthFirstComponentLookupStrategy</code>: It's similar to
+             <code>BreadthFirstComponentLookupStrategy</code>, except that
+             the search algorithm is depth first.
+           </li>
+         </ul>
+         <p>The default implementation used by genesis is
+           <code>BreadthFirstComponentLookupStrategy</code>. To define some other implementation,
+           just override the
+           <code>LookupStrategy createLookupStrategy()</code> method of
+           <code>net.java.dev.genesis.ui.swing.SwingBinder</code> class, or choose your
+           implementation using the proper <code>SwingBinder</code> constructor.
+         </p>
+       </subsection>
+       <subsection name="SWT">
+         <p>genesis' SWT support defines three classes that implements <code>LookupStrategy</code>,
+           like in Swing support. Each lookup strategy is based on the widget name
+           (<code>org.eclipse.swt.widgets.Widget.getData()</code>):
+         </p>
+         <ul>
+           <li><code>MapWidgetLookupStrategy</code>: Utiliza
+             o mesmo mecanismo de <code>MapLookupStrategy</code>. Uses the same logic defined by
+             <code>MapLookupStrategy</code>. The only difference is that the method 
+             <code>String getName(Object object)</code> returns the
+             widget name (<code>widget.getData()</code>) if the widget
+             has not been registered.
+           </li>
+           <li><code>BreadthFirstWidgetLookupStrategy</code>: The use of
+             <code>register</code> method is not necessary to register widgets,
+             because the widget name (<code>widget.getData()</code>)
+             is used in lookup logic. The <code>lookup</code> method
+             starts a breadth first search in all widgets that belongs to the
+             root widget passed as parameter in <code>lookup</code> method.
+           </li>
+           <li><code>DepthFirstWidgetLookupStrategy</code>: It's similar to
+             <code>BreadthFirstWidgetLookupStrategy</code>, except that
+             the search algorithm is depth first.
+           </li>
+         </ul>
+         <p>Note that SWT doesn't define a method to name widgets.
+           To name a widget, use 
+           <code>Widget.setData("desiredName")</code> method.
+         </p>
+         <p>The default implementation used by genesis is
+           <code>BreadthFirstWidgetLookupStrategy</code>. To define some other implementation,
+           just override the
+           <code>LookupStrategy createLookupStrategy()</code> method of
+           <code>net.java.dev.genesis.ui.swt.SWTBinder</code> class, or choose your
+           implementation using the proper <code>SWTBinder</code> constructor.
+         </p>
+       </subsection>
+     </section>
+   </body>
+</document>

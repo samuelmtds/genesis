@@ -8,8 +8,8 @@
      <section name="Customizando o binding de componentes gráficos">
        <p>O genesis possui implementações padrão de <code>binding</code>s
          para cada tipo de componente gráfico. Ou seja, cada tipo de componente
-         gráfico possui um <code>binding</code> que determina como será
-         sua interação com o <code>form</code>. Cada <code>binding</code>
+         gráfico possui um <code>binder</code> que determina como será
+         sua interação com o <code>form</code>. Cada <code>binder</code>
          indica como os valores e eventos de um determinado componente gráfico
          serão passados ao <code>form</code>, e como os valores e ações
          do <code>form</code> serão passados ao componente gráfico.

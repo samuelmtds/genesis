@@ -16,23 +16,15 @@
       href="http://www.jboss.org/">JBoss</a> application server, an open-source
       free server. This does not mean genesis only runs on this server; genesis
       was developed in a J2EE compatible way.</p>
-      <p>There are 3 simple steps necessary to install the useradmin sample in
-      the application server:</p>
-      <ol>
-        <li>Download and install <a href=
-        "http://www.jboss.org/">JBoss</a> application server. It is recommended
-        to use its latest 3.2.x or 4.x release.</li>
-        <li>Run the ant scripts to deploy the example
-        <a href="#Running the useradmin sample">(as instructed later in
-        this document)</a>. These scripts are distributed together with
-        genesis.</li>
-        <li>Start the JBoss server <a href="#Running the useradmin sample">
-        (as instructed later in this document)</a>.</li>
-      </ol>
-      <p>After installing and starting JBoss, we can run the sample by accessing
-      a Java Web start link or by using the ant scripts to run the sample
-      application <a href="#Running the useradmin sample">
-        (as instructed later in this document)</a>.</p>
+      <p><a href="http://ant.apache.org/">Ant</a> is necessary to run useradmin sample.
+      To run this sample in remote mode, it's needed the application server
+      <a href="http://www.jboss.org/">JBoss</a></p>
+      <p>Learn how to run this sample in local mode (without an application server)
+         <a href="#Running in local mode">here</a>.</p>
+      <p>Learn how to run this sample in remote mode (with an application server)
+         <a href="#Running in remote mode">here</a>.</p>
+      <p>To use the SWT part of useradmin's sample, read the instructions
+        <a href="configuring_swt.html">here</a></p>
     </section>
     <section name="useradmin sample's purpose">
       <p>useradmin sample's purpose is to demonstrate to users genesis major
@@ -45,22 +37,57 @@
       <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/shared/src
       </code> that contain the client module and the client/server shared module
       each.</p>
-      <p>The client module source dir contains sets comprised of three source
-      files: one for the form, one for the UI xml (Thinlet xml) and one for the
-      view definition. For example, let's consider the initial useradmin screen:
-      </p>
+      <p>The client module source dir contains UI related classes. The useradmin sample
+        uses three different UI technologies: <a href="http://www.thinlet.com/">Thinlet</a>,
+      <a href="http://java.sun.com/products/jfc/">Swing</a> and
+      <a href="http://www.eclipse.org/swt">SWT</a>. To use SWT, read the instructions
+         <a href="configuring_swt.html">here</a>.</p>
+
+      <p>The package <code>net.java.dev.genesis.samples.useradmin.ui</code> 
+      contains files that define the UI logic (rules to enable and disable fields, actions, etc).
+      We call these classes <b>forms</b> and <b>they are independent</b> of
+      UI technology. For example, <code><b>UserListForm.java</b></code> it's a Java class
+      whose fields represent screen data e it has methods that represent screen actions.</p>
+
+      <p>At Thinlet (package <code>net.java.dev.genesis.samples.useradmin.ui.thinlet</code>)
+      we found two file types that define the UI. Let's consider the useradmin search screen:</p>
       <ul>
         <li><code><b>user-list.xml</b></code>: Thinlet xml file that describes
         how UI components are arranged on the screen. Component names match
         field names and method names in the form.</li>
-        <li><code><b>UserListForm.java</b></code>: Java class whose fields keep
-        data displayed on the screen and whose methods are screen actions.</li>
         <li><code><b>UserListView.java</b></code>: Java class responsible for
         the screen, where the UI dimensions are defined, which UI xml file to
         use and that <code>binds</code> a form to a view. Other auxiliary
         methods may be defined by this class in order to allow other screens to
         be open or to programatically invoke a form action.</li>
       </ul>
+
+      <p>At Swing (package <code>net.java.dev.genesis.samples.useradmin.ui.swing</code>
+      and sub-packages) we found the UI skeleton coded using Swing.
+      Let's consider the useradmin search screen:</p>
+      <ul>
+         <li><code><b>UserListView.java</b></code>: Java class coded using Swing
+         and responsible for the search screen, where the UI dimensions are defined and
+         how UI components are arranged on the screen. The <code>binding</code>
+         with a specific form is done, that means that the form will handle
+         the UI events. Other auxiliary methods are defined to make possible
+         other windows to be opened and programatically call some action of this
+         screen.</li>
+      </ul>
+
+      <p>At SWT (package <code>net.java.dev.genesis.samples.useradmin.ui.swt</code>
+      and sub-packages)  we found the UI skeleton coded using SWT.
+      Let's consider the useradmin search screen:</p>
+      <ul>
+         <li><code><b>UserListView.java</b></code>: Java class coded using SWT
+         and responsible for the search screen, where the UI dimensions are defined and
+         how UI components are arranged on the screen. The <code>binding</code>
+         with a specific form is done, that means that the form will handle
+         the UI events. Other auxiliary methods are defined to make possible
+         other windows to be opened and programatically call some action of this
+         screen.</li>
+      </ul>
+
       <p>The shared module source dir contains the source files that implement
       business logic (commands) and others that are Hibernate mapped classes
       (databeans). A command example is
@@ -223,52 +250,98 @@ public class User implements Serializable {
       <code>java.io.Serializable</code> so the class can be used as a parameter
       or as a return value for a remote call.</p>
     </section>
-    <section name="Running the useradmin sample">
-      <p>To run this sample, ant scripts have been provided in order to perfom
-      this task. To use those scripts, execute the following steps:</p>
-      <ul>
-        <li>Make a copy the <code>buid.properties.sample</code> file and
-        rename it to <code>build.properties</code></li>
-        <li>Edit the new <code>build.properties</code> file in order to modify
-        or comment the properties according to your execution environment.</li>
-        <li>Within command line, run the ant script by just typing: <code>
-        ant install</code>. This command will start the deployment
-        process, which will install the sample application in a directory
-        named useradmin at your JBoss server folder.</li>
-        <li>Once the instalation process has finished, JBoss server can be
-        started by the following command:
-        <code>&lt;JBOSS_DIRECTORY&gt;/bin/run -c useradmin</code></li>
-        <li>After JBoss has started, this sample can be executed by accessing
-        <a href="http://localhost:8080/useradmin/">
-        http://localhost:8080/useradmin/</a> URL. Through this page, the 
-        "<a href="http://localhost:8080/useradmin/application/remote.jnlp">
-        Run remote User Admin</a>" link
-        will activate the application download and run it using Java Web
-        Start technology.</li>
-        <li>Another option to run this sample is to use an ant task with
-        the following command: <code>ant run:remote</code>. This
-        command will run the useradmin sample with remote calls to the JBoss
-        server</li>
-        <li>It's also possible to execute this sample with local calls
-        configuration only - i.e. the sample will not use the JBoss server in
-
-        anyway. In order to perfom this, there are some options:</li>
-        <ul>
-           <li>Use the "<a href="http://localhost:8080/useradmin/application/local.jnlp">
-           Run local User Admin</a>" link from 
-           <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/
-           </a> URL.</li>
-           <li>Use the following line command: <code>ant run:local</code></li>
-           <li>Double click the <code>useradmin-local-weaved.jar</code> file
-           located inside the
-           <code>&lt;GENESIS_DIST&gt;/samples/useradmin/target/war/application</code>
-           directory. In some operating systems this double click should 
-           be equivalent to the following line command:</li>
+    <section name="Running in local mode">
+       <p>To run this sample in local mode, you will need:</p>
+       <ul>
+          <li>The <a href="http://ant.apache.org/">Ant</a> tool, prefer the latest
+            version (currently Ant 1.6.5)</li>
+       </ul>
+       
+       <p>Follow the steps:</p>
+       <ul>
+        <li>Make a copy of <code>buid.properties.sample</code> file and rename to
+        <code>build.properties</code></li>
+        <li>Edit the <code>build.properties</code> file, modifying or commenting
+        the properties according your needs. Take a look on a configuration sample:</li>
 <source>
-java -jar useradmin-local-weaved.jar
+## Build properties sample ##
+
+# Here we defined that it won't run in remote mode
+remote.mode=false
+   
+# In local mode, a database is needed. In this case, we use HSQLDB
+jdbc.driver=target/hsqldb.jar
 </source>
-        </ul>
+        <li>In command line, executes the ant script:
+<source>
+c:\genesis\samples\useradmin>ant install
+</source>
+        This command will start the installation process.
+        It will only copy all dependant libraries to the folder where the application
+        jar resides.</li>
+        <li>To run the sample, run the ant task:</li>
+<source>
+c:\genesis\samples\useradmin>ant run:local
+</source>
+        <li>Or use the command line:</li>
+<source>
+c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
+</source>
+        <li>Or double-click the file <code>useradmin-local-weaved.jar</code></li>
       </ul>
+    </section>
+    <section name="Running in remote mode">
+      <p>To run this sample in remote mode, you will need:</p>
+       <ul>
+          <li>The <a href="http://ant.apache.org/">Ant</a> tool, prefer the latest
+            version (currently Ant 1.6.5)</li>
+          <li>The <a href="http://www.jboss.org/">JBoss</a> Application Server,
+          prefer the latest version of the series 3.2.x or 4.0.x</li>
+       </ul>
+      <p>To run this sample in remote mode, follow the steps:</p>
+      <ul>
+        <li>Make a copy of <code>buid.properties.sample</code> file and rename to
+        <code>build.properties</code></li>
+        <li>Edit the <code>build.properties</code> file, modifying or commenting
+        the properties according your needs. Take a look on a configuration sample:</li>
+<source>
+## Build properties sample ##
+
+# Here we defined that it won't run in local mode
+local.mode=false
+   
+# Here we define the JBoss Home directory
+jboss.home=/opt/jboss-3.2.7
+</source>
+        <li>In the command line, run the ant script:
+<source>
+c:\genesis\samples\useradmin>ant install
+</source>
+        The installation process will start and a folder called
+        "useradmin" will be created at the <code>server</code> folder of
+        JBoss Application Server. That folder contains the useradmin sample,
+        its configuration and all of its dependencies.</li>
+        <li>After the installation process, start JBoss with the following
+        command:</li>
+<source>
+&lt;JBOSS_HOME&gt;\bin>run -c useradmin
+</source>
+        <li>After JBoss starts, the sample can be executed accessing the URL
+        <a href="http://localhost:8080/useradmin/">
+        http://localhost:8080/useradmin/</a>. The
+        "<a href="http://localhost:8080/useradmin/application/remote.jnlp">
+        Run remote User Admin</a>" link will download, install and run the sample
+        on the user machine, with Java Web Start technology</li>
+        <li>Another option, is run the sample with the following ant task:</li>
+<source>
+c:\genesis\samples\useradmin>ant run:remote
+</source>
+        <li>If you have left local mode enabled, you can run the sample in local mode throught the link
+        "<a href="http://localhost:8080/useradmin/application/local.jnlp">Run local User Admin</a>"
+        of <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/</a> page.</li>
+       </ul>
+    </section>
+    <section name="Considerations">
       <p>This sample goal is to demonstrate how a project might be structured
       and how to use genesis features. It's recommended to start new genesis-
       based projects by using the <a href="empty_project.html">empty project</a>
