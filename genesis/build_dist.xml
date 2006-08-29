@@ -122,6 +122,7 @@
          <patternset refid="genesis-xdoclet-extensions.pattern" />
          <patternset refid="genesis-ant-tasks.pattern" />
          <include name="genesis/${genesis.lib.dir}/**" />
+         <exclude name="genesis/${genesis.lib.dir}/swt/*/*/**" />
       </patternset>
 
       <patternset id="genesis-all.pattern">
