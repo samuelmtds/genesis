@@ -22,4 +22,5 @@ package net.java.dev.genesis.script.mustang.bridge;
 public interface ScriptEngine {
    public Object eval(String script) throws Exception;
    public ScriptContext getContext();
+   public Object compile(String script) throws Exception;
 }

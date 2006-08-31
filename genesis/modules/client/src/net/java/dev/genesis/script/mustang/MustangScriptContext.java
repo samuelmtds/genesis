@@ -32,25 +32,30 @@ public class MustangScriptContext extends ScriptContext {
    public static final String GENESIS_FUNCTIONS_NS = "genesis";
 
    private final ScriptEngine scriptEngine;
+   private Object realContext;
 
-   protected MustangScriptContext(String engine, Object root) {
-      this.scriptEngine = JavaxScriptBridge.getInstance().createScriptEngineManager()
-            .getEngineByName(engine);
-
+   protected MustangScriptContext(ScriptEngine engine, Object root) {
+      this.scriptEngine = engine;
+      this.realContext = engine.getContext().getRealContext();
       declare(FORM_NS, root);
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
+   }
+   
+   protected ScriptEngine getScriptEngine() {
+      return scriptEngine;
    }
 
    protected Object doEval(ScriptExpression expr) {
       try {
-         return scriptEngine.eval(expr.getExpressionString());
+         return ((MustangExpression) expr).evalCompiled(scriptEngine,
+               realContext);
       } catch (Exception e) {
          throw new ScriptException(e.getMessage(), e);
       }
    }
 
    protected ScriptExpression newScriptExpression(String expression) {
-      return new MustangExpression(expression);
+      return new MustangExpression(expression, scriptEngine);
    }
 
    public void registerFunctions(String prefix, Class functionClass) {

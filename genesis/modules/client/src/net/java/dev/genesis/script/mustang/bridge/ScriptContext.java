@@ -18,9 +18,12 @@
  */
 package net.java.dev.genesis.script.mustang.bridge;
 
+import java.util.Map;
+
 public interface ScriptContext {
    public void setAttribute(String name, Object value, int scope);
-   public Bindings getBindings(int scope);
+   public Map getBindings(int scope);
    public Object getAttribute(String name);
    public Object removeAttribute(String name, int scope);
+   public Object getRealContext();
 }

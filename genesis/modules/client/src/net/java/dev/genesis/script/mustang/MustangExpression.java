@@ -18,10 +18,32 @@
  */
 package net.java.dev.genesis.script.mustang;
 
+import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
+import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
+import net.java.dev.genesis.script.mustang.bridge.ScriptEngine;
 
 public class MustangExpression extends ScriptExpression {
-   public MustangExpression(String expr) {
+   private Object realCompiledScript;
+
+   public MustangExpression(String expr, ScriptEngine engine) {
       super(expr);
+      compile(engine);
+   }
+
+   protected void compile(ScriptEngine engine) {
+      try {
+         realCompiledScript = engine.compile(getExpressionString());
+      } catch (Exception e) {
+         throw new ScriptException(e.getMessage(), e);
+      }
+   }
+
+   public Object evalCompiled(ScriptEngine engine, Object realCtx) throws Exception {
+      if (realCompiledScript == null) {
+         return engine.eval(getExpressionString());
+      }
+
+      return JavaxScriptBridge.getInstance().eval(realCompiledScript, realCtx);
    }
 }

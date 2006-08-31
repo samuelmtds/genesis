@@ -21,19 +21,27 @@ package net.java.dev.genesis.script.mustang;
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptExpression;
+import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
+import net.java.dev.genesis.script.mustang.bridge.ScriptEngine;
+import net.java.dev.genesis.script.mustang.bridge.ScriptEngineManager;
 
 public class MustangScript implements Script {
-   private final String engine;
-   
-   protected MustangScript(String engine) {
-      this.engine = engine;
+   private final ScriptEngineManager manager;
+   private final ScriptEngine engine; // engine used to compile scripts
+   private final String lang;
+
+   protected MustangScript(String lang) {
+      this.lang = lang;
+      this.manager = JavaxScriptBridge.getInstance()
+            .createScriptEngineManager();
+      this.engine = manager.getEngineByName(lang);
    }
 
    public ScriptContext newContext(Object root) {
-      return new MustangScriptContext(engine, root);
+      return new MustangScriptContext(manager.getEngineByName(lang), root);
    }
 
    public ScriptExpression compile(String expression) {
-      return new MustangExpression(expression);
+      return new MustangExpression(expression, engine);
    }
 }
