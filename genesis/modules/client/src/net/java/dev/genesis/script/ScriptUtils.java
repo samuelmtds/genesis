@@ -24,6 +24,7 @@ import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
+import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
@@ -34,8 +35,12 @@ import org.apache.commons.beanutils.PropertyUtils;
 public class ScriptUtils {
    private static final ThreadLocal current = new ThreadLocal();
 
+   public static boolean supportsJavaxScript() {
+      return JavaxScriptBridge.getInstance().supportsJavaxScript();
+   }
+
    public static ScriptContext getCurrentContext() {
-      return (ScriptContext)current.get();
+      return (ScriptContext) current.get();
    }
 
    public static void enter(ScriptContext ctx) {
@@ -67,27 +72,27 @@ public class ScriptUtils {
          String[] values = s.split(":");
 
          if (values.length == 1) {
-            return new ScriptValue(null, obj); 
+            return new ScriptValue(null, obj);
          }
 
          if (values.length != 2) {
-            throw new IllegalArgumentException("Malformed expression '" + obj + 
-                  "'");       
+            throw new IllegalArgumentException("Malformed expression '" + obj
+                  + "'");
          }
 
          return new ScriptValue(values[1], getPropertyValue(values[0],
-               values[1]));       
+               values[1]));
       }
 
-      return new ScriptValue(null, obj); 
+      return new ScriptValue(null, obj);
    }
 
    public static FormMetadata getFormMetadata(ScriptContext ctx) {
-      return (FormMetadata)ctx.lookup(FormController.FORM_METADATA_KEY);
+      return (FormMetadata) ctx.lookup(FormController.FORM_METADATA_KEY);
    }
 
    public static Map getChangedMap(ScriptContext ctx) {
-      return ((FormState)ctx.lookup(FormController.CURRENT_STATE_KEY))
+      return ((FormState) ctx.lookup(FormController.CURRENT_STATE_KEY))
             .getChangedMap();
    }
 
@@ -100,7 +105,8 @@ public class ScriptUtils {
       }
 
       final FormMetadata meta = getFormMetadata(ctx);
-      final FieldMetadata fieldMetadata = meta.getFieldMetadata(scriptValue.getFieldName());
+      final FieldMetadata fieldMetadata = meta.getFieldMetadata(scriptValue
+            .getFieldName());
 
       if (fieldMetadata != null) {
          return fieldMetadata.getEmptyResolver();
@@ -120,7 +126,8 @@ public class ScriptUtils {
       }
 
       final FormMetadata meta = getFormMetadata(ctx);
-      final FieldMetadata fieldMetadata = meta.getFieldMetadata(scriptValue.getFieldName());
+      final FieldMetadata fieldMetadata = meta.getFieldMetadata(scriptValue
+            .getFieldName());
 
       if (fieldMetadata != null) {
          return fieldMetadata.getEqualityComparator();

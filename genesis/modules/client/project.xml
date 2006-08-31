@@ -12,6 +12,14 @@
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
+            <artifactId>genesis-annotation</artifactId>
+            <version>${pom.currentVersion}</version>
+            <type>jar</type>
+            <url>https://genesis.dev.java.net/</url>
+            <properties/>
+        </dependency>
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>genesis-shared</artifactId>
             <version>${pom.currentVersion}</version>
             <type>jar</type>
@@ -32,7 +40,9 @@
             <version>1.2</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/commons/</url>
-            <properties/>
+            <properties>
+              <comment>If JXPath is used as script language</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
@@ -56,7 +66,9 @@
             <version>1.5</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/commons/</url>
-            <properties/>
+            <properties>
+              <comment>If commons-validator is used</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>jakarta</groupId>
@@ -64,12 +76,14 @@
             <version>2.0.8</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/oro/</url>
-            <properties/>
+            <properties>
+              <comment>If commons-validator is used</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>reusable-components</groupId>
             <artifactId>reusable-components</artifactId>
-            <jar>reusable-components-20040406.jar</jar>
+            <jar>reusable-components-20060810.jar</jar>
             <type>jar</type>
             <url>https://reusable-components.dev.java.net/</url>
             <properties/>
@@ -80,7 +94,9 @@
             <jar>thinlet-20040817.jar</jar>
             <type>jar</type>
             <url>http://thinlet.sourceforge.net/</url>
-            <properties/>
+            <properties>
+              <comment>If Thinlet is used</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>jakarta</groupId>
@@ -88,15 +104,19 @@
             <version>2.3.0</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/bsf/</url>
-            <properties/>
+            <properties>
+              <comment>If BSF is used (needed when using javascript without JDK 6)</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>bsh</groupId>
             <artifactId>bsh</artifactId>
-            <version>2.0b2</version>
+            <version>2.0b4</version>
             <type>jar</type>
             <url>http://www.beanshell.org/</url>
-            <properties/>
+            <properties>
+              <comment>If BeanShell is used as script language</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>jakarta</groupId>
@@ -104,7 +124,9 @@
             <version>1.0</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/commons/el/</url>
-            <properties/>
+            <properties>
+              <comment>If EL is used as script language</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>jakarta</groupId>
@@ -112,13 +134,17 @@
             <version>1.1.2</version>
             <type>jar</type>
             <url>http://jakarta.apache.org/taglibs/</url>
-            <properties/>
+            <properties>
+              <comment>If EL is used as script language</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>j2ee</groupId>
             <artifactId>jsp-api</artifactId>
             <jar>jsp-api.jar</jar>
-            <properties/>
+            <properties>
+              <comment>If EL is used as script language</comment>
+            </properties>
         </dependency>
         <dependency>
             <groupId>swt</groupId>
@@ -126,8 +152,19 @@
             <version>3.2</version>
             <type>jar</type>
             <url>http://www.eclipse.org/swt/</url>
+            <properties>
+              <comment>If SWT is used</comment>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>backport175</groupId>
+            <artifactId>backport175</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+            <url>http://backport175.codehaus.org/</url>
             <properties/>
         </dependency>
+
         <!-- Unit test dependency -->
         <dependency>
             <groupId>hibernate</groupId>
@@ -135,7 +172,9 @@
             <version>2.1.8</version>
             <type>jar</type>
             <url>http://www.hibernate.org/</url>
-            <properties/>
+            <properties>
+              <comment>Unit test dependency</comment>
+            </properties>
         </dependency>
     </dependencies>
     <build>

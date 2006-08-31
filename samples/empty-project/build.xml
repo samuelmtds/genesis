@@ -17,7 +17,7 @@
            comment the specific line and change aop.xml to refer to it -->
       <property name="use.beanshell" value="false" />
       <property name="use.el" value="false" />
-
+      <property name="use.jxpath" value="false" />
 
       <!-- Uncomment a line if you don't use the UI technology it refers to and
            want the build process to ignore its jars -->

@@ -133,6 +133,7 @@
       <property name="use.javascript" value="true" />
       <property name="use.beanshell" value="true" />
       <property name="use.el" value="true" />
+      <property name="use.jxpath" value="true" />
       <property name="use.bsf" value="true" />
 
       <property name="use.swing" value="true" />
@@ -148,6 +149,10 @@
 
       <condition property="beanshell.needed">
          <istrue value="${use.beanshell}" />
+      </condition>
+
+      <condition property="jxpath.needed">
+         <istrue value="${use.jxpath}" />
       </condition>
 
       <condition property="bsf.needed">
@@ -192,7 +197,6 @@
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
             <include name="commons-digester*.jar" />
-            <include name="commons-jxpath*.jar" />
             <include name="commons-logging*.jar" />
             <include name="commons-validator*.jar" />
             <include name="jakarta-oro-*.jar" />
@@ -737,13 +741,13 @@
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils-*.jar" />
             <include name="commons-digester-*.jar" />
-            <include name="commons-jxpath-*.jar" />
             <include name="commons-logging-*.jar" />
             <include name="commons-validator-*.jar" />
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components-*.jar" />
          </fileset>
          <fileset dir="${script.dist}">
+            <include name="commons-jxpath-*.jar" if="jxpath.needed" />
             <include name="bsf-*.jar" if="bsf.needed" />
             <include name="bsh-*.jar" if="beanshell.needed" />
             <include name="js.jar" if="javascript.needed" />
@@ -1371,7 +1375,6 @@
                </fileset>
                <fileset dir="${commons.dist}">
                   <include name="commons-beanutils*.jar"/>
-                  <include name="commons-jxpath*.jar"/>
                   <include name="commons-logging*.jar"/>
                   <include name="commons-digester*.jar"/>
                   <include name="commons-validator*.jar"/>
@@ -1388,6 +1391,7 @@
                   <include name="backport175-*.jar" />
                </fileset>
                <fileset dir="${script.dist}">
+                  <include name="commons-jxpath*.jar" if="jxpath.needed" />
                   <include name="bsf-*.jar" if="bsf.needed" />
                   <include name="bsh-*.jar" if="beanshell.needed" />
                   <include name="js.jar" if="javascript.needed" />

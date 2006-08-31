@@ -19,8 +19,12 @@
 package net.java.dev.genesis.ui;
 
 import java.math.BigDecimal;
+
+import net.java.dev.genesis.script.Script;
+import net.java.dev.genesis.script.ScriptContext;
+import net.java.dev.genesis.script.ScriptRegistry;
+
 import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.Validator;
@@ -254,10 +258,21 @@ public class BasicValidator {
             Double.parseDouble(value), Double.parseDouble(field.getVarValue(
             "min")), Double.parseDouble(field.getVarValue("max"))));
    }
-   
+
+   /**
+    * @deprecated use validateScript(Object,Field) instead
+    */
    public static boolean validateJXPath(Object bean, Field field) {
-      final JXPathContext ctx = JXPathContext.newContext(bean);
-      
-      return !Boolean.FALSE.equals(ctx.getValue(field.getVarValue("jxpath")));
+      Script script = ScriptRegistry.getInstance().getScript(ScriptRegistry.JXPATH);
+      final ScriptContext ctx = script.newContext(bean);
+
+      return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("jxpath")));
+   }
+
+   public static boolean validateScript(Object bean, Field field) {
+      Script script = ScriptRegistry.getInstance().getScript();
+      final ScriptContext ctx = script.newContext(bean);
+
+      return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("script")));
    }
 }

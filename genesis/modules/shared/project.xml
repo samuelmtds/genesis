@@ -37,7 +37,7 @@
         <dependency>
             <groupId>reusable-components</groupId>
             <artifactId>reusable-components</artifactId>
-            <jar>reusable-components-20040406.jar</jar>
+            <jar>reusable-components-20060810.jar</jar>
             <type>jar</type>
             <url>https://reusable-components.dev.java.net/</url>
             <properties/>

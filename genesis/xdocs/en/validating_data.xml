@@ -65,14 +65,13 @@
         <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
         ></code>: check if the number is part of an expected interval, defined 
         by variables <code>min</code> and <code>max</code>.</li>
-        <li><a name="jxpath"><code><b>jxpath</b></code></a>: it considers data 
-        as valid if evaluating the <a 
-        href="http://jakarta.apache.org/commons/jxpath/">JXPath</a> expression 
-        defined by the variable named <code>jxpath</code> returns a value 
+        <li><a name="script"><code><b>script</b></code></a>: it considers data 
+        as valid if evaluating the script expression 
+        defined by the variable named <code>script</code> returns a value 
         different from <code>java.lang.Boolean.FALSE</code>.</li>
       </ul>
       <p>As it is true for Struts validators, all the validators provided with 
-      genesis except for <code>jxpath</code> are only triggered if the field is 
+      genesis except for <code>script</code> are only triggered if the field is 
       not empty. This means that <b>even if you configure a validator properly, 
       it will be invoked only when the user inputs something into the field</b>. 
       If you would like your validator to always be run, <code>required</code> 
@@ -189,12 +188,18 @@
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateBigDecimalRange" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
-                msg="errors.bigDecimalRange"/>	
+                msg="errors.bigDecimalRange"/>
+        <!-- jxpath validator is deprecated. Use script validator instead -->
         <validator name="jxpath" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateJXPath" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
-                msg="errors.jxpath"/>			
+                msg="errors.jxpath"/>
+        <validator name="script" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateScript" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.script"/>
     </global>
 </form-validation>
 ]]>
