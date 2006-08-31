@@ -1213,6 +1213,17 @@
    <target name="jar" depends="jar:local,jar:remote,jar:shared,-do-custom-jar" />
 
    <target name="server-artifact:additional-macrodefs" if="server.artifact.needed">
+      <presetdef name="sar"
+                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <genesis:sar-macro>
+            <additional-fileset>
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-shared-${genesis.version}.jar" />
+               </fileset>
+               <fileset file="${jar.shared.location}" />
+            </additional-fileset>
+         </genesis:sar-macro>
+      </presetdef>
       <presetdef name="ear"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <genesis:ear-macro>
@@ -1227,7 +1238,11 @@
    </target>
 
    <target name="-do-server-artifact">
-      <genesis:sar-macro />
+      <genesis:sar />
+   </target>
+
+   <target name="-do-new-server-artifact">
+      <genesis:sar4ear-macro />
       <genesis:ear />
    </target>
 

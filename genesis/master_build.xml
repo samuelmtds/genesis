@@ -78,6 +78,12 @@
       <property name="jdbc.driver" 
                 value="${jboss.app}/lib/${jdbc.driver.jar.name}" />
 
+      <property name="use.ear.pack" value="true" />
+
+      <condition property="ear.pack.needed">
+         <istrue value="${use.ear.pack}" />
+      </condition>
+
       <condition property="needs.annotation">
          <or>
             <istrue value="${force.annotation}" />
@@ -871,10 +877,15 @@
    <target name="server-artifact:master-init">
       <property name="needs.server.artifact" value="${remote.mode}" />
 
+      <property name="server.service.artifact.name" 
+                      value="${genesisBasedApplication.name}.sar" />
+      <property name="server.artifact.name" 
+                      value="${genesisBasedApplication.name}.ear" />
+
       <property name="server.service.artifact.location" 
-                location="${build.dir}/${genesisBasedApplication.name}.sar" />
+                location="${build.dir}/${server.service.artifact.name}" />
       <property name="server.artifact.location" 
-                location="${build.dir}/${genesisBasedApplication.name}.ear" />
+                location="${build.dir}/${server.artifact.name}" />
    </target>
 
    <target name="server-artifact:additional-init" />
@@ -903,6 +914,42 @@
 
    <target name="server-artifact:master-macrodefs" if="server.artifact.needed">
       <macrodef name="sar-macro"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <element name="customize" optional="true"/>
+         <element name="additional-fileset" optional="true" />
+         <sequential>
+            <zip destfile="${server.service.artifact.location}">
+               <fileset dir="${shared.hibernate.dir}">
+                  <include name="**/*.hbm.xml" />
+               </fileset>
+               <zipfileset dir="${shared.hibernate.dir}"
+                     includes="jboss-service.xml" prefix="META-INF" />
+               <fileset dir="${shared.sources.dir}">
+                  <include name="hibernate.properties" />
+               </fileset>
+               <fileset dir="${hibernate.dist}">
+                  <include name="commons-logging*.jar" />
+                  <include name="log4j*.jar" />
+                  <include name="dom4j*.jar" />
+                  <include name="optional*.jar" />
+                  <include name="commons-collections*.jar" />
+                  <include name="ehcache*.jar" />
+                  <include name="cglib*.jar" />
+                  <include name="odmg*.jar" />
+                  <include name="hibernate*.jar" />
+               </fileset>
+               <fileset dir="${commons.dist}">
+                  <include name="commons-beanutils*.jar" />
+                  <include name="reusable-components*.jar" />
+               </fileset>
+               <fileset refid="lib.fileset" />
+               <fileset refid="shared.lib.fileset" />
+               <additional-fileset />
+               <customize />
+            </zip>
+         </sequential>
+      </macrodef>
+      <macrodef name="sar4ear-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <element name="customize" optional="true"/>
          <element name="additional-fileset" optional="true" />
@@ -969,9 +1016,21 @@
 
    <target name="-do-server-artifact" />
 
+   <target name="-do-new-server-artifact" />
+
    <target name="server-artifact" depends="define-call-task,server-artifact:macrodefs"
            if="server.artifact.needed">
-      <genesis:call target="-do-server-artifact" />
+      <condition property="server-artifact-taskname" value="-do-new-server-artifact">
+         <istrue value="${use.ear.pack}" />
+      </condition>
+
+      <condition property="server-artifact-taskname" value="-do-server-artifact">
+         <not>
+            <istrue value="${use.ear.pack}" />
+         </not>
+      </condition>
+
+      <genesis:call target="${server-artifact-taskname}" />
    </target>
 
    <target name="deploy:pre-init">
@@ -1036,7 +1095,14 @@
          <genesis:deploy-server-artifact-macro>
             <default-filesets>
                <fileset file="${jboss.datasource.config.xml}" />
-               <fileset file="${server.artifact.location}" />
+               <fileset dir="${genesis.dist}">
+                  <include name="genesis-server-${genesis.version}.jar" unless="ear.pack.needed" />
+                  <exclude name="**" if="ear.pack.needed" />
+               </fileset>
+               <fileset dir="${build.dir}">
+                  <include name="${server.service.artifact.name}" unless="ear.pack.needed" />
+                  <include name="${server.artifact.name}" if="ear.pack.needed" />
+               </fileset>
             </default-filesets>
          </genesis:deploy-server-artifact-macro>
       </presetdef>
