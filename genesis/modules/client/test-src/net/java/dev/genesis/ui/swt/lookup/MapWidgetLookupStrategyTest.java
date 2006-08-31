@@ -20,7 +20,6 @@ package net.java.dev.genesis.ui.swt.lookup;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.ui.binding.MapLookupStrategy;
-import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
