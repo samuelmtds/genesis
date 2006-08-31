@@ -93,7 +93,7 @@ public class JTextComponentBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateValueWithoutTrim() throws Exception {
-      binder.registerComponentBinder("text", new JTextComponentBinder(false));
+      binder.registerWidgetBinder("text", new JTextComponentBinder(false));
       componentBinder = binder.getWidgetBinder(text);
       
       assertNull(componentBinder.bind(binder, text,
