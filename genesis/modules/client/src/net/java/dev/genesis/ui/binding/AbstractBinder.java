@@ -199,10 +199,22 @@ public abstract class AbstractBinder implements FormControllerListener {
     */
    protected abstract LookupStrategy createLookupStrategy();
 
+   /**
+    * Lookup the object registered with the given name
+    * 
+    * @param name the object's name
+    * @return the object registered with the given name
+    */
    public Object lookup(String name) {
       return getLookupStrategy().lookup(root, name);
    }
 
+   /**
+    * Lookup the Button Group registered with the given name
+    * 
+    * @param name the button-group's name
+    * @return the button group registered with the given name
+    */
    public Object lookupButtonGroup(String name) {
       return buttonGroupsMap.get(name);
    }
@@ -216,6 +228,11 @@ public abstract class AbstractBinder implements FormControllerListener {
       return getLookupStrategy().getName(object);
    }
 
+   /**
+    * Method that does the bind. It will look in the form and associate
+    * fields, actions and dataproviders with components in the UI.
+    * This method should be the last one used by a binder. 
+    */
    public void bind() {
       try {
          bindFieldMetadatas(formMetadata);
@@ -677,7 +694,16 @@ public abstract class AbstractBinder implements FormControllerListener {
       return formatter;
    }
 
-   protected WidgetBinder registerWidgetBinder(String name, WidgetBinder binder) {
+   /**
+    * Associates the specified widget binder with the field with the specified name.
+    * Use this to register a custom widget binder to a specified field.
+    * 
+    * @param name the name with which the specified widget binder is to be associated.
+    * @param binder the widget binder to be associated with the specified name.
+    * @return previous widget associated with specified name, or <tt>null</tt>
+    *          if none.
+    */
+   public WidgetBinder registerWidgetBinder(String name, WidgetBinder binder) {
       return (WidgetBinder) componentBinders.put(name, binder);
    }
 
