@@ -138,7 +138,6 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       indexes = (int[]) binder
             .get("updateFormSelection(DataProviderMetadata,int[])");
       assertNotNull(indexes);
-      System.out.println(Arrays.toString(indexes));
       assertTrue(Arrays.equals(new int[0], indexes));
    }
 

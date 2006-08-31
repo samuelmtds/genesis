@@ -132,7 +132,6 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       indexes = (int[]) binder
             .get("updateFormSelection(DataProviderMetadata,int[])");
       assertNotNull(indexes);
-      System.out.println(Arrays.toString(indexes));
       assertTrue(Arrays.equals(new int[] { 0 }, indexes));
 
       simulateSelect(1);
@@ -151,7 +150,6 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       indexes = (int[]) binder
             .get("updateFormSelection(DataProviderMetadata,int[])");
       assertNotNull(indexes);
-      System.out.println(Arrays.toString(indexes));
       assertTrue(Arrays.equals(new int[] { 2, 3 }, indexes));
 
       simulateSelect(new int[] {});
