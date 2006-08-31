@@ -27,17 +27,14 @@ import net.java.dev.genesis.reflection.ReflectionInvoker;
 
 public final class EnumHelper {
    private static final EnumHelper instance = new EnumHelper();
-   
-   private boolean isJdk5;
+
    private Class enumClass;
-   
+
    private EnumHelper() {
       try {
-         Class.class.getMethod("isEnum", new Class[0]);
          enumClass = Class.forName("java.lang.Enum");
-         isJdk5 = true;
       } catch (Exception e) {
-         isJdk5 = false;
+         // not JDK 5 or later
       }
    }
 
@@ -60,7 +57,7 @@ public final class EnumHelper {
    }
 
    public boolean supportsEnum() {
-      return isJdk5;
+      return enumClass != null;
    }
    
    public boolean isReusableComponentEnum(Class clazz) {
@@ -68,7 +65,7 @@ public final class EnumHelper {
    }
    
    public boolean isJava5Enum(Class clazz) {
-      return isJdk5 && Boolean.TRUE.equals(invoke(clazz, "isEnum"));
+      return supportsEnum() && Boolean.TRUE.equals(invoke(clazz, "isEnum"));
    }
    
    public boolean isReusableComponentEnum(Object object) {
