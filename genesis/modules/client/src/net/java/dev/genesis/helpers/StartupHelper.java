@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,6 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
-import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,6 +44,7 @@ public class StartupHelper {
    private static Log log = LogFactory.getLog(StartupHelper.class);
    private BeanUtilsBean beanUtilsBean = new BeanUtilsBean(
          new ConverterRegistry(), new PropertyUtilsBean());
+   private String jxpathContextFactoryKey = "org.apache.commons.jxpath.JXPathContextFactory";
    private String jxpathContextFactoryClassName =
          "net.java.dev.genesis.commons.jxpath.JXPathContextFactory";
    private final Map converters = new HashMap();
@@ -106,8 +106,7 @@ public class StartupHelper {
 
    protected void registerJXPathContextFactory() {
       log.info("Registering JXPathContextFactory class name");
-      System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
-            jxpathContextFactoryClassName);
+      System.setProperty(jxpathContextFactoryKey, jxpathContextFactoryClassName);
    }
 
    public Converter addConverter(Class clazz, Converter converter) {
