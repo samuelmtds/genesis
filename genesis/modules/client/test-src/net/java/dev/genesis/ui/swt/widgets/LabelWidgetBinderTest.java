@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swt.components;
+package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
@@ -26,48 +26,44 @@ import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.MockSWTBinder;
-import net.java.dev.genesis.ui.swt.widgets.ProgressBarWidgetBinder;
+import net.java.dev.genesis.ui.swt.widgets.LabelWidgetBinder;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-public class ProgressBarWidgetBinderTest extends GenesisTestCase {
+public class LabelWidgetBinderTest extends GenesisTestCase {
    private Shell root;
-   private ProgressBar progress;
+   private Label label;
    private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
    private BoundField boundField;
    private MockForm form;
    private FieldMetadata fieldMeta;
 
-   
-   public ProgressBarWidgetBinderTest() {
-      super("ProgressBar Widget Binder Unit Test");
+   public LabelWidgetBinderTest() {
+      super("Label Widget Binder Unit Test");
    }
 
    protected void setUp() throws Exception {
-      progress = new ProgressBar(root = new Shell(), SWT.NONE);
+      label = new Label(root = new Shell(), SWT.NONE);
       binder = new MockSWTBinder(root, form = new MockForm(), new Object());
-      widgetBinder = binder.getWidgetBinder(progress);
-      fieldMeta = form.getFormMetadata().getFieldMetadata("intField");
+      widgetBinder = binder.getWidgetBinder(label);
+      fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
-   
+
    public void testSetValue() throws Exception {
-      assertTrue(widgetBinder instanceof ProgressBarWidgetBinder);
-      
-      assertNull(widgetBinder.bind(binder, progress, (ActionMetadata) null));
-      assertNull(widgetBinder.bind(binder, progress, (DataProviderMetadata) null));
+      assertTrue(widgetBinder instanceof LabelWidgetBinder);
 
-      boundField = widgetBinder.bind(binder, progress, fieldMeta);
-      assertNotNull(boundField);
+      assertNull(widgetBinder.bind(binder, label,
+            (DataProviderMetadata) null));
+      assertNull(widgetBinder.bind(binder, label, (ActionMetadata) null));
+      assertNotNull(boundField = widgetBinder.bind(binder, label, fieldMeta));
 
-      assertEquals(0, progress.getSelection());
+      boundField.setValue("someValue");
+      assertEquals("someValue", label.getText());
 
-      boundField.setValue(new Integer(3));
-      assertEquals(3, progress.getSelection());
-
-      boundField.setValue(new Integer(100));
-      assertEquals(100, progress.getSelection());
+      boundField.setValue(null);
+      assertEquals("", label.getText());
    }
 }

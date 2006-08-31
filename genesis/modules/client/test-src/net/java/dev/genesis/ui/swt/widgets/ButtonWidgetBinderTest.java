@@ -16,54 +16,58 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swt.components;
+package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
-import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.MockSWTBinder;
-import net.java.dev.genesis.ui.swt.widgets.LabelWidgetBinder;
+import net.java.dev.genesis.ui.swt.widgets.ButtonWidgetBinder;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
-public class LabelWidgetBinderTest extends GenesisTestCase {
+public class ButtonWidgetBinderTest extends GenesisTestCase {
    private Shell root;
-   private Label label;
+   private Button button;
    private MockSWTBinder binder;
    private WidgetBinder widgetBinder;
-   private BoundField boundField;
    private MockForm form;
-   private FieldMetadata fieldMeta;
+   private ActionMetadata actionMeta;
 
-   public LabelWidgetBinderTest() {
-      super("Label Widget Binder Unit Test");
+   public ButtonWidgetBinderTest() {
+      super("Button Component Binder Unit Test");
    }
 
    protected void setUp() throws Exception {
-      label = new Label(root = new Shell(), SWT.NONE);
+      button = new Button(root = new Shell(), SWT.NONE);
       binder = new MockSWTBinder(root, form = new MockForm(), new Object());
-      widgetBinder = binder.getWidgetBinder(label);
-      fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
+      actionMeta = (ActionMetadata) form.getFormMetadata().getActionMetadatas()
+            .get("someAction");
+      widgetBinder = binder.getWidgetBinder(button);
    }
 
-   public void testSetValue() throws Exception {
-      assertTrue(widgetBinder instanceof LabelWidgetBinder);
+   public void testButtonClick() {
+      assertTrue(widgetBinder instanceof ButtonWidgetBinder);
 
-      assertNull(widgetBinder.bind(binder, label,
-            (DataProviderMetadata) null));
-      assertNull(widgetBinder.bind(binder, label, (ActionMetadata) null));
-      assertNotNull(boundField = widgetBinder.bind(binder, label, fieldMeta));
+      assertNull(widgetBinder.bind(binder, button, (DataProviderMetadata) null));
+      assertNull(widgetBinder.bind(binder, button, (FieldMetadata) null));
+      assertNotNull(widgetBinder.bind(binder, button, actionMeta));
 
-      boundField.setValue("someValue");
-      assertEquals("someValue", label.getText());
+      simulateClick(button);
+      assertSame(actionMeta, binder.get("invokeFormAction(ActionMetadata)"));
+   }
 
-      boundField.setValue(null);
-      assertEquals("", label.getText());
+   private void simulateClick(Button button) {
+      Event event = new Event();
+      event.widget = button;
+      event.button = 1;
+      event.type = SWT.Selection;
+      button.notifyListeners(event.type, event);
    }
 }
