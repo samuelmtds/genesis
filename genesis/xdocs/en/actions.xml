@@ -27,12 +27,11 @@
         information must be implemented. But before deleting it, the user is
         supposed to confirm the operation. This confirmation could be
         implemented by displaying an <code>OptionDialog</code> (Thinlet), a
-        <code>JOptionPane</code> (Swing) or <code>MessageBox</code> (SWT)
-        to the user and proceeding with it
-        only if s/he agreed to delete it. However, deleting some information is 
-        not a graphical API specific operation and, therefore, should be 
-        implemented on the form class. How can it be implemented the right 
-        way?</p>
+        <code>JOptionPane</code> (Swing) or a <code>MessageBox</code> (SWT)
+        to the user and proceeding with it only if s/he agreed to delete it. 
+        However, deleting some information is not a graphical API specific 
+        operation and, therefore, should be implemented in the form class. How 
+        can it be implemented the right way?</p>
         <p>In order to execute a UI-related method before invoking a form
         method - and even not calling the form method at all -, the
         <code>@BeforeAction</code> annotation should be used. This annotation 
@@ -96,7 +95,7 @@ public class BeforeActionViewSWTExample {
    @BeforeAction("delete")
    public boolean confirmDeletion() {
       MessageBox box = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES
-            | SWT.NO | SWT.CANCEL);
+            | SWT.NO);
       box.setText("Deleting record...");
       box.setMessage("Do you really want to delete this record?");
 
@@ -134,15 +133,15 @@ public class BeforeActionFormExample {
         <code>delete()</code> is invoked by genesis and event handling for this
         button finishes.</p>
         <p>Notice that the annotation <code>@ViewHandler</code> is used for
-        <code>BeforeActionViewSwingExample</code> and <code>BeforeActionViewSWTExample</code>.
-        It is necessary for all 
+        <code>BeforeActionViewSwingExample</code> and 
+        <code>BeforeActionViewSWTExample</code>. It is necessary for all 
         classes responsible for handling API-specific events, except for those
         that inherit from <code>BaseThinlet</code>. This rule can be put in 
-        simple terms like that: if Swing is being used, the annotation must be
-        placed in the graphical component class or in the handler object used in
-        the <code>SwingBinder</code> or <code>SWTBinder</code> constructor;
-        if Thinlet is being used, this
-        annotation is only required if the event handler object is a POJO.</p>
+        simple terms like that: if Swing or SWT are being used, the annotation 
+        must be placed in the graphical component class or in the handler object 
+        used in the <code>SwingBinder</code> or <code>SWTBinder</code> 
+        constructor; if Thinlet is being used, this annotation is only required 
+        if the event handler object is a POJO.</p>
       </subsection>
       <subsection name="Using @AfterAction">
         <p>After executing a form method it might be necessary to use
@@ -193,7 +192,7 @@ public class AfterActionViewSWTExample extends JDialog {
 
    public AfterActionViewSwingExample() {
       // initialization logic
-      shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+      shell = new Shell(parent, SWT.DIALOG_TRIM);
       new SWTBinder(shell, new AfterActionFormExample(), this).bind();
    }
 

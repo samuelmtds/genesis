@@ -94,7 +94,7 @@ public class ExemploBeforeActionViewSWT {
    @BeforeAction("excluir")
    public boolean confirmaExclusao() {
       MessageBox box = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES
-            | SWT.NO | SWT.CANCEL);
+            | SWT.NO);
       box.setText("Excluindo registro...");
       box.setMessage("Deseja realmente excluir o registro?");
 
@@ -130,9 +130,9 @@ public class ExemploBeforeActionForm {
         o usuário escolher a opção "Sim" na janela que será exibida. Quando a
         confirmação ocorre, o método <code>excluir()</code> é invocado pelo
         framework e o tratamento do acionamento do botão é encerrado.</p>
-        <p>Note o uso da anotação <code>@ViewHandler</code> na classe 
-        <code>ExemploBeforeActionViewSwing</code> e <code>ExemploBeforeActionViewSWT</code>.
-        Isso é necessário para todas
+        <p>Note o uso da anotação <code>@ViewHandler</code> nas classes 
+        <code>ExemploBeforeActionViewSwing</code> e 
+        <code>ExemploBeforeActionViewSWT</code>. Isso é necessário para todas
         as classes que são responsáveis pelo tratamento de eventos específicos 
         da API de interface gráfica, exceto pelas classes que herdam de 
         <code>BaseThinlet</code>. Podemos simplificar a regra do seu uso da 
@@ -193,7 +193,7 @@ public class ExemploAfterActionViewSWT {
 
    public ExemploAfterActionView() {
       // lógica de inicializacao
-      shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+      shell = new Shell(parent, SWT.DIALOG_TRIM);
       new SWTBinder(this, new ExemploAfterActionForm(), this).bind();
    }
 
@@ -276,7 +276,7 @@ public class ExemploRefreshViewThinlet extends BaseThinlet {
    // ...
 }
 </source>
-        <p>Para uso de outro bindings como Swing ou SWT, existe o método 
+        <p>Para uso de outros bindings como Swing ou SWT, existe o método 
         <code>refresh()</code> declarado em <code>AbstractBinder</code>.</p>
 <source>
 public class ExemploRefreshViewSwing extends JFrame {
@@ -370,9 +370,9 @@ public class ExemploRefreshViewForm {
         <code>invokeFormAction(String)</code> ou 
         <code>invokeFormAction(Object,String)</code> de 
         <code>BaseThinlet</code>.
-        Para uso com Swing SWT é possível utilizar o método
-        <code>invokeAction(String)</code> declarado em <code>AbstractBinder</code>.
-        As ações também incluem 
+        Para uso com Swing ou SWT é possível utilizar o método
+        <code>invokeAction(String)</code> declarado em 
+        <code>AbstractBinder</code>. As ações também incluem 
         <code>@DataProvider</code>, que será explicado numa seção futura. Um 
         exemplo de uso da API genérica pode ser visto abaixo:</p>
 <source>
