@@ -139,13 +139,13 @@ public Date getDataCorrente() {
 </source>
         <p>Porém, neste caso, o que ocorre é que apenas o campo texto 
         (<code>textfield</code>/<code>JTextField</code>/<code>Text</code>)
-        fica invisível (caso as 
-        referidas condições não sejam satisfeitas). Atente para o fato de que o 
-        <code>label</code>/<code>JLabel</code>/<code>Label</code>
-        e o <code>panel</code> 
-        (necessário para espaçamento no Thinlet) não ficam invisíveis - isto 
-        claramente não é o que deve ocorrer nestas situações. O desejável é que 
-        esses três controles sigam a mesma regra de visibilidade.</p>
+        fica invisível (caso as referidas condições não sejam satisfeitas). 
+        Atente para o fato de que o 
+        <code>label</code>/<code>JLabel</code>/<code>Label</code> e o 
+        <code>panel</code> (necessário para espaçamento no Thinlet) não ficam 
+        invisíveis - isto claramente não é o que deve ocorrer nestas situações. 
+        O desejável é que esses três controles sigam a mesma regra de 
+        visibilidade.</p>
         <p>Para que isto ocorra, utiliza-se a propriedade
         <code>widgetGroup</code> no atributo "property" do
         <code>textfield</code> no xml do Thinlet, conforme o exemplo abaixo:</p>
@@ -163,8 +163,8 @@ public Date getDataCorrente() {
         <code>panel</code> agora estão nomeados e referenciados dentro do
         <code>widgetGroup</code>, separados por vírgula.</p>
         <p>Para o Swing, deve-se definir a <code>clientProperty</code> 
-        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code>e para SWT, deve-se definir
-         o metadado (<code>data</code>)
+        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code> e para o SWT, deve-se 
+        definir o metadado (<code>data</code>) 
         <code>SWTBinder.WIDGET_GROUP_PROPERTY</code> conforme demonstrado 
         abaixo:</p>
 <source>
@@ -199,13 +199,15 @@ dataCorrente.setData(SWTBinder.WIDGET_GROUP_PROPERTY, "dataCorrenteLabel");
 //..
 ]]>
 </source>
-        <p>Perceba que o valor da <code>clientProperty</code>/<code>data</code> é o 
-        <code>name</code> do <code>JLabel</code>/<code>Label</code>. Se houvesse mais de um 
+        <p>Perceba que o valor da <code>clientProperty</code>/<code>data</code> 
+        é o <code>name</code>/<code>data</code> do 
+        <code>JLabel</code>/<code>Label</code>. Se houvesse mais de um 
         componente, seus nomes poderiam ser separados por vírgula ou poderia ser
         utilizada uma array de <code>String</code> como valor da propriedade.
-        Pode-se ainda utilizar como valor da <code>clientProperty</code>/<code>data</code> o 
-        próprio componente, uma coleção de componentes ou um array de 
-        componentes, como ilustrado abaixo:</p>
+        Pode-se ainda utilizar como valor da 
+        <code>clientProperty</code>/<code>data</code> o próprio componente, uma 
+        coleção de componentes ou um array de componentes, como ilustrado 
+        abaixo:</p>
 <source>
 //..
 getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
