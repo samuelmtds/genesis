@@ -24,8 +24,8 @@
       e este está presente na distribuição empty-project ou na distribuição 
       completa do genesis. A estrutura se encontra no diretório
       <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-project/</b></code>.</p>
-
-<p>Veja exemplos de configuração para diferentes cenários <a href="#Cenários">aqui</a></p>
+      <p>Veja exemplos de configuração para diferentes cenários 
+      <a href="#Cenários">aqui</a></p>
     </section>
     <section name="O que é necessário?">
       <p>É necessário ter instalado:</p>
@@ -38,9 +38,10 @@
         "http://ant.apache.org/">Apache Ant</a>. Prefira sempre a última
         versão disponível (no momento, Ant 1.6.5)</li>
       </ul>
-      <p><b>Não é necessário utilizar a estrutura do projeto vazio se utilizar apenas a
-      funcionalidade de <code>binding</code> do genesis. Basta importar as bibliotecas
-      do <code>genesis-client</code> e suas dependências como parte de seu próprio projeto.</b></p>
+      <p><b>Não é necessário utilizar a estrutura do projeto vazio se utilizar 
+      apenas a funcionalidade de binding do genesis. Basta importar as 
+      bibliotecas do <code>genesis-client</code> e suas dependências como parte 
+      de seu próprio projeto.</b></p>
     </section>
     <section name="Configurando um novo projeto">
       <p>Você pode copiar toda estrutura do <b>empty-project</b> para um
@@ -181,7 +182,8 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
         (<b>Commands</b>). Juntamente com os Commands, temos as classes mapeadas 
         do Hibernate.</li>
       </ul>
-      <p>É possível criar diretórios com bibliotecas específicas para cada módulo:</p>
+      <p>É possível criar diretórios com bibliotecas específicas para cada 
+      módulo:</p>
       <ul>
         <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/client/lib</b>: Diretório
         que deve conter todos os jars necessários para compilação e execução
@@ -271,7 +273,7 @@ ant all
 ant run:remote
 </source>
       <p>Para configurar o SWT em seu projeto, leia as instruções
-        <a href="configuring_swt.html">aqui</a></p>
+      <a href="configuring_swt.html">aqui</a></p>
     </section>
     <section name="Cenários">
        <p>Abaixo temos exemplos de configuração do genesis para diferentes cenários</p>
