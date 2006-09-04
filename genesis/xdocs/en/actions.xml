@@ -188,7 +188,7 @@ public class AfterActionViewSwingExample extends JDialog {
 <source>
 @ViewHandler
 public class AfterActionViewSWTExample extends JDialog {
-   private Shel; shell;
+   private Shell shell;
 
    public AfterActionViewSwingExample() {
       // initialization logic
