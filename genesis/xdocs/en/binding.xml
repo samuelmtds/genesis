@@ -9,9 +9,9 @@
       <p>One of the most innovative genesis features is its <b>binding</b>. This
       feature keeps the UI always in synch with a JavaBean, which is called a 
       <b>form</b>. Three graphical toolkits are currently supported for this 
-      integration: Swing, SWT and Thinlet. Below there is a basic example of how to 
-      implement a login screen using the binding for each APIs . First, there is 
-      the form class definition:</p>
+      integration: Swing, SWT and Thinlet. Below there is a basic example of how 
+      to implement a login screen using the binding for each APIs . First, there 
+      is the form class definition:</p>
 <source>
 @Form
 public class LoginForm {
@@ -118,7 +118,8 @@ public class LoginSwingView extends JDialog {
    }
 }
 </source>
-      <p>The same UI using SWT:</p>
+      <p>Next, there is the code for showing a UI bound to this form using 
+      SWT:</p>
 <source>
 @ViewHandler
 public class LoginSWTView {
@@ -260,11 +261,11 @@ public class LoginThinletView extends BaseDialogThinlet {
       several widgets in the UI, such as textfields, passwordfields, labels and
       others. For it to work, each component name must be equal to a property 
       name. If you are using Swing, the <code>setName(String)</code> method of
-      each component should be used for that. If you are using SWT, 
-      the <code>setData(Object)</code> method of
-      each component should be used for that. If Thinlet is being used, an
-      easy way to configure a widget name is by defining its <code>name</code> 
-      property in the xml file as shown above.</p>
+      each component should be used for that. If you are using SWT, the 
+      <code>setData(Object)</code> method of each component should be used for 
+      that. If Thinlet is being used, an easy way to configure a widget name is 
+      by defining its <code>name</code> property in the xml file as shown 
+      above.</p>
       <p>Both the form property value and its display value will be in synch
       when the component that represents the property loses focus. In the 
       example above, this happens whenever the user presses the TAB key or 
@@ -281,16 +282,15 @@ public class LoginThinletView extends BaseDialogThinlet {
       <p>How to perform the binding depends on the graphical API being used. For
       all APIs, there is a class that is known as <b>view</b>, i.e., the class
       that defines the UI and calls the methods that perform the binding. If
-      Swing or SWT is being used, the view must always be annotated with
-      <code>@ViewHandler</code>. As shown above, the Swing and SWT binding is performed
-      by using the helper class named <code>SwingBinder</code> and <code>SWTBidner</code>.
-      respectively. This class
-      makes it possible to customize the binding process, although the code 
-      snippet shown above covers most cases. For the Thinlet binding, genesis 
-      has two helper classes, <code>BaseThinlet</code> and 
-      <code>BaseDialogThinlet</code>, that are used to build standard windows 
-      and dialogs, respectively, and that have a <code>bind(Object)</code> 
-      method, used above.</p>
+      Swing or SWT are being used, the view must always be annotated with
+      <code>@ViewHandler</code>. As shown above, the Swing binding is performed
+      by using the helper class named <code>SwingBinder</code>, while the SWT 
+      binding is implemented by <code>SWTBinder</code>. This class makes it 
+      possible to customize the binding process, although the code snippet shown 
+      above covers most cases. For the Thinlet binding, genesis has two helper 
+      classes, <code>BaseThinlet</code> and <code>BaseDialogThinlet</code>, that 
+      are used to build standard windows and dialogs, respectively, and that have 
+      a <code>bind(Object)</code> method, used above.</p>
       <p>The following sections will give more details about each binding.</p>
     </section>
   </body>

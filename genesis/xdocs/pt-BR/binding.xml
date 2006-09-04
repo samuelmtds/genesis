@@ -8,7 +8,7 @@
     <section name="Binding">
       <p>Uma das funcionalidades mais inovadoras do genesis é o <b>binding</b>.
       O binding mantém a interface gráfica sincronizada automaticamente com um
-      JavaBean, a que chamamos de <b>form</b>. Dois toolkits gráficos são 
+      JavaBean, a que chamamos de <b>form</b>. Três toolkits gráficos são 
       suportados atualmente para esta integração: Swing, SWT e Thinlet. Abaixo temos
       um exemplo básico de como o binding funciona com essas três APIs para
       implementar uma tela de login. Primeiro, temos o form:</p>
@@ -261,11 +261,10 @@ public class LoginThinletView extends BaseDialogThinlet {
       dinamicamente a diversos widgets da interface gráfica, como textfields, 
       passwordfields, labels e outros. Para que isto aconteça, os nomes dos 
       componentes têm que ser iguais aos nomes das propriedades. Com Swing, 
-      deve-se usar o método <code>setName(String)</code> dos componentes. Com SWT,
-      use o método <code>setData(Object)</code>. Usando 
-      Thinlet, conforme mostrado no exemplo acima, isso é feito por definir a 
-      propriedade <code>name</code> dos widgets no xml com o nome das 
-      propriedades.</p>
+      deve-se usar o método <code>setName(String)</code> dos componentes. Com 
+      SWT, o método <code>setData(Object)</code> deve ser usado. Usando Thinlet, 
+      conforme mostrado no exemplo acima, isso é feito por definir a propriedade 
+      <code>name</code> dos widgets no xml com o nome das propriedades.</p>
       <p>Tanto o valor da propriedade no form quanto sua exibição na tela 
       estarão sincronizados quando o componente que representa a propriedade 
       perder o foco. No caso do exemplo dado, isso acontece quando o usuário 
@@ -285,14 +284,14 @@ public class LoginThinletView extends BaseDialogThinlet {
       que define a interface gráfica e que chama os métodos necessários para 
       efetuar o binding. Para o Swing e SWT, a view sempre deve ser anotada com 
       <code>@ViewHandler</code>. Conforme mostrado acima, o binding no 
-      Swing e SWT é feito através da classe auxiliar <code>SwingBinder</code> e
-      <code>SWTBinder</code> respectivamente. Através 
-      destas classes é possível fazer diversas customizações no processo de 
-      binding, mas o código mostrado no exemplo atende a maioria dos casos. Para 
-      o Thinlet, o genesis possui duas classes auxiliares, 
-      <code>BaseThinlet</code> e <code>BaseDialogThinlet</code>, que são usadas
-      para construir janelas comuns e janelas de diálogo, respectivamente, e que
-      possuem o método <code>bind(Object)</code>, usado no exemplo.</p>
+      Swing é feito através da classe auxiliar <code>SwingBinder</code> e no 
+      SWT, usando-se a classe <code>SWTBinder</code>. Através destas classes é 
+      possível fazer diversas customizações no processo de binding, mas o código 
+      mostrado no exemplo atende a maioria dos casos. Para o Thinlet, o genesis 
+      possui duas classes auxiliares, <code>BaseThinlet</code> e 
+      <code>BaseDialogThinlet</code>, que são usadas para construir janelas 
+      comuns e janelas de diálogo, respectivamente, e que possuem o método 
+      <code>bind(Object)</code>, usado no exemplo.</p>
       <p>As seções subsequentes dão explicações mais detalhadas sobre cada um
       dos bindings.</p>
     </section>
