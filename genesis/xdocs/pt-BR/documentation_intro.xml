@@ -23,8 +23,8 @@
          <li><b>Integração com Hibernate:</b> Simplifica o uso do Hibernate, não 
          exigindo nenhuma configuração adicional e integrado as funcionalidades 
          de remotabilidade transparente e suporte a transações.</li>
-         <li><b>Binding Swing, SWT e Thinlet:</b> Através do binding do genesis, é 
-         possível exibir e manter JavaBeans sincronizados com o estado da tela
+         <li><b>Binding Swing, SWT e Thinlet:</b> Através do binding do genesis, 
+         é possível exibir e manter JavaBeans sincronizados com o estado da tela
          sem a necessidade de listeners, APIs de eventos ou interfaces 
          especiais. Além disso, pode-se ligar métodos a botões apenas com uma
          anotação.</li>

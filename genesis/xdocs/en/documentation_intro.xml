@@ -24,10 +24,10 @@
          <li><b>Hibernate integrations:</b> Working with Hibernate is made 
          easier, without any need for extra configuration and with transparent
          remoting and transactional support.</li>
-         <li><b>Swing, SWT and Thinlet binding:</b> genesis binding makes it possible
-         to display JavaBeans and keep them in synch with UI state without using 
-         listeners, event APIs or special interfaces. In addition, methods can 
-         be bound to buttons by using an annotation.</li>
+         <li><b>Swing, SWT and Thinlet binding:</b> genesis binding makes it 
+         possible to display JavaBeans and keep them in synch with UI state 
+         without using listeners, event APIs or special interfaces. In addition, 
+         methods can be bound to buttons by using an annotation.</li>
          <li><b>Support for conditional UI control:</b> By using annotations 
          <code>@EnabledWhen</code> and <code>@VisibleWhen</code>, it is possible
          to enable/disable components and show/hide them in the UI in a 
