@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Estrutura de um projeto vazio para WEB</title>
+    <title>Estrutura de um projeto vazio para web</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
     </author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
     <section name="Como começar?">
@@ -14,13 +15,14 @@
       compilação e instalação já estão configurados nesse projeto vazio.</p>
       <p>É de extrema importância que você já tenha lido a documentação do
       genesis e compreenda seus conceitos e funcionalidades. Antes de começar a
-      codificar, leia o <a href="documentation_intro.html">Manual do Usuário</a>.</p>
+      codificar, leia o <a href="documentation_intro.html">Manual do 
+      Usuário</a>.</p>
       <p>À estrutura de um projeto vazio chamamos de <code>empty-web-project</code>
-      e este está presente na distribuição empty-web-project ou na distribuição completa do genesis.
-      A estrutura se encontra no diretório
+      e este está presente na distribuição empty-web-project ou na distribuição 
+      completa do genesis. A estrutura se encontra no diretório
       <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-web-project/</b></code>.</p>
-
-      <p>Veja exemplos de configuração para diferentes cenários <a href="#Cenários">aqui</a></p>
+      <p>Veja exemplos de configuração para diferentes cenários <a 
+      href="#Cenários">aqui</a>.</p>
     </section>
     <section name="O que é necessário?">
       <p>Além do genesis, é necessário ter instalado:</p>
@@ -136,7 +138,7 @@ genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
       arquivos que geralmente ficam empacotados em um war.</p>
       <p>Outro diretório é <b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/lib</b>
       onde deve ser colocado as bibliotecas utilizadas na parte web da aplicação,
-      como por exemplo struts.jar (se você estiver usando struts).</p>
+      como por exemplo struts.jar (se você estiver usando Struts).</p>
     </section>
     <section name="Compilando e instalando sua aplicação">
       <p>O projeto pode ser compilado e instalado no JBoss utilizando a
@@ -228,12 +230,14 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <property name="genesisBasedApplication.name" value="minhaaplicacao" />
     <property name="genesisBasedApplication.prettyName" value="Minha Aplicação" />
 
-    <!-- Não é necessário nenhuma outra configuração, basta colocar as bibliotecas do struts no diretório
-      modules/web/lib -->
+    <!-- Não é necessário nenhuma outra configuração, basta colocar as 
+         bibliotecas do struts no diretório modules/web/lib -->
 
-    <!-- Bibliotecas necessárias ao módulo shared, colocar no diretório modules/shared/lib -->
+    <!-- Bibliotecas necessárias ao módulo shared, colocar no diretório 
+         modules/shared/lib -->
 
-    <!-- Bibliotecas necessárias tanto ao módulo shared quanto client, colocar no diretório lib -->
+    <!-- Bibliotecas necessárias tanto ao módulo shared quanto web colocar 
+         no diretório lib -->
   </target>
 </project>
 ]]>

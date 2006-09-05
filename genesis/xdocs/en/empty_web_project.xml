@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Empty WEB project structure</title>
+    <title>Empty web project structure</title>
     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
     </author>
   </properties>
@@ -15,14 +15,16 @@
       <p>It's extremely important you have already read genesis docs and
       understood its concepts and features. Before starting to code, read the <a
       href="documentation_intro.html">User Manual</a>.</p>
-      <p>We call an empty web project strutucture <code>empty-web-project</code> and it
-      comes with genesis-empty-web-project distribution or genesis-all distribution.
-      This structure can be found in dir
+      <p>The empty web project strutucture is called 
+      <code>empty-web-project</code> and it comes with the 
+      genesis-empty-web-project distribution or the genesis-all 
+      distribution. This structure can be found in dir
       <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-web-project/</b></code>.</p>
-      <p>Take a look at some configuration samples <a href="#Scenarios">here</a></p>
+      <p>Take a look at some configuration samples <a 
+      href="#Scenarios">here</a>.</p>
     </section>
     <section name="What is needed?">
-      <p>Besides genesis, it is necessary:</p>
+      <p>For creating your project, you must have installed:</p>
       <ul>
         <li>genesis distribution along its dependency libraries.</li>
         <li><a href="http://www.jboss.org/">JBoss</a> server. We recommend a
@@ -115,7 +117,8 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
       <ul>
         <li><b>&lt;PROJECT_DIR&gt;/modules/web/src</b>: Dir that contains all
         source files related to the web side of your application (servlets, 
-        context listeners, and other classes related to the view tier).</li>
+        context listeners, and other classes related to the presentation 
+        tier).</li>
         <li><b>&lt;PROJECT_DIR&gt;/modules/shared/src</b>: Dir that contains all
         source files that both the web side and the ejb container side will need.
         Generally classes that represent business logic and have
@@ -125,12 +128,12 @@ genesis.home=c:/projects/genesis-&lt;version&gt;/genesis
         layer to the persistence layer.</li>
       </ul>
       <p>Another web dir can be found at 
-      <b>&lt;PROJECT_DIR&gt;/modules/web/content</b> and must contains
-      html, jsp, javascript, pics, xml and other files that usually are part of
-      war files.</p>
+      <b>&lt;PROJECT_DIR&gt;/modules/web/content</b> and it should contain html, 
+      jsp, javascript, pics, xml and other files that usually are part of war 
+      files.</p>
       <p>The last dir is <b>&lt;PROJECT_DIR&gt;/modules/web/lib</b>
       where you should put jars related to your web-tier, such as struts.jar 
-      (if you are using struts).</p>
+      (if you are using Struts).</p>
     </section>
     <section name="Compiling and installing your application">
       <p>The project can be compiled and installed on JBoss using <a href=
@@ -159,10 +162,6 @@ http://localhost:8080/&lt;genesisBasedApplication.name&gt;
        <subsection name="WEB Application using MySQL and Struts">
 <p><b>build.properties</b> file</p>
 <source>
-### general configuration
-genesisBasedApplication.name=myapplication
-genesisBasedApplication.prettyName=My Application
-  
 ### configure genesis home directory
 genesis.home=D:/opensource/genesis-3.0/genesis
   
@@ -223,11 +222,15 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
   <target name="-pre-init">
     <property file="build.properties" />
 
-    <!-- It's not necessary any other configuration, you just have to add struts jar to the modules/web/lib folder -->
+    <property name="genesisBasedApplication.name" value="myapplication" />
+    <property name="genesisBasedApplication.prettyName" value="My Application" />
+
+    <!-- It's not necessary to do any other configuration, you just have to add 
+         struts jars to the modules/web/lib folder -->
 
     <!-- Add jars needed by shared module to the modules/shared/lib folder -->
 
-    <!-- Add jars needed by shared and client module to the lib folder -->
+    <!-- Add jars needed by shared and web module to the lib folder -->
   </target>
 </project>
 ]]>
@@ -236,4 +239,3 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     </section>
   </body>
 </document>
-
