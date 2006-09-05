@@ -11,14 +11,16 @@
       to one graphical API-specific class.</p>
       <p>Two interfaces for error handling are defined by genesis:</p>
       <ul>
-        <li><b><code>net.java.dev.genesis.ui.binding.ExceptionHandler</code></b>: A generic
-        interface that defines only one method, <code>handleException(Throwable)</code> that is
-        called to handle exceptions. It's possible to implement this interface to define
-        a custom procedure for error handling in your application.</li>
+        <li><b><code>net.java.dev.genesis.ui.binding.ExceptionHandler</code></b>: 
+        A generic interface that defines only one method, 
+        <code>handleException(Throwable)</code> that is called to handle 
+        exceptions. This interface can be implemented to define a completely 
+        customized error handling process for your application.</li>
         <li><b><code>net.java.dev.genesis.ui.binding.DispatcherExceptionHandler</code></b>:
-        Extends the previous interface (<code>ExceptionHandler</code>) and defines
-        a default procedure for error handling with specific methods to handle validation errors,
-        known errors and unknown errors. The default procedure will be explained below.</li>
+        Extends the previous interface (<code>ExceptionHandler</code>) and 
+        defines a standard procedure for error handling with specific methods 
+        for validation errors, known errors and unknown errors. The default 
+        process will be explained below.</li>
       </ul>
       <p>The following procedure is used by genesis:</p>
       <ul>
@@ -31,8 +33,9 @@
         <code>getCause()</code> is verified, until that method returns 
         <code>null</code>; finally an message with stack trace is shown.</li>
       </ul>
-      <p>The abstract class <code>net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler</code>
-      implements that procedure as explained below:</p>
+      <p>The abstract class 
+      <code>net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler</code>
+      implements this procedure as explained below:</p>
       <ul>
         <li>If a <code>ValidationException</code> has happened, it is handled by
         <code>showValidationErrors(ValidationException)</code>.</li>
@@ -42,40 +45,43 @@
         <code>handleCustomException(Throwable)</code> that returns a
         <code>boolean</code> indicating whether the error has been handled or
         not.</li>
-        <li>When an error hasn't been handled,
+        <li>When the error hasn't been handled,
         <code>handleUnknownException(Throwable)</code> gets invoked, ending the
         error handling chain.</li>
       </ul>
-      <p>Other two abstract methods are defined by <code>AbstractDispatcherExceptionHandler</code></p>
+      <p>Two other abstract methods are defined by this class:</p>
       <ul>
         <li><b><code>showWarningMessageDialog(title,message)</code></b>:
-          It should show a warning dialog to the user with the current title and message.</li>
+        It should display a warning dialog to the user using the title and 
+        message parameters.</li>
         <li><b><code>showErrorMessageDialog(title,message,throwable)</code></b>:
-          It should show an error dialog to the user with the current title, message and
-          if needed, some information about the exception.
+        It should display an error dialog to the user with the current title, 
+        message and, if needed, some information about the exception.
         </li>
       </ul>
       <p>For most users, it's enough to know how each error will be handled by
       the framework. However, any of the above described methods can be
       overridden if there is a need to customize error handling. In general,
-      only <code>handleCustomException(Throwable)</code> should be override, so
+      only <code>handleCustomException(Throwable)</code> should be overriden, so
       users can define their custom exception handling.</p>
-      <p>Each graphical API defines a default implementation of <code>AbstractDispatcherExceptionHandler</code>,
-        as shown below:</p>
+      <p>Each graphical API defines a default implementation of 
+      <code>AbstractDispatcherExceptionHandler</code>, as shown below:</p>
       <ul>
-        <li><b><code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code></b>: Uses
-        <code>JOptionPane</code> to show the warning/error message to the user.</li>
-        <li><b><code>net.java.dev.genesis.ui.swt.SWTExceptionHandler</code></b>: Uses
-        <code>MessageBox</code> to show the warning/error message to the user.</li>
-        <li><b><code>net.java.dev.genesis.ui.swt.ThinletExceptionHandler</code></b>: Uses
-        <code>MessageDialog</code> and <code>ErrorReporterDialog</code>
-        to show the warning/error message to the user.</li>
+        <li><b><code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code></b>: 
+        Uses <code>JOptionPane</code> to display the warning/error message to 
+        the user.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.SWTExceptionHandler</code></b>: 
+        Uses <code>MessageBox</code> to display the warning/error message to the 
+        user.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.ThinletExceptionHandler</code></b>: 
+        Uses <code>MessageDialog</code> and <code>ErrorReporterDialog</code>
+        to display the warning/error message to the user.</li>
       </ul>
       <p>You should use the <code>setExceptionHandler</code> method, defined in
-      <code>AbstractBinder</code> (for Swing/SWT)
-      to use your custom <code>ExceptionHandler</code> implementation, or override
-      the <code>createExceptionHandler</code> method to return a new instance of your
-      custom <code>ExceptionHandler</code>.</p>
+      <code>AbstractBinder</code>, to use your custom 
+      <code>ExceptionHandler</code> implementation (for Swing/SWT), or override
+      the <code>createExceptionHandler</code> method of your binder to return a 
+      new instance of your custom <code>ExceptionHandler</code> class.</p>
     </section>
   </body>
 </document>
