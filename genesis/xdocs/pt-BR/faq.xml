@@ -79,8 +79,8 @@
           <code>Session</code> do objeto chamador.</li>
           <li>O processo de build pode não estar funcionando corretamente,
           caso esta seja a primeira vez que se tenta compilar o projeto.</li>
-          <li>O método não foi corretamente anotado com @Remotable, 
-          @Transactional ou @Criteria</li>
+          <li>O método não foi corretamente anotado com <code>@Remotable</code>, 
+          <code>@Transactional</code> ou <code>@Criteria</code>.</li>
         </ul>
         </p>
       </subsection>
