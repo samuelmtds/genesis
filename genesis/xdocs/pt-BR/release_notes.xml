@@ -31,6 +31,19 @@
           <li>Adicionado <a href="binding.html">suporte a SWT</a>.</li>
           <li>É possível utilizar genesis-client em projetos sem o uso de AOP</li>
         </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li><code>@BeforeAction</code> não funciona para <code>@Action</code> 
+          que também seja um <code>@DataProvider</code>
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=331">Issue
+          # 331</a>).</li>
+          <li>Propriedades virtuais não funcionam com <code>JComboBox</code> e 
+          <code>JList</code> quando se usam <code>Enum</code>s
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=357">Issue
+          # 357</a>).</li>
+        </ul>
         <p>Uma lista completa das alterações ocorridas entre a 3.0-EA3 e a 3.0-EA4
         pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;target_milestone=3.0-EA4">aqui</a>.</p>

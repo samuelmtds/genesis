@@ -2,6 +2,7 @@
 <document>
   <properties>
     <title>Release Notes</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
@@ -27,7 +28,21 @@
         <p>Some of the most noteworthy new features and changes are:</p>
         <ul>
           <li>Added <a href="binding.html">SWT support</a>.</li>
-          <li>It's possible to use genesis-client in regular Java Projects, without the use of AOP.</li>
+          <li>It's possible to use genesis-client in regular Java projects 
+          without using AOP.</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li><code>@BeforeAction</code> does not work for an 
+          <code>@Action</code> that is also a <code>@DataProvider</code>
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=331">Issue
+          # 331</a>).</li>
+          <li>Virtual properties for <code>JComboBox</code> and 
+          <code>JList</code> don't work when using <code>Enum</code>
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=357">Issue
+          # 357</a>).</li>
         </ul>
         <p>The full change log between 3.0-EA3 and 3.0-EA4 can be found <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;target_milestone=3.0-EA4">here</a>.</p>
