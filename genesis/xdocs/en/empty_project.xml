@@ -13,7 +13,7 @@
       <p>genesis was conceived having as a goal to make development easier and
       faster. In order to allow someone to use it in an easier and faster way,
       we made available a whole empty project structure, so you just need to
-      code your own classes. All compilation and installations process are
+      code your own classes. All compilation and installation processes are
       already configured in this empty project.</p>
       <p>It's extremely important you have already read genesis docs and
       understood its concepts and features. Before start coding, please read the 
@@ -22,7 +22,8 @@
       it comes with genesis-empty-project distribution or genesis-all 
       distribution. This structure can be found in dir
       <code><b>&lt;GENESIS_DISTRIBUTION&gt;/samples/empty-project/</b></code>.</p>
-      <p>Take a look at some configuration samples <a href="#Scenarios">here</a></p>
+      <p>Take a look at some configuration samples <a 
+      href="#Scenarios">here</a></p>
     </section>
     <section name="What is needed?">
       <p>For creating your project, you must have installed:</p>
