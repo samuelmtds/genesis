@@ -70,13 +70,13 @@ public class UserListView {
     *
     */
    private void createShell() {
-      GridLayout gridLayout3 = new GridLayout();
-      gridLayout3.numColumns = 1;
+      GridLayout shellGridLayout = new GridLayout();
+      shellGridLayout.numColumns = 1;
 
       if (shell == null) {
          shell = new Shell();
       }
-      shell.setLayout(gridLayout3);
+      shell.setLayout(shellGridLayout);
 
       createUpperContainer();
       createUsersComposite();
@@ -91,12 +91,12 @@ public class UserListView {
     *
     */
    private void createUpperContainer() {
-      GridData gridData = new GridData();
-      gridData.horizontalAlignment = GridData.FILL;
-      gridData.verticalAlignment = GridData.CENTER;
+      GridData upperContainerGridData = new GridData();
+      upperContainerGridData.horizontalAlignment = GridData.FILL;
+      upperContainerGridData.verticalAlignment = GridData.CENTER;
 
       upperContainer = new SashForm(shell, SWT.NONE);
-      upperContainer.setLayoutData(gridData);
+      upperContainer.setLayoutData(upperContainerGridData);
 
       createNameComposite();
       createLoginComposite();
@@ -109,20 +109,20 @@ public class UserListView {
     *
     */
    private void createNameComposite() {
-      GridData gridData3 = new GridData();
-      gridData3.widthHint = 120;
+      GridData nameGridData = new GridData();
+      nameGridData.widthHint = 120;
 
-      GridLayout gridLayout = new GridLayout();
-      gridLayout.numColumns = 2;
+      GridLayout nameCompositeGridLayout = new GridLayout();
+      nameCompositeGridLayout.numColumns = 2;
       
       nameComposite = new Composite(upperContainer, SWT.NONE);
-      nameComposite.setLayout(gridLayout);
+      nameComposite.setLayout(nameCompositeGridLayout);
 
       nameLabel = new Label(nameComposite, SWT.NONE);
       nameLabel.setText(getMessage("User.name"));
       
       name = new Text(nameComposite, SWT.BORDER);
-      name.setLayoutData(gridData3);
+      name.setLayoutData(nameGridData);
       name.setData("name");
    }
 
@@ -131,20 +131,20 @@ public class UserListView {
     *
     */
    private void createLoginComposite() {
-      GridData gridData4 = new GridData();
-      gridData4.widthHint = 120;
+      GridData loginGridData = new GridData();
+      loginGridData.widthHint = 120;
 
-      GridLayout gridLayout1 = new GridLayout();
-      gridLayout1.numColumns = 2;
+      GridLayout loginCompositeGridLayout = new GridLayout();
+      loginCompositeGridLayout.numColumns = 2;
 
       loginComposite = new Composite(upperContainer, SWT.NONE);
-      loginComposite.setLayout(gridLayout1);
+      loginComposite.setLayout(loginCompositeGridLayout);
 
       loginLabel = new Label(loginComposite, SWT.NONE);
       loginLabel.setText(getMessage("User.login"));
 
       login = new Text(loginComposite, SWT.BORDER);
-      login.setLayoutData(gridData4);
+      login.setLayoutData(loginGridData);
       login.setData("login");
    }
 
@@ -153,20 +153,20 @@ public class UserListView {
     *
     */
    private void createEmailComposite() {
-      GridData gridData5 = new GridData();
-      gridData5.widthHint = 120;
+      GridData emailGridData = new GridData();
+      emailGridData.widthHint = 120;
 
-      GridLayout gridLayout2 = new GridLayout();
-      gridLayout2.numColumns = 2;
+      GridLayout emailCompositeGridLayout = new GridLayout();
+      emailCompositeGridLayout.numColumns = 2;
 
       emailComposite = new Composite(upperContainer, SWT.NONE);
-      emailComposite.setLayout(gridLayout2);
+      emailComposite.setLayout(emailCompositeGridLayout);
 
       emailLabel = new Label(emailComposite, SWT.NONE);
       emailLabel.setText(getMessage("User.email"));
 
       email = new Text(emailComposite, SWT.BORDER);
-      email.setLayoutData(gridData5);
+      email.setLayoutData(emailGridData);
       email.setData("email");
    }
 
@@ -175,13 +175,13 @@ public class UserListView {
     *
     */
    private void createSearchResetComposite() {
-      FillLayout fillLayout = new FillLayout();
-      fillLayout.spacing = 3;
-      fillLayout.marginWidth = 3;
-      fillLayout.marginHeight = 3;
+      FillLayout searchResetCompositeLayout = new FillLayout();
+      searchResetCompositeLayout.spacing = 3;
+      searchResetCompositeLayout.marginWidth = 3;
+      searchResetCompositeLayout.marginHeight = 3;
 
       searchResetComposite = new Composite(upperContainer, SWT.NONE);
-      searchResetComposite.setLayout(fillLayout);
+      searchResetComposite.setLayout(searchResetCompositeLayout);
 
       search = new Button(searchResetComposite, SWT.NONE);
       search.setText(getMessage("button.search"));
@@ -198,18 +198,18 @@ public class UserListView {
     *
     */
    private void createUsersComposite() {
-      GridData gridData1 = new GridData();
-      gridData1.widthHint = 730;
-      gridData1.heightHint = 180;
-      gridData1.verticalAlignment = GridData.CENTER;
-      gridData1.horizontalAlignment = GridData.FILL;
+      GridData usersGridData = new GridData();
+      usersGridData.widthHint = 730;
+      usersGridData.heightHint = 180;
+      usersGridData.verticalAlignment = GridData.CENTER;
+      usersGridData.horizontalAlignment = GridData.FILL;
 
       usersComposite = new Composite(shell, SWT.NONE | SWT.BORDER);
       usersComposite.setLayout(new GridLayout());
 
       users = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL| SWT.BORDER);
       users.setHeaderVisible(true);
-      users.setLayoutData(gridData1);
+      users.setLayoutData(usersGridData);
       users.addMouseListener(new MouseAdapter() {
          public void mouseDoubleClick(MouseEvent e) {
             binder.invokeAction("update");
@@ -261,11 +261,11 @@ public class UserListView {
     *
     */
    private void createPagingComposite() {
-      RowLayout rowLayout1 = new RowLayout();
-      rowLayout1.spacing = 705;
+      RowLayout pagingCompositeLayout = new RowLayout();
+      pagingCompositeLayout.spacing = 705;
 
       pagingComposite = new Composite(usersComposite, SWT.NONE);
-      pagingComposite.setLayout(rowLayout1);
+      pagingComposite.setLayout(pagingCompositeLayout);
 
       previousPage = new Button(pagingComposite, SWT.NONE);
       previousPage.setText("<<");
@@ -281,16 +281,16 @@ public class UserListView {
     *
     */
    private void createBottomComposite() {
-      GridData gridData2 = new GridData();
-      gridData2.horizontalAlignment = GridData.END;
-      gridData2.verticalAlignment = GridData.CENTER;
+      GridData bottomCompositeGridData = new GridData();
+      bottomCompositeGridData.horizontalAlignment = GridData.END;
+      bottomCompositeGridData.verticalAlignment = GridData.CENTER;
 
-      GridLayout gridLayout4 = new GridLayout();
-      gridLayout4.numColumns = 3;
+      GridLayout bottomCompositeGridLayout = new GridLayout();
+      bottomCompositeGridLayout.numColumns = 3;
 
       bottomComposite = new Composite(shell, SWT.NONE);
-      bottomComposite.setLayout(gridLayout4);
-      bottomComposite.setLayoutData(gridData2);
+      bottomComposite.setLayout(bottomCompositeGridLayout);
+      bottomComposite.setLayoutData(bottomCompositeGridData);
 
       create = new Button(bottomComposite, SWT.NONE);
       create.setText(getMessage("button.newUser"));

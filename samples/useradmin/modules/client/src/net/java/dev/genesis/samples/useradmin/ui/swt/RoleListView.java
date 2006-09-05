@@ -53,14 +53,14 @@ public class RoleListView extends Dialog {
     * This method initializes shell
     */
    private void createShell() {
-      GridLayout gridLayout = new GridLayout();
-      gridLayout.numColumns = 1;
+      GridLayout shellGridLayout = new GridLayout();
+      shellGridLayout.numColumns = 1;
 
       if (shell == null) {
          shell = new Shell();
          shell.setText(getMessage("RoleListView.title"));
       }
-      shell.setLayout(gridLayout);
+      shell.setLayout(shellGridLayout);
 
       createComposite();      
       createButtonsContainer();
@@ -73,22 +73,23 @@ public class RoleListView extends Dialog {
     *
     */
    private void createComposite() {
-      GridData gridData1 = new GridData();
-      gridData1.horizontalAlignment = GridData.FILL;
-      gridData1.widthHint = 300;
-      gridData1.heightHint = 200;
-      gridData1.verticalAlignment = GridData.CENTER;
-      GridData gridData = new GridData();
-      gridData.horizontalAlignment = GridData.FILL;
-      gridData.verticalAlignment = GridData.CENTER;
+      GridData rolesGridData = new GridData();
+      rolesGridData.horizontalAlignment = GridData.FILL;
+      rolesGridData.widthHint = 300;
+      rolesGridData.heightHint = 200;
+      rolesGridData.verticalAlignment = GridData.CENTER;
+
+      GridData compositeGridData = new GridData();
+      compositeGridData.horizontalAlignment = GridData.FILL;
+      compositeGridData.verticalAlignment = GridData.CENTER;
 
       composite = new Composite(shell, SWT.BORDER);
       composite.setLayout(new GridLayout());
-      composite.setLayoutData(gridData);
+      composite.setLayoutData(compositeGridData);
 
       roles = new Table(composite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.VIRTUAL| SWT.BORDER);
       roles.setHeaderVisible(true);
-      roles.setLayoutData(gridData1);
+      roles.setLayoutData(rolesGridData);
       roles.setLinesVisible(true);
       roles.addMouseListener(new MouseAdapter() {
          public void mouseDoubleClick(MouseEvent e) {
@@ -113,11 +114,12 @@ public class RoleListView extends Dialog {
     *
     */
    private void createButtonsContainer() {
-      GridData gridData2 = new GridData();
-      gridData2.horizontalAlignment = GridData.END;
-      gridData2.verticalAlignment = GridData.CENTER;
+      GridData buttonsContainerGridData = new GridData();
+      buttonsContainerGridData.horizontalAlignment = GridData.END;
+      buttonsContainerGridData.verticalAlignment = GridData.CENTER;
+
       buttonsContainer = new SashForm(shell, SWT.NONE);
-      buttonsContainer.setLayoutData(gridData2);
+      buttonsContainer.setLayoutData(buttonsContainerGridData);
       remove = new Button(buttonsContainer, SWT.NONE);
       remove.setText("Remove");
       remove.setData("remove");

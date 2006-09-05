@@ -81,15 +81,15 @@ public class InsertUpdateView extends Dialog {
     * This method initializes shell
     */
    private void createShell() {
-      GridLayout gridLayout1 = new GridLayout();
-      gridLayout1.numColumns = 1;
+      GridLayout shellGridLayout = new GridLayout();
+      shellGridLayout.numColumns = 1;
 
       if (shell == null) {
          shell = new Shell();
          shell.setText("Shell");
       }
 
-      shell.setLayout(gridLayout1);
+      shell.setLayout(shellGridLayout);
 
       createComposite();
       createButtonsContainer();
@@ -103,44 +103,51 @@ public class InsertUpdateView extends Dialog {
     *
     */
    private void createComposite() {
-      GridData gridData9 = new GridData();
-      gridData9.widthHint = 80;
-      GridData gridData8 = new GridData();
-      gridData8.horizontalSpan = 3;
-      gridData8.verticalAlignment = GridData.CENTER;
-      gridData8.horizontalAlignment = GridData.FILL;
-      GridData gridData7 = new GridData();
-      gridData7.horizontalSpan = 3;
-      gridData7.verticalAlignment = GridData.CENTER;
-      gridData7.horizontalAlignment = GridData.FILL;
-      GridData gridData6 = new GridData();
-      gridData6.horizontalSpan = 3;
-      gridData6.verticalAlignment = GridData.CENTER;
-      gridData6.horizontalAlignment = GridData.FILL;
-      GridData gridData5 = new GridData();
-      gridData5.horizontalSpan = 3;
-      gridData5.verticalAlignment = GridData.CENTER;
-      gridData5.horizontalAlignment = GridData.FILL;
-      GridData gridData4 = new GridData();
-      gridData4.horizontalSpan = 3;
-      gridData4.verticalAlignment = GridData.CENTER;
-      gridData4.horizontalAlignment = GridData.FILL;
-      GridData gridData1 = new GridData();
-      gridData1.horizontalSpan = 3;
-      gridData1.horizontalAlignment = GridData.FILL;
-      gridData1.verticalAlignment = GridData.CENTER;
-      gridData1.widthHint = -1;
-      GridLayout gridLayout = new GridLayout();
-      gridLayout.numColumns = 4;
+      GridData roleGridData = new GridData();
+      roleGridData.widthHint = 80;
+
+      GridData loginGridData = new GridData();
+      loginGridData.horizontalSpan = 3;
+      loginGridData.verticalAlignment = GridData.CENTER;
+      loginGridData.horizontalAlignment = GridData.FILL;
+
+      GridData passwordGridData = new GridData();
+      passwordGridData.horizontalSpan = 3;
+      passwordGridData.verticalAlignment = GridData.CENTER;
+      passwordGridData.horizontalAlignment = GridData.FILL;
+
+      GridData emailGridData = new GridData();
+      emailGridData.horizontalSpan = 3;
+      emailGridData.verticalAlignment = GridData.CENTER;
+      emailGridData.horizontalAlignment = GridData.FILL;
+
+      GridData birthdayGridData = new GridData();
+      birthdayGridData.horizontalSpan = 3;
+      birthdayGridData.verticalAlignment = GridData.CENTER;
+      birthdayGridData.horizontalAlignment = GridData.FILL;
+
+      GridData addressGridData = new GridData();
+      addressGridData.horizontalSpan = 3;
+      addressGridData.verticalAlignment = GridData.CENTER;
+      addressGridData.horizontalAlignment = GridData.FILL;
+
+      GridData nameGridData = new GridData();
+      nameGridData.horizontalSpan = 3;
+      nameGridData.horizontalAlignment = GridData.FILL;
+      nameGridData.verticalAlignment = GridData.CENTER;
+      nameGridData.widthHint = -1;
+
+      GridLayout compositeGridLayout = new GridLayout();
+      compositeGridLayout.numColumns = 4;
 
       composite = new Composite(shell, SWT.BORDER);
-      composite.setLayout(gridLayout);
+      composite.setLayout(compositeGridLayout);
 
       nameLabel = new Label(composite, SWT.NONE);
       nameLabel.setText(getMessage("User.name"));
 
       name = new Text(composite, SWT.BORDER);
-      name.setLayoutData(gridData1);
+      name.setLayoutData(nameGridData);
       name.setData("name");
 
       roleLabel = new Label(composite, SWT.NONE);
@@ -163,42 +170,42 @@ public class InsertUpdateView extends Dialog {
       });
       role = new Label(composite, SWT.NONE);
       role.setText("");
-      role.setLayoutData(gridData9);
+      role.setLayoutData(roleGridData);
       role.setData("roleLabel");
 
       loginLabel = new Label(composite, SWT.NONE);
       loginLabel.setText(getMessage("User.login"));
 
       login = new Text(composite, SWT.BORDER);
-      login.setLayoutData(gridData8);
+      login.setLayoutData(loginGridData);
       login.setData("login");
 
       passwordLabel = new Label(composite, SWT.NONE);
       passwordLabel.setText(getMessage("User.password"));
 
       password = new Text(composite, SWT.PASSWORD | SWT.BORDER);
-      password.setLayoutData(gridData7);
+      password.setLayoutData(passwordGridData);
       password.setData("password");
 
       emailLabel = new Label(composite, SWT.NONE);
       emailLabel.setText(getMessage("User.email"));
 
       email = new Text(composite, SWT.BORDER);
-      email.setLayoutData(gridData6);
+      email.setLayoutData(emailGridData);
       email.setData("email");
 
       birthdayLabel = new Label(composite, SWT.NONE);
       birthdayLabel.setText(getMessage("User.birthday"));
 
       birthday = new Text(composite, SWT.BORDER);
-      birthday.setLayoutData(gridData5);
+      birthday.setLayoutData(birthdayGridData);
       birthday.setData("birthday");
 
       addressLabel = new Label(composite, SWT.NONE);
       addressLabel.setText(getMessage("User.address"));
 
       address = new Text(composite, SWT.BORDER);
-      address.setLayoutData(gridData4);
+      address.setLayoutData(addressGridData);
       address.setData("address");
 
       countryLabel = new Label(composite, SWT.NONE);
@@ -217,13 +224,13 @@ public class InsertUpdateView extends Dialog {
     *
     */
    private void createCountry() {
-      GridData gridData3 = new GridData();
-      gridData3.horizontalSpan = 3;
+      GridData countryGridData = new GridData();
+      countryGridData.horizontalSpan = 3;
 
-      gridData3.verticalAlignment = GridData.CENTER;
-      gridData3.horizontalAlignment = GridData.FILL;
+      countryGridData.verticalAlignment = GridData.CENTER;
+      countryGridData.horizontalAlignment = GridData.FILL;
       country = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-      country.setLayoutData(gridData3);
+      country.setLayoutData(countryGridData);
       country.setData("country");
    }
 
@@ -232,13 +239,13 @@ public class InsertUpdateView extends Dialog {
     *
     */
    private void createState() {
-      GridData gridData2 = new GridData();
-      gridData2.horizontalSpan = 3;
+      GridData stateGridData = new GridData();
+      stateGridData.horizontalSpan = 3;
 
-      gridData2.verticalAlignment = GridData.CENTER;
-      gridData2.horizontalAlignment = GridData.FILL;
+      stateGridData.verticalAlignment = GridData.CENTER;
+      stateGridData.horizontalAlignment = GridData.FILL;
       state = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-      state.setLayoutData(gridData2);
+      state.setLayoutData(stateGridData);
       state.setData("state");
    }
 
@@ -247,13 +254,13 @@ public class InsertUpdateView extends Dialog {
     *
     */
    private void createButtonsContainer() {
-      GridData gridData = new GridData();
-      gridData.horizontalAlignment = GridData.CENTER;
-      gridData.verticalAlignment = GridData.CENTER;
+      GridData buttonsContainerGridData = new GridData();
+      buttonsContainerGridData.horizontalAlignment = GridData.CENTER;
+      buttonsContainerGridData.verticalAlignment = GridData.CENTER;
 
       buttonsContainer = new SashForm(shell, SWT.NONE);
       buttonsContainer.setLayout(new FillLayout());
-      buttonsContainer.setLayoutData(gridData);
+      buttonsContainer.setLayoutData(buttonsContainerGridData);
 
       cancel = new Button(buttonsContainer, SWT.NONE);
       cancel.setText(getMessage("button.cancel"));

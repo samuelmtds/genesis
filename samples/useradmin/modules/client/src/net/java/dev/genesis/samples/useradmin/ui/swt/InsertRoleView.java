@@ -66,30 +66,32 @@ public class InsertRoleView extends Dialog {
     *
     */
    private void createComposite() {
-      GridData gridData2 = new GridData();
-      gridData2.horizontalAlignment = GridData.FILL;
-      gridData2.verticalAlignment = GridData.CENTER;
-      GridData gridData1 = new GridData();
-      gridData1.horizontalAlignment = GridData.FILL;
-      gridData1.widthHint = 150;
-      gridData1.verticalAlignment = GridData.CENTER;
-      GridLayout gridLayout = new GridLayout();
-      gridLayout.numColumns = 2;
+      GridData labelGridData = new GridData();
+      labelGridData.horizontalAlignment = GridData.FILL;
+      labelGridData.verticalAlignment = GridData.CENTER;
+
+      GridData codeGridData = new GridData();
+      codeGridData.horizontalAlignment = GridData.FILL;
+      codeGridData.widthHint = 150;
+      codeGridData.verticalAlignment = GridData.CENTER;
+
+      GridLayout compositeGridLayout = new GridLayout();
+      compositeGridLayout.numColumns = 2;
       composite = new Composite(shell, SWT.BORDER);
-      composite.setLayout(gridLayout);
+      composite.setLayout(compositeGridLayout);
 
       codeLabel = new Label(composite, SWT.NONE);
       codeLabel.setText("Code");
 
       code = new Text(composite, SWT.BORDER);
-      code.setLayoutData(gridData1);
+      code.setLayoutData(codeGridData);
       code.setData("code");
 
       labelLabel = new Label(composite, SWT.NONE);
       labelLabel.setText("Label");
 
       label = new Text(composite, SWT.BORDER);
-      label.setLayoutData(gridData2);
+      label.setLayoutData(labelGridData);
       label.setData("label");
    }
 
@@ -98,12 +100,12 @@ public class InsertRoleView extends Dialog {
     *
     */
    private void createButtonsContainer() {
-      GridData gridData = new GridData();
-      gridData.horizontalAlignment = GridData.CENTER;
-      gridData.verticalAlignment = GridData.CENTER;
+      GridData buttonsContainerGridData = new GridData();
+      buttonsContainerGridData.horizontalAlignment = GridData.CENTER;
+      buttonsContainerGridData.verticalAlignment = GridData.CENTER;
 
       buttonsContainer = new SashForm(shell, SWT.NONE);
-      buttonsContainer.setLayoutData(gridData);
+      buttonsContainer.setLayoutData(buttonsContainerGridData);
 
       cancel = new Button(buttonsContainer, SWT.NONE);
       cancel.setText("Cancel");
