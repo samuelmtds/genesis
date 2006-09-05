@@ -39,9 +39,8 @@
       xml. For Swing, <code>widgetName</code> must be equal to the value 
       returned by the <code>getName()</code> method of the target 
       <code>Component</code> instance. For SWT, <code>widgetName</code>
-      must be equal to the value returned by the
-      <code>getData()</code> method of the target 
-      <code>Widget</code> instance.</p>
+      must be equal to the value returned by the <code>getData()</code> method 
+      of the target <code>Widget</code> instance.</p>
       <p><b>At least one of these three properties must be informed</b>.</p>
       <p>The <code>name</code> of the widget that will populated by a 
       <code>@DataProvider</code> is equal to the value of the first property 
@@ -382,14 +381,13 @@ private Combo stateComboBox;
 </source>
           <p>Above we can see the source code of an interface that displays a
           <code>combobox</code> that will hold states at runtime. The combobox 
-          <code>name</code> (<code>stateComboBox.setData("state")</code>)
-          property is equal to the value for the <code>objectField</code> 
-          property in annotation <code>@DataProvider</code>. In order to display
-          data in the <code>Combo</code> correctly, some properties must be
-          configured for the component.
-          Values configured as properties for this 
-          component are checked to determine which bean property should be made visible to 
-          users. The properties values can be specified using the 
+          name (<code>stateComboBox.setData("state")</code>) is equal to the 
+          value for the <code>objectField</code> property in annotation 
+          <code>@DataProvider</code>. In order to display data in the 
+          <code>Combo</code> correctly, some properties must be configured for 
+          the component. Values configured as properties for this component are 
+          checked to determine which bean property should be made visible to 
+          users. Property values can be specified using the 
           <code>Widget.setData(Object key, Object value)</code> 
           method. The following values may be used for this kind of widget:</p>
           <ul>
@@ -400,8 +398,8 @@ private Combo stateComboBox;
             <code>net.java.dev.reusablecomponents.lang.Enum</code>). For enums, 
             if that property isn't defined, the value returned by 
             <code>toString()</code> will be used instead.</li>
-            <li><b>SWTBinder.VALUE_PROPERTY</b>: name of the property used for displaying the bean. 
-            It is required when the bean is not an enum (
+            <li><b>SWTBinder.VALUE_PROPERTY</b>: name of the property used for 
+            displaying the bean. It is required when the bean is not an enum (
             <code>java.lang.Enum</code> or 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
             <li><b>SWTBinder.BLANK_PROPERTY</b>: includes a blank line as the 
@@ -458,15 +456,14 @@ private Table stateTable;
 </source>
           <p>Requirements for populating a table are slightly different.</p>
           <p>As shown above, we can notice that the table name 
-          (<code>stateTable.setData("state")</code>)
-          must 
-          be equal to the <code>objectField</code> value (unless
-          <code>widgetName</code> is specified). Each row will represent an 
-          instance and each column will be filled with the value of the bean 
-          property whose name is equal to the column <code>identifier</code>
-          (eg: <code>descriptionColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "description")</code>). 
-          It's possible to define column identifiers easier using the
-          <code>setData</code> method of the table:</p>
+          (<code>stateTable.setData("state")</code>) must be equal to the 
+          <code>objectField</code> value (unless <code>widgetName</code> is 
+          specified). Each row will represent an instance and each column will 
+          be filled with the value of the bean property whose name is equal to 
+          the column <code>SWTBinder.TABLE_COLUMN_IDENTIFIER</code>
+          (eg: <code>descriptionColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, 
+          "description")</code>). It's possible to define column identifiers 
+          easier using the <code>setData</code> method of the table:</p>
 <source>
 <![CDATA[
 private Table stateTable;

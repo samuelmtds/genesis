@@ -160,7 +160,7 @@ public class ExemploDataProviderForm {
             instância, do bean que será utilizado para popular o componente. É 
             requerida, com exceção das enums (<code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
-            enums, se essa propriedade não é definida, o valor do 
+            enums, se essa propriedade não for definida, o valor do 
             <code>toString()</code> da enum é utilizado.</li>
             <li><b>value</b>: nome da propriedade utilizada para exibir o bean. 
             É requerida quando o bean não for uma enum (
@@ -250,7 +250,7 @@ private JComboBox estadoComboBox;
             componente. É requerida, com exceção das enums (
             <code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
-            enums, se essa propriedade não é definida, o valor do 
+            enums, se essa propriedade não for definida, o valor do 
             <code>toString()</code> da enum é utilizado.</li>
             <li><b>SwingBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
             para exibir o bean. É requerida quando o bean não for uma enum (
@@ -395,30 +395,28 @@ private Combo estadoComboBox;
 </source>
           <p>Acima vemos o código da tela que exibe um <code>combobox</code>
           que conterá os estados em tempo de execução. O nome do componente
-          (<code>estadoComboBox.setData("estado")</code>)
-          possui o mesmo valor
+          (<code>estadoComboBox.setData("estado")</code>) possui o mesmo valor 
           que o atributo <code>objectField</code> da anotação 
           <code>@DataProvider</code>. Para que os valores sejam mostrados 
           corretamente ao usuário ao popular o <code>Combo</code>, é 
           necessário configurar algumas propriedades do componente. Os valores 
           configurados como propriedades do componente são verificados 
-          para determinar qual 
-          propriedade do bean deve ser visível para o usuário. Os valores das 
-          propriedades são configurados através do método 
-          <code>setData(Object chave, Object valor)</code> do 
+          para determinar qual propriedade do bean deve ser visível para o 
+          usuário. Os valores das  propriedades são configurados através do 
+          método <code>setData(Object chave, Object valor)</code> do 
           componente. As seguintes propriedades são utilizadas no caso de 
           comboboxes:</p>
           <ul>
             <li><b>SWTBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
             é único por instância, do bean que será utilizado para popular o 
-            componente. É requerida, com exceção das enums (
-            <code>java.lang.Enum</code> ou 
+            componente. É requerida, com exceção das enums 
+            (<code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
-            enums, se essa propriedade não é definida, o valor do 
+            enums, se essa propriedade não for definida, o valor do 
             <code>toString()</code> da enum é utilizado.</li>
             <li><b>SWTBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
-            para exibir o bean. É requerida quando o bean não for uma enum (
-            <code>java.lang.Enum</code> ou 
+            para exibir o bean. É requerida quando o bean não for uma enum 
+            (<code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
             <li><b>SWTBinder.BLANK_PROPERTY</b>: inclui uma linha em branco 
             como primeira opção da combobox. Não é requerida e tem como valor 
@@ -476,17 +474,17 @@ private Table estadoTable;
           diferentes.</p>
           <p>Com base no exemplo acima, podemos observar que o valor do nome
           do componente (<code>estadoTable.setData("estado")</code>)
-          na tabela 
-          precisa ser igual ao valor do atributo <code>objectField</code>, 
-          exceto quando for especificado o atributo <code>widgetName</code> na 
-          anotação, e nesse caso o valor de <code>widgetName</code> deve ser o 
-          nome do componente. Cada linha da tabela representará uma instância e 
-          cada coluna será preenchida com a propriedade do bean cujo nome é o 
-          valor do <code>identifier</code> (ex: 
-          <code>descricaoColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "descricao")</code>)
-          de cada uma 
-          delas. É possível definir o identifier de cada coluna de outra forma
-          mais fácil, através do método <code>setData</code> da própria tabela:</p>
+          na tabela precisa ser igual ao valor do atributo 
+          <code>objectField</code>, exceto quando for especificado o atributo 
+          <code>widgetName</code> na anotação, e nesse caso o valor de 
+          <code>widgetName</code> deve ser o nome do componente. Cada linha da 
+          tabela representará uma instância e cada coluna será preenchida com a 
+          propriedade do bean cujo nome é o valor do 
+          <code>SWTBinder.TABLE_COLUMN_IDENTIFIER</code> (ex: 
+          <code>descricaoColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, 
+          "descricao")</code>) de cada uma delas. É possível definir o 
+          identificador de cada coluna de outra forma mais fácil, através do 
+          método <code>setData</code> da própria tabela:</p>
 <source>
 private Table estadoTable;
   ...
@@ -494,7 +492,8 @@ private Table estadoTable;
      ...
      Table estadoTable = new Table(shell, SWT.NONE);
      estadoTable.setData("estado");
-     estadoTable.setData(SWTBinder.COLUMN_NAMES, new String[] {"sigla", "descricao"});
+     estadoTable.setData(SWTBinder.COLUMN_NAMES, new String[] {"sigla", 
+           "descricao"});
      estadoTable.setHeaderVisible(true);
 
      TableColumn siglaColumn = new TableColumn(estadoTable, SWT.NONE);
