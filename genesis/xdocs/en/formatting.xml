@@ -105,7 +105,7 @@ binder.registerFormatter("property", f);
 binder.bind();
 </source>
       <p>The value of <code>property</code> to be displayed on the screen
-      will be <code>Custom format</code> constant, no matter what its
+      will be the <code>Custom format</code> constant, no matter what its
       value on the form is.</p>
       <subsection name="Virtual properties">
         <p>Since release 2.2, it is possible to work with virtual properties,
@@ -113,30 +113,30 @@ binder.bind();
         properties have their display value determined by a specific 
         formatter.</p>
         <p>If you're using Thinlet or SWT, the formatter must be registered
-        in the <code>ThinletBinder</code> instance. If you're using Swing, and 
-        the <code>TableCellRenderer</code> instance for the 
-        <code>TableColumn</code> has not been customized, the formatter must be 
-        registered in the <code>SwingBinder</code> instance.</p>
+        in the <code>ThinletBinder</code>/<code>SWTtBinder</code> instance. If 
+        you're using Swing, and the <code>TableCellRenderer</code> instance for 
+        the <code>TableColumn</code> has not been customized, the formatter must 
+        be registered in the <code>SwingBinder</code> instance.</p>
         <p>The process for defining and displaying a virtual property is
         basically the same of a regular property, except for the following
         things:</p>
         <ul>
            <li>Only table cells and values displayed in comboboxes or lists can
            be virtual properties.</li>
-           <li>Virtual properties can be defined in different ways, depending on which
-           UI technology is used:
+           <li>Virtual properties can be defined in different ways, depending on 
+           which UI technology is used:
              <ul>
-               <li>If you're using Thinlet, they can be defined for comboboxes and lists by
-               adding to the <code>property</code> element in the xml definition a
-               <code>virtual=true</code> token. Since table columns do not have
-               a <code>property</code> attribute, the value of its attribute
-               <code>name</code> must be prefixed with <code>virtual:</code>.</li>
-               <li>If you're using Swing or SWT, the widget <code>name</code>
-               must be prefixed with 
-               <code>AbstractBinder.VIRTUAL_PREFIX</code> constant or 
-               <code>clientProperty SwingBinder.VIRTUAL</code>/<code>data SWTBinder.VIRTUAL</code>
-               must be
-               <code>Boolean.TRUE</code></li>
+               <li>If you're using Thinlet, they can be defined for comboboxes 
+               and lists by adding to the <code>property</code> element in the 
+               xml definition a <code>virtual=true</code> token. Since table 
+               columns do not have a <code>property</code> attribute, the value 
+               of its attribute <code>name</code> must be prefixed with 
+               <code>virtual:</code>.</li>
+               <li>If you're using Swing or SWT, the widget's 
+               <code>name</code>/<code>data</code> must be prefixed with the
+               <code>AbstractBinder.VIRTUAL_PREFIX</code> constant or the 
+               <code>clientProperty SwingBinder.VIRTUAL</code>/<code>data 
+               SWTBinder.VIRTUAL</code> must be <code>Boolean.TRUE</code>.</li>
              </ul>
            </li>
            <li>Virtual properties can be defined for comboboxes and lists by
@@ -215,7 +215,8 @@ widget.setData(SWTBinder.VIRTUAL, Boolean.TRUE);
 //..
 Shell shell = new Shell();
 
-Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL| SWT.BORDER);
+Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | 
+      SWT.VIRTUAL| SWT.BORDER);
 widget.setData("widget");
 widget.setHeaderVisible(true);
 
@@ -226,7 +227,8 @@ column1.setWidth(50);
 
 TableColumn column2 = new TableColumn(widget, SWT.NONE);
 column2.setText("Virtual");
-column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, AbstractBinder.VIRTUAL_PREFIX + "virtualValue");
+column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, 
+      AbstractBinder.VIRTUAL_PREFIX + "virtualValue");
 column2.setWidth(200);
 //..
 </source>

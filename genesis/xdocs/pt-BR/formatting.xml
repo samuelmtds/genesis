@@ -114,13 +114,12 @@ binder.bind();
         virtuais, ou seja, que não existem no objeto sendo exibido. Essas
         propriedades tem seu valor de exibição determinado através em um
         formatador específico.</p> 
-        <p>Caso a API gráfica utilizada seja o Thinlet ou SWT,
-        este formatador tem de 
-        estar obrigatoriamente registrado na instância de 
-        <code>ThinletBinder</code>. Caso esteja-se utilizando Swing, se o 
-        <code>TableCellRenderer</code> da <code>TableColumn</code> não tiver 
-        sido customizado, o formatador deverá ser registrado na instância de 
-        <code>SwingBinder</code>.</p>
+        <p>Caso a API gráfica utilizada seja Thinlet ou SWT, este formatador tem 
+        de estar obrigatoriamente registrado na instância de 
+        <code>ThinletBinder</code>/<code>SWTBinder</code>. Caso esteja-se 
+        utilizando Swing, se o <code>TableCellRenderer</code> da 
+        <code>TableColumn</code> não tiver sido customizado, o formatador deverá 
+        ser registrado na instância de <code>SwingBinder</code>.</p>
         <p>O processo de definição e exibição de uma propriedade virtual é
         basicamente o mesmo de uma propriedade normal, exceto pelos pontos
         abaixos:</p>
@@ -136,12 +135,12 @@ binder.bind();
                não possuem o atributo <code>property</code>, o valor de seu 
                atributo <code>name</code> deve ser precedido do prefixo 
                <code>virtual:</code>.</li>
-               <li>Caso esteja-se utilizando Swing ou SWT, o <code>name</code> do 
-               widget deve ser precedido pela constante definida em 
+               <li>Caso esteja-se utilizando Swing ou SWT, o 
+               <code>name</code>/<code>data</code> do widget deve ser precedido 
+               pela constante definida em 
                <code>AbstractBinder.VIRTUAL_PREFIX</code> ou a 
                <code>clientProperty SwingBinder.VIRTUAL</code>/<code>data SWTBinder.VIRTUAL</code>
-               deve possuir como
-               valor <code>Boolean.TRUE</code></li>
+               deve possuir como valor <code>Boolean.TRUE</code></li>
              </ul>
            </li>
            <li>A instância de <code>Formatter</code> receberá como parâmetro do
@@ -214,7 +213,8 @@ widget.setData(SWTBinder.VIRTUAL, Boolean.TRUE);
 //..
 Shell shell = new Shell();
 
-Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL| SWT.BORDER);
+Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | 
+      SWT.VIRTUAL| SWT.BORDER);
 widget.setData("widget");
 widget.setHeaderVisible(true);
 
@@ -225,7 +225,8 @@ column1.setWidth(50);
 
 TableColumn column2 = new TableColumn(widget, SWT.NONE);
 column2.setText("Virtual");
-column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, AbstractBinder.VIRTUAL_PREFIX + "valorVirtual");
+column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, AbstractBinder.VIRTUAL_PREFIX + 
+      "valorVirtual");
 column2.setWidth(200);
 //..
 </source>
@@ -257,6 +258,6 @@ binder.bind();
         <code>virtual:</code>, isso não afeta a formação do nome da propriedade
         na hora de registrar o formatador.</p>
       </subsection>
-   </section>
+    </section>
   </body>
 </document>
