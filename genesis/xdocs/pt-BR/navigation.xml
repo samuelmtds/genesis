@@ -69,10 +69,6 @@
                 href="/pt-BR/configuring_messages.html" />
           <item name="Paginação e pesquisas dinâmicas" 
                 href="/pt-BR/paging_and_dynamic_search.html" />
-          <item name="Estratégias de Lookup de componentes gráficos" 
-                href="/pt-BR/lookup_strategy.html" />
-          <item name="Customizando o binding de componentes gráficos" 
-                href="/pt-BR/widget_binder.html" />
         </item>
         <item name="Guia de referência rápida de anotações"
               href="/pt-BR/quick_reference.html" />
@@ -94,6 +90,10 @@
               href="/pt-BR/aspects.html" />
         <item name="Suporte a linguagens de script"
               href="/pt-BR/generic_scripting.html" />
+        <item name="Estratégias de pesquisa de componentes gráficos" 
+              href="/pt-BR/lookup_strategy.html" />
+        <item name="Customizando o binding de componentes gráficos" 
+              href="/pt-BR/widget_binder.html" />
       </item>
       <item name="FAQ" href="/pt-BR/faq.html" />
       <item name="Roadmap"

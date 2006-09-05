@@ -69,10 +69,6 @@
                 href="/en/configuring_messages.html" />
           <item name="Paging and dynamic queries" 
                 href="/en/paging_and_dynamic_search.html" />
-          <item name="Widget Lookup Strategy" 
-                href="/en/lookup_strategy.html" />
-          <item name="Customizing Widget Binding" 
-                href="/en/widget_binder.html" />
         </item>
         <item name="Annotation quick reference guide"
               href="/en/quick_reference.html" />
@@ -88,12 +84,16 @@
             href="/en/useradmin_sample.html" />
       <item name="Advanced guide"
             href="/en/advanced_introduction.html">
-        <item name="XDoclet Extensions"
+        <item name="XDoclet extensions"
               href="/en/xdoclet_extensions.html" />
         <item name="genesis aspects"
               href="/en/aspects.html" />
         <item name="Generic scripting support"
               href="/en/generic_scripting.html" />
+        <item name="Widget lookup strategies" 
+              href="/en/lookup_strategy.html" />
+        <item name="Customizing widget binding" 
+              href="/en/widget_binder.html" />
       </item>
       <item name="FAQ" href="/en/faq.html" />
       <item name="Roadmap"
