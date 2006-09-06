@@ -1,9 +1,31 @@
+/*
+ * The Genesis Project
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 package net.java.dev.genesis.samples.useradmin.ui.swt;
 
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
+import net.java.dev.genesis.samples.useradmin.ui.swt.role.RoleChooser;
+import net.java.dev.genesis.samples.useradmin.ui.swt.role.RoleChooserWidgetBinder;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.swt.SWTBinder;
+import net.java.dev.genesis.ui.swt.WidgetBinderRegistryFactory;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;
@@ -26,6 +48,10 @@ import org.eclipse.swt.widgets.Text;
  * @ViewHandler
  */
 public class InsertUpdateView extends Dialog {
+   static {
+      WidgetBinderRegistryFactory.getInstance().register(RoleChooser.class,
+            new RoleChooserWidgetBinder());
+   }
 
    private final InsertUpdateForm form;
    private boolean hasChanged;
@@ -36,7 +62,6 @@ public class InsertUpdateView extends Dialog {
    private Label nameLabel = null;
    private Text name = null;
    private Label roleLabel = null;
-   private Text roleCode = null;
    private Label loginLabel = null;
    private Text login = null;
    private Label passwordLabel = null;
@@ -54,10 +79,9 @@ public class InsertUpdateView extends Dialog {
    private SashForm buttonsContainer = null;
    private Button cancel = null;
    private Button save = null;
-   private Button findRole = null;
-   private Label role = null;
+   private RoleChooser roleChooser = null;
    
-   public InsertUpdateView(Shell parent) throws Exception{
+   public InsertUpdateView(Shell parent) throws Exception {
       this(parent, null);
    }
    
@@ -104,41 +128,35 @@ public class InsertUpdateView extends Dialog {
     */
    private void createComposite() {
       GridData roleGridData = new GridData();
-      roleGridData.widthHint = 80;
+      roleGridData.widthHint = 200;
 
       GridData loginGridData = new GridData();
-      loginGridData.horizontalSpan = 3;
       loginGridData.verticalAlignment = GridData.CENTER;
       loginGridData.horizontalAlignment = GridData.FILL;
 
       GridData passwordGridData = new GridData();
-      passwordGridData.horizontalSpan = 3;
       passwordGridData.verticalAlignment = GridData.CENTER;
       passwordGridData.horizontalAlignment = GridData.FILL;
 
       GridData emailGridData = new GridData();
-      emailGridData.horizontalSpan = 3;
       emailGridData.verticalAlignment = GridData.CENTER;
       emailGridData.horizontalAlignment = GridData.FILL;
 
       GridData birthdayGridData = new GridData();
-      birthdayGridData.horizontalSpan = 3;
       birthdayGridData.verticalAlignment = GridData.CENTER;
       birthdayGridData.horizontalAlignment = GridData.FILL;
 
       GridData addressGridData = new GridData();
-      addressGridData.horizontalSpan = 3;
       addressGridData.verticalAlignment = GridData.CENTER;
       addressGridData.horizontalAlignment = GridData.FILL;
 
       GridData nameGridData = new GridData();
-      nameGridData.horizontalSpan = 3;
       nameGridData.horizontalAlignment = GridData.FILL;
       nameGridData.verticalAlignment = GridData.CENTER;
       nameGridData.widthHint = -1;
 
       GridLayout compositeGridLayout = new GridLayout();
-      compositeGridLayout.numColumns = 4;
+      compositeGridLayout.numColumns = 2;
 
       composite = new Composite(shell, SWT.BORDER);
       composite.setLayout(compositeGridLayout);
@@ -153,25 +171,9 @@ public class InsertUpdateView extends Dialog {
       roleLabel = new Label(composite, SWT.NONE);
       roleLabel.setText(getMessage("User.role"));
 
-      roleCode = new Text(composite, SWT.BORDER);
-      roleCode.setData("roleCode");
-
-      findRole = new Button(composite, SWT.NONE);
-      findRole.setText("...");
-
-      findRole.addSelectionListener(new SelectionAdapter() {
-         public void widgetSelected(SelectionEvent event) {
-            RoleListView view = new RoleListView(shell);
-            if (view.display()) {
-               form.setRole(view.getRole());
-               binder.refresh();
-            }
-         }
-      });
-      role = new Label(composite, SWT.NONE);
-      role.setText("");
-      role.setLayoutData(roleGridData);
-      role.setData("roleLabel");
+      roleChooser = new RoleChooser(composite, SWT.NONE);
+      roleChooser.setData("role");
+      roleChooser.setLayoutData(roleGridData);
 
       loginLabel = new Label(composite, SWT.NONE);
       loginLabel.setText(getMessage("User.login"));
@@ -225,10 +227,9 @@ public class InsertUpdateView extends Dialog {
     */
    private void createCountry() {
       GridData countryGridData = new GridData();
-      countryGridData.horizontalSpan = 3;
-
       countryGridData.verticalAlignment = GridData.CENTER;
       countryGridData.horizontalAlignment = GridData.FILL;
+
       country = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
       country.setLayoutData(countryGridData);
       country.setData("country");
@@ -240,10 +241,9 @@ public class InsertUpdateView extends Dialog {
     */
    private void createState() {
       GridData stateGridData = new GridData();
-      stateGridData.horizontalSpan = 3;
-
       stateGridData.verticalAlignment = GridData.CENTER;
       stateGridData.horizontalAlignment = GridData.FILL;
+
       state = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
       state.setLayoutData(stateGridData);
       state.setData("state");
