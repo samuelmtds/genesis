@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.script.mustang;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import net.java.dev.genesis.script.ScriptContext;
@@ -49,6 +50,8 @@ public class MustangScriptContext extends ScriptContext {
       try {
          return ((MustangExpression) expr).evalCompiled(scriptEngine,
                realContext);
+      } catch (InvocationTargetException ite) {
+         throw new ScriptException(ite.getTargetException().getMessage(), ite.getTargetException());
       } catch (Exception e) {
          throw new ScriptException(e.getMessage(), e);
       }
