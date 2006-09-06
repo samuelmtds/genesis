@@ -7,46 +7,46 @@
   </properties>
   <body>
     <section name="Installing the useradmin sample">
-      <p>Installing the <code>useradmin</code> sample is a simple task.
-      <code>useradmin</code> distribution can be found in the useradmin distribution
+      <p>Installing the <code>useradmin</code> sample is a simple task. The
+      <code>useradmin</code> sample can be found in the useradmin distribution
       or the full distribution genesis packages that can be found
       <a href="download.html">here</a>.
-      Distributions for all samples
-      are already setup to be run in standalone/local mode or with the <a
+      Distributions for all samples are already setup to be run in 
+      standalone/local mode or with the <a 
       href="http://www.jboss.org/">JBoss</a> application server, an open-source
       free server. This does not mean genesis only runs on this server; genesis
       was developed in a J2EE compatible way.</p>
-      <p><a href="http://ant.apache.org/">Ant</a> is necessary to run useradmin sample.
-      To run this sample in remote mode, it's needed the application server
-      <a href="http://www.jboss.org/">JBoss</a></p>
-      <p>Learn how to run this sample in local mode (without an application server)
-         <a href="#Running in local mode">here</a>.</p>
-      <p>Learn how to run this sample in remote mode (with an application server)
-         <a href="#Running in remote mode">here</a>.</p>
-      <p>To use the SWT part of useradmin's sample, read the instructions
-        <a href="configuring_swt.html">here</a></p>
+      <p><a href="http://ant.apache.org/">Ant</a> is required to run the 
+      useradmin sample. To run this sample in remote mode, it's the <a 
+      href="http://www.jboss.org/">JBoss</a> application server is also 
+      required.</p>
+      <p>Learn how to run this sample in local mode (without an application 
+      server) <a href="#Running in local mode">here</a>.</p>
+      <p>Learn how to run this sample in remote mode (using an application 
+      server) <a href="#Running in remote mode">here</a>.</p>
+      <p>To use the SWT portion of useradmin's sample, read the instructions
+      <a href="configuring_swt.html">here</a>.</p>
     </section>
     <section name="useradmin sample's purpose">
-      <p>useradmin sample's purpose is to demonstrate to users genesis major
-      features and also shows the transparent remoting, cause just with the
-      same source code, it's possible to run the sample using either
-      remote calls or local calls.</p>
-      <p>The sample has two source code dirs: the directory
-      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/client/src
-      </code> and the directory
-      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/shared/src
-      </code> that contain the client module and the client/server shared module
-      each.</p>
-      <p>The client module source dir contains UI related classes. The useradmin sample
-        uses three different UI technologies: <a href="http://www.thinlet.com/">Thinlet</a>,
-      <a href="http://java.sun.com/products/jfc/">Swing</a> and
-      <a href="http://www.eclipse.org/swt">SWT</a>. To use SWT, read the instructions
-         <a href="configuring_swt.html">here</a>.</p>
-
+      <p>useradmin sample's purpose is to demonstrate to users genesis' major
+      features and also is a great example of transparent remoting in action, 
+      since with the same source code, it's possible to run the sample using 
+      either remote or local calls.</p>
+      <p>The sample has two source code dirs,
+      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/client/src</code> and
+      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/shared/src</code>, 
+      that contain the client module and the client/server shared module,
+      respectively.</p>
+      <p>The client module source dir contains UI related classes. The useradmin 
+      sample uses three different UI technologies: <a 
+      href="http://www.thinlet.com/">Thinlet</a>, <a 
+      href="http://java.sun.com/products/jfc/">Swing</a> and <a 
+      href="http://www.eclipse.org/swt">SWT</a>. To use SWT, read the 
+      instructions <a href="configuring_swt.html">here</a>.</p>
       <p>The package <code>net.java.dev.genesis.samples.useradmin.ui</code> 
-      contains files that define the UI logic (rules to enable and disable fields, actions, etc).
-      We call these classes <b>forms</b> and <b>they are independent</b> of
-      UI technology. For example, <code><b>UserListForm.java</b></code> it's a Java class
+      contains files that define the UI logic (rules to enable and disable 
+      fields, actions, etc). We call these classes <b>forms</b> and <b>they are 
+      independent</b> of UI technology. For example, <code><b>UserListForm.java</b></code> it's a Java class
       whose fields represent screen data e it has methods that represent screen actions.</p>
 
       <p>At Thinlet (package <code>net.java.dev.genesis.samples.useradmin.ui.thinlet</code>)
