@@ -24,30 +24,45 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 
+
 public class SWTExceptionHandler extends AbstractDispatcherExceptionHandler {
    private final Composite root;
 
    public SWTExceptionHandler(Composite root) {
-		this.root = root;
-	}
+      this.root = root;
+   }
 
-	public Composite getRoot() {
-		return root;
-	}
+   public Composite getRoot() {
+      return root;
+   }
 
-   protected void showWarningMessageDialog(final String title, final String message) {
+   protected void showWarningMessageDialog(final String title,
+      final String message) {
       showMessageDialog(title, message, SWT.ICON_WARNING | SWT.OK);
    }
 
-   protected void showErrorMessageDialog(final String title, final String message, Throwable throwable) {
-      showMessageDialog(title, message + '\n' + getStackTrace(throwable), SWT.ICON_ERROR | SWT.OK);
+   protected void showErrorMessageDialog(final String title,
+      final String message, Throwable throwable) {
+      showErrorDialog(title, message, throwable, SWT.NONE);
    }
 
-   protected void showMessageDialog(final String title, final String message, int style) {
+   protected void showMessageDialog(final String title, final String message,
+      int style) {
       MessageBox msgBox = new MessageBox(root.getShell(), style);
 
       msgBox.setMessage(message);
       msgBox.setText(title);
       msgBox.open();
+   }
+
+   protected void showErrorDialog(final String title, final String message,
+      final Throwable throwable, int style) {
+      ErrorReporterDialog dialog = new ErrorReporterDialog(root.getShell(),
+            style);
+
+      dialog.setText(title);
+      dialog.setMessage(message);
+      dialog.setStackTraceMessage(getStackTrace(throwable));
+      dialog.open();
    }
 }

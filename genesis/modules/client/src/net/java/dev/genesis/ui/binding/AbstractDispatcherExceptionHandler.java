@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.binding;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import net.java.dev.genesis.ui.UIException;
@@ -29,7 +30,11 @@ import org.apache.commons.logging.LogFactory;
 public abstract class AbstractDispatcherExceptionHandler implements
       DispatcherExceptionHandler {
    public void handleException(Throwable throwable) {
-      if (throwable instanceof ValidationException) {
+      if (throwable instanceof InvocationTargetException) {
+         handleException(((InvocationTargetException)throwable).getTargetException());
+
+         return;
+      } else if (throwable instanceof ValidationException) {
          showValidationErrors((ValidationException) throwable);
 
          return;

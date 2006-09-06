@@ -19,12 +19,21 @@
 package net.java.dev.genesis.ui.swing;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
+import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler;
 
 import org.apache.commons.logging.LogFactory;
@@ -44,12 +53,38 @@ public class SwingExceptionHandler extends AbstractDispatcherExceptionHandler {
       showMessageDialog(title, message, JOptionPane.WARNING_MESSAGE);
    }
 
-   protected void showErrorMessageDialog(final String title, final String message, Throwable throwable) {
-      showMessageDialog(title, message + '\n' + getStackTrace(throwable),
-            JOptionPane.ERROR_MESSAGE);
+   protected void showErrorMessageDialog(final String title,
+         final String message, Throwable throwable) {
+      showMessageDialog(title, createStackTracePanel(message, throwable), JOptionPane.ERROR_MESSAGE);
+   }
+   
+   protected Object createStackTracePanel(String message, Throwable throwable) {
+      JPanel panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+      JLabel messageLabel = new JLabel(message);
+      messageLabel.setFont(messageLabel.getFont().deriveFont(Font.BOLD));
+      messageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+      JLabel stackLabel = new JLabel(UIUtils.getInstance().getBundle()
+            .getString("ErrorReporterDialog.stackTrace"));
+      stackLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+      JTextArea stackTextArea = new JTextArea(getStackTrace(throwable));
+      stackTextArea.setEditable(false);
+      stackTextArea.setColumns(50);
+      stackTextArea.setRows(10);
+
+      panel.add(messageLabel);
+      panel.add(Box.createRigidArea(new Dimension(0, 5)));
+      panel.add(stackLabel);
+      panel.add(Box.createRigidArea(new Dimension(0, 5)));
+      panel.add(new JScrollPane(stackTextArea));
+
+      return panel;
    }
 
-   protected void showMessageDialog(final String title, final String message,
+   protected void showMessageDialog(final String title, final Object message,
          final int type) {
       if (EventQueue.isDispatchThread()) {
          JOptionPane.showMessageDialog(root, message, title, type);

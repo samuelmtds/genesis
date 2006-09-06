@@ -372,28 +372,32 @@ public class SwingBinder extends AbstractBinder {
                               .valueOf(SwingBinder.this.listener == args[0]);
                      }
 
-                     return method.invoke(SwingBinder.this, args);
+                     try {
+                        return method.invoke(SwingBinder.this, args);
+                     } catch (InvocationTargetException ite) {
+                        throw ite.getTargetException();
+                     }
                   }
 
                   final Object[] result = new Object[1];
-                  final Exception[] exception = new Exception[1];
+                  final Throwable[] throwable = new Throwable[1];
 
                   EventQueue.invokeAndWait(new Runnable() {
                      public void run() {
                         try {
                            result[0] = method.invoke(SwingBinder.this, args);
                         } catch (IllegalArgumentException ex) {
-                           exception[0] = ex;
+                           throwable[0] = ex;
                         } catch (InvocationTargetException ex) {
-                           exception[0] = ex;
+                           throwable[0] = ex.getTargetException();
                         } catch (IllegalAccessException ex) {
-                           exception[0] = ex;
+                           throwable[0] = ex;
                         }
                      }
                   });
 
-                  if (exception[0] != null) {
-                     throw exception[0];
+                  if (throwable[0] != null) {
+                     throw throwable[0];
                   }
 
                   return result[0];
