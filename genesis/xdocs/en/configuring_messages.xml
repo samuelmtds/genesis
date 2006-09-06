@@ -60,10 +60,12 @@ MessageDialog.close=Close
 Option.YES=Yes
 Option.NO=No
 Option.CANCEL=Cancel
+  
+# 3. Messages used in error handling
 ErrorReporterDialog.ok=OK
 ErrorReporterDialog.stackTrace=Stack Trace:
 
-# 3. Used defined configurations
+# 4. Used defined configurations
 ChooseView.title=Choose
 ChooseView.choose=Choose an option
 ChooseView.thinlet=Thinlet

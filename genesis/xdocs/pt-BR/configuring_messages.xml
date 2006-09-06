@@ -61,10 +61,12 @@ MessageDialog.close=Close
 Option.YES=Yes
 Option.NO=No
 Option.CANCEL=Cancel
+  
+# 3. Configuração das mensagens utilizadas em telas de exibição de erros
 ErrorReporterDialog.ok=OK
 ErrorReporterDialog.stackTrace=Stack Trace:
 
-# 3. Configurações personalizadas do usuário
+# 4. Configurações personalizadas do usuário
 ChooseView.title=Choose
 ChooseView.choose=Choose an option
 ChooseView.thinlet=Thinlet
