@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.Widget;
 public class SWTBinder extends AbstractBinder {
    public static final String TABLE_COLUMN_IDENTIFIER = "genesis:tableColumnIdentifier";
 
-   private final WidgetBinderRegistryFactory factory =
-      WidgetBinderRegistryFactory.getInstance();
+   private final WidgetBinderRegistry factory =
+      WidgetBinderRegistry.getInstance();
 
    public SWTBinder(Composite composite, Object form, Object handler) {
       this(composite, form, handler, (LookupStrategy) null);

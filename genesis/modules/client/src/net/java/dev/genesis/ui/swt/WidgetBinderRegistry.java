@@ -42,13 +42,13 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
-public class WidgetBinderRegistryFactory {
-   private static final WidgetBinderRegistryFactory instance =
-      new WidgetBinderRegistryFactory();
+public class WidgetBinderRegistry {
+   private static final WidgetBinderRegistry instance =
+      new WidgetBinderRegistry();
    private Registry registry = new Registry();
    private GroupBinder groupBinder = new ButtonGroupBinder();
 
-   private WidgetBinderRegistryFactory() {
+   private WidgetBinderRegistry() {
       register(Text.class, new TextWidgetBinder());
       register(Label.class, new LabelWidgetBinder());
       register(Button.class, new ButtonWidgetBinder());
@@ -60,7 +60,7 @@ public class WidgetBinderRegistryFactory {
       register(Table.class, new TableWidgetBinder());
    }
 
-   public static WidgetBinderRegistryFactory getInstance() {
+   public static WidgetBinderRegistry getInstance() {
       return instance;
    }
 

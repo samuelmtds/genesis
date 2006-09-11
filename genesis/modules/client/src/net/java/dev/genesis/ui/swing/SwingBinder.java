@@ -61,8 +61,7 @@ public class SwingBinder extends AbstractBinder {
     */
    public static final String BINDER_KEY = "genesis:SwingBinder";
 
-   private final ComponentBinderRegistryFactory factory =
-      ComponentBinderRegistryFactory.getInstance();
+   private final ComponentBinderRegistry factory = ComponentBinderRegistry.getInstance();
    private final ActionListener defaultButtonListener;
    private final WindowListener windowListener;
    private final FormControllerListener listener;

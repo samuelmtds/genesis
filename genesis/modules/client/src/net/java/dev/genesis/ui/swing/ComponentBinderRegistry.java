@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,13 +44,13 @@ import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.text.JTextComponent;
 
-public class ComponentBinderRegistryFactory {
-   private static final ComponentBinderRegistryFactory instance =
-      new ComponentBinderRegistryFactory();
+public class ComponentBinderRegistry {
+   private static final ComponentBinderRegistry instance =
+      new ComponentBinderRegistry();
    private final Registry registry = new Registry();
    private GroupBinder groupBinder = new ButtonGroupBinder();
 
-   private ComponentBinderRegistryFactory() {
+   private ComponentBinderRegistry() {
       register(JTextComponent.class, new JTextComponentBinder());
       register(JLabel.class, new JLabelComponentBinder());
       register(AbstractButton.class, new AbstractButtonComponentBinder());
@@ -63,7 +63,7 @@ public class ComponentBinderRegistryFactory {
       register(JTable.class, new JTableComponentBinder());
    }
 
-   public static ComponentBinderRegistryFactory getInstance() {
+   public static ComponentBinderRegistry getInstance() {
       return instance;
    }
 

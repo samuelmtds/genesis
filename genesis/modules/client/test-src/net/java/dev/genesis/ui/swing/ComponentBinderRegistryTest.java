@@ -44,15 +44,15 @@ import net.java.dev.genesis.ui.swing.components.JTableComponentBinder;
 import net.java.dev.genesis.ui.swing.components.JTextComponentBinder;
 import net.java.dev.genesis.ui.swing.components.JToggleButtonComponentBinder;
 
-public class ComponentBinderRegistryFactoryTest extends GenesisTestCase {
-   public ComponentBinderRegistryFactoryTest() {
-      super("ComponentBinder Registry Factory Unit Test");
+public class ComponentBinderRegistryTest extends GenesisTestCase {
+   public ComponentBinderRegistryTest() {
+      super("ComponentBinder Registry Unit Test");
    }
 
-   private ComponentBinderRegistryFactory registry;
+   private ComponentBinderRegistry registry;
 
    protected void setUp() {
-      registry = ComponentBinderRegistryFactory.getInstance();
+      registry = ComponentBinderRegistry.getInstance();
    }
 
    protected void tearDown() throws Exception {

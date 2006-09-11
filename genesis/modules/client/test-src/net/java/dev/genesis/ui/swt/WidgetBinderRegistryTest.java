@@ -41,15 +41,15 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
-public class WidgetBinderRegistryFactoryTest extends GenesisTestCase {
-   public WidgetBinderRegistryFactoryTest() {
-      super("WidgetBinder Registry Factory Unit Test");
+public class WidgetBinderRegistryTest extends GenesisTestCase {
+   public WidgetBinderRegistryTest() {
+      super("WidgetBinder Registry Unit Test");
    }
 
-   private WidgetBinderRegistryFactory registry;
+   private WidgetBinderRegistry registry;
 
    protected void setUp() {
-      registry = WidgetBinderRegistryFactory.getInstance();
+      registry = WidgetBinderRegistry.getInstance();
    }
 
    protected void tearDown() throws Exception {
