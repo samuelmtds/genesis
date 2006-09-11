@@ -114,7 +114,6 @@
             <include name="jrexx*.jar" />
             <include name="junit*.jar" />
             <include name="managementapi*.jar" />
-            <include name="piccolo*.jar" />
             <include name="qdox*.jar" />
             <include name="trove*.jar" />
          </fileset>
@@ -277,7 +276,7 @@
       <property name="jdbc.username" value="sa" />
       <property name="jdbc.password" value="" />
       <property name="jdbc.connection.url" 
-                value="jdbc:hsqldb:genesis/useradmin" />
+                value="jdbc:hsqldb:genesis/${genesisBasedApplication.name}" />
 
       <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
 
