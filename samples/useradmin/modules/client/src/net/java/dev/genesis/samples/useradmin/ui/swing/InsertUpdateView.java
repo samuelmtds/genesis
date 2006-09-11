@@ -40,9 +40,7 @@ import javax.swing.WindowConstants;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
 import net.java.dev.genesis.samples.useradmin.ui.swing.role.RoleChooser;
-import net.java.dev.genesis.samples.useradmin.ui.swing.role.RoleChooserComponentBinder;
 import net.java.dev.genesis.ui.UIUtils;
-import net.java.dev.genesis.ui.swing.ComponentBinderRegistryFactory;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.factory.SwingFactory;
 
@@ -52,12 +50,6 @@ import org.apache.commons.beanutils.PropertyUtils;
  * @ViewHandler
  */
 public class InsertUpdateView extends JDialog {
-   static {
-      ComponentBinderRegistryFactory.getInstance()
-                                       .register(RoleChooser.class,
-            new RoleChooserComponentBinder());
-   }
-
    private final InsertUpdateForm form;
    private boolean hasChanged;
    private final SwingBinder binder;

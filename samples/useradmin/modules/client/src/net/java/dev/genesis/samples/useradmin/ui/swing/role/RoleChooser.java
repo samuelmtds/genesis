@@ -22,6 +22,7 @@ import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.java.dev.genesis.samples.useradmin.ui.InsertRoleForm;
 import net.java.dev.genesis.samples.useradmin.ui.RoleListForm;
 import net.java.dev.genesis.ui.UIUtils;
+import net.java.dev.genesis.ui.swing.ComponentBinderRegistry;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 import java.awt.Dialog;
@@ -51,6 +52,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public class RoleChooser extends JPanel {
+   static {
+      ComponentBinderRegistry.getInstance().register(RoleChooser.class,
+            new RoleChooserComponentBinder());
+   }
+
    private final JFrame owner;
    private JTextField roleCodeTextField;
    private JButton chooseButton;

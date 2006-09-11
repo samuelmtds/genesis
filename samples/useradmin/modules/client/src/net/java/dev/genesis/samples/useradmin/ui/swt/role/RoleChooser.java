@@ -21,6 +21,7 @@ package net.java.dev.genesis.samples.useradmin.ui.swt.role;
 
 
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
+import net.java.dev.genesis.ui.swt.WidgetBinderRegistry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,6 +35,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 public class RoleChooser extends Composite {
+   static {
+      WidgetBinderRegistry.getInstance().register(RoleChooser.class,
+            new RoleChooserWidgetBinder());
+   }
+
    public static final int RoleChanged = -99;
    
    private Text roleCode;

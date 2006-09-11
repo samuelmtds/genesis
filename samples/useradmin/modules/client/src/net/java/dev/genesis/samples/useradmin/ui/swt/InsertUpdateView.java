@@ -22,10 +22,8 @@ package net.java.dev.genesis.samples.useradmin.ui.swt;
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
 import net.java.dev.genesis.samples.useradmin.ui.swt.role.RoleChooser;
-import net.java.dev.genesis.samples.useradmin.ui.swt.role.RoleChooserWidgetBinder;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.swt.SWTBinder;
-import net.java.dev.genesis.ui.swt.WidgetBinderRegistryFactory;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;
@@ -48,11 +46,6 @@ import org.eclipse.swt.widgets.Text;
  * @ViewHandler
  */
 public class InsertUpdateView extends Dialog {
-   static {
-      WidgetBinderRegistryFactory.getInstance().register(RoleChooser.class,
-            new RoleChooserWidgetBinder());
-   }
-
    private final InsertUpdateForm form;
    private boolean hasChanged;
    private final SWTBinder binder;
