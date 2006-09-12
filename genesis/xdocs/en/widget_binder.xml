@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
    <properties>
-     <title>Customizing Widget Binding</title>
+     <title>Customizing widget binding</title>
      <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
    </properties>
    <body>
-     <section name="Customizing Widget Binding">
-       <p>genesis provides default <code>binding</code> implementation for each
-         widget type. That means that each widget type has its own <code>binder</code>
-         that determines how is the interaction with the form.
-         Each widget <code>binder</code> defines how the values and events of a specific
-         widget are passed to the <code>form</code>, and how the values and actions
-         of the <code>form</code> are passed to the widget.
-       </p>
-       <p>genesis defines some interfaces that represents fields and actions of a screen
-         that are <i>connected</i> to the form. The interfaces are:
-         <ul>
-           <li><b><code>BoundAction</code></b>: Represents an UI action that
-             is bound to a form method.</li>
-           <li><b><code>BoundField</code></b>: Represents an UI field that
-             is bound to a form field.</li>
-           <li><b><code>BoundDataProvider</code></b>: Represent an UI field 
-             that is bound to a form method (data provider) and optionally, to
-             a form field that stores the user selection..</li>
-         </ul>
-       </p>
-       <p>Each widget has its own <code>binder</code> that is responsible
-          for the creation of <code>BoundAction</code>,
-          <code>BoundField</code> and/or <code>BoundDataProvider</code>.
-          It's possible to define a custom <code>binder</code> to a specific
-          widget type, or to a specific widget.
-       </p>
-       <p>genesis provides specific <code>binder</code>s for
-         Swing components and SWT widgets, that is covered below.
-       </p>
+     <section name="Customizing widget binding">
+       <p>Binding in genesis is implemented using a delegation model: it is 
+       possible to define based on the widget class or even in a specific case
+       how a specific widget should be bound to a property, <code>@Action</code> 
+       or <code>@DataProvider</code>.</p>
+       <p>genesis has default binding implementations for each widget type. Each 
+       widget binder defines how the values and events of a specific widget will
+       affect the form, and how the values and actions of the form will be 
+       handled by the widget.</p>
+       <p>genesis defines some interfaces that are runtime representations of 
+       the fields and actions of the UI that are bound to the form. These 
+       interfaces are:</p>
+       <ul>
+         <li><b><code>BoundAction</code></b>: Represents an UI action that is 
+         bound to a form method.</li>
+         <li><b><code>BoundField</code></b>: Represents an UI field that is 
+         bound to a form field.</li>
+         <li><b><code>BoundDataProvider</code></b>: Represent an UI field that 
+         lists data and is bound to a form method (data provider) and 
+         optionally, to a form field that stores the user selection..</li>
+       </ul>
+       <p>Each widget has its own binder that is responsible for the creation of 
+       <code>BoundAction</code>s, <code>BoundField</code>s and/or 
+       <code>BoundDataProvider</code>s as required. It is possible to set custom 
+       binders for a specific widget type, or for a specific widget.</p>
+       <p>genesis provides specific binders for Swing components and SWT 
+       widgets. They will be covered in the next sections.</p>
        <subsection name="Swing">
-         <p>Each component <code>binder</code> should implement 
-           <code>net.java.dev.genesis.ui.binding.WidgetBinder</code> interface.
-           This interface
-           defines methods for creating <code>BoundAction</code>,
-           <code>BoundField</code> and <code>BoundDataProvider</code>.
-           The abstract class
-           <code>net.java.dev.genesis.ui.swing.components.AbstractComponentBinder</code>
-           provides a basic implementation with common logic shared by all
-           <code>binders</code> (visibility control, enable and disable, widget group).
-         </p>
-         <p>Below, the commented source code of the default binder used by
-           components that inherits <code>javax.swing.AbstractButton</code>
-            (<code>JButton</code>, <code>JMenuItem</code>, etc):</p>
+         <p>Each component binder should implement the
+         <code>net.java.dev.genesis.ui.binding.WidgetBinder</code> interface.
+         This interface defines methods for creating <code>BoundAction</code>,
+         <code>BoundField</code> and <code>BoundDataProvider</code> instances. 
+         The abstract class called
+         <code>net.java.dev.genesis.ui.swing.components.AbstractComponentBinder</code>
+         provides a basic implementation with the common logic shared by all 
+         binders (visibility control, enabling/disabling widgets, widget 
+         group).</p>
+         <p>As an sample, examine the commented source code of the default 
+         binder used by components that inherit from 
+         <code>javax.swing.AbstractButton</code> (<code>JButton</code>, 
+         <code>JMenuItem</code>, etc):</p>
 <source>
-// We recommend to extend <b>AbstractComponentBinder</b> class
+// We recommend extending the <b>AbstractComponentBinder</b> class
 public class AbstractButtonComponentBinder extends AbstractComponentBinder {
-  
-   // The button represents a form action, so, only this method should be implemented.
-   // This method takes the binder, the component (the button itself) and the ActionMetadata
-   // that represents the action to be executed. A <b>BoundAction</b> that represents the
-   // connection between the button and the form must be returned
+   // The button represents a form action, therefore this method is the only one
+   // that needs to be implemented. This method takes the binder, the component 
+   // - the button itself - and the ActionMetadata that represents the action to 
+   // be executed. A <b>BoundAction</b> that represents the connection between 
+   // the button and the form must be returned
    public BoundAction bind(SwingBinder binder, Component component,
-      ActionMetadata actionMetadata) {
+         ActionMetadata actionMetadata) {
       return new AbstractButtonComponentBoundAction(binder,
-         (AbstractButton) component, actionMetadata);
+            (AbstractButton)component, actionMetadata);
    }
 
    // Inner class that implements <b>BoundAction</b> and extends
-   // AbstractComponentBinder.AbstractBoundMember that has common logic shared
-   // by all binders
+   // AbstractComponentBinder.AbstractBoundMember (that has common logic shared
+   // by all binders)
    public class AbstractButtonComponentBoundAction extends AbstractBoundMember
          implements BoundAction {
       private final AbstractButton component;
@@ -72,14 +71,13 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
       private final ActionListener listener;
 
       public AbstractButtonComponentBoundAction(SwingBinder binder,
-         AbstractButton component, ActionMetadata actionMetadata) {
+            AbstractButton component, ActionMetadata actionMetadata) {
          super(binder, component);
          this.component = component;
          this.actionMetadata = actionMetadata;
     
-         // The <b>ActionListener</b> is added to the button.
-         // To use a custom listener, just overrides the
-         // <b>createActionListener()</b> method
+         // The <b>ActionListener</b> is added to the button. To use a custom 
+         // listener, just override the <b>createActionListener()</b> method.
          this.component.addActionListener(listener = createActionListener());
       }
 
@@ -100,8 +98,8 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
          return new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-               // Throught the <b>invokeFormAction</b> method,
-               // the form action is invoked.
+               // Using the <b>invokeFormAction</b> method, the form action is 
+               // invoked.
                getBinder().invokeFormAction(getActionMetadata());
             }
          };
@@ -117,37 +115,38 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
    }
 }
 </source>
-         <p>To register a new <code>binder</code> for a specific component type,
-         use the <code>register(Class,WidgetBinder)</code> method defined in
-         <code>net.java.dev.genesis.ui.swing.ComponentBinderRegistryFactory</code> class,
-         at your application startup, as shown below:</p>
+         <p>To register a new binder for a specific component type, use the 
+         <code>register(Class, WidgetBinder)</code> method defined by
+         <code>net.java.dev.genesis.ui.swing.ComponentBinderRegistry</code>, at 
+         your application startup, as shown below:</p>
 <source>
 public class MyApplication {
   public static void main(String[] args) {
     // StartupHelper initialization 
-    ....
+    // ...
 
-    ComponentBinderRegistryFactory.
-       getInstance().register(JTable.class, new MyTableBinder());
+    ComponentBinderRegistry.getInstance().register(JTable.class, 
+          new MyTableBinder());
   }
 }
 </source>
-         <p>To register a new <code>binder</code> for a specific component, use the
-         <code>registerWidgetBinder(String,WidgetBinder)</code> method defined in
-         <code>net.java.dev.genesis.ui.binding.AbstractBinder</code> class,
-           as shown below:</p>
+         <p>To register a new binder for a specific component, use the
+         <code>registerWidgetBinder(String, WidgetBinder)</code> method defined 
+         by <code>net.java.dev.genesis.ui.binding.AbstractBinder</code>,
+         as shown below:</p>
 <source>
 @ViewHandler
 public class SwingView extends JDialog {
    private SwingBinder binder;
-   ....
+   // ...
+
    public SwingView() {
       binder = new SwingBinder(this, new Form());
    }
 
    public initComponents() {
-      JTable tabela = ... // Table creation
-      tabela.setName("usersTable");
+      JTable table = // Table creation
+      table.setName("usersTable");
 
       binder.registerWidgetBinder("usersTable", new MyTableBinder());
       binder.bind();
@@ -156,19 +155,20 @@ public class SwingView extends JDialog {
 </source>
        </subsection>
        <subsection name="SWT">
-         <p>Each widget <code>binder</code> should implement
-           <code>net.java.dev.genesis.ui.binding.WidgetBinder</code> interface, like Swing.
-           This interface defines methods for creating <code>BoundAction</code>,
-           <code>BoundField</code> and <code>BoundDataProvider</code>.
-           The abstract class
-           <code>net.java.dev.genesis.ui.swt.widgets.AbstractWidgetBinder</code>
-           provides a basic implementation with common logic shared by all
-           <code>binders</code> (visibility control, enable and disable, widget group).
-         </p>
-         <p>Below, the commented source code of the default binder used by all widgets of type 
-           <code>org.eclipse.swt.widgets.Text</code>:</p>
+         <p>As it is true for Swing, each widget binder should implement the 
+         <code>net.java.dev.genesis.ui.binding.WidgetBinder</code> interface.
+         This interface defines methods for creating <code>BoundAction</code>s,
+         <code>BoundField</code>s and <code>BoundDataProvider</code>s.
+         The abstract class
+         <code>net.java.dev.genesis.ui.swt.widgets.AbstractWidgetBinder</code>
+         provides a basic implementation with common logic shared by all 
+         binders (visibility control, enabling/disabling widgets, widget 
+         group).</p>
+         <p>As an sample, examine the commented source code of the default 
+         binder used by widgets whose type is 
+         <code>org.eclipse.swt.widgets.Text</code>:</p>
 <source>
-// We recommend to extend <b>AbstractWidgetBinder</b> class
+// We recommend extending the <b>AbstractComponentBinder</b> class
 public class TextWidgetBinder extends AbstractWidgetBinder {
    // Whether trim must be used to retrieve the widget text
    private final boolean trim;
@@ -185,19 +185,20 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
 	   return trim;
    }
 
-   // The widget represents a form field, so, only this method should be implemented.
-   // This method takes the binder, the widget (the text widget itself) and the FieldMetadata
-   // that represents the form field. A <b>BoundField</b> that represents the
-   // connection between the widget and the form field must be returned
+   // This widget represents a form field, therefore this method is the only one
+   // that needs to be implemented. This method takes the binder, the widget 
+   // - the text widget itself - and the FieldMetadata that represents the form 
+   // field. A <b>BoundField</b> that represents the connection between the 
+   // widget and the form field must be returned
    public BoundField bind(SWTBinder binder, Widget widget,
-      FieldMetadata fieldMetadata) {
+         FieldMetadata fieldMetadata) {
       return new TextWidgetBoundField(binder, (Text) widget,
-         fieldMetadata);
+            fieldMetadata);
    }
 
    // Inner class that implements <b>BoundAction</b> and extends
-   // AbstractWidgetBinder.AbstractBoundMember that has common logic shared
-   // by all binders
+   // AbstractWidgetBinder.AbstractBoundMember (that has common logic shared
+   // by all binders)
    public class TextWidgetBoundField extends AbstractBoundMember
          implements BoundField {
       private final Text widget;
@@ -210,9 +211,8 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
          this.widget = widget;
          this.fieldMetadata = fieldMetadata;
 
-         // The <b>FocusListener</b> is added to the widget.
-         // To use a custom listener, just overrides the
-         // <b>createFocusListener()</b> method
+         // The <b>FocusListener</b> is added to the widget. To use a custom 
+         // listener, just override the <b>createFocusListener()</b> method
          this.widget.addFocusListener(listener = createFocusListener());
       }
 
@@ -228,13 +228,13 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
          return listener;
       }
 
-      // <b>FocusListener</b> instatiation
+      // <b>FocusListener</b> instantiation
       protected FocusListener createFocusListener() {
          return new FocusAdapter() {
             public void focusLost(FocusEvent event) {
 
-               // Throught the <b>populateForm</b> method,
-               // the form field will be populated with the widget value
+               // Using the <b>populateForm</b> method, the form field will be 
+               // populated with the widget value
                getBinder().populateForm(getFieldMetadata(), getValue());
             }
          };
@@ -259,38 +259,39 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
    }
 }
 </source>
-         <p>To register a new <code>binder</code> for a specific widget type,
-         use the <code>register(Class,WidgetBinder)</code> method defined in
-         <code>net.java.dev.genesis.ui.swt.WidgetBinderRegistryFactory</code> class,
-           at your application startup, as shown below:</p>
+         <p>To register a new binder for a specific widget type, use the 
+         <code>register(Class, WidgetBinder)</code> method defined by
+         <code>net.java.dev.genesis.ui.swt.WidgetBinderRegistry</code>, at your 
+         application startup, as shown below:</p>
 <source>
 public class MyApplication {
   public static void main(String[] args) {
     // StartupHelper initialization
-    ....
+    // ...
 
-    WidgetBinderRegistryFactory.
-       getInstance().register(Combo.class, new MyComboBinder());
+    WidgetBinderRegistry.getInstance().register(Combo.class, 
+          new MyComboBinder());
   }
 }
 </source>
-         <p>To register a new <code>binder</code> for a specific widget, use the
-         <code>registerWidgetBinder(String,WidgetBinder)</code> method defined in
-         <code>net.java.dev.genesis.ui.binding.AbstractBinder</code> class,
-           as shown below:</p>
+         <p>To register a new binder for a specific widget, use the
+         <code>registerWidgetBinder(String, WidgetBinder)</code> method defined
+         by <code>net.java.dev.genesis.ui.binding.AbstractBinder</code>,
+         as shown below:</p>
 <source>
 @ViewHandler
 public class SWTView {
    private Shell shell;
    private SwingBinder binder;
-   ....
+   // ...
+
    public SwingView() {
       shell = new Shell();
       binder = new SwingBinder(shell, new Form(), this);
    }
 
    public initComponents() {
-      Combo combo = ... // Combo creation
+      Combo combo = // Combo creation
       combo.setData("usersCombo");
 
       binder.registerWidgetBinder("usersCombo", new MyComboBinder());
