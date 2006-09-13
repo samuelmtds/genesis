@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Release Notes - Releases 2.x/0.2.x</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Downloads and release notes (2.x/0.2.x)">
+      <ul>
+        <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
+        <li><a href="#0.2-RC2">0.2-RC2</a></li>
+        <li><a href="#0.2-RC1">0.2-RC1</a></li>
+        <li><a href="#0.2-beta2">0.2-beta2</a></li>
+        <li><a href="#0.2-beta1">0.2-beta1</a></li>
+      </ul>
+    </section>
+    <section name="0.2 (2.0)">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>This release contains very few enhancements to samples and
+        documentation.</p>
+        <p>The full change log for 0.2 can be found  <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?target_milestone=0.2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgments">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+          </ul>
+      </subsection>
+    </section>
+    <section name="0.2-RC2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2654&amp;expandFolder=2654&amp;folderID=1756">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>This release contains very few enhancements to <a
+        href="#0.2-RC1">0.2-RC1</a>:</p>
+        <ul>
+          <li>It is possible to put more than one <code>@AfterAction</code>
+          and/or <code>@BeforeAction</code> annotation in a method</li>
+          <li>The useradmin sample has been updated in order to demonstrate
+          genesis 0.2-RC1 features</li>
+          <li><code>empty-project</code>'s <code>build.xml</code> now supports
+          <a href="empty_project.html#Configuring_a_new_project">new properties</a>
+          for defining database access configuration</li>
+        </ul>
+        <p>The following bugs have been fixed in this release:</p>
+        <ul>
+          <li>The <code>objectField</code> property value is set to
+          <code>null</code> instead of an empty collection
+          when the property type is <code>Collection</code> and the
+          <code>@DataProvider</code> method is bound to a table
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173">Issue
+          # 173</a>)</li>
+          <li>The <code>indexField</code> property first value is ignored
+          at binding time and if an <code>objectField</code> whose type is an
+          array or a <code>Collection</code> is used together with it, a
+          <code>-1</code> value in the <code>indexField</code> causes an
+          <code>ArrayIndexOutOfBoundsException</code> to be thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=181">Issue
+          # 181</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-RC1 and 0.2-RC2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-RC2/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgments">
+        <p>Special thanks to Bruno Borges for finding the bug that has been
+        fixed in this release and for proposing the enhancement regarding
+        multiple <code>@[After|Before]Action</code> annotations in a
+        method.</p>
+      </subsection>
+    </section>
+    <section name="0.2-RC1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2644&amp;expandFolder=2644&amp;folderID=0">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li><code>@Criteria</code> annotation with
+          <a href="quick_reference.html#@Criteria">order-by</a>.</li>
+          <li>Support
+          <a href="conditions.html#Widget_groups">enabledWidgetGroup and visibleWidgetGroup</a>
+          which allows the user to define differents groups for enabling and
+          visibity rules.</li>
+          <li>Allow users to specify a label for
+          <a href="populating_with_dataproviders.html">blank</a>
+          elements in comboboxes/lists.</li>
+          <li>Improved <code>@DataProvider</code> syntax to support explicit
+          <a href="populating_with_dataproviders.html">widget name</a>
+          definition. This feature also allows <code>@DataProvider</code> to be
+          used with read-only widgets.</li>
+          <li>Implement support for <code>@DataProvider</code>
+          <a href="populating_with_dataproviders.html">indexField</a>
+          update detection.</li>
+          <li><a href="quick_reference.html#@ClearOn"><code>@ClearOn</code></a>
+          annotation works with <code>@DataProvider</code>.</li>
+          <li>Support for
+          <a href="populating_with_dataproviders.html">list</a>
+          usage with <code>@DataProvider</code>.</li>
+          <li>It is possible to invoke actions within a form using the new classes
+          <a href="actions.html#Invoking_form_actions_directly"><code>ActionInvoker</code> and <code>BaseForm</code></a>
+          </li>
+          <li>It is now possible to <a href="formatting.html">override the formatter instance</a>
+          to be used with a certain field</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Validation should be performed on the values being displayed,
+          not the values assigned to the form instance
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=134">Issue
+          # 134</a>)</li>
+          <li>If a user types invalid data for an int field, for instance,
+          a <code>NullPointerException</code> is thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=135">Issue
+          # 135</a>)</li>
+          <li>If <code>blank=true</code> is specified for a combo that is
+          populated using a <code>@DataProvider</code>, selecting an element
+          always highlight the wrong element or throws an <code>Exception</code>
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=138">Issue
+          # 138</a>)</li>
+          <li><code>empty-project</code> build file has a target named
+          <code>genesis.app:run</code> that does not work since it refers to a
+          path that cannot be found (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=156">Issue
+          # 156</a>)</li>
+          <li>Using checkboxes without a group causes genesis to update its text
+          (and not its state). If the user tries to click on the checkbox,
+          a <code>NullPointerException</code> is thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=165">Issue
+          # 165</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-beta2 and 0.2-RC1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;target_milestone=0.2-RC1">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-RC1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Liaw Mike</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>We would like to acknowledge Bruno Borges, Cláudio Rocha and Marcelo
+        Módolo for their ideas, feedback, comments and/or tests.</p>
+      </subsection>
+    </section>
+    <section name="0.2-beta2">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>New helper class to make it easier to initialize the application,
+          <a href="startup.html">StartupHelper</a>
+          </li>
+          <li>A new attribute in <code>@DataProvider</code>, is now supported,
+          <a href="populating_with_dataproviders.html"><code>callOnInit</code></a>
+          </li>
+          <li>Support for defining <a
+          href="conditions.html#Widget_groups">widget groups</a>
+          to be used with <code>@EnabledWhen</code> /
+          <code>@VisibleWhen</code> annotations</li>
+          <li>New helper classes for paging and dynamic searches, <a
+          href="paging_and_dynamic_search.html#Working_with_dynamic_searches"><code>BaseSearchForm</code>
+          and <code>BaseCriteriaSearchForm</code></a></li>
+          <li>Simplified binding usage with <a
+          href="actions.html#Invoking_form_actions_directly"><code>invokeFormAction(..)</code></a>,
+          <a href="actions.html#Programatically_Screen_Update"><code>refreshView(..)</code> and
+          <code>refreshViewFromForm(Object)</code></a></li>
+          <li><a href="aspects.html#Local_EJB_execution">Local EJB execution</a></li>
+          <li>Several new configuration parameters and improvements in
+          <a href="aspects.html">aspects</a></li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Form state is not reset when an exception occurs (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=55">Issue #
+          55</a>)</li>
+          <li><code>CommandResolver.isRemotable(Method)</code> is not always
+          invoked (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=74">Issue #
+          74</a>)</li>
+          <li><code>@DataProvider</code> does not work properly with combos (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=81">Issue #
+          81</a>)</li>
+          <li><code>@ClearOn</code> does not work properly with
+          <code>@Condition</code> (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=88">Issue #
+          88</a>)</li>
+          <li>Unit tests cannot be executed because task
+          <code>&lt;webdoclet&gt;</code> is undefined (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=91">Issue #
+          91</a>)</li>
+          <li>A <code>ClassCastException</code> may occur when
+          <code>@DataProvider</code> is used (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=93">Issue #
+          93</a>)</li>
+          <li><code>@EnabledWhen</code>/<code>@VisibleWhen</code> do not work
+          with not bound properties (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=110">Issue
+          # 110</a>)</li>
+          <li><code>@Action</code> and <code>@DataProvider</code> in inherited
+          methods are ignored (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=115">Issue
+          # 115</a>)</li>
+          <li>JDK 1.4.2 bug in
+          <code>PropertyDescriptor.getReadMethod()</code> affects
+          <code>FieldMetadata</code> instance configuration (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=116">Issue
+          # 116</a>)</li>
+          <li>Annotation parsing for <code>ThinletMetadata</code> ignores
+          inherited methods (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=122">Issue
+          # 122</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-beta1 and 0.2-beta2 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;target_milestone=0.2-beta2">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-beta2/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>Liaw Mike is now part of the official project team and works on
+        documentation.</p>
+      </subsection>
+    </section>
+    <section name="0.2-beta1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&amp;expandFolder=2342&amp;folderID=1756">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Many changes and features are part of this release. Some of the most
+        noteworthy are:</p>
+        <ul>
+          <li>Remote and transactional methods are now defined using
+          annotations, replacing the old marker interfaces + method naming
+          convention</li>
+          <li>@Criteria implementation</li>
+          <li>Local execution mode</li>
+          <li>Brand new redesigned UI model, much more expressive and powerful
+          </li>
+        </ul>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/0.2-beta1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;issue_type=DEFECT">here
+        </a></p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Rossetto</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Clebert Suconic</li>
+            <li>Daniel Amadei</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Handerson Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Marcos Caldeira</li>
+            <li>Pablo Madril</li>
+            <li>Paulo Pacheco</li>
+            <li>Pedro Barelli</li>
+            <li>Richard Nill</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+            <li>Vivian Fiales</li>
+          </ul>
+      </subsection>
+    </section>
+  </body>
+</document>

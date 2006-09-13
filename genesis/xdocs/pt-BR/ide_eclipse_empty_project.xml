@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+   <properties>
+     <title>Importando o projeto vazio para o Eclipse</title>
+     <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+   </properties>
+   <body>
+      <section name="Passo a Passo para Importar o empty project no Eclipse">
+        <p>
+        1. Clique com o botão direito no <b>Package Explorer</b> e escolha <b>New Project</b>
+        </p>              
+        <img src="../eclipse/01.JPG" border="0" alt="Eclipse - Passo 1"></img>
+
+        <p>
+        2. Escolha <b>Java Project</b> e clique em <b>Next</b>
+        </p>
+        <img src="../eclipse/02.JPG" border="0" alt="Eclipse - Passo 2"></img>
+
+        <p>
+        3. Dê um nome para seu projeto e escolha a opção <b>Create project from existing source</b>, 
+        e escolha o diretório onde o <code>empty-project</code> se encontra. Depois clique 
+        em <b>Next</b>
+        </p>
+        <img src="../eclipse/03.JPG" border="0" alt="Eclipse - Passo 3"></img>
+
+        <p>
+        4. Na tab <b>Source</b> escolha o diretório <code>modules/shared/src</code> e clique para adicionar
+        como diretório de fontes (ícone com sinal de +). O diretório <code>modules/client/src</code> é
+        automaticamente reconhecido pelo Eclipse como diretório de fontes. Coloque o <b>Default
+        output folder</b> para um algum diretório qualquer como por exemplo &lt;SEU_PROJETO&gt;/bin.
+        </p>
+        <img src="../eclipse/04.JPG" border="0" alt="Eclipse - Passo 4"></img>
+
+        <p>
+        5. Na tab <b>Libraries</b> clique em <b>Add External Jars</b>, e
+        escolha os jars do genesis e os jars que estão na pasta lib do genesis. 
+        </p>
+        <img src="../eclipse/05.JPG" border="0" alt="Eclipse - Passo 5"></img>
+
+        <p>
+        6. Não é necessário adicionar todos os jars que
+        você encontrar. Você pode escolher inicialmente os jars como mostrado
+        na imagem. Se precisar de outro, você pode adicioná-lo
+        mais tarde. Se for usar Java 5, adicione também a biblioteca
+        <code>genesis-annotation-jdk5-&lt;versão&gt;.jar</code></p>
+        <img src="../eclipse/06.JPG" border="0" alt="Eclipse - Passo 6"></img>
+
+        <p>
+        7. Agora você precisa fazer um cópia do <code>build.properties.sample</code>,
+        clicando com o botão direito nele, e escolhendo <b>Copy</b>. 
+        Depois clique com o botão direito e escolha <b>Paste</b>. Nesse
+        momento você vai dar o novo nome do arquivo, onde você deve colocar
+        <b>build.properties</b>
+        </p>
+        <img src="../eclipse/07.JPG" border="0" alt="Eclipse - Passo 7"></img>
+        <br />
+        <img src="../eclipse/08.JPG" border="0" alt="Eclipse - Passo 7"></img>
+
+        <p>
+        8. Clique em <b>build.properties</b> com o botão direito, e escolha 
+        <b>Open With - Properties File Editor</b>.
+        </p>
+        <img src="../eclipse/09.JPG" border="0" alt="Eclipse - Passo 8"></img>
+        
+        <p>        
+        9. Você abrirá um arquivo de propriedades, onde você deverá configurar
+        as propriedades conforme o seu ambiente:
+        <ul>
+        <li><b>jboss.home</b> - diretório do jboss</li>
+        </ul>
+        </p>
+        <img src="../eclipse/10.JPG" border="0" alt="Eclipse - Passo 9"></img>
+
+        <p>
+        10. Depois de configurar as propriedades, você já pode compilar o seu
+        projeto. Vá no menu <b>Window - Show View - Ant</b>
+        </p>
+        <img src="../eclipse/11.JPG" border="0" alt="Eclipse - Passo 10"></img>
+
+        <p>
+        11. Arraste o arquivo <b>build.xml</b> para a view do ant. Dê 2 cliques na
+        tarefa <code>all</code> que seu projeto será compilado.
+        </p>
+        <img src="../eclipse/12.JPG" border="0" alt="Eclipse - Passo 11"></img>
+
+      </section>
+   </body>
+</document>
+
+

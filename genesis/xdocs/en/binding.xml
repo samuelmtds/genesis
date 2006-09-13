@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Binding</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Binding">
+      <p>One of the most innovative genesis features is its <b>binding</b>. This
+      feature keeps the UI always in synch with a JavaBean, which is called a 
+      <b>form</b>. Three graphical toolkits are currently supported for this 
+      integration: Swing, SWT and Thinlet. Below there is a basic example of how 
+      to implement a login screen using the binding for each APIs . First, there 
+      is the form class definition:</p>
+<source>
+@Form
+public class LoginForm {
+   private String user;
+   private String password;
+
+   public String getUser() {
+      return user;
+   }
+
+   public void setUser(String user) {
+      this.user = user;
+   }
+
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   @Action
+   public void login() {
+      System.out.println(user);
+      System.out.println(password);
+   }
+
+   @Action
+   public void clear() {
+      setUser(null);
+      setPassword(null);
+   }
+}
+</source>
+      <p>Then, there is the code for showing a UI bound to this form using 
+      Swing:</p>
+<source>
+@ViewHandler
+public class LoginSwingView extends JDialog {
+   public LoginSwingView() {
+      super(new JFrame(), "Login");
+      initComponents();
+
+      SwingBinder binder = new SwingBinder(this, new LoginForm());
+      binder.bind();
+   }
+   
+   private void initComponents() {
+      getContentPane().setLayout(new GridLayout(2, 1));
+
+      JPanel dataPanel = new JPanel();
+      dataPanel.setLayout(new GridLayout(2, 2, 5, 5));
+
+      JLabel labelUser = new JLabel();
+      labelUser.setText("User");
+      dataPanel.add(labelUser);
+
+      JTextField user = new JTextField();
+      user.setName("user");
+      dataPanel.add(user);
+
+      JLabel labelPassword = new JLabel();
+      labelPassword.setText("Password");
+      dataPanel.add(labelPassword);
+
+      JPasswordField password = new JPasswordField();
+      password.setName("password");
+      dataPanel.add(password);
+
+      getContentPane().add(dataPanel);
+
+      JPanel buttonPanel = new JPanel();
+
+      JButton login = new JButton();
+      login.setText("Login");
+      login.setName("login");
+      buttonPanel.add(login);
+
+      JButton clear = new JButton();
+      clear.setText("Clear");
+      clear.setName("clear");
+      buttonPanel.add(clear);
+
+      getContentPane().add(buttonPanel);
+
+      pack();
+
+      setLocationRelativeTo(null);
+
+      addWindowListener(new WindowAdapter() {
+         public void windowClosing(WindowEvent e) {
+            System.exit(0);
+         }
+      });
+   }
+
+   public static void main(String args[]) {
+      SwingUtilities.invokeLater(new Runnable() {
+         public void run() {
+            new LoginSwingView().setVisible(true);
+         }
+      });
+   }
+}
+</source>
+      <p>Next, there is the code for showing a UI bound to this form using 
+      SWT:</p>
+<source>
+@ViewHandler
+public class LoginSWTView {
+   private Shell shell = null;
+   private Composite composite = null;
+   private Label labelUser = null;
+   private Text user = null;
+   private Label labelPassword = null;
+   private Text password = null;
+   private Composite compositeButtons = null;
+   private Button clear = null;
+   private Button login = null;
+
+   public LoginSWTView() {
+      createShell();
+      SWTBinder binder = new SWTBinder(shell, new LoginForm(), this);
+      binder.bind();
+   }
+
+   private void createShell() {
+      shell = new Shell();
+      shell.setText("Login");
+      createComposite();
+      createCompositeButtons();
+      shell.setLayout(new GridLayout());
+      
+      shell.pack();
+   }
+
+   private void createComposite() {
+      GridLayout gridLayout = new GridLayout();
+      gridLayout.numColumns = 2;
+
+      GridData gridData = new GridData();
+      gridData.horizontalAlignment = GridData.FILL;
+      gridData.verticalAlignment = GridData.FILL;
+
+      composite = new Composite(shell, SWT.NONE);
+      composite.setLayoutData(gridData);
+      composite.setLayout(gridLayout);
+
+      labelUser = new Label(composite, SWT.NONE);
+      labelUser.setText("User");
+
+      user = new Text(composite, SWT.BORDER);
+      user.setData("user");
+
+      labelPassword = new Label(composite, SWT.NONE);
+      labelPassword.setText("Password");
+
+      password = new Text(composite, SWT.BORDER | SWT.PASSWORD);
+      password.setData("password");
+   }
+
+   private void createCompositeButtons() {
+      RowLayout rowLayout = new RowLayout();
+      rowLayout.fill = true;
+      
+      GridData gridData = new GridData();
+      gridData.horizontalAlignment = GridData.END;
+      gridData.verticalAlignment = GridData.FILL;
+
+      compositeButtons = new Composite(shell, SWT.NONE);
+      compositeButtons.setLayoutData(gridData);
+      compositeButtons.setLayout(rowLayout);
+      
+      clear = new Button(compositeButtons, SWT.NONE);
+      clear.setText("Clear");
+      clear.setData("clear");
+
+      login = new Button(compositeButtons, SWT.NONE);
+      login.setText("Login");
+      login.setData("login");
+   }
+
+   public void display() throws Exception {
+      final Display display = Display.getDefault();
+      Rectangle bounds = display.getBounds();
+      shell.setLocation(bounds.x
+            + (bounds.width - shell.getBounds().width) / 2, bounds.y
+            + (bounds.height - shell.getBounds().height) / 2);
+
+      shell.open();
+      shell.forceActive();
+      
+      while (!shell.isDisposed()) {
+         if (!display.readAndDispatch()) {
+            display.sleep();
+         }
+      }
+
+      display.dispose();
+   }
+
+   public static void main(String[] args) throws Exception {
+      new LoginSWTView().display();
+   }
+}
+</source>
+      <p>Finally, both the xml file and the required code to present the same 
+      form using Thinlet are shown:</p>
+<source>
+<![CDATA[
+ 1. <panel gap="5" top="5" left="5" bottom="5" right="5" weightx="1"
+ 2.        weighty="1">
+ 3.    <panel gap="5" columns="2" weightx="1">
+ 4.       <label text="User" font="bold" />
+ 5.       <textfield name="user" columns="10" />
+ 6.       <label text="Password" font="bold" />
+ 7.       <passwordfield name="password" columns="10" />
+ 8.    </panel>
+ 9.    <panel gap="5" halign="center" weightx="1">
+10.       <button name="login" text="Login" />
+11.       <button name="reset" text="Reset" />
+12.    </panel>
+13. </panel>
+]]>
+</source>
+<source>
+public class LoginThinletView extends BaseDialogThinlet {
+   public LoginThinletView() throws Exception {
+      getDialog().setTitle("Login");
+
+      add(parse("login.xml"));
+      bind(new LoginForm());
+   }
+
+   public static void main(String[] args) throws Exception {
+      new LoginThinletView().display();
+   }
+}
+</source>
+      <p>By analyzing this example, it is possible to notice a few important 
+      things about how to define a form. A form class should be annotated with 
+      <code>@Form</code>, which tells genesis that this class must be handled 
+      in a special way so it provides all information required for binding.</p>
+      <p>Properties exposed by setters and getters - in this case, 
+      <code>user</code> and <code>password</code> - can be dynamically bound to
+      several widgets in the UI, such as textfields, passwordfields, labels and
+      others. For it to work, each component name must be equal to a property 
+      name. If you are using Swing, the <code>setName(String)</code> method of
+      each component should be used for that. If you are using SWT, the 
+      <code>setData(Object)</code> method of each component should be used for 
+      that. If Thinlet is being used, an easy way to configure a widget name is 
+      by defining its <code>name</code> property in the xml file as shown 
+      above.</p>
+      <p>Both the form property value and its display value will be in synch
+      when the component that represents the property loses focus. In the 
+      example above, this happens whenever the user presses the TAB key or 
+      clicks somewhere else when either the <code>user</code> or the 
+      <code>password</code> textboxes have focus.</p>
+      <p>Methods can also be bound to buttons in the GUI. In order to do that,
+      these methods must be annotated with <code>@Action</code> and there must
+      be buttons in the interface whose <code>name</code> property is equal to 
+      their names. Then, whenever a button is triggered, the matching method in 
+      the form is invoked. For the example above, when the Login button is 
+      clicked, the current value for fields User and Password is printed in the 
+      default output, while triggering the Reset button clears both fields' 
+      content in the form and in the screen.</p>
+      <p>How to perform the binding depends on the graphical API being used. For
+      all APIs, there is a class that is known as <b>view</b>, i.e., the class
+      that defines the UI and calls the methods that perform the binding. If
+      Swing or SWT are being used, the view must always be annotated with
+      <code>@ViewHandler</code>. As shown above, the Swing binding is performed
+      by using the helper class named <code>SwingBinder</code>, while the SWT 
+      binding is implemented by <code>SWTBinder</code>. This class makes it 
+      possible to customize the binding process, although the code snippet shown 
+      above covers most cases. For the Thinlet binding, genesis has two helper 
+      classes, <code>BaseThinlet</code> and <code>BaseDialogThinlet</code>, that 
+      are used to build standard windows and dialogs, respectively, and that have 
+      a <code>bind(Object)</code> method, used above.</p>
+      <p>The following sections will give more details about each binding.</p>
+    </section>
+  </body>
+</document>
+ 

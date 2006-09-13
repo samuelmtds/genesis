@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+
+<!-- the project element's name attribute will be used in the name of the module's jar file -->
+<project name="genesis" default="all">
+    <!-- ====================================================================== -->
+    <!-- NOTE: this file is intended to be imported from the modules' build.xml -->
+    <!-- CODING CONVENTION: NO TABS, INDENT 4 SPACES                            -->
+    <!-- ====================================================================== -->
+
+    <property name="xdoclet.root.dir" value="${basedir}/../.."/>
+    <property file="${xdoclet.root.dir}/build.properties"/>
+    <property file="${xdoclet.root.dir}/project.properties"/>
+
+    <!-- Module specific properties that can't be put in build.properties -->
+    <property name="module.dir"               value="${modules.dir}/${ant.project.name}"/>
+    <property name="module.src.dir"           value="${module.dir}/src"/>
+    <property name="module.resources.dir"     value="${module.dir}/resources"/>
+    <property name="module.build.dir"         value="${modules.build.dir}/${ant.project.name}"/>
+    <property name="module.classes.dir"       value="${module.build.dir}/classes"/>
+    <property name="module.jar.file"          value="${dist.lib.dir}/xdoclet-${ant.project.name}-module.jar"/>
+    <property name="xdoclet-xml.dir"          value="${module.classes.dir}/META-INF"/>
+    <property name="xtags.file"               value="${module.src.dir}/META-INF/xtags.xml"/>
+    <property name="module.tag.docs.file"     value="${docs.tags.dir}/${ant.project.name}-tags.xml"/>
+    <property name="module.tag.doclipse.file" value="${dist.dir}/doclipse/${ant.project.name}.xml"/>
+
+    <!-- =================================================================== -->
+    <!-- Executes all targets                                                -->
+    <!-- =================================================================== -->
+    <target name="all" depends="jar,docs,copy-src,doclipse" unless="module.jar.uptodate"/>
+
+    <!-- =================================================================== -->
+    <!-- Initialises the build.                                              -->
+    <!-- =================================================================== -->
+    <target name="init">
+<echo>
++----------------------------------------------------------------------
+|
+| B U I L D I N G  X D O C L E T  M O D U L E  '${ant.project.name}'
+|
++----------------------------------------------------------------------
+</echo>
+
+        <xmlcatalog id="xtags">
+            <dtd
+                publicId="-//XDoclet Team//DTD XDoclet Tags 1.1//EN"
+                location="${xtags.dtd}"
+            />
+        </xmlcatalog>
+        
+        <mkdir dir="${dist.lib.dir}" />
+
+        <!-- Define classpath required for compiling modules -->
+        <path id="module.compile.class.path">
+
+            <fileset dir="${dist.lib.dir}">
+                <!-- include previously built jars -->
+                <include name="*.jar"/>
+            </fileset>
+
+            <!-- Include core classes -->
+            <fileset dir="${xdoclet.home}/lib">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+
+        <mkdir dir="${module.classes.dir}"/>
+		<mkdir dir="${module.resources.dir}"/>
+
+        <path id="module.xml.class.path">
+            <fileset dir="${dist.lib.dir}">
+                <!-- include previously built jars -->
+                <include name="*.jar"/>
+            </fileset>
+            <!-- include classes from this module -->
+            <pathelement location="${module.classes.dir}"/>
+            <!-- include resources from this module -->
+            <pathelement location="${module.src.dir}"/>
+
+            <!--
+            Include classes from the core. The core is also a module,
+            since it contains an xdoclet.xml and core taghandlers.
+            This is required only because of the externalizer, which
+            is invoked by the core build before the xdoclet.jar file
+            is assembled.
+            -->
+            <!-- Include core classes -->
+            <fileset dir="${xdoclet.home}/lib">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+
+        <!-- Checks for xtags.xml -->
+        <available file="${module.src.dir}/META-INF/xtags.xml" property="module.xtags.exists"/>
+
+        <condition property="file.url.prefix" value="file://">
+            <os family="unix" />
+        </condition>
+        <condition property="file.url.prefix" value="file:/">
+            <os family="windows" />
+        </condition>
+
+        <!-- Checks if the module jar is uptodate -->
+        <uptodate property="module.jar.uptodate" targetfile="${module.jar.file}">
+            <srcfiles dir="${module.dir}"/>
+        </uptodate>
+
+        <!-- Checks if the module's tag docs are uptodate -->
+        <uptodate property="module.tag.docs.uptodate" targetfile="${module.tag.docs.file}" srcfile="${xtags.file}"/>
+
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Generates an xdoclet.xml deployment descriptor for xdoclet modules  -->
+    <!-- =================================================================== -->
+    <target name="xdoclet-xml"
+        description="Generates an xdoclet.xml deployment descriptor for xdoclet modules"
+        unless="module.jar.uptodate"
+        depends="compile"
+    >
+        <!--
+        Define classpath required for generating xml descriptors
+        We're including our own classes on the class path because
+        the module might contain a subtask which depends on a doclettask
+        in the same module. all classes have to be on the classpath for
+        the xdoclet.xml generation to succeed. The classpath has to be defined
+        *after* compilation because Ant will strip away nonexistant
+        paths from the classpath. (The class directory doesn't exist before
+        the classes are compiled).
+        -->
+        <!-- Define the xdoclet task -->
+        <taskdef name="xdoclet" classname="xdoclet.DocletTask"
+            classpathref="module.xml.class.path"
+        />
+
+        <mkdir dir="${xdoclet-xml.dir}"/>
+        <xdoclet destdir="${xdoclet-xml.dir}">
+
+            <fileset dir="${module.src.dir}">
+                <include name="**/*Handler.java" />
+                <include name="**/*SubTask.java" />
+            </fileset>
+
+            <template
+                templateFile="${xdoclet-xml.template.file}"
+                destinationFile="xdoclet.xml"
+            />
+        </xdoclet>
+    </target>
+
+    <!-- =============================== -->
+    <!-- Validate formal tag descriptor. -->
+    <!-- =============================== -->
+    <target name="validate-xtags" depends="init" if="module.xtags.exists">
+        <xmlvalidate file="${xtags.file}" warn="true">
+            <xmlcatalog refid="xtags"/>
+        </xmlvalidate>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Runs externalizer, it generates Messages.properties files for each  -->
+    <!-- package.                                                            -->
+    <!-- =================================================================== -->
+    <target name="externalizer" depends="init"
+        description="Runs externalizer, it generates Messages.properties files for each package."
+        unless="module.jar.uptodate"
+    >
+        <!-- Define the xdoclet task -->
+        <taskdef name="externalizerdoclet" classname="xdoclet.DocletTask"
+            classpathref="module.xml.class.path"
+        />
+
+        <echo message="Copying resources..."/>
+        <!-- copy to l10n build dir, for building the locale-specific messages jar -->
+        <!-- don't copy to classes dir; if the localised messages aren't in the main jar(s) it's easier to switch them off if required -->
+        <copy todir="${l10n.build.dir}">
+            <fileset dir="${module.resources.dir}" includes="**/*.properties"/>
+        </copy>
+
+        <echo message="Generating message bundle files for module..."/>
+        <!-- generate into classes dir, the base language messages will be built into the jar -->
+        <externalizerdoclet destdir="${module.classes.dir}">
+            <fileset dir="${module.src.dir}">
+                <include name="**/*.java" />
+            </fileset>
+            <externalizer tagName="msg.bundle" keyParamName="id" valueParamName="msg"/>
+        </externalizerdoclet>
+        <!-- also generate into l10n build dir, to make it easier to build the translators' base language jar -->
+        <externalizerdoclet destdir="${l10n.build.dir}">
+            <fileset dir="${module.src.dir}">
+                <include name="**/*.java" />
+            </fileset>
+            <externalizer tagName="msg.bundle" keyParamName="id" valueParamName="msg"/>
+        </externalizerdoclet>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compiles the source code                                            -->
+    <!-- =================================================================== -->
+    <target name="compile" unless="module.jar.uptodate">
+        <mkdir dir="${module.classes.dir}"/>
+        <javac
+            destdir="${module.classes.dir}"
+            classpathref="module.compile.class.path"
+            debug="${compile.debug}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}"
+        >
+            <src path="${module.src.dir}"/>
+        </javac>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Creates the module jar                                              -->
+    <!-- =================================================================== -->
+    <target name="jar" depends="validate-xtags,compile,xdoclet-xml,externalizer" unless="module.jar.uptodate">
+        <jar jarfile="${module.jar.file}">
+            <fileset dir="${module.classes.dir}">
+                <include name="**/*.class"/>
+                <include name="META-INF/xdoclet.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+            <fileset dir="${module.src.dir}">
+                <!-- just exclude java. modules like to store all the funny things inside... -->
+                <exclude name="**/*.java"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Generate tag documentation.                                         -->
+    <!-- =================================================================== -->
+    <target name="docs" depends="init"
+            description="Generate tag documentation"
+            if="module.xtags.exists"
+            unless="module.tag.docs.uptodate">
+
+        <mkdir dir="${docs.tags.dir}"/>
+        <path id="doc.class.path">
+            <fileset dir="${dist.lib.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+        </path>
+
+        <xslt
+            in="${xtags.file}"
+            out="${module.tag.docs.file}"
+            extension=".xml"
+            style="${docs.stylesheets.dir}/xtags2xdoc.xslt">
+                <xmlcatalog refid="xtags"/>
+        </xslt>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Copies the source code. Required for building one xdoclet.xml       -->
+    <!-- as well as the module toc.xml                                       -->
+    <!-- =================================================================== -->
+    <target name="copy-src" depends="init" unless="module.jar.uptodate">
+        <mkdir dir="${modules.all-src.dir}"/>
+        <copy todir="${modules.all-src.dir}">
+            <fileset dir="${module.src.dir}">
+                <include name="**/*Handler.java" />
+                <include name="**/*Task.java" />
+                <include name="**/*.properties" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Clean                                                               -->
+    <!-- =================================================================== -->
+    <target name="clean">
+        <delete dir="${module.build.dir}"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Generate Doclipse files                                             -->
+    <!-- =================================================================== -->
+    <target name="doclipse" depends="init">
+        <xslt
+            in="${xtags.file}"
+            out="${module.tag.doclipse.file}"
+            extension=".xml"
+            style="${docs.stylesheets.dir}/doclipse.xslt">
+			<xmlcatalog refid="xtags"/>
+        </xslt>
+    </target>
+
+</project>

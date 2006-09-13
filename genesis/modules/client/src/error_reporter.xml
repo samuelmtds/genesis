@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dialog PUBLIC '-//Thinlets 1.0//EN' 'https://thinlet.dev.java.net/thinlet.dtd'>
+<panel gap="10" top="10" left="10" bottom="10" right="10">
+    <panel gap="10" top="10" left="10" bottom="10" right="10"
+           weightx="1" weighty="1" columns="1">
+        <label name="message" weightx="1" />
+        <label text="i18n.ErrorReporterDialog.stackTrace" weightx="1" font="bold" />
+        <textarea name="stackTrace" editable="false" rows="10" columns="60" 
+                  font="monospaced" />
+        <panel gap="10" weightx="1" halign="right">
+            <button text="i18n.ErrorReporterDialog.ok" action="close()" weightx="0" type="default" 
+                    mnemonic="0" />
+        </panel>
+    </panel>
+</panel>

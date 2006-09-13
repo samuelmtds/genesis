@@ -1,0 +1,29 @@
+<project>
+    <extend>../../project.xml</extend>
+    <artifactId>genesis-annotation</artifactId>
+    <name>Genesis Annotation Technology</name>
+    <repository>
+      <connection>
+         scm:cvs:pserver:${maven.guest.username}@cvs.dev.java.net:/cvs:genesis</connection>
+      <developerConnection>
+         scm:cvs:pserver:${maven.username}@cvs.dev.java.net:/cvs:genesis</developerConnection>
+      <url>https://genesis.dev.java.net/source/browse/genesis/genesis/modules/annotation/</url>
+    </repository>
+    <dependencies>
+    </dependencies>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <unitTest/>
+        <resources>
+			<resource>
+    	    	<directory>${pom.build.sourceDirectory}</directory>
+        		<includes>
+		          <include>**/*.properties</include>
+        		</includes>
+			</resource>
+    	</resources>
+    </build>
+    <reports>
+    </reports>
+    <properties/>
+</project>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Tratando erros</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Tratando erros">
+      <p>O tratamento de erros no genesis é centralizado, de modo que todas as 
+      exceções geradas são repassadas para uma única classe específica da API
+      gráfica.</p>
+      <p>O genesis define duas interfaces para tratamento de erros:</p>
+      <ul>
+        <li><b><code>net.java.dev.genesis.ui.binding.ExceptionHandler</code></b>: 
+        Interface mais genérica que define apenas um método, 
+        <code>handleException(Throwable)</code>, que é chamado para tratar as
+        exceções lançadas. É possível implementar essa interface para definir 
+        uma lógica de tratamento de erros customizada pela sua aplicação.</li>
+        <li><b><code>net.java.dev.genesis.ui.binding.DispatcherExceptionHandler</code></b>:
+        Estende a interface anterior (<code>ExceptionHandler</code>) e define 
+        um procedimento padrão para tratamento de erros com métodos mais 
+        específicos para tratamento de erros de validação, erros conhecidos
+        e não conhecidos. O procedimento padrão para tratamento de erros é 
+        explicado a seguir.</li>
+      </ul>
+      <p>O procedimento padrão para tratamento de erros utilizado pelo genesis é:</p>
+      <ul>
+        <li>Se a exceção for uma <code>UIException</code>, é exibida uma janela 
+        de diálogo de erro com o título e descrição contidos na instância.</li>
+        <li>Se a exceção for uma <code>ValidationException</code>, é exibida uma
+        janela de alerta tendo como conteúdo um erro por linha.</li>
+        <li>Caso contrário, verifica-se foi definida pela aplicação tratamento 
+        específico para este tipo de exceção; se não foi, verifica-se a 
+        exceção retornada por <code>getCause()</code> até que este método 
+        retorne <code>null</code>; por fim é exibida uma mensagem com o stack
+        trace da exceção.</li>
+      </ul>
+      <p>A classe abstrata <code>net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler</code>
+      implementa tal procedimento da seguinte forma:</p>
+      <ul>
+        <li>Se o erro for uma <code>ValidationException</code>, este é 
+        redirecionado para 
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>Quando o erro é uma <code>UIException</code>, este é repassado para
+        <code>handleUIException(UIException)</code>.</li>
+        <li>Se todas as checagens anteriores falharem, o erro é passado para
+        <code>handleCustomException(Throwable)</code> que retorna um
+        <code>boolean</code> indicando se o erro foi tratado ou não.</li>
+        <li>Quando o erro não é tratado, o método
+        <code>handleUnknownException(Throwable)</code> é invocado, terminando a
+        cadeia de tratamento de erros.</li>
+      </ul>
+      <p>Esta classe define ainda dois métodos abstratos:</p>
+      <ul>
+        <li><b><code>showWarningMessageDialog(title,message)</code></b>:
+          Sua implementação deve mostrar ao usuário uma janela de alerta com
+          o título e a mensagem passadas como parâmetro.</li>
+        <li><b><code>showErrorMessageDialog(title,message,throwable)</code></b>:
+          Sua implementação deve mostrar ao usuário um janela de erro com
+          o título, a mensagem e quando necessário, informações da exceção.
+        </li>
+      </ul>
+      <p>Para a maioria dos usuários, basta saber como cada erro será tratado
+      pelo framework. No entanto, qualquer um dos métodos descritos acima pode
+      ser sobrescrito se for necessário customizar o tratamento de erros. 
+      Geralmente é necessário sobrescrever apenas o método 
+      <code>handleCustomException(Throwable)</code> para definir como cada erro 
+      de sua aplicação é tratado.</p>
+      <p>Cada API gráfica contém uma implementacão de 
+      <code>AbstractDispatcherExceptionHandler</code>, como mostrado abaixo:</p>
+      <ul>
+        <li><b><code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code></b>: 
+        Utiliza <code>JOptionPane</code> para mostrar a mensagem de alerta/erro 
+        ao usuário.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.SWTExceptionHandler</code></b>: 
+        Utiliza <code>MessageBox</code> para mostrar a mensagem de alerta/erro 
+        ao usuário.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.ThinletExceptionHandler</code></b>: 
+        Utiliza <code>MessageDialog</code> e <code>ErrorReporterDialog</code>
+        para mostrar a mensagem de alerta/erro ao usuário.</li>
+      </ul>
+      <p>Utilize o método <code>setExceptionHandler</code> definido na classe
+      <code>AbstractBinder</code> (para Swing/SWT) para utilizar sua própria 
+      implementação de <code>ExceptionHandler</code>, ou sobrescreva o método 
+      <code>createExceptionHandler</code> de modo a retornar uma nova instância 
+      de sua própria implementação de <code>ExceptionHandler</code>.</p>
+    </section>
+  </body>
+</document>

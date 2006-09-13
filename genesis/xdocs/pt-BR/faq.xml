@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>FAQ</title>
+    <author email="lmike@dev.java.net">Liaw Mike Djoesman</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="FAQ">
+      <p>Perguntas freqüentes:
+      <ul>
+        <li><a href="#Posso utilizar o genesis para criar uma aplicação web?">
+        Posso utilizar o genesis para criar uma aplicação web?</a></li>
+        <li><a href="#Como o genesis se compara ao Spring?">
+        Como o genesis se compara ao Spring?</a></li>
+        <li><a href="#Como utilizo SWT em diferentes Plataformas?">
+        Como utilizo SWT em diferentes Plataformas?</a></li>
+        <li><a href="#Como posso usar genesis em aplicações J2ME?">
+        Como posso usar genesis em aplicações J2ME?</a></li>
+        <li><a href="#Por que estou obtendo uma NullPointerException ao chamar
+        getSession()?">Por que estou obtendo uma
+        <code>NullPointerException</code> ao chamar <code>getSession()</code>?
+        </a></li>
+        <li><a href="#Como obtenho suporte técnico?">Como obtenho suporte
+        técnico?</a></li>
+      </ul>
+      </p>
+      <subsection name="Posso utilizar o genesis para criar uma aplicação web?">
+        <p>A atual versão do genesis já pode ser utilizada com qualquer
+        framework web, tais como Struts ou WebWork.</p>
+        <p>Para criar uma aplicação web basta construir um projeto que
+        utilize os componentes de negócio do genesis. Existem planos para que o
+        genesis possua seu próprio framework web, mas isto ainda não é verdade
+        no momento.</p>
+      </subsection>
+      <subsection name="Como o genesis se compara ao Spring?">
+        <p>Os projetos tem dois objetivos bem diferentes. Enquanto o genesis
+        foca em resolver o problema de tornar a lógica de interface mais fácil
+        de desenvolver sem que se perca a flexibilidade e a testabilidade, além
+        de facilitar o desenvolvimento do código de negócio, o Spring foca em
+        tornar o desenvolvimento J2EE mais simples e promover o uso de certas
+        práticas, como a programação voltada a interfaces. Embora ambos
+        frameworks possuam suporte ao Hibernate, por exemplo, a injeção de
+        dependências no Spring é também genérica, enquanto o genesis possui um
+        nível genérico mas não tão abrangente. No entanto, certas
+        funcionalidades do genesis não são encontradas no Spring, como o
+        <a href=
+        "paging_and_dynamic_search.html#Trabalhando_com_pesquisas_dinâmicas">suporte
+        a pesquisas dinâmicas</a>.</p>
+      </subsection>
+      <subsection name="Como utilizo SWT em diferentes Plataformas?">
+        <p>Leia as instruções leia as instruções 
+          <a href="configuring_swt.html">aqui</a></p>
+      </subsection>
+      <subsection name="Como posso usar genesis em aplicações J2ME?">
+        <p>Recomenda-se utilizar um subconjunto das funcionalidades providas no
+        pacote de ui, como o uso direto de
+        <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>, por
+        exemplo. Funcionalidade avançadas, como o binding, provavelmente não
+        funcionarão nestes ambientes.</p>
+        <p>O suporte direto da maioria das funcionalidades de UI em J2ME faz
+        parte dos planos do time do genesis, mas ainda não há datas definidas
+        para tal.</p>
+      </subsection>
+      <subsection name="Por que estou obtendo uma NullPointerException ao chamar
+        getSession()?">
+        <p>Há várias situações em que ocorre este problema. Basicamente
+        são elas:
+        <ul>
+          <li>A classe que depende da injeção da <code>Session</code> está no
+          ponto errado da árvore de arquivos fontes (no módulo client, por
+          exemplo). Deste modo, o processo de weaving não a afeta como
+          desejado e a sessão do Hibernate não é injetada.</li>
+          <li>Houve um encadeamento de chamadas entre os objetos de
+          negócio. Neste caso, a <code>Session</code> do Hibernate não
+          foi injetada nas chamadas subsequentes. Para resolver isso, basta
+          utilizar o método <code>setSession(Session)</code> do objeto de
+          negócio encadeado passando como parâmetro a própria
+          <code>Session</code> do objeto chamador.</li>
+          <li>O processo de build pode não estar funcionando corretamente,
+          caso esta seja a primeira vez que se tenta compilar o projeto.</li>
+          <li>O método não foi corretamente anotado com <code>@Remotable</code>, 
+          <code>@Transactional</code> ou <code>@Criteria</code>.</li>
+        </ul>
+        </p>
+      </subsection>
+      <subsection name="Como obtenho suporte técnico?">
+        <p>Suporte básico e gratuito pode ser obtido através das <a
+        href="../mail-lists.html">listas de discussão</a> do projeto.</p>
+        <p>Caso seja necessário suporte para definição da arquitetura,
+        melhorias de performance, treinamento no genesis ou nas tecnologias que
+        este utiliza, a Summa Technologies pode ser contatada conforme
+        informações abaixo:</p>
+        <ul>
+          <li>Summa Technologies do Brasil:
+            <ul>
+              <li>Endereço: Rua Funchal, 411 - 11o. andar, CJ. 112 - São
+              Paulo - 04551-060</li>
+              <li>Telefone: +55.11.3846.1622</li>
+              <li>Fax: +55.11.3845.3514</li>
+              <li><a href="mailto:brazil@summa-tech.com">brazil@summa-tech.com</a></li>
+            </ul>
+          </li>
+          <li>Summa Technologies:
+            <ul>
+              <li>Endereço: US Steel Tower, 53rd Floor - 600 Grant Street -
+              Pittsburgh, PA 15219</li>
+              <li>Telefone: +01.412.258.3300</li>
+              <li>Fax: +01.412.258.3299</li>
+              <li><a href="mailto:info@summa-tech.com">info@summa-tech.com</a></li>
+            </ul>
+          </li>
+        </ul>
+      </subsection>
+    </section>
+  </body>
+</document>

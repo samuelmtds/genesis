@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Populando combos, listas e tabelas</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Populando combos, listas e tabelas">
+      <p>As opções disponíveis em um combo box podem variar de acordo com os
+      dados preenchidos pelo usuário ou outras regras de negócio. O conteúdo de
+      uma tabela pode precisar ser preenchido dinamicamente em resposta a um
+      critério de filtro especificado pelo usuário, por exemplo. Para lidar com
+      tais situações, existe uma anotação chamada <code>@DataProvider</code>,
+      cuja sintaxe é:</p>
+<source>
+@DataProvider(objectField="nomeCampoObjeto",
+              indexField="nomeCampoIndice",
+              widgetName="nomeCampo",
+              callOnInit=valorBooleano
+              resetSelection=valorBooleano)
+</source>
+      <p>Esta anotação deve ser colocada em métodos que retornam uma
+      <code>java.util.List</code> ou uma array de <code>Object</code>s. O 
+      retorno dos métodos será utilizado para popular a combobox, lista ou 
+      tabela.</p>
+      <p><code>objectField</code> deve receber o nome da propriedade em seu 
+      form, se houver, que guardará a instância (ou instâncias, em caso de 
+      múltipla seleção) selecionada no widget. Deve ser do mesmo tipo ou uma 
+      superclasse do tipo retornado no método anotado, uma array do tipo ou uma
+      <code>Collection</code>.</p>
+      <p><code>indexField</code> é o nome da propriedade em
+      seu form que guardará os índices dos elementos selecionados no widget.
+      Deve ser um <code>int</code> ou um <code>Integer</code>, uma array de um 
+      desses tipos ou uma <code>Collection</code>.</p>
+      <p><code>widgetName</code>, se utilizado, deve receber o nome do 
+      componente gráfico - lista, combo ou tabela - que receberá os valores 
+      retornados pelo método anotado. No caso do Thinlet, o 
+      <code>widgetName</code> deve ser o <code>name</code> do widget definido no 
+      xml da view. No caso do Swing, o <code>widgetName</code> deve ser igual ao 
+      valor retornado por <code>getName()</code> para o <code>Component</code>
+      desejado. No caso do SWT, o <code>widgetName</code> deve ser igual ao 
+      valor retornado por <code>getData()</code>
+      para o <code>Widget</code> desejado.</p>
+      <p><b>Pelo menos uma dessas três propriedades deve ser informada</b>.</p>
+      <p>O <code>name</code> do widget que será populado pelo 
+      <code>@DataProvider</code> é igual ao valor da primeira propriedade que
+      estiver definida, na seguinte ordem de prioridade: 
+      <code>widgetName</code>, <code>objectField</code>, 
+      <code>indexField</code>.</p>
+      <p>Como mencionado acima, <code>objectField</code> e
+      <code>indexField</code> recebem o nome de uma propriedade cujo tipo pode
+      ser um bean, uma array ou uma <code>Collection</code>. Vejamos exatamente
+      quando cada tipo poderá ser utilizado de acordo com o modo de seleção do
+      widget:</p>
+      <subsection name="Seleção Única">
+        <table>
+          <tr>
+            <th>Tipo de Retorno do Método anotado</th>
+            <th>objectField</th>
+            <th>indexField</th>
+          </tr>
+          <tr>
+            <td><code>java.util.List</code> ou array de objetos</td>
+            <td>Qualquer classe (não pode ser tipo primitivo)</td>
+            <td><code>Integer</code> ou tipo primitivo <code>int</code></td>
+          </tr>
+        </table>
+      </subsection>
+      <subsection name="Seleção Múltipla">
+        <table>
+          <tr>
+            <th>Tipo de Retorno do Método anotado</th>
+            <th>objectField</th>
+            <th>indexField</th>
+          </tr>
+          <tr>
+            <td><code>java.util.List</code> ou array de objetos</td>
+            <td>Array de qualquer classe (não pode ser de tipo primitivo) ou
+            <code>Collection</code> de qualquer classe</td>
+            <td>Array de <code>Integer</code>s (ou de tipo primitivo
+            <code>int</code>) ou <code>Collection</code> de
+            <code>Integer</code>s</td>
+          </tr>
+        </table>
+      </subsection>
+      <p>Abaixo teremos um exemplo do uso da anotação em vários cenários 
+      possíveis:</p>
+<source>
+public class Estado {
+   private String sigla;
+   private String descricao;
+
+   // getters e setters para as propriedades
+}
+</source>
+<source>
+@Form
+public class ExemploDataProviderForm {
+   private Estado estado;
+
+   public Estado getEstado() {
+      return estado;
+   }
+
+   public void setEstado(Estado estado) {
+      this.estado = estado;
+   }
+
+   @DataProvider(objectField="estado")
+   public List populaEstados() {
+      // retorna uma List contendo instâncias de Estado
+   }
+
+   // ...
+}
+</source>
+      <p>Considerando o código fonte do form mostrado acima, criaremos 
+      interfaces gráficas com as diferentes APIs e componentes gráficos:</p>
+      <p><b>Thinlet</b>
+        <ul>
+          <li><a href="#ThinletComboBox">ComboBox</a></li>
+          <li><a href="#ThinletList">List</a></li>
+          <li><a href="#ThinletTable">Table</a></li>
+        </ul>
+      </p>
+      <p><b>Swing</b>
+        <ul>
+          <li><a href="#SwingComboBox">ComboBox</a></li>
+          <li><a href="#SwingList">List</a></li>
+          <li><a href="#SwingTable">Table</a></li>
+        </ul>
+      </p>
+      <p><b>SWT</b>
+        <ul>
+          <li><a href="#SWTComboBox">ComboBox</a></li>
+          <li><a href="#SWTList">List</a></li>
+          <li><a href="#SWTTable">Table</a></li>
+        </ul>
+      </p>
+      <subsection name="Thinlet">
+        <h5><a name="ThinletComboBox">ComboBox</a></h5>
+<source>
+<![CDATA[
+<panel gap="5">
+   <label text="Estado:" />
+   <combobox name="estado" property="key=sigla;value=descricao" />
+</panel>
+]]>
+</source>
+          <p>Acima vemos o xml da tela que exibe um <code>label</code> e um 
+          <code>combobox</code> que conterá os estados em tempo de execução. A 
+          propriedade <code>name</code> possui o mesmo valor que o atributo
+          <code>objectField</code> da anotação <code>@DataProvider</code>. 
+          Pode-se notar alguns valores configurados no atributo 
+          <code>property</code>. Os seguintes valores são utilizados no caso de 
+          comboboxes:</p>
+          <ul>
+            <li><b>key</b>: nome da propriedade, cujo valor é único por 
+            instância, do bean que será utilizado para popular o componente. É 
+            requerida, com exceção das enums (<code>java.lang.Enum</code> ou 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
+            enums, se essa propriedade não for definida, o valor do 
+            <code>toString()</code> da enum é utilizado.</li>
+            <li><b>value</b>: nome da propriedade utilizada para exibir o bean. 
+            É requerida quando o bean não for uma enum (
+            <code>java.lang.Enum</code> ou 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>blank</b>: inclui uma linha em branco como primeira opção da
+            combobox. Não é requerida e tem como valor padrão 
+            <code>false</code>.</li>
+            <li><b>blankLabel</b>: define o texto a ser exibido na linha em 
+            branco. Não é requerida, tem como valor padrão uma 
+            <code>String</code> vazia e só é usada quando 
+            <code>blank=true</code>.</li>
+          </ul>
+          <p>Conforme indicado pelo valor do atributo <code>objectField</code>, 
+          a propriedade de nome <code>estado</code> do form conterá a instância 
+          de <code>Estado</code> correspondente à opção da combo escolhida pelo 
+          usuário.</p>
+        <h5><a name="ThinletList">List</a></h5>
+<source>
+<![CDATA[
+<panel gap="5">
+   <label text="Estado:" />
+   <list name="estado" property="key=sigla;value=descricao" />
+</panel>
+]]>
+</source>
+          <p>No caso de uma <code>list</code>, os requerimentos são similares 
+          aos do <a href="#ThinletComboBox">combobox</a>.</p>
+        <h5><a name="ThinletTable">Table</a></h5>
+<source>
+<![CDATA[
+<panel gap="5">
+   <table name="estado">
+      <header>
+         <column name="sigla" text="Sigla" />
+         <column name="descricao" text="Descrição" />
+      </header>
+   </table>
+</panel>
+]]>
+</source>
+          <p>Os requerimentos para popular uma table são um pouco 
+          diferentes.</p>
+          <p>Com base no exemplo acima, podemos observar que o valor de 
+          <code>name</code> na tabela precisa ser igual ao valor do atributo
+          <code>objectField</code>, exceto quando for especificado o atributo
+          <code>widgetName</code> na anotação, e nesse caso o valor de 
+          <code>widgetName</code> deve ser o nome do componente. Cada linha da 
+          tabela representará uma instância e cada coluna será preenchida com a 
+          propriedade do bean cujo nome é o valor de <code>name</code> em cada 
+          uma delas.</p>
+      </subsection>
+      <subsection name="Swing">
+        <h5><a name="SwingComboBox">ComboBox</a></h5>
+<source>
+<![CDATA[
+private JComboBox estadoComboBox;
+  ...
+  private initComponents() {
+     ...
+     estadoComboBox = new JComboBox();
+     estadoComboBox.setName("estado");
+     estadoComboBox.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
+     estadoComboBox.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
+     estadoComboBox.setRenderer(new KeyValueListCellRenderer(estadoComboBox));
+  }
+]]>
+</source>
+          <p>Acima vemos o código da tela que exibe um <code>combobox</code>
+          que conterá os estados em tempo de execução. O nome do componente
+          (<code>estadoComboBox.setName("estado")</code>) possui o mesmo valor
+          que o atributo <code>objectField</code> da anotação 
+          <code>@DataProvider</code>. Para que os valores sejam mostrados 
+          corretamente ao usuário ao popular o <code>JComboBox</code>, é 
+          necessário configurar algumas propriedades do componente e utilizar a 
+          classe <code>net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer</code>
+          como renderer do componente. Esta classe verifica os valores 
+          configurados como propriedades do componente para determinar qual 
+          propriedade do bean deve ser visível para o usuário. Os valores das 
+          propriedades são configurados através do método 
+          <code>putClientProperty(Object chave, Object valor)</code> do 
+          componente. As seguintes propriedades são utilizadas no caso de 
+          comboboxes:</p>
+          <ul>
+            <li><b>SwingBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
+            é único por instância, do bean que será utilizado para popular o 
+            componente. É requerida, com exceção das enums (
+            <code>java.lang.Enum</code> ou 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
+            enums, se essa propriedade não for definida, o valor do 
+            <code>toString()</code> da enum é utilizado.</li>
+            <li><b>SwingBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
+            para exibir o bean. É requerida quando o bean não for uma enum (
+            <code>java.lang.Enum</code> ou 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>SwingBinder.BLANK_PROPERTY</b>: inclui uma linha em branco 
+            como primeira opção da combobox. Não é requerida e tem como valor 
+            padrão <code>false</code>.</li>
+            <li><b>SwingBinder.BLANK_LABEL_PROPERTY</b>: define o texto a ser 
+            exibido na linha em branco. Não é requerida, tem como valor padrão 
+            uma <code>String</code> vazia e só é usada quando 
+            <code>blank=true</code>.</li>
+          </ul>
+          <p>Conforme indicado pelo valor do atributo <code>objectField</code>, 
+          a propriedade de nome <code>estado</code> do form conterá a instância 
+          de <code>Estado</code> correspondente à opção da combo escolhida pelo 
+          usuário.</p>
+          <p>Para facilitar a construção do widget, pode-se utilizar métodos 
+          estáticos da classe 
+          <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code>. O 
+          código para criação e configuração do <code>JComboBox</code> 
+          seria:</p>
+<source>
+<![CDATA[
+private SwingBinder binder;
+private JComboBox estadoComboBox;
+  ...
+  private initComponents() {
+     ...
+     estadoComboBox = SwingFactory.createComboBox(binder, "estado", "sigla", "descricao");
+  }
+]]>
+</source>
+          <p>No código acima, construímos um <code>JComboBox</code> passando 
+          como parâmetros o binder, o nome do componente, o nome da propriedade 
+          chave (<code>SwingBinder.KEY_PROPERTY</code>) e o nome da propriedade 
+          value (<code>SwingBinder.VALUE_PROPERTY</code>).</p>
+        <h5><a name="SwingList">List</a></h5>
+<source>
+<![CDATA[
+private JList estadoList;
+  ...
+  private initComponents() {
+     ...
+     estadoList = new JList();
+     estadoList.setName("estado");
+     estadoList.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
+     estadoList.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
+     estadoList.setRenderer(new KeyValueListCellRenderer(estadoList));
+  }
+]]>
+</source>
+          <p>No caso de uma <code>JList</code>, os requerimentos são similares 
+          aos do <a href="#SwingComboBox">JComboBox</a>.</p>
+        <h5><a name="SwingTable">Table</a></h5>
+<source>
+<![CDATA[
+private JTable estadoTable;
+  ...
+  private initComponents() {
+     ...
+
+     TableColumnModel columnModel = new DefaultTableColumnModel();
+     TableModel model = new DefaultTableModel();
+
+     TableColumn siglaColumn = new TableColumn(0);
+     siglaColumn.setIdentifier("sigla");
+     siglaColumn.setHeaderValue("Sigla");
+     columnModel.addColumn(siglaColumn);
+
+     TableColumn descricaoColumn = new TableColumn(1);
+     descricaoColumn.setIdentifier("descricao");
+     descricaoColumn.setHeaderValue("Descrição");
+     columnModel.addColumn(descricaoColumn);
+
+     estadoTable = new JTable(model, columnModel);
+     estadoTable.setName("estado");
+  }
+]]>
+</source>
+          <p>Os requerimentos para popular uma table são um pouco 
+          diferentes.</p>
+          <p>Com base no exemplo acima, podemos observar que o valor do nome
+          do componente (<code>estadoTable.setName("estado")</code>) na tabela 
+          precisa ser igual ao valor do atributo <code>objectField</code>, 
+          exceto quando for especificado o atributo <code>widgetName</code> na 
+          anotação, e nesse caso o valor de <code>widgetName</code> deve ser o 
+          nome do componente. Cada linha da tabela representará uma instância e 
+          cada coluna será preenchida com a propriedade do bean cujo nome é o 
+          valor do <code>identifier</code> (ex: 
+          <code>descricaoColumn.setIdentifier("descricao")</code>) de cada uma 
+          delas. É possível definir o identifier de cada coluna de outra forma
+          mais fácil, através do método <code>putClientProperty</code>:</p>
+<source>
+<![CDATA[
+private JTable estadoTable;
+  ...
+  private initComponents() {
+     ...
+     estadoTable = new JTable(new DefaultTableModel(new String[] {"Sigla", "Descrição"}, 0));
+     estadoTable.setName("estado");
+     estadoTable.putClientProperty(SwingBinder.COLUMN_NAMES, new String[] {"sigla", "descricao"});
+  }
+]]>
+</source>
+          <p>Para facilitar a construção do widget, pode-se utilizar métodos 
+          estáticos da classe 
+          <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code>.
+          O código para criação e configuração da <code>JTable</code> seria:</p>
+<source>
+<![CDATA[
+private SwingBinder binder;
+private JTable estadoTable;
+  ...
+  private initComponents() {
+     ...
+     estadoTable = SwingFactory.createTable(binder, "estado",
+          new String[] {"sigla", "descricao" },
+          new String[] {"Sigla", "Descrição" });
+  }
+]]>
+</source>
+          <p>No código acima, construímos um <code>JTable</code> passando como 
+          parâmetros o binder, o nome do componente, um array dos 
+          <code>identifier</code>s de cada coluna e um array para os textos 
+          visíveis para cada coluna.</p>
+      </subsection>
+      <subsection name="SWT">
+        <h5><a name="SWTComboBox">ComboBox</a></h5>
+<source>
+<![CDATA[
+private Combo estadoComboBox;
+  ...
+  private initComponents() {
+     ...
+     estadoComboBox = new Combo(shell, SWT.NONE);
+     estadoComboBox.setData("estado");
+     estadoComboBox.setData(SWTBinder.KEY_PROPERTY, "sigla");
+     estadoComboBox.setData(SWTBinder.VALUE_PROPERTY, "descricao");
+  }
+]]>
+</source>
+          <p>Acima vemos o código da tela que exibe um <code>combobox</code>
+          que conterá os estados em tempo de execução. O nome do componente
+          (<code>estadoComboBox.setData("estado")</code>) possui o mesmo valor 
+          que o atributo <code>objectField</code> da anotação 
+          <code>@DataProvider</code>. Para que os valores sejam mostrados 
+          corretamente ao usuário ao popular o <code>Combo</code>, é 
+          necessário configurar algumas propriedades do componente. Os valores 
+          configurados como propriedades do componente são verificados 
+          para determinar qual propriedade do bean deve ser visível para o 
+          usuário. Os valores das  propriedades são configurados através do 
+          método <code>setData(Object chave, Object valor)</code> do 
+          componente. As seguintes propriedades são utilizadas no caso de 
+          comboboxes:</p>
+          <ul>
+            <li><b>SWTBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
+            é único por instância, do bean que será utilizado para popular o 
+            componente. É requerida, com exceção das enums 
+            (<code>java.lang.Enum</code> ou 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
+            enums, se essa propriedade não for definida, o valor do 
+            <code>toString()</code> da enum é utilizado.</li>
+            <li><b>SWTBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
+            para exibir o bean. É requerida quando o bean não for uma enum 
+            (<code>java.lang.Enum</code> ou 
+            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>SWTBinder.BLANK_PROPERTY</b>: inclui uma linha em branco 
+            como primeira opção da combobox. Não é requerida e tem como valor 
+            padrão <code>false</code>.</li>
+            <li><b>SWTBinder.BLANK_LABEL_PROPERTY</b>: define o texto a ser 
+            exibido na linha em branco. Não é requerida, tem como valor padrão 
+            uma <code>String</code> vazia e só é usada quando 
+            <code>blank=true</code>.</li>
+          </ul>
+          <p>Conforme indicado pelo valor do atributo <code>objectField</code>, 
+          a propriedade de nome <code>estado</code> do form conterá a instância 
+          de <code>Estado</code> correspondente à opção da combo escolhida pelo 
+          usuário.</p>
+        <h5><a name="SWTList">List</a></h5>
+<source>
+<![CDATA[
+private List estadoList;
+  ...
+  private initComponents() {
+     ...
+     estadoList = new List(shell, SWT.NONE);
+     estadoList.setData("estado");
+     estadoList.setData(SwingBinder.KEY_PROPERTY, "sigla");
+     estadoList.setData(SwingBinder.VALUE_PROPERTY, "descricao");
+  }
+]]>
+</source>
+          <p>No caso de uma <code>List</code>, os requerimentos são similares 
+          aos do <a href="#SWTComboBox">ComboBox</a>.</p>
+        <h5><a name="SWTTable">Table</a></h5>
+<source>
+<![CDATA[
+private Table estadoTable;
+  ...
+  private initComponents() {
+     ...
+
+     Table estadoTable = new Table(shell, SWT.NONE);
+     estadoTable.setData("estado");
+     estadoTable.setHeaderVisible(true);
+
+     TableColumn siglaColumn = new TableColumn(estadoTable, SWT.NONE);
+     siglaColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "sigla");
+     siglaColumn.setText("Sigla");
+     siglaColumn.setWidth(100);
+
+     TableColumn descricaoColumn = new TableColumn(estadoTable, SWT.NONE);
+     descricaoColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "descricao");
+     descricaoColumn.setText("Descrição");
+     descricaoColumn.setWidth(200);
+  }
+]]>
+</source>
+          <p>Os requerimentos para popular uma table são um pouco 
+          diferentes.</p>
+          <p>Com base no exemplo acima, podemos observar que o valor do nome
+          do componente (<code>estadoTable.setData("estado")</code>)
+          na tabela precisa ser igual ao valor do atributo 
+          <code>objectField</code>, exceto quando for especificado o atributo 
+          <code>widgetName</code> na anotação, e nesse caso o valor de 
+          <code>widgetName</code> deve ser o nome do componente. Cada linha da 
+          tabela representará uma instância e cada coluna será preenchida com a 
+          propriedade do bean cujo nome é o valor do 
+          <code>SWTBinder.TABLE_COLUMN_IDENTIFIER</code> (ex: 
+          <code>descricaoColumn.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, 
+          "descricao")</code>) de cada uma delas. É possível definir o 
+          identificador de cada coluna de outra forma mais fácil, através do 
+          método <code>setData</code> da própria tabela:</p>
+<source>
+private Table estadoTable;
+  ...
+  private initComponents() {
+     ...
+     Table estadoTable = new Table(shell, SWT.NONE);
+     estadoTable.setData("estado");
+     estadoTable.setData(SWTBinder.COLUMN_NAMES, new String[] {"sigla", 
+           "descricao"});
+     estadoTable.setHeaderVisible(true);
+
+     TableColumn siglaColumn = new TableColumn(estadoTable, SWT.NONE);
+     siglaColumn.setText("Sigla");
+     siglaColumn.setWidth(100);
+
+     TableColumn descricaoColumn = new TableColumn(estadoTable, SWT.NONE);
+     descricaoColumn.setText("Descrição");
+     descricaoColumn.setWidth(200);
+  }
+</source>
+      </subsection>
+    </section>
+    <section name="Entendendo callOnInit e resetSelection">
+      <p>Uma variação no comportamento desta anotação ocorre com a utilização do 
+      atributo <code>callOnInit</code>. Suponha que o combobox ou a tabela dos 
+      exemplos acima não deveriam ser preenchidas na inicialização da janela em 
+      questão. Neste caso, a anotação deveria ser reescrita da seguinte 
+      forma:</p>
+<source>
+   // ...
+
+   @DataProvider(objectField="estado", callOnInit=false)
+   public List populaEstados() {
+      // retorna uma Collection contendo instâncias de Estado
+         }
+    
+   // ...
+</source>
+      <p>Desta forma, na inicialização da janela, o combobox, list e tabela
+      estarão vazios. O preenchimento dos mesmos poderá ser acionado mediante
+      a anotação <code>@CallWhen</code>, usada em conjunto com 
+      <code>@DataProvider</code> para indicar sob que condição a tabela, lista e 
+      combo serão repopulados. <code>@Action</code> pode ser usado no mesmo 
+      método caso este também possa ser acionado por um botão (como "Pesquisar", 
+      por exemplo) e, quando isso ocorrer, o uso de <code>@EnabledWhen</code> e
+      <code>@VisibleWhen</code> também será possível.</p>
+      <p>O atributo <code>resetSelection</code> determina se os elementos serão
+      desselecionados quando o método for invocado. Este é o comportamento
+      padrão, ou seja, se omitido, o valor desse atributo é considerado
+      <code>true</code>. Quando o valor informado é <code>false</code>, a
+      seleção é mantida com respeito a <b>posição</b> dos ítens, o que torna
+      essa funcionalidade mais útil quando algo está sendo adicionado ao final
+      da <code>java.util.List</code> ou array cada vez que o método é
+      executado.</p>
+      <p>Para informações adicionais, consulte a referência da anotação <a 
+      href="quick_reference.html#@DataProvider">@DataProvider</a>.</p>
+    </section>
+  </body>
+</document>

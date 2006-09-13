@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Configurando as bibliotecas do SWT</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Configurando as bibliotecas do SWT">
+      <p>O <a href="http://www.eclipse.org/swt/">SWT</a> (Standard Widget 
+      Toolkit) possui diferentes distribuições para diversas plataformas. Desta 
+      forma, aqueles que usam Windows devem possuir a distribuição específica 
+      para Windows, assim como usuários Linux, Solaris ou Mac OS devem utilizar 
+      a distribuição de sua plataforma. Abaixo encontram-se instruções de como 
+      deve ser configurada uma ou mais distribuições para uso num projeto junto 
+      com o genesis.</p>
+      <p><b>Nenhuma distribuição do SWT acompanha a distribuição do genesis</b>,
+      logo, para criar um projeto SWT ou rodar a parte SWT do exemplo <a 
+      href="useradmin_sample.html">useradmin</a> é necessário baixar a 
+      distribuição SWT correspondente para sua plataforma. Os arquivos podem ser 
+      encontrados no <a href="http://www.eclipse.org/swt/">site oficial do 
+      SWT</a>.</p>
+      <p>Os arquivos da distribuição desejada devem ser descompactados na pasta 
+      <b><code>&lt;genesis.home&gt;/genesis/lib/swt</code></b> e organizados 
+      hierarquicamente por sistema operacional e arquitetura do processador. Por
+      exemplo, imagine um projeto onde será utilizado SWT em máquinas Windows
+      (processador x86 - 32 bits), Linux (usando GTK e processadores x86 - 32 e 
+      64 bits), Solaris (processador SPARC) e Mac OS (processador PPC). A 
+      estrutura criada em 
+      <b><code>&lt;genesis.home&gt;/genesis/lib/swt</code></b> será:</p>
+<source>
+Diretório &lt;genesis.home&gt;/genesis/lib/swt
+  
+Windows
+  + x86
+    - swt.jar
+    - swt1.dll
+    - swt2.dll
+    - etc...
+
+Linux
+  + x86_64
+    - swt.jar
+    - swt1.so
+    - swt2.so
+    - etc...  
+  - swt.jar
+  - swt1.so
+  - swt2.so
+  - etc...
+
+Solaris
+  + sparc
+    - swt.jar
+    - swt1.so
+    - swt2.so
+    - etc...
+  
+Mac
+  - swt.jar
+  - swt1.jnilib
+  - swt2.jnilib
+  - etc...
+</source>
+      <p>O nome da pasta correspondente ao sistema operacional corresponde ao 
+      nome da propriedade de sistema da JVM <code>os.name</code>. É possível 
+      utilizar apenas a parte inicial do valor de <code>os.name</code>.</p>
+      <p>O nome da pasta correspondente a arquitetura do processador corresponde 
+      ao nome da propriedade de sistema da JVM <code>os.arch</code>.</p>
+      <p>Para conhecer os valores das propriedades <code>os.name</code> e 
+      <code>os.arch</code> para determinado ambiente, compile e rode o programa 
+      abaixo:</p>
+<source>
+public class OsAndArch {
+  public static void main(String[] args) {
+     System.out.println("Sistema Operacional: " + System.getProperty("os.name"));
+     System.out.println("Arquitetura Processador: " + System.getProperty("os.arch"));
+  }  
+}
+</source>
+      <p>Para o Windows XP, a seguinte saída é visualizada:</p>
+<source>
+Sistema Operacional: Windows XP
+Arquitetura Processador: x86
+</source>
+      <p>Neste caso, os <code>jar</code>s e <code>dll</code>s do SWT devem ser
+      colocados no diretório <code>Windows/x86</code>.</p>
+    </section>
+  </body>
+</document>

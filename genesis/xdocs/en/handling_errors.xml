@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Handling errors</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Handling errors">
+      <p>genesis error handling is centralized, so all exceptions are routed
+      to one graphical API-specific class.</p>
+      <p>Two interfaces for error handling are defined by genesis:</p>
+      <ul>
+        <li><b><code>net.java.dev.genesis.ui.binding.ExceptionHandler</code></b>: 
+        A generic interface that defines only one method, 
+        <code>handleException(Throwable)</code> that is called to handle 
+        exceptions. This interface can be implemented to define a completely 
+        customized error handling process for your application.</li>
+        <li><b><code>net.java.dev.genesis.ui.binding.DispatcherExceptionHandler</code></b>:
+        Extends the previous interface (<code>ExceptionHandler</code>) and 
+        defines a standard procedure for error handling with specific methods 
+        for validation errors, known errors and unknown errors. The default 
+        process will be explained below.</li>
+      </ul>
+      <p>The following procedure is used by genesis:</p>
+      <ul>
+        <li>If the exception is an <code>UIException</code>, a dialog is shown
+        with title and description extracted from the exception itself.</li>
+        <li>If the exception is a <code>ValidationException</code>, a warning
+        dialog is shown, each line displaying one error.</li>
+        <li>Otherwise, it verifies whether the application has defined a 
+        specific way of handling it; if not, the exception returned by 
+        <code>getCause()</code> is verified, until that method returns 
+        <code>null</code>; finally an message with stack trace is shown.</li>
+      </ul>
+      <p>The abstract class 
+      <code>net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler</code>
+      implements this procedure as explained below:</p>
+      <ul>
+        <li>If a <code>ValidationException</code> has happened, it is handled by
+        <code>showValidationErrors(ValidationException)</code>.</li>
+        <li>When the error is a <code>UIException</code>, it's handled by <code>
+        handleUIException(UIException)</code>.</li>
+        <li>If all previous checks fail, the exception is passed to
+        <code>handleCustomException(Throwable)</code> that returns a
+        <code>boolean</code> indicating whether the error has been handled or
+        not.</li>
+        <li>When the error hasn't been handled,
+        <code>handleUnknownException(Throwable)</code> gets invoked, ending the
+        error handling chain.</li>
+      </ul>
+      <p>Two other abstract methods are defined by this class:</p>
+      <ul>
+        <li><b><code>showWarningMessageDialog(title,message)</code></b>:
+        It should display a warning dialog to the user using the title and 
+        message parameters.</li>
+        <li><b><code>showErrorMessageDialog(title,message,throwable)</code></b>:
+        It should display an error dialog to the user with the current title, 
+        message and, if needed, some information about the exception.
+        </li>
+      </ul>
+      <p>For most users, it's enough to know how each error will be handled by
+      the framework. However, any of the above described methods can be
+      overridden if there is a need to customize error handling. In general,
+      only <code>handleCustomException(Throwable)</code> should be overriden, so
+      users can define their custom exception handling.</p>
+      <p>Each graphical API defines a default implementation of 
+      <code>AbstractDispatcherExceptionHandler</code>, as shown below:</p>
+      <ul>
+        <li><b><code>net.java.dev.genesis.ui.swing.SwingExceptionHandler</code></b>: 
+        Uses <code>JOptionPane</code> to display the warning/error message to 
+        the user.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.SWTExceptionHandler</code></b>: 
+        Uses <code>MessageBox</code> to display the warning/error message to the 
+        user.</li>
+        <li><b><code>net.java.dev.genesis.ui.swt.ThinletExceptionHandler</code></b>: 
+        Uses <code>MessageDialog</code> and <code>ErrorReporterDialog</code>
+        to display the warning/error message to the user.</li>
+      </ul>
+      <p>You should use the <code>setExceptionHandler</code> method, defined in
+      <code>AbstractBinder</code>, to use your custom 
+      <code>ExceptionHandler</code> implementation (for Swing/SWT), or override
+      the <code>createExceptionHandler</code> method of your binder to return a 
+      new instance of your custom <code>ExceptionHandler</code> class.</p>
+    </section>
+  </body>
+</document>

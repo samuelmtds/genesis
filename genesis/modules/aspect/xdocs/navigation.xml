@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="genesis">
+  <title>genesis-aspect</title>
+  <body>
+    <links>
+      <item name="genesis" href="../../index.html" />
+      <item name="genesis-aspect" href="../genesis-aspect/index.html" />
+      <item name="genesis-client" href="../genesis-client/index.html" />
+      <item name="genesis-server" href="../genesis-server/index.html" />
+      <item name="genesis-shared" href="../genesis-shared/index.html" />
+      <item name="genesis-xdoclet" href="../../tags/genesis-tags.html" />
+    </links>
+    <menu name="Projects">
+      <item name="genesis" href="../../index.html" />
+    </menu>
+    <menu name="java.net" type="footer">
+      <item name="genesis.dev.java.net" href="https://genesis.dev.java.net" />
+      <item name="java.net member" img="../../java_dot_net_member.bmp" href="http://java.net" />
+    </menu>
+  </body>
+</project>

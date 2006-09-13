@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Sample application - useradmin</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
+    </author>
+  </properties>
+  <body>
+    <section name="Installing the useradmin sample">
+      <p>Installing the <code>useradmin</code> sample is a simple task. The
+      <code>useradmin</code> sample can be found in the useradmin distribution
+      or the full distribution genesis packages that can be found
+      <a href="download.html">here</a>.
+      Distributions for all samples are already setup to be run in 
+      standalone/local mode or with the <a 
+      href="http://www.jboss.org/">JBoss</a> application server, an open-source
+      free server. This does not mean genesis only runs on this server; genesis
+      was developed in a J2EE compatible way.</p>
+      <p><a href="http://ant.apache.org/">Ant</a> is required to run the 
+      useradmin sample. To run this sample in remote mode, it's the <a 
+      href="http://www.jboss.org/">JBoss</a> application server is also 
+      required.</p>
+      <p>Learn how to run this sample in local mode (without an application 
+      server) <a href="#Running in local mode">here</a>.</p>
+      <p>Learn how to run this sample in remote mode (using an application 
+      server) <a href="#Running in remote mode">here</a>.</p>
+      <p>To use the SWT portion of useradmin's sample, read the instructions
+      <a href="configuring_swt.html">here</a>.</p>
+    </section>
+    <section name="useradmin sample's purpose">
+      <p>useradmin sample's purpose is to demonstrate to users genesis' major
+      features and also is a great example of transparent remoting in action, 
+      since with the same source code, it's possible to run the sample using 
+      either remote or local calls.</p>
+      <p>The sample has two source code dirs,
+      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/client/src</code> and
+      <code>&lt;GENESIS_DIST&gt;/samples/useradmin/modules/shared/src</code>, 
+      that contain the client module and the client/server shared module,
+      respectively.</p>
+      <p>The client module source dir contains UI related classes. The useradmin 
+      sample uses three different UI technologies: <a 
+      href="http://www.thinlet.com/">Thinlet</a>, <a 
+      href="http://java.sun.com/products/jfc/">Swing</a> and <a 
+      href="http://www.eclipse.org/swt">SWT</a>. To use SWT, read the 
+      instructions <a href="configuring_swt.html">here</a>.</p>
+      <p>The package <code>net.java.dev.genesis.samples.useradmin.ui</code> 
+      contains files that define the UI logic (rules to enable and disable 
+      fields, actions, etc). We call these classes <b>forms</b> and <b>they are 
+      independent</b> of UI technology. For example, <code><b>UserListForm.java</b></code> it's a Java class
+      whose fields represent screen data e it has methods that represent screen actions.</p>
+
+      <p>At Thinlet (package <code>net.java.dev.genesis.samples.useradmin.ui.thinlet</code>)
+      we found two file types that define the UI. Let's consider the useradmin search screen:</p>
+      <ul>
+        <li><code><b>user-list.xml</b></code>: Thinlet xml file that describes
+        how UI components are arranged on the screen. Component names match
+        field names and method names in the form.</li>
+        <li><code><b>UserListView.java</b></code>: Java class responsible for
+        the screen, where the UI dimensions are defined, which UI xml file to
+        use and that <code>binds</code> a form to a view. Other auxiliary
+        methods may be defined by this class in order to allow other screens to
+        be open or to programatically invoke a form action.</li>
+      </ul>
+
+      <p>At Swing (package <code>net.java.dev.genesis.samples.useradmin.ui.swing</code>
+      and sub-packages) we found the UI skeleton coded using Swing.
+      Let's consider the useradmin search screen:</p>
+      <ul>
+         <li><code><b>UserListView.java</b></code>: Java class coded using Swing
+         and responsible for the search screen, where the UI dimensions are defined and
+         how UI components are arranged on the screen. The <code>binding</code>
+         with a specific form is done, that means that the form will handle
+         the UI events. Other auxiliary methods are defined to make possible
+         other windows to be opened and programatically call some action of this
+         screen.</li>
+      </ul>
+
+      <p>At SWT (package <code>net.java.dev.genesis.samples.useradmin.ui.swt</code>
+      and sub-packages)  we found the UI skeleton coded using SWT.
+      Let's consider the useradmin search screen:</p>
+      <ul>
+         <li><code><b>UserListView.java</b></code>: Java class coded using SWT
+         and responsible for the search screen, where the UI dimensions are defined and
+         how UI components are arranged on the screen. The <code>binding</code>
+         with a specific form is done, that means that the form will handle
+         the UI events. Other auxiliary methods are defined to make possible
+         other windows to be opened and programatically call some action of this
+         screen.</li>
+      </ul>
+
+      <p>The shared module source dir contains the source files that implement
+      business logic (commands) and others that are Hibernate mapped classes
+      (databeans). A command example is
+      <code>net.java.dev.genesis.samples.useradmin.business.UserCreateCommand
+      </code>:</p>
+<source>
+public class UserCreateCommand extends AbstractHibernateCommand {
+
+   @Transactional
+   public Serializable createUser(final User user) throws Exception {
+      return getSession().save(user);
+   }
+
+
+}
+</source>
+      <p>This example shows how simple and straight commands can be. The command
+      shown above has just a transactional method that persists a user in the
+      database. Transaction commit/rollback is automatically hanlded by genesis.
+      </p>
+      <p>As a databean example, let's examine
+      <code>net.java.dev.genesis.samples.useradmin.databeans.User</code>, a
+      class that represents a User entity mapped to a table using XDoclet tags:
+      </p>
+<source>
+/**
+ * @hibernate.class
+ *
+ * @hibernate.query name="User.findByRole"
+ *          query="from User u where u.role.code = :roleCode"
+ */
+public class User implements Serializable {
+   private Long id;
+   private String name;
+   private String login;
+   private String password;
+   private String email;
+   private Date birthday;
+   private String address;
+   private Role role;
+   private Country country;
+   private State state;
+
+   /**
+    * @hibernate.property
+    */
+   public Date getBirthday() {
+      return birthday;
+   }
+
+   public void setBirthday(Date birthday) {
+      this.birthday = birthday;
+   }
+
+   /**
+    * @hibernate.property
+    type="net.java.dev.genesis.samples.useradmin.databeans.CountryType"
+    */
+   public Country getCountry() {
+      return country;
+   }
+
+   public void setCountry(Country country) {
+      this.country = country;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   /**
+    * @hibernate.many-to-one
+    */
+   public Role getRole() {
+      return role;
+   }
+
+   public void setRole(Role role) {
+      this.role = role;
+   }
+
+   /**
+    * @hibernate.id generator-class="increment"
+    */
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getLogin() {
+      return login;
+   }
+
+   public void setLogin(String login) {
+      this.login = login;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   /**
+    * @hibernate.property
+    */
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   /**
+    * @hibernate.property
+    type="net.java.dev.genesis.samples.useradmin.databeans.StateType"
+    */
+   public State getState() {
+      return state;
+   }
+
+   public void setState(State state) {
+      this.state = state;
+   }
+}
+</source>
+      <p>A databean is JavaBean compliant class, i.e., one that exposes
+      properties through getters and setters. It doesn't have to implement any
+      interface nor to extend any abstract class. It is convenient to implement
+      <code>java.io.Serializable</code> so the class can be used as a parameter
+      or as a return value for a remote call.</p>
+    </section>
+    <section name="Running in local mode">
+       <p>To run this sample in local mode, you will need:</p>
+       <ul>
+          <li>The <a href="http://ant.apache.org/">Ant</a> tool, prefer the latest
+            version (currently Ant 1.6.5)</li>
+       </ul>
+       
+       <p>Follow the steps:</p>
+       <ul>
+        <li>Make a copy of <code>buid.properties.sample</code> file and rename to
+        <code>build.properties</code></li>
+        <li>Edit the <code>build.properties</code> file, modifying or commenting
+        the properties according your needs. Take a look on a configuration sample:</li>
+<source>
+## Build properties sample ##
+
+# Here we defined that it won't run in remote mode
+remote.mode=false
+   
+# In local mode, a database is needed. In this case, we use HSQLDB
+jdbc.driver=target/hsqldb.jar
+</source>
+        <li>In command line, executes the ant script:
+<source>
+c:\genesis\samples\useradmin>ant install
+</source>
+        This command will start the installation process.
+        It will only copy all dependant libraries to the folder where the application
+        jar resides.</li>
+        <li>To run the sample, run the ant task:</li>
+<source>
+c:\genesis\samples\useradmin>ant run:local
+</source>
+        <li>Or use the command line:</li>
+<source>
+c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
+</source>
+        <li>Or double-click the file <code>useradmin-local-weaved.jar</code></li>
+      </ul>
+    </section>
+    <section name="Running in remote mode">
+      <p>To run this sample in remote mode, you will need:</p>
+       <ul>
+          <li>The <a href="http://ant.apache.org/">Ant</a> tool, prefer the latest
+            version (currently Ant 1.6.5)</li>
+          <li>The <a href="http://www.jboss.org/">JBoss</a> Application Server,
+          prefer the latest version of the series 3.2.x or 4.0.x</li>
+       </ul>
+      <p>To run this sample in remote mode, follow the steps:</p>
+      <ul>
+        <li>Make a copy of <code>buid.properties.sample</code> file and rename to
+        <code>build.properties</code></li>
+        <li>Edit the <code>build.properties</code> file, modifying or commenting
+        the properties according your needs. Take a look on a configuration sample:</li>
+<source>
+## Build properties sample ##
+
+# Here we defined that it won't run in local mode
+local.mode=false
+   
+# Here we define the JBoss Home directory
+jboss.home=/opt/jboss-3.2.7
+</source>
+        <li>In the command line, run the ant script:
+<source>
+c:\genesis\samples\useradmin>ant install
+</source>
+        The installation process will start and a folder called
+        "useradmin" will be created at the <code>server</code> folder of
+        JBoss Application Server. That folder contains the useradmin sample,
+        its configuration and all of its dependencies.</li>
+        <li>After the installation process, start JBoss with the following
+        command:</li>
+<source>
+&lt;JBOSS_HOME&gt;\bin>run -c useradmin
+</source>
+        <li>After JBoss starts, the sample can be executed accessing the URL
+        <a href="http://localhost:8080/useradmin/">
+        http://localhost:8080/useradmin/</a>. The
+        "<a href="http://localhost:8080/useradmin/application/remote.jnlp">
+        Run remote User Admin</a>" link will download, install and run the sample
+        on the user machine, with Java Web Start technology</li>
+        <li>Another option, is run the sample with the following ant task:</li>
+<source>
+c:\genesis\samples\useradmin>ant run:remote
+</source>
+        <li>If you have left local mode enabled, you can run the sample in local mode throught the link
+        "<a href="http://localhost:8080/useradmin/application/local.jnlp">Run local User Admin</a>"
+        of <a href="http://localhost:8080/useradmin/">http://localhost:8080/useradmin/</a> page.</li>
+       </ul>
+    </section>
+    <section name="Considerations">
+      <p>This sample goal is to demonstrate how a project might be structured
+      and how to use genesis features. It's recommended to start new genesis-
+      based projects by using the <a href="empty_project.html">empty project</a>
+      as a start point and use this sample as a refenrece.</p>
+    </section>
+  </body>
+</document>

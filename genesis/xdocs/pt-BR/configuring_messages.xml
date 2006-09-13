@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Configurando as mensagens</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Configurando as mensagens">
+      <p>Diversas mensagens podem ser configuradas externamente ao código
+      utilizando-se um <code>java.util.ResourceBundle</code>. O
+      <code>ResourceBundle</code> permite armazenar um dicionário de
+      propriedades nome/valor - similar a um <code>Properties</code> -
+      suportando múltiplos <code>java.util.Locale</code>s. De forma
+      simplificada, é possível configurar mensagens diferentes de acordo com o
+      idioma utilizado.</p>
+      <p>O genesis utiliza um <code>ResourceBundle</code> de nome
+      <code>messages</code>, de modo que deve existir um
+      <code>messages.properties</code> no classpath. A classe
+      <code>net.java.dev.genesis.ui.UIUtils</code> mantém a instância deste
+      <code>ResourceBundle</code> durante a execução.</p>
+      <p>São configurados no arquivo de recursos mensagens e texto referentes a:
+      </p>
+      <ul>
+        <li>Validação</li>
+        <li>Valores de display das <code>Enum</code>s (no formato
+        <code>Classe.CONSTANTE=Valor de display</code>)</li>
+        <li>Mensagens das telas padrão providas com o genesis, como a tela
+        utilizada por <code>OptionDialog</code></li>
+        <li>Quaisquer textos definidos pelo usuário que devam ser externalizados
+        do código</li>
+      </ul>
+      <p>Abaixo há um exemplo de configuração do <code>ResourceBundle</code>
+      para o exemplo useradmin:</p>
+<source>
+# 1. Configuração para validação
+errors.byte=The {0} field is not a byte.
+errors.short=The {0} field is not a short.
+errors.int=The {0} field is not an integer.
+errors.long=The {0} field is not a long.
+errors.float=The {0} field is not a float.
+errors.double=The {0} field is not a double.
+errors.bigdecimal=The {0} field is not a big decimal.
+errors.required=The {0} field is required.
+errors.requiredif=The {0} field is required.
+errors.mask=The {0} field is not valid.
+errors.email=The {0} field is not a valid email.
+errors.date=The {0} field is not a valid date.
+errors.min={0} must be greater or equal to {1}.
+errors.max={0} must be lesser or equal to {1}.
+errors.minlength=The {0} field can not be less than {1} characters.
+errors.maxlength=The {0} field can not be greater than {1} characters.
+errors.longRange={0} is not in the range {1} through {2}.
+errors.doubleRange={0} is not in the range {1} through {2}.
+errors.bigDecimalRange={0} is not in the range {1} through {2}.
+errors.jxpath=The {0} field is not valid.
+validation.errors.title=Validation errors
+
+# 2. Configuração das mensagens das telas do thinlet
+MessageDialog.close=Close
+Option.YES=Yes
+Option.NO=No
+Option.CANCEL=Cancel
+  
+# 3. Configuração das mensagens utilizadas em telas de exibição de erros
+ErrorReporterDialog.ok=OK
+ErrorReporterDialog.stackTrace=Stack Trace:
+
+# 4. Configurações personalizadas do usuário
+ChooseView.title=Choose
+ChooseView.choose=Choose an option
+ChooseView.thinlet=Thinlet
+ChooseView.swing=Swing
+ChooseView.swt=SWT
+ChooseView.exit=Exit
+
+InsertRoleView.title=Insert Role
+InsertView.title=Insert User
+UpdateView.title=Update User
+RoleListView.title=Role List
+UserListView.title=Users Administration
+UserListView.deleteConfirmationTitle=Confirm Delete
+UserListView.deleteConfirmation=Are you sure you want to delete selected users ?
+
+button.ok=Ok
+button.add=Add
+button.remove=Remove
+button.cancel=Cancel
+button.save=Save
+button.search=Search
+button.reset=Reset
+button.newUser=New User
+button.updateUser=Update User
+button.removeUser=Remove User
+
+User.name=Name
+User.login=Login
+User.password=Password
+User.email=e-mail
+User.birthday=Birthday
+User.address=Address
+User.country=Country
+User.state=State
+User.role=Role
+
+Role.label=Label
+Role.code=Code
+
+Country.BR=Brazil
+Country.US=United States
+Country.OTHER=Other
+
+State.DF=Distrito Federal
+State.SP=São Paulo
+State.RJ=Rio de Janeiro
+State.AL=Alaska
+State.FL=Flórida
+State.NY=New York
+State.OTHER=Other
+</source>
+      <p>Para mais informações sobre como trabalhar com arquivos de recurso
+      consulte o Javadoc da classe <code>java.util.ResourceBundle</code>.</p>
+    </section>
+  </body>
+</document>

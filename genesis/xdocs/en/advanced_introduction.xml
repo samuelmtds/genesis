@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Advanced guide</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Advanced guide">
+      <p align="justify">This section contains genesis advanced documentation
+      and reading it is only necessary for developers willing to understand or
+      extend the framework core. Although genesis developers try really hard to
+      keep all code changes backwards compatible, since information contained
+      in this documentation section is intrinsically bound to the way features
+      are implemented, it is possible incompatible changes happen in the
+      classes and options described here.</p>
+      <p>If you customize any of the resources documented here, please let us
+      know about it through the <a href="../mail-lists.html">users list</a> in
+      order to minimize the chances your code does not work with future
+      genesis releases.</p>
+    </section>
+    <section name="Versions of dependencies' jars">
+      <p>In order to know the version of dependencies' jars, please refer to
+      Maven dependencies reports for each module:</p>
+      <ul>
+        <li><a href="../multiproject/genesis-aspect/dependencies.html">genesis-aspect</a></li>
+        <li><a href="../multiproject/genesis-client/dependencies.html">genesis-client</a></li>
+        <li><a href="../multiproject/genesis-server/dependencies.html">genesis-server</a></li>
+        <li><a href="../multiproject/genesis-shared/dependencies.html">genesis-shared</a></li>
+      </ul>
+    </section>
+    <section name="Annotation handling">
+      <p>All the several genesis annotations are handled in the same way by the
+      components that manipulate them. A basic rule is followed: annotations
+      are inherited when the code element (class/method) is not overridden and
+      ignored otherwise. An example makes it clear:</p>
+<source>
+@Form
+public class ParentForm {
+  @EnabledWhen("condition1")
+  public String getProperty1() { ... }
+
+  @EnabledWhen("condition2")
+  public String getProperty2() { ... }
+
+  // ...
+}
+</source>
+<source>
+public class ChildForm extends ParentForm {
+  public String getProperty1() { ... }
+
+  // ...
+}
+</source>
+      <p>The <code>ChildForm</code> class does not contain the
+      <code>@Form</code> annotation, in the same way its
+      <code>getProperty1()</code> method does not contain the
+      <code>@EnabledWhen</code> annotation. However, the
+      <code>getProperty2()</code> method contains the annotation inherited
+      from <code>ParentForm</code>, since it has not been overridden.</p>
+      <p>If elements in <code>ChildForm</code> were supposed to contain the
+      same annotations used in <code>ParentForm</code>, it would be needed to
+      use them explicitly in <code>ChildForm</code> as well.</p>
+    </section>
+  </body>
+</document>

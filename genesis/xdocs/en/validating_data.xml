@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Validating data</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Validating data">
+      <p>Data validation is critical for system integrity, especially when data
+      is entered by users, as is the case for UI applications. Support for
+      validation in genesis is implemented by using one of Jakarta project's
+      components, <a href=
+      "http://jakarta.apache.org/commons/validator/">commons-validator</a>.
+      Several other open-source frameworks use commons-validator as a foundation
+      for their own validation components, including Struts, so it is likely you 
+      are already used to this API. Otherwise, we recommend reading the docs 
+      from their project site.</p>
+      <p>Annotation <code>@ValidateBefore</code> can be used in actions that are
+      only supposed to be executed when validation succeeds. If a validation 
+      error occurs, a <code>net.java.dev.genesis.ui.ValidationException</code> 
+      will be thrown - an exception that is <a 
+      href="handling_errors.html">handled by default</a> by genesis by 
+      displaying error information in an user-friendly way.</p>
+      <p>Several default validators are implemented by 
+      <code>BasicValidator</code>, which is contained in the
+      <code>net.java.dev.genesis.ui</code> package. Most of these validators are
+      similar to the ones provided with Struts, so it is easier for those 
+      familiar with this framework to understand them. They are:</p>
+      <ul>
+        <li><code><b>byte</b>, <b>short</b>, <b>int</b>, <b>long</b>,
+        <b>float</b> and <b>double</b></code>: check if data can be converted to
+        one of these types without any overflow.</li>
+        <li><code><b>bigDecimal</b></code>: checks if data can be converted to
+        <code>java.math.BigDecimal</code> using the default <a href=
+        "http://jakarta.apache.org/commons/beanutils/">BeanUtils</a> converter
+        registered for this class. genesis provides a custom implementation of 
+        this converter, <code>BigDecimalConverter</code> in
+        <code>net.java.dev.genesis.commons.beanutils.converters</code>, since
+        implementations that ship with BeanUtils do not work as expected for the
+        pt-BR Locale.</li>
+        <li><code><b>date</b></code>: implements date validation. The
+        variable <code>pattern</code> can be used to set a valid data pattern to
+        be used for the process. This pattern should follow the 
+        <code>java.text.DateFormat</code> pattern specification.</li>
+        <li><code><b>email</b></code>: only accepts content that can be
+        considered a syntatically valid email.</li>
+        <li><code><b>required</b></code>: asserts the field is not empty.</li>
+        <li><code><b>requiredif</b></code>: compatible with the version that
+        comes with Struts, it implements a somewhat weak validation scheme. Its 
+        use is not recommended and it is provided just as a way to make it 
+        easier for Struts users to use genesis validation. Use the <a 
+        href="#jxpath">jxpath</a> validator instead.</li>
+        <li><code><b>mask</b></code>: implements validation based on a regular
+        expression. It requires the definition of a <code>mask</code>
+        variable containg the regular expression.</li>
+        <li><code><b>minlength</b> and <b>maxlength</b></code>: guarantee that
+        informed data has at least and at most, respectively, the number of 
+        characters defined by the <code>minlength</code> or 
+        <code>maxlength</code> variables.</li>
+        <li><code><b>min</b></code>: checks if the number is greater or equal to 
+        the value defined by the <code>min</code> variable.</li>
+        <li><code><b>max</b></code>: checks if the number is lesser or equal to 
+        the value defined by the <code>max</code> variable.</li>
+        <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
+        ></code>: check if the number is part of an expected interval, defined 
+        by variables <code>min</code> and <code>max</code>.</li>
+        <li><a name="script"><code><b>script</b></code></a>: it considers data 
+        as valid if evaluating the script expression 
+        defined by the variable named <code>script</code> returns a value 
+        different from <code>java.lang.Boolean.FALSE</code>.</li>
+      </ul>
+      <p>As it is true for Struts validators, all the validators provided with 
+      genesis except for <code>script</code> are only triggered if the field is 
+      not empty. This means that <b>even if you configure a validator properly, 
+      it will be invoked only when the user inputs something into the field</b>. 
+      If you would like your validator to always be run, <code>required</code> 
+      should also be configured for the field.</p>
+      <p>Validators receive the input in its "raw" String form. It's
+      important to keep that in mind when coding script expressions or using a
+      custom validator.</p>
+      <p>The class that integrates commons-validator with genesis,
+      <code>net.java.dev.genesis.ui.ValidationUtils</code>, expects two
+      configuration files to be available in the classpath:
+      <code>validation-rules.xml</code> and <code>validation.xml</code>. These
+      files must be comply with the commons-validator 1.1 DTD. A default
+      configuration for <code>validation-rules.xml</code> is provided with
+      genesis-client jar as shown below:</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN' 
+   'http://jakarta.apache.org/commons/dtds/validator_1_1.dtd'>
+<form-validation>
+    <global>
+        <validator name="byte" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateByte" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.byte"/>
+        <validator name="short" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateShort" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.short"/>	
+        <validator name="int" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateInt" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.int"/>
+        <validator name="long" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateLong" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.long"/>
+        <validator name="float" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateFloat" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.float"/>
+        <validator name="double" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateDouble" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.double"/>
+        <validator name="bigDecimal" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateBigDecimal" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.bigdecimal"/>
+        <validator name="required" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateRequired" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.required"/>
+        <validator name="requiredif" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateRequiredIf" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field,org.apache.commons.validator.Validator" 
+                msg="errors.requiredif"/>
+        <validator name="mask" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMask" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.mask"/>
+        <validator name="email" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateEmail" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.email"/>
+        <validator name="date" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateDate" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.date"/>			
+        <validator name="minlength" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMinLength" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.minlength"/>			
+        <validator name="maxlength" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMaxLength" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.maxlength"/>			
+        <validator name="min" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMin" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.min"/>	
+        <validator name="max" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateMax" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.max"/>	
+        <validator name="longRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateLongRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.longRange"/>			
+        <validator name="doubleRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateDoubleRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.doubleRange"/>		
+        <validator name="bigDecimalRange" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateBigDecimalRange" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.bigDecimalRange"/>
+        <!-- jxpath validator is deprecated. Use script validator instead -->
+        <validator name="jxpath" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateJXPath" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.jxpath"/>
+        <validator name="script" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateScript" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.script"/>
+    </global>
+</form-validation>
+]]>
+</source>
+      <p>Usually, the most practical way to configure form validation is to use
+      <a href="http://xdoclet.sourceforge.net/">XDoclet</a>. An example of how to 
+      configure validation for a form from the useradmin sample is the 
+      <code>InsertUpdateForm</code> class, from package 
+      <code>net.java.dev.genesis.samples.useradmin.ui</code>, partially shown 
+      below:</p>
+<source>
+/**
+ * @genesis.form
+ */
+@Form
+public class InsertUpdateForm {
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.birthday"
+    *
+    * @genesis.validator type="date"
+    * @genesis.validator-var name="pattern" value="MM/dd/yyyy"
+    */
+   public void setBirthday(Date birthday) {
+      this.birthday = birthday;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.country"
+    */
+   public void setCountry(Country country) {
+      this.country = country;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.email"
+    *
+    * @genesis.validator type="email"
+    * @genesis.validator-args arg0resource="User.email"
+    */
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.role"
+    */
+   public void setRole(Role role) {
+      this.role = role;
+      setRoleCode(role == null ? null : role.getCode());
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.login"
+    *
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="4"
+    */
+   public void setLogin(String login) {
+      this.login = login;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.name"
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.password"
+    *
+    * @genesis.validator type="minlength" arg1value="${var:minlength}"
+    * @genesis.validator-var name="minlength" value="6"
+    *
+    * @genesis.validator type="maxlength" arg1value="${var:maxlength}"
+    * @genesis.validator-var name="maxlength" value="8"
+    */
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.address"
+    */
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   /**
+    * @genesis.validator type="required"
+    * @genesis.validator-args arg0resource="User.state"
+    */
+   public void setState(State state) {
+      this.state = state;
+   }
+
+   @Action
+   @ValidateBefore
+   public void save() throws Exception {
+      final User user = new User();
+      PropertyUtils.copyProperties(user, this);
+      if (getId() == null) {
+         new UserCreateCommand().createUser(user);
+      } else {
+         new UserUpdateCommand().updateUser(user);
+      }
+   }
+
+   // ...
+}
+</source>
+      <p>Before invoking <code>save()</code>, validation is executed based on
+      the rules defined by the generated file and eventual errors will prevent
+      the method from being executed. For those not used to XDoclet, here is a 
+      transcription from the <code>validation.xml</code> file generated during 
+      build execution:</p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE form-validation PUBLIC
+   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration
+   1.1//EN'
+   'http://jakarta.apache.org/commons/dtds/validator_1_1.dtd'>
+<form-validation>
+  <!--
+    Define global validation config in validation-global.xml
+  -->
+  <formset>
+      <form name="net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm">
+              <field property="birthday"
+                     depends="required,date">
+                  <arg position="0"
+                       key="User.birthday"
+                  />
+                  <var>
+                    <var-name>pattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                  </var>
+              </field>
+              <field property="country"
+                     depends="required">
+                  <arg position="0"
+                       key="User.country"
+                  />
+              </field>
+              <field property="email"
+                     depends="required,email">
+                  <arg position="0"
+                       key="User.email"
+                  />
+              </field>
+              <field property="role"
+                     depends="required">
+                  <arg position="0"
+                       key="User.role"
+                  />
+              </field>
+              <field property="login"
+                     depends="required,minlength">
+                  <arg position="0"
+                       key="User.login"
+                  />
+                  <arg position="1"
+                       name="minlength"
+                       key="${var:minlength}"
+                       resource="false"
+                  />
+                  <var>
+                    <var-name>minlength</var-name>
+                    <var-value>4</var-value>
+                  </var>
+              </field>
+              <field property="name"
+                     depends="required">
+                  <arg position="0"
+                       key="User.name"
+                  />
+              </field>
+              <field property="password"
+                     depends="required,minlength,maxlength">
+                  <arg position="0"
+                       key="User.password"
+                  />
+                  <arg position="1"
+                       name="minlength"
+                       key="${var:minlength}"
+                       resource="false"
+                  />
+                  <arg position="1"
+                       name="maxlength"
+                       key="${var:maxlength}"
+                       resource="false"
+                  />
+                  <var>
+                    <var-name>minlength</var-name>
+                    <var-value>6</var-value>
+                  </var>
+                  <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>8</var-value>
+                  </var>
+              </field>
+              <field property="address"
+                     depends="required">
+                  <arg position="0"
+                       key="User.address"
+                  />
+              </field>
+              <field property="state"
+                     depends="required">
+                  <arg position="0"
+                       key="User.state"
+                  />
+              </field>
+      </form>
+  </formset>
+</form-validation>
+]]>
+</source>
+      <p>A resource file is used to configure messages, as described in <a 
+      href="configuring_messages.html">Configuring messages</a>.
+      </p>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,23 @@
+To build xdoclet modules, you need:
+
+- Ant (http://ant.apache.org/)
+- XDoclet (1.2.3 or newer version) binary distribution (http://xdoclet.sourceforge.net/)
+- To create a file named build.properties
+
+In build.properties you must define a XDoclet Home pointing to
+XDoclet installation:
+
+   xdoclet.home=<XDOCLET_HOME>
+
+e.g.
+   xdoclet.home=/usr/xdoclet
+
+Run ant to build the xdoclet modules distribution.
+
+e.g.:
+   ant
+
+xdoclet-genesis-module.jar will be created (<CURRENT_DIR>/dist)
+xdoclet-hibernate-ext-module.jar will be created (<CURRENT_DIR>/dist)
+
+You can put those jars in your xdoclet lib directory

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>genesis</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+    <author email="pmadril@uol.com.br">Pablo Jorge Madril</author>
+  </properties>
+  <body>
+    <section name="genesis">
+       <p><font size="+1"><a 
+       href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5887&amp;expandFolder=5887&amp;filter=genesis-all">Quick 
+       Download</a></font></p>
+    </section>
+    <section name="Uma visão geral">
+      <p>O <b>genesis</b> é um framework que tem como objetivo principal 
+      simplificar e tornar produtivo o desenvolvimento de aplicações 
+      corporativas, sem sacrificar a escalabilidade e testabilidade do software. 
+      Foca principalmente em simplificar o desenvolvimento de componentes de 
+      negócio e na construção de interfaces gráficas complexas com o mínimo 
+      de esforço de desenvolvedor. Para cumprir essa missão, o genesis integra
+      diversos frameworks open-source e suporta a plataforma Java 2 EE de 
+      forma completamente transparente para o desenvolvedor, através do uso de 
+      AOP. O nosso principal desafio é fazer com que pessoas com pouco 
+      conhecimento da plataforma Java sejam capazes de desenvolver aplicações 
+      robustas em pouco tempo, sem precisar aprender diversas tecnologias e 
+      conceitos complexos. Convidamos você a conhecer a nossa abordagem para 
+      esse problema.</p>
+    </section>
+    <section name="Por onde começar?">
+      <subsection name="Desenvolvedores">
+         <p>Faça o download do genesis e leia o <a 
+         href="documentation_intro.html">Manual do Usuário</a>. Rode os <a 
+         href="useradmin_sample.html">exemplos</a> e utilize uma <a 
+         href="empty_project.html">estrutura pronta</a> para começar a 
+         desenvolver. Em pouco tempo você estará criando a sua aplicação. 
+         Tire suas dúvidas no <a href="faq.html">FAQ</a> e participe da lista de 
+         discussão dentro de nossa comunidade. Para assinar a lista de 
+         discussão, basta enviar um e-mail para <a 
+         href="mailto:usuarios-subscribe@genesis.dev.java.net">usuarios-subscribe@genesis.dev.java.net</a>.
+         Após o envio do e-mail, basta você responder ao e-mail de confirmação 
+         do servidor. Para enviar qualquer mensagem para a lista, mande e-mail 
+         para o endereço <a 
+         href="mailto:usuarios@genesis.dev.java.net">usuarios@genesis.dev.java.net</a>.
+         </p>
+      </subsection>
+      <subsection name="Desenvolvedores de Frameworks">
+         <p>Fique por dentro da arquitetura do genesis estudando a nossa <a 
+         href="advanced_introduction.html">documentação avançada</a>. Veja 
+         detalhes a respeito das tecnologias utilizadas no framework (AOP, IoC, 
+         etc).</p>
+      </subsection>
+    </section>
+    <section name="Dúvidas?">
+       <subsection name="Lista de Discussão">
+       Inscreva-se na nossa <a 
+       href="mailto:usuarios-subscribe@genesis.dev.java.net">lista de 
+       discussão</a> e tire a suas dúvidas direto com os desenvolvedores.
+       </subsection>
+       <subsection name="FAQ">
+       Dúvidas mais frequentes respondidas no nosso <a href="faq.html">FAQ</a>
+       </subsection>
+    </section>
+ </body>
+</document>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Configuring messages</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro</author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Configuring messages">
+      <p>Messages can be externalized by configuring them in a
+      <code>java.util.ResourceBundle</code>. A <code>ResourceBundle</code>
+      allows one to keep a name/value property dictionary - similar to a
+      <code>Properties</code> instance -, supporting multiple
+      <code>java.util.Locale</code> instances. Putting it into a few words, it 
+      is possible to configure different messages depending on the language 
+      being used.</p>
+      <p>genesis uses a <code>ResourceBundle</code> named <code>messages</code>,
+      thus it is required that a <code>messages.properties</code> file is
+      available on classpath. The <code>net.java.dev.genesis.ui.UIUtils</code>
+      class keeps this <code>ResourceBundle</code> instance in runtime.</p>
+      <p>In the resource file messages relative to the following things are
+      configured:
+      </p>
+      <ul>
+        <li>Validation</li>
+        <li>Display values for <code>Enum</code> constants (in a
+        <code>ClassName.CONSTANT=Display value</code> format)</li>
+        <li>Messages for the default views provided with genesis, such as the
+        one used for <code>OptionDialog</code></li>
+        <li>Any user-defined text that need to be externalized</li>
+      </ul>
+      <p>There is an example of how to configure a <code>ResourceBundle</code>
+      from the useradmin sample below:</p>
+<source>
+# 1. Validation-related configuration
+errors.byte=The {0} field is not a byte.
+errors.short=The {0} field is not a short.
+errors.int=The {0} field is not an integer.
+errors.long=The {0} field is not a long.
+errors.float=The {0} field is not a float.
+errors.double=The {0} field is not a double.
+errors.bigdecimal=The {0} field is not a big decimal.
+errors.required=The {0} field is required.
+errors.requiredif=The {0} field is required.
+errors.mask=The {0} field is not valid.
+errors.email=The {0} field is not a valid email.
+errors.date=The {0} field is not a valid date.
+errors.min={0} must be greater or equal to {1}.
+errors.max={0} must be lesser or equal to {1}.
+errors.minlength=The {0} field can not be less than {1} characters.
+errors.maxlength=The {0} field can not be greater than {1} characters.
+errors.longRange={0} is not in the range {1} through {2}.
+errors.doubleRange={0} is not in the range {1} through {2}.
+errors.bigDecimalRange={0} is not in the range {1} through {2}.
+errors.jxpath=The {0} field is not valid.
+validation.errors.title=Validation errors
+
+# 2. Messages for default thinlet views
+MessageDialog.close=Close
+Option.YES=Yes
+Option.NO=No
+Option.CANCEL=Cancel
+  
+# 3. Messages used in error handling
+ErrorReporterDialog.ok=OK
+ErrorReporterDialog.stackTrace=Stack Trace:
+
+# 4. Used defined configurations
+ChooseView.title=Choose
+ChooseView.choose=Choose an option
+ChooseView.thinlet=Thinlet
+ChooseView.swing=Swing
+ChooseView.swt=SWT
+ChooseView.exit=Exit
+
+InsertRoleView.title=Insert Role
+InsertView.title=Insert User
+UpdateView.title=Update User
+RoleListView.title=Role List
+UserListView.title=Users Administration
+UserListView.deleteConfirmationTitle=Confirm Delete
+UserListView.deleteConfirmation=Are you sure you want to delete selected users ?
+
+button.ok=Ok
+button.add=Add
+button.remove=Remove
+button.cancel=Cancel
+button.save=Save
+button.search=Search
+button.reset=Reset
+button.newUser=New User
+button.updateUser=Update User
+button.removeUser=Remove User
+
+User.name=Name
+User.login=Login
+User.password=Password
+User.email=e-mail
+User.birthday=Birthday
+User.address=Address
+User.country=Country
+User.state=State
+User.role=Role
+
+Role.label=Label
+Role.code=Code
+
+Country.BR=Brazil
+Country.US=United States
+Country.OTHER=Other
+
+State.DF=Distrito Federal
+State.SP=São Paulo
+State.RJ=Rio de Janeiro
+State.AL=Alaska
+State.FL=Flórida
+State.NY=New York
+State.OTHER=Other
+</source>
+      <p>For more information on how to work with resource files, see the
+      Javadoc for class <code>java.util.ResourceBundle</code>.</p>
+    </section>
+  </body>
+</document>

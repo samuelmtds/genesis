@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Transaction support</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Transaction support">
+      <p>To run a method inside a transaction, the <code>@Transactional</code> 
+      annotation should be used in a similar way <code>@Remotable</code> is 
+      used, as shown below:</p>
+<source>
+@Transactional
+public void transactionalMethod() {
+   // method code
+}
+</source>
+      <p>Using <code>@Transactional</code> automatically applies the same 
+      effects of the <code>@Remotable</code> annotation to the method. Thefore, 
+      only one of these annotations need to be put in a method. Besides
+      keeping transparent remoting characteristics,
+      <code>@Transactional</code> forces the method to be executed inside a JTA
+      transaction. Any other JTA resources accessed during its execution will be
+      automatically included in the same transaction. The transaction context
+      will be propagated to any other method or component invoked by the first
+      method with a <code>@Transactional</code> annotation, without the need of
+      any additional code.</p>
+      <p>If the method execution completes as expected, the transaction will be
+      committed at the end of the method. If an exception is thrown, a
+      rollback will be issued and the exception will be propagated to the 
+      client-side.</p>
+    </section>
+  </body>
+</document>

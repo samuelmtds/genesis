@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Configuring genesis at startup</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Configuring genesis at startup">
+      <p>Several components must be initialized and/or configured so that
+      genesis works properly. In order to make this process easier, genesis
+      contains the class named
+      <code>net.java.dev.genesis.helpers.StartupHelper</code>. This class
+      encapsulates the steps that would have to be performed manually, but that 
+      tend to be very similar for most applications.</p>
+      <p>Most of the times, adding the following line to your application's 
+      startup code (probably the <code>main(String[] args)</code> method of one 
+      of the classes) is the only thing required:</p>
+<source>
+new StartupHelper().initialize();
+</source>
+      <p>It is important to notice that this class needs to be executed before
+      using any other genesis API in your application. The default
+      initialization process performed by this instruction executes the 
+      following steps:</p>
+      <ul>
+        <li>commons-beanutils configuration, so it is consistent with genesis
+        API</li>
+        <li>commons-jxpath configuration, if it's used in conditional
+        expressions</li>
+        <li>Registration of default converters and formatters, needed to
+        integrate Java components and the graphical API</li>
+        <li>Execution of a simple empty business class,
+        <code>net.java.dev.genesis.command.NoopCommand</code>, in a background
+        thread, just to initialize aspects and connect to the application server
+        without blocking the application.</li>
+        <li>Validation rules are loaded by a background thread so they are 
+        already available when needed.</li>
+      </ul>
+      <p>All the steps in this process may be customized by calling methods 
+      exposed by <code>StartupHelper</code>, making this class useful in
+      almost all scenarios. For example, if an application does not communicate
+      with a application server or will perform this anyway right after its
+      initialization, <code>NoopCommand</code> execution can be turned off by
+      doing:</p>
+<source>
+StartupHelper helper = new StartupHelper();
+helper.setRunNoopCommand(false);
+helper.initialize();
+</source>
+      <p><code>StartupHelper</code> registers a converter and a formatter for
+      <code>java.util.Date</code> according to a specific data format and
+      <code>java.util.Locale</code> instance. By default, their values are the
+      constant <code>MM/dd/yyyy</code> and the JVM default <code>Locale</code>,
+      but there is an overloaded constructor that allow us to specify them
+      directly:</p>
+<source>
+new StartupHelper(new Locale("pt", "BR"), "dd/MM/yyyy");
+</source>
+      <p>By default, <code>StartupHelper</code> loads the validation rules. If 
+      validation is not being used by the application, this pre-loading process 
+      can be turned off as shown below:</p>
+<source>
+StartupHelper helper = new StartupHelper();
+helper.setLoadValidatorRules(false);
+helper.initialize();
+</source>
+    </section>
+  </body>
+</document>

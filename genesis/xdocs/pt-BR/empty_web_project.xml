@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Estrutura de um projeto vazio para web</title>
+    <author email="allanjones@dev.java.net">Allan Jones Batista de Castro
+    </author>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Como começar?">
+      <p>O genesis foi criado com o intuito de sempre facilitar e agilizar o
+      processo de desenvolvimento. Para que você possa utilizá-lo da forma mais
+      rápida e fácil, disponibilizamos uma estrutura inteira de um projeto
+      vazio, assim você só precisa codificar suas classes. Todo processo de
+      compilação e instalação já estão configurados nesse projeto vazio.</p>
+      <p>É de extrema importância que você já tenha lido a documentação do
+      genesis e compreenda seus conceitos e funcionalidades. Antes de começar a
+      codificar, leia o <a href="documentation_intro.html">Manual do 
+      Usuário</a>.</p>
+      <p>À estrutura de um projeto vazio chamamos de <code>empty-web-project</code>
+      e este está presente na distribuição empty-web-project ou na distribuição 
+      completa do genesis. A estrutura se encontra no diretório
+      <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-web-project/</b></code>.</p>
+      <p>Veja exemplos de configuração para diferentes cenários <a 
+      href="#Cenários">aqui</a>.</p>
+    </section>
+    <section name="O que é necessário?">
+      <p>Além do genesis, é necessário ter instalado:</p>
+      <ul>
+        <li>Distribuição do genesis juntamente com as suas bibliotecas de
+        dependências.</li>
+        <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
+        alguma das versões 3.2.x ou 4.x</li>
+        <li>Para compilar e instalar a aplicação, recomendamos 
+        <a href="http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
+      </ul>
+    </section>
+    <section name="Configurando um novo projeto">
+      <p>Você pode copiar toda estrutura do <b>empty-web-project</b> para um
+      diretório de desenvolvimento de sua escolha. O primeiro passo para
+      configurar um novo projeto é copiar o arquivo
+      <code>build.properties.sample</code> para outro arquivo com nome <code>
+      build.properties</code>. O arquivo <code>build.properties</code> define
+      certas propriedades que são específicas do projeto ou do desenvolvedor. O
+      conteúdo inicial do arquivo <code>build.properties.sample</code> segue
+      abaixo:</p>
+<source>
+## Build properties sample ##
+
+#################################################################################
+## The following property must be defined in build.properties with an           #
+## appropriate value for the local environment                                  #
+jboss.home=/opt/jboss-3.2.7
+genesisBasedApplication.name=empty-web-project
+genesisBasedApplication.prettyName=Empty Web Project
+#################################################################################
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  #
+## need to be defined in build.properties if their values are different in your #
+## local setup                                                                  #
+#genesis.home=../../genesis
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.8
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+#################################################################################
+</source>
+      <p>Pelo menos três propriedades necessitam ser definidas:</p>
+      <ul>
+        <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
+        servidor JBoss 3.2.x ou 4.0.x</li>
+        <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
+        para seu projeto, de preferência sem espaços.</li>
+        <li><code><b>genesisBasedApplication.prettyName</b></code>: Define um
+        nome descritivo para o projeto. Esse nome pode conter espaços.</li>
+      </ul>
+      <p>Existem outras propriedades que não são obrigatórias pois já possuem um
+      valor padrão, porém elas podem ser redefinidas. Segue abaixo algumas
+      delas:</p>
+      <ul>
+        <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
+        do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
+        ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
+        do pool de conexões do JBoss. Você pode fornecer outro arquivo
+        que contenha as configurações personalizadas de seu próprio banco de dados.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indica o dialeto que o Hibernate
+        deve utilizar para gerar os comandos SQL para o banco. Se você for utilizar outro banco
+        que não for o HSQLDB você deve fornecer o dialeto correto. Para informações sobre qual
+        dialeto você deve utilizar, consulte a documentação do
+        <a href="http://www.hibernate.org/">Hibernate</a>.</li>
+      </ul>
+      <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
+      de um novo projeto utilizando o genesis.</p>
+      <ul>
+        <li>Possuímos o JBoss 4.0.4.GA instalado no diretório
+        <code>C:\servidores\jboss-4.0.4.GA</code></li>
+        <li>Instalamos a distribuição do genesis no diretório
+        <code>C:\projetos</code>, onde que criará o diretório
+        <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
+        <li>O projeto se chamará <b>helloworld</b> e seu nome descritivo será <b>
+        Hello World</b>.</li>
+      </ul>
+      <p>O nosso <code><b>build.properties</b></code> poderá ser:</p>
+<source>
+jboss.home=c:/servidores/jboss-4.0.4.GA
+genesisBasedApplication.name=helloworld
+genesisBasedApplication.prettyName=Hello World
+
+genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
+</source>
+    </section>
+    <section name="Desenvolvendo com o genesis">
+      <p>Existem dois diretórios de fontes no projeto:</p>
+      <ul>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/src</b>: Diretório
+        que contém todos os arquivos fontes que dizem respeito a parte web
+        da sua aplicação (servlets, context listeners, e outras classes ligadas a parte
+        visual da aplicação).</li>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/shared/src</b>: Diretório
+        que contém os arquivos fontes que são comuns tanto a parte web da
+        aplicação quanto ao container ejb da aplicação. Geralmente são
+        colocados nesse diretório de fontes as classes que representam a lógica
+        de negócio e possuem os métodos remotos/transacionais da aplicação
+        (<b>Commands</b>). Juntamente com os Commands, temos aquilo que chamamos
+        de <b>Databeans</b>, ou seja, os objetos que são mapeados do Hibernate,
+        pois estes objetos são passados desde a camada de visualização até a
+        camada de persistência.</li>
+      </ul>
+      <p>No diretório web da aplicação, encontramos ainda o diretório
+      <b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/content</b> onde deve ser colocado
+      os arquivos html, jsp, javascript, imagens, xml de configuração e outros
+      arquivos que geralmente ficam empacotados em um war.</p>
+      <p>Outro diretório é <b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/lib</b>
+      onde deve ser colocado as bibliotecas utilizadas na parte web da aplicação,
+      como por exemplo struts.jar (se você estiver usando Struts).</p>
+    </section>
+    <section name="Compilando e instalando sua aplicação">
+      <p>O projeto pode ser compilado e instalado no JBoss utilizando a
+      ferramenta <a href="http://ant.apache.org/">Ant</a>.</p>
+      <p>Para compilar e instalar a sua aplicação temos as seguintes tarefas
+      básicas do Ant:</p>
+      <ul>
+        <li><b>all</b>: Compila sua aplicação, gera os pacotes jar, sar e war além
+        de fazer o deploy da sua aplicação</li>
+        <li><b>clean</b>: Apaga todos os arquivos gerados numa compilação.</li>
+        <li><b>clean-build</b>: Equivalente a chamar as tarefas <code>clean</code> e 
+        <code>all</code> em seqüência</li>
+      </ul>
+      <p>A maneira rápida de colocar seu projeto para rodar:
+<source>
+ant all
+&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
+
+Depois, basta acessar a sua aplicação web no endereço correspondente, por exemplo:
+http://localhost:8080/&lt;genesisBasedApplication.name&gt;
+</source>
+      </p>
+    </section>
+    <section name="Cenários">
+       <p>Abaixo temos exemplos de configuração do genesis para alguns cenários</p>
+       <subsection name="Aplicação WEB usando MySQL e Struts">
+<p>Arquivo <b>build.properties</b></p>
+<source>
+### Indique a pasta onde se encontra a distribuição do genesis
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### Indique a pasta de instalação do JBoss
+jboss.home=D:/servers/jboss-4.0.4.GA
+
+### Indique o local onde o jar do driver do MySQL se encontra
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## Configurações de seu Banco de Dados
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+</source>
+<p>Arquivo <b>conf/mysql-ds.xml</b></p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>MySqlDS</jndi-name>
+    <connection-url>jdbc:mysql://localhost:3306/meudatabase</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>meuusuario</user-name>
+    <password>minhasenha</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
+    <!-- should only be used on drivers after 3.22.1 with "ping" support
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+    -->
+    <!-- sql to call when connection is created
+    <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+]]>
+</source>
+<p>Arquivo <b>build.xml</b></p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+  <import file="web_build.xml" />
+
+  <target name="-pre-init">
+    <property file="build.properties" />
+
+    <property name="genesisBasedApplication.name" value="minhaaplicacao" />
+    <property name="genesisBasedApplication.prettyName" value="Minha Aplicação" />
+
+    <!-- Não é necessário nenhuma outra configuração, basta colocar as 
+         bibliotecas do struts no diretório modules/web/lib -->
+
+    <!-- Bibliotecas necessárias ao módulo shared, colocar no diretório 
+         modules/shared/lib -->
+
+    <!-- Bibliotecas necessárias tanto ao módulo shared quanto web colocar 
+         no diretório lib -->
+  </target>
+</project>
+]]>
+</source>
+       </subsection>
+    </section>
+  </body>
+</document>
