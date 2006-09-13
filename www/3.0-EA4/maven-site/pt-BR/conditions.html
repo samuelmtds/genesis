@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Trabalhando com condições - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 12 September 2006
+                <span class="separator">|</span> Doc for  3.0-EA4
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><a href="../pt-BR/transactions.html">Suporte a transações</a></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/configuring_swt.html">Funcionalidades específicas para SWT</a><ul><li class="none"><a href="../pt-BR/configuring_swt.html">Configurando as bibliotecas do SWT</a></li></ul></li><li class="expanded"><strong><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a></strong><ul><li class="none"><strong><a href="../pt-BR/conditions.html">Trabalhando com condições</a></strong></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><a href="../pt-BR/handling_errors.html">Tratando erros</a></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Para web</a></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></li><li class="none"><a href="../pt-BR/aspects.html">Aspectos do genesis</a></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li><li class="none"><a href="../pt-BR/lookup_strategy.html">Estratégias de pesquisa de componentes gráficos</a></li><li class="none"><a href="../pt-BR/widget_binder.html">Customizando o binding de componentes gráficos</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Trabalhando_com_condições"></a><h2>Trabalhando com condições</h2>
+      <p>Um conceito poderoso no genesis é o suporte a condições. Esse suporte
+      permite implementar uma variedade de características, como controle de
+      habilitação/desabilitação de widgets, visibilidade, limpeza automática de
+      campos e chamadas automáticas a métodos. Tudo isso é feito de maneira
+      declarativa no form, sem necessidade de lidar com a API gráfica utilizada
+      para as views.</p>
+      <div class="subsection"><a name="Habilitando_e_desabilitando_componentes"></a><h3>Habilitando e desabilitando componentes</h3>
+        <p>É muito comum no desenvolvimento de interfaces gráficas a situação em
+        que determinado campo ou botão só pode estar habilitado quando uma
+        determinada condição é verdade. A fim de simplificar estes casos, o
+        genesis possui uma anotação chamada <code>@EnabledWhen</code>. Esta
+        anotação pode ser utilizada tanto com atributos como com ações. Um
+        exemplo prático do uso encontra-se abaixo:</p>
+
+    <div class="source"><pre>
+@Form
+public class ExemploEnabledWhenForm {
+   private boolean casado;
+   private String nomeConjuge;
+
+   public boolean isCasado() {
+      return casado;
+   }
+
+   public void setCasado(boolean casado) {
+      this.casado = casado;
+   }
+
+   @EnabledWhen("form.casado")
+   public String getNomeConjuge() {
+      return nomeConjuge;
+   }
+
+   public void setNomeConjuge(String nomeConjuge) {
+      this.nomeConjuge = nomeConjuge;
+   }
+}
+</pre></div>
+  
+        <p>No caso acima, somente quando o widget que representa a propriedade
+        <code>casado</code> estiver indicando o valor <code>true</code> para ela
+        é que será possível entrar com o nome do cônjuge, i.e., esposo/esposa da
+        pessoa.</p>
+      </div>
+      <div class="subsection"><a name="Controlando_a_visibilidade"></a><h3>Controlando a visibilidade</h3>
+        <p>É possível ocultar componentes ou mostrá-los condicionalmente
+        utilizando a anotação <code>@VisibleWhen</code>. Sua sintaxe é
+        semelhante a da anotação <code>@EnabledWhen</code> e também pode ser
+        utilizada tanto para atributos como para ações. Um exemplo de uso com
+        ação encontra-se abaixo:</p>
+
+    <div class="source"><pre>
+@Form
+public class ExemploVisibleWhenForm {
+   private int numeroDependentes;
+
+   public int getNumeroDependentes() {
+      return numeroDependentes;
+   }
+
+   public void setNumeroDependentes(int numeroDependentes) {
+      this.numeroDependentes = numeroDependentes;
+   }
+
+   @Action
+   @VisibleWhen("form.numeroDependentes &gt; 0")
+   public void calculaTaxasAdicionais() {
+      // ...
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>O botão que representa <code>calculaTaxasAdicionais()</code> só
+        estará visível quando o valor da propriedade
+        <code>numeroDependentes</code> for maior que zero.</p>
+      </div>
+      <div class="subsection"><a name="Agrupamento_de_widgets"></a><h3>Agrupamento de widgets</h3>
+        <p>Em muitos casos, certas operações necessitam ser executadas para um
+        grupo de controles visuais (widgets). Um exemplo desta situação é tornar
+        invisível ou habilitado um grupo de controles como um todo. Para 
+        explicar como fazer isso, vamos considerar um exemplo prático. Abaixo 
+        temos o código resumido da construção de uma mesma interface em 
+        Thinlet, Swing e SWT:
+        </p>
+
+    <div class="source"><pre>
+
+...
+&lt;label text="Data Corrente:" font="bold"/&gt;
+&lt;panel width="10" height="1" /&gt;
+&lt;textfield name="dataCorrente" /&gt;
+...
+
+</pre></div>
+  
+
+    <div class="source"><pre>
+
+//..
+getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
+
+JLabel dataCorrenteLabel = new JLabel();
+dataCorrenteLabel.setText("Data Corrente:");
+getContentPane().add(dataCorrenteLabel);
+
+JTextField dataCorrente = new javax.swing.JTextField();
+dataCorrente.setName("dataCorrente");
+getContentPane().add(dataCorrente);
+
+//..
+
+</pre></div>
+  
+
+    <div class="source"><pre>
+
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label dataCorrenteLabel = new Label(shell, SWT.NONE);
+dataCorrenteLabel.setText("Data Corrente:");
+
+Text dataCorrente = new Text(shell, SWT.BORDER);
+dataCorrente.setData("dataCorrente");
+
+//..
+
+</pre></div>
+  
+        <p>Nas interfaces acima, o desenvolvedor tem a intenção de
+        mostrar o campo "Data Corrente" mediante certas condições. Para isso,
+        utiliza-se a anotação <code>@VisibleWhen</code> conforme o
+        código abaixo:</p>
+
+    <div class="source"><pre>
+@VisibleWhen("certasCondicoes")
+public Date getDataCorrente() {
+   ...
+}
+</pre></div>
+  
+        <p>Porém, neste caso, o que ocorre é que apenas o campo texto 
+        (<code>textfield</code>/<code>JTextField</code>/<code>Text</code>)
+        fica invisível (caso as referidas condições não sejam satisfeitas). 
+        Atente para o fato de que o 
+        <code>label</code>/<code>JLabel</code>/<code>Label</code> e o 
+        <code>panel</code> (necessário para espaçamento no Thinlet) não ficam 
+        invisíveis - isto claramente não é o que deve ocorrer nestas situações. 
+        O desejável é que esses três controles sigam a mesma regra de 
+        visibilidade.</p>
+        <p>Para que isto ocorra, utiliza-se a propriedade
+        <code>widgetGroup</code> no atributo "property" do
+        <code>textfield</code> no xml do Thinlet, conforme o exemplo abaixo:</p>
+
+    <div class="source"><pre>
+
+...
+&lt;label name="dataCorrenteLabel" text="Data Corrente:" font="bold"/&gt;
+&lt;panel name="dataCorrenteEspaco" width="10" height="1" /&gt;
+&lt;textfield name="dataCorrente"
+      property="widgetGroup=dataCorrenteLabel,dataCorrenteEspaco"/&gt;
+...
+
+</pre></div>
+  
+        <p>Veja que os controles <code>label</code> e
+        <code>panel</code> agora estão nomeados e referenciados dentro do
+        <code>widgetGroup</code>, separados por vírgula.</p>
+        <p>Para o Swing, deve-se definir a <code>clientProperty</code> 
+        <code>SwingBinder.WIDGET_GROUP_PROPERTY</code> e para o SWT, deve-se 
+        definir o metadado (<code>data</code>) 
+        <code>SWTBinder.WIDGET_GROUP_PROPERTY</code> conforme demonstrado 
+        abaixo:</p>
+
+    <div class="source"><pre>
+
+//..
+getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
+
+JLabel dataCorrenteLabel = dataCorrenteLabel = new JLabel();
+dataCorrenteLabel.setName("dataCorrenteLabel");
+dataCorrenteLabel.setText("Data Corrente:");
+getContentPane().add(dataCorrenteLabel);
+
+JTextField dataCorrente = new javax.swing.JTextField();
+dataCorrente.setName("dataCorrente");
+dataCorrente.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, "dataCorrenteLabel");
+getContentPane().add(dataCorrente);
+
+//..
+
+</pre></div>
+  
+
+    <div class="source"><pre>
+
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label dataCorrenteLabel = new Label(shell, SWT.NONE);
+dataCorrenteLabel.setText("Data Corrente:");
+
+Text dataCorrente = new Text(shell, SWT.BORDER);
+dataCorrente.setData("dataCorrente");
+dataCorrente.setData(SWTBinder.WIDGET_GROUP_PROPERTY, "dataCorrenteLabel");
+//..
+
+</pre></div>
+  
+        <p>Perceba que o valor da <code>clientProperty</code>/<code>data</code> 
+        é o <code>name</code>/<code>data</code> do 
+        <code>JLabel</code>/<code>Label</code>. Se houvesse mais de um 
+        componente, seus nomes poderiam ser separados por vírgula ou poderia ser
+        utilizada uma array de <code>String</code> como valor da propriedade.
+        Pode-se ainda utilizar como valor da 
+        <code>clientProperty</code>/<code>data</code> o próprio componente, uma 
+        coleção de componentes ou um array de componentes, como ilustrado 
+        abaixo:</p>
+
+    <div class="source"><pre>
+//..
+getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
+
+JLabel dataCorrenteLabel = dataCorrenteLabel = new JLabel();
+dataCorrenteLabel.setName("dataCorrenteLabel");
+dataCorrenteLabel.setText("Data Corrente:");
+getContentPane().add(dataCorrenteLabel);
+
+JTextField dataCorrente = new javax.swing.JTextField();
+dataCorrente.setName("dataCorrente");
+dataCorrente.putClientProperty(SwingBinder.WIDGET_GROUP_PROPERTY, <b>dataCorrenteLabel</b>);
+getContentPane().add(dataCorrente);
+
+//..
+</pre></div>
+  
+
+    <div class="source"><pre>
+//..
+shell = new Shell(SWT.TITLE | SWT.CLOSE);
+
+Label dataCorrenteLabel = new Label(shell, SWT.NONE);
+dataCorrenteLabel.setText("Data Corrente:");
+
+Text dataCorrente = new Text(shell, SWT.BORDER);
+dataCorrente.setData("dataCorrente");
+dataCorrente.setData(SWTBinder.WIDGET_GROUP_PROPERTY, <b>dataCorrenteLabel</b>);
+//..
+</pre></div>
+  
+        <p>Desse modo, todos os widgets referenciados irão obedecer à regra de 
+        visibilidade anotada no <code>form</code> anteriormente.</p>
+        <p>Além do agrupamento genérico <code>widgetGroup</code>, pode-se
+        utilizar as propriedades mais específicas <code>enabledWidgetGroup</code>
+        e <code>visibleWidgetGroup</code> que definem um grupo de widgets que
+        seguem respectivamente as regras de habilitação/desabilitação e
+        visibilidade/invisibilidade de forma separada. Essas propriedades são 
+        disponibilizadas porque em muitos casos o agrupamento de widgets é 
+        diferente em cada caso. Exemplo:</p>
+
+    <div class="source"><pre>
+
+...
+&lt;label name="clienteLabel" text="Cliente:" font="bold"/&gt;
+&lt;panel name="clienteEspaco1" width="10" height="1" /&gt;
+&lt;textfield name="codigoCliente" ... /&gt;
+&lt;panel name="clienteEspaco2" width="10" height="1" /&gt;
+&lt;textfield name="nomeCliente"
+      property="enabledWidgetGroup=codigoCliente;
+            visibleWidgetGroup=clienteLabel,clienteEspaco1,
+                               codigoCliente,clienteEspaco2"/&gt;
+...
+
+</pre></div>
+  
+        <p>Dessa forma, pode-se definir uma regra de habilitação/desabilitação
+        de edição que afetará apenas os widgets <code>codigoCliente</code> e
+        <code>nomeCliente</code> e uma outra regra de visibilidade para o
+        conjunto completo, incluindo o label e os espaçamentos.</p>
+        <p>Para o Swing, utiliza-se as <code>clientProperty</code>s 
+        <code>SwingBinder.ENABLED_GROUP_PROPERTY</code> e 
+        <code>SwingBinder.VISIBLE_GROUP_PROPERTY</code>.
+        Para o SWT, utiliza-se os metadados (<code>data</code>) 
+        <code>SWTBinder.ENABLED_GROUP_PROPERTY</code> e 
+        <code>SWTBinder.VISIBLE_GROUP_PROPERTY</code>.</p>
+      </div>
+      <div class="subsection"><a name="Limpando_o_conteúdo_dos_campos"></a><h3>Limpando o conteúdo dos campos</h3>
+        <p>Sob diversas condições é necessário limpar o conteúdo de certos
+        campos. O genesis pode fazer isso automaticamente pelo programador
+        através do uso da anotação <code>@ClearOn</code>. Embora sua sintaxe
+        seja semelhante a de <code>@EnabledWhen</code> e
+        <code>@VisibleWhen</code>, esta anotação somente pode ser usada para
+        atributos e não para ações (já que elas não possuem conteúdo). Pode-se
+        modificar um dos exemplos anteriores para torná-lo mais correto:</p>
+
+    <div class="source"><pre>
+@Form
+public class ExemploClearOnForm {
+   private boolean casado;
+   private String nomeConjuge;
+
+   public boolean isCasado() {
+      return casado;
+   }
+
+   public void setCasado(boolean casado) {
+      this.casado = casado;
+   }
+
+   @EnabledWhen("form.casado")
+   @ClearOn("!form.casado")
+   public String getNomeConjuge() {
+      return nomeConjuge;
+   }
+
+   public void setNomeConjuge(String nomeConjuge) {
+      this.nomeConjuge = nomeConjuge;
+   }
+}
+</pre></div>
+  
+        <p>Quando a propriedade <code>casado</code> tiver o valor
+        <code>false</code> o atributo <code>nomeConjuge</code> terá o seu valor
+        resetado para <code>null</code> automaticamente.</p>
+        <p>O valor para o qual o campo é resetado é definido através da anotação
+        <code>@EmptyValue</code>. Esta anotação deve estar sobre o atributo para
+        o qual especifica o valor vazio. Sua sintaxe é:</p>
+
+    <div class="source"><pre>
+@EmptyValue("valor")
+</pre></div>
+  
+        <p>Caso <code>@EmptyValue</code> não esteja especificado, um valor
+        padrão é utilizado - <code>false</code> para campos booleanos, zero para
+        numéricos e <code>null</code> para os demais.</p>
+        <p>É possível utilizar <code>@ClearOn</code> juntamente com uma anotação
+        <code>@DataProvider</code>. Nesses casos, os componentes referenciados pelo
+        DataProviders são limpos e as propriedades do form que indicam os itens
+        selecionados são resetados para <code>null</code> quando a condição
+        for satisfeita. Um exemplo de uso é:</p>
+
+    <div class="source"><pre>
+   @DataProvider(objectField="estado")
+   @ClearOn("&lt;alguma condição em linguagem de script&gt;")
+   public List populaEstados() {
+      ...
+   }
+</pre></div>
+  
+      </div>
+      <div class="subsection"><a name="Invocando_métodos_automaticamente"></a><h3>Invocando métodos automaticamente</h3>
+        <p>Alguns métodos precisam ser chamados toda vez que certas condições
+        ocorrerem. Ao invés de forçar o programador a fazer isso manualmente - o
+        que pode levar a código "spaghetti" -, o genesis possui a anotação
+        <code>@CallWhen</code>. Com sintaxe similar à das anotações anteriores,
+        esta anotação pode somente ser usada em ações e não em atributos.</p>
+        <p>Pode-se modificar um dos exemplos anteriores para ilustrar o uso
+        prático desta anotação:</p>
+
+    <div class="source"><pre>
+@Form
+public class ExemploCallWhenForm {
+   private int numeroDependentes;
+
+   public int getNumeroDependentes() {
+      return numeroDependentes;
+   }
+
+   public void setNumeroDependentes(int numeroDependentes) {
+      this.numeroDependentes = numeroDependentes;
+   }
+
+   @Action
+   @CallWhen("form.numeroDependentes &gt; 0")
+   public void calculaTaxasAdicionais() {
+      // ...
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>Diferentemente do exemplo original para <code>@VisibleWhen</code>, o
+        método <code>calculaTaxasAdicionais()</code> será invocado
+        automaticamente pelo genesis toda vez que a propriedade
+        <code>numeroDependentes</code> for maior que zero.</p>
+      </div>
+      <div class="subsection"><a name="Declarando_condições"></a><h3>Declarando condições</h3>
+        <p>Embora todas as anotações que recebem condições em formato de script
+        possam receber expressões de qualquer tipo, certas condições podem ser 
+        utilizadas repetidas vezes no código ou como parte de outra expressão. 
+        Assim, o genesis possibilita a declaração dessas condições e sua 
+        exportação como variáveis que podem ser referenciadas em outros pontos 
+        do código. Para declarar uma condição utiliza-se a anotação 
+        <code>@Condition</code>, que possui a seguinte sintaxe:</p>
+
+    <div class="source"><pre>
+@Condition("nomeCondicao=expressaoScript")
+</pre></div>
+  
+        <p>A variável <code>nomeCondicao</code> é exportada de modo a
+        representar a expressão <code>expressaoScript</code> em outros pontos do
+        código. A maneira de se referenciar a variável numa outra expressão 
+        depende da linguagem de script utlizada.</p>
+        <p>Esta anotação pode ser usada tanto na classe, no getter de um
+        atributo ou em um método anotado com <code>@Action</code>. Contudo, seu 
+        escopo dentro do genesis será sempre o de classe, não importando onde 
+        ela seja declarada. Obviamente, esta anotação é útil somente quando 
+        usada em conjunto com outra anotação condicional que referencie a 
+        variável exportada, como as mencionadas acima.</p>
+        <p></p>
+      </div>
+    </div><div class="section"><a name="Determinando_se_o_campo_está_vazio"></a><h2>Determinando se o campo está vazio</h2>
+      <p>A fim de realizar ou não algumas operações, o framework precisa
+      determinar se um campo está vazio. Além disso, o fato de um campo estar
+      preenchido ou não é uma informação que costuma ser utilizada pelo
+      desenvolvedor para estabelecer condições nas anotações do genesis. A
+      interface <code>EmptyResolver</code>, definida no pacote
+      <code>net.java.dev.genesis.resolvers</code> é utilizada para isto.</p>
+      <p>Esta interface expõe um único método, <code>isEmpty(Object)</code>, que
+      retorna um <code>boolean</code>. Para especificar qual implementação de
+      <code>EmptyResolver</code> deverá ser utilizada para determinado atributo
+      basta anotá-lo com <code>@EmptyResolver</code>. A sintaxe desta anotação
+      é:</p>
+
+    <div class="source"><pre>
+@EmptyResolver(value=&lt;classeQueImplementaInterface&gt;,
+               properties=&lt;atributos&gt;)
+</pre></div>
+  
+      <p>Para evitar que fosse necessário especificar qual implementação de
+      <code>EmptyResolver</code> deveria ser utilizada para cada atributo em
+      cada form de uma aplicação, o genesis provê um mecanismo capaz de
+      determinar uma implementação padrão com base no tipo do atributo. A classe
+      <code>EmptyResolverRegistry</code> mantém um registro das implementações
+      padrão de <code>EmptyResolver</code> por classe. As seguintes
+      implementações padrão são mantidas inicialmente:</p>
+      <ul>
+        <li><code>MapEmptyResolver</code> é registrado para instâncias de
+        <code>java.util.Map</code>. Retorna <code>true</code> quando a instância
+        é nula ou <code>java.util.Map.isEmpty()</code> retorne <code>true</code>.</li>
+        <li><code>CollectionEmptyResolver</code> é a implementação padrão para
+        <code>java.util.Collection</code>. Usa o mesmo princípio que
+        <code>MapEmptyResolver</code> para determinar as instâncias vazias.</li>
+        <li>A implementação registrada para <code>String</code> é
+        <code>StringEmptyResolver</code>. Retorna <code>true</code> quando a instância
+        é nula ou de tamanho zero após removidos os espaços, i.e.,
+        <code>s == null || s.trim().length() == 0</code>.</li>
+        <li>Para todos os casos restantes é registrada uma instância de
+        <code>DefaultEmptyResolver</code>. Esta implementação retorna <code>true</code>
+        para instâncias nulas ou arrays com zero elementos.</li>
+      </ul>
+      <p>Estas implementações registradas como padrão devem ser suficientes para
+      a maioria dos casos. Como exemplo de customização, consideremos o uso da
+      anotação em um atributo de form no qual espaços vazios são relevantes:</p>
+
+    <div class="source"><pre>
+@EmptyResolver(properties="trim=false")
+public String getAtributo() {
+   return atributo;
+}
+</pre></div>
+  
+      <p>Visto que <code>String</code> já possui um <code>EmptyResolver</code>
+      padrão registrado, <code>StringEmptyResolver</code>, e que esta
+      implementação já expõe um atributo que permite configurar se os espaços
+      serão removidos ou não, não é necessário especificar o nome da classe que
+      implementa a interface e sim apenas definir a propriedade <code>trim</code>
+      como <code>false</code>. Se não fosse possível configurar a instância
+      padrão, uma outra implementação poderia ser usada da seguinte forma:</p>
+
+    <div class="source"><pre>
+@EmptyResolver(br.com.empresa.pacote.ImplementacaoEmptyResolver.class)
+public String getAtributo() {
+   return atributo;
+}
+</pre></div>
+  
+      <div class="subsection"><a name="Verificando_se_um_campo_está_vazio_em_expressões___________condicionais"></a><h3>Verificando se um campo está vazio em expressões           condicionais</h3>
+        <p>Conforme já mencionado, é muito comum determinar condições baseadas
+        no fato de um campo estar vazio ou não. O genesis expõe funções de script
+        auxiliares que podem ser usadas nas condições com o intuito de facilitar
+        esta tarefa: <code>isEmpty(any)</code> e 
+        <code>isNotEmpty(any)</code>.</p>
+        <p>Quando o valor passado para elas é uma propriedade do form, o
+        <code>EmptyResolver</code> configurado para ela - determinado pelo
+        processo acima descrito - é utilizado para determinar o retorno da
+        função. Caso seja uma variável ou mesmo uma constante, obtém-se de
+        <code>EmptyResolverRegistry</code> a implementação padrão de
+        <code>EmptyResolver</code> para o tipo da expressão e esta é usada.
+        Pode-se utilizar estas funções com a linguagem de script padrão do 
+        genesis, <a href="generic_scripting.html">JavaScript</a>, como mostrado 
+        abaixo:</p>
+
+    <div class="source"><pre>
+public String getAtributo() {
+   return atributo;
+}
+
+public void setAtributo(String atributo) {
+   this.atributo = atributo;
+}
+
+@EnabledWhen("genesis.isNotEmpty('form:atributo')")
+public String getAtributoDependente() {
+   return atributoDependente;
+}
+
+public void setAtributoDependente(String atributoDependente) {
+   this.atributoDependente = atributoDependente;
+}
+</pre></div>
+  
+        <p>Note o uso da sintaxe <code>'form:atributo'</code> como parâmetro da
+        função. Isso é necessário para que a função seja aplicada para o valor
+        de <code>atributo</code> no form, ao invés de utilizar a literal 
+        <code>'atributo'</code> como argumento.</p>
+        <p>É possível verificar a sintaxe desta função para outras linguagens de
+        script no <a href="quick_reference.html#Funções_script_do_genesis">guia 
+        de referência rápida de anotações</a>.</p>
+      </div>
+    </div><div class="section"><a name="Comparando_valores"></a><h2>Comparando valores</h2>
+      <p>Tanto o próprio framework como o desenvolvedor precisa diversas vezes
+      verificar se algum campo teve seu valor alterado ou se seu valor é igual
+      ao de uma constante ou ao conteúdo de outro campo. A interface
+      <code>EqualityComparator</code> definida em
+      <code>net.java.dev.genesis.equality</code> é implementada por classes
+      capazes de tomar essa decisão.</p>
+      <p>Nesta interface é definido o método <code>equals(Object,Object)</code>
+      que retorna um <code>boolean</code> indicando se as instâncias comparadas
+      são iguais. A anotação de mesmo nome, <code>@EqualityComparator</code>
+      pode ser usada para definir explicitamente a implementação utilizada para
+      determinado atributo. Sua sintaxe é semelhante a de
+      <code>@EmptyResolver</code>:</p>
+
+    <div class="source"><pre>
+@EqualityComparator(value=&lt;classeQueImplementaInterface&gt;,
+                    properties=&lt;atributos&gt;
+</pre></div>
+  
+      <p>Na maioria dos casos não será necessário utilizar a anotação visto que
+      o genesis possui também para este caso um mecanismo padrão para determinar
+      qual implementação da interface deve ser utilizada para um dado atributo.
+      O registro das classes e suas implementações é mantido por
+      <code>EqualityComparatorRegistry</code>. As implementações registradas por
+      padrão são:</p>
+      <ul>
+        <li><code>BigDecimalEqualityComparator</code> considera duas instâncias
+        de <code>java.math.BigDecimal</code> iguais se ambas forem nulas ou se o
+        retorno do método <code>compareTo(BigDecimal)</code> invocado sobre uma
+        delas for zero.</li>
+        <li><code>StringEqualityComparator</code> considera <code>String</code>s
+        nulas ou de tamanho zero após removidos os espaços como iguais. Também
+        são consideradas iguais se <code>s1.trim().equals(s2.trim())</code>.</li>
+        <li>Os casos restantes são tratados por
+        <code>DefaultEqualityComparator</code> que determina como iguais duas
+        instâncias nulas ou utiliza o retorno de <code>o1.equals(o2)</code>.</li>
+      </ul>
+      <div class="subsection"><a name="Verificando_mudanças_de_valores_em_campos_e_fazendo___________comparações_em_expressões_condicionais"></a><h3>Verificando mudanças de valores em campos e fazendo           comparações em expressões condicionais</h3>
+        <p>Algumas funções de script são exportadas pelo genesis para auxiliar o
+        programador em tarefas comuns:</p>
+        <ul>
+          <li><code>hasChanged(propriedade)</code> e
+          <code>hasNotChanged(propriedade)</code> verificam se ocorreram ou
+          não mudanças no valor da propriedade do form.</li>
+          <li><code>equals(any,any)</code> e <code>notEquals(any,any)</code>
+          comparam dois valores - que podem ser constantes, propriedades do form
+          ou variáveis - e retornam o resultado da comparação.</li>
+        </ul>
+        <p>O genesis mantém internamente um controle dos campos que tiveram seu
+        valor alterado na iteração atual. É esta lista que é consultada pelas
+        funções <code>hasChanged(propriedade)</code> e
+        <code>hasNotChanged(propriedade)</code>. Para determinar se um valor
+        foi alterado ou não e popular esta lista interna, o framework utiliza a
+        instância de <code>EqualityComparator</code> configurada para a
+        propriedade.</p>
+        <p>As funções <code>equals(any,any)</code> e
+        <code>notEquals(any,any)</code> também utilizam instâncias de
+        <code>EqualityComparator</code> para determinar seu retorno. No entanto,
+        o processo para isto é um pouco mais complexo, conforme explicado
+        abaixo:</p>
+        <ul>
+          <li>É determinada a instância de <code>EqualityComparator</code> para
+          cada um dos parâmetros. Se o parâmetro for uma propriedade do form, a
+          implementação configurada para ele será utilizada. Caso contrário,
+          será considerada a implementação padrão obtida através de consulta a
+          <code>EqualityComparatorRegistry</code>.</li>
+          <li>Se os comparadores dos dois parâmetros forem iguais, o primeiro
+          deles será utilizado para compará-los.</li>
+          <li>Se o primeiro parâmetro for da mesma classe ou uma subclasse do
+          tipo do segundo parâmetro, a sua instância de
+          <code>EqualityComparator</code> será utilizada para efetuar a
+          comparação.</li>
+          <li>Se o segundo parâmetro for da mesma classe ou uma subclasse do
+          tipo do primeiro parâmetro, a sua instância de
+          <code>EqualityComparator</code> será utilizada para efetuar a
+          comparação.</li>
+          <li>Se nenhuma das condições acima for verdade será retornado
+          <code>false</code>.</li>
+        </ul>
+        <p>O uso de uma função de cada par, utilizando 
+        <a href="generic_scripting.html">JavaScript</a>, é demonstrado 
+        abaixo:</p>
+
+    <div class="source"><pre>
+public BigDecimal getTaxa() {
+   return taxa;
+}
+
+public void setTaxa(BigDecimal taxa) {
+   this.taxa = taxa;
+}
+
+@Action
+@CallWhen("genesis.hasChanged('form:taxa')")
+public void recalculaValores() {
+   // lógica de recálculo
+}
+</pre></div>
+  
+
+    <div class="source"><pre>
+public BigDecimal getValorDevido() {
+   return valorDevido;
+}
+
+public void setValorDevido(BigDecimal valorDevido) {
+   this.valorDevido = valorDevido;
+}
+
+public BigDecimal getValorPago() {
+   return valorPago;
+}
+
+public void setValorPago(BigDecimal valorPago) {
+   this.valorPago = valorPago;
+}
+
+@Action
+@CallWhen("genesis.notEquals('form:valorDevido', 'form:valorPago')")
+public void calculaMontanteCorrigido() {
+   // lógica para cálculo do montante corrigido
+}
+</pre></div>
+  
+      </div>
+      <div class="subsection"><a name="Alterando_a_forma_como_os_valores_são_clonados"></a><h3>Alterando a forma como os valores são clonados</h3>
+         <p>Em versões anteriores, os valores anteriores das propriedades eram
+         simplesmente copiados como parte do estado do form, o que trazia 
+         algumas limitações na detecção de mudança de valores. Por exemplo, 
+         caso o valor de uma propriedade fosse um JavaBean e uma das 
+         propriedades deste bean fosse alterada, não seria possível detectar a
+         mudança com <code>genesis.hasChanged('form:propriedade')</code>, visto 
+         que tanto a cópia do estado anterior que o genesis possuía como o valor 
+         atual apontariam para a mesma instância em memória.</p>
+         <p>A partir da versão 2.3 foi introduzida uma API que permite controlar
+         como o genesis gera a cópia do valor anterior de uma propriedade. A 
+         interface <code>net.java.dev.genesis.cloning.Cloner</code> possui um
+         método <code>clone(Object)</code> que retorna o valor que o genesis 
+         deve guardar como cópia do valor informado como parâmetro. A 
+         implementação padrão dessa interface - provida por 
+         <code>net.java.dev.genesis.cloning.DefaultCloner</code> - simplesmente 
+         retorna o valor passado como parâmetro, preservando assim a 
+         compatibilidade com a versão anterior.</p>
+         <p>Assim como no caso de <code>EqualityComparator</code>, existe um 
+         registro que associa as implementações de <code>Cloner</code> com a 
+         classe usada na propriedade, 
+         <code>net.java.dev.genesis.cloning.ClonerRegistry</code>, bem como uma
+         anotação que permite sobrescrever a implementação de 
+         <code>Cloner</code> a ser usada, <code>@Cloner</code>.</p>
+         <p>O código abaixo mostra como sobrescrever a implementação de 
+         <code>Cloner</code> usada tanto globalmente como para uma propriedade
+         específica de um bean:</p>
+
+    <div class="source"><pre>
+ClonerRegistry.getInstance().register(Usuario.class, new BeanUtilsCloner());
+</pre></div>
+  
+
+    <div class="source"><pre>
+@Form
+public class ExemploClonerForm {
+   @Cloner(net.java.dev.genesis.cloning.BeanUtilsCloner.class)
+   public Usuario getUsuario() {
+      // ...
+   }
+   
+   // ...
+}
+</pre></div>
+  
+         <p>A classe utilizada nos exemplos acima, 
+         <code>net.java.dev.genesis.cloning.BeanUtilsCloner</code>, é a outra 
+         implementação provida pelo genesis que clona o valor utilizando a API 
+         do Commons BeanUtils.</p>
+      </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2006, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
