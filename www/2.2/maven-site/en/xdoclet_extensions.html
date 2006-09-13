@@ -1,73 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - XDoclet extensions</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
-                	Last published: 19 July 2005
-                  | Doc for 2.2</div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/screenshots.html">Screenshots</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="collapsed"><a href="../en/ui_basic_concepts.html">UI component model</a></li><li class="none"><a href="../en/business_component_model.html">Business component model</a></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li><li class="none"><strong><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></strong></li></ul></li><li class="none"><a href="../en/jars_explained.html">Understanding genesis jars</a></li><li class="none"><a href="../en/empty_project.html">Developing with genesis</a></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="collapsed"><a href="../en/advanced_introduction.html">Advanced guide</a></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="XDoclet_extensions"></a><h2>XDoclet extensions</h2><p><a href="http://xdoclet.sf.net/" class="externalLink" title="External Link">XDoclet</a> is a framework that
-      makes it possible to generate code from special Javadoc tags present in
-      source code. genesis' development started when the most recent XDoclet
-      version available was 1.2.0 and several resources were still not part of
-      it, especially when it came to its Hibernate integration.</p><p>To work around those limitations, genesis' distribution contained some
-      modified XDoclet modules for a while. As XDoclet itself evolved, some
-      new features eventually became part of it, but the way the extensions
-      present in genesis were being distributed prevented features from the
-      overridden modules to be used - both from the validation and hibernate
-      modules. Since genesis 2.2, this distribution has been modified so it is
-      easier to use both features that are part of the original XDoclet as well
-      as the ones made available by genesis.</p><p>The current version of the extensions contains all features that are
-      part of XDoclet 1.2.2 and some modifications as explained below.</p></div><div class="section"><a name="genesis_module"></a><h2>genesis module</h2><p><a href="http://jakarta.apache.org/commons/validator/" class="externalLink" title="External Link">Commons
-      Validator</a> was originally part of <a href="http://struts.apache.org" class="externalLink" title="External Link">Struts</a> and that is why the support
-      provided by XDoclet is limited to using Commons Validator with this web
-      framework. That is the reason tags that generate the Commons Validator
-      xml file are prefixed by <code>@struts.</code> and have an explicit
-      dependency on Struts classes.</p><p>The XDoclet extension module named genesis provides tags with the same
-      semantics as the <code>@struts.validator*</code> tags, except the tags'
-      names begin with <code>@genesis.validator</code> and they work with POJOs
-      instead of requiring the annotated classes to extend a Struts class. An
-      example of how to use these tags can be found in the <a href="ui_additional_features.html#Validating_data">documentation about
-      validation support</a>.</p></div><div class="section"><a name="hibernate_module"></a><h2>hibernate module</h2><p>The hibernate module supports some new features that are not available
-      in the original module bundled with XDoclet. The main ones are support
-      for generating the <code>meta</code> element by using the
-      <code>@hibernate.meta</code> tag, definition of many-to-one relationships
-      with tables with composite keys, external queries merging and also
-      component mapping merging. For more infomation, please refer to the <a href="http://opensource.atlassian.com/projects/xdoclet/browse/XDT-1312" class="externalLink" title="External Link">issue</a>
-      submitted to the XDoclet project that describes the changes made by the
-      genesis team.</p></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.0-EA4/maven-site/en/xdoclet_extensions.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.0-EA4/maven-site/en/xdoclet_extensions.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.0-EA4/maven-site/en/xdoclet_extensions.html';
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
