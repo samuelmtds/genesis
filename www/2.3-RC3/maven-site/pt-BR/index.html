@@ -1,89 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - genesis</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta><meta name="author" content="Pablo Jorge Madril"></meta><meta name="email" content="pmadril@uol.com.br"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 16 December 2005
-                <span class="separator">|</span> Doc for  2.3-RC3
-                </div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><strong><a href="../pt-BR/index.html">Visão geral</a></strong></li><li class="none"><a href="../pt-BR/screenshots.html">Screenshots</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="collapsed"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a></li><li class="none"><a href="../pt-BR/jars_explained.html">Entendendo os jars do genesis</a></li><li class="none"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Desenvolvendo com o genesis (WEB)</a></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="collapsed"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Bem-vindo_ao_genesis"></a><h2>Bem-vindo ao genesis</h2>
-      <p>O <b>genesis</b> é um framework open source que tem como objetivo
-      atingir a <b>simplicidade, produtividade, testabilidade e escalabilidade
-      </b> no desenvolvimento de aplicações corporativas.</p>
-      <p>Ele combina de forma única biblotecas públicas que se tornaram padrões
-      de mercado como <b>Hibernate, AspectWerkz, Thinlet, Jakarta-Commons,</b>
-      entre outras e reúne toda a experiência da <b>Summa</b> na construção de
-      aplicações de missão crítica.</p>
-      <p>Foi desenvolvido e testado a partir dos requisitos de usuários reais,
-      sendo resultado da experiência obtida na execução de projetos. Uma das
-      soluções hoje implantadas em um cliente lida com mais de 1 milhão de
-      transações por dia, o que comprova a escalabilidade da solução.</p>
-    </div><div class="section"><a name="Principais_características"></a><h2>Principais características</h2>
-      <p>Entre as principais características do genesis pode-se citar:</p>
-    <ul>
-       <li><b>Simplicidade:</b> não existem requirementos complexos da parte do
-       framework: seus componentes não precisam estender classes, não é
-       necessário expor uma interface, configurar dezenas de linhas de xml por
-       componente e nem mesmo obter uma instância deles usando uma factory ou
-       interface.</li>
-       <li><b>Produtividade:</b> seu código basicamente se resume a lógica de
-       negócios e o framework é de fácil assimilação, o que torna
-       desenvolvedores que saibam apenas Java básico extremamente produtivos em
-       pouquíssimo tempo.</li>
-       <li><b>Testabilidade:</b> o framework foi concebido de modo que testes
-       unitários possam ser escritos até mesmo para seus componentes de
-       interface gráfica.</li>
-       <li><b>Escalabilidade:</b> sua arquitetura stateless (sem estado) e sem
-       contenção possibilita o desenvolvimento de soluções escaláveis sem grande
-       esforço por parte do programador.</li>
-       <li><b>Remotabilidade/transacionalidade transparente:</b> através do uso
-       de AOP, uma chamada a um método pode ser facilmente configurada para
-       execução remota e/ou transacional sem alteração no código cliente.</li>
-       <li><b>Suporte ao desenvolvimento de UI:</b> o uso do genesis-client
-       torna o desenvolvimento de UIs extremamente simples, permitindo que a
-       partir de pouquíssimas configurações e meros JavaBeans possa-se controlar
-       todo o fluxo da UI e características comuns como visibilidade, travamento
-       de campos, limpeza em cascata, chamada de métodos em determinadas
-       condições, população de componentes como combos e tabelas de forma
-       automática e controlada pelo framework.</li>
-       <li><b>Integração com Hibernate:</b> a integração com o Hibernate permite
-       que se construa de forma extremamente fácil buscas paginadas, pesquisas
-       dinâmicas e etc.</li>
-    </ul>
-    
-    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.0-EA4/maven-site/pt-BR/index.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.0-EA4/maven-site/pt-BR/index.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.0-EA4/maven-site/pt-BR/index.html';
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>

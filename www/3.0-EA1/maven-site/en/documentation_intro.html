@@ -1,63 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - Introduction</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
-                	Last published: 13 March 2005
-                  | Doc for 3.0-EA1</div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/screenshots.html">Screenshots</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><strong><a href="../en/documentation_intro.html">User manual</a></strong><ul><li class="none"><strong><a href="../en/documentation_intro.html">Introduction</a></strong></li><li class="collapsed"><a href="../en/ui_basic_concepts.html">UI component model</a></li><li class="none"><a href="../en/business_component_model.html">Business component model</a></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="none"><a href="../en/jars_explained.html">Understanding genesis jars</a></li><li class="none"><a href="../en/empty_project.html">Developing with genesis</a></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="collapsed"><a href="../en/advanced_introduction.html">Advanced guide</a></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Introduction"></a><h2>Introduction</h2><p>This documentation explains genesis' main concepts and features so
-      those can be applied to development. It is not expected that users
-      will understand details about genesis' internal implementation/architecture,
-      nor be capable of extending genesis features.</p><p>Besides specific documentation for each genesis module, there's an
-      annotations reference guide to help developers with their syntax. Reading
-      the other docs is still needed to understand how features actually work.
-      </p><p>It's worth mentioning that although samples are configured to be run
-      "as is" in JBoss application server and that docs sometimes refer to this
-      product, all framework features are product-independent and J2EE-
-      compatible.</p></div><div class="section"><a name="Useful_links"></a><h2>Useful links</h2><p>This manual is not enough to be able to fully explore all features in
-      all frameworks and libraries used by genesis. In order to learn more about
-      them, we recommed visiting each project site:</p><ul>
-        <li><b>AspectWerkz</b>: <a href="http://aspectwerkz.codehaus.org/" class="externalLink" title="External Link">http://aspectwerkz.codehaus.org/</a>
-        </li>
-        <li><b>Commons BeanUtils</b>: <a href="http://jakarta.apache.org/commons/beanutils/" class="externalLink" title="External Link">
-        http://jakarta.apache.org/commons/beanutils/</a></li>
-        <li><b>Commons JXPath</b>: <a href="http://jakarta.apache.org/commons/jxpath/" class="externalLink" title="External Link">
-        http://jakarta.apache.org/commons/jxpath/</a></li>
-        <li><b>Commons Logging</b>: <a href="http://jakarta.apache.org/commons/logging/" class="externalLink" title="External Link">
-        http://jakarta.apache.org/commons/logging/</a></li>
-        <li><b>Commons Validator</b>: <a href="http://jakarta.apache.org/commons/validator/" class="externalLink" title="External Link">
-        http://jakarta.apache.org/commons/validator/</a></li>
-        <li><b>Hibernate</b>: <a href="http://www.hibernate.org/" class="externalLink" title="External Link">http://www.hibernate.org/</a></li>
-        <li><b>reusable-components</b>: <a href="https://reusable-components.dev.java.net/">
-        https://reusable-components.dev.java.net/</a></li>
-        <li><b>Thinlet</b>: <a href="http://www.thinlet.com/" class="externalLink" title="External Link">http://www.thinlet.com/</a></li>
-      </ul></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.0-EA4/maven-site/en/documentation_intro.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.0-EA4/maven-site/en/documentation_intro.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.0-EA4/maven-site/en/documentation_intro.html';
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
