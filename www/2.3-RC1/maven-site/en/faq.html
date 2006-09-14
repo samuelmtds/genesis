@@ -1,119 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>genesis - FAQ</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-			    @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Liaw Mike Djoesman"></meta><meta name="email" content="lmike@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
-                	Last published: 25 August 2005
-                  | Doc for 2.3-RC1</div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/screenshots.html">Screenshots</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="collapsed"><a href="../en/documentation_intro.html">User manual</a></li><li class="none"><a href="../en/jars_explained.html">Understanding genesis jars</a></li><li class="none"><a href="../en/empty_project.html">Developing with genesis</a></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="collapsed"><a href="../en/advanced_introduction.html">Advanced guide</a></li><li class="none"><strong><a href="../en/faq.html">FAQ</a></strong></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About SOL Genesis</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="FAQ"></a><h2>FAQ</h2><p>Frequent questions:
-      <ul>
-        <li><a href="#Is_it_possible_to_use_genesis_to_build_a_web_application_">Is
-        it possible to use genesis to build a web application?</a></li>
-        <li><a href="#How_does_genesis_compare_to_Spring_">
-        How does genesis compare to Spring?</a></li>
-        <li><a href="#When_will_genesis_provide_Swing_support_">
-        When will genesis provide Swing support?</a></li>
-        <li><a href="#How_can_I_use_genesis_in_J2ME_applications_">
-        How can I use genesis in J2ME applications?</a></li>
-        <li><a href="#Why_am_I_getting_a_NullPointerException_in_a_getSession___________call_">Why am I getting a <code>NullPointerException</code> in a
-        <code>getSession()</code> call??
-        </a></li>
-        <li><a href="#How_can_I_get_technical_support_">How can I get technical
-        support?</a></li>
-      </ul>
-      </p><div class="subsection"><a name="Is_it_possible_to_use_genesis_to_build_a_web_application_"></a><h3>Is it possible to use genesis to build a web application?</h3><p>The current genesis release can already be used with any web
-        framework, such as Struts or WebWork.</p><p>In order to create a web application, the only thing needed is to
-        create a project that uses genesis business components. There are plans
-        for building a web framework for genesis itself, but they have not been
-        implemented so far.</p></div><div class="subsection"><a name="How_does_genesis_compare_to_Spring_"></a><h3>How does genesis compare to Spring?</h3><p>These two projects have different goals. While genesis focuses in
-        resolving the problem of providing an easier way to develop graphical
-        interfaces and business code, the Spring framework focuses in make J2EE
-        development easier and in promoting the use of certains practices, like
-        programming to interfaces. Although both frameworks support Hibernate,
-        for example, Spring has a more generic dependency injection mechanism
-        while genesis has a generic one that is not so generic. However, some
-        genesis functionalities are not provided by Spring, such as <a href="ui_additional_features.html#Working_with_dynamic_searches">support for
-        dynamic searches</a>.</p></div><div class="subsection"><a name="When_will_genesis_provide_Swing_support_"></a><h3>When will genesis provide Swing support?</h3><p>Swing will be supported in a future genesis release. There is no
-        certain date for this to happen, but it is likely it will be available
-        by mid year.</p></div><div class="subsection"><a name="How_can_I_use_genesis_in_J2ME_applications_"></a><h3>How can I use genesis in J2ME applications?</h3><p>It is recommended to only use a sub-set of the functionalities
-        provided in the UI package, such as the direct use of <code>
-        net.java.dev.genesis.ui.thinlet.BaseThinlet</code> for example.
-        Advanced functionalities like binding will mostly not work within
-        those environments.</p><p>To support all major genesis functionalities within J2ME is part
-        of the genesis development team plans, but there is no certain date
-        for this to happen.</p></div><div class="subsection"><a name="Why_am_I_getting_a_NullPointerException_in_a_getSession___________call_"></a><h3>Why am I getting a NullPointerException in a getSession()         call?</h3><p>There are several situations that cause this problem to occur.
-        Basically they are:
-        <ul>
-          <li>The class that depends on the injection of the
-          <code>Session</code> instance is in the wrong place within the
-          source code hierarchy (in the client module, for example). This way,
-          the weaving process will not affect that class as intended and the
-          Hibernate session will not be injected.</li>
-          <li>There has been a method call chain using business objects.
-          In this case, a Hibernate <code>Session</code> is not injected
-          in secondary calls. To fix this, one just needs to use
-          the <code>setSession(Session)</code> method of the callee object
-          using the caller <code>Session</code> instance as parameter.</li>
-          <li>In case it is first time one is trying to build a new
-          project, the build process may not be working properly.</li>
-          <li>The method hasn't been properly annotated with @Remotable, 
-          @Transactional or @Criteria</li>
-        </ul>
-        </p></div><div class="subsection"><a name="How_can_I_get_technical_support_"></a><h3>How can I get technical support?</h3><p>Free basic support can be obtained in the project <a href="../mail-lists.html">discussion lists</a>.</p><p>If further support is required, like architecture definition,
-        perfomance improvements, genesis or related technologies training,
-        Summa Technologies may be contacted in the following locations:</p><ul>
-          <li>Summa Technologies:
-            <ul>
-              <li>Address: US Steel Tower, 53rd Floor - 600 Grant Street -
-              Pittsburgh, PA 15219</li>
-              <li>phone: +01.412.258.3300</li>
-              <li>Fax: +01.412.258.3299</li>
-              <li><a href="mailto:info@summa-tech.com">info@summa-tech.com</a></li>
-            </ul>
-          </li>
-          <li>Summa Technologies do Brasil:
-            <ul>
-              <li>Address: Rua Funchal, 411 - 11o. andar, CJ. 112 - São
-              Paulo - 04551-060</li>
-              <li>Phone: +55.11.3846.1622</li>
-              <li>Fax: +55.11.3845.3514</li>
-              <li><a href="mailto:brazil@summa-tech.com">brazil@summa-tech.com</a></li>
-            </ul>
-          </li>
-        </ul></div></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2005, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.0-EA4/maven-site/en/faq.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.0-EA4/maven-site/en/faq.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.0-EA4/maven-site/en/faq.html';
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
