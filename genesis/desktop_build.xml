@@ -1591,6 +1591,12 @@
             </excludes>
          </genesis:webstart-copy-macro>
       </presetdef>
+      
+      <presetdef name="war"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <war warfile="${webstart.war.file}" basedir="${webstart.target.dir}" 
+              webxml="${webstart.web.xml}" />
+      </presetdef>
    </target>
 
    <target name="-do-webstart-signjar">
@@ -1666,10 +1672,13 @@
       <genesis:call target="-do-webstart-copy" />
    </target>
 
+   <target name="-do-webstart-war">
+      <genesis:war />
+   </target>
+
    <target name="webstart:war" depends="webstart:check-conditions" 
            if="webstart.needed">
-      <war warfile="${webstart.war.file}" basedir="${webstart.target.dir}" 
-           webxml="${webstart.web.xml}" />
+      <genesis:call target="-do-webstart-war" />
    </target>
 
    <target name="webstart" 
