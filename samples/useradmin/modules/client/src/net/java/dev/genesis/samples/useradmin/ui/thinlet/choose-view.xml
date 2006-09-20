@@ -6,7 +6,7 @@
         <panel gap="5" columns="4" halign="center" valign="center">
             <button text="i18n.ChooseView.thinlet" font="bold" mnemonic="0" action="onThinlet()"/>
             <button text="i18n.ChooseView.swing" font="bold" mnemonic="0" action="onSwing()"/>
-            <button text="i18n.ChooseView.swt" font="bold" mnemonic="0" action="onSWT()"/>
+            <button text="i18n.ChooseView.swt" font="bold" mnemonic="1" action="onSWT()"/>
             <button text="i18n.ChooseView.exit" font="bold" mnemonic="1" action="onExit()"/>
         </panel>
     </panel>
