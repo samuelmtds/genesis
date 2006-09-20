@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
-public class ErrorReporterDialog extends Dialog {
+public class ErrorReporterDialog {
    private Shell shell;
    private Composite stackTraceComposite = null;
    private Label messageLabel = null;
@@ -46,12 +46,11 @@ public class ErrorReporterDialog extends Dialog {
    private Button button = null;
 
    public ErrorReporterDialog(Shell parent, int style) {
-      super(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | style);
+      shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | style);
       initialize();
    }
 
    private void initialize() {
-      shell = new Shell(getStyle());
       shell.setLayout(new GridLayout());
 
       createStackTraceComposite();
@@ -105,10 +104,14 @@ public class ErrorReporterDialog extends Dialog {
       stackTraceArea.setText(message);
    }
 
+   public void setTitle(String title) {
+      shell.setText(title);
+   }
+
    public int open() {
       shell.pack();
 
-      final Display display = getParent().getDisplay();
+      final Display display = shell.getParent().getDisplay();
       final Rectangle bounds = display.getBounds();
       shell.setLocation(bounds.x +
          ((bounds.width - shell.getBounds().width) / 2),

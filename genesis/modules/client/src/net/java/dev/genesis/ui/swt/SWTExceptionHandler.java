@@ -60,7 +60,7 @@ public class SWTExceptionHandler extends AbstractDispatcherExceptionHandler {
       ErrorReporterDialog dialog = new ErrorReporterDialog(root.getShell(),
             style);
 
-      dialog.setText(title);
+      dialog.setTitle(title);
       dialog.setMessage(message);
       dialog.setStackTraceMessage(getStackTrace(throwable));
       dialog.open();
