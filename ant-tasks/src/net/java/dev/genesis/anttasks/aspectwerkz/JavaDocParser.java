@@ -68,16 +68,18 @@ public class JavaDocParser {
                   .getLineNumber(), enclosingClassName, enclosingClassFileName);
          } else {
             // escape
-            AnnotationPreprocessor preProcessor = (AnnotationPreprocessor) annotationPreprocessors
-                  .get(annotationName);
+            AnnotationPreprocessor preProcessor = (AnnotationPreprocessor) 
+                  annotationPreprocessors.get(annotationName);
+
+            if (preProcessor == null) {
+               throw new CompilerException("This annotation cannot have " +
+                     "arguments: [@" + rawAnnotationString + "]", 
+                     SourceLocation.render(annotationClass, tag, 
+                     enclosingClassName, enclosingClassFileName));
+            }
+
             rawValueString = preProcessor.convert(rawValueString);
 
-            /*
-             * StringBuffer sb = new StringBuffer("\""); for (int i = 0; i <
-             * rawValueString.length(); i++) { char c =
-             * rawValueString.charAt(i); if (c == '\"') { sb.append("\\\""); }
-             * else { sb.append(c); } } sb.append("\"");
-             */
             return new RawAnnotation(annotationClass, rawValueString, tag
                   .getLineNumber(), enclosingClassName, enclosingClassFileName);
          }
