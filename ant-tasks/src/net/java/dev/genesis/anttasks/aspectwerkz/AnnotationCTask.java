@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.java.dev.genesis.anttasks.aspectwerkz.annotation.AnnotationPreprocessor;
+import org.apache.tools.ant.AntClassLoader;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -219,7 +220,6 @@ public class AnnotationCTask extends MatchingTask {
             + ((compileList.length == 1) ? "" : "s")
             + ((destDir != null) ? (" to " + destDir) : ""));
 
-      try {
          AnnotationC compiler = new AnnotationC(EMPTY_STRING_ARRAY,
                compileList, classpath.list(), (destDir == null) ? null
                      : destDir.getAbsolutePath(), allProps,
@@ -229,19 +229,52 @@ public class AnnotationCTask extends MatchingTask {
                      throw ex;
                   }
                }, true);
+
+         AntClassLoader classLoader = null;
+
          for (Iterator iter = preprocessors.iterator(); iter.hasNext();) {
             Preprocessor preProc = (Preprocessor) iter.next();
             preProc.validate();
-            Class preProcClass = Class.forName(preProc.getPreprocessor());
 
-            compiler.register(preProc.getAnnotation(), (AnnotationPreprocessor) preProcClass.newInstance());
+            if (classLoader == null) {
+               classLoader = new AntClassLoader();
+               classLoader.setParent(getClass().getClassLoader());
+               classLoader.setParentFirst(false);
+               classLoader.setClassPath(classpath);
+            }
+
+            registerPreProcessor(classLoader, preProc, compiler);
          }
 
          compiler.compile();
-      } catch (Exception ex) {
-         throw new BuildException("Annotation failed: " + ex.getMessage(), ex,
-               getLocation());
+   }
+
+   private void registerPreProcessor(final AntClassLoader classLoader, 
+         final Preprocessor preprocessor, final AnnotationC compiler) {
+      Exception e = null;
+
+      try {
+         Class preProcClass = classLoader.findClass(preprocessor
+               .getPreprocessor());
+         compiler.register(preprocessor.getAnnotation(), 
+               (AnnotationPreprocessor)preProcClass.newInstance());
+      } catch (ClassNotFoundException ex) {
+         e = ex;
+      } catch (IllegalAccessException ex) {
+         e = ex;
+      } catch (InstantiationException ex) {
+         e = ex;
+      } catch (ClassCastException ex) {
+         e = ex;
       }
+
+      if (e == null) {
+         return;
+      }
+
+      throw new BuildException("Could not register preprocessor for " +
+            "annotation " + preprocessor.getAnnotation(), e, 
+            getLocation());
    }
 
    protected void resetFileLists() {
