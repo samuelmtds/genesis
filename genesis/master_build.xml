@@ -177,6 +177,7 @@
          <attribute name="classpath" />
          <attribute name="touchfile" />
          <element name="customize" optional="true" />
+         <element name="customize-classpath" optional="true" />
 
          <sequential>
             <taskdef name="annotationc" 
@@ -192,6 +193,7 @@
                   <path location="@{classpath}" />
                   <fileset dir="${genesis.dist}" 
                            includes="genesis-annotation-jdk14-${genesis.version}.jar" />
+                  <customize-classpath />
                </classpath>
                <customize />
             </annotationc>
@@ -421,12 +423,17 @@
       </condition>
    </target>
 
-   <target name="shared:annotations" if="shared.annotationc.tasks.needed"
-           depends="shared:check-annotations-needed,define-aw-macros">
+   <target name="-do-shared-annotations">
       <genesis:annotationc srcdir="${shared.sources.dir}" 
                            destdir="${shared.annotated.dir}"
                            classpath="${shared.classes.dir}"
                            touchfile="${shared.annotated.timestamp.file}" />
+   </target>
+
+   <target name="shared:annotations" if="shared.annotationc.tasks.needed"
+           depends="shared:check-annotations-needed,define-aw-macros,
+                    define-call-task">
+      <genesis:call target="-do-shared-annotations" />
    </target>
 
    <target name="shared:master-check-hibernate-conditions" depends="shared:init">
@@ -667,13 +674,18 @@
 
    <target name="client:compile" depends="client:javac" />
 
+   <target name="-pre-compile">
+      <!-- Override to implement extra tasks that should be performed before
+           compiling client/shared sources-->
+   </target>
+
    <target name="-do-custom-compile">
       <!-- Override to implement extra tasks that should be performed after 
            compiling client/shared sources-->
    </target>
 
    <target name="compile" 
-           depends="shared:compile,client:compile,-do-custom-compile"/>
+           depends="-pre-compile,shared:compile,client:compile,-do-custom-compile"/>
 
    <target name="weaving:pre-init">
       <!-- Override to define any properties that shouldn't be redefined by 
