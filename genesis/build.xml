@@ -141,6 +141,7 @@
 		<fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+		<fileset dir="${swt.specific.dir}" includes="*.jar" />
 	</path>
 
    <available classname="java.lang.annotation.Annotation" property="supports.annotation" />
@@ -602,6 +603,7 @@
             <pathelement path="${genesis.jdbc.driver}" />
             <path location="${genesis.module.tests}/${genesis.weaving.dest}" />
             <path location="${genesis.module.annotation}/${genesis.annotation.dest}" />
+            <fileset dir="${swt.specific.dir}" includes="*.jar" />
 			</classpath>
 			<batchtest todir="${genesis.module.tests}/${test.reportsDirectory}">
             <fileset dir="${genesis.module.tests}/${src.dir}">
