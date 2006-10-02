@@ -37,7 +37,10 @@ public class FormMetadataFactoryAspect {
                .getClassLoader());
 
          String scriptFactoryName = (String) parameters.get("scriptFactory");
-         ScriptRegistry.getInstance().setScriptFactoryName(scriptFactoryName);
+         
+         if (scriptFactoryName != null) {
+            ScriptRegistry.getInstance().setScriptFactoryName(scriptFactoryName);
+         }
 
          String properties = (String) parameters.get("scriptFactoryProperties");
 
