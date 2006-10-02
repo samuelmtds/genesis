@@ -48,6 +48,7 @@ public class FormMetadataFactoryTest extends TestCase {
    private ActionMetadata saveMethod;
    private ActionMetadata resetMethod;
    private ActionMetadata cancelMethod;
+   private ActionMetadata compositeVisibleWhenMethod;
    private MethodMetadata calculateMethod;
    private MethodMetadata provideSomeListMethod;
    private DataProviderMetadata provideAnotherListMethod;
@@ -66,6 +67,8 @@ public class FormMetadataFactoryTest extends TestCase {
       saveMethod = formMetadata.getMethodMetadata("save").getActionMetadata();
       resetMethod = formMetadata.getMethodMetadata("reset").getActionMetadata();
       cancelMethod = formMetadata.getMethodMetadata("cancel").getActionMetadata();
+      compositeVisibleWhenMethod = formMetadata.getMethodMetadata(
+            "compositeVisibleWhen").getActionMetadata();
       calculateMethod = formMetadata.getMethodMetadata("calculate");
       provideSomeListMethod = formMetadata.getMethodMetadata("provideSomeList");
       provideAnotherListMethod = formMetadata.getMethodMetadata("provideAnotherList").getDataProviderMetadata();
@@ -134,6 +137,7 @@ public class FormMetadataFactoryTest extends TestCase {
             resetMethod.getVisibleCondition().toString());
       assertNull(cancelMethod.getVisibleCondition());
       assertNull(descriptionField.getVisibleCondition());
+      assertEquals("true", String.valueOf(compositeVisibleWhenMethod.getVisibleCondition()));
    }
 
    public void testValidateBefore() {
@@ -400,6 +404,13 @@ public class FormMetadataFactoryTest extends TestCase {
        * 		string-length(normalize-space(description)) != 3
        */
       public void calculate() {
+      }
+
+      /**
+       * @Action
+       * @VisibleWhen({"a", "a", "b", "b", "javascript", "true"})
+       */
+      public void compositeVisibleWhen() {
       }
 
       /**
