@@ -67,7 +67,7 @@ public class VisibleWhenAnnotationHandler implements AnnotationHandler {
          throw new IllegalArgumentException(
                "VisibleWhen must define at least one script condition or pairs of script conditions");
       } else {
-         for (int i = 0; i < values.length / 2; i += 2) {
+         for (int i = 0; i < values.length; i += 2) {
             if (!ScriptRegistry.getInstance().isCurrentScriptFactoryNameFor(
                   values[i])) {
                continue;
