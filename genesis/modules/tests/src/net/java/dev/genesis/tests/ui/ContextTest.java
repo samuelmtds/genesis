@@ -60,7 +60,7 @@ public class ContextTest extends TestCase {
       }
 
       /**
-       * @Condition someVar=g:isEmpty(string1)
+       * @Condition someVar=genesis.isEmpty('form:string1')
        */
       public String getString1() {
          return string1;

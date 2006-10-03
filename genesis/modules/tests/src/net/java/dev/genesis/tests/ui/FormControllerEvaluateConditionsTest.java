@@ -90,9 +90,9 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       /**
        * @Condition
-       * 		Field3EqualsField4=g:equals(field3,field4)
+       * 		Field3EqualsField4=genesis.equals('form:field3', 'form:field4')
        * @Condition
-       * 		Field4Empty=g:isEmpty(field4)
+       * 		Field4Empty=genesis.isEmpty('form:field4')
        */
       public Integer getField1() {
          return field1;
@@ -103,7 +103,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       }
 
       /**
-       * @EnabledWhen $Field4Empty
+       * @EnabledWhen Field4Empty
        */
       public String getField2() {
          return field2;
@@ -114,7 +114,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       }
 
       /**
-       * @ClearOn g:equals(field3,'abc')
+       * @ClearOn genesis.equals('form:field3','abc')
        */
       public String getField3() {
          return field3;
@@ -125,7 +125,7 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
       }
 
       /**
-       * @VisibleWhen g:equals(field3,'abcd')
+       * @VisibleWhen genesis.equals('form:field3','abcd')
        */
       public String getField4() {
          return field4;
@@ -137,14 +137,14 @@ public class FormControllerEvaluateConditionsTest extends TestCase {
 
       /**
        * @Action
-       * @CallWhen g:equals(field3,'abcd')
+       * @CallWhen genesis.equals('form:field3','abcd')
        */
       public void calculate(){
       }
 
       /**
        * @DataProvider objectField=field2
-       * @CallWhen g:equals(field3,'abcd')
+       * @CallWhen genesis.equals('form:field3','abcd')
        */
       public List provideSomeList(){
          return new ArrayList();
