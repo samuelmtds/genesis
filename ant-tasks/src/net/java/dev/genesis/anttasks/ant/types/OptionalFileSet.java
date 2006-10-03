@@ -18,38 +18,12 @@
  */
 package net.java.dev.genesis.anttasks.ant.types;
 
-import java.io.File;
-
-import net.java.dev.genesis.anttasks.ant.EmptyDirectoryScanner;
-
-import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 
 public class OptionalFileSet extends FileSet {
    public DirectoryScanner getDirectoryScanner(Project p) {
-      if (isReference()) {
-         return getRef(p).getDirectoryScanner(p);
-      }
-      
-      File dir = getDir(p);      
-      if (dir == null) {
-         throw new BuildException("No directory specified for "
-               + getDataTypeName() + ".");
-      }
-      
-      if (dir.exists() && !dir.isDirectory()) {
-         throw new BuildException(dir.getAbsolutePath()
-         + " is not a directory.");
-      }
-      
-      DirectoryScanner ds = dir.exists() ? new DirectoryScanner() : 
-            new EmptyDirectoryScanner();
-      setupDirectoryScanner(ds, p);
-      ds.setFollowSymlinks(isFollowSymlinks());
-      ds.scan();
-
-      return ds;
+      return FileSetUtils.getDirectoryScanner(this, getDataTypeName(), p);
    }
 }

@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import net.java.dev.genesis.anttasks.ant.types.FileSetUtils;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -60,7 +61,8 @@ public class NativeJar extends Task {
 
       for (Iterator iter = dirs.iterator(); iter.hasNext();) {
          DirSet dirset = (DirSet) iter.next();
-         DirectoryScanner ds = dirset.getDirectoryScanner(getProject());
+         DirectoryScanner ds = FileSetUtils.getDirectoryScanner(dirset,
+               "dirset", getProject());
          String[] directories = ds.getIncludedDirectories();
          File currentDir = dirset.getDir(getProject());
 

@@ -1337,6 +1337,11 @@
 
    <target name="webstart:macrodefs" depends="webstart:check-conditions" 
            if="webstart.needed">
+      <genesis:optional-fileset id="webstart.macrodefs.swt.fileset" 
+                                dir="${swt.dist}">
+         <include name="**/*.jar" />
+      </genesis:optional-fileset>
+
       <macrodef name="webstart-signjar-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="lazy" default="true" />
@@ -1429,9 +1434,7 @@
                   <include name="jboss-remoting.jar" />
                   <include name="jboss-serialization.jar" />
                </fileset>
-               <fileset dir="${swt.dist}">
-                  <include name="**/*.jar" />
-               </fileset>
+               <fileset refid="webstart.macrodefs.swt.fileset" />
                <fileset refid="lib.fileset" />
                <fileset refid="shared.lib.fileset" />
                <fileset refid="client.lib.fileset" />
