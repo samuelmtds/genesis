@@ -19,8 +19,11 @@
 package net.java.dev.genesis.ui.thinlet;
 
 import net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ThinletExceptionHandler extends AbstractDispatcherExceptionHandler {
+   private static final Log log = LogFactory.getLog(ThinletExceptionHandler.class);
    private final BaseThinlet thinlet;
 
    public ThinletExceptionHandler(BaseThinlet thinlet) {
@@ -32,8 +35,8 @@ public class ThinletExceptionHandler extends AbstractDispatcherExceptionHandler 
       try {
          ErrorReporterDialog.show(thinlet, title, message, throwable);
       } catch (ScreenNotFoundException scnfe) {
-         System.out.println("The error screen file could not be found");
-         scnfe.printStackTrace();
+         log.error("The error screen file could not be found", scnfe);
+         log.error("Original error:", throwable);
       }
    }
 
