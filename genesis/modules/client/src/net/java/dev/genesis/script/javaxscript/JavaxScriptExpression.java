@@ -16,17 +16,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.script.mustang;
+package net.java.dev.genesis.script.javaxscript;
 
 import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
-import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
-import net.java.dev.genesis.script.mustang.bridge.ScriptEngine;
+import net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge;
+import net.java.dev.genesis.script.javaxscript.bridge.ScriptEngine;
 
-public class MustangExpression extends ScriptExpression {
+public class JavaxScriptExpression extends ScriptExpression {
    private Object realCompiledScript;
 
-   public MustangExpression(String expr, ScriptEngine engine) {
+   public JavaxScriptExpression(String expr, ScriptEngine engine) {
       super(expr);
       compile(engine);
    }

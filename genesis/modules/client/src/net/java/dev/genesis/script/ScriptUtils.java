@@ -24,7 +24,7 @@ import net.java.dev.genesis.equality.EqualityComparator;
 import net.java.dev.genesis.equality.EqualityComparatorRegistry;
 import net.java.dev.genesis.resolvers.EmptyResolver;
 import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
+import net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge;
 import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;

@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.script.mustang;
+package net.java.dev.genesis.script.javaxscript;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -25,17 +25,17 @@ import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFunctionsAdapter;
-import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
-import net.java.dev.genesis.script.mustang.bridge.ScriptEngine;
+import net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge;
+import net.java.dev.genesis.script.javaxscript.bridge.ScriptEngine;
 
-public class MustangScriptContext extends ScriptContext {
+public class JavaxScriptScriptContext extends ScriptContext {
    public static final String FORM_NS = "form";
    public static final String GENESIS_FUNCTIONS_NS = "genesis";
 
    private final ScriptEngine scriptEngine;
    private Object realContext;
 
-   protected MustangScriptContext(ScriptEngine engine, Object root) {
+   protected JavaxScriptScriptContext(ScriptEngine engine, Object root) {
       this.scriptEngine = engine;
       this.realContext = engine.getContext().getRealContext();
       declare(FORM_NS, root);
@@ -48,7 +48,7 @@ public class MustangScriptContext extends ScriptContext {
 
    protected Object doEval(ScriptExpression expr) {
       try {
-         return ((MustangExpression) expr).evalCompiled(scriptEngine,
+         return ((JavaxScriptExpression) expr).evalCompiled(scriptEngine,
                realContext);
       } catch (InvocationTargetException ite) {
          throw new ScriptException(ite.getTargetException().getMessage(), ite.getTargetException());
@@ -58,7 +58,7 @@ public class MustangScriptContext extends ScriptContext {
    }
 
    protected ScriptExpression newScriptExpression(String expression) {
-      return new MustangExpression(expression, scriptEngine);
+      return new JavaxScriptExpression(expression, scriptEngine);
    }
 
    public void registerFunctions(String prefix, Class functionClass) {

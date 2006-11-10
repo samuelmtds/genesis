@@ -16,21 +16,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.script.mustang;
+package net.java.dev.genesis.script.javaxscript;
 
 import net.java.dev.genesis.script.Script;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptExpression;
-import net.java.dev.genesis.script.mustang.bridge.JavaxScriptBridge;
-import net.java.dev.genesis.script.mustang.bridge.ScriptEngine;
-import net.java.dev.genesis.script.mustang.bridge.ScriptEngineManager;
+import net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge;
+import net.java.dev.genesis.script.javaxscript.bridge.ScriptEngine;
+import net.java.dev.genesis.script.javaxscript.bridge.ScriptEngineManager;
 
-public class MustangScript implements Script {
+public class JavaxScriptScript implements Script {
    private final ScriptEngineManager manager;
    private final ScriptEngine engine; // engine used to compile scripts
    private final String lang;
 
-   protected MustangScript(String lang) {
+   protected JavaxScriptScript(String lang) {
       this.lang = lang;
       this.manager = JavaxScriptBridge.getInstance()
             .createScriptEngineManager();
@@ -38,10 +38,10 @@ public class MustangScript implements Script {
    }
 
    public ScriptContext newContext(Object root) {
-      return new MustangScriptContext(manager.getEngineByName(lang), root);
+      return new JavaxScriptScriptContext(manager.getEngineByName(lang), root);
    }
 
    public ScriptExpression compile(String expression) {
-      return new MustangExpression(expression, engine);
+      return new JavaxScriptExpression(expression, engine);
    }
 }

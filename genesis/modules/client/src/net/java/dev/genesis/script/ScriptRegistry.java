@@ -51,7 +51,7 @@ public class ScriptRegistry {
       
       registry.put(JAVASCRIPT,
             ScriptUtils.supportsJavaxScript() ?
-                  "net.java.dev.genesis.script.mustang.MustangScriptFactory"
+                  "net.java.dev.genesis.script.javaxscript.JavaxScriptScriptFactory"
                   : "net.java.dev.genesis.script.bsf.BSFScriptFactory");
    }
 

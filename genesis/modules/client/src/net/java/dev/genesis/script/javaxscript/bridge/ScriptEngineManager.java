@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.script.mustang.bridge;
+package net.java.dev.genesis.script.javaxscript.bridge;
 
 public interface ScriptEngineManager {
    public ScriptEngine getEngineByName(String shortName);

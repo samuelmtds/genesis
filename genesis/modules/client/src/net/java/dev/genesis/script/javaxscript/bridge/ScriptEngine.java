@@ -16,14 +16,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.script.mustang.bridge;
+package net.java.dev.genesis.script.javaxscript.bridge;
 
-import java.util.Map;
 
-public interface ScriptContext {
-   public void setAttribute(String name, Object value, int scope);
-   public Map getBindings(int scope);
-   public Object getAttribute(String name);
-   public Object removeAttribute(String name, int scope);
-   public Object getRealContext();
+public interface ScriptEngine {
+   public Object eval(String script) throws Exception;
+   public ScriptContext getContext();
+   public Object compile(String script) throws Exception;
 }
