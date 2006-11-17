@@ -37,14 +37,14 @@ import org.codehaus.backport175.reader.Annotation;
 public class DataProviderAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "DataProvider cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "DataProvider");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "DataProvider cannot be a field annotation");
+      AnnotationHandlerExceptionFactory.notFieldAnnotation(formMetadata, 
+            fieldMetadata, "DataProvider", true);
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
@@ -63,10 +63,12 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
       if (GenesisUtils.isBlank(widgetName)
             && GenesisUtils.isBlank(objectFieldName)
             && GenesisUtils.isBlank(indexFieldName)) {
-         throw new RuntimeException(
-               "At least one of widgetName, objectField or "
-                     + "indexField must be specified for @DataProvider in "
-                     + methodMetadata.getMethodEntry().getMethodName());
+         StringBuffer errorMessage = new StringBuffer("At least one of " +
+               "widgetName, objectField or indexField must be specified for " +
+               "@DataProvider");
+         AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
+               methodMetadata, errorMessage);
+         throw new IllegalArgumentException(errorMessage.toString());
       }
 
       dataProviderMetadata.setCallOnInit(callOnInit);
@@ -87,9 +89,24 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
                .get(objectFieldName);
 
          if (descriptor == null) {
-            throw new RuntimeException("The object "
-                  + formMetadata.getFormClass()
-                  + " doesn´t have a field called " + objectFieldName);
+            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
+                  "objectField refers to '").append(objectFieldName).append(
+                  "', but such a public property does not exist; maybe " +
+                  "creating public <type> get");
+            
+            StringBuffer propertyName = new StringBuffer().append(Character
+                  .toUpperCase(objectFieldName.charAt(0)));
+
+            if (objectFieldName.length() > 1) {
+               propertyName.append(objectFieldName.substring(1));
+            }
+
+            errorMessage.append(propertyName).append("() and public void set")
+                  .append(propertyName).append("(<type> var) will fix it");
+            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
+                  methodMetadata, errorMessage);
+
+            throw new IllegalArgumentException(errorMessage.toString());
          }
 
          final Class fieldType = descriptor.getPropertyType();
@@ -97,9 +114,15 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          if (fieldType.isPrimitive()
                || (fieldType.isArray() && fieldType.getComponentType()
                      .isPrimitive())) {
-            throw new RuntimeException("The object " + objectFieldName
-                  + " has an object field called " + objectFieldName
-                  + " that cannot be primitive or array of primitives");
+            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
+                  "objectField refers to '").append(objectFieldName).append(
+                  "', but it cannot be a primitive or an array of " +
+                  "primitives");
+
+            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
+                  methodMetadata, errorMessage);
+
+            throw new IllegalArgumentException(errorMessage.toString());
          }
 
          dataProviderMetadata.setObjectField(new FieldEntry(descriptor
@@ -111,9 +134,24 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
                .get(indexFieldName);
 
          if (descriptor == null) {
-            throw new RuntimeException("The object "
-                  + formMetadata.getFormClass()
-                  + " doesn´t have a field called " + indexFieldName);
+            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
+                  "indexField refers to '").append(indexFieldName).append(
+                  "', but such a public property does not exist; maybe " +
+                  "creating public <type> get");
+
+            StringBuffer propertyName = new StringBuffer().append(Character
+                  .toUpperCase(indexFieldName.charAt(0)));
+
+            if (indexFieldName.length() > 1) {
+               propertyName.append(indexFieldName.substring(1));
+            }
+
+            errorMessage.append(propertyName).append("() and public void set")
+                  .append(propertyName).append("(<type> var) will fix it");
+            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
+                  methodMetadata, errorMessage);
+
+            throw new IllegalArgumentException(errorMessage.toString());
          }
 
          final Class fieldType = descriptor.getPropertyType().isArray() ? descriptor
@@ -123,12 +161,15 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          if (!Collection.class.isAssignableFrom(descriptor.getPropertyType())
                && !Integer.TYPE.isAssignableFrom(fieldType)
                && !Integer.class.isAssignableFrom(fieldType)) {
-            throw new RuntimeException(
-                  "The object "
-                        + objectFieldName
-                        + " has an index field called "
-                        + indexFieldName
-                        + " that's not an Integer, int, Collection of them, or array of them.");
+            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
+                  "indexField refers to '").append(indexFieldName).append(
+                  "', but it is not an Integer, int, array of the previous " +
+                  "types nor a java.util.Collection");
+
+            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
+                  methodMetadata, errorMessage);
+
+            throw new IllegalArgumentException(errorMessage.toString());
          }
 
          dataProviderMetadata.setIndexField(new FieldEntry(

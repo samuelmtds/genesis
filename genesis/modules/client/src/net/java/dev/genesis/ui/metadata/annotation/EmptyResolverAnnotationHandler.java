@@ -32,8 +32,8 @@ import org.codehaus.backport175.reader.Annotation;
 public class EmptyResolverAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "EmptyResolver cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "EmptyResolver");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -44,8 +44,8 @@ public class EmptyResolverAnnotationHandler implements AnnotationHandler {
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "EmptyResolver cannot be a method annotation");
+      AnnotationHandlerExceptionFactory.notMethodAnnotation(formMetadata, 
+            methodMetadata, "EmptyResolver");
    }
 
    private EmptyResolver getEmptyResolver(final FieldMetadata fieldMetadata,

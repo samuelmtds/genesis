@@ -28,7 +28,8 @@ import org.codehaus.backport175.reader.Annotation;
 public class ClearOnAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException("ClearOn cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "ClearOn");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -41,8 +42,8 @@ public class ClearOnAnnotationHandler implements AnnotationHandler {
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
       if (methodMetadata.getDataProviderMetadata() == null) {
-         throw new IllegalArgumentException(
-               "ClearOn cannot be a method annotation that's not a DataProvider method");
+         AnnotationHandlerExceptionFactory.mustBePropertyOrDataProvider(
+               formMetadata, methodMetadata, "ClearOn");
       }
 
       ClearOn annon = (ClearOn) annotation;

@@ -27,22 +27,22 @@ import org.codehaus.backport175.reader.Annotation;
 public class ValidateBeforeAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "ValidateBefore cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "ValidateBefore");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "ValidateBefore cannot be a field annotation");
+      AnnotationHandlerExceptionFactory.notFieldAnnotation(formMetadata, 
+            fieldMetadata, "ValidateBefore", true);
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
 
       if (methodMetadata.getActionMetadata() == null) {
-         throw new IllegalArgumentException(
-               "ValidateBefore must be an action annotation");
+         AnnotationHandlerExceptionFactory.mustBeAction(formMetadata, 
+               methodMetadata, "ValidateBefore");
       }
 
       methodMetadata.getActionMetadata().setValidateBefore(annotation != null);

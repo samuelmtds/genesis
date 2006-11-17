@@ -30,8 +30,8 @@ import org.codehaus.backport175.reader.Annotation;
 public class EnabledWhenAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "EnabledWhen cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata,
+            "EnabledWhen");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -43,8 +43,8 @@ public class EnabledWhenAnnotationHandler implements AnnotationHandler {
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
       if (methodMetadata.getActionMetadata() == null) {
-         throw new IllegalArgumentException(
-               "EnabledWhen must be a field or action annotation");
+         AnnotationHandlerExceptionFactory.mustBePropertyOrAction(formMetadata,
+               methodMetadata, "EnabledWhen");
       }
 
       processMemberAnnotation(formMetadata.getScript(), methodMetadata

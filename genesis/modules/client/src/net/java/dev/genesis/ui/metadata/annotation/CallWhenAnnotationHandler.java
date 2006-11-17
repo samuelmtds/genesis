@@ -28,13 +28,14 @@ import org.codehaus.backport175.reader.Annotation;
 public class CallWhenAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException("CallWhen cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "CallWhen");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "CallWhen cannot be a field annotation");
+      AnnotationHandlerExceptionFactory.notFieldAnnotation(formMetadata, 
+            fieldMetadata, "CallWhen", true);
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,

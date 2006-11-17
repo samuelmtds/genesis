@@ -31,41 +31,51 @@ import org.codehaus.backport175.reader.Annotation;
 public class VisibleWhenAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "VisibleWhen cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "VisibleWhen");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
-      processMemberAnnotation(formMetadata.getScript(), fieldMetadata,
-            annotation);
+      processMemberAnnotation(formMetadata, fieldMetadata, annotation);
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
       if (methodMetadata.getActionMetadata() == null) {
-         throw new IllegalArgumentException(
-               "VisibleWhen must be a field or action annotation");
+         AnnotationHandlerExceptionFactory.mustBePropertyOrAction(formMetadata, 
+               methodMetadata, "VisibleWhen");
       }
 
-      processMemberAnnotation(formMetadata.getScript(), methodMetadata
+      processMemberAnnotation(formMetadata, methodMetadata
             .getActionMetadata(), annotation);
    }
 
-   private void processMemberAnnotation(final Script script,
+   private void processMemberAnnotation(final FormMetadata formMetadata,
          final MemberMetadata memberMetadata, final Annotation annotation) {
       VisibleWhen annon = (VisibleWhen) annotation;
       String[] values = annon.value();
-      if (values.length == 0) {
-         throw new IllegalArgumentException(
-               "VisibleWhen must define at least one script condition");
+      if (values == null || values.length == 0) {
+         StringBuffer errorMessage = new StringBuffer("@VisibleWhen must " +
+               "define at least one script condition");
+         AnnotationHandlerExceptionFactory.appendMemberName(formMetadata, 
+               memberMetadata, errorMessage);
+
+         throw new IllegalArgumentException(errorMessage.toString());
       }
+
+      final Script script = formMetadata.getScript();
 
       if (values.length == 1) {
          memberMetadata.setVisibleCondition(script.compile(values[0]));
       } else if (values.length % 2 != 0) {
-         throw new IllegalArgumentException(
-               "VisibleWhen must define at least one script condition or pairs of script conditions");
+         StringBuffer errorMessage = new StringBuffer("@VisibleWhen must " +
+               "define at least one script condition or pairs of script " +
+               "conditions");
+         AnnotationHandlerExceptionFactory.appendMemberName(formMetadata, 
+               memberMetadata, errorMessage);
+
+         throw new IllegalArgumentException(errorMessage.toString());
       } else {
          for (int i = 0; i < values.length; i += 2) {
             if (!ScriptRegistry.getInstance().isCurrentScriptFactoryNameFor(

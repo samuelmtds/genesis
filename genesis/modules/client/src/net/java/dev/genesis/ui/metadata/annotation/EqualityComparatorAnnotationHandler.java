@@ -32,8 +32,8 @@ import org.codehaus.backport175.reader.Annotation;
 public class EqualityComparatorAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "EqualityComparator cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "EqualityComparator");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -46,8 +46,8 @@ public class EqualityComparatorAnnotationHandler implements AnnotationHandler {
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
-      throw new IllegalArgumentException(
-            "EqualityComparator cannot be a method annotation");
+      AnnotationHandlerExceptionFactory.notMethodAnnotation(formMetadata, 
+            methodMetadata, "EqualityComparator");
    }
 
    private EqualityComparator getEqualityComparator(

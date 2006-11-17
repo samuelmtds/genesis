@@ -32,7 +32,8 @@ import org.codehaus.backport175.reader.Annotation;
 public class ClonerAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
-      throw new IllegalArgumentException("Cloner cannot be a form annotation");
+      AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
+            "Cloner");
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -43,7 +44,8 @@ public class ClonerAnnotationHandler implements AnnotationHandler {
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
-      throw new IllegalArgumentException("Cloner cannot be a method annotation");
+      AnnotationHandlerExceptionFactory.notMethodAnnotation(formMetadata, 
+            methodMetadata, "Cloner");
    }
 
    private Cloner getCloner(final FieldMetadata fieldMetadata,
