@@ -277,7 +277,7 @@ public class AnnotationC {
                      rawAnnotation.getAnnotationClass().getName())) {
             String value = tags[i].getValue().trim();
 
-            if (!value.startsWith("(") && !value.endsWith(")")) {
+            if (!(value.startsWith("(") && value.endsWith(")"))) {
                if (interfaceClass != null) {
                   buffer.append(',');
                } else {
@@ -288,6 +288,7 @@ public class AnnotationC {
                }
 
                buffer.append(rawAnnotation.getValue());
+               continue;
             }
          }
 
@@ -327,8 +328,8 @@ public class AnnotationC {
          if ("net.java.dev.genesis.annotation.Condition".equals(
                      rawAnnotation.getAnnotationClass().getName())) {
             String value = tags[i].getValue().trim();
-
-            if (!value.startsWith("(") && !value.endsWith(")")) {
+            
+            if (!(value.startsWith("(") && value.endsWith(")"))) {
                if (interfaceClass != null) {
                   buffer.append(',');
                } else {
@@ -339,6 +340,7 @@ public class AnnotationC {
                }
 
                buffer.append(rawAnnotation.getValue());
+               continue;
             }
          }
 
@@ -354,7 +356,7 @@ public class AnnotationC {
          RawAnnotation conditionAnnon = new RawAnnotation(interfaceClass,
                buffer.toString(), line, enhancer.getClassName(),
                enhancer.getClassFileName());
-         enhancer.insertClassAnnotation(conditionAnnon);
+         enhancer.insertMethodAnnotation(method, conditionAnnon);
          logInfo("\tprocessing method annotation [" + conditionAnnon.getName() +
             " @ " + method.getParentClass().getName() + '.' + method.getName() +
             ']');
