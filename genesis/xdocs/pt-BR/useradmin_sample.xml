@@ -44,7 +44,7 @@
       à interface gráfica. Temos três possibilidades de interface gráfica nesse
       exemplo: <a href="http://www.thinlet.com/">Thinlet</a>,
       <a href="http://java.sun.com/products/jfc/">Swing</a> e
-      <a href="http://www.eclipse.org/swt">SWT</a>. Para utilizar SWT, veja as 
+      <a href="http://www.eclipse.org/swt/">SWT</a>. Para utilizar SWT, veja as 
       instruções <a href="configuring_swt.html">aqui</a>.</p>
       <p>No pacote <code>net.java.dev.genesis.samples.useradmin.ui</code> 
       encontramos arquivos que definem a lógica da tela, ou seja, seu 

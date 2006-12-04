@@ -41,7 +41,7 @@
       sample uses three different UI technologies: <a 
       href="http://www.thinlet.com/">Thinlet</a>, <a 
       href="http://java.sun.com/products/jfc/">Swing</a> and <a 
-      href="http://www.eclipse.org/swt">SWT</a>. To use SWT, read the 
+      href="http://www.eclipse.org/swt/">SWT</a>. To use SWT, read the 
       instructions <a href="configuring_swt.html">here</a>.</p>
       <p>The package <code>net.java.dev.genesis.samples.useradmin.ui</code> 
       contains files that define the UI logic (rules to enable and disable 

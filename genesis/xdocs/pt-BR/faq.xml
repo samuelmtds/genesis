@@ -21,6 +21,10 @@
         getSession()?">Por que estou obtendo uma
         <code>NullPointerException</code> ao chamar <code>getSession()</code>?
         </a></li>
+        <li><a href="#Por que estou obtendo um java.lang.IllegalArgumentException
+        em um método anotado com @DataProvider?">Por que estou obtendo um
+        <code>java.lang.IllegalArgumentException</code> em um método anotado com <code>@DataProvider</code>?
+        </a></li>
         <li><a href="#Como obtenho suporte técnico?">Como obtenho suporte
         técnico?</a></li>
       </ul>
@@ -84,6 +88,15 @@
         </ul>
         </p>
       </subsection>
+      <subsection name="Por que estou obtendo um java.lang.IllegalArgumentException
+        em um método anotado com @DataProvider?">
+        <p>Provavelmente o método que você está anotado com <code>@DataProvider</code>
+        tem o prefixo <code>get</code>, o que torna o método um <code>getter</code>. Métodos
+        <code>getter</code>s não podem ser anotados com <code>@DataProvider</code> pois tais
+        métodos representam propriedades de seu <code>form</code>. Para resolver tal problema,
+        basta renomear o seu método para que não tenha o prefixo <code>get</code>.
+        </p>
+      </subsection>
       <subsection name="Como obtenho suporte técnico?">
         <p>Suporte básico e gratuito pode ser obtido através das <a
         href="../mail-lists.html">listas de discussão</a> do projeto.</p>
@@ -96,7 +109,7 @@
             <ul>
               <li>Endereço: Rua Funchal, 411 - 11o. andar, CJ. 112 - São
               Paulo - 04551-060</li>
-              <li>Telefone: +55.11.3846.1622</li>
+              <li>Telefone: +55.11.3055.2060</li>
               <li>Fax: +55.11.3845.3514</li>
               <li><a href="mailto:brazil@summa-tech.com">brazil@summa-tech.com</a></li>
             </ul>
