@@ -62,6 +62,8 @@ public class DepthFirstWidgetLookupStrategy extends
          return control;
       }
 
+      registerMap((String) control.getData(), control);
+
       Widget w = depthFirstLookup(control, name);
 
       if (w != null) {

@@ -50,6 +50,8 @@ public class BreadthFirstWidgetLookupStrategy
                return first;
             }
 
+            registerMap((String) first.getData(), first);
+
             Widget w = breadthFirstLookup(first, name, queue);
 
             if (w != null) {

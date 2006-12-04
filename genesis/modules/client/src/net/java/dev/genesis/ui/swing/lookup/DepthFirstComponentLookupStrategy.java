@@ -21,6 +21,8 @@ package net.java.dev.genesis.ui.swing.lookup;
 import java.awt.Component;
 import java.awt.Container;
 
+import javax.swing.JMenu;
+
 public class DepthFirstComponentLookupStrategy
       extends RecursiveComponentLookupStrategy {
    protected Component lookupImpl(Component component, String name) {
@@ -29,12 +31,20 @@ public class DepthFirstComponentLookupStrategy
 
    private Component depthFirstLookup(Component component, String name) {
       if (component instanceof Container) {
-         Component[] components = ((Container) component).getComponents();
+         Container container = (Container) component;
+
+         if (component instanceof JMenu) {
+            container = ((JMenu) container).getPopupMenu();
+         }
+
+         Component[] components = container.getComponents();
 
          for (int i = 0; i < components.length; i++) {
             if (name.equals(components[i].getName())) {
                return components[i];
             }
+
+            registerMap(components[i].getName(), components[i]);
 
             Component c = depthFirstLookup(components[i], name);
 

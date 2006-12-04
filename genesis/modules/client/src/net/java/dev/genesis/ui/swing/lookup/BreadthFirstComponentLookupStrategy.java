@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JMenu;
+
 public class BreadthFirstComponentLookupStrategy
       extends RecursiveComponentLookupStrategy {
    protected Component lookupImpl(Component component, String name) {
@@ -35,6 +37,10 @@ public class BreadthFirstComponentLookupStrategy
       if (component instanceof Container) {
          Container container = (Container) component;
 
+         if (component instanceof JMenu) {
+            container = ((JMenu) container).getPopupMenu();
+         }
+
          queue.addAll(Arrays.asList(container.getComponents()));
 
          while (!queue.isEmpty()) {
@@ -43,6 +49,8 @@ public class BreadthFirstComponentLookupStrategy
             if (name.equals(first.getName())) {
                return first;
             }
+
+            registerMap(first.getName(), first);
 
             Component c = breadthFirstLookup(first, name, queue);
 

@@ -46,6 +46,14 @@ public class MapLookupStrategy implements LookupStrategy {
       return object;
    }
 
+   protected void registerMap(String name, Object object) {
+      if (name == null || components.containsKey(name)) {
+         return;
+      }
+
+      register(name, object);
+   }
+
    public String getName(Object object) {
       return (String) identityMap.get(object);
    }
