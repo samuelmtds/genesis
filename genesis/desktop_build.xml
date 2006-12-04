@@ -750,7 +750,7 @@
             <include name="commons-jxpath-*.jar" if="jxpath.needed" />
             <include name="bsf-*.jar" if="bsf.needed" />
             <include name="bsh-*.jar" if="beanshell.needed" />
-            <include name="js.jar" if="javascript.needed" />
+            <include name="js-*.jar" if="javascript.needed" />
             <include name="commons-el-*.jar" if="el.needed" />
             <include name="jakarta-taglibs-standard-*.jar" if="el.needed" />
             <include name="jsp-api.jar" if="el.needed" />
@@ -1414,7 +1414,7 @@
                   <include name="commons-jxpath*.jar" if="jxpath.needed" />
                   <include name="bsf-*.jar" if="bsf.needed" />
                   <include name="bsh-*.jar" if="beanshell.needed" />
-                  <include name="js.jar" if="javascript.needed" />
+                  <include name="js-*.jar" if="javascript.needed" />
                   <include name="commons-el-*.jar" if="el.needed" />
                   <include name="jakarta-taglibs-standard-*.jar" if="el.needed" />
                   <include name="jsp-api.jar" if="el.needed" />
