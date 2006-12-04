@@ -24,6 +24,7 @@ import net.java.dev.genesis.samples.useradmin.business.RoleRemoveCommand;
 import net.java.dev.genesis.samples.useradmin.business.RoleSearchCommand;
 import net.java.dev.genesis.samples.useradmin.databeans.Role;
 import net.java.dev.genesis.ui.ActionInvoker;
+import net.java.dev.genesis.ui.UIException;
 
 /**
  * @Form
@@ -52,7 +53,11 @@ public class RoleListForm {
     * @EnabledWhen("genesis.isNotEmpty('form:role')")
     */
    public void remove() throws Exception {
-      new RoleRemoveCommand().removeRole(role);
+      if (!new RoleRemoveCommand().removeRole(role)) {
+         throw new UIException("Cannot remove role", role.getLabel() + " is " +
+               "associated with users and cannot be removed");
+      }
+
       ActionInvoker.invoke(this, "provideRoles");
    }
    
