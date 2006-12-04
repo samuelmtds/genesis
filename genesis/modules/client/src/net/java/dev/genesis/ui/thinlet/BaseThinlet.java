@@ -520,7 +520,7 @@ public abstract class BaseThinlet extends Thinlet implements
 
             if (keyPropertyName != null) {
                Object o = properties.get(propertyName);
-               o = o == null ? null : PropertyUtils.getProperty(
+               o = o == null ? null : getProperty(getName(component),
                      properties.get(propertyName), keyPropertyName);
 
                propertyValue = format(formatters, keyPropertyName, o);
@@ -549,6 +549,18 @@ public abstract class BaseThinlet extends Thinlet implements
             setText(component, getPropertyValue(properties, propertyName, 
                   false, formatters));
          }
+      }
+   }
+
+   protected Object getProperty(String componentName, Object bean, String propertyName)
+         throws IllegalAccessException, InvocationTargetException {
+      try {
+         return PropertyUtils.getProperty(bean, propertyName);
+      } catch (NoSuchMethodException e) {
+         throw new IllegalArgumentException("The widget named '" + componentName
+               + "' has mis configured the property '" + propertyName
+               + "' of bean " + bean.getClass().getName() + ". "
+               + e.getMessage());
       }
    }
 
@@ -835,7 +847,7 @@ public abstract class BaseThinlet extends Thinlet implements
          description = virtual ? virtualFormatter.format(value = o)
                : (valueProperty == null ? format(formatters,
                      componentName + '.', value = o) : format(formatters, componentName
-                     + '.' + valueProperty, value = PropertyUtils.getProperty(o,
+                     + '.' + valueProperty, value = getProperty(componentName, o,
                      valueProperty)));
          Object item = createItemOfType(key, description, value, type,
                getWidgetFactory(widgetFactories, componentName + '.' + 
@@ -850,7 +862,7 @@ public abstract class BaseThinlet extends Thinlet implements
          IllegalAccessException, NoSuchMethodException {
       if (keyProperty != null) {
          return format(formatters, componentName + '.' + keyProperty,
-               PropertyUtils.getProperty(o, keyProperty));
+               getProperty(componentName, o, keyProperty));
       } else if (EnumHelper.getInstance().isEnum(o)) {
          return o.toString();
       }
@@ -944,7 +956,7 @@ public abstract class BaseThinlet extends Thinlet implements
             skip = false;
 
             while ((indexOfDot = propertyName.indexOf('.', indexOfDot)) != -1) {
-               if (PropertyUtils.getProperty(bean, 
+               if (getProperty(componentName, bean, 
                      propertyName.substring(0, indexOfDot)) == null) {
                   Object cell = createItemOfType(propertyName, format(
                         formatters, componentName + '.' + propertyName, null),
@@ -963,7 +975,7 @@ public abstract class BaseThinlet extends Thinlet implements
                continue;
             }
 
-            Object value = PropertyUtils.getProperty(bean, propertyName);
+            Object value = getProperty(componentName, bean, propertyName);
             Object cell = createItemOfType(propertyName, format(formatters,
                   componentName + '.' + propertyName, value), value,
                   ItemType.CELL, getWidgetFactory(widgetFactories, 
