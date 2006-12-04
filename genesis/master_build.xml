@@ -74,6 +74,10 @@
       <property name="jboss.client"
                 location="${jboss.home}/client" />
 
+      <basename property="name.jdbc.driver.jar" file="${jdbc.driver}" />
+      <condition property="jdbc.driver.jar.name" value="${name.jdbc.driver.jar}">
+         <isset property="jdbc.driver"/>
+      </condition>
       <property name="jdbc.driver.jar.name" value="hsqldb.jar" />
       <property name="jdbc.driver" 
                 value="${jboss.app}/lib/${jdbc.driver.jar.name}" />
