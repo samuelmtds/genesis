@@ -20,11 +20,12 @@ package net.java.dev.genesis.ui;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class UIUtils {
    private static final UIUtils instance = new UIUtils();
-   private final ResourceBundle bundle = ResourceBundle.getBundle("messages");
+   private ResourceBundle bundle;
 
    private UIUtils() {
    }
@@ -55,6 +56,14 @@ public class UIUtils {
    }
 
    public ResourceBundle getBundle() {
+      if (bundle == null) {
+         try {
+            bundle = ResourceBundle.getBundle("messages");
+         } catch (MissingResourceException e) {
+            throw new RuntimeException("The 'messages.properties' file was not found in classpath.");
+         }
+      }
+
       return bundle;
    }
 }

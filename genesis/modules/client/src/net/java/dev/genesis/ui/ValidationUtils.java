@@ -40,24 +40,28 @@ import org.apache.commons.validator.ValidatorResults;
 import org.xml.sax.SAXException;
 
 public final class ValidationUtils {
-   private static final ValidationUtils instance = new ValidationUtils();
+   private static final Log log = LogFactory.getLog(ValidationUtils.class);
+   private static ValidationUtils instance;
    private final ValidatorResources resources;
-   private Log log = LogFactory.getLog(ValidationUtils.class);
    
-   private ValidationUtils() {
-      try {
-         resources = initResources();
-         UIUtils.getInstance().getBundle();
-      } catch (final IOException ioe) {
-         log.error(ioe);
-         throw new ExceptionInInitializerError(ioe);
-      } catch (final SAXException saxe) {
-         log.error(saxe);
-         throw new ExceptionInInitializerError(saxe);
-      }
+   private ValidationUtils() throws IOException, SAXException {
+      resources = initResources();
+      UIUtils.getInstance().getBundle();
    }
    
    public static ValidationUtils getInstance() {
+      if (instance == null) {
+         try {
+            instance = new ValidationUtils();
+         } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+         } catch (SAXException e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+         }
+      }
+
       return instance;
    }
 
