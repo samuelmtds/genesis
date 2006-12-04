@@ -25,7 +25,6 @@ import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -103,7 +102,7 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
                String identifier = getIdentifier(modelIndex);
                boolean isVirtual = getBinder().isVirtual(identifier);
 
-               Object value = isVirtual ? bean : PropertyUtils.getProperty(
+               Object value = isVirtual ? bean : getProperty(
                      bean, identifier);
                items[i].setText(modelIndex, getBinder().format(getName(),
                      identifier, value, isVirtual));

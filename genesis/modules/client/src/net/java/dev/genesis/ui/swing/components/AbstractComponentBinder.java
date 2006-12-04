@@ -31,6 +31,7 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 import java.awt.Component;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,6 +39,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.JComponent;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 public abstract class AbstractComponentBinder implements WidgetBinder {
    public BoundField bind(AbstractBinder binder, Object widget,
@@ -222,6 +225,18 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
 
          for (Iterator iter = visibleWidgetGroupSet.iterator(); iter.hasNext();) {
             ((JComponent) iter.next()).setVisible(visible);
+         }
+      }
+
+      protected Object getProperty(Object bean, String propertyName)
+            throws IllegalAccessException, InvocationTargetException {
+         try {
+            return PropertyUtils.getProperty(bean, propertyName);
+         } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException("The component named '" + getName()
+                  + "' has mis configured the property '" + propertyName
+                  + "' of bean " + bean.getClass().getName() + ". "
+                  + e.getMessage());
          }
       }
 

@@ -28,7 +28,6 @@ import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -184,7 +183,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          boolean isVirtual = getBinder().isVirtual(widget, valueProperty);
 
          return getBinder().format(getName(), valueProperty, isVirtual ?
-               value : PropertyUtils.getProperty(value, valueProperty), isVirtual);
+               value : getProperty(value, valueProperty), isVirtual);
       }
 
       protected String getKey(Object value) throws Exception {
@@ -192,7 +191,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
                .getData(SWTBinder.KEY_PROPERTY);
 
          if (keyPropertyName != null) {
-            Object o = (value == null) ? null : PropertyUtils.getProperty(
+            Object o = (value == null) ? null : getProperty(
                   value, keyPropertyName);
 
             return getBinder().format(getName(), keyPropertyName, o);

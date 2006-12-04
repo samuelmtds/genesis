@@ -60,8 +60,8 @@ public class ScriptUtils {
       try {
          return PropertyUtils.getProperty(bean, propertyName);
       } catch (Exception e) {
-         throw new IllegalArgumentException("Bean doesn't have the property '"
-               + propertyName + "'");
+         throw new IllegalArgumentException("Bean named " + objKey
+               + ": " + e.getMessage());
       }
    }
 

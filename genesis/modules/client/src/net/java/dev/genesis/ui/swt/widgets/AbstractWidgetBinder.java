@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.swt.widgets;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
@@ -215,6 +217,18 @@ public class AbstractWidgetBinder implements WidgetBinder {
 
          for (Iterator iter = visibleWidgetGroupSet.iterator(); iter.hasNext();) {
             ((Control) iter.next()).setVisible(visible);
+         }
+      }
+
+      protected Object getProperty(Object bean, String propertyName)
+            throws IllegalAccessException, InvocationTargetException {
+         try {
+            return PropertyUtils.getProperty(bean, propertyName);
+         } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException("The widget named '" + getName()
+                  + "' has mis configured the property '" + propertyName
+                  + "' of bean " + bean.getClass().getName() + ". "
+                  + e.getMessage());
          }
       }
 

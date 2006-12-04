@@ -34,8 +34,6 @@ import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 public class JComboBoxComponentBinder extends AbstractComponentBinder {
    public BoundDataProvider bind(SwingBinder binder, Component component,
       DataProviderMetadata dataProviderMetadata) {
@@ -187,7 +185,7 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          if (keyPropertyName != null) {
             Object o =
                (value == null) ? null
-               : PropertyUtils.getProperty(value, keyPropertyName);
+               : getProperty(value, keyPropertyName);
 
             return getBinder().format(getName(), keyPropertyName, o);
          } else if (EnumHelper.getInstance().isEnum(value)) {

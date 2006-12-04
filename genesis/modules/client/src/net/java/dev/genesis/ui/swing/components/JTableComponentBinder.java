@@ -31,8 +31,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
@@ -150,7 +148,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
                      Object value = getBinder().isVirtual(
                            propertyName = getIdentifier(column)) ? bean
-                           : PropertyUtils.getProperty(bean, propertyName);
+                           : getProperty(bean, propertyName);
                      model.setValueAt(value, i, modelIndex);
                   }
                }
