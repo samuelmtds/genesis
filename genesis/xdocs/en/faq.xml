@@ -88,12 +88,13 @@
       </subsection>
       <subsection name="Why am I getting a java.lang.IllegalArgumentException
         in a method annotated with @DataProvider?">
-        <p>Probably the name of the method annotated with <code>@DataProvider</code>
-        starts with <code>get</code>, so its a <code>getter</code> method.
-        <code>Getter</code>s methods can not be annotated with <code>@DataProvider</code>, because
-        those methods represent properties of your <code>form</code>. To solve that problem,
-        just rename your method to something else without the <code>get</code> prefix.
-        </p>
+        <p>Probably the name of the method annotated with 
+        <code>@DataProvider</code> starts with a <code>get</code> prefix, so 
+        it is considered a <code>getter</code> method. <code>Getter</code> 
+        methods cannot be annotated with <code>@DataProvider</code>, since these 
+        methods represent properties of your <code>form</code>. To solve this 
+        problem, just rename your method to something else that does not start
+        with <code>get</code>.</p>
       </subsection>
       <subsection name="How can I get technical support?">
         <p>Free basic support can be obtained in the project <a

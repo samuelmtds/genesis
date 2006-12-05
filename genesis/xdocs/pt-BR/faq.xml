@@ -21,7 +21,7 @@
         getSession()?">Por que estou obtendo uma
         <code>NullPointerException</code> ao chamar <code>getSession()</code>?
         </a></li>
-        <li><a href="#Por que estou obtendo um java.lang.IllegalArgumentException
+        <li><a href="#Por que estou obtendo uma java.lang.IllegalArgumentException
         em um método anotado com @DataProvider?">Por que estou obtendo um
         <code>java.lang.IllegalArgumentException</code> em um método anotado com <code>@DataProvider</code>?
         </a></li>
@@ -88,14 +88,16 @@
         </ul>
         </p>
       </subsection>
-      <subsection name="Por que estou obtendo um java.lang.IllegalArgumentException
-        em um método anotado com @DataProvider?">
-        <p>Provavelmente o método que você está anotado com <code>@DataProvider</code>
-        tem o prefixo <code>get</code>, o que torna o método um <code>getter</code>. Métodos
-        <code>getter</code>s não podem ser anotados com <code>@DataProvider</code> pois tais
-        métodos representam propriedades de seu <code>form</code>. Para resolver tal problema,
-        basta renomear o seu método para que não tenha o prefixo <code>get</code>.
-        </p>
+      <subsection name="Por que estou obtendo uma 
+        java.lang.IllegalArgumentException em um método anotado com 
+        @DataProvider?">
+        <p>Provavelmente o método que está anotado com 
+        <code>@DataProvider</code> tem o prefixo <code>get</code>, o que torna 
+        o método um <code>getter</code>. Métodos <code>getter</code>s não podem 
+        ser anotados com <code>@DataProvider</code>, pois tais métodos 
+        representam propriedades de seu <code>form</code>. Para resolver este 
+        problema, basta renomear o seu método para que não tenha o prefixo 
+        <code>get</code>.</p>
       </subsection>
       <subsection name="Como obtenho suporte técnico?">
         <p>Suporte básico e gratuito pode ser obtido através das <a
