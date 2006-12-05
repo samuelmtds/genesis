@@ -233,10 +233,12 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
          try {
             return PropertyUtils.getProperty(bean, propertyName);
          } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException("The component named '" + getName()
-                  + "' has mis configured the property '" + propertyName
-                  + "' of bean " + bean.getClass().getName() + ". "
-                  + e.getMessage());
+            IllegalArgumentException iae = new IllegalArgumentException(
+                  "The component named '" + getName() + "' expected "  + 
+                  bean.getClass().getName() + " to have a property named '" + 
+                  propertyName + "' (at bean " + bean + ")");
+            iae.initCause(e);
+            throw iae;
          }
       }
 

@@ -75,11 +75,12 @@ public class KeyValueListCellRenderer extends DefaultListCellRenderer {
       } catch (InvocationTargetException e) {
          throw new RuntimeException(e);
       } catch (NoSuchMethodException e) {
-         throw new IllegalArgumentException("The component named '"
-               + getBinder().getName(component)
-               + "' has mis configured the property '" + propertyName
-               + "' of bean " + bean.getClass().getName() + ". "
-               + e.getMessage());
+         IllegalArgumentException iae = new IllegalArgumentException(
+               "The component named '" + getBinder().getName(component) + 
+               "' expected "  + bean.getClass().getName() + " to have a " +
+               "property named '" + propertyName + "' (at bean " + bean + ")");
+         iae.initCause(e);
+         throw iae;
       }
    }
 
