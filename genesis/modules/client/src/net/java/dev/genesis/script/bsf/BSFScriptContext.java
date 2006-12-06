@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.script.bsf;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFunctionsAdapter;
 
+import org.apache.bsf.BSFDeclaredBean;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.bsf.util.ObjectRegistry;
@@ -37,7 +39,7 @@ public class BSFScriptContext extends ScriptContext {
    public static final String PRIMITIVE_FUNCTIONS_NS = "types";
 
    private final BSFManager manager = new BSFManager();
-   private final HashMap contextMap = new HashMap();
+   private final Map contextMap = new HashMap();
    private final String lang;
 
    protected BSFScriptContext(String lang, final Object root) {
@@ -90,7 +92,7 @@ public class BSFScriptContext extends ScriptContext {
    }
 
    public Map getContextMap() {
-      return contextMap;
+      return Collections.unmodifiableMap(contextMap);
    }
 
    protected ObjectRegistry getObjectRegistry() {
@@ -102,8 +104,10 @@ public class BSFScriptContext extends ScriptContext {
    }
 
    protected class BSFObjectRegistry extends ObjectRegistry {
+      private final Map registry = new HashMap();
+
       public Object lookup(String name) throws IllegalArgumentException {
-         Object obj = contextMap.get(name);
+         Object obj = registry.get(name);
 
          if (obj == null) {
             throw new IllegalArgumentException("object '" + name
@@ -114,10 +118,17 @@ public class BSFScriptContext extends ScriptContext {
       }
 
       public void register(String name, Object obj) {
-         contextMap.put(name, obj);
+         registry.put(name, obj);
+
+         if (obj instanceof BSFDeclaredBean) {
+            contextMap.put(name, ((BSFDeclaredBean)obj).bean);   
+         } else {
+            contextMap.put(name, obj);
+         }
       }
 
       public void unregister(String name) {
+         registry.remove(name);
          contextMap.remove(name);
       }
    }

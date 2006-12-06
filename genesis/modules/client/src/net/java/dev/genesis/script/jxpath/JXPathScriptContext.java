@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.script.jxpath;
 
+import java.util.Collections;
 import java.util.Map;
 
 import net.java.dev.genesis.commons.jxpath.VariablesImpl;
@@ -70,7 +71,7 @@ public class JXPathScriptContext extends ScriptContext {
    }
 
    public Map getContextMap() {
-      return ((VariablesImpl) ctx.getVariables()).getVariablesMap();
+      return Collections.unmodifiableMap(((VariablesImpl) ctx.getVariables()).getVariablesMap());
    }
 
    protected Variables getVariables() {

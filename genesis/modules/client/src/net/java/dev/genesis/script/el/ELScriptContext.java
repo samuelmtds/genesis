@@ -20,6 +20,7 @@ package net.java.dev.genesis.script.el;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,7 +98,7 @@ public class ELScriptContext extends ScriptContext implements VariableResolver,
    }
 
    public Map getContextMap() {
-      return variables;
+      return Collections.unmodifiableMap(variables);
    }
 
    protected VariableResolver getVariableResolver() {

@@ -19,6 +19,7 @@
 package net.java.dev.genesis.script.javaxscript;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.Map;
 
 import net.java.dev.genesis.script.ScriptContext;
@@ -77,8 +78,8 @@ public class JavaxScriptScriptContext extends ScriptContext {
    }
 
    public Map getContextMap() {
-      return scriptEngine.getContext().getBindings(
-            JavaxScriptBridge.getInstance().getEngineScope());
+      return Collections.unmodifiableMap(scriptEngine.getContext().getBindings(
+            JavaxScriptBridge.getInstance().getEngineScope()));
    }
 
    public Object lookup(String name) {
