@@ -55,6 +55,7 @@ public class JTableComponentBinderTest extends GenesisTestCase {
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
       componentBinder = binder.getWidgetBinder(table);
+      dataMeta.setResetSelection(true);
    }
 
    public void testSelectIndexes() {
@@ -143,6 +144,32 @@ public class JTableComponentBinderTest extends GenesisTestCase {
 
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = table.getModel().getRowCount();
+      assertEquals(0, table.getSelectedRows().length);
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         for (int j = 0; j < 2; j++) {
+            assertEquals(table.getModel().getValueAt(i, j), PropertyUtils
+                  .getProperty(newList[i], j == 0 ? "key" : "value"));
+         }
+      }
+
+      table.getSelectionModel().addSelectionInterval(0, 2);
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = table.getModel().getRowCount();
+      assertEquals(0, table.getSelectedRows().length);
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         for (int j = 0; j < 2; j++) {
+            assertEquals(table.getModel().getValueAt(i, j), PropertyUtils
+                  .getProperty(newList[i], j == 0 ? "key" : "value"));
+         }
+      }
+
+      dataMeta.setResetSelection(false);
+      table.getSelectionModel().addSelectionInterval(0, 2);
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = table.getModel().getRowCount();
+      assertTrue(Arrays.equals(new int[] {0, 1, 2}, table.getSelectedRows()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 2; j++) {
@@ -154,6 +181,7 @@ public class JTableComponentBinderTest extends GenesisTestCase {
       newList = new Object[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = table.getModel().getRowCount();
+      assertTrue(Arrays.equals(new int[] {0}, table.getSelectedRows()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 2; j++) {
@@ -167,6 +195,5 @@ public class JTableComponentBinderTest extends GenesisTestCase {
       count = table.getModel().getRowCount();
       assertEquals(count, newList.length);
    }
-
 
 }

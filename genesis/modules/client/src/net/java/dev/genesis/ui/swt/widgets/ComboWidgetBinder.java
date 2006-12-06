@@ -99,7 +99,18 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
       }
 
       public void updateList(List list) throws Exception {
+         boolean isBlank = isBlank(widget);
+
+         int selected = widget.getSelectionIndex();
+         if (dataProviderMetadata.isResetSelection()) {
+            selected = isBlank ? 0 : -1;
+         } else {
+            selected = selected <= list.size() ? selected : isBlank ? 0 : -1;
+         }
+
          widget.setItems(getData(list));
+
+         widget.select(selected);
       }
 
       public void setValue(Object value) throws Exception {

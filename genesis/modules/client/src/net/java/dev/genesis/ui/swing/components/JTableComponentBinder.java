@@ -116,13 +116,28 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       public void updateList(List data) throws Exception {
+         int[] selected = dataProviderMetadata.isResetSelection() ? new int[0]
+               : component.getSelectedRows();
+
          createTableModelAdapter().setData(data);
+         setSelectedIndexes(data.size(), selected);
+      }
+
+      protected void setSelectedIndexes(int listSize, int[] indexes) {
+         component.clearSelection();
+         for (int i = 0; i < indexes.length; i++) {
+            if (indexes[i] >= listSize) {
+               continue;
+            }
+
+            component.getSelectionModel().addSelectionInterval(indexes[i],
+                  indexes[i]);
+         }
       }
 
       protected TableModelAdapter createTableModelAdapter() {
          return new TableModelAdapter() {
             public void setData(List data) throws Exception {
-               component.getSelectionModel().clearSelection();
                DefaultTableModel model = (DefaultTableModel) component
                      .getModel();
 

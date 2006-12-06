@@ -57,6 +57,7 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
       componentBinder = binder.getWidgetBinder(combo);
+      dataMeta.setResetSelection(true);
    }
 
    public void testSelectIndexes() {
@@ -164,6 +165,27 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       String[] newList = new String[] { "newOne", "newTwo", "newThree" };
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = combo.getItemCount();
+      assertEquals(-1, combo.getSelectedIndex());
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItemAt(i), newList[i]);
+      }
+
+      combo.setSelectedIndex(2);
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(-1, combo.getSelectedIndex());
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItemAt(i), newList[i]);
+      }
+
+      dataMeta.setResetSelection(false);
+      combo.setSelectedIndex(2);
+
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(2, combo.getSelectedIndex());
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItemAt(i), newList[i]);
@@ -172,6 +194,7 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       newList = new String[] { "other" };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = combo.getItemCount();
+      assertEquals(-1, combo.getSelectedIndex());
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItemAt(i), newList[i]);
@@ -194,6 +217,28 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       String[] newList = new String[] { "newOne", "newTwo", "newThree" };
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = combo.getItemCount();
+      assertEquals(0, combo.getSelectedIndex());
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItemAt(i + 1), newList[i]);
+      }
+
+      combo.setSelectedIndex(3);
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(0, combo.getSelectedIndex());
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItemAt(i + 1), newList[i]);
+      }
+
+      dataMeta.setResetSelection(false);
+      combo.setSelectedIndex(3);
+      
+      newList = new String[] { "newOne", "newTwo", "newThree" };
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(3, combo.getSelectedIndex());
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItemAt(i + 1), newList[i]);
@@ -202,6 +247,7 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       newList = new String[] { "other" };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = combo.getItemCount();
+      assertEquals(0, combo.getSelectedIndex());
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItemAt(i + 1), newList[i]);

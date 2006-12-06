@@ -81,6 +81,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       combo.setItems(values);
 
       widgetBinder = binder.getWidgetBinder(combo);
+      dataMeta.setResetSelection(true);
    }
 
    protected void setKey(int index, String key) throws Exception {
@@ -223,6 +224,27 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
             new MockBean("newThree", "NewThree") };
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = combo.getItemCount();
+      assertEquals(-1, combo.getSelectionIndex());
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItem(i), getValue(combo, newList[i]));
+      }
+
+      combo.select(2);
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(-1, combo.getSelectionIndex());
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItem(i), getValue(combo, newList[i]));
+      }
+
+      dataMeta.setResetSelection(false);
+      combo.select(2);
+
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(2, combo.getSelectionIndex());
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItem(i), getValue(combo, newList[i]));
@@ -231,6 +253,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       newList = new MockBean[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = combo.getItemCount();
+      assertEquals(-1, combo.getSelectionIndex());
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItem(i), getValue(combo, newList[i]));
@@ -255,6 +278,27 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
             new MockBean("newThree", "NewThree") };
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = combo.getItemCount();
+      assertEquals(0, combo.getSelectionIndex());
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItem(i + 1), getValue(combo, newList[i]));
+      }
+
+      combo.select(3);
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(0, combo.getSelectionIndex());
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(combo.getItem(i + 1), getValue(combo, newList[i]));
+      }
+
+      dataMeta.setResetSelection(false);
+      combo.select(3);
+
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = combo.getItemCount();
+      assertEquals(3, combo.getSelectionIndex());
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItem(i + 1), getValue(combo, newList[i]));
@@ -263,6 +307,7 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       newList = new MockBean[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = combo.getItemCount();
+      assertEquals(0, combo.getSelectionIndex());
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(combo.getItem(i + 1), getValue(combo, newList[i]));

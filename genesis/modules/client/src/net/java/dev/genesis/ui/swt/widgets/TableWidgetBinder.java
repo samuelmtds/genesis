@@ -89,6 +89,9 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
       }
 
       public void updateList(List data) throws Exception {
+         int[] selected = dataProviderMetadata.isResetSelection() ? new int[0]
+               : widget.getSelectionIndices();
+
          widget.deselectAll();
          widget.setItemCount(data.size());
 
@@ -108,6 +111,22 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
                      identifier, value, isVirtual));
             }
          }
+
+         int[] toSelect = new int[selected.length];
+         int itemCount = widget.getItemCount();
+         int j = 0;
+         for (; j < selected.length; j++) {
+            if (selected[j] >= itemCount) {
+               break;
+            }
+
+            toSelect[j] = selected[j];
+         }
+
+         selected = new int[j];
+         System.arraycopy(toSelect, 0, selected, 0, j);
+
+         widget.select(selected);
       }
       
       protected int getModelIndex(int index) {

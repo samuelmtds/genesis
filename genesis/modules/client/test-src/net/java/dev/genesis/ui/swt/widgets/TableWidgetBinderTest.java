@@ -90,6 +90,7 @@ public class TableWidgetBinderTest extends GenesisTestCase {
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
       widgetBinder = binder.getWidgetBinder(table);
+      dataMeta.setResetSelection(true);
    }
 
    public void testSelectIndexes() {
@@ -174,6 +175,32 @@ public class TableWidgetBinderTest extends GenesisTestCase {
 
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = table.getItemCount();
+      assertEquals(0, table.getSelectionIndices().length);
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         for (int j = 0; j < 2; j++) {
+            assertEquals(table.getItems()[i].getText(j), PropertyUtils
+                  .getProperty(newList[i], j == 0 ? "key" : "value"));
+         }
+      }
+
+      table.select(new int[] {0, 1, 2});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = table.getItemCount();
+      assertEquals(0, table.getSelectionIndices().length);
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         for (int j = 0; j < 2; j++) {
+            assertEquals(table.getItems()[i].getText(j), PropertyUtils
+                  .getProperty(newList[i], j == 0 ? "key" : "value"));
+         }
+      }
+
+      dataMeta.setResetSelection(false);
+      table.select(new int[] {0, 1, 2});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = table.getItemCount();
+      assertTrue(Arrays.equals(new int[] {0, 1, 2}, table.getSelectionIndices()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 2; j++) {
@@ -185,6 +212,8 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       newList = new Object[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = table.getItemCount();
+      System.out.println(Arrays.toString(table.getSelectionIndices()));
+      assertTrue(Arrays.equals(new int[] {0}, table.getSelectionIndices()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 2; j++) {

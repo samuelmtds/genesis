@@ -94,7 +94,16 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
       }
 
       public void updateList(List list) throws Exception {
+         boolean isBlank = isBlank(widget);
+
+         int[] selected = widget.getSelectionIndices();
+         if (dataProviderMetadata.isResetSelection()) {
+            selected = isBlank ? new int[] { 0 } : new int[] { -1 };
+         }
+
+         widget.deselectAll();
          widget.setItems(getData(list));
+         widget.setSelection(selected);
       }
 
       public void setValue(Object value) throws Exception {

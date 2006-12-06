@@ -58,6 +58,7 @@ public class JListComponentBinderTest extends GenesisTestCase {
             .getDataProviderMetadatas().get(
                   new MethodEntry(form.getMethod("someDataProvider")));
       componentBinder = binder.getWidgetBinder(list);
+      dataMeta.setResetSelection(true);
    }
 
    public void testSelectIndexes() {
@@ -232,6 +233,26 @@ public class JListComponentBinderTest extends GenesisTestCase {
       String[] newList = new String[] { "newOne", "newTwo", "newThree" };
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = list.getModel().getSize();
+      assertEquals(-1, list.getSelectedIndex());
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getModel().getElementAt(i), newList[i]);
+      }
+
+      list.setSelectedIndices(new int[] {0, 1, 2});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getModel().getSize();
+      assertEquals(0, list.getSelectedIndices().length);
+      assertEquals(count, newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getModel().getElementAt(i), newList[i]);
+      }
+
+      dataMeta.setResetSelection(false);
+      list.setSelectedIndices(new int[] {0, 1, 2});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getModel().getSize();
+      assertTrue(Arrays.equals(new int[] {0, 1, 2}, list.getSelectedIndices()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getModel().getElementAt(i), newList[i]);
@@ -240,6 +261,7 @@ public class JListComponentBinderTest extends GenesisTestCase {
       newList = new String[] { "other" };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = list.getModel().getSize();
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectedIndices()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getModel().getElementAt(i), newList[i]);
@@ -263,6 +285,26 @@ public class JListComponentBinderTest extends GenesisTestCase {
       String[] newList = new String[] { "newOne", "newTwo", "newThree" };
       boundDataProvider.updateList(Arrays.asList(newList));
       int count = list.getModel().getSize();
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectedIndices()));
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getModel().getElementAt(i + 1), newList[i]);
+      }
+
+      list.setSelectedIndices(new int[] {1, 2, 3});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getModel().getSize();
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectedIndices()));
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getModel().getElementAt(i + 1), newList[i]);
+      }
+
+      dataMeta.setResetSelection(false);
+      list.setSelectedIndices(new int[] {1, 2, 3});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getModel().getSize();
+      assertTrue(Arrays.equals(new int[] {1, 2, 3}, list.getSelectedIndices()));
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getModel().getElementAt(i + 1), newList[i]);
@@ -271,6 +313,7 @@ public class JListComponentBinderTest extends GenesisTestCase {
       newList = new String[] { "other" };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = list.getModel().getSize();
+      assertTrue(Arrays.equals(new int[] {1}, list.getSelectedIndices()));
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getModel().getElementAt(i + 1), newList[i]);

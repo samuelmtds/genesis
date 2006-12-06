@@ -80,6 +80,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       list.setItems(values);
       
       widgetBinder = binder.getWidgetBinder(list);
+      dataMeta.setResetSelection(true);
    }
    
    protected void setKey(int index, String key) throws Exception {
@@ -287,6 +288,24 @@ public class ListWidgetBinderTest extends GenesisTestCase {
             new MockBean("newTwo", "NewTwo"),
             new MockBean("newThree", "NewThree") };
       boundDataProvider.updateList(Arrays.asList(newList));
+      assertEquals(0, list.getSelectionIndices().length);
+      assertEquals(list.getItemCount(), newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i), getValue(list, newList[i]));
+      }
+
+      list.select(new int[] {0, 1, 2});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      assertEquals(0, list.getSelectionIndices().length);
+      assertEquals(list.getItemCount(), newList.length);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i), getValue(list, newList[i]));
+      }
+
+      dataMeta.setResetSelection(false);
+      list.select(new int[] {0, 1, 2});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      assertTrue(Arrays.equals(new int[] {0, 1, 2}, list.getSelectionIndices()));
       assertEquals(list.getItemCount(), newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getItem(i), getValue(list, newList[i]));
@@ -294,6 +313,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
 
       newList = new MockBean[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectionIndices()));
       assertEquals(list.getItemCount(), newList.length);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getItem(i), getValue(list, newList[i]));
@@ -317,7 +337,29 @@ public class ListWidgetBinderTest extends GenesisTestCase {
             new MockBean("newTwo", "NewTwo"),
             new MockBean("newThree", "NewThree") };
       boundDataProvider.updateList(Arrays.asList(newList));
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectionIndices()));
       int count = list.getItemCount();
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i + 1), getValue(list, newList[i]));
+      }
+      
+      list.select(new int[] {1, 2, 3});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectionIndices()));
+      count = list.getItemCount();
+      assertEquals(count, newList.length + 1);
+      for (int i = 0; i < newList.length; i++) {
+         assertEquals(list.getItem(i + 1), getValue(list, newList[i]));
+      }
+
+      dataMeta.setResetSelection(false);
+      list.deselectAll();
+      list.select(new int[] {1, 2, 3});
+      boundDataProvider.updateList(Arrays.asList(newList));
+      count = list.getItemCount();
+      assertTrue(Arrays.equals(new int[] {1, 2, 3}, list.getSelectionIndices()));
+      
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getItem(i + 1), getValue(list, newList[i]));
@@ -326,6 +368,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       newList = new MockBean[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = list.getItemCount();
+      assertTrue(Arrays.equals(new int[] {1}, list.getSelectionIndices()));
       assertEquals(count, newList.length + 1);
       for (int i = 0; i < newList.length; i++) {
          assertEquals(list.getItem(i + 1), getValue(list, newList[i]));

@@ -118,25 +118,38 @@ public class JListComponentBinder extends AbstractComponentBinder {
          deactivateListeners();
 
          try {
-            if (indexes.length == 0 || (isBlank && indexes.length == 1 && indexes[0] < 0)) {
-               component.clearSelection();
-            } else {
-               component.setSelectedIndices(indexes);
-            }
+            setSelectedIndexes(isBlank, indexes);
          } finally {
             reactivateListeners();
          }
       }
 
+      protected void setSelectedIndexes(boolean isBlank, int[] indexes) {
+         if (indexes.length == 0 || (isBlank && indexes.length == 1 && indexes[0] < 0)) {
+            component.clearSelection();
+         } else {
+            component.setSelectedIndices(indexes);
+         }
+      }
+      
       public void updateList(List list) throws Exception {
          deactivateListeners();
 
          try {
+            boolean isBlank = isBlank(component);
+
+            int[] selected = component.getSelectedIndices();
+            if (dataProviderMetadata.isResetSelection()) {
+               selected = isBlank ? new int[] { 0 } : new int[] { -1 };
+            }
+            
             if (useListModelAdapter) {
                createListModelAdapter().setData(getData(list));
             } else {
                component.setListData(getData(list));
             }
+
+            setSelectedIndexes(isBlank, selected);
          } finally {
             reactivateListeners();
          }

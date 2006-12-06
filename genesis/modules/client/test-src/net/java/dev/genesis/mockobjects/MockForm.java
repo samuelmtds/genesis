@@ -62,6 +62,7 @@ public class MockForm implements FormMetadataFactory, FormControllerFactory {
             someDataProvider, true, true);
       metadata.addMethodMetadata(someDataProvider, methodMeta);
       methodMeta.getDataProviderMetadata().setWidgetName("dataProviderField");
+      methodMeta.getDataProviderMetadata().setResetSelection(true);
       methodMeta.getDataProviderMetadata().setObjectField(new FieldEntry("objectField", Object.class));
    }
 

@@ -102,7 +102,18 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
       public void updateList(List list) throws Exception {
          deactivateListeners();
          try {
+            boolean isBlank = isBlank(component);
+
+            int selected = component.getSelectedIndex();
+            if (dataProviderMetadata.isResetSelection()) {
+               selected = isBlank ? 0 : -1;
+            } else {
+               selected = selected <= list.size() ? selected : isBlank ? 0 : -1;
+            }
+
             createComboBoxModelAdapter().setData(getData(list));
+
+            component.setSelectedIndex(selected);
          } finally {
             reactivateListeners();
          }
