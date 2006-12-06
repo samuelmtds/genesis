@@ -20,7 +20,11 @@
    <defaultexcludes add="**/Thumbs.db"/>
 
    <!-- Call using maven or build site before -->
-   <target name="genesis:dist" description="Generate genesis distribution" depends="define-dist-macro">
+   <target name="genesis:dist"
+   		  description="Generate genesis distribution"
+           depends="define-dist-macro,genesis:build-modules,genesis:build-dist" />
+
+   <target name="genesis:build-modules" depends="define-dist-macro">
       <echo>This target must be called using maven... or build site before (maven genesis:site).</echo>
 
       <!-- Problems with <ant ...>, <antcall ...> or <subant...>. TODO: See what's happening -->
@@ -48,6 +52,9 @@
          <arg line="-f ${basedir}/../samples/useradmin/build.xml dist" />
       </exec>
 
+    </target>
+
+    <target name="genesis:build-dist" depends="define-dist-macro">
       <patternset id="genesis-license.pattern">
          <include name="genesis/LICENSE.txt" />
          <include name="genesis/lgpl.txt" />
@@ -110,6 +117,9 @@
       <patternset id="genesis-xdoclet-extensions.pattern">
          <patternset refid="genesis-license.pattern" />
          <include name="${xdoclet.dist}/*.jar" />
+         <exclude name="${xdoclet.dist}/xdoclet-jboss-module-*.jar" />
+         <exclude name="${xdoclet.dist}/xdoclet-jmx-module-*.jar" />
+         <exclude name="${xdoclet.dist}/xdoclet-web-module-*.jar" />
       </patternset>
 
       <patternset id="genesis-ant-tasks.pattern">

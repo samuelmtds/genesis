@@ -19,6 +19,9 @@
               <include name="xdoclet-hibernate-module-${xdoclet.version}.jar" />
               <include name="xdoclet-xdoclet-module-${xdoclet.version}.jar" />
               <include name="xdoclet-ejb-module-${xdoclet.version}.jar" />
+              <include name="xdoclet-jboss-module-${xdoclet.version}.jar" />
+              <include name="xdoclet-jmx-module-${xdoclet.version}.jar" />
+              <include name="xdoclet-web-module-${xdoclet.version}.jar" />
            </fileset>
            <fileset dir="${xdoclet.additional.libs}" includes="*.jar" />
         </copy>
