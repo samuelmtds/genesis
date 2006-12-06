@@ -93,11 +93,11 @@
       <path refid="backport175.path" />  
       <path location="${genesis.module.annotation}/${build.dest}" />  
       <fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
-      <fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
       <fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
       <fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+      <fileset dir="${genesis.script.dist}" includes="commons-jxpath*.jar" />
       <fileset dir="${swt.specific.dir}" includes="*.jar" />
 	</path>
 
@@ -117,10 +117,10 @@
 		<fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
 		<fileset dir="${genesis.j2ee.dist}" includes="j2ee.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
-		<fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+      <fileset dir="${genesis.script.dist}" includes="commons-jxpath*.jar" />
 	</path>
 
    <path id="container.dependency.classpath" />
@@ -137,10 +137,10 @@
 		<fileset dir="${genesis.j2ee.dist}" includes="j2ee.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-beanutils*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-logging*.jar" />
-		<fileset dir="${genesis.commons.dist}" includes="commons-jxpath*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="commons-validator*.jar" />
 		<fileset dir="${genesis.commons.dist}" includes="reusable-components*.jar" />
 		<fileset dir="${genesis.thinlet.dist}" includes="thinlet*.jar" />
+      <fileset dir="${genesis.script.dist}" includes="commons-jxpath*.jar" />
 		<fileset dir="${swt.specific.dir}" includes="*.jar" />
 	</path>
 
@@ -648,6 +648,8 @@
          <classpath>
             <path refid="commons.path" />
             <path refid="thinlet.path" />
+            <path refid="script.path" />
+            <path refid="backport175.path" />
             <path location="${genesis.module.client}/${build.dest}" />
             <path location="${genesis.module.shared}/${build.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
