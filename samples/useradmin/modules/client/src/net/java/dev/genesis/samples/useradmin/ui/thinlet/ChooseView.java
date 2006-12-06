@@ -18,7 +18,21 @@
  */
 package net.java.dev.genesis.samples.useradmin.ui.thinlet;
 
+import net.java.dev.genesis.ui.thinlet.MessageDialog;
+
 public class ChooseView extends BaseView {
+   private static final boolean swtAvailable;
+   
+   static {
+      Class c = null;
+
+      try {
+         c = Class.forName("org.eclipse.swt.SWT");
+      } catch (ClassNotFoundException ex) {
+      }
+      
+      swtAvailable = c != null;
+   }
 
    public ChooseView() throws Exception {
       super("ChooseView.title", "choose-view.xml", 210, 90, false);
@@ -41,6 +55,13 @@ public class ChooseView extends BaseView {
    }
 
    public void onSWT() throws Exception {
+      if (!swtAvailable) {
+         MessageDialog.show(this, "Error", "SWT has not been properly " +
+               "configured. Please refer to genesis documentation for more " +
+               "information.");
+         return;
+      }
+
       dispose();
       new net.java.dev.genesis.samples.useradmin.ui.swt.UserListView()
             .display();
