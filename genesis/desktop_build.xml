@@ -1273,13 +1273,14 @@
       <property name="webstart.signjar.storepass" value="summa@brasil" />
       <property name="webstart.signjar.keypass" value="g3n3sis" />
 
+      <property name="webstart.protocol" value="http" />
       <property name="webstart.server" value="127.0.0.1" />
       <property name="webstart.port" value="8080" />
       <property name="webstart.context" 
                 value="${genesisBasedApplication.name}"/>
 
       <property name="webstart.jnlp.homepage"
-                value="http://${webstart.server}:${webstart.port}/${webstart.context}" />
+                value="${webstart.protocol}://${webstart.server}:${webstart.port}/${webstart.context}" />
       <property name="webstart.jnlp.codebase"
                 value="${webstart.jnlp.homepage}/${webstart.jars.dir.name}" />
       <property name="webstart.jnlp.title" 
