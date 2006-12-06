@@ -32,11 +32,11 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
 
    protected BaseDialogThinlet(final BaseThinlet thinlet, final int width, 
                               final int height) {
-      this(new Dialog(thinlet.getFrame(), true), width, height);
+      this(createDialog(thinlet), width, height);
    }
 
    protected BaseDialogThinlet(final BaseThinlet thinlet) {
-      this(new Dialog(thinlet.getFrame(), true));
+      this(createDialog(thinlet));
    }
 
    protected BaseDialogThinlet(final Dialog dialog, final int width, 
@@ -152,5 +152,19 @@ public abstract class BaseDialogThinlet extends BaseThinlet {
    
    public void setDoDialogPackAction(boolean b) {
       this.doDialogPackAction = b;
+   }
+
+   private static Dialog createDialog(BaseThinlet thinlet) {
+      Frame frame = thinlet.getFrame();
+      
+      if (frame != null) {
+         return new Dialog(frame, true);
+      } else if (thinlet instanceof BaseDialogThinlet) {
+         Dialog dialog = new Dialog(((BaseDialogThinlet)thinlet).getDialog());
+         dialog.setModal(true);
+         return dialog;
+      } else {
+         return new Dialog(new Frame());
+      }
    }
 }
