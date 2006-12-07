@@ -34,11 +34,14 @@ public class JavaxScriptScriptContext extends ScriptContext {
    public static final String GENESIS_FUNCTIONS_NS = "genesis";
 
    private final ScriptEngine scriptEngine;
+   private final Map unmodifiableMap;
    private Object realContext;
 
    protected JavaxScriptScriptContext(ScriptEngine engine, Object root) {
       this.scriptEngine = engine;
       this.realContext = engine.getContext().getRealContext();
+      this.unmodifiableMap = Collections.unmodifiableMap(scriptEngine.getContext().getBindings(
+            JavaxScriptBridge.getInstance().getEngineScope()));
       declare(FORM_NS, root);
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
@@ -78,8 +81,7 @@ public class JavaxScriptScriptContext extends ScriptContext {
    }
 
    public Map getContextMap() {
-      return Collections.unmodifiableMap(scriptEngine.getContext().getBindings(
-            JavaxScriptBridge.getInstance().getEngineScope()));
+      return unmodifiableMap;
    }
 
    public Object lookup(String name) {

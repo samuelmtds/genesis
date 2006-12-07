@@ -36,12 +36,14 @@ public class JXPathScriptContext extends ScriptContext {
    public static final String PRIMITIVE_FUNCTIONS_NS = "t";
 
    private JXPathContext ctx;
+   private final Map unmodifiableMap;
    private FunctionLibrary functionLib = new FunctionLibrary();
 
    protected JXPathScriptContext(Object root) {
       ctx = JXPathContext.newContext(root);
       ctx.setFunctions(functionLib);
       ctx.setVariables(getVariables());
+      unmodifiableMap = Collections.unmodifiableMap(((VariablesImpl) ctx.getVariables()).getVariablesMap());
       registerFunctions(PRIMITIVE_FUNCTIONS_NS, PrimitiveFunctions.class);
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
@@ -71,7 +73,7 @@ public class JXPathScriptContext extends ScriptContext {
    }
 
    public Map getContextMap() {
-      return Collections.unmodifiableMap(((VariablesImpl) ctx.getVariables()).getVariablesMap());
+      return unmodifiableMap;
    }
 
    protected Variables getVariables() {

@@ -40,6 +40,7 @@ public class BSFScriptContext extends ScriptContext {
 
    private final BSFManager manager = new BSFManager();
    private final Map contextMap = new HashMap();
+   private final Map unmodifiableMap = Collections.unmodifiableMap(contextMap);
    private final String lang;
 
    protected BSFScriptContext(String lang, final Object root) {
@@ -92,7 +93,7 @@ public class BSFScriptContext extends ScriptContext {
    }
 
    public Map getContextMap() {
-      return Collections.unmodifiableMap(contextMap);
+      return unmodifiableMap;
    }
 
    protected ObjectRegistry getObjectRegistry() {

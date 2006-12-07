@@ -43,6 +43,7 @@ public class ELScriptContext extends ScriptContext implements VariableResolver,
    public static final String GENESIS_FUNCTIONS_NS = "g";
 
    private final Map variables = new HashMap();
+   private final Map unmodifiableMap = Collections.unmodifiableMap(variables);
    private final Map functions = new HashMap();
    private final ExpressionEvaluator evaluator;
 
@@ -98,7 +99,7 @@ public class ELScriptContext extends ScriptContext implements VariableResolver,
    }
 
    public Map getContextMap() {
-      return Collections.unmodifiableMap(variables);
+      return unmodifiableMap;
    }
 
    protected VariableResolver getVariableResolver() {
