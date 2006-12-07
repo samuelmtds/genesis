@@ -212,7 +212,6 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       newList = new Object[] { new MockBean("other", "Other") };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = table.getItemCount();
-      System.out.println(Arrays.toString(table.getSelectionIndices()));
       assertTrue(Arrays.equals(new int[] {0}, table.getSelectionIndices()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
