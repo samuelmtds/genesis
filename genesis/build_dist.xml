@@ -6,6 +6,7 @@
    <property name="build.dir" value="${genesis.build.dir}" />
    <property name="build.docs" value="${build.dir}/docs" />
    <property name="xdoclet.dist" value="xdoclet/dist" />
+   <property name="artifactsDir" value="${build.dir}" />
 
    <condition property="executableSuffix" value="">
       <not>
@@ -40,9 +41,9 @@
          <arg line="-f ${basedir}/build.xml genesis:jar" />
       </exec>
 
-      <mkdir dir="${build.dir}" />
+      <mkdir dir="${artifactsDir}" />
       <delete>
-         <fileset dir="${build.dir}">
+         <fileset dir="${artifactsDir}">
             <include name="*.zip" />
             <include name="*.tar.gz" />
          </fileset>
@@ -258,13 +259,13 @@
        <element name="tarcustomize" optional="true" />
        <sequential>
           <echo>Generating @{type}...</echo>
-	        <zip destfile="${build.dir}/@{type}-${genesis.version}.zip" filesonly="true">
+	        <zip destfile="${artifactsDir}/@{type}-${genesis.version}.zip" filesonly="true">
 	           <zipfileset dir="../" prefix="genesis-${genesis.version}">
 	              <patternset refid="@{type}.pattern" />
 	           </zipfileset>
 	           <zipcustomize/>
 	        </zip>
-	        <tar longfile="gnu" tarfile="${build.dir}/@{type}-${genesis.version}.tar.gz" compression="gzip">
+	        <tar longfile="gnu" tarfile="${artifactsDir}/@{type}-${genesis.version}.tar.gz" compression="gzip">
 	           <tarfileset dir="../" prefix="genesis-${genesis.version}">
 	              <patternset refid="@{type}.pattern" />
 	           </tarfileset>
