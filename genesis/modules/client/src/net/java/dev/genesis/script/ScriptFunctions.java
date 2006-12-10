@@ -32,7 +32,7 @@ public class ScriptFunctions {
 
       if (log.isDebugEnabled()) {
          log.debug("Property '" + scriptValue.getFieldName()
-               + (result ? "' changed" : "' didn´t change"));
+               + (result ? "' changed" : "' didn't change"));
       }
 
       return result;

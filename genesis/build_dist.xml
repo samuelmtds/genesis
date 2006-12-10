@@ -106,8 +106,10 @@
          <include name="genesis/${genesis.xdoc.dir}/**" />
          <include name="genesis/*" />
          <exclude name="genesis/.*"/>
+         <exclude name="genesis/velocity.log" />
          <exclude name="genesis/**/${build.dir}/**/*"/>
          <exclude name="genesis/**/build.properties"/>
+         <exclude name="genesis/**/jcoverage.ser" />
       </patternset>
 
       <patternset id="genesis-docs.pattern">
@@ -141,6 +143,7 @@
          <patternset refid="genesis-dist.pattern" />
          <patternset refid="genesis-dependencies.pattern" />
          <patternset refid="genesis-empty-project.pattern" />
+         <patternset refid="genesis-empty-web-project.pattern" />
          <patternset refid="genesis-useradmin-sample.pattern" />
          <patternset refid="genesis-src.pattern" />
          <patternset refid="genesis-docs.pattern" />
@@ -176,16 +179,16 @@
       </genesis:generate-dist>
       
       <genesis:generate-dist type="genesis-empty-web-project">
-         <zipcustomize>
+        <zipcustomize>
             <zipfileset dir="." prefix="genesis-${genesis.version}/samples/empty-web-project">
                <patternset refid="web.pattern" />
             </zipfileset>
-       </zipcustomize>
-         <tarcustomize>
+        </zipcustomize>
+        <tarcustomize>
              <tarfileset dir="." prefix="genesis-${genesis.version}/samples/empty-web-project">
                 <patternset refid="web.pattern" />
              </tarfileset>
-       </tarcustomize>
+        </tarcustomize>
       </genesis:generate-dist>
 
       <genesis:generate-dist type="genesis-useradmin-sample">
