@@ -246,12 +246,20 @@
       </condition>
    </target>
 
-   <target name="client:annotations" if="client.annotationc.tasks.needed"
-           depends="client:check-annotations-needed,define-aw-macros">
+   <target name="-do-client-annotations">
       <genesis:annotationc srcdir="${client.sources.dir}" 
                            destdir="${client.annotated.dir}"
                            classpath="${client.classes.dir}"
-                           touchfile="${client.annotated.timestamp.file}" />
+                           touchfile="${client.annotated.timestamp.file}">
+         <additional-classpath>
+            <path location="${shared.annotated.dir}" />
+         </additional-classpath>
+      </genesis:annotationc>
+   </target>
+
+   <target name="client:annotations" if="client.annotationc.tasks.needed"
+           depends="client:check-annotations-needed,define-aw-macros">
+      <genesis:call target="-do-client-annotations" />
    </target>
 
    <target name="client:pre-check-validation-conditions">

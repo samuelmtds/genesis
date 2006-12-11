@@ -182,6 +182,7 @@
          <attribute name="touchfile" />
          <element name="customize" optional="true" />
          <element name="customize-classpath" optional="true" />
+         <element name="additional-classpath" optional="true" />
 
          <sequential>
             <taskdef name="annotationc" 
@@ -197,6 +198,7 @@
                   <path location="@{classpath}" />
                   <fileset dir="${genesis.dist}" 
                            includes="genesis-annotation-jdk14-${genesis.version}.jar" />
+                  <additional-classpath />
                   <customize-classpath />
                </classpath>
                <customize />
