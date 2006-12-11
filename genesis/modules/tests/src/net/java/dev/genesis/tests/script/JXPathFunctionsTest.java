@@ -19,14 +19,21 @@
 package net.java.dev.genesis.tests.script;
 
 import net.java.dev.genesis.commons.jxpath.JXPathContextFactory;
+import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptFactory;
 import net.java.dev.genesis.script.jxpath.JXPathScriptContext;
 import net.java.dev.genesis.script.jxpath.JXPathScriptFactory;
 
+/**
+ * @Form
+ */
 public class JXPathFunctionsTest extends ScriptFunctionsTest {
+   private static String staticValue;
+
    static {
       System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
             JXPathContextFactory.class.getName());
+      staticValue = null;
    }
 
    protected ScriptFactory newScriptFactory() {
@@ -85,5 +92,19 @@ public class JXPathFunctionsTest extends ScriptFunctionsTest {
 
    protected String toScriptString(String string) {
       return '\'' + string + '\'';
+   }
+   
+   public void testStaticFunction() throws Exception {
+      ScriptContext ctx = getContext(this);
+      String baseExpression = getClass().getName() + ".assign";
+      
+      String testValue = "test";
+      ctx.eval(baseExpression + "('" + testValue + "')");
+      assertEquals(testValue, staticValue);
+   }
+
+   public static final boolean assign(String value) {
+      staticValue = value;
+      return true;
    }
 }

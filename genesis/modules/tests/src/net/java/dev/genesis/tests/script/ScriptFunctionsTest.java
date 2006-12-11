@@ -46,7 +46,7 @@ public abstract class ScriptFunctionsTest extends TestCase {
 
    protected abstract ScriptFactory newScriptFactory();
 
-   private ScriptContext getContext(final Object root) throws Exception {
+   protected ScriptContext getContext(final Object root) throws Exception {
       this.root = root;
 
       ScriptContext ctx = newScriptFactory().newScript().newContext(root);
