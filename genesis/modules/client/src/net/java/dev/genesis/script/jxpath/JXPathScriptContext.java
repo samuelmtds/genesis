@@ -35,17 +35,26 @@ public class JXPathScriptContext extends ScriptContext {
    public static final String GENESIS_FUNCTIONS_NS = "g";
    public static final String PRIMITIVE_FUNCTIONS_NS = "t";
 
-   private JXPathContext ctx;
+   private final JXPathContext ctx;
    private final Map unmodifiableMap;
-   private FunctionLibrary functionLib = new FunctionLibrary();
+   private final FunctionLibrary functionLib;
 
    protected JXPathScriptContext(Object root) {
       ctx = JXPathContext.newContext(root);
+      functionLib = createFunctionLibrary();
       ctx.setFunctions(functionLib);
       ctx.setVariables(getVariables());
-      unmodifiableMap = Collections.unmodifiableMap(((VariablesImpl) ctx.getVariables()).getVariablesMap());
+      unmodifiableMap = Collections.unmodifiableMap(((VariablesImpl) 
+            ctx.getVariables()).getVariablesMap());
       registerFunctions(PRIMITIVE_FUNCTIONS_NS, PrimitiveFunctions.class);
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
+   }
+
+   protected FunctionLibrary createFunctionLibrary() {
+      FunctionLibrary functionLib = new FunctionLibrary();
+      functionLib.addFunctions(ctx.getFunctions());
+
+      return functionLib;
    }
 
    protected Object doEval(ScriptExpression expr) {
