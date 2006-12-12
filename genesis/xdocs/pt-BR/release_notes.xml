@@ -9,6 +9,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#3.0-EA5">3.0-EA5</a></li>
         <li><a href="#3.0-EA4">3.0-EA4</a></li>
         <li><a href="#3.0-EA3">3.0-EA3</a></li>
         <li><a href="#3.0-EA2">3.0-EA2</a></li>
@@ -19,6 +20,82 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-EA5">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=6559&amp;expandFolder=6559">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Foram melhoradas as mensagens de erro para anotações incorretas,
+          propriedades inexistentes e arquivos não disponíveis.</li>
+          <li>O exemplo UserAdmin teve melhorias funcionais para quando o grupo
+          está associado com usuários e quando o SWT não está configrado 
+          corretamente.</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li><code>all.with.webstart</code> falha se o diretório do SWT não 
+          existir
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=376">Issue
+          # 376</a>).</li>
+          <li><code>webstart-jnlp-local</code> falha se <code>jdbc.driver</code>
+          for sobrescrita
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=387">Issue
+          # 387</a>).</li>
+          <li><code>NullPointerException</code> aleatória é lançada ao ler as 
+          anotações
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=389">Issue
+          # 389</a>).</li>
+          <li>Instâncias de <code>JMenu/JMenuItem</code> não podem ser 
+          localizadas por <code>LookupStrategy</code>
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=394">Issue
+          # 394</a>).</li>
+          <li>A validação falha para o campo <code>state</code> com Swing no
+          UserAdmin
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=401">Issue
+          # 401</a>).</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA4 e a 3.0-EA5
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA4&amp;target_milestone=3.0-EA5">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-EA5/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA5&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniel Gomes</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Elissandro Mendes</li>
+            <li>Gustavo Nalle</li>
+            <li>Jorge Rangel</li>
+            <li>José Geraldo</li>
+            <li>Rafael Busetti</li>
+            <li>Rafael Kempfer</li>
+            <li>Rodrigo Santos</li>
+            <li>Yuri Teixeira</li>
+            <li>Waldemar Roberti</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-EA4">
       <subsection name="Downloads">
