@@ -22,7 +22,7 @@
         <code>NullPointerException</code> ao chamar <code>getSession()</code>?
         </a></li>
         <li><a href="#Por que estou obtendo uma java.lang.IllegalArgumentException
-        em um método anotado com @DataProvider?">Por que estou obtendo um
+        em um método anotado com @DataProvider?">Por que estou obtendo uma
         <code>java.lang.IllegalArgumentException</code> em um método anotado com <code>@DataProvider</code>?
         </a></li>
         <li><a href="#Como obtenho suporte técnico?">Como obtenho suporte
@@ -88,9 +88,8 @@
         </ul>
         </p>
       </subsection>
-      <subsection name="Por que estou obtendo uma 
-        java.lang.IllegalArgumentException em um método anotado com 
-        @DataProvider?">
+      <subsection name="Por que estou obtendo uma java.lang.IllegalArgumentException
+        em um método anotado com @DataProvider?">
         <p>Provavelmente o método que está anotado com 
         <code>@DataProvider</code> tem o prefixo <code>get</code>, o que torna 
         o método um <code>getter</code>. Métodos <code>getter</code>s não podem 
