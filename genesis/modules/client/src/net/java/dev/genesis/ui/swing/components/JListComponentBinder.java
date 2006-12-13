@@ -141,6 +141,19 @@ public class JListComponentBinder extends AbstractComponentBinder {
             int[] selected = component.getSelectedIndices();
             if (dataProviderMetadata.isResetSelection()) {
                selected = isBlank ? new int[] { 0 } : new int[] { -1 };
+            } else {
+               int maxSelectionSize = isBlank ? list.size() + 1 : list.size();
+               int j = 0;
+               for (int i = 0; i < selected.length; i++) {
+                  if (selected[i] < maxSelectionSize) {
+                     j++;
+                  }
+               }
+
+               int[] temp = new int[j];
+               System.arraycopy(selected, 0, temp, 0, j);
+
+               selected = temp;
             }
             
             if (useListModelAdapter) {
