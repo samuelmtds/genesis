@@ -1,0 +1,706 @@
+<html>
+<head>
+<title>unit tests coverage</title>
+<link rel ="stylesheet" type="text/css" href="../../../../../../style.css" title="Style">
+</head>
+<body>
+<span class="title">Coverage report</span>
+<p>
+  <table cellspacing="0" cellpadding="0" class="report">
+  <tr class="report">
+    <th class="report">&nbsp;</th>
+    <th class="report">%line</th>
+    <th class="report">%branch</th>
+  </tr>
+  <tr class="report">
+    <td class="reportText"><span class="text">net.java.dev.genesis.script.bsf.BSFScriptContext</span></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">0%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="0"></td><td class="percentUnCovered" width="100.0"></td></tr></table></td></tr></table></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">0%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="0"></td><td class="percentUnCovered" width="100.0"></td></tr></table></td></tr></table></td>
+  </tr>
+  </table>
+  <p>
+  <table cellspacing="0" cellpadding="0" class="src">
+    <tr>
+      <td class="numLine">&nbsp;1</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">/*</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;2</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * The Genesis Project</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;3</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;4</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;5</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This library is free software; you can redistribute it and/or</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;6</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;7</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * License as published by the Free Software Foundation; either</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;8</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * version 2.1 of the License, or (at your option) any later version.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;9</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;10</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This library is distributed in the hope that it will be useful,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;11</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;12</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;13</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Lesser General Public License for more details.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;14</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;15</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * You should have received a copy of the GNU Lesser General Public</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;16</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * License along with this library; if not, write to the Free Software</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;17</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;18</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;19</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">package</span> net.java.dev.genesis.script.bsf;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;20</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;21</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Collections;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;22</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.HashMap;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;23</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Map;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;24</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;25</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.script.PrimitiveFunctions;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;26</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.script.ScriptContext;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;27</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.script.ScriptException;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;28</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.script.ScriptExpression;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;29</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.script.ScriptFunctionsAdapter;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;30</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;31</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.bsf.BSFDeclaredBean;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;32</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.bsf.BSFException;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;33</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.bsf.BSFManager;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;34</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.bsf.util.ObjectRegistry;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;35</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;36</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<span class="keyword">public</span> <span class="keyword">class</span> BSFScriptContext <span class="keyword">extends</span> ScriptContext {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;37</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String FORM_NS = <span class="string">"form"</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;38</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String GENESIS_FUNCTIONS_NS = <span class="string">"genesis"</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;39</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PRIMITIVE_FUNCTIONS_NS = <span class="string">"types"</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;40</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;41</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   <span class="keyword">private</span> <span class="keyword">final</span> BSFManager manager = <span class="keyword">new</span> BSFManager();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;42</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   <span class="keyword">private</span> <span class="keyword">final</span> Map contextMap = <span class="keyword">new</span> HashMap();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;43</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   <span class="keyword">private</span> <span class="keyword">final</span> Map unmodifiableMap = Collections.unmodifiableMap(contextMap);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;44</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">final</span> String lang;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;45</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;46</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   <span class="keyword">protected</span> BSFScriptContext(String lang, <span class="keyword">final</span> Object root) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;47</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">this</span>.lang = lang;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;48</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      manager.setObjectRegistry(getObjectRegistry());</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;49</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      declare(FORM_NS, root);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;50</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      registerFunctions(PRIMITIVE_FUNCTIONS_NS, PrimitiveFunctions.<span class="keyword">class</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;51</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;52</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;53</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;54</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Object doEval(ScriptExpression expr) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;55</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;56</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">return</span> manager.eval(lang, expr.getExpressionString(), 0, 0, expr</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;57</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               .getExpressionString());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;58</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">catch</span> (BSFException e) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;59</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ScriptException(e.getMessage(), e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;60</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;61</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;62</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;63</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> ScriptExpression newScriptExpression(String expression) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;64</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> BSFExpression(expression);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;65</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;66</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;67</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> registerFunctions(String prefix, Class functionClass) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;68</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;69</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         manager.declareBean(prefix, functionClass.newInstance(), <span class="keyword">null</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;70</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">catch</span> (Exception e) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;71</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ScriptException(e.getMessage(), e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;72</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;73</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;74</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;75</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> declare(String name, Object value) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;76</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;77</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         manager.declareBean(name, value, <span class="keyword">null</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;78</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">catch</span> (BSFException e) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;79</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ScriptException(e.getMessage(), e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;80</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;81</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;82</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;83</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object lookup(String name) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;84</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> manager.lookupBean(name);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;85</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;86</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;87</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> undeclare(String name) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;88</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;89</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         manager.undeclareBean(name);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;90</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">catch</span> (BSFException e) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;91</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ScriptException(e.getMessage(), e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;92</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;93</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;94</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;95</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Map getContextMap() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;96</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> unmodifiableMap;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;97</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;98</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;99</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> ObjectRegistry getObjectRegistry() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;100</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> BSFObjectRegistry();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;101</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;102</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;103</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Class getFunctions() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;104</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> ScriptFunctionsAdapter.<span class="keyword">class</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;105</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;106</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;107</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> <span class="keyword">class</span> BSFObjectRegistry <span class="keyword">extends</span> ObjectRegistry {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;108</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">private</span> <span class="keyword">final</span> Map registry = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;109</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;110</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">public</span> Object lookup(String name) throws IllegalArgumentException {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;111</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         Object obj = registry.get(name);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;112</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;113</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (obj == <span class="keyword">null</span>) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;114</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"object '"</span> + name</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;115</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                  + <span class="string">"' not in registry"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;116</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;117</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;118</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> obj;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;119</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;120</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;121</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">public</span> <span class="keyword">void</span> register(String name, Object obj) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;122</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         registry.put(name, obj);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;123</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;124</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (obj instanceof BSFDeclaredBean) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;125</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            contextMap.put(name, ((BSFDeclaredBean)obj).bean);   </pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;126</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         } <span class="keyword">else</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;127</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            contextMap.put(name, obj);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;128</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;129</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;130</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;131</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">public</span> <span class="keyword">void</span> unregister(String name) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;132</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         registry.remove(name);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;133</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         contextMap.remove(name);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;134</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;135</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;136</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;}</pre></td>
+    </tr>
+  </table>
+<p><table cellpadding="0" cellspacing="0" class="report">  <tr class="report">    <td class="reportText"><span class="text">    This report is generated by <a href="http://www.jcoverage.com">jcoverage</a>, <a href="http://maven.apache.org">Maven</a> and <a href="http://maven.apache.org/reference/plugins/jcoverage/">Maven JCoverage Plugin</a>.    </span></td>  </tr></table>
+</body>
+</html>
