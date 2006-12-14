@@ -143,6 +143,7 @@ public class SiteUpdater {
          bw.write("document.location.href='");
          bw.write(forwardTo);
          bw.write("';\n");
+         bw.write("}\n");
          bw.write("// -->\n");
          bw.write("</script>\n");
          bw.write("<center>Redirecting to docs for the latest release; click <a " +
@@ -197,6 +198,6 @@ public class SiteUpdater {
       }
 
       return forwardTo.append(fullForwardTo.getCanonicalPath().substring(
-            wwwPath.length() + 1)).toString();
+            wwwPath.length() + 1).replace(File.separatorChar, '/')).toString();
    }
 }
