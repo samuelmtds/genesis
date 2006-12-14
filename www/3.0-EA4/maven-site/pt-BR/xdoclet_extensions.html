@@ -1,87 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Extensões do XDoclet - genesis</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 12 September 2006
-                <span class="separator">|</span> Doc for  3.0-EA4
-                </div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><a href="../pt-BR/transactions.html">Suporte a transações</a></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/configuring_swt.html">Funcionalidades específicas para SWT</a><ul><li class="none"><a href="../pt-BR/configuring_swt.html">Configurando as bibliotecas do SWT</a></li></ul></li><li class="expanded"><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a><ul><li class="none"><a href="../pt-BR/conditions.html">Trabalhando com condições</a></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><a href="../pt-BR/handling_errors.html">Tratando erros</a></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Para web</a></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><strong><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></strong></li><li class="none"><a href="../pt-BR/aspects.html">Aspectos do genesis</a></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li><li class="none"><a href="../pt-BR/lookup_strategy.html">Estratégias de pesquisa de componentes gráficos</a></li><li class="none"><a href="../pt-BR/widget_binder.html">Customizando o binding de componentes gráficos</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Extensões_do_XDoclet"></a><h2>Extensões do XDoclet</h2>
-      <p>O <a href="http://xdoclet.sourceforge.net/" class="externalLink" title="External Link">XDoclet</a> é um framework que
-      possibilita a geração de código através de tags Javadoc especiais
-      contidas no código fonte. O desenvolvimento do genesis iniciou-se quando
-      a versão mais recente do XDoclet era a 1.2.0 e diversos recursos ainda
-      não estavam presentes nele, principalmente referente à integração com o
-      Hibernate.</p>
-      <p>Para contornar estas limitações, durante um bom tempo de sua
-      história a distribuição do genesis conteve alguns módulos modificados do
-      XDoclet. Com a evolução do próprio XDoclet, alguns recursos foram
-      incorporados, mas a forma com que as extensões presentes no genesis eram
-      distribuídas impediam que se usasse qualquer recurso dos módulos
-      sobrepostos - os módulos de validação e do Hibernate. A partir da versão
-      2.2 do genesis, essa distribuição foi modificada de modo a permitir mais
-      facilmente o uso tanto das funcionalidades originais como as das
-      modificadas.</p>
-      <p>A versão atual das extensões contém todas as funcionalidades presentes
-      na versão 1.2.3 original do XDoclet, além das modificações explicadas
-      abaixo.</p>
-    </div><div class="section"><a name="Módulo_genesis"></a><h2>Módulo genesis</h2>
-      <p>O framework <a href="http://jakarta.apache.org/commons/validator/" class="externalLink" title="External Link">Commons Validator</a>
-      nasceu como parte do <a href="http://struts.apache.org" class="externalLink" title="External Link">Struts</a> e, por
-      isso mesmo, foi primeiro suportado pelo XDoclet apenas para funcionar
-      junto com este framework web. Isto explica por que as tags que geram o
-      xml para o Commons Validator possuem originalmente o prefixo
-      <code>@struts.</code> e dependem explicitamente de classes do Struts.</p>
-      <p>O módulo de extensões do XDoclet chamado genesis suporta tags com a
-      mesma semântica das tags <code>@struts.validator*</code>, exceto que o
-      nome das tags começa com <code>@genesis.validator</code> e funcionam com
-      POJOs ao invés de requerer que a classe que possui as anotações estenda
-      alguma classe do Struts. Um exemplo do uso das tags pode ser encontrado
-      na <a href="validating_data.html">documentação
-      do suporte à validação</a>.</p>
-    </div><div class="section"><a name="Módulo_hibernate"></a><h2>Módulo hibernate</h2>
-      <p>O módulo hibernate contém algumas funcionalidades não presentes no
-      módulo original fornecido com o XDoclet. As principais delas são suporte
-      a geração do elemento <code>meta</code> através da tag
-      <code>@hibernate.meta</code>, definição de relacionamentos many-to-one
-      para tabelas com chaves compostas, merge de queries em arquivos externos
-      e também do mapeamento de componentes. Para maiores informações, favor
-      consultar o <a href="http://opensource.atlassian.com/projects/xdoclet/browse/XDT-1312" class="externalLink" title="External Link">issue</a>
-      submetido ao projeto do XDoclet que contém as melhorias feitas pela
-      equipe do genesis.</p>
-    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2006, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.0-EA5/maven-site/pt-BR/xdoclet_extensions.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.0-EA5/maven-site/pt-BR/xdoclet_extensions.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.0-EA5/maven-site/pt-BR/xdoclet_extensions.html';
+}
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
