@@ -1,3 +1,13 @@
+# SWT jar
+maven.jar.swt=${genesis.swt.dist}/Windows/x86/swt.jar
+
+# Needed for running JUnit inside maven build
+maven.junit.jvmargs=-Djava.library.path=../../lib/swt/Windows/x86
+
+# Java 5 home
+# Needed only if your main JVM is not a Java 5 installation
+#genesis.java5.home=C:/java5
+
 #
 # The xdoclet libs directory
 # Override only if necessary
@@ -8,7 +18,3 @@
 # default maven.username is defined in project.properties
 # Override only if necessary
 #maven.username=guest
-
-# Java 5 home
-# Needed only if your main JVM is not a Java 5 installation
-#genesis.java5.home=C:/java5
