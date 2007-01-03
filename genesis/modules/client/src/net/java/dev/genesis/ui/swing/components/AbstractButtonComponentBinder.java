@@ -27,12 +27,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
+import net.java.dev.genesis.ui.binding.BoundField;
+import net.java.dev.genesis.ui.metadata.FieldMetadata;
 
 public class AbstractButtonComponentBinder extends AbstractComponentBinder {
+   public BoundField bind(SwingBinder binder, Component component,
+         FieldMetadata fieldMetadata) {
+      return new AbstractButtonComponentBoundField(binder, 
+            (AbstractButton) component, fieldMetadata);
+   }
+
    public BoundAction bind(SwingBinder binder, Component component,
-      ActionMetadata actionMetadata) {
+         ActionMetadata actionMetadata) {
       return new AbstractButtonComponentBoundAction(binder,
-         (AbstractButton) component, actionMetadata);
+            (AbstractButton) component, actionMetadata);
+   }
+
+   public class AbstractButtonComponentBoundField extends AbstractBoundMember
+         implements BoundField {
+      private final AbstractButton component;
+      private final FieldMetadata fieldMetadata;
+
+      public AbstractButtonComponentBoundField(SwingBinder binder, 
+            AbstractButton component, FieldMetadata fieldMetadata) {
+         super(binder, component);
+         this.component = component;
+         this.fieldMetadata = fieldMetadata;
+      }
+
+      protected AbstractButton getComponent() {
+         return component;
+      }
+
+      protected FieldMetadata getFieldMetadata() {
+         return fieldMetadata;
+      }
+
+      public void setValue(Object value) {
+         component.setText(getBinder().getFormatter(fieldMetadata).format(value));
+      }
    }
 
    public class AbstractButtonComponentBoundAction extends AbstractBoundMember

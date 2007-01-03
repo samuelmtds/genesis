@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -35,6 +36,8 @@ public class AbstractButtonComponentBinderTest extends GenesisTestCase {
    private WidgetBinder componentBinder;
    private MockForm form;
    private ActionMetadata actionMeta;
+   private FieldMetadata fieldMeta;
+   private BoundField boundField;
    
    public AbstractButtonComponentBinderTest() {
       super("Abstract Button Component Binder Unit Test");
@@ -44,18 +47,31 @@ public class AbstractButtonComponentBinderTest extends GenesisTestCase {
       button = SwingUtils.newButton();
       binder = new MockSwingBinder(new JPanel(), form = new MockForm());
       actionMeta = (ActionMetadata) form.getFormMetadata().getActionMetadatas().get("someAction");
+      fieldMeta = (FieldMetadata) form.getFormMetadata().getFieldMetadata("stringField");
       componentBinder = binder.getWidgetBinder(button);
    }
 
-   public void testButtonClick() {
+   public void testStandardBehaviour() {
       assertTrue(componentBinder instanceof AbstractButtonComponentBinder);
-      
       assertNull(componentBinder.bind(binder, button,
             (DataProviderMetadata) null));
-      assertNull(componentBinder.bind(binder, button, (FieldMetadata) null));
+   }
+
+   public void testButtonClick() {
       assertNotNull(componentBinder.bind(binder, button, actionMeta));
 
       button.doClick();
       assertSame(actionMeta, binder.get("invokeFormAction(ActionMetadata)"));
+   }
+   
+   public void testText() throws Exception {
+      assertNotNull(boundField = componentBinder.bind(binder, button, fieldMeta));
+      assertEquals("", button.getText());
+
+      boundField.setValue("someValue");
+      assertEquals("someValue", button.getText());
+
+      boundField.setValue(null);
+      assertEquals("", button.getText());
    }
 }
