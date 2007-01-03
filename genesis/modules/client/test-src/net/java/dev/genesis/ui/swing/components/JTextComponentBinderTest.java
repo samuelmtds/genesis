@@ -58,7 +58,6 @@ public class JTextComponentBinderTest extends GenesisTestCase {
       assertTrue(componentBinder instanceof JTextComponentBinder);
       assertNull(componentBinder
             .bind(binder, text, (DataProviderMetadata) null));
-      assertNull(componentBinder.bind(binder, text, (ActionMetadata) null));
 
       boundField = componentBinder.bind(binder, text, fieldMeta);
       assertNotNull(boundField);
@@ -76,7 +75,6 @@ public class JTextComponentBinderTest extends GenesisTestCase {
    public void testUpdateValue() throws Exception {
       assertNull(componentBinder.bind(binder, text,
             (DataProviderMetadata) null));
-      assertNull(componentBinder.bind(binder, text, (ActionMetadata) null));
       assertNotNull(componentBinder.bind(binder, text, fieldMeta));
 
       text.setText("someValue");
@@ -98,7 +96,6 @@ public class JTextComponentBinderTest extends GenesisTestCase {
       
       assertNull(componentBinder.bind(binder, text,
             (DataProviderMetadata) null));
-      assertNull(componentBinder.bind(binder, text, (ActionMetadata) null));
       assertNotNull(componentBinder.bind(binder, text, fieldMeta));
 
       text.setText("someValue");

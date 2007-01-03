@@ -62,7 +62,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
 
    public void testSelectIndexes() {
       assertTrue(componentBinder instanceof JComboBoxComponentBinder);
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
       assertNotNull(componentBinder.bind(binder, combo, dataMeta));
 
@@ -88,7 +87,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
    public void testSelectIndexesWithBlank() {
       combo.putClientProperty(SwingBinder.BLANK_PROPERTY, Boolean.TRUE);
 
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
       assertNotNull(componentBinder.bind(binder, combo, dataMeta));
 
@@ -118,7 +116,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateIndexes() {
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
       assertNotNull(boundDataProvider = componentBinder.bind(binder, combo,
             dataMeta));
@@ -136,7 +133,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
    public void testUpdateIndexesWithBlank() {
       combo.putClientProperty(SwingBinder.BLANK_PROPERTY, Boolean.TRUE);
 
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
 
       boundDataProvider = componentBinder.bind(binder, combo, dataMeta);
@@ -156,7 +152,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateList() throws Exception {
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
 
       boundDataProvider = componentBinder.bind(binder, combo, dataMeta);
@@ -208,7 +203,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
 
    public void testUpdateListWithBlank() throws Exception {
       combo.putClientProperty(SwingBinder.BLANK_PROPERTY, Boolean.TRUE);
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
 
       boundDataProvider = componentBinder.bind(binder, combo, dataMeta);
@@ -262,7 +256,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
    public void testSetValue() throws Exception {
       combo.putClientProperty(SwingBinder.KEY_PROPERTY, "key");
 
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
       assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
             combo, dataMeta));
@@ -289,7 +282,6 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       combo.putClientProperty(SwingBinder.BLANK_PROPERTY, Boolean.TRUE);
       combo.putClientProperty(SwingBinder.KEY_PROPERTY, "key");
 
-      assertNull(componentBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
       assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
             combo, dataMeta));

@@ -51,7 +51,6 @@ public class JToggleButtonComponentBinderTest extends GenesisTestCase {
 
    public void testSetValue() throws Exception {
       assertTrue(componentBinder instanceof JToggleButtonComponentBinder);
-      assertNull(componentBinder.bind(binder, toggle, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, toggle,
             (DataProviderMetadata) null));
 
@@ -68,7 +67,6 @@ public class JToggleButtonComponentBinderTest extends GenesisTestCase {
    }
 
    public void testUpdateValue() throws Exception {
-      assertNull(componentBinder.bind(binder, toggle, (ActionMetadata) null));
       assertNull(componentBinder.bind(binder, toggle,
             (DataProviderMetadata) null));
       assertNotNull(componentBinder.bind(binder, toggle, fieldMeta));

@@ -37,11 +37,11 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
             (AbstractButton) component, fieldMetadata);
    }
 
-   public BoundAction bind(SwingBinder binder, Component component,
-         ActionMetadata actionMetadata) {
-      return new AbstractButtonComponentBoundAction(binder,
-            (AbstractButton) component, actionMetadata);
-   }
+//   public BoundAction bind(SwingBinder binder, Component component,
+//         ActionMetadata actionMetadata) {
+//      return new AbstractButtonComponentBoundAction(binder,
+//            (AbstractButton) component, actionMetadata);
+//   }
 
    public class AbstractButtonComponentBoundField extends AbstractBoundMember
          implements BoundField {
