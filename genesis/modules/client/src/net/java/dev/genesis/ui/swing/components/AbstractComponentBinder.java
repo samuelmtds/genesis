@@ -18,6 +18,10 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.EventSetDescriptor;
+import java.beans.IntrospectionException;
 import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundAction;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
@@ -31,6 +35,8 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 import java.awt.Component;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,6 +47,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class AbstractComponentBinder implements WidgetBinder {
    public BoundField bind(AbstractBinder binder, Object widget,
@@ -59,17 +66,52 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
    }
 
    public BoundField bind(SwingBinder binder, Component component,
-      FieldMetadata fieldMetadata) {
+         FieldMetadata fieldMetadata) {
       return null;
    }
 
    public BoundAction bind(SwingBinder binder, Component component,
-      ActionMetadata actionMetatada) {
-      return null;
+         ActionMetadata actionMetatada) {
+      final BeanInfo info;
+
+      try {
+         info = Introspector.getBeanInfo(component.getClass());
+      } catch (IntrospectionException ex) {
+         return null;
+      }
+
+      EventSetDescriptor[] descriptors = info.getEventSetDescriptors();
+      EventSetDescriptor selectedDescriptor = null;
+
+      for (int i = 0; i < descriptors.length; i++) {
+         if (!ActionListener.class.isAssignableFrom(
+               descriptors[i].getListenerType())) {
+            continue;
+         }
+
+         if ("action".equals(descriptors[i].getName())) {
+            selectedDescriptor = descriptors[i];
+            break;
+         }
+
+         if (selectedDescriptor != null) {
+            // Multiple ActionListeners; can't decide which to use
+            return null;
+         }
+
+         selectedDescriptor = descriptors[i];
+      }
+
+      if (selectedDescriptor == null) {
+         return null;
+      }
+
+      return new ComponentBoundAction(binder, (JComponent) component, 
+            actionMetatada, selectedDescriptor);
    }
 
    public BoundDataProvider bind(SwingBinder binder, Component component,
-      DataProviderMetadata dataProviderMetadata) {
+         DataProviderMetadata dataProviderMetadata) {
       return null;
    }
 
@@ -247,6 +289,66 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
       }
 
       public void unbind() {
+      }
+   }
+
+   public class ComponentBoundAction extends AbstractBoundMember 
+         implements BoundAction {
+      private final JComponent component;
+      private final ActionMetadata actionMetadata;
+      private final EventSetDescriptor descriptor;
+      private final ActionListener listener;
+
+      public ComponentBoundAction(SwingBinder binder, JComponent component, 
+            ActionMetadata actionMetadata, EventSetDescriptor descriptor) {
+         super(binder, component);
+         this.component = component;
+         this.actionMetadata = actionMetadata;
+         this.descriptor = descriptor;
+
+         try {
+            descriptor.getAddListenerMethod().invoke(component, new Object[] {
+                  listener = createActionListener()});
+         } catch (IllegalAccessException ex) {
+            IllegalArgumentException iae = new IllegalArgumentException();
+            iae.initCause(ex);
+            throw iae;
+         } catch (InvocationTargetException ex) {
+            IllegalArgumentException iae = new IllegalArgumentException();
+            iae.initCause(ex);
+            throw iae;
+         }
+      }
+
+      protected ActionMetadata getActionMetadata() {
+         return actionMetadata;
+      }
+
+      protected ActionListener getListener() {
+         return listener;
+      }
+
+      protected ActionListener createActionListener() {
+         return new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+               getBinder().invokeFormAction(getActionMetadata());
+            }
+         };
+      }
+
+      public void unbind() {
+         if (listener != null && descriptor.getRemoveListenerMethod() != null) {
+            try {
+               descriptor.getRemoveListenerMethod().invoke(component, new Object[] {
+                     listener});
+            } catch (IllegalArgumentException ex) {
+               LogFactory.getLog(getClass()).error("Error removing listener", ex);
+            } catch (IllegalAccessException ex) {
+               LogFactory.getLog(getClass()).error("Error removing listener", ex);
+            } catch (InvocationTargetException ex) {
+               LogFactory.getLog(getClass()).error("Error removing listener", ex);
+            }
+         }
       }
    }
 }
