@@ -19,13 +19,20 @@
 package net.java.dev.genesis.tests.ui;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.tests.TestCase;
+import net.java.dev.genesis.ui.ActionInvoker;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
+import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.controller.FormStateImpl;
+import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
+import net.java.dev.genesis.ui.metadata.MethodMetadata;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -115,6 +122,50 @@ public class FormControllerTest extends TestCase {
       controller.populate(someValues, null);
       controller.reset(state);
       assertDescribedMapEquals(describedMap, PropertyUtils.describe(someForm));
+   }
+   
+   public void testNonAnnotatedFormClass() throws Exception {
+      final NonAnnotatedFormClass form = new NonAnnotatedFormClass();
+      final FormController controller = new DefaultFormControllerFactory()
+            .getFormController(form);
+      final List reference = new ArrayList();
+
+      controller.addFormControllerListener(new FormControllerListener() {
+         public void enabledConditionsChanged(Map updatedEnabledConditions) {
+         }
+
+         public void visibleConditionsChanged(Map updatedVisibleConditions) {
+         }
+
+         public boolean beforeInvokingMethod(MethodMetadata methodMetadata) throws Exception {
+            return true;
+         }
+
+         public void afterInvokingMethod(MethodMetadata methodMetadata) throws Exception {
+         }
+
+         public void dataProvidedListChanged(DataProviderMetadata metadata, List items) throws Exception {
+            reference.clear();
+            reference.addAll(items);
+         }
+
+         public void dataProvidedIndexesChanged(DataProviderMetadata metadata, int[] selectedIndexes) {
+         }
+
+         public void valuesChanged(Map updatedValues) throws Exception {
+         }
+      });
+
+      controller.setup();
+      assertTrue(reference.isEmpty());
+      
+      controller.invokeAction("add", null);
+      assertEquals(1, reference.size());
+      assertEquals(form.getProvidedList(), reference);
+
+      controller.invokeAction("add", null);
+      assertEquals(2, reference.size());
+      assertEquals(form.getProvidedList(), reference);
    }
 
    /**
@@ -288,4 +339,26 @@ public class FormControllerTest extends TestCase {
       }
    }
 
+   public static class NonAnnotatedFormClass {
+      private List providedList = new ArrayList();
+
+      /**
+       * @DataProvider widgetName=someWidget
+       */
+      public List populateWidget() {
+         return providedList;
+      }
+
+      /**
+       * @Action
+       */
+      public void add() throws Exception {
+         providedList.add(providedList);
+         ActionInvoker.invoke(this, "populateWidget");
+      }
+
+      public List getProvidedList() {
+         return providedList;
+      }
+   }
 }
