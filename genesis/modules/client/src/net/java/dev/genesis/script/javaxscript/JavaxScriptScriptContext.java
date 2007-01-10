@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -69,7 +69,7 @@ public class JavaxScriptScriptContext extends ScriptContext {
       try {
          scriptEngine.getContext().setAttribute(prefix,
                functionClass.newInstance(),
-               JavaxScriptBridge.getInstance().getGlobalScope());
+               JavaxScriptBridge.getInstance().getEngineScope());
       } catch (Exception e) {
          throw new ScriptException(e.getMessage(), e);
       }
@@ -94,6 +94,6 @@ public class JavaxScriptScriptContext extends ScriptContext {
    }
 
    protected Class getFunctions() {
-      return ScriptFunctionsAdapter.class;
+      return JavaxScriptFunctions.class;
    }
 }
