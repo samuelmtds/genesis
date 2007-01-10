@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -59,47 +59,6 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
 
       public void setValue(Object value) {
          component.setText(getBinder().getFormatter(fieldMetadata).format(value));
-      }
-   }
-
-   public class AbstractButtonComponentBoundAction extends AbstractBoundMember
-         implements BoundAction {
-      private final AbstractButton component;
-      private final ActionMetadata actionMetadata;
-      private final ActionListener listener;
-
-      public AbstractButtonComponentBoundAction(SwingBinder binder,
-         AbstractButton component, ActionMetadata actionMetadata) {
-         super(binder, component);
-         this.component = component;
-         this.actionMetadata = actionMetadata;
-         this.component.addActionListener(listener = createActionListener());
-      }
-
-      protected ActionMetadata getActionMetadata() {
-         return actionMetadata;
-      }
-
-      protected AbstractButton getComponent() {
-         return component;
-      }
-
-      protected ActionListener getListener() {
-         return listener;
-      }
-
-      protected ActionListener createActionListener() {
-         return new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-               getBinder().invokeFormAction(getActionMetadata());
-            }
-         };
-      }
-
-      public void unbind() {
-         if (listener != null) {
-            component.removeActionListener(listener);
-         }
       }
    }
 }
