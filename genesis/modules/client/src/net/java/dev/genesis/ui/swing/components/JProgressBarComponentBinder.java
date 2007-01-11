@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -54,7 +54,7 @@ public class JProgressBarComponentBinder extends AbstractComponentBinder {
       protected FieldMetadata getFieldMetadata() {
          return fieldMetadata;
       }
-      
+
       protected int toInt(Object value) throws Exception {
          Integer integer = (Integer) BeanUtilsBean.getInstance()
                .getConvertUtils().lookup(Integer.TYPE).convert(Integer.TYPE,
@@ -65,6 +65,10 @@ public class JProgressBarComponentBinder extends AbstractComponentBinder {
 
       public void setValue(Object value) throws Exception {
          component.setValue(toInt(value));
+      }
+
+      public Object getValue() {
+         return new Integer(component.getValue());
       }
    }
 }

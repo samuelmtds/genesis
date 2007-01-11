@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,6 +45,12 @@ public abstract class MockBoundMember implements BoundMember {
 
    public void setValue(Object value) throws Exception {
       map.put("setValue(Object)", value);
+   }
+
+   public Object getValue() throws Exception {
+      map.put("getValue()", Boolean.TRUE);
+
+      return null;
    }
 
    public String getName() {

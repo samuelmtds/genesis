@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,6 +48,9 @@ public class SpinnerWidgetBinderTest extends GenesisTestCase {
 
    protected void setUp() throws Exception {
       spinner = new Spinner(root = new Shell(), SWT.NONE);
+      spinner.setDigits(0);
+      spinner.setMaximum(Integer.MAX_VALUE);
+      spinner.setMinimum(Integer.MIN_VALUE);
       binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       widgetBinder = binder.getWidgetBinder(spinner);
       fieldMeta = form.getFormMetadata().getFieldMetadata("intField");
@@ -77,15 +80,22 @@ public class SpinnerWidgetBinderTest extends GenesisTestCase {
       assertNotNull(widgetBinder.bind(binder, spinner, fieldMeta));
 
       simulateSelection(3);
-      Integer value = (Integer) binder
+      String value = (String) binder
             .get("populateForm(FieldMetadata,Object)");
       assertNotNull(value);
-      assertEquals(3, value.intValue());
+      assertEquals("3", value);
 
       simulateSelection(100);
-      value = (Integer) binder.get("populateForm(FieldMetadata,Object)");
+      value = (String) binder.get("populateForm(FieldMetadata,Object)");
       assertNotNull(value);
-      assertEquals(100, value.intValue());
+      assertEquals("100", value);
+
+      spinner.setDigits(4);
+      simulateSelection(31415);
+      value = (String) binder.get("populateForm(FieldMetadata,Object)");
+      assertNotNull(value);
+      assertEquals("3.1415", value);
+      
    }
    
    private void simulateSelection(int selection) {

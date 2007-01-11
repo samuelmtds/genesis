@@ -18,13 +18,9 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
-import net.java.dev.genesis.ui.binding.BoundAction;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 import net.java.dev.genesis.ui.binding.BoundField;
@@ -59,6 +55,10 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
 
       public void setValue(Object value) {
          component.setText(getBinder().getFormatter(fieldMetadata).format(value));
+      }
+
+      public Object getValue() {
+         return component.getText();
       }
    }
 }

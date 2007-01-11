@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -86,6 +87,10 @@ public class JListComponentBinder extends AbstractComponentBinder {
       protected ListSelectionListener createListSelectionListener() {
          return new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
+               if (event.getValueIsAdjusting()) {
+                  return;
+               }
+               
                getBinder().updateFormSelection(getDataProviderMetadata(), getIndexes());
             }
          };
@@ -112,6 +117,10 @@ public class JListComponentBinder extends AbstractComponentBinder {
                   "list. It can't be updated with indexes " + sb.toString());
          }
          
+         if (Arrays.equals(getIndexes(), indexes)) {
+            return;
+         }
+
          boolean isBlank = isBlank(component);
          indexes = getBinder().getIndexesFromController(indexes, isBlank);
 
@@ -168,6 +177,19 @@ public class JListComponentBinder extends AbstractComponentBinder {
          }
       }
 
+      public Object getValue() throws Exception {
+         if (dataProviderMetadata.getObjectField() == null
+               || component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
+            return null;
+         }
+
+         if (isBlank(component) && component.getSelectedIndex() == 0) {
+            return null;
+         }
+
+         return getKey(component.getSelectedValue());
+      }
+
       public void setValue(Object value) throws Exception {
          if (dataProviderMetadata.getObjectField() == null) {
             return;
@@ -179,8 +201,23 @@ public class JListComponentBinder extends AbstractComponentBinder {
             return;
          }
 
-         boolean isBlank = isBlank(component);
+         int index = getIndexFor(value);
 
+         deactivateListeners();
+
+         try {
+            if (index < 0) {
+               component.clearSelection();
+            } else {
+               component.setSelectedIndex(index);   
+            }
+         } finally {
+            reactivateListeners();
+         }
+      }
+
+      protected int getIndexFor(Object value) throws Exception {
+         boolean isBlank = isBlank(component);
          int found = -1;
 
          if (value != null) {
@@ -201,19 +238,9 @@ public class JListComponentBinder extends AbstractComponentBinder {
             found++;
          }
 
-         deactivateListeners();
-
-         try {
-            if (found < 0) {
-               component.clearSelection();
-            } else {
-               component.setSelectedIndex(found);   
-            }
-         } finally {
-            reactivateListeners();
-         }
+         return found;
       }
-
+      
       public void unbind() {
          if (listener != null) {
             component.removeListSelectionListener(listener);

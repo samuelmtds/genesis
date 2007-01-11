@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -91,6 +91,10 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
                   "Length of selected indexes must be one");
          }
 
+         if (widget.getSelectionIndex() == indexes[0]) {
+            return;
+         }
+
          if (indexes[0] < 0) {
             widget.deselectAll();
          } else {
@@ -111,6 +115,18 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
          widget.setItems(getData(list));
 
          widget.select(selected);
+      }
+
+      public Object getValue() throws Exception {
+         if (dataProviderMetadata.getObjectField() == null) {
+            return null;
+         }
+
+         if (isBlank(widget) && widget.getSelectionIndex() == 0) {
+            return null;
+         }
+
+         return getKey(widget.getSelectionIndex());
       }
 
       public void setValue(Object value) throws Exception {

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -71,21 +71,33 @@ public class SpinnerWidgetBinder extends AbstractWidgetBinder {
          };
       }
 
-      protected Object getValue() {
-         return getBinder().getConverter(fieldMetadata).convert(String.class,
-               new Integer(widget.getSelection()));
+      public Object getValue() {
+         int value = widget.getSelection();
+         int digits = widget.getDigits();
+
+         if (digits == 0) {
+            return String.valueOf(value);
+         }
+
+         return String.valueOf(((float)value) / (Math.pow(10, digits)));
       }
 
-      protected int toInt(Object value) throws Exception {
-         Integer integer = (Integer) BeanUtilsBean.getInstance()
-               .getConvertUtils().lookup(Integer.TYPE).convert(Integer.TYPE,
+      protected float toFloat(Object value) throws Exception {
+         Float number = (Float) BeanUtilsBean.getInstance()
+               .getConvertUtils().lookup(Float.TYPE).convert(Float.TYPE,
                      value);
 
-         return integer.intValue();
+         return number.floatValue();
       }
 
       public void setValue(Object value) throws Exception {
-         widget.setSelection(toInt(value));
+         float number = toFloat(value);
+
+         if (widget.getDigits() > 0) {
+            number *= Math.pow(10, widget.getDigits());
+         }
+
+         widget.setSelection(Math.round(number));
       }
 
       public void unbind() {

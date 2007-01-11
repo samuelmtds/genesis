@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -580,13 +580,31 @@ public abstract class AbstractBinder implements FormControllerListener {
          handleException(e);
       }
    }
-   
+
    protected MethodMetadata getMethodMetadata(String name) {
       return formMetadata.getMethodMetadata(new MethodEntry(name, new String[0]));
    }
 
    protected Map getStringProperties() throws Exception {
-      return ValidationUtils.getInstance().getPropertiesMap(form);
+      Map stringProperties = ValidationUtils.getInstance().getPropertiesMap(form);
+
+      for (Iterator iter = stringProperties.entrySet().iterator(); iter.hasNext();) {
+         Map.Entry entry = (Map.Entry) iter.next();
+         String fieldName = (String) entry.getKey();
+         Object value = entry.getValue();
+
+         if (value == null || "".equals(value)) {
+            BoundField bound = (BoundField) boundFields.get(fieldName);
+
+            if (bound == null) {
+               continue;
+            }
+
+            entry.setValue(bound.getValue());
+         }
+      }
+
+      return stringProperties;
    }
 
    public boolean isVirtual(String propertyName) {

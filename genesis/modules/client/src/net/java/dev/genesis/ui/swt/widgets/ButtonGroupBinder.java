@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -130,6 +130,23 @@ public class ButtonGroupBinder implements GroupBinder {
 
             button.setSelection(true);
          }
+      }
+
+      public Object getValue() {
+         Control[] controls = buttonGroup.getChildren();
+
+         for (int i = 0; i < controls.length; i++) {
+            if (!isToggleStyle(controls[i]) || !(controls[i] instanceof Button)) {
+               continue;
+            }
+
+            Button button = (Button) controls[i];
+            if (button.getSelection()) {
+               return getValue(button);
+            }
+         }
+
+         return null;
       }
 
       protected boolean equals(Object newValue, Object currentButtonValue) {

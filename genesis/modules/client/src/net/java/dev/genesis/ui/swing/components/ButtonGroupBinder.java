@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -142,6 +142,19 @@ public class ButtonGroupBinder implements GroupBinder {
             buttonGroup.setSelected(button.getModel(), true);
             break;
          }
+      }
+
+      public Object getValue() {
+         Enumeration en = buttonGroup.getElements();
+         while (en.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) en.nextElement();
+
+            if (button.isSelected()) {
+               return getValue(button);
+            }
+         }
+
+         return null;
       }
 
       public void setEnabled(boolean enabled) {

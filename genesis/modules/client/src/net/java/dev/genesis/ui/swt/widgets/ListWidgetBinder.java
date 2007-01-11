@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package net.java.dev.genesis.ui.swt.widgets;
 import java.util.Iterator;
 import java.util.List;
 
+
 import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
@@ -28,6 +29,8 @@ import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -35,6 +38,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Widget;
 
 public class ListWidgetBinder extends AbstractWidgetBinder {
+   private static final Log log = LogFactory.getLog(ListWidgetBinder.class);
+
    public BoundDataProvider bind(SWTBinder binder, Widget widget,
          DataProviderMetadata dataProviderMetadata) {
       return new ListBoundMember(binder, (org.eclipse.swt.widgets.List) widget,
@@ -106,9 +111,27 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          widget.setSelection(selected);
       }
 
-      public void setValue(Object value) throws Exception {
+      public Object getValue() throws Exception {
          if (dataProviderMetadata.getObjectField() == null
                || (widget.getStyle() & SWT.SINGLE) != 0) {
+            return null;
+         }
+
+         if (isBlank(widget) && widget.getSelectionIndex() == 0) {
+            return null;
+         }
+         
+         return getKey(widget.getSelectionIndex());
+      }
+
+      public void setValue(Object value) throws Exception {
+         if (dataProviderMetadata.getObjectField() == null) {
+            return;
+         }
+
+         if ((widget.getStyle() & SWT.SINGLE) != 0) {
+            log.warn("Cannot update " + getBinder().getName(widget)
+                  + " widget because it's not a single selection list.");
             return;
          }
 

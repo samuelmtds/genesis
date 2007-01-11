@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -91,6 +91,10 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
             throw new IllegalArgumentException("Length of selected indexes must be one");
          }
 
+         if (component.getSelectedIndex() == indexes[0]) {
+            return;
+         }
+
          deactivateListeners();
          try {
             component.setSelectedIndex(indexes[0]);
@@ -117,6 +121,18 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          } finally {
             reactivateListeners();
          }
+      }
+
+      public Object getValue() throws Exception {
+         if (dataProviderMetadata.getObjectField() == null) {
+            return null;
+         }
+
+         if (isBlank(component) && component.getSelectedIndex() == 0) {
+            return null;
+         }
+
+         return getKey(component.getSelectedItem());
       }
 
       public void setValue(Object value) throws Exception {

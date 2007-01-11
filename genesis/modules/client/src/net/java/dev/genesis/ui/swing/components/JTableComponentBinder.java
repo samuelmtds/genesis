@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -96,6 +97,10 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       protected ListSelectionListener createListSelectionListener() {
          return new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
+               if (event.getValueIsAdjusting()) {
+                  return;
+               }
+
                getBinder().updateFormSelection(getDataProviderMetadata(),
                      getIndexes());
             }
@@ -107,11 +112,22 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       public void updateIndexes(int[] indexes) {
-         ListSelectionModel sm = component.getSelectionModel();
-         sm.clearSelection();
+         // fix: strange bug when using indexField and selecting items using SHIFT + ARROW
+         if (Arrays.equals(getIndexes(), indexes)) {
+            return;
+         }
 
-         for (int i = 0; i < indexes.length; i++) {
-            sm.addSelectionInterval(indexes[i], indexes[i]);
+         deactivateSelectionListener();
+
+         try {
+            ListSelectionModel sm = component.getSelectionModel();
+            sm.clearSelection();
+   
+            for (int i = 0; i < indexes.length; i++) {
+               sm.addSelectionInterval(indexes[i], indexes[i]);
+            }
+         } finally {
+            reactivateSelectionListener();
          }
       }
 
@@ -124,14 +140,32 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       protected void setSelectedIndexes(int listSize, int[] indexes) {
-         component.clearSelection();
-         for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] >= listSize) {
-               continue;
+         deactivateSelectionListener();
+         
+         try {
+            component.clearSelection();
+            for (int i = 0; i < indexes.length; i++) {
+               if (indexes[i] >= listSize) {
+                  continue;
+               }
+   
+               component.getSelectionModel().addSelectionInterval(indexes[i],
+                     indexes[i]);
             }
+         } finally {
+            reactivateSelectionListener();
+         }
+      }
 
-            component.getSelectionModel().addSelectionInterval(indexes[i],
-                  indexes[i]);
+      protected void deactivateSelectionListener() {
+         if (listener != null) {
+            component.getSelectionModel().removeListSelectionListener(listener);
+         }
+      }
+
+      protected void reactivateSelectionListener() {
+         if (listener != null) {
+            component.getSelectionModel().addListSelectionListener(listener);
          }
       }
 
