@@ -80,21 +80,21 @@ public class SpinnerWidgetBinderTest extends GenesisTestCase {
       assertNotNull(widgetBinder.bind(binder, spinner, fieldMeta));
 
       simulateSelection(3);
-      String value = (String) binder
+      Object value = binder
             .get("populateForm(FieldMetadata,Object)");
       assertNotNull(value);
-      assertEquals("3", value);
+      assertEquals(new Integer(3), value);
 
       simulateSelection(100);
-      value = (String) binder.get("populateForm(FieldMetadata,Object)");
+      value = binder.get("populateForm(FieldMetadata,Object)");
       assertNotNull(value);
-      assertEquals("100", value);
+      assertEquals(new Integer(100), value);
 
       spinner.setDigits(4);
       simulateSelection(31415);
-      value = (String) binder.get("populateForm(FieldMetadata,Object)");
+      value = binder.get("populateForm(FieldMetadata,Object)");
       assertNotNull(value);
-      assertEquals("3.1415", value);
+      assertEquals(new Float(3.1415), value);
       
    }
    

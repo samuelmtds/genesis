@@ -65,6 +65,10 @@ public class ButtonGroupBinder implements GroupBinder {
          return fieldMetadata;
       }
 
+      protected String format(Object value) {
+         return binder.format(getName(), fieldMetadata.getFieldName(), value, false);
+      }
+
       protected boolean isToggleStyle(Widget widget) {
          return (widget.getStyle() & (SWT.CHECK | SWT.RADIO | SWT.TOGGLE)) != 0;
       }
@@ -132,7 +136,7 @@ public class ButtonGroupBinder implements GroupBinder {
          }
       }
 
-      public Object getValue() {
+      public String getValue() {
          Control[] controls = buttonGroup.getChildren();
 
          for (int i = 0; i < controls.length; i++) {
@@ -142,7 +146,7 @@ public class ButtonGroupBinder implements GroupBinder {
 
             Button button = (Button) controls[i];
             if (button.getSelection()) {
-               return getValue(button);
+               return format(getValue(button));
             }
          }
 

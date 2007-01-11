@@ -66,13 +66,17 @@ public class JSliderComponentBinder extends AbstractComponentBinder {
       protected ChangeListener createChangeListener() {
          return new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      protected Object getCurrentValue() {
          return new Integer(component.getValue());
+      }
+
+      public String getValue() {
+         return format(fieldMetadata, getCurrentValue());
       }
 
       protected int toInt(Object value) throws Exception {

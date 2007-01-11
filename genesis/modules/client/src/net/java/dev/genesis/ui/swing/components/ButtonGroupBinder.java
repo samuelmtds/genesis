@@ -79,6 +79,10 @@ public class ButtonGroupBinder implements GroupBinder {
          return fieldMetadata;
       }
 
+      protected String format(Object value) {
+         return binder.format(getName(), fieldMetadata.getFieldName(), value, false);
+      }
+
       protected void addActionListener(ActionListener listener) {
          Enumeration elements = buttonGroup.getElements();
 
@@ -144,13 +148,13 @@ public class ButtonGroupBinder implements GroupBinder {
          }
       }
 
-      public Object getValue() {
+      public String getValue() {
          Enumeration en = buttonGroup.getElements();
          while (en.hasMoreElements()) {
             AbstractButton button = (AbstractButton) en.nextElement();
 
             if (button.isSelected()) {
-               return getValue(button);
+               return format(getValue(button));
             }
          }
 

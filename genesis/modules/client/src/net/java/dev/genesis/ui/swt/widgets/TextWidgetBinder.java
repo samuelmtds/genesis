@@ -83,7 +83,7 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
          };
       }
 
-      public Object getValue() {
+      public String getValue() {
          return isTrim() ? widget.getText().trim() : widget.getText();
       }
 

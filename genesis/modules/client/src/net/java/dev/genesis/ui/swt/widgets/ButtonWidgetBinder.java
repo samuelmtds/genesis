@@ -126,13 +126,17 @@ public class ButtonWidgetBinder extends AbstractWidgetBinder {
       protected SelectionListener createSelectionListener() {
          return new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-               getBinder().populateForm(fieldMetadata, getValue());
+               getBinder().populateForm(fieldMetadata, getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      protected Object getCurrentValue() {
          return Boolean.valueOf(widget.getSelection());
+      }
+
+      public String getValue() {
+         return format(fieldMetadata, getCurrentValue());
       }
 
       public void setValue(Object value) {

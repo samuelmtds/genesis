@@ -67,13 +67,17 @@ public class JToggleButtonComponentBinder extends AbstractComponentBinder {
       protected ActionListener createActionListener() {
          return new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      protected Object getCurrentValue() {
          return Boolean.valueOf(component.isSelected());
+      }
+
+      public String getValue() {
+         return format(fieldMetadata, getCurrentValue());
       }
 
       protected boolean toBoolean(Object value) throws Exception {

@@ -57,7 +57,7 @@ public class AbstractButtonComponentBinder extends AbstractComponentBinder {
          component.setText(getBinder().getFormatter(fieldMetadata).format(value));
       }
 
-      public Object getValue() {
+      public String getValue() {
          return component.getText();
       }
    }

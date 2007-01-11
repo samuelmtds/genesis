@@ -177,7 +177,7 @@ public class JListComponentBinder extends AbstractComponentBinder {
          }
       }
 
-      public Object getValue() throws Exception {
+      public String getValue() throws Exception {
          if (dataProviderMetadata.getObjectField() == null
                || component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
             return null;

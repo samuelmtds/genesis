@@ -28,5 +28,5 @@ public interface BoundField extends BoundMember {
     */
    public void setValue(Object value) throws Exception;
 
-   public Object getValue() throws Exception;
+   public String getValue() throws Exception;
 }

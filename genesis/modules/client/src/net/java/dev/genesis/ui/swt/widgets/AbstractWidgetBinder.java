@@ -234,6 +234,11 @@ public class AbstractWidgetBinder implements WidgetBinder {
          }
       }
 
+      protected String format(FieldMetadata fieldMetadata, Object value) {
+         return binder.format(getName(), fieldMetadata.getFieldName(), value,
+               getBinder().isVirtual(widget, fieldMetadata.getFieldName()));
+      }
+
       public String getName() {
          return binder.getLookupStrategy().getName(widget);
       }

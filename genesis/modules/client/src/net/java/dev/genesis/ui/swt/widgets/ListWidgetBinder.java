@@ -111,7 +111,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          widget.setSelection(selected);
       }
 
-      public Object getValue() throws Exception {
+      public String getValue() throws Exception {
          if (dataProviderMetadata.getObjectField() == null
                || (widget.getStyle() & SWT.SINGLE) != 0) {
             return null;

@@ -67,8 +67,8 @@ public class JProgressBarComponentBinder extends AbstractComponentBinder {
          component.setValue(toInt(value));
       }
 
-      public Object getValue() {
-         return new Integer(component.getValue());
+      public String getValue() {
+         return format(fieldMetadata, new Integer(component.getValue()));
       }
    }
 }

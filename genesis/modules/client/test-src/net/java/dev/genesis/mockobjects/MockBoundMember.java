@@ -47,7 +47,7 @@ public abstract class MockBoundMember implements BoundMember {
       map.put("setValue(Object)", value);
    }
 
-   public Object getValue() throws Exception {
+   public String getValue() throws Exception {
       map.put("getValue()", Boolean.TRUE);
 
       return null;

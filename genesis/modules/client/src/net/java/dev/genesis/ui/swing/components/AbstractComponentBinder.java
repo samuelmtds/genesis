@@ -284,6 +284,11 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
          }
       }
 
+      protected String format(FieldMetadata fieldMetadata, Object value) {
+         return binder.format(getName(), fieldMetadata.getFieldName(), value,
+               getBinder().isVirtual(component, fieldMetadata.getFieldName()));
+      }
+
       public String getName() {
          return getBinder().getName(component);
       }

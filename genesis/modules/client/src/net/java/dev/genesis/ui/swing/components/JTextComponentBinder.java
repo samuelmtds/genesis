@@ -84,7 +84,7 @@ public class JTextComponentBinder extends AbstractComponentBinder {
          };
       }
 
-      public Object getValue() {
+      public String getValue() {
          return isTrim() ? component.getText().trim() : component.getText();
       }
 

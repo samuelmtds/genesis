@@ -80,13 +80,17 @@ public class JSpinnerComponentBinder extends AbstractComponentBinder {
       protected ChangeListener createChangeListener() {
          return new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      protected Object getCurrentValue() {
          return component.getValue();
+      }
+
+      public String getValue() {
+         return format(fieldMetadata, getCurrentValue());
       }
 
       public void setValue(Object value) throws Exception {

@@ -56,7 +56,7 @@ public class LabelWidgetBinder extends AbstractWidgetBinder {
          widget.setText(getBinder().getFormatter(fieldMetadata).format(value));
       }
 
-      public Object getValue() {
+      public String getValue() {
          return widget.getText();
       }
    }

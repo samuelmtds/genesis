@@ -65,13 +65,17 @@ public class SliderWidgetBinder extends AbstractWidgetBinder {
       protected SelectionListener createSelectionListener() {
          return new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      protected Object getCurrentValue() {
          return new Integer(widget.getSelection());
+      }
+
+      public String getValue() {
+         return format(fieldMetadata, getCurrentValue());
       }
 
       protected int toInt(Object value) throws Exception {

@@ -117,7 +117,7 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
          widget.select(selected);
       }
 
-      public Object getValue() throws Exception {
+      public String getValue() throws Exception {
          if (dataProviderMetadata.getObjectField() == null) {
             return null;
          }

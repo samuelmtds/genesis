@@ -66,20 +66,24 @@ public class SpinnerWidgetBinder extends AbstractWidgetBinder {
       protected SelectionListener createSelectionListener() {
          return new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      protected Object getCurrentValue() {
          int value = widget.getSelection();
          int digits = widget.getDigits();
 
          if (digits == 0) {
-            return String.valueOf(value);
-         }
+            return new Integer(value);
+         } 
 
-         return String.valueOf(((float)value) / (Math.pow(10, digits)));
+         return new Float(((float)value) / (Math.pow(10, digits)));
+      }
+
+      public String getValue() {
+         return format(fieldMetadata, getCurrentValue());
       }
 
       protected float toFloat(Object value) throws Exception {

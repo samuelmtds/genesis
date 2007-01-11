@@ -65,8 +65,8 @@ public class ProgressBarWidgetBinder extends AbstractWidgetBinder {
          widget.setSelection(toInt(value));
       }
 
-      public Object getValue() {
-         return new Integer(widget.getSelection());
+      public String getValue() {
+         return format(fieldMetadata, new Integer(widget.getSelection()));
       }
    }
 }
