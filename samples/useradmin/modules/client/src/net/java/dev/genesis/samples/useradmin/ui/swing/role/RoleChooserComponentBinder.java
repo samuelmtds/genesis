@@ -54,13 +54,17 @@ public class RoleChooserComponentBinder extends AbstractComponentBinder {
       protected RoleChooserListener createRoleChooserListener() {
          return new RoleChooserListener() {
             public void roleChanged(RoleChooser chooser) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      public Object getCurrentValue() {
          return component.getRole();
+      }
+
+      public String getValue() {
+         return component.getRole() == null ? null : component.getRole().getCode();
       }
 
       public void setValue(Object value) {

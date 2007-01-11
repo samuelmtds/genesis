@@ -55,13 +55,17 @@ public class RoleChooserWidgetBinder extends AbstractWidgetBinder {
       protected RoleChooserListener createRoleChooserListener() {
          return new RoleChooserListener() {
             public void handleEvent(Event event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
+               getBinder().populateForm(getFieldMetadata(), getCurrentValue());
             }
          };
       }
 
-      public Object getValue() {
+      public Object getCurrentValue() {
          return widget.getRole();
+      }
+
+      public String getValue() {
+         return widget.getRole() == null ? null : widget.getRole().getCode();
       }
 
       public void setValue(Object value) {
