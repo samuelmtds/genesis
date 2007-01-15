@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -87,7 +87,7 @@ public final class EnumHelper {
          return Arrays.asList((Object[])invoke(clazz, "getEnumConstants"));
       }
 
-      throw new UnsupportedOperationException(clazz.getName() + " is not an enum");
+      throw new IllegalArgumentException(clazz.getName() + " is not an enum");
    }
    
    public Object valueOf(Class clazz, String name) {
@@ -106,7 +106,7 @@ public final class EnumHelper {
          return null;
       }
 
-      throw new UnsupportedOperationException(clazz.getName() + " is not an enum");
+      throw new IllegalArgumentException(clazz.getName() + " is not an enum");
    }
    
    public Class getDeclaringClass(Object object) {
@@ -116,7 +116,7 @@ public final class EnumHelper {
          return (Class) invoke(object, "getDeclaringClass");
       }
 
-      throw new UnsupportedOperationException(object + " is not an enum");
+      throw new IllegalArgumentException(object + " is not an enum");
    }
    
    public String getName(Object object) {
@@ -126,6 +126,6 @@ public final class EnumHelper {
          return object.toString();
       }
 
-      throw new UnsupportedOperationException(object + " is not an enum");
+      throw new IllegalArgumentException(object + " is not an enum");
    }
 }
