@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -95,6 +95,34 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
 
       String value2 = "value2";
       button2.setActionCommand(value2);
+
+      assertFalse(button1.getModel().isSelected());
+      assertFalse(button2.getModel().isSelected());
+
+      group.setSelected(button1.getModel(), true);
+      button1.doClick();
+      assertTrue(button1.getModel().isSelected());
+      assertFalse(button2.getModel().isSelected());
+
+      assertSame(value1, binder.get("populateForm(FieldMetadata,Object)"));
+
+      group.setSelected(button2.getModel(), true);
+      button2.doClick();
+      assertFalse(button1.getModel().isSelected());
+      assertTrue(button2.getModel().isSelected());
+
+      assertSame(value2, binder.get("populateForm(FieldMetadata,Object)"));
+   }
+
+   public void testButtonGroupWithName() {
+      groupBinder = binder.getGroupBinder(group);
+      groupBinder.bind(binder, group, fieldMeta);
+      
+      String value1 = "value1";
+      button1.setName(value1);
+
+      String value2 = "value2";
+      button2.setName(value2);
 
       assertFalse(button1.getModel().isSelected());
       assertFalse(button2.getModel().isSelected());

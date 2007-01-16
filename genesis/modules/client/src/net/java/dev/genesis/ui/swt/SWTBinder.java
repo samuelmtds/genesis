@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,6 +46,15 @@ public class SWTBinder extends AbstractBinder {
 
    protected ExceptionHandler createExceptionHandler() {
       return new SWTExceptionHandler((Composite) getRoot());
+   }
+
+   public Composite registerButtonGroup(Composite buttonGroup) {
+      if (buttonGroup.getData() == null) {
+         throw new IllegalArgumentException("Composite " + buttonGroup + " " +
+               "must have a name to be registered as a button group");
+      }
+
+      return registerButtonGroup((String) buttonGroup.getData(), buttonGroup);
    }
 
    public Composite registerButtonGroup(String name, Composite buttonGroup) {

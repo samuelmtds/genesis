@@ -107,15 +107,27 @@ public class ButtonGroupBinder implements GroupBinder {
       }
 
       protected Object getValue(AbstractButton button) {
-         Object value = useActionCommandAsSelectedValue ? button
-               .getActionCommand() : button
-               .getClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE);
+         Object value;
+         
+         if (useActionCommandAsSelectedValue) {
+            value = button.getActionCommand();
+         } else {
+            value = button.getClientProperty(
+                  SwingBinder.BUTTON_GROUP_SELECTION_VALUE);
+            
+            if (value == null) {
+               value = button.getName();
+            }
+         }
 
          if (value == null) {
             log.warn("No selected value configured for button " + button + ". Use " +
                   (useActionCommandAsSelectedValue ?
                         "button.setActionCommand(\"someValue\")" :
-                        "button.putClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE, someValue)" ));
+                        "button.putClientProperty(" +
+                        "SwingBinder.BUTTON_GROUP_SELECTION_VALUE, someValue) " +
+                        "or button.setName(someValue)" ) + " to define its " +
+                        "value.");
          }
 
          return value;

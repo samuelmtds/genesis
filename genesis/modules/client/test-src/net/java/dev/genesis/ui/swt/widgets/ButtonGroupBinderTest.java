@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -82,7 +82,7 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
       fieldMeta = form.getFormMetadata().getFieldMetadata("stringField");
    }
 
-   public void testButtonGroup() {
+   public void testButtonGroupWithKey() {
       groupBinder = binder.getGroupBinder(group);
       assertTrue(groupBinder instanceof ButtonGroupBinder);
 
@@ -109,6 +109,35 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
 
       assertSame(value2, binder.get("populateForm(FieldMetadata,Object)"));
    }
+
+   public void testButtonGroupWithName() {
+      groupBinder = binder.getGroupBinder(group);
+      assertTrue(groupBinder instanceof ButtonGroupBinder);
+
+      groupBinder.bind(binder, group, fieldMeta);
+
+      Object value1 = new Object();
+      button1.setData(value1);
+
+      Object value2 = new Object();
+      button2.setData(value2);
+
+      assertFalse(button1.getSelection());
+      assertFalse(button2.getSelection());
+
+      simulateClick(button1);
+      assertTrue(button1.getSelection());
+      assertFalse(button2.getSelection());
+
+      assertSame(value1, binder.get("populateForm(FieldMetadata,Object)"));
+
+      simulateClick(button2);
+      assertFalse(button1.getSelection());
+      assertTrue(button2.getSelection());
+
+      assertSame(value2, binder.get("populateForm(FieldMetadata,Object)"));
+   }
+
 
    public void testSetValue() throws Exception {
       groupBinder = binder.getGroupBinder(group);

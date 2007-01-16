@@ -24,6 +24,9 @@ import net.java.dev.genesis.ui.binding.GroupBinder;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,6 +37,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 public class ButtonGroupBinder implements GroupBinder {
+   private static final Log log = LogFactory.getLog(ButtonGroupBinder.class);
+
    public BoundField bind(AbstractBinder binder, Object group,
          FieldMetadata fieldMetadata) {
       return new ButtonGroupBoundField(binder, (Composite) group, fieldMetadata);
@@ -115,7 +120,20 @@ public class ButtonGroupBinder implements GroupBinder {
       }
 
       protected Object getValue(Button button) {
-         return button.getData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE);
+         Object value = button.getData(SWTBinder.BUTTON_GROUP_SELECTION_VALUE);
+
+         if (value == null) {
+            value = button.getData();
+         }
+
+         if (value == null) {
+            log.warn("No selected value configured for button " + button + 
+                  ". Use button.setData(" +
+                  "SWTBinder.BUTTON_GROUP_SELECTION_VALUE, someValue) or " +
+                  "button.setData(someValue) to define its value.");
+         }
+
+         return value;
       }
 
       public void setValue(Object value) throws Exception {
