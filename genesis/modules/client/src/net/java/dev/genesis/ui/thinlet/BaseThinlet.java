@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -458,6 +458,12 @@ public abstract class BaseThinlet extends Thinlet implements
    protected void displayBean(Object bean, Object root, Map formatters) 
          throws IllegalAccessException, InvocationTargetException, 
                 NoSuchMethodException {
+      displayBean(bean, root, formatters, 0);
+   }
+
+   protected void displayBean(Object bean, Object root, Map formatters, 
+         int maximumSearchDepthLevel) throws IllegalAccessException, 
+         InvocationTargetException, NoSuchMethodException {
       final Map properties = bean instanceof Map ? (Map)bean : 
             PropertyUtils.describe(bean);
 
@@ -479,7 +485,8 @@ public abstract class BaseThinlet extends Thinlet implements
 
          if (component == null) {
             if (groupComponents == null) {
-               groupComponents = getAllOfClass(root, CHECKBOX);
+               groupComponents = getAllOfClass(root, new String [] {CHECKBOX, 
+                     TOGGLE_BUTTON}, maximumSearchDepthLevel);
             }
 
             for (final Iterator  i = groupComponents.iterator(); i.hasNext(); ) {

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -309,7 +309,7 @@ public class ThinletBinder implements FormControllerListener {
                return;
             }
          
-            value = name;
+            value = thinlet.getName(component);
          } else {
             value = String.valueOf(thinlet.isSelected(component));
          }
@@ -478,7 +478,8 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    public void valuesChanged(Map updatedValues) throws Exception {
-      thinlet.displayBean(updatedValues, root, formatters);
+      thinlet.displayBean(updatedValues, root, formatters, 
+            getComponentSearchDepth());
    }
 
    public boolean beforeInvokingMethod(MethodMetadata methodMetadata) 
