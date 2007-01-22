@@ -42,7 +42,11 @@ public class EnumConverter implements Converter {
        if (nullReturnAcceptable && value == null) {
            return null;
        }
-       
+
+       if (value != null && type.isAssignableFrom(value.getClass())) {
+          return value;
+       }
+
        Object en = null;
        Exception e = null;
        

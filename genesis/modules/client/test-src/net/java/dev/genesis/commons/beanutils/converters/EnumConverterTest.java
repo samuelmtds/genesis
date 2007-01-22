@@ -82,14 +82,14 @@ public class EnumConverterTest extends GenesisTestCase {
 
    public void testInvalidEnumClass() {
       try {
-         nonNullConverter.convert(String.class, SampleEnum.A_NAME);
+         nonNullConverter.convert(Integer.class, SampleEnum.A_NAME);
          fail("nonNullConverter should throw a ConversionException");
       } catch (ConversionException ce) {
          // ok, worked
       }
 
       try {
-         nullConverter.convert(String.class, SampleEnum.A_NAME);
+         nullConverter.convert(Integer.class, SampleEnum.A_NAME);
          fail("nullConverter should throw a ConversionException");
       } catch (ConversionException ce) {
          // ok, worked
@@ -110,5 +110,18 @@ public class EnumConverterTest extends GenesisTestCase {
       } catch (ConversionException ce) {
          // ok, worked
       }
+   }
+
+   public void testEnums() {
+      assertSame(SampleEnum.A, nonNullConverter.convert(SampleEnum.class, 
+            SampleEnum.A));
+      assertSame(SampleEnum.A, nullConverter.convert(SampleEnum.class, 
+            SampleEnum.A));
+      
+      Class enumClass = net.java.dev.reusablecomponents.lang.Enum.class;
+
+      assertSame(SampleEnum.A, nonNullConverter.convert(enumClass, 
+            SampleEnum.A));
+      assertSame(SampleEnum.A, nullConverter.convert(enumClass, SampleEnum.A));
    }
 }
