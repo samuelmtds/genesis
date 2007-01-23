@@ -138,6 +138,15 @@ public class ButtonGroupBinder implements GroupBinder {
             return currentButtonValue == null;
          }
 
+         Class newClass = newValue.getClass();
+         Class currentClass = currentButtonValue.getClass();
+
+         if (newClass == String.class && currentClass != String.class) {
+            currentButtonValue = format(currentButtonValue);
+         } else if (newClass != String.class && currentClass == String.class) {
+            newValue = format(newValue);
+         }
+               
          return newValue.equals(currentButtonValue);
       }
 
