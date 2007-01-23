@@ -112,7 +112,6 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       public void updateIndexes(int[] indexes) {
-         // fix: strange bug when using indexField and selecting items using SHIFT + ARROW
          if (Arrays.equals(getIndexes(), indexes)) {
             return;
          }
