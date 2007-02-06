@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Binding de botões de rádio e caixas de seleção</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Binding de botões de rádio e caixas de seleção">
+      <p>O binding de botões de rádio, caixas de seleção e componentes 
+      semelhantes (como togglebuttons) possui algumas particularidades que o 
+      diferencia do processo padrão.</p>
+      <p>Independentemente da API gráfica, esses componentes normalmente 
+      funcionam como um <b>grupo</b>. Com Thinlet, usa-se a propriedade 
+      <code>group</code>, no Swing há a classe <code>ButtonGroup</code> e com 
+      SWT deve-se adicionar todos os componentes a um <code>Composite</code> que
+      funciona como agrupador. A mudança de conceito é que o binding é feito 
+      <b>para o grupo</b> ao invés de para os componentes individuais.</p>
+      <p>No caso do Thinlet, os grupos já são naturalmente identificados por um
+      nome - o próprio valor da propriedade <code>group</code> -, então nada 
+      mais é necessário para que o genesis possa localizá-lo. Contudo, no caso
+      do Swing e do SWT, o conceito do grupo foge do padrão natural dos outros
+      componentes da API, de modo que é necessário identificar explicitamente um
+      grupo.</p>
+      <p>Com Swing, para se registrar um <code>ButtonGroup</code>, usa-se o 
+      método <code>registerButtonGroup(String, ButtonGroup)</code> do 
+      <code>SwingBinder</code>. Para o SWT, existe um método similar chamado
+      <code>registerButtonGroup(String, Composite)</code> no 
+      <code>SWTBinder</code>. Em ambos os binders, a String representa o nome da
+      propriedade do form que guardará a seleção. Para o SWT, existe também um
+      método <code>registerButtonGroup(Composite)</code> que assume que o nome
+      do grupo é o nome do próprio <code>Composite</code> passado como 
+      parâmetro.</p>
+      <p>Para definir qual valor será atribuído à propriedade do form quando 
+      determinado item for selecionado, basta atribuir esse valor à propriedade
+      <code>name</code> do componente (no caso do SWT, o equivalente é a 
+      propriedade <code>data</code>).</p>
+      <p>Para facilitar o entendimento e esclarecer as particularidades do 
+      binding para cada API gráfica, vamos considerar um exemplo prático. 
+      Suponhamos que exista uma enum <code>Sexo</code>, conforme mostrado 
+      abaixo:</p>
+<source>
+public enum Sexo {
+   MASCULINO, FEMININO;
+}
+</source>
+      <p>Abaixo, um form que captura a seleção do sexo e imprime seu valor na 
+      saída padrão quando uma ação é invocada:</p>
+<source>
+@Form
+public class ExemploRadioButtonForm {
+   private Sexo sexo = Sexo.MASCULINO;
+
+   public Sexo getSexo() {
+      return sexo;
+   }
+
+   public void setSexo(Sexo sexo) {
+      this.sexo = sexo;
+   }
+
+   @Action
+   public void exibirSelecao() {
+      System.out.println(sexo);
+   }
+}
+</source>
+      <p>Primeiro, vamos examinar as particularidades da construção duma view 
+      com Thinlet. O xml e a view encontram-se abaixo:</p>
+<source>
+<![CDATA[
+<panel bottom="5" columns="1" gap="5" left="5" right="5" top="5" weightx="1" weighty="1">
+   <panel border="true" bottom="5" columns="1" left="5" right="5" text=" Sexo " top="5">
+      <checkbox group="sexo" name="MASCULINO" text="Masculino"/>
+      <checkbox group="sexo" name="FEMININO" text="Feminino"/>
+   </panel>
+   <button name="exibirSelecao" text="Exibir"/>
+</panel>
+]]>
+</source>
+<source>
+public class ExemploRadioButtonThinletView extends BaseThinlet {
+   public ExemploRadioButtonThinletView() throws Exception {
+      add(parse("exemplo_radio_button.xml"));
+
+      ThinletBinder binder = prepareBinder(new ExemploRadioButtonForm());
+      binder.setComponentSearchDepth(Integer.MAX_VALUE);
+      binder.bind();
+   }
+}
+</source>
+      <p>Cada <code>checkbox / radiobutton</code> que poderá alterar o valor da
+      propriedade <code>sexo</code> do form é identificada pelo valor da sua 
+      propriedade <code>group</code>. O valor a ser atribuído à propriedade é
+      definido usando-se a propriedade <code>name</code>.</p>
+      <p>A única particularidade ao utilizar esses componentes com Thinlet é que
+      é necessário definir a propriedade <code>componentSearchDepth</code> do 
+      binder para que os componentes sejam localizados pela busca recursiva. 
+      Pode-se utilizar o valor exato em que os componentes se encontram na 
+      árvore de componentes ou utilizar <code>Integer.MAX_VALUE</code>, que 
+      permite a busca em profundidade sem limitações.</p>
+      <p>A seguir, temos a view em Swing:</p>
+<source>
+public class ExemploRadioButtonSwingView extends javax.swing.JFrame {
+   private ButtonGroup sexo;
+   private JRadioButton masculino;
+   private JRadioButton feminino;
+
+   public ExemploRadioButtonSwingView() {
+      initComponents();
+
+      final ExemploRadioButtonForm form = new ExemploRadioButtonForm();
+
+      SwingBinder binder = new SwingBinder(this, form);
+      binder.registerButtonGroup("sexo", sexo);
+      binder.bind();
+   }
+   
+   private void initComponents() {
+      getContentPane().setLayout(new GridBagLayout());
+
+      JPanel painelSexo = new JPanel();
+      painelSexo.setLayout(new GridLayout(0, 1));
+      painelSexo.setBorder(BorderFactory.createTitledBorder("Sexo"));
+
+      sexo = new ButtonGroup();
+
+      masculino = new JRadioButton();
+      masculino.setText("Masculino");
+      masculino.setName("MASCULINO");
+      painelSexo.add(masculino);
+      sexo.add(masculino);
+      
+      feminino = new JRadioButton();
+      feminino.setText("Feminino");
+      feminino.setName("FEMININO");
+      painelSexo.add(feminino);
+      sexo.add(feminino);
+      
+      GridBagConstraints gridBagConstraints = new GridBagConstraints();
+      gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+      getContentPane().add(painelSexo, gridBagConstraints);
+
+      JButton exibir = new JButton();
+      exibir.setText("Exibir");
+      exibir.setName("exibirSelecao");
+
+      gridBagConstraints = new GridBagConstraints();
+      gridBagConstraints.insets = new Insets(5, 0, 0, 0);
+      getContentPane().add(exibir, gridBagConstraints);
+
+      setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      pack();
+   }
+}
+</source>
+      <p>No código de criação da view, cada <code>JRadioButton</code> é 
+      associado ao <code>ButtonGroup</code> referenciado pela variável 
+      <code>sexo</code>. O <code>name</code> de cada <code>JRadioButton</code> é
+      definido de modo a ser igual ao nome da constante da enum que este 
+      representa. Por fim, o <code>ButtonGroup</code> precisa ser associado à
+      propriedade do form que representa e isso é feito usando-se o método 
+      <code>registerButtonGroup(String, ButtonGroup)</code> do 
+      <code>SwingBinder</code>.</p>
+      <!--p>A mesma tela em SWT:</p-->
+    </section>
+  </body>
+</document>
+ 
