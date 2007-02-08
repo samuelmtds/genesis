@@ -59,6 +59,8 @@
                 href="/en/conditions.html" />
           <item name="Populating comboboxes, lists and tables"
                 href="/en/populating_with_dataproviders.html" />
+          <item name="Binding radiobuttons and checkboxes"
+                href="/en/binding_toggle_buttons.html" />
           <item name="Formatting data" 
                 href="/en/formatting.html" />
           <item name="Handling errors" 

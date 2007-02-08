@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Binding radiobuttons and checkboxes</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Binding radiobuttons and checkboxes">
+      <p>Binding radiobuttons, checkboxes and similar components (such as 
+      togglebuttons) differs a little bit from the standard binding process.</p>
+      <p>No matter what graphic API is being used, these components usually work
+      as a <b>group</b>. For Thinlet, the property named <code>group</code> is 
+      used, for Swing there is the <code>ButtonGroup</code> class and for SWT 
+      all related components must be added to a <code>Composite</code> that will
+      work as a group. The main conceptual change is that the <b>group</b> is 
+      bound as a whole, instead of binding each component independently.</p>
+      <p>When it comes to Thinlet, since groups are already naturally identified 
+      by a name - the value assigned to the <code>group</code> property -, then
+      nothing else is needed for genesis to locate them. However, for both Swing
+      and SWT, the concept of a group differs from the standard way other 
+      components work, making it necessary to explicitly identify a group.</p>
+      <p>For Swing, to register a <code>ButtonGroup</code> the 
+      <code>registerButtonGroup(String, ButtonGroup)</code> method of the
+      <code>SwingBinder</code> class can be used. For SWT, a similar method 
+      called <code>registerButtonGroup(String, Composite)</code> that is part of 
+      <code>SWTBinder</code> exists. For both binders, the String property is 
+      the name of the form property that will hold the selection. For SWT, there
+      is also a method called <code>registerButtonGroup(Composite)</code> that
+      assumes the group name is equal to the name of the <code>Composite</code> 
+      informed as a parameter.</p>
+      <p>To define which value should be assigned to the form propery when an 
+      item is selected, the <code>name</code> should be used (for SWT, the 
+      <code>data</code> property should be used).</p>
+      <p>To make it easier to understand how this process works and to show what
+      particular steps are needed specifically for each API, let's analyze a 
+      practical example. Let's suppose there is an enum named 
+      <code>Gender</code>, as shown below:</p>
+<source>
+public enum Gender {
+   MALE, FEMALE;
+}
+</source>
+      <p>Here is the form that captures the gender selection and prints its 
+      value in the standard output when an action is invoked:</p>
+<source>
+@Form
+public class RadioButtonSampleForm {
+   private Gender gender = Gender.MALE;
+
+   public Gender getGender() {
+      return gender;
+   }
+
+   public void setGender(Gender gender) {
+      this.gender = gender;
+   }
+
+   @Action
+   public void showSelection() {
+      System.out.println(gender);
+   }
+}
+</source>
+      <p>First, let's examine what is needed to build a bound view using 
+      Thinlet. The xml file and the view are shown below:</p>
+<source>
+<![CDATA[
+<panel bottom="5" columns="1" gap="5" left="5" right="5" top="5" weightx="1" weighty="1">
+   <panel border="true" bottom="5" columns="1" left="5" right="5" text=" Gender " top="5">
+      <checkbox group="gender" name="MALE" text="Male"/>
+      <checkbox group="gender" name="FEMALE" text="Female"/>
+   </panel>
+   <button name="showSelection" text="Show"/>
+</panel>
+]]>
+</source>
+<source>
+public class RadioButtonSampleThinletView extends BaseThinlet {
+   public RadioButtonSampleThinletView() throws Exception {
+      add(parse("radio_button_sample.xml"));
+
+      ThinletBinder binder = prepareBinder(new RadioButtonSampleForm());
+      binder.setComponentSearchDepth(Integer.MAX_VALUE);
+      binder.bind();
+   }
+}
+</source>
+      <p>Each <code>checkbox / radiobutton</code> that can change the value of 
+      the form property named <code>gender</code> is identified by the value of
+      its <code>group</code> property. The value that should be assigned to the
+      property is defined by the <code>name</code> property.</p>
+      <p>The only special step when these components are used with Thnlet is 
+      that the binder <code>componentSearchDepth</code> property must be set in 
+      order to allow these components to be located by the binder. Either the
+      exact depth value might be used or the <code>Integer.MAX_VALUE</code>
+      constant, which allows lookups with no depth limitation.</p>
+      <p>Now let's examine the Swing view:</p>
+<source>
+public class RadioButtonSampleSwingView extends javax.swing.JFrame {
+   private ButtonGroup gender;
+   private JRadioButton male;
+   private JRadioButton female;
+
+   public RadioButtonSampleThinletView() {
+      initComponents();
+
+      final RadioButtonSampleForm form = new RadioButtonSampleForm();
+
+      SwingBinder binder = new SwingBinder(this, form);
+      binder.registerButtonGroup("gender", gender);
+      binder.bind();
+   }
+   
+   private void initComponents() {
+      getContentPane().setLayout(new GridBagLayout());
+
+      JPanel genderPanel = new JPanel();
+      genderPanel.setLayout(new GridLayout(0, 1));
+      genderPanel.setBorder(BorderFactory.createTitledBorder("Gende"));
+
+      gender = new ButtonGroup();
+
+      male = new JRadioButton();
+      male.setText("Male");
+      male.setName("MALE");
+      genderPanel.add(male);
+      gender.add(male);
+      
+      female = new JRadioButton();
+      female.setText("Female");
+      female.setName("FEMALE");
+      genderPanel.add(female);
+      gender.add(female);
+      
+      GridBagConstraints gridBagConstraints = new GridBagConstraints();
+      gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+      getContentPane().add(genderPanel, gridBagConstraints);
+
+      JButton show = new JButton();
+      show.setText("Show");
+      show.setName("showSelection");
+
+      gridBagConstraints = new GridBagConstraints();
+      gridBagConstraints.insets = new Insets(5, 0, 0, 0);
+      getContentPane().add(show, gridBagConstraints);
+
+      setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      pack();
+   }
+}
+</source>
+      <p>In the code above, each <code>JRadioButton</code> is associated with 
+      the <code>ButtonGroup</code> referred by the <code>gender</code> variable. 
+      The value of the <code>name</code> property of each 
+      <code>JRadioButton</code> is equal to the enum constant the component 
+      represents. Finally, the <code>ButtonGroup</code> instance must be 
+      associated with the form property it represents; this is done by calling
+      the <code>SwingBinder</code>'s 
+      <code>registerButtonGroup(String, ButtonGroup)</code> method.</p>
+      <!--p>A mesma tela em SWT:</p-->
+    </section>
+  </body>
+</document>
+ 
