@@ -655,7 +655,8 @@
 
    <target name="-do-weaving-copy-local-files">
       <genesis:weaving-copy targetdir="${preweaving.local.dir}" 
-                                  xml="${weaving.local.xml}" />
+                                  xml="${weaving.local.xml}"
+                                 jndi="${genesis.command.executor.local.jndi}" />
    </target>
 
    <target name="weaving:copy-local-files" 
@@ -676,7 +677,8 @@
 
    <target name="-do-weaving-copy-remote-files">
       <genesis:weaving-copy targetdir="${preweaving.remote.dir}" 
-                            xml="${weaving.remote.xml}" />
+                            xml="${weaving.remote.xml}" 
+                           jndi="${genesis.command.executor.jndi}" />
    </target>
 
    <target name="weaving:copy-remote-files" depends="weaving:check-conditions" 
@@ -1300,6 +1302,8 @@
       <property name="webstart.jnlp.tooltip"
                 value="${webstart.jnlp.description}" />
       <property name="webstart.jnlp.icon" value="icon.gif" />
+      <property name="webstart.jnlp.offline-allowed" value="false" />
+      <property name="webstart.local.jnlp.offline-allowed" value="true" />
 
       <property name="webstart.jnlp.j2se.version" value="1.4+" />
       <property name="webstart.jnlp.j2se.initial.heap.size" value="32M" />
@@ -1454,6 +1458,7 @@
       <macrodef name="webstart-jnlp-macro"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="tofile" />
+         <attribute name="offline-allowed" />
          <element name="customize-fileset" optional="true" />
          <element name="default-excludes" optional="true" />
          <element name="customize-native-fileset" optional="true" />
@@ -1470,7 +1475,7 @@
                      classname="net.java.dev.genesis.anttasks.jnlp.JNLPTask"
                      classpathref="anttasks.path" />
             <jnlp codebase="${webstart.jnlp.codebase}" tofile="@{tofile}">
-               <information>
+               <information offlineAllowed="@{offline-allowed}">
                   <title>${webstart.jnlp.title}</title>
                   <vendor>${webstart.jnlp.vendor}</vendor>
                   <description>${webstart.jnlp.description}</description>
@@ -1522,7 +1527,8 @@
       </presetdef>
       <presetdef name="webstart-jnlp-local"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <genesis:webstart-jnlp tofile="${webstart.local.jnlp.location}">
+         <genesis:webstart-jnlp tofile="${webstart.local.jnlp.location}"
+                                offline-allowed="${webstart.local.jnlp.offline-allowed}">
             <customize-resources>
                <jar download="eager" main="true">
                   <fileset dir="${webstart.jars.dir}" 
@@ -1537,7 +1543,8 @@
       </presetdef>
       <presetdef name="webstart-jnlp-remote"
                  uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-         <genesis:webstart-jnlp tofile="${webstart.remote.jnlp.location}">
+         <genesis:webstart-jnlp tofile="${webstart.remote.jnlp.location}"
+                                offline-allowed="${webstart.jnlp.offline-allowed}">
             <customize-resources>
                <jar download="eager" main="true">
                   <fileset dir="${webstart.jars.dir}" 

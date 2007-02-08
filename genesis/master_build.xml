@@ -34,6 +34,7 @@
       <condition property="java.source.level" value="1.5">
          <isset property="supports.java.annotation" />
       </condition>
+      <property name="java.target.level" value="${java.source.level}" />
    </target>
 
    <target name="-do-additional-init" />
@@ -269,6 +270,10 @@
 
       <property name="genesis.transactional.injector" 
                 value="net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector" />
+      <property name="genesis.command.executor.jndi" 
+                value="ejb/CommandExecutor" />
+      <property name="genesis.command.executor.local.jndi" 
+                value="local/ejb/CommandExecutor" />
 
       <property name="hibernate.generate.files" value="true" />
       <property name="hibernate.session.factory.jndi.name" 
@@ -394,6 +399,7 @@
       <javac destdir="${shared.classes.dir}"
             debug="${keep.debug.information}"
             source="${java.source.level}"
+            target="${java.target.level}"
             classpathref="shared.javac.classpath">
          <src path="${shared.sources.dir}" />
       </javac>
@@ -673,6 +679,7 @@
       <javac destdir="${client.classes.dir}"
             debug="${keep.debug.information}"
             source="${java.source.level}"
+            target="${java.target.level}"
             classpathref="client.javac.classpath">
          <src path="${client.sources.dir}" />
       </javac>
@@ -738,6 +745,7 @@
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <attribute name="targetdir" />
          <attribute name="xml" />
+         <attribute name="jndi" default="${genesis.command.executor.jndi}" />
          <element name="default-copy-fileset" optional="true" />
          <element name="copy-fileset" optional="true" />
          <element name="default-unjar-fileset" optional="true" />
@@ -754,7 +762,11 @@
                <unjar-fileset />
             </unjar>
             <copy file="@{xml}" 
-                  tofile="@{targetdir}/META-INF/aop.xml" />
+                  tofile="@{targetdir}/META-INF/aop.xml">
+               <filterset begintoken="$${" endtoken="}">
+                  <filter token="command.executor.jndi" value="@{jndi}" />
+               </filterset>
+            </copy>
          </sequential>
       </macrodef>
 
@@ -996,11 +1008,13 @@
             <genesisear destfile="${server.artifact.location}"
                         displayname="${genesisBasedApplication.prettyName}"
                         hibernatefactoryjndi="${hibernate.session.factory.jndi.name}"
-                        transactionalinjector="${genesis.transactional.injector}">
+                        transactionalinjector="${genesis.transactional.injector}"
+                        commandexecutorjndi="${genesis.command.executor.jndi}"
+                        commandexecutorlocaljndi="${genesis.command.executor.local.jndi}">
                <ejb dir="${genesis.dist}">
                   <include name="genesis-server-${genesis.version}.jar"/>
                </ejb>
-               <service file="${server.service.artifact.location}" />
+               <jbossservice file="${server.service.artifact.location}" />
                <lib dir="${hibernate.dist}">
                   <include name="commons-logging*.jar" />
                   <include name="log4j*.jar" />

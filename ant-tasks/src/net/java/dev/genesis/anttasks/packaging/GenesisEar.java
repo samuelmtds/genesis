@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,9 +50,6 @@ import org.apache.tools.zip.ZipOutputStream;
 /**
  * Creates a EAR archive. Based on WAR task
  *
- *
- * @since Ant 1.4
- *
  * @ant.task category="packaging"
  */
 public class GenesisEar extends Jar {
@@ -67,9 +64,13 @@ public class GenesisEar extends Jar {
       " \"http://www.jboss.org/j2ee/dtd/jboss-app_3_2.dtd\">";
    private static final String JBOSS_APP_XML_NAME = "META-INF/jboss-app.xml";
    private static final String EJB_JAR_XML_NAME = "META-INF/ejb-jar.xml";
+   private static final String JBOSS_XML_NAME = "META-INF/jboss.xml";
 
    private static final String HIBERNATE_FACTORY_JNDI = "jboss:/hibernate/SessionFactory";
    private static final String TRANSACTIONAL_INJECTOR = "net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector";
+
+   private static final String COMMAND_EXECUTOR_JNDI_NAME = "ejb/CommandExecutor";
+   private static final String COMMAND_EXECUTOR_LOCAL_JNDI_NAME = "local/ejb/CommandExecutor";
 
    private Manifest manifest;
    private String displayName;
@@ -77,6 +78,8 @@ public class GenesisEar extends Jar {
    private String largeIcon;
    private String hibernatefactoryjndi;
    private String transactionalinjector;
+   private String commandexecutorjndi;
+   private String commandexecutorlocaljndi;
    private List modules = new ArrayList();
    private List roles = new ArrayList();
    private List libs = new ArrayList();
@@ -96,6 +99,14 @@ public class GenesisEar extends Jar {
 
    public void setTransactionalinjector(String injector) {
       this.transactionalinjector = injector;
+   }
+
+   public void setCommandexecutorjndi(String commandexecutorjndi) {
+      this.commandexecutorjndi = commandexecutorjndi;
+   }
+
+   public void setCommandexecutorlocaljndi(String commandexecutorlocaljndi) {
+      this.commandexecutorlocaljndi = commandexecutorlocaljndi;
    }
 
    /**
@@ -150,8 +161,8 @@ public class GenesisEar extends Jar {
    /**
     * add services files
     */
-   public void addService(Module fs) {
-      fs.getType().setValue("service");
+   public void addJbossservice(Module fs) {
+      fs.getType().setValue("jbossservice");
       services.add(fs);
       super.addFileset(fs);
    }
@@ -250,9 +261,10 @@ public class GenesisEar extends Jar {
 
    protected File getJarWithMergedManifest(final File file) throws IOException {
       final ZipFile zip = new ZipFile(file);
-      final ZipEntry entry = zip.getEntry("META-INF/ejb-jar.xml");
+      final ZipEntry ejbJarEntry = zip.getEntry(EJB_JAR_XML_NAME);
+      final ZipEntry jbossEntry = zip.getEntry(JBOSS_XML_NAME);
 
-      if (entry == null) {
+      if (ejbJarEntry == null && jbossEntry == null) {
          return file;
       }
 
@@ -275,25 +287,41 @@ public class GenesisEar extends Jar {
                   return;
                }
 
-               StringBuffer sb = updateEjbJarXmlEntries(zip, entry);
+               StringBuffer sb = updateEjbJarXmlEntries(zip, ejbJarEntry);
                
-               if (sb == null) {
-                  return;
+               if (sb != null) {
+                  zipDir(null, zOut, "META-INF/", ZipFileSet.DEFAULT_DIR_MODE);
+
+                  ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
+                  OutputStreamWriter out = new OutputStreamWriter(bufOut, "ISO-8859-1");
+                  PrintWriter writer = new PrintWriter(out);
+                  writer.println(sb.toString());
+                  writer.flush();
+
+                  ByteArrayInputStream bufIn = new ByteArrayInputStream(bufOut
+                        .toByteArray());
+
+                  super.zipFile(bufIn, zOut, EJB_JAR_XML_NAME, System
+                        .currentTimeMillis(), null, ZipFileSet.DEFAULT_FILE_MODE);
                }
 
-               zipDir(null, zOut, "META-INF/", ZipFileSet.DEFAULT_DIR_MODE);
+               sb = updateJbossXmlEntries(zip, jbossEntry);
 
-               ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
-               OutputStreamWriter out = new OutputStreamWriter(bufOut, "ISO-8859-1");
-               PrintWriter writer = new PrintWriter(out);
-               writer.println(sb.toString());
-               writer.flush();
+               if (sb != null) {
+                  zipDir(null, zOut, "META-INF/", ZipFileSet.DEFAULT_DIR_MODE);
 
-               ByteArrayInputStream bufIn = new ByteArrayInputStream(bufOut
-                     .toByteArray());
+                  ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
+                  OutputStreamWriter out = new OutputStreamWriter(bufOut, "ISO-8859-1");
+                  PrintWriter writer = new PrintWriter(out);
+                  writer.println(sb.toString());
+                  writer.flush();
 
-               super.zipFile(bufIn, zOut, EJB_JAR_XML_NAME, System
-                     .currentTimeMillis(), null, ZipFileSet.DEFAULT_FILE_MODE);
+                  ByteArrayInputStream bufIn = new ByteArrayInputStream(bufOut
+                        .toByteArray());
+
+                  super.zipFile(bufIn, zOut, JBOSS_XML_NAME, System
+                        .currentTimeMillis(), null, ZipFileSet.DEFAULT_FILE_MODE);
+               }
             }
          };
          jar.setTaskName(getTaskName());
@@ -361,6 +389,30 @@ public class GenesisEar extends Jar {
       return sb;
    }
 
+   protected StringBuffer updateJbossXmlEntries(ZipFile zip, ZipEntry entry) throws IOException {
+      if (entry == null) {
+         return null;
+      }
+
+      boolean updateJndi = !COMMAND_EXECUTOR_JNDI_NAME.equals(commandexecutorjndi);
+      boolean updateLocalJndi = !COMMAND_EXECUTOR_LOCAL_JNDI_NAME.equals(commandexecutorlocaljndi);
+      if (!updateJndi && !updateLocalJndi) {
+         return null;
+      }
+
+      StringBuffer sb = getInputStreamAsStringBuffer(zip.getInputStream(entry));
+      
+      if (updateJndi) {
+         updateCommandExecutorJndiName(sb);
+      }
+      
+      if (updateLocalJndi) {
+         updateCommandExecutorLocalJndiName(sb);
+      }
+      
+      return sb;
+   }
+
    protected StringBuffer getInputStreamAsStringBuffer(InputStream in) throws IOException {
       char[] buffer = new char[1024];
       int length = 0;
@@ -406,6 +458,30 @@ public class GenesisEar extends Jar {
       }
 
       sb.replace(indexOf, indexOf + TRANSACTIONAL_INJECTOR.length(), transactionalinjector);
+
+      return sb;
+   }
+
+   protected StringBuffer updateCommandExecutorJndiName(StringBuffer sb) {
+      int indexOf = sb.indexOf(COMMAND_EXECUTOR_JNDI_NAME);
+
+      if (indexOf < 0) {
+         return sb;
+      }
+
+      sb.replace(indexOf, indexOf + COMMAND_EXECUTOR_JNDI_NAME.length(), commandexecutorjndi);
+
+      return sb;
+   }
+
+   protected StringBuffer updateCommandExecutorLocalJndiName(StringBuffer sb) {
+      int indexOf = sb.indexOf(COMMAND_EXECUTOR_LOCAL_JNDI_NAME);
+
+      if (indexOf < 0) {
+         return sb;
+      }
+
+      sb.replace(indexOf, indexOf + COMMAND_EXECUTOR_LOCAL_JNDI_NAME.length(), commandexecutorlocaljndi);
 
       return sb;
    }
@@ -608,7 +684,7 @@ public class GenesisEar extends Jar {
          if (type.getValue().equals("web")) {
             mkSimpleTag(buf, "web-uri", file.getName());
             mkSimpleTag(buf, "context-root", mkContext(file, getContext()));
-         } else if (type.getValue().equals("service")) {
+         } else if (type.getValue().equals("jbossservice")) {
             buf.append(file.getName());
          } else {
             buf.append(file.getName());
@@ -655,7 +731,7 @@ public class GenesisEar extends Jar {
     */
    public static class Types extends EnumeratedAttribute {
       public String[] getValues() {
-         return new String[] { "java", "ejb", "web", "connector", "service" };
+         return new String[] { "java", "ejb", "web", "connector", "jbossservice" };
       }
    }
 

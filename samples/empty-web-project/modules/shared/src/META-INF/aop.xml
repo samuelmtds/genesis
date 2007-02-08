@@ -26,7 +26,7 @@
          <param name="keepThreadInstance" value="true" />
       </aspect>
       <aspect class="LocalEJBCommandExecutionAspect">
-         <param name="jndiName" value="local/ejb/CommandExecutor"/>
+         <param name="jndiName" value="${command.executor.jndi}" />
       </aspect>
       <aspect class="CriteriaCommandExecutionAspect"/>
    </system>

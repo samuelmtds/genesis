@@ -186,7 +186,8 @@
 
    <target name="-do-weaving-copy-files">
       <genesis:weaving-copy targetdir="${preweaving.dir}" 
-                            xml="${weaving.xml}" />
+                            xml="${weaving.xml}"
+                           jndi="${genesis.command.executor.local.jndi}" />
    </target>
 
    <target name="-do-weaving" 
