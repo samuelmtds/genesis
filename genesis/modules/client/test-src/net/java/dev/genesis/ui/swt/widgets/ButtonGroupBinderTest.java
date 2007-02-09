@@ -30,6 +30,7 @@ import net.java.dev.genesis.ui.swt.widgets.ButtonGroupBinder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
@@ -207,6 +208,20 @@ public class ButtonGroupBinderTest extends GenesisTestCase {
    }
 
    private void simulateClick(Button button) {
+      Control[] controls = group.getChildren();
+
+      for (int i = 0; i < controls.length; i++) {
+         if (!(controls[i] instanceof Button)) {
+            continue;
+         }
+
+         Button b = (Button) controls[i];
+         if (b != button) {
+            b.setSelection(false);
+            continue;
+         }
+      }
+      
       button.setSelection(true);
       Event event = new Event();
       event.widget = button;

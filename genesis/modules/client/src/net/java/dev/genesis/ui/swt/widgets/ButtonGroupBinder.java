@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.ui.swt.widgets;
 
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.GroupBinder;
@@ -96,20 +97,6 @@ public class ButtonGroupBinder implements GroupBinder {
             public void widgetSelected(SelectionEvent event) {
                Button button = (Button) event.getSource();
 
-               Control[] controls = buttonGroup.getChildren();
-
-               for (int i = 0; i < controls.length; i++) {
-                  if (!isToggleStyle(controls[i])
-                        || !(controls[i] instanceof Button)) {
-                     continue;
-                  }
-
-                  Button otherButton = (Button) controls[i];
-                  if (button != otherButton) {
-                     otherButton.setSelection(false);
-                  }
-               }
-
                if (!button.getSelection()) {
                   return;
                }
@@ -174,6 +161,19 @@ public class ButtonGroupBinder implements GroupBinder {
       protected boolean equals(Object newValue, Object currentButtonValue) {
          if (newValue == null) {
             return currentButtonValue == null;
+         }
+
+         Class newClass = newValue.getClass();
+         Class currentClass = currentButtonValue.getClass();
+
+         if (newClass == String.class && currentClass != String.class) {
+            currentButtonValue = EnumHelper.getInstance().isEnum(currentButtonValue) ?
+                  EnumHelper.getInstance().getName(currentButtonValue) :
+                  format(currentButtonValue);
+         } else if (newClass != String.class && currentClass == String.class) {
+            newValue = EnumHelper.getInstance().isEnum(newValue) ?
+                  EnumHelper.getInstance().getName(newValue) :
+                  format(newValue);
          }
 
          return newValue.equals(currentButtonValue);
