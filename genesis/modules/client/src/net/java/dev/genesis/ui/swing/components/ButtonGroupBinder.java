@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
+import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.GroupBinder;
@@ -142,9 +143,13 @@ public class ButtonGroupBinder implements GroupBinder {
          Class currentClass = currentButtonValue.getClass();
 
          if (newClass == String.class && currentClass != String.class) {
-            currentButtonValue = format(currentButtonValue);
+            currentButtonValue = EnumHelper.getInstance().isEnum(currentButtonValue) ?
+                  EnumHelper.getInstance().getName(currentButtonValue) :
+                  format(currentButtonValue);
          } else if (newClass != String.class && currentClass == String.class) {
-            newValue = format(newValue);
+            newValue = EnumHelper.getInstance().isEnum(newValue) ?
+                  EnumHelper.getInstance().getName(newValue) :
+                  format(newValue);
          }
                
          return newValue.equals(currentButtonValue);
