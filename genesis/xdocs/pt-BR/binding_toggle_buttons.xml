@@ -161,8 +161,87 @@ public class ExemploRadioButtonSwingView extends javax.swing.JFrame {
       propriedade do form que representa e isso é feito usando-se o método 
       <code>registerButtonGroup(String, ButtonGroup)</code> do 
       <code>SwingBinder</code>.</p>
-      <!--p>A mesma tela em SWT:</p-->
-    </section>
+      <p>A mesma tela em SWT:</p>
+<source>
+public class ExemploRadioButtonSWTView {
+  private Shell shell;
+  private Group sexo;
+  private Button masculino;
+  private Button feminino;
+
+  public ExemploRadioButtonSWTView() {
+     initComponents();
+
+     final ExemploRadioButtonForm form = new ExemploRadioButtonForm();
+
+     SWTBinder binder = new SWTBinder(shell, form, this);
+     binder.registerButtonGroup("sexo", sexo);
+     binder.bind();
+  }
+
+  private void initComponents() {
+     createShell();
+  }
+
+  private void createShell() {
+     shell = new Shell(SWT.TITLE | SWT.CLOSE);
+     GridLayout shellGridLayout = new GridLayout();
+     shellGridLayout.numColumns = 1;
+
+     shell.setLayout(shellGridLayout);
+
+     sexo = new Group(shell, SWT.SHADOW_ETCHED_IN);
+     sexo.setText("Sexo");
+     sexo.setData("sexo");
+     sexo.setLayoutData(new GridData(GridData.FILL_BOTH));
+     sexo.setLayout(new GridLayout(1, true));
+
+     masculino = new Button(sexo, SWT.RADIO);
+     masculino.setText("Masculino");
+     masculino.setData("MASCULINO");
+
+     feminino = new Button(sexo, SWT.RADIO);
+     feminino.setText("Feminino");
+     feminino.setData("FEMININO");
+
+     Button exibir = new Button(shell, SWT.NONE);
+     exibir.setText("Exibir");
+     exibir.setData("exibirSelecao");
+     exibir.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, true, 
+           true));
+
+     shell.pack();
+  }
+
+  public void display() throws Exception {
+     final Display display = Display.getCurrent();
+     Rectangle bounds = display.getBounds();
+     shell.setLocation(bounds.x
+           + (bounds.width - shell.getBounds().width) / 2, bounds.y
+           + (bounds.height - shell.getBounds().height) / 2);
+
+     shell.open();
+     shell.forceActive();
+
+     while (!shell.isDisposed()) {
+        if (!display.readAndDispatch()) {
+           display.sleep();
+        }
+     }
+
+     display.dispose();
+  }
+}
+</source>
+      <p>Cada <code>Button</code> é criado como <code>SWT.RADIO</code> e 
+      incluído no <code>Composite</code> referenciado pela variável 
+      <code>sexo</code>. O <code>data</code> de cada <code>Button</code> é 
+      definido de modo a ser igual ao nome da constante da enum que este 
+      representa. Por fim, o <code>Composite</code> precisa ser associado à
+      propriedade do form que representa e isso é feito usando-se o método 
+      <code>registerButtonGroup(String, Composite)</code> do 
+      <code>SWTBinder</code>.</p>
+   </section>
   </body>
 </document>
  
