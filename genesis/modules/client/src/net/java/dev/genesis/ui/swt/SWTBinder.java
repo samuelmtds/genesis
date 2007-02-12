@@ -48,15 +48,6 @@ public class SWTBinder extends AbstractBinder {
       return new SWTExceptionHandler((Composite) getRoot());
    }
 
-   public Composite registerButtonGroup(Composite buttonGroup) {
-      if (buttonGroup.getData() == null) {
-         throw new IllegalArgumentException("Composite " + buttonGroup + " " +
-               "must have a name to be registered as a button group");
-      }
-
-      return registerButtonGroup((String) buttonGroup.getData(), buttonGroup);
-   }
-
    public Composite registerButtonGroup(String name, Composite buttonGroup) {
       return (Composite) registerGroup(name, buttonGroup);
    }
