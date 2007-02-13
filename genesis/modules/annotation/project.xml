@@ -1,7 +1,7 @@
 <project>
     <extend>../../project.xml</extend>
     <artifactId>genesis-annotation</artifactId>
-    <name>Genesis Annotation Technology</name>
+    <name>genesis annotation module</name>
     <repository>
       <connection>
          scm:cvs:pserver:${maven.guest.username}@cvs.dev.java.net:/cvs:genesis</connection>
@@ -15,14 +15,14 @@
         <sourceDirectory>src</sourceDirectory>
         <unitTest/>
         <resources>
-			<resource>
-    	    	<directory>${pom.build.sourceDirectory}</directory>
-        		<includes>
-		          <include>**/*.properties</include>
-        		</includes>
-			</resource>
-    	</resources>
-    </build>
+           <resource>
+              <directory>${pom.build.sourceDirectory}</directory>
+              <includes>
+                 <include>**/*.properties</include>
+              </includes>
+           </resource>
+        </resources>
+     </build>
     <reports>
     </reports>
     <properties/>

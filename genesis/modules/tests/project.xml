@@ -2,10 +2,10 @@
     <extend>../../project.xml</extend>
     <pomVersion>3</pomVersion>
     <artifactId>genesis-unit-tests</artifactId>
-    <name>Genesis Unit Tests</name>
+    <name>genesis unit tests</name>
     <package>tests</package>
     <dependencies>
-	    <dependency>
+	<dependency>
             <groupId>genesis</groupId>
             <artifactId>genesis-shared</artifactId>
             <version>${pom.currentVersion}</version>

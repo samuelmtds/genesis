@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>genesis shared module</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="genesis shared module">
+      <p>This section contains reports created by Maven about the genesis shared
+      module, including Javadoc. If you are looking for documentation about 
+      genesis features, please refer to the <a href="../../index.html">main 
+      page</a>.</p>
+    </section>
+  </body>
+</document>

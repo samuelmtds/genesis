@@ -1,7 +1,7 @@
 <project>
     <extend>../../project.xml</extend>
     <artifactId>genesis-container</artifactId>
-    <name>Genesis Container</name>
+    <name>genesis container module</name>
     <repository>
       <connection>
          scm:cvs:pserver:${maven.guest.username}@cvs.dev.java.net:/cvs:genesis</connection>
