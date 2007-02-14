@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,18 @@ public class BeanUtilsClonerTest extends GenesisTestCase {
       }
    }
 
+   public static class BadBean {
+      private String field = "Bad";
+
+      public String getField() {
+         return field;
+      }
+
+      public void setField(String field) {
+         throw new IllegalStateException(field);
+      }
+   }
+
    public BeanUtilsClonerTest() {
       super("BeanUtils Cloner Unit Test");
    }
@@ -49,5 +61,12 @@ public class BeanUtilsClonerTest extends GenesisTestCase {
       assertNotSame(bean, clone);
       assertSame(bean.getField(), clone.getField());
 
+      BadBean badBean = new BadBean();
+      
+      try {
+         cloner.clone(badBean);
+         fail("RuntimeException should have been thrown!");
+      } catch (RuntimeException re) {
+      }
    }
 }
