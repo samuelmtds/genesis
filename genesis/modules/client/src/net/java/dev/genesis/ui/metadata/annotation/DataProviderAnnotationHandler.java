@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -88,11 +88,19 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          PropertyDescriptor descriptor = (PropertyDescriptor) descriptorsPerPropertyName
                .get(objectFieldName);
 
-         if (descriptor == null) {
+         if (descriptor == null || descriptor.getReadMethod() == null ||
+               descriptor.getWriteMethod() == null) {
             StringBuffer errorMessage = new StringBuffer("@DataProvider " +
                   "objectField refers to '").append(objectFieldName).append(
-                  "', but such a public property does not exist; maybe " +
-                  "creating public <type> get");
+                  "', but ");
+
+            if (descriptor == null) {
+               errorMessage.append("such a public property does not exist");
+            } else {
+               errorMessage.append("it is not a read-write property");
+            }
+
+            errorMessage.append("; maybe creating public <type> get");
             
             StringBuffer propertyName = new StringBuffer().append(Character
                   .toUpperCase(objectFieldName.charAt(0)));
@@ -133,11 +141,19 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          PropertyDescriptor descriptor = (PropertyDescriptor) descriptorsPerPropertyName
                .get(indexFieldName);
 
-         if (descriptor == null) {
+         if (descriptor == null || descriptor.getReadMethod() == null ||
+               descriptor.getWriteMethod() == null) {
             StringBuffer errorMessage = new StringBuffer("@DataProvider " +
                   "indexField refers to '").append(indexFieldName).append(
-                  "', but such a public property does not exist; maybe " +
-                  "creating public <type> get");
+                  "', but ");
+
+            if (descriptor == null) {
+               errorMessage.append("such a public property does not exist");
+            } else {
+               errorMessage.append("it is not a read-write property");
+            }
+
+            errorMessage.append("; maybe creating public <type> get");
 
             StringBuffer propertyName = new StringBuffer().append(Character
                   .toUpperCase(indexFieldName.charAt(0)));
