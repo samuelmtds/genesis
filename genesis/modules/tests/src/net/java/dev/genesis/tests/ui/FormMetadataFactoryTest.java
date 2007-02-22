@@ -274,6 +274,26 @@ public class FormMetadataFactoryTest extends TestCase {
             new OverriddenForm()).getFieldMetadata("code"));
    }
 
+   public void testBrokenObjectField() {
+      try {
+         getFormMetadata(new BrokenObjectFieldForm());
+         fail("An IllegalArgumentException should be thrown when objectField " +
+               "is not a read-write property");
+      } catch (IllegalArgumentException iae) {
+         //Expected
+      }
+   }
+
+   public void testBrokenIndexField() {
+      try {
+         getFormMetadata(new BrokenIndexFieldForm());
+         fail("An IllegalArgumentException should be thrown when indexField " +
+               "is not a read-write property");
+      } catch (IllegalArgumentException iae) {
+         //Expected
+      }
+   }
+
    /**
     * @Form
     */
@@ -479,4 +499,36 @@ public class FormMetadataFactoryTest extends TestCase {
          return super.getCode();
       }
    }
+
+   /**
+    * @Form
+    */
+   public static class BrokenObjectFieldForm {
+      public Object getObjectField() {
+         return null;
+      }
+
+      /**
+       * @DataProvider objectField=objectField
+       */
+      public List aProvider() {
+         return null;
+      }
+   }
+
+   /**
+    * @Form
+    */
+   public static class BrokenIndexFieldForm {
+      public void setIndexField(Object o) {
+      }
+
+      /**
+       * @DataProvider indexField=indexField
+       */
+      public List aProvider() {
+         return null;
+      }
+   }
+  
 }
