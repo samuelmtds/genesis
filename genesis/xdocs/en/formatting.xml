@@ -107,6 +107,15 @@ binder.bind();
       <p>The value of <code>property</code> to be displayed on the screen
       will be the <code>Custom format</code> constant, no matter what its
       value on the form is.</p>
+      <p>It is also possible to reuse <code>java.text.Format</code> instances as
+      the basis of new formatters by using <code>FormatAdapter</code>. To 
+      display numbers in the format <code>1,234.00</code>, the formatter can be
+      generated in the following way:</p>
+<source>
+Formatter formatter = new FormatAdapter(new DecimalFormat("#,##0.00", true));
+</source>
+      <p>The second parameter indicates that <code>null</code> should be 
+      formatted as an empty<code>String</code>.</p>
       <subsection name="Virtual properties">
         <p>Since release 2.2, it is possible to work with virtual properties,
         i.e., properties that don't exist in the object being displayed. These

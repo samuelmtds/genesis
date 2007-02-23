@@ -109,6 +109,15 @@ binder.bind();
       <p>O valor de <code>propriedade</code> exibido na tela será sempre a
       constante <code>Formato alterado</code>, independentemente do seu
       valor no form.</p>
+      <p>Pode-se também reutilizar instâncias de <code>java.text.Format</code>
+      como base de seu formatador usando <code>FormatAdapter</code>. Para exibir 
+      números no formato <code>1.234,00</code>, poderia se gerar o formatador da
+      seguinte forma:</p>
+<source>
+Formatter formatter = new FormatAdapter(new DecimalFormat("#,##0.00", true));
+</source>
+      <p>O segundo parâmetro indica que valores <code>null</code> devem ser 
+      formatados como uma <code>String</code> vazia.</p>
       <subsection name="Propriedades virtuais">
         <p>Desde a versão 2.2, é possível se trabalhar com propriedades
         virtuais, ou seja, que não existem no objeto sendo exibido. Essas
