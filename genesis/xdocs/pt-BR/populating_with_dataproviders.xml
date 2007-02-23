@@ -299,7 +299,7 @@ private JList estadoList;
      estadoList.setName("estado");
      estadoList.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
      estadoList.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
-     estadoList.setRenderer(new KeyValueListCellRenderer(estadoList));
+     estadoList.setCellRenderer(new KeyValueListCellRenderer(estadoList));
   }
 ]]>
 </source>

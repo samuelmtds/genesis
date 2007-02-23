@@ -288,7 +288,7 @@ private JList stateList;
      stateList.setName("state");
      stateList.putClientProperty(SwingBinder.KEY_PROPERTY, "acronym");
      stateList.putClientProperty(SwingBinder.VALUE_PROPERTY, "description");
-     stateList.setRenderer(new KeyValueListCellRenderer(stateList));
+     stateList.setCellRenderer(new KeyValueListCellRenderer(stateList));
   }
 ]]>
 </source>
