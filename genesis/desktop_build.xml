@@ -64,34 +64,14 @@
       <macrodef name="hibernatedoclet-local"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <sequential>
-            <genesis:hibernatedoclet-macro>
-               <subtasks>
-                  <hibernatecfg dialect="${hibernate.dialect}"
-                                userName="${jdbc.username}"
-                                password="${jdbc.password}"
-                                driver="${jdbc.driver.class}"
-                                jdbcUrl="${jdbc.connection.url}"
-                                transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
-                                showSql="${hibernate.show.sql}" />
-               </subtasks>
-            </genesis:hibernatedoclet-macro>
+            <genesis:hibernatedoclet-macro />
          </sequential>
       </macrodef>
 
       <macrodef name="hibernatedoclet-both"
                 uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
          <sequential>
-            <genesis:hibernatedoclet-remote>
-               <customize>
-                  <hibernatecfg dialect="${hibernate.dialect}"
-                                userName="${jdbc.username}"
-                                password="${jdbc.password}"
-                                driver="${jdbc.driver.class}"
-                                jdbcUrl="${jdbc.connection.url}"
-                                transactionManagerStrategy="net.sf.hibernate.transaction.JDBCTransactionFactory"
-                                showSql="${hibernate.show.sql}" />
-               </customize>
-            </genesis:hibernatedoclet-remote>
+            <genesis:hibernatedoclet-remote />
          </sequential>
       </macrodef>
    </target>
@@ -179,6 +159,10 @@
          <include name="*.jar" />
       </genesis:optional-fileset>
 
+      <genesis:optional-fileset dir="${client.lib.ext.dir}" id="client.lib.ext.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
       <genesis:optional-fileset dir="${swt.specific.dir}" id="swt.lib.fileset">
          <include name="*.jar" unless="skip.swt" />
       </genesis:optional-fileset>
@@ -209,6 +193,7 @@
          <fileset refid="swt.lib.fileset" />
          <fileset refid="lib.fileset" />
          <fileset refid="client.lib.fileset" />
+         <fileset refid="client.lib.ext.fileset" />
       </path>
    </target>
 
@@ -767,8 +752,11 @@
          </fileset>
          <fileset refid="swt.lib.fileset" />
          <fileset refid="lib.fileset" />
+         <fileset refid="lib.ext.fileset" />
          <fileset refid="shared.lib.fileset" />
+         <fileset refid="shared.lib.ext.fileset" />
          <fileset refid="client.lib.fileset" />
+         <fileset refid="client.lib.ext.fileset" />
       </path>
 
       <path id="run.standard.local.classpath">
@@ -783,16 +771,18 @@
 
       <path id="run.standard.remote.classpath">
          <fileset file="${jar.remote.location}" />
+         <fileset dir="${j2ee.dist}">
+            <include name="j2ee.jar" />
+         </fileset>
          <fileset dir="${jboss.client}">
-            <include name="concurrent.jar" />
-            <include name="jboss-client.jar" />
-            <include name="jboss-common-client.jar" />
-            <include name="jboss-j2ee.jar" />
-            <include name="jboss-remoting.jar" />
-            <include name="jboss-serialization.jar" />
-            <include name="jboss-transaction-client.jar" />
-            <include name="jbosssx-client.jar" />
-            <include name="jnp-client.jar" />
+            <include name="concurrent.jar" if="jboss.client.needed" />
+            <include name="jboss-client.jar" if="jboss.client.needed" />
+            <include name="jboss-common-client.jar" if="jboss.client.needed" />
+            <include name="jboss-remoting.jar" if="jboss.client.needed" />
+            <include name="jboss-serialization.jar" if="jboss.client.needed" />
+            <include name="jboss-transaction-client.jar" if="jboss.client.needed" />
+            <include name="jbosssx-client.jar" if="jboss.client.needed" />
+            <include name="jnp-client.jar" if="jboss.client.needed" />
          </fileset>
       </path>
    </target>
@@ -1099,6 +1089,12 @@
                         dir="${shared.hibernate.dir}">
          <patternset refid="classes.patternset" />
          <exclude name="jboss-service.xml" />
+         <exclude name="${hibernate.remote.cfg.file}" />
+      </genesis:optional-fileset>
+      <genesis:optional-fileset id="jar.server.shared.hibernate.dir" 
+                         dir="${shared.hibernate.dir}">
+         <patternset refid="classes.patternset" />
+         <exclude name="${hibernate.local.cfg.file}" />
       </genesis:optional-fileset>
       <genesis:optional-fileset id="jar.client.shared.sources.dir" 
                         dir="${shared.sources.dir}">
@@ -1205,7 +1201,7 @@
 
    <target name="-do-jar-remote">
       <genesis:jar-client destfile="${jar.remote.location}" 
-                         classesdir="${weaving.remote.dir}" />
+                          classesdir="${weaving.remote.dir}" />
    </target>
 
    <target name="jar:remote" depends="define-call-task,jar:check-conditions,jar:macrodefs" 
@@ -1217,7 +1213,11 @@
            if="jar.shared.needed">
       <genesis:jar destfile="${jar.shared.location}" 
                    classesdir="${shared.classes.dir}"
-                   sourcesdir="${shared.sources.dir}" />
+                   sourcesdir="${shared.sources.dir}">
+		   <additional-filesets>
+		      <fileset refid="jar.server.shared.hibernate.dir" />
+		   </additional-filesets>
+      </genesis:jar>
    </target>
 
    <target name="jar" depends="jar:local,jar:remote,jar:shared,-do-custom-jar" />
@@ -1433,19 +1433,21 @@
                   <include name="jsp-api.jar" if="el.needed" />
                </fileset>
                <fileset file="${jdbc.driver}" />
+               <fileset dir="${j2ee.dist}">
+                  <include name="j2ee.jar" />
+               </fileset>
                <fileset dir="${jboss.client}">
                   <!-- Common files (JBoss 3.2.x and JBoxx 4.x) -->
-                  <include name="jboss-client.jar" />
-                  <include name="jboss-common-client.jar" />
-                  <include name="jboss-j2ee.jar" />
-                  <include name="jboss-transaction-client.jar" />
-                  <include name="jbosssx-client.jar" />
-                  <include name="jnp-client.jar" />
+                  <include name="jboss-client.jar" if="jboss.client.needed" />
+                  <include name="jboss-common-client.jar" if="jboss.client.needed" />
+                  <include name="jboss-transaction-client.jar" if="jboss.client.needed" />
+                  <include name="jbosssx-client.jar" if="jboss.client.needed" />
+                  <include name="jnp-client.jar" if="jboss.client.needed" />
 
                   <!-- JBoss 4.x specific files  -->
-                  <include name="concurrent.jar" />
-                  <include name="jboss-remoting.jar" />
-                  <include name="jboss-serialization.jar" />
+                  <include name="concurrent.jar" if="jboss.client.needed" />
+                  <include name="jboss-remoting.jar" if="jboss.client.needed" />
+                  <include name="jboss-serialization.jar" if="jboss.client.needed" />
                </fileset>
                <fileset refid="webstart.macrodefs.swt.fileset" />
                <fileset refid="lib.fileset" />

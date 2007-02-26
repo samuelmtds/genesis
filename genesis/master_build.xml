@@ -15,12 +15,20 @@
       <property name="classes.dir" value="${build.dir}/classes" />
       <property name="annotated.dir" value="${build.dir}/annotated" />
       <property name="lib.dir" value="lib" />
+      <property name="lib.ext.dir" value="${lib.dir}/ext" />
+
       <property name="timestamp.file" value=".timestamp" />
       <property name="verbose" value="true" />
       <property name="genjp" value="true" />
 
       <property name="local.mode" value="false" />
       <property name="remote.mode" value="true" />
+
+      <property name="include.jboss.client" value="true" />
+
+      <condition property="jboss.client.needed">
+         <istrue value="${include.jboss.client}" />
+      </condition>
 
       <property name="force.annotation" value="false" />
       <available property="supports.java.annotation" classname="java.lang.annotation.Annotation"  />
@@ -267,6 +275,7 @@
       <property name="shared.hibernate.merge.dir"
                 value="${shared.sources.dir}" />
       <property name="shared.lib.dir" value="${shared.dir}/${lib.dir}" />
+      <property name="shared.lib.ext.dir" value="${shared.dir}/${lib.ext.dir}" />
 
       <property name="genesis.transactional.injector" 
                 value="net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector" />
@@ -282,8 +291,23 @@
                 value="HibernateFactory,name=HibernateFactory" />
       <property name="hibernate.dialect" 
                 value="net.sf.hibernate.dialect.HSQLDialect"/>
+      <property name="hibernate.local.transaction.factory_class"
+                value="net.sf.hibernate.transaction.JDBCTransactionFactory" />
+      <property name="hibernate.remote.transaction.factory_class"
+                value="net.sf.hibernate.transaction.JTATransactionFactory" />
+      <property name="hibernate.transaction.manager_lookup_class"
+                value="net.sf.hibernate.transaction.JBossTransactionManagerLookup" />
+      <property name="hibernate.cfg.file" value="hibernate.cfg.xml" />
+      <property name="hibernate.local.cfg.file" value="${hibernate.cfg.file}" />
+      <property name="hibernate.remote.cfg.file" value="remote-${hibernate.cfg.file}" />
+
+      <property name="hibernate.user.transaction.name"
+                value="UserTransaction" />
       <property name="hibernate.show.sql" value="true" />
       <property name="hibernate.version" value="2.1.8" />
+      <property name="hibernate.major.version" value="2.0" />
+      <property name="hibernate.xmlencoding" value="ISO-8859-1" />
+      <property name="hibernate.validate.xml" value="false" />
 
       <property name="jdbc.driver.class" value="org.hsqldb.jdbcDriver" />
       <property name="jdbc.username" value="sa" />
@@ -293,13 +317,34 @@
 
       <property name="jboss.datasource.jndi.name" value="java:/DefaultDS" />
 
+      <condition property="generate.remote.hibernate.cfg.xml" value="true">
+         <and>
+            <istrue value="${remote.mode}" />
+            <equals arg1="${genesis.transactional.injector}"
+                    arg2="net.java.dev.genesis.ejb.hibernate.EJBHibernateCfgTransactionalInjector" />
+         </and>
+      </condition>
+      <property name="generate.remote.hibernate.cfg.xml" value="false" />
+
       <genesis:optional-fileset dir="${lib.dir}" id="lib.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
+      <genesis:optional-fileset dir="${lib.ext.dir}" id="lib.ext.fileset">
          <include name="*.jar" />
       </genesis:optional-fileset>
 
       <genesis:optional-fileset dir="${shared.lib.dir}" id="shared.lib.fileset">
          <include name="*.jar" />
       </genesis:optional-fileset>
+
+      <genesis:optional-fileset dir="${shared.lib.ext.dir}" id="shared.lib.ext.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
+      <condition property="shared.j2ee.needed">
+         <istrue value="${use.j2ee.shared.classpath}"/>
+      </condition>
 
       <path id="shared.standard.javac.classpath">
          <fileset dir="${genesis.dist}">
@@ -313,7 +358,12 @@
             <include name="reusable-components*.jar" />
          </fileset>
          <fileset refid="lib.fileset" />
+         <fileset refid="lib.ext.fileset" />
          <fileset refid="shared.lib.fileset" />
+         <fileset refid="shared.lib.ext.fileset" />
+         <fileset dir="${j2ee.dist}">
+            <include name="j2ee.jar" if="shared.j2ee.needed" />
+         </fileset>
       </path>
    </target>
 
@@ -503,10 +553,26 @@
                <fileset dir="${shared.sources.dir}">
                   <include name="**/*.java" />
                </fileset>
-               <hibernate version="2.0"
-                          xmlencoding="ISO-8859-1"
-                          validateXML="false" 
+               <hibernate version="${hibernate.major.version}"
+                          xmlencoding="${hibernate.xmlencoding}"
+                          validateXML="${hibernate.validate.xml}" 
                           mergedir="${shared.hibernate.merge.dir}" />
+               <genesishibernatecfg dialect="${hibernate.dialect}"
+                             localTransactionManagerFactory="${hibernate.local.transaction.factory_class}"
+                             remoteTransactionManagerFactory="${hibernate.remote.transaction.factory_class}"
+                             transactionManagerLookup="${hibernate.transaction.manager_lookup_class}"
+                             transactionManagerStrategy="${hibernate.remote.transaction.factory_class}"
+                             dataSource="${jboss.datasource.jndi.name}"
+                             userTransactionName="${hibernate.user.transaction.name}"
+                             showSql="${hibernate.show.sql}"
+                             userName="${jdbc.username}"
+                             password="${jdbc.password}"
+                             driver="${jdbc.driver.class}"
+                             jdbcUrl="${jdbc.connection.url}"
+                             localMode="${local.mode}"
+                             remoteMode="${generate.remote.hibernate.cfg.xml}"
+                             localDestinationFile="${hibernate.local.cfg.file}"
+                             remoteDestinationFile="${hibernate.remote.cfg.file}" />
                <subtasks />
             </hibernatedoclet>
             <touch file="${shared.hibernate.timestamp.file}" />
@@ -542,9 +608,9 @@
                                 serviceName="${hibernate.jboss.service.name}"
                                 dialect="${hibernate.dialect}"
                                 dataSource="${jboss.datasource.jndi.name}"
-                                transactionManagerStrategy="net.sf.hibernate.transaction.JBossTransactionManagerLookup"
-                                transactionStrategy="net.sf.hibernate.transaction.JTATransactionFactory"
-                                userTransactionName="UserTransaction"
+                                transactionManagerStrategy="${hibernate.transaction.manager_lookup_class}"
+                                transactionStrategy="${hibernate.remote.transaction.factory_class}"
+                                userTransactionName="${hibernate.user.transaction.name}"
                                 showSql="${hibernate.show.sql}"
                                 depends="jboss.jca:service=${jboss.jca.service.name},name=${jboss.ds.name}"
                                 version="${hibernate.version}" />
@@ -580,6 +646,7 @@
       <property name="client.sources.dir" value="${client.dir}/${sources.dir}" />
       <property name="client.classes.dir" value="${client.dir}/${classes.dir}" />
       <property name="client.lib.dir" value="${client.dir}/${lib.dir}" />
+      <property name="client.lib.ext.dir" value="${client.dir}/${lib.ext.dir}" />
    </target>
 
    <target name="client:additional-init" />

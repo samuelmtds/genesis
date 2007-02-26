@@ -19,6 +19,10 @@
          <include name="*.jar" />
       </genesis:optional-fileset>
 
+      <genesis:optional-fileset dir="${client.lib.ext.dir}" id="client.lib.ext.fileset">
+         <include name="*.jar" />
+      </genesis:optional-fileset>
+
       <path id="client.standard.javac.classpath">
          <path location="${shared.classes.dir}" />
          <path refid="j2ee.path" />
@@ -33,6 +37,7 @@
          </fileset>
          <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
          <fileset refid="client.lib.fileset" />
+         <fileset refid="client.lib.ext.fileset" />
       </path>
    </target>
 

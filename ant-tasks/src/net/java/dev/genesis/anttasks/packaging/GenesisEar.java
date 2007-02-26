@@ -65,6 +65,7 @@ public class GenesisEar extends Jar {
    private static final String JBOSS_APP_XML_NAME = "META-INF/jboss-app.xml";
    private static final String EJB_JAR_XML_NAME = "META-INF/ejb-jar.xml";
    private static final String JBOSS_XML_NAME = "META-INF/jboss.xml";
+   private static final String WAS_POLICY_NAME = "META-INF/was.policy";
 
    private static final String HIBERNATE_FACTORY_JNDI = "jboss:/hibernate/SessionFactory";
    private static final String TRANSACTIONAL_INJECTOR = "net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector";
@@ -162,7 +163,7 @@ public class GenesisEar extends Jar {
     * add services files
     */
    public void addJbossservice(Module fs) {
-      fs.getType().setValue("jbossservice");
+      fs.getType().setValue("service");
       services.add(fs);
       super.addFileset(fs);
    }
@@ -500,6 +501,7 @@ public class GenesisEar extends Jar {
       super.initZipOutputStream(zOut);
       writeAppXML(zOut, mkApplicationXML());
       writeJBossServiceXML(zOut, mkJBossAppXML());
+      writeWasPolicy(zOut, mkWasPolicy());
    }
 
    private void writeAppXML(ZipOutputStream zOut, String appXML)
@@ -538,6 +540,21 @@ public class GenesisEar extends Jar {
          System.currentTimeMillis(), null, ZipFileSet.DEFAULT_FILE_MODE);
    }
 
+   private void writeWasPolicy(ZipOutputStream zOut,
+         String wasPolicy) throws IOException {
+         zipDir(null, zOut, "META-INF/", ZipFileSet.DEFAULT_DIR_MODE);
+
+         ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
+         OutputStreamWriter out = new OutputStreamWriter(bufOut, "UTF-8");
+         PrintWriter writer = new PrintWriter(out);
+         writer.println(wasPolicy);
+         writer.flush();
+
+         ByteArrayInputStream bufIn = new ByteArrayInputStream(bufOut.toByteArray());
+
+         super.zipFile(bufIn, zOut, WAS_POLICY_NAME,
+            System.currentTimeMillis(), null, ZipFileSet.DEFAULT_FILE_MODE);
+      }
    // ----------------------------------------------------
    // SecurityRole subtag
    // ----------------------------------------------------
@@ -615,6 +632,10 @@ public class GenesisEar extends Jar {
       return buf.toString();
    }
 
+   protected String mkWasPolicy() {
+      return "grant codeBase \"file:${application}\" {\n  permission java.security.AllPermission;\n};\n";
+   }
+
    protected static void mkTagList(StringBuffer buf, List lst, String indent) {
       for (int i = 0; i < lst.size(); i++) {
          buf.append(indent).append(lst.get(i));
@@ -684,7 +705,7 @@ public class GenesisEar extends Jar {
          if (type.getValue().equals("web")) {
             mkSimpleTag(buf, "web-uri", file.getName());
             mkSimpleTag(buf, "context-root", mkContext(file, getContext()));
-         } else if (type.getValue().equals("jbossservice")) {
+         } else if (type.getValue().equals("service")) {
             buf.append(file.getName());
          } else {
             buf.append(file.getName());
@@ -731,7 +752,7 @@ public class GenesisEar extends Jar {
     */
    public static class Types extends EnumeratedAttribute {
       public String[] getValues() {
-         return new String[] { "java", "ejb", "web", "connector", "jbossservice" };
+         return new String[] { "java", "ejb", "web", "connector", "service" };
       }
    }
 
