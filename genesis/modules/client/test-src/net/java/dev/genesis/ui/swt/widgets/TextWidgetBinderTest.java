@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.swt.widgets;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
@@ -93,6 +94,20 @@ public class TextWidgetBinderTest extends GenesisTestCase {
       assertEquals("", binder.get("populateForm(FieldMetadata,Object)"));
    }
 
+   public void testUpdateValueAsYouType() throws Exception {
+      text.setData(AbstractBinder.BINDING_STRATEGY_PROPERTY, 
+            AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+      assertNull(widgetBinder.bind(binder, text, (DataProviderMetadata) null));
+      assertNotNull(widgetBinder.bind(binder, text, fieldMeta));
+
+      simulateTyping(text, "someValue");
+      assertEquals("someValue", binder.get("populateForm(FieldMetadata,Object)"));
+
+      simulateTyping(text, " ");
+      assertEquals("", binder.get("populateForm(FieldMetadata,Object)"));
+   }
+
+
    public void testUpdateValueWithoutTrim() throws Exception {
       binder.registerWidgetBinder("text", new TextWidgetBinder(false));
       widgetBinder = binder.getWidgetBinder(text);
@@ -121,5 +136,15 @@ public class TextWidgetBinderTest extends GenesisTestCase {
       event.button = 1;
       event.type = SWT.FocusOut;
       component.notifyListeners(event.type, event);
+   }
+   
+   protected void simulateTyping(Text component, String text) {
+      component.setText("");
+
+      final char[] chars = text.toCharArray();
+
+      for (int i = 0; i < chars.length; i++) {
+         component.insert(String.valueOf(chars[i]));
+      }
    }
 }

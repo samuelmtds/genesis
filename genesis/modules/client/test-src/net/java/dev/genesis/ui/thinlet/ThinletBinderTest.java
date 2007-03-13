@@ -376,6 +376,17 @@ public class ThinletBinderTest extends GenesisTestCase {
       
       // empty widgets list
       componentsMap.put("no_components", Collections.EMPTY_LIST);
+
+      // As you type fields
+      componentsMap.put("passwordfield_as_you_type", Collections.singletonList(
+            asYouType(ThinletUtils.newPasswordField())));
+      componentsMap.put("textarea_as_you_type", Collections.singletonList(
+            asYouType(ThinletUtils.newTextArea())));
+      componentsMap.put("textfield_as_you_type", Collections.singletonList(
+            asYouType(ThinletUtils.newTextField())));
+      
+      // An unsupported as you type field
+      componentsMap.put("label_as_you_type", Collections.singletonList(ThinletUtils.newLabel()));
       
       thinlet = new BaseThinlet() {
          public void setMethod(Object component, String key, String value, Object root, Object handler) {
@@ -414,6 +425,10 @@ public class ThinletBinderTest extends GenesisTestCase {
       formMetadata.addFieldMetadata("table", new FieldMetadata("table", Object.class, true));
       formMetadata.addFieldMetadata("checkbox_not_writeable", new FieldMetadata("checkbox_not_writeable", Object.class, false));
       formMetadata.addFieldMetadata("no_components", new FieldMetadata("no_components", Object.class, false));
+      formMetadata.addFieldMetadata("passwordfield_as_you_type", new FieldMetadata("passwordfield_as_you_type", Object.class, true));
+      formMetadata.addFieldMetadata("textarea_as_you_type", new FieldMetadata("textarea_as_you_type", Object.class, true));
+      formMetadata.addFieldMetadata("textfield_as_you_type", new FieldMetadata("textfield_as_you_type", Object.class, true));
+      formMetadata.addFieldMetadata("label_as_you_type", new FieldMetadata("label_as_you_type", Object.class, true));
 
       binder.bindFieldMetadatas(formMetadata);
 
@@ -429,6 +444,10 @@ public class ThinletBinderTest extends GenesisTestCase {
       assertEquals("slider", thinlet.getName(widgetGroup.get("slider")));
       assertEquals("textarea", thinlet.getName(widgetGroup.get("textarea")));
       assertEquals("textfield", thinlet.getName(widgetGroup.get("textfield")));
+      assertEquals("passwordfield", thinlet.getName(widgetGroup.get("passwordfield_as_you_type")));
+      assertEquals("textarea", thinlet.getName(widgetGroup.get("textarea_as_you_type")));
+      assertEquals("textfield", thinlet.getName(widgetGroup.get("textfield_as_you_type")));
+      assertEquals("label", thinlet.getName(widgetGroup.get("label_as_you_type")));
       
       // Unsupported widgets are not bound
       assertNull(widgetGroup.get("table"));
@@ -448,13 +467,26 @@ public class ThinletBinderTest extends GenesisTestCase {
       assertEquals(getText("action", "setValue(list,list.name)"), methods.get(widgetGroup.get("list")));
       assertEquals(getText("action", "setValue(spinbox,spinbox.name)"), methods.get(widgetGroup.get("spinbox")));
       
+      // Assert action methods for as you type widgets
+      assertEquals(getText("action", "setValue(passwordfield_as_you_type,passwordfield_as_you_type.name)"), methods.get(widgetGroup.get("passwordfield_as_you_type")));
+      assertEquals(getText("action", "setValue(textarea_as_you_type,textarea_as_you_type.name)"), methods.get(widgetGroup.get("textarea_as_you_type")));
+      assertEquals(getText("action", "setValue(textfield_as_you_type,textfield_as_you_type.name)"), methods.get(widgetGroup.get("textfield_as_you_type")));
+      
       // Assert focuslost methods
       assertEquals(getText("focuslost", "setValue(label,label.name)"), methods.get(widgetGroup.get("label")));
       assertEquals(getText("focuslost", "setValue(slider,slider.name)"), methods.get(widgetGroup.get("slider")));
       assertEquals(getText("focuslost", "setValue(textarea,textarea.name)"), methods.get(widgetGroup.get("textarea")));
       assertEquals(getText("focuslost", "setValue(textfield,textfield.name)"), methods.get(widgetGroup.get("textfield")));
+
+      // Assert focuslost methods for ignored as you type widgets
+      assertEquals(getText("focuslost", "setValue(label_as_you_type,label_as_you_type.name)"), methods.get(widgetGroup.get("label_as_you_type")));
    }
-   
+
+   private Object asYouType(Object component) {
+      ThinletUtils.putProperty(component, "bindingStrategy", "asYouType");
+      return component;
+   }
+
    private String getText(String key, String value) {
       return "key=" + key + ";value=" + value + ";root="
             + thinlet.getDesktop() + ";handler=" + binder;

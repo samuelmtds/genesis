@@ -18,6 +18,8 @@
  */
 package net.java.dev.genesis.ui.swt.widgets;
 
+import net.java.dev.genesis.ui.binding.AbstractBinder;
+import net.java.dev.genesis.ui.binding.BindingStrategy;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
@@ -25,6 +27,8 @@ import net.java.dev.genesis.ui.swt.SWTBinder;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
@@ -32,35 +36,109 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
    private final boolean trim;
 
    public TextWidgetBinder() {
-	   this(true);
+      this(true);
    }
-
+   
    public TextWidgetBinder(boolean trim) {
-	   this.trim = trim;
+      this.trim = trim;
    }
    
    protected boolean isTrim() {
-	   return trim;
+      return trim;
    }
 
    public BoundField bind(SWTBinder binder, Widget widget,
-      FieldMetadata fieldMetadata) {
+         FieldMetadata fieldMetadata) {
       return new TextWidgetBoundField(binder, (Text) widget,
          fieldMetadata);
    }
 
+   public static abstract class TextBindingStrategy 
+         implements BindingStrategy {
+      public void addListener(Object widget) {
+         addListener((Text)widget);
+      }
+
+      protected abstract void addListener(Text widget);
+
+      public void removeListener(Object widget) {
+         removeListener((Text)widget);
+      }
+
+      protected abstract void removeListener(Text widget);
+   }
+
    public class TextWidgetBoundField extends AbstractBoundMember
          implements BoundField {
+      public class FocusBindingStrategy extends TextBindingStrategy {
+         private FocusListener listener;
+
+         protected void addListener(Text widget) {
+            widget.addFocusListener(listener = createFocusListener());
+         }
+
+         protected FocusListener createFocusListener() {
+            return new FocusAdapter() {
+               public void focusLost(FocusEvent event) {
+                  getBinder().populateForm(getFieldMetadata(), getValue());
+               }
+            };
+         }
+
+         public void setValue(Object value) {
+            updateComponentValue(value);
+         }
+
+         protected void removeListener(Text component) {
+            if (listener != null) {
+               widget.removeFocusListener(listener);
+            }
+         }
+      }
+
+      public class ModifyBindingStrategy extends TextBindingStrategy {
+         private ModifyListener listener;
+
+         protected void addListener(Text widget) {
+            widget.addModifyListener(listener = createModifyListener());
+         }
+
+         protected ModifyListener createModifyListener() {
+            return new ModifyListener() {
+               public void modifyText(ModifyEvent modifyEvent) {
+                  getBinder().populateForm(getFieldMetadata(), getValue());
+               }
+            };
+         }
+
+         public void setValue(Object value) {
+            final String valueAsString = formatValue(value);
+
+            if (!fieldMetadata.getEqualityComparator().equals(
+                  valueAsString, getValue())) {
+               updateComponentValue(value);
+            }
+         }
+
+         protected void removeListener(Text component) {
+            if (listener != null) {
+               widget.removeModifyListener(listener);
+            }
+         }
+      }
+
       private final Text widget;
       private final FieldMetadata fieldMetadata;
-      private final FocusListener listener;
+      private final BindingStrategy strategy;
 
       public TextWidgetBoundField(SWTBinder binder,
-         Text widget, FieldMetadata fieldMetadata) {
+            Text widget, FieldMetadata fieldMetadata) {
          super(binder, widget);
          this.widget = widget;
          this.fieldMetadata = fieldMetadata;
-         this.widget.addFocusListener(listener = createFocusListener());
+         this.strategy = createBindingStrategy();
+
+         strategy.addListener(widget);
       }
 
       protected Text getWidget() {
@@ -71,30 +149,32 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
          return fieldMetadata;
       }
 
-      protected FocusListener getListener() {
-         return listener;
-      }
-
-      protected FocusListener createFocusListener() {
-         return new FocusAdapter() {
-            public void focusLost(FocusEvent event) {
-               getBinder().populateForm(getFieldMetadata(), getValue());
-            }
-         };
+      protected BindingStrategy createBindingStrategy() {
+         return AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE.equals(
+               widget.getData(
+               AbstractBinder.BINDING_STRATEGY_PROPERTY)) ? 
+               (BindingStrategy)new ModifyBindingStrategy() : 
+               new FocusBindingStrategy();
       }
 
       public String getValue() {
          return isTrim() ? widget.getText().trim() : widget.getText();
       }
 
+      public String formatValue(Object value) {
+         return getBinder().getFormatter(fieldMetadata).format(value);
+      }
+
+      public void updateComponentValue(Object value) {
+         widget.setText(formatValue(value));
+      }
+
       public void setValue(Object value) throws Exception {
-         widget.setText(getBinder().getFormatter(fieldMetadata).format(value));
+         strategy.setValue(value);
       }
 
       public void unbind() {
-         if (listener != null) {
-            widget.removeFocusListener(listener);
-         }
+         strategy.removeListener(widget);
       }
    }
 }

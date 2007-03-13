@@ -113,6 +113,12 @@ public abstract class AbstractBinder implements FormControllerListener {
    public static final String BUTTON_GROUP_SELECTION_VALUE = 
          "genesis:buttonGroupSelectionValue";
 
+   public static final String BINDING_STRATEGY_PROPERTY = 
+         "genesis:bindingStrategy";
+
+   public static final String BINDING_STRATEGY_AS_YOU_TYPE = 
+         "genesis:bindingStrategyAsYouType";
+
    private final Map boundFields = new HashMap();
    private final Map boundActions = new HashMap();
    private final Map boundDataProviders = new HashMap();

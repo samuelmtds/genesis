@@ -18,23 +18,33 @@
  */
 package net.java.dev.genesis.ui.swing.components;
 
+import java.awt.EventQueue;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
+import javax.swing.FocusManager;
 
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
+import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;
 
 public class JTextComponentBinderTest extends GenesisTestCase {
+   private class JTextField extends javax.swing.JTextField {
+      public void processKeyEvent(KeyEvent e) {
+         super.processKeyEvent(e);
+      }
+   }
+
    private JTextField text;
    private MockSwingBinder binder;
    private WidgetBinder componentBinder;
@@ -89,6 +99,20 @@ public class JTextComponentBinderTest extends GenesisTestCase {
       simulateFocusLost(text);
       assertEquals("", binder.get("populateForm(FieldMetadata,Object)"));
    }
+   
+   public void testUpdateValueAsYouType() throws Exception {
+      text.putClientProperty(AbstractBinder.BINDING_STRATEGY_PROPERTY, 
+            AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+      assertNull(componentBinder.bind(binder, text,
+            (DataProviderMetadata) null));
+      assertNotNull(componentBinder.bind(binder, text, fieldMeta));
+
+      simulateTyping(text, "someValue");
+      assertEquals("someValue", binder.get("populateForm(FieldMetadata,Object)"));
+
+      simulateTyping(text, " ");
+      assertEquals("", binder.get("populateForm(FieldMetadata,Object)"));
+   }
 
    public void testUpdateValueWithoutTrim() throws Exception {
       binder.registerWidgetBinder("text", new JTextComponentBinder(false));
@@ -120,6 +144,24 @@ public class JTextComponentBinderTest extends GenesisTestCase {
       FocusEvent event = new FocusEvent(component, FocusEvent.FOCUS_LOST);
       for (int i = 0; i < listeners.length; i++) {
          listeners[i].focusLost(event);
+      }
+   }
+
+   private void simulateTyping(final JTextField component, 
+         final String value) throws InterruptedException, InvocationTargetException {
+      component.setText("");
+      final char[] chars = value.toCharArray();
+
+      for (int i = 0; i < chars.length; i++) {
+         final char c = chars[i];
+
+         EventQueue.invokeAndWait(new Runnable() {
+            public void run() {
+               component.processKeyEvent(new KeyEvent(component, KeyEvent.KEY_TYPED, 
+                     EventQueue.getMostRecentEventTime(), 0, KeyEvent.VK_UNDEFINED, 
+                     c));
+            }
+         });
       }
    }
 }

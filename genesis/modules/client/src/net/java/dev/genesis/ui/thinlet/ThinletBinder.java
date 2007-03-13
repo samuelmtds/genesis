@@ -54,8 +54,6 @@ import thinlet.Thinlet;
 
 public class ThinletBinder implements FormControllerListener {
    private static final Log log = LogFactory.getLog(ThinletBinder.class);
-   /* these are not alphabetically ordered by accident or mere readability;
-     it's needed so that binary searching works with them */
    private static final String[] supportedFieldWidgets = new String[] {
          BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LABEL, 
          BaseThinlet.LIST, BaseThinlet.PASSWORD_FIELD, BaseThinlet.SLIDER, 
@@ -64,6 +62,16 @@ public class ThinletBinder implements FormControllerListener {
    private static final String[] fieldsChangedByAction = new String[] {
          BaseThinlet.CHECKBOX, BaseThinlet.COMBOBOX, BaseThinlet.LIST,
          BaseThinlet.SPINBOX, BaseThinlet.TOGGLE_BUTTON };
+   private static final String[] supportedAsYouTypeFieldWidgets = new String[] {
+         BaseThinlet.PASSWORD_FIELD, BaseThinlet.TEXTAREA, 
+         BaseThinlet.TEXTFIELD };
+   
+   static {
+      // So that binary searching works, even if someone messes up the order...
+      Arrays.sort(supportedFieldWidgets);
+      Arrays.sort(fieldsChangedByAction);
+      Arrays.sort(supportedAsYouTypeFieldWidgets);
+   }
 
    private final BaseThinlet thinlet;
    private final Object root;
@@ -210,7 +218,10 @@ public class ThinletBinder implements FormControllerListener {
                thinlet.getName(component) + 
                (thinlet.getGroup(component) == null ? ".name)" : ".group)"),
                root, this);
-      } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1) {
+      } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1 ||
+            (Arrays.binarySearch(supportedAsYouTypeFieldWidgets, className) > -1 &&
+            "asYouType".equals(thinlet.getProperty(component, 
+            "bindingStrategy")))) {
          thinlet.setMethod(component, "action", "setValue(" + name + "," +
                name + ".name)", root, this);
       } else {
