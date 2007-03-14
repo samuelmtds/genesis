@@ -98,11 +98,17 @@
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateBigDecimalRange" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
-                msg="errors.bigDecimalRange"/>	
+                msg="errors.bigDecimalRange"/>
+        <!-- jxpath validator is deprecated. Use script validator instead -->
         <validator name="jxpath" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateJXPath" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
-                msg="errors.jxpath"/>			
+                msg="errors.jxpath"/>
+        <validator name="script"
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateScript" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.script"/>
     </global>
 </form-validation>
