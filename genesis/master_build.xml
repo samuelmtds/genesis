@@ -357,7 +357,7 @@
             <include name="genesis-shared-${genesis.version}.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}">
-            <include name="hibernate2.jar" if="hibernate2.needed" />
+            <include name="hibernate2.jar" />
          </fileset>
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
