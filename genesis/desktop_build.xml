@@ -189,7 +189,9 @@
          <fileset dir="${thinlet.dist}">
             <include name="*.jar" unless="skip.thinlet" />
          </fileset>
-         <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
+         <fileset dir="${hibernate.dist}">
+            <include name="hibernate2.jar" if="hibernate2.needed" />
+         </fileset>
          <fileset refid="swt.lib.fileset" />
          <fileset refid="lib.fileset" />
          <fileset refid="client.lib.fileset" />
@@ -729,9 +731,9 @@
             <include name="trove-*.jar" />
          </fileset>
          <fileset dir="${hibernate.dist}">
-            <include name="hibernate2.jar" />
-            <include name="commons-collections-*.jar" />
-            <include name="odmg-*.jar" />
+            <include name="hibernate2.jar" if="hibernate2.needed" />
+            <include name="commons-collections-*.jar" if="hibernate2.needed" />
+            <include name="odmg-*.jar" if="hibernate2.needed" />
          </fileset>
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils-*.jar" />
@@ -763,9 +765,9 @@
          <fileset file="${jar.local.location}" />
          <fileset refid="jdbc.driver.file" />
          <fileset dir="${hibernate.dist}">
-            <include name="cglib-full-*.jar"/>
-            <include name="ehcache-*.jar"/>
-            <include name="jta*.jar"/>
+            <include name="cglib-full-*.jar" if="hibernate2.needed" />
+            <include name="ehcache-*.jar" if="hibernate2.needed" />
+            <include name="jta*.jar" if="hibernate2.needed" />
          </fileset>
       </path>
 
@@ -1048,9 +1050,9 @@
             <fileset refid="jdbc.driver.file" />
          </path>
          <fileset dir="${hibernate.dist}">
-            <include name="cglib-full-*.jar"/>
-            <include name="ehcache-*.jar"/>
-            <include name="jta*.jar"/>
+            <include name="cglib-full-*.jar" if="hibernate2.needed" />
+            <include name="ehcache-*.jar" if="hibernate2.needed" />
+            <include name="jta*.jar" if="hibernate2.needed" />
          </fileset>
          <path refid="j2ee.path"/>
          <path refid="run.classpath" />
@@ -1251,8 +1253,11 @@
       <genesis:sar />
    </target>
 
-   <target name="-do-new-server-artifact">
+   <target name="-do-sar4ear" if="shared.hibernate.tasks.needed">
       <genesis:sar4ear-macro />
+   </target>
+
+   <target name="-do-new-server-artifact" depends="-do-sar4ear">
       <genesis:ear />
    </target>
 
@@ -1391,12 +1396,12 @@
                <fileset file="${jar.local.location}" />
                <fileset file="${jar.remote.location}" />
                <fileset dir="${hibernate.dist}">
-                  <include name="cglib-full*.jar" />
-                  <include name="commons-collection*.jar" />
-                  <include name="ehcache*.jar" />
-                  <include name="hibernate*.jar" />
-                  <include name="jta.jar" />
-                  <include name="odmg-*.jar" />
+                  <include name="cglib-full*.jar" if="hibernate2.needed" />
+                  <include name="commons-collection*.jar" if="hibernate2.needed" />
+                  <include name="ehcache*.jar" if="hibernate2.needed" />
+                  <include name="hibernate*.jar" if="hibernate2.needed" />
+                  <include name="jta.jar" if="hibernate2.needed" />
+                  <include name="odmg-*.jar" if="hibernate2.needed" />
                </fileset>
                <fileset dir="${genesis.dist}">
                   <include name="genesis-annotation-jdk14-${genesis.version}.jar"/>

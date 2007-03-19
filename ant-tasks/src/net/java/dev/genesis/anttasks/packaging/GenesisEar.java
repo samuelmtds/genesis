@@ -522,7 +522,7 @@ public class GenesisEar extends Jar {
 
    private void writeJBossServiceXML(ZipOutputStream zOut,
       String jbossserviceXML) throws IOException {
-      if (services.isEmpty()) {
+      if (services.isEmpty() || jbossserviceXML == null) {
          return;
       }
 
@@ -625,7 +625,9 @@ public class GenesisEar extends Jar {
 
       buf.append(JBOSS_APP_XML_HEADER).append("\n\n");
       buf.append("<jboss-app>\n");
-      mkTagList(buf, services, "  ");
+      if (!mkTagList(buf, services, "  ", true)) {
+         return null;
+      }
 
       buf.append("</jboss-app>\n");
 
@@ -636,10 +638,26 @@ public class GenesisEar extends Jar {
       return "grant codeBase \"file:${application}\" {\n  permission java.security.AllPermission;\n};\n";
    }
 
-   protected static void mkTagList(StringBuffer buf, List lst, String indent) {
+   protected static boolean mkTagList(StringBuffer buf, List lst, String indent) {
+      return mkTagList(buf, lst, indent, false);
+   }
+
+   protected static boolean mkTagList(StringBuffer buf, List lst, String indent, boolean optional) {
+      boolean atLeastOne = false;
+
       for (int i = 0; i < lst.size(); i++) {
-         buf.append(indent).append(lst.get(i));
+         Module module = (Module) lst.get(i);
+         String value = module.mkString(optional);
+
+         if (optional && value == null) {
+            continue;
+         }
+
+         buf.append(indent).append(value);
+         atLeastOne = true;
       }
+
+      return atLeastOne;
    }
 
    protected static StringBuffer mkSimpleTag(StringBuffer buf, String tag,
@@ -666,11 +684,16 @@ public class GenesisEar extends Jar {
          type.setValue("java");
       }
 
-      public String toString() {
+      public String mkString(boolean optional) {
          StringBuffer buf = new StringBuffer(100);
 
          String[] fileNames = getDirectoryScanner(getProject())
                                        .getIncludedFiles();
+
+         if (optional && fileNames.length == 0) {
+            return null;
+         }
+
          validate(fileNames);
 
          for (int i = 0; i < fileNames.length; i++) {
@@ -678,6 +701,10 @@ public class GenesisEar extends Jar {
          }
 
          return buf.toString();
+      }
+
+      public String toString() {
+         return mkString(false);
       }
 
       protected void validate(String[] fileNames) throws BuildException {

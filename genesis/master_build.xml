@@ -25,6 +25,7 @@
       <property name="remote.mode" value="true" />
 
       <property name="include.jboss.client" value="true" />
+      <property name="use.hibernate2" value="true" />
 
       <condition property="jboss.client.needed">
          <istrue value="${include.jboss.client}" />
@@ -43,6 +44,10 @@
          <isset property="supports.java.annotation" />
       </condition>
       <property name="java.target.level" value="${java.source.level}" />
+
+      <condition property="hibernate2.needed">
+         <istrue value="${use.hibernate2}" />
+      </condition>
    </target>
 
    <target name="-do-additional-init" />
@@ -351,7 +356,9 @@
             <include name="${genesis-annotation.jar}" />
             <include name="genesis-shared-${genesis.version}.jar" />
          </fileset>
-         <fileset dir="${hibernate.dist}" includes="hibernate*.jar" />
+         <fileset dir="${hibernate.dist}">
+            <include name="hibernate2.jar" if="hibernate2.needed" />
+         </fileset>
          <fileset dir="${commons.dist}">
             <include name="commons-beanutils*.jar" />
             <include name="commons-logging*.jar" />
@@ -1024,15 +1031,15 @@
                   <include name="hibernate.properties" />
                </fileset>
                <fileset dir="${hibernate.dist}">
-                  <include name="commons-logging*.jar" />
-                  <include name="log4j*.jar" />
-                  <include name="dom4j*.jar" />
-                  <include name="optional*.jar" />
-                  <include name="commons-collections*.jar" />
-                  <include name="ehcache*.jar" />
-                  <include name="cglib*.jar" />
-                  <include name="odmg*.jar" />
-                  <include name="hibernate*.jar" />
+                  <include name="commons-logging*.jar" if="hibernate2.needed" />
+                  <include name="log4j*.jar" if="hibernate2.needed" />
+                  <include name="dom4j*.jar" if="hibernate2.needed" />
+                  <include name="optional*.jar" if="hibernate2.needed" />
+                  <include name="commons-collections*.jar" if="hibernate2.needed" />
+                  <include name="ehcache*.jar" if="hibernate2.needed" />
+                  <include name="cglib*.jar" if="hibernate2.needed" />
+                  <include name="odmg*.jar" if="hibernate2.needed" />
+                  <include name="hibernate*.jar" if="hibernate2.needed" />
                </fileset>
                <fileset dir="${commons.dist}">
                   <include name="commons-beanutils*.jar" />
@@ -1083,15 +1090,15 @@
                </ejb>
                <jbossservice file="${server.service.artifact.location}" />
                <lib dir="${hibernate.dist}">
-                  <include name="commons-logging*.jar" />
-                  <include name="log4j*.jar" />
-                  <include name="dom4j*.jar" />
-                  <include name="optional*.jar" />
-                  <include name="commons-collections*.jar" />
-                  <include name="ehcache*.jar" />
-                  <include name="cglib*.jar" />
-                  <include name="odmg*.jar" />
-                  <include name="hibernate*.jar" />
+                  <include name="commons-logging*.jar" if="hibernate2.needed" />
+                  <include name="log4j*.jar" if="hibernate2.needed" />
+                  <include name="dom4j*.jar" if="hibernate2.needed" />
+                  <include name="optional*.jar" if="hibernate2.needed" />
+                  <include name="commons-collections*.jar" if="hibernate2.needed" />
+                  <include name="ehcache*.jar" if="hibernate2.needed" />
+                  <include name="cglib*.jar" if="hibernate2.needed" />
+                  <include name="odmg*.jar" if="hibernate2.needed" />
+                  <include name="hibernate*.jar" if="hibernate2.needed" />
                </lib>
                <lib dir="${commons.dist}">
                   <include name="commons-beanutils*.jar" />

@@ -35,7 +35,9 @@
             <include name="commons-validator*.jar" />
             <include name="reusable-components*.jar" />
          </fileset>
-         <fileset dir="${hibernate.dist}" includes="hibernate2.jar" />
+         <fileset dir="${hibernate.dist}">
+            <include name="hibernate2.jar" if="hibernate2.needed" />
+         </fileset>
          <fileset refid="client.lib.fileset" />
          <fileset refid="client.lib.ext.fileset" />
       </path>
