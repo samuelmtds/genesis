@@ -882,7 +882,7 @@ More info...</a></p>
         <code>BaseThinlet</code> (or <code>BaseDialogThinlet</code> class) or 
         that is annotated with <a href="#@ViewHandler">@ViewHandler</a>. The 
         <code>@AfterAction</code> annotation should be applied to a view method 
-        that should be executed <b>before</b> an <code>@Action</code> method. The 
+        that should be executed <b>after</b> an <code>@Action</code> method. The 
         method name must match the <code>@Action</code>'s name or this name must 
         be supplied as a parameter.</p>
         <table>

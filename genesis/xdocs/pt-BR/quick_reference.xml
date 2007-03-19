@@ -897,7 +897,7 @@ informações...</a></p>
         <code>BaseDialogThinlet</code>) ou anotadas com 
         <a href="#@ViewHandler">@ViewHandler</a>. A anotação 
         <code>@AfterAction</code> se aplica ao método da view que deve ser 
-        executado <b>antes</b> da execução da <code>@Action</code>. O método 
+        executado <b>depois</b> da execução da <code>@Action</code>. O método 
         deve possuir o mesmo nome da <code>@Action</code> ou indicá-lo como 
         parâmetro.</p>
         <table>
