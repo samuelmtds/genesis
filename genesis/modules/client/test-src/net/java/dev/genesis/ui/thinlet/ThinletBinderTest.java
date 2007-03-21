@@ -483,7 +483,8 @@ public class ThinletBinderTest extends GenesisTestCase {
    }
 
    private Object asYouType(Object component) {
-      ThinletUtils.putProperty(component, "bindingStrategy", "asYouType");
+      ThinletUtils.putProperty(component, "bindingStrategy", 
+            BaseThinlet.AS_YOU_TYPE);
       return component;
    }
 
@@ -499,21 +500,23 @@ public class ThinletBinderTest extends GenesisTestCase {
       ThinletUtils.putProperty(other, "bindingStrategy", "other");
       
       assertNull(binder.getBindingStrategy(regular));
-      assertSame("asYouType", binder.getBindingStrategy(asYouType));
+      assertSame(BaseThinlet.AS_YOU_TYPE, binder.getBindingStrategy(asYouType));
       assertSame("other", binder.getBindingStrategy(other));
 
       ThinletBinder asYouTypeBinder = new ThinletBinder(thinlet, 
             thinlet.getDesktop(), form, viewHandler);
-      asYouTypeBinder.setBindingStrategy("asYouType");
+      asYouTypeBinder.setBindingStrategy(BaseThinlet.AS_YOU_TYPE);
 
-      assertSame("asYouType", asYouTypeBinder.getBindingStrategy(regular));
-      assertSame("asYouType", asYouTypeBinder.getBindingStrategy(asYouType));
+      assertSame(BaseThinlet.AS_YOU_TYPE, 
+            asYouTypeBinder.getBindingStrategy(regular));
+      assertSame(BaseThinlet.AS_YOU_TYPE, 
+            asYouTypeBinder.getBindingStrategy(asYouType));
       assertSame("other", asYouTypeBinder.getBindingStrategy(other));
 
       ThinletBinder.setDefaultBindingStrategy("other");
 
       assertSame("other", binder.getBindingStrategy(regular));
-      assertSame("asYouType", binder.getBindingStrategy(asYouType));
+      assertSame(BaseThinlet.AS_YOU_TYPE, binder.getBindingStrategy(asYouType));
       assertSame("other", binder.getBindingStrategy(other));
    }
    

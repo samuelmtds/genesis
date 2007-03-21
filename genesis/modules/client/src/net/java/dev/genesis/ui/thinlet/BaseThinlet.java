@@ -56,6 +56,7 @@ public abstract class BaseThinlet extends Thinlet implements
       DispatcherExceptionHandler {
    public static final String ACTION = "action";
    public static final String ALIGNMENT = "alignment";
+   public static final String AS_YOU_TYPE = "alignment";
    public static final String BUTTON = "button";
    public static final String CHECKBOX = "checkbox";
    public static final String CELL = "cell";

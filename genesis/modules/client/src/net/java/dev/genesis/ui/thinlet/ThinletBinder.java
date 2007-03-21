@@ -224,7 +224,7 @@ public class ThinletBinder implements FormControllerListener {
                root, this);
       } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1 ||
             (Arrays.binarySearch(supportedAsYouTypeFieldWidgets, className) > -1 &&
-            "asYouType".equals(getBindingStrategy(component)))) {
+            BaseThinlet.AS_YOU_TYPE.equals(getBindingStrategy(component)))) {
          thinlet.setMethod(component, "action", "setValue(" + name + "," +
                name + ".name)", root, this);
       } else {
