@@ -119,6 +119,9 @@ public abstract class AbstractBinder implements FormControllerListener {
    public static final String BINDING_STRATEGY_AS_YOU_TYPE = 
          "genesis:bindingStrategyAsYouType";
 
+   private static String defaultBindingStrategy;
+   private String bindingStrategy;
+
    private final Map boundFields = new HashMap();
    private final Map boundActions = new HashMap();
    private final Map boundDataProviders = new HashMap();
@@ -876,5 +879,33 @@ public abstract class AbstractBinder implements FormControllerListener {
       }
 
       return selected;
+   }
+
+
+   public static String getDefaultBindingStrategy() {
+      return defaultBindingStrategy;
+   }
+
+   public static void setDefaultBindingStrategy(String aDefaultBindingStrategy) {
+      defaultBindingStrategy = aDefaultBindingStrategy;
+   }
+
+   public String getBindingStrategy() {
+      return bindingStrategy;
+   }
+
+   public void setBindingStrategy(String bindingStrategy) {
+      this.bindingStrategy = bindingStrategy;
+   }
+
+   public String getBindingStrategy(String componentBindingStrategy) {
+      if (componentBindingStrategy != null) {
+         return componentBindingStrategy;
+      }
+
+      String bindingStrategy = getBindingStrategy();
+
+      return (bindingStrategy != null) ? bindingStrategy : 
+            getDefaultBindingStrategy();
    }
 }

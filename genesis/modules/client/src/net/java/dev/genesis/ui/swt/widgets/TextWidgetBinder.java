@@ -151,8 +151,8 @@ public class TextWidgetBinder extends AbstractWidgetBinder {
 
       protected BindingStrategy createBindingStrategy() {
          return AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE.equals(
-               widget.getData(
-               AbstractBinder.BINDING_STRATEGY_PROPERTY)) ? 
+               getBinder().getBindingStrategy((String)widget.getData(
+               AbstractBinder.BINDING_STRATEGY_PROPERTY))) ? 
                (BindingStrategy)new ModifyBindingStrategy() : 
                new FocusBindingStrategy();
       }

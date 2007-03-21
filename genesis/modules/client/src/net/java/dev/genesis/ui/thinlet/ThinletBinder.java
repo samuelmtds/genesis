@@ -73,6 +73,8 @@ public class ThinletBinder implements FormControllerListener {
       Arrays.sort(supportedAsYouTypeFieldWidgets);
    }
 
+   private static String defaultBindingStrategy;
+
    private final BaseThinlet thinlet;
    private final Object root;
    private final Object form;
@@ -83,6 +85,8 @@ public class ThinletBinder implements FormControllerListener {
 
    private int componentSearchDepth = 0;
    private List groupComponents;
+
+   private String bindingStrategy;
 
    private final Collection boundFieldNames = new HashSet();
    private final Map dataProvided = new HashMap();
@@ -220,14 +224,27 @@ public class ThinletBinder implements FormControllerListener {
                root, this);
       } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1 ||
             (Arrays.binarySearch(supportedAsYouTypeFieldWidgets, className) > -1 &&
-            "asYouType".equals(thinlet.getProperty(component, 
-            "bindingStrategy")))) {
+            "asYouType".equals(getBindingStrategy(component)))) {
          thinlet.setMethod(component, "action", "setValue(" + name + "," +
                name + ".name)", root, this);
       } else {
          thinlet.setMethod(component, "focuslost", "setValue(" + name + 
                "," + name + ".name)", root, this);
       }
+   }
+   
+   protected String getBindingStrategy(Object component) {
+      String bindingStrategy = (String)thinlet.getProperty(component, 
+            "bindingStrategy");
+
+      if (bindingStrategy != null) {
+         return bindingStrategy;
+      }
+
+      bindingStrategy = getBindingStrategy();
+
+      return (bindingStrategy != null) ? bindingStrategy : 
+            getDefaultBindingStrategy();
    }
 
    protected List findComponents(final String name) {
@@ -647,5 +664,21 @@ public class ThinletBinder implements FormControllerListener {
       return enabled ?
             (Collection)enabledWidgetGroupMap.get(fieldKey) :
             (Collection)visibleWidgetGroupMap.get(fieldKey);
+   }
+
+   public static String getDefaultBindingStrategy() {
+      return defaultBindingStrategy;
+   }
+
+   public static void setDefaultBindingStrategy(String aDefaultBindingStrategy) {
+      defaultBindingStrategy = aDefaultBindingStrategy;
+   }
+
+   public String getBindingStrategy() {
+      return bindingStrategy;
+   }
+
+   public void setBindingStrategy(String bindingStrategy) {
+      this.bindingStrategy = bindingStrategy;
    }
 }

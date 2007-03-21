@@ -491,6 +491,31 @@ public class ThinletBinderTest extends GenesisTestCase {
       return "key=" + key + ";value=" + value + ";root="
             + thinlet.getDesktop() + ";handler=" + binder;
    }
+
+   public void testGetBindingStrategy() {
+      Object regular = ThinletUtils.newTextField();
+      Object asYouType = asYouType(ThinletUtils.newTextField());
+      Object other = ThinletUtils.newTextField(); 
+      ThinletUtils.putProperty(other, "bindingStrategy", "other");
+      
+      assertNull(binder.getBindingStrategy(regular));
+      assertSame("asYouType", binder.getBindingStrategy(asYouType));
+      assertSame("other", binder.getBindingStrategy(other));
+
+      ThinletBinder asYouTypeBinder = new ThinletBinder(thinlet, 
+            thinlet.getDesktop(), form, viewHandler);
+      asYouTypeBinder.setBindingStrategy("asYouType");
+
+      assertSame("asYouType", asYouTypeBinder.getBindingStrategy(regular));
+      assertSame("asYouType", asYouTypeBinder.getBindingStrategy(asYouType));
+      assertSame("other", asYouTypeBinder.getBindingStrategy(other));
+
+      ThinletBinder.setDefaultBindingStrategy("other");
+
+      assertSame("other", binder.getBindingStrategy(regular));
+      assertSame("asYouType", binder.getBindingStrategy(asYouType));
+      assertSame("other", binder.getBindingStrategy(other));
+   }
    
    public void testFindComponents() {
       Object checkbox = ThinletUtils.newCheckbox();

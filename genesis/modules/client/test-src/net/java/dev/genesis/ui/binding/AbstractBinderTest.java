@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -316,5 +316,37 @@ public class AbstractBinderTest extends GenesisTestCase {
       expected = new int[] {};
       result = binder.getIndexesFromUI(indexes, true);
       assertTrue(Arrays.equals(expected, result));
+   }
+
+   public void testGetBindingStrategy() {
+      String regular = null;
+      String asYouType = AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE;
+      String other = "other"; 
+ 
+      final MockAbstractBinder binder = new MockAbstractBinder(root, form, 
+            handler);
+
+      assertNull(binder.getBindingStrategy(regular));
+      assertSame(AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE, 
+            binder.getBindingStrategy(asYouType));
+      assertSame("other", binder.getBindingStrategy(other));
+
+      final MockAbstractBinder asYouTypeBinder = new MockAbstractBinder(root, 
+            form, handler);
+      asYouTypeBinder.setBindingStrategy(
+            AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+
+      assertSame(AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE, 
+            asYouTypeBinder.getBindingStrategy(regular));
+      assertSame(AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE, 
+            asYouTypeBinder.getBindingStrategy(asYouType));
+      assertSame("other", asYouTypeBinder.getBindingStrategy(other));
+
+      AbstractBinder.setDefaultBindingStrategy("other");
+
+      assertSame("other", binder.getBindingStrategy(regular));
+      assertSame(AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE, 
+            binder.getBindingStrategy(asYouType));
+      assertSame("other", binder.getBindingStrategy(other));
    }
 }

@@ -181,8 +181,8 @@ public class JTextComponentBinder extends AbstractComponentBinder {
 
       protected BindingStrategy createBindingStrategy() {
          return AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE.equals(
-               component.getClientProperty(
-               AbstractBinder.BINDING_STRATEGY_PROPERTY)) ? 
+               getBinder().getBindingStrategy((String)component
+               .getClientProperty(AbstractBinder.BINDING_STRATEGY_PROPERTY))) ? 
                (BindingStrategy)new DocumentBindingStrategy() : 
                new FocusBindingStrategy();
       }
