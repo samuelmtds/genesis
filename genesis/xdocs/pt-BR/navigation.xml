@@ -61,6 +61,8 @@
                 href="/pt-BR/populating_with_dataproviders.html" />
           <item name="Binding de botões de rádio e caixas de seleção"
                 href="/pt-BR/binding_toggle_buttons.html" />
+          <item name="Mudando a estratégia de binding"
+                href="/pt-BR/binding_strategy.html" />
           <item name="Formatando os dados" 
                 href="/pt-BR/formatting.html" />
           <item name="Tratando erros" 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Mudando a estratégia de binding</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Mudando a estratégia de binding">
+      <p>Para todos os componentes gráficos que permitem edição de texto, o 
+      genesis sincroniza as alterações feitas pelo usuário com o form quando o
+      componente perde o foco. Essa é a melhor estratégia para a maior parte das
+      aplicações, visto que diversos passos são executados a cada sincronização
+      e certas funcionalidades implementadas pelo desenvolvedor podem gerar 
+      um custo ainda maior de processamento, como verificar se determinado 
+      código representa uma entidade válida, por exemplo.</p>
+      <p>Contudo, há alguns cenários em que é útil sincronizar o estado quando
+      ocorrem outros eventos, como a cada vez que uma tecla é digitada. Ao fazer 
+      um wizard para uma IDE, por exemplo, pode ser útil verificar se o dado 
+      digitado é um caminho válido ou se pode ser usado como nome de classe. 
+      Para casos assim, o genesis provê um mecanismo de estratégias de bindings,
+      que permite configurar quando deve ser feita esta sincronia.</p>
+      <p>Para configurar um campo texto para que a sincronia ocorra à medida que
+      cada tecla é digitada, basta seguir um procedimento simples que possui
+      pequenas variações por tecnologia de interface gráfica. Primeiro, 
+      com Swing:</p>
+<source>
+JTextField textField;
+// ...
+textField.putClientProperty(AbstractBinder.BINDING_STRATEGY_PROPERTY,
+      AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+</source>
+      <p>Usando SWT:</p>
+<source>
+Text textField;
+// ...
+textField.setData(AbstractBinder.BINDING_STRATEGY_PROPERTY,
+      AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+</source>
+      <p>Por fim, no xml da view com Thinlet:</p>
+<source>
+<![CDATA[
+<textfield name="textField" property="bindingStrategy=asYouType" />
+]]>
+</source>
+      <p>Conforme observado acima, basta definir uma propriedade por componente
+      gráfico que determina a estratégia de binding. Apenas o nome e o valor 
+      dessa propriedade, bem como a forma de atribuí-los, varia por tecnologia 
+      de interface gráfica, seguindo o mesmo padrão utilizado pelo framework 
+      para outras propriedades.</p>
+      <p>É possível também mudar a estratégia padrão usada para esses 
+      componentes, tanto por binder como globalmente. Para isso, tanto 
+      <code>ThinletBinder</code> como <code>AbstractBinder</code> (superclasse 
+      de <code>SwingBinder</code> e <code>SWTBinder</code>) definem os métodos
+      <code>setBindingStrategy(String)</code> e 
+      <code>setDefaultBindingStrategy(String)</code> que permitem, 
+      respectivamente, mudar a estratégia por binder ou globalmente. A 
+      <code>String</code> informada deve ser a mesma usada na configuração por 
+      componentes, ou seja, <code>BaseThinlet.AS_YOU_TYPE</code> para Thinlet e
+      <code>AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE</code> para Swing e 
+      SWT.</p>
+    </section>
+  </body>
+</document>

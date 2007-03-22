@@ -61,6 +61,8 @@
                 href="/en/populating_with_dataproviders.html" />
           <item name="Binding radiobuttons and checkboxes"
                 href="/en/binding_toggle_buttons.html" />
+          <item name="Configuring binding strategies"
+                href="/en/binding_strategy.html" />
           <item name="Formatting data" 
                 href="/en/formatting.html" />
           <item name="Handling errors" 

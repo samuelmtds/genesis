@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Configuring binding strategies</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Configuring binding strategies">
+      <p>By default, genesis synchronizes user changes with the form for text
+      editing widgets when they lose focus. This is the best strategy for most 
+      applications, since several steps are necessary for each synchronization 
+      operation and some features implemented by the developer can increase this 
+      cost, such as checking if the typed code represents a valid entity in the 
+      database.</p>
+      <p>However, there are a few scenarios when it is useful to synchronize 
+      state when other events occur, for instance, when a key is pressed. In an
+      IDE wizard, it might be helpful to check if the input is a valid path or
+      is a valid class identifier. For such cases, genesis provides a way to 
+      change the binding strategy, making it possible to define when 
+      synchronization should take place.</p>
+      <p>The procedure to set up a text field so that its state is synchronized 
+      with the form every time a key is pressed is simple and varies just a 
+      little bit depending on the target UI technology. First, with Swing:</p>
+<source>
+JTextField textField;
+// ...
+textField.putClientProperty(AbstractBinder.BINDING_STRATEGY_PROPERTY,
+      AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+</source>
+      <p>Using SWT:</p>
+<source>
+Text textField;
+// ...
+textField.setData(AbstractBinder.BINDING_STRATEGY_PROPERTY,
+      AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
+</source>
+      <p>Finally, a Thinlet xml view:</p>
+<source>
+<![CDATA[
+<textfield name="textField" property="bindingStrategy=asYouType" />
+]]>
+</source>
+      <p>As shown above, it is as simple as defining a property for the widget
+      that configures its binding strategy. Only the property name and value and
+      the way to define it depends on the UI technology, following the same 
+      pattern used by the framework for all widget properties.</p>
+      <p>It is also possible to change the strategy used by default for these
+      widgets, on a binder basis or globally. Both
+      <code>ThinletBinder</code> and <code>AbstractBinder</code> (superclass 
+      of <code>SwingBinder</code> and <code>SWTBinder</code>) define 
+      <code>setBindingStrategy(String)</code> and 
+      <code>setDefaultBindingStrategy(String)</code>, methods that allow the
+      strategy to be defined for the current binder and globally, respectively.
+      The <code>String</code> parameter should be the same one used to 
+      configure the widgets, i.e., <code>BaseThinlet.AS_YOU_TYPE</code> for 
+      Thinlet and <code>AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE</code> for
+      Swing and SWT.</p>
+    </section>
+  </body>
+</document>
