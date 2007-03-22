@@ -9,6 +9,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#3.0-RC1">3.0-RC1</a></li>
         <li><a href="#3.0-EA5">3.0-EA5</a></li>
         <li><a href="#3.0-EA4">3.0-EA4</a></li>
         <li><a href="#3.0-EA3">3.0-EA3</a></li>
@@ -20,6 +21,74 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-RC1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7096&amp;expandFolder=7096">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Foi adicionado <a href="binding_strategy.html">suporte a 
+          estratégias de binding</a>.</li>
+          <li>O <a href="binding_toggle_buttons.html">binding de botões de rádio 
+          e caixas de seleção</a> foi revisto e documentado</li>
+        </ul>
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>A validação possui falhas críticas para o Swing e o SWT
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=399">Issue
+          # 399</a>).</li>
+          <li><code>genesis.equals(any,any)</code> falha com o Java SE 6
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=419">Issue
+          # 419</a>).</li>
+          <li>O binding de caixas de seleção e botões de rádio não funciona para
+          Thinlet e SWT
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=425">Issue
+          # 425</a> e <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=433">issue
+          # 433</a>).</li>
+          <li>Uma <code>StackOverflow</code> é lançada se 
+          <code>indexField</code> for usado com um <code>@DataProvider</code>
+          ligado a um <code>JTable</code>
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=426">Issue
+          # 426</a>).</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA5 e a 3.0-RC1
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA5&amp;target_milestone=3.0-RC1">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-RC1/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC1&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniel Gomes</li>
+            <li>Daniela Gomes</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Elissandro Mendes</li>
+            <li>Gustavo Nalle</li>
+            <li>Homero Dâmico</li>
+            <li>Jorge Rangel</li>
+            <li>José Geraldo</li>
+            <li>Michel Graciano</li>
+            <li>Rodrigo Santos</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-EA5">
       <subsection name="Downloads">

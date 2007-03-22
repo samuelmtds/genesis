@@ -8,6 +8,7 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#3.0-RC1">3.0-RC1</a></li>
         <li><a href="#3.0-EA5">3.0-EA5</a></li>
         <li><a href="#3.0-EA4">3.0-EA4</a></li>
         <li><a href="#3.0-EA3">3.0-EA3</a></li>
@@ -19,6 +20,72 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-RC1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7096&amp;expandFolder=7096">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li><a href="binding_strategy.html">Binding strategies</a> are now 
+          supported.</li>
+          <li><a href="binding_toggle_buttons.html">Binding for checkboxes and
+          radiobuttons</a> has been reviewed and documented.</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Validation is broken for Swing and SWT bindings
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=399">Issue
+          # 399</a>).</li>
+          <li><code>genesis.equals(any,any)</code> fails with Java SE 6
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=419">Issue
+          # 419</a>).</li>
+          <li>Binding of checkboxes/radiobuttons/toggle buttons is broken for
+          Thinlet and SWT
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=425">Issue
+          # 425</a> and <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=433">issue
+          # 433</a>).</li>
+          <li>A <code>StackOverflow</code> is thrown if
+          <code>indexField</code> is used with a <code>@DataProvider</code>
+          bound to a <code>JTable</code>
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=426">Issue
+          # 426</a>).</li>
+        </ul>
+        <p>The full change log between 3.0-EA5 and 3.0-RC1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA5&amp;target_milestone=3.0-RC1">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/3.0-RC1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC1&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniel Gomes</li>
+            <li>Daniela Gomes</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Elissandro Mendes</li>
+            <li>Gustavo Nalle</li>
+            <li>Homero Dâmico</li>
+            <li>Jorge Rangel</li>
+            <li>José Geraldo</li>
+            <li>Michel Graciano</li>
+            <li>Rodrigo Santos</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-EA5">
       <subsection name="Downloads">
