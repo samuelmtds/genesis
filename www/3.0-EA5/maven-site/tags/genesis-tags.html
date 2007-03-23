@@ -1,49 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Tag Reference - genesis</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><link href="../favicon.ico" rel="shortcut icon"></link><link href="../favicon.ico" rel="icon"></link></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 13 December 2006
-                <span class="separator">|</span> Doc for  3.0-EA5
-                </div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">English version</a></li><li class="none"><a href="../pt-BR/index.html">Versão em português</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="@genesis_Tag_Reference"></a><h2>@genesis Tag Reference</h2><p>
-      Defines validation rules.
-    </p><p>Applies to: Applicable to POJOs</p><div id="source"><div class="subsection"><a name="@genesis_Class_Level_Tags"></a><h3>@genesis Class Level Tags</h3><a href="#@genesis_form__0____" title="Defines a bean and its attributes.">@genesis.form</a><br></br></div></div><div id="source"><div class="subsection"><a name="@genesis_Method_Level_Tags"></a><h3>@genesis Method Level Tags</h3><a href="#@genesis_validator__0____" title="Defines genesis Validator for current setter field or getter on nested properties">@genesis.validator</a><br></br><a href="#@genesis_validator-args__0__1_" title="Defines arguments for current setter field.">@genesis.validator-args</a><br></br><a href="#@genesis_validator-var__0____" title="Defines genesis Validator variable">@genesis.validator-var</a><br></br></div></div><div id="source"><div class="subsection"><a name="@genesis_Field_Level_Tags"></a><h3>@genesis Field Level Tags</h3></div></div></div><div class="section"><a name="@genesis_Class_Level_Tag_Usage"></a><h2>@genesis Class Level Tag Usage</h2><div class="subsection"><a name="@genesis_form__0____"></a><h3>@genesis.form (0..*)</h3><p>Defines a bean and its attributes.</p><p>Applies to: POJOs</p></div></div><div class="section"><a name="@genesis_Method_Level_Tag_Usage"></a><h2>@genesis Method Level Tag Usage</h2><div class="subsection"><a name="@genesis_validator__0____"></a><h3>@genesis.validator (0..*)</h3><p>Defines genesis Validator for current setter field or getter on nested properties</p><p>Applies to: genesis Validator</p><table class="bodyTable"><tr class="b"><th>Parameter</th><th>Type</th><th>Applicability</th><th>Description</th><th>Mandatory</th></tr><tr class="a" valign="top"><td>type</td><td>text</td><td></td><td>Validator type, such as "required"</td><td><b>true</b></td></tr><tr class="b" valign="top"><td>msgkey</td><td>text</td><td></td><td>Override key for the validator error message</td><td>false</td></tr><tr class="a" valign="top"><td>msgvalue</td><td>text</td><td></td><td>Explicitly define a validator error message</td><td>false</td></tr><tr class="b" valign="top"><td>page</td><td>text</td><td></td><td>Only fields with a "page" attribute
-                     value that is equal to or less than the page property
-                     on the form JavaBean are processed.</td><td>false</td></tr><tr class="a" valign="top"><td>arg0value</td><td>text</td><td></td><td>Value of argument index 0</td><td>false</td></tr><tr class="b" valign="top"><td>arg0resource</td><td>text</td><td></td><td>Resource key of argument index 0</td><td>false</td></tr><tr class="a" valign="top"><td>arg1value</td><td>text</td><td></td><td>Value of argument index 1</td><td>false</td></tr><tr class="b" valign="top"><td>arg1resource</td><td>text</td><td></td><td>Resource key of argument index 1</td><td>false</td></tr><tr class="a" valign="top"><td>arg2value</td><td>text</td><td></td><td>Value of argument index 2</td><td>false</td></tr><tr class="b" valign="top"><td>arg2resource</td><td>text</td><td></td><td>Resource key of argument index 2</td><td>false</td></tr><tr class="a" valign="top"><td>arg3value</td><td>text</td><td></td><td>Value of argument index 3</td><td>false</td></tr><tr class="b" valign="top"><td>arg3resource</td><td>text</td><td></td><td>Resource key of argument index 3</td><td>false</td></tr></table></div><div class="subsection"><a name="@genesis_validator-args__0__1_"></a><h3>@genesis.validator-args (0..1)</h3><p>Defines arguments for current setter field.</p><p>Applies to: genesis Validator</p><table class="bodyTable"><tr class="a"><th>Parameter</th><th>Type</th><th>Applicability</th><th>Description</th><th>Mandatory</th></tr><tr class="b" valign="top"><td>arg0value</td><td>text</td><td></td><td>Value of argument index 0</td><td>false</td></tr><tr class="a" valign="top"><td>arg0resource</td><td>text</td><td></td><td>Resource key of argument index 0<br></br>Default value(s):
-                                                      <br></br>FormName.fieldName</td><td>false</td></tr><tr class="b" valign="top"><td>arg1value</td><td>text</td><td></td><td>Value of argument index 1</td><td>false</td></tr><tr class="a" valign="top"><td>arg1resource</td><td>text</td><td></td><td>Resource key of argument index 1</td><td>false</td></tr><tr class="b" valign="top"><td>arg2value</td><td>text</td><td></td><td>Value of argument index 2</td><td>false</td></tr><tr class="a" valign="top"><td>arg2resource</td><td>text</td><td></td><td>Resource key of argument index 2</td><td>false</td></tr><tr class="b" valign="top"><td>arg3value</td><td>text</td><td></td><td>Value of argument index 3</td><td>false</td></tr><tr class="a" valign="top"><td>arg3resource</td><td>text</td><td></td><td>Resource key of argument index 3</td><td>false</td></tr></table></div><div class="subsection"><a name="@genesis_validator-var__0____"></a><h3>@genesis.validator-var (0..*)</h3><p>Defines genesis Validator variable</p><p>Applies to: genesis Validator</p><table class="bodyTable"><tr class="b"><th>Parameter</th><th>Type</th><th>Applicability</th><th>Description</th><th>Mandatory</th></tr><tr class="a" valign="top"><td>name</td><td>text</td><td></td><td>Variable name</td><td><b>true</b></td></tr><tr class="b" valign="top"><td>value</td><td>text</td><td></td><td>Variable value</td><td><b>true</b></td></tr></table></div></div><div class="section"><a name="@genesis_Field_Level_Tag_Usage"></a><h2>@genesis Field Level Tag Usage</h2></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2006, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.0-RC1/maven-site/tags/genesis-tags.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.0-RC1/maven-site/tags/genesis-tags.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.0-RC1/maven-site/tags/genesis-tags.html';
+}
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
