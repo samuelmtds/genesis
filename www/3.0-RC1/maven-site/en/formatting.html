@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Formatting data - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 23 March 2007
+                <span class="separator">|</span> Doc for  3.0-RC1
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><strong><a href="../en/formatting.html">Formatting data</a></strong></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Formatting_data"></a><h2>Formatting data</h2>
+      <p>Since formatting information so it can be displayed on the screen is a
+      very important part of any graphical application, it's expected doing so 
+      is easy and configurable. The API used for this purpose on genesis is
+      implemented in <code>net.java.dev.genesis.text</code>.</p>
+      <p>This package contains an interface called <code>Formatter</code>,
+      that defines a <code>format(Object)</code> method. This method converts
+      its argument to a formatted String. Similarly to what happens to other
+      framework components, there's a registry of default interface
+      implementations per class, the <code>FormatterRegistry</code> class. The
+      following implementations are initially registered in this class:</p>
+      <ul>
+        <li><code>EnumFormatter</code> converts <code>java.lang.Enum</code> and
+        <code>net.java.dev.reusablecomponents.lang.Enum</code> instances by
+        looking up in the <a href="configuring_messages.html#Configuring messages"><code>ResourceBundle</code></a>
+        the message configured by the key composed by class name without 
+        package + '.' + constant name. If this message is not found, a INFO 
+        message will be logged and the instance converted by using 
+        <code>toString()</code>.</li>
+        <li><code>DefaultFormatter</code> is registered for all remaining types
+        and converts instances using <code>toString()</code> - except when they
+        are <code>null</code>, when it returns a zero-length String.</li>
+      </ul>
+      <p>To register a new formatter for a class the method
+      <code>register(Class,Formatter)</code> from <code>FormatterRegistry</code>
+      can be used.</p>
+      <p>However, the ability of registering a formatter instance per class
+      may not work in some situations. For example, when a
+      <code>boolean</code> property is displayed as text, it may be necessary
+      to display a custom text instead of the <code>true</code> and
+      <code>false</code> constants. genesis has an API that allows a specific
+      formatter instance to be used to display a field. Some steps are required
+      to use this feature:</p>
+      <ol>
+        <li>If Thinlet binding is being used, instead of calling some version of 
+        the <code>bind(..)</code> method, a <code>ThinletBinder</code> instance 
+        should be prepared by calling either <code>prepareBinder(form)</code> or
+        <code>prepareBinder(widget,form)</code>, both methods defined in
+        <code>net.java.dev.genesis.ui.thinlet.BaseThinlet</code>.</li>
+        <li>The formatter instance should be registered using the
+        <code>registerFormatter(String,Formatter)</code> method specified by
+        <code>net.java.dev.genesis.ui.thinlet.ThinletBinder</code> or
+        <code>net.java.dev.genesis.ui.binding.AbstractBinder</code>
+        (for <code>Swing</code> and <code>SWT</code>), according to
+        which UI technology you're using. The
+        <code>String</code> argument value should be the name of the property
+        whose formatter will be overridden. The property name should be:
+          <ul>
+            <li>If it is a simple property, returned by a getter method, it is
+            the simple property name.</li>
+            <li>If the formatter instance should be used for combobox or list
+            items or for a column in a table, the property name should be
+            composed as
+            <code>widgetName.nameOfThePropertyOfTheObjectBeingDisplayed</code>.
+            </li>
+          </ul>
+        </li>
+        <li>Optionally, if the property whose formatter has been overridden
+        needs to be converted by genesis to its original type and the custom
+        generated format is not supported by the default converter, the
+        converter must be overriden by calling the
+        <code>registerConverter(String,Converter)</code> method.
+        <code>org.apache.commons.beanutils.Converter</code> is part of
+        Jakarta Commons BeanUtils and you should refer to this framework's 
+        documentation if this interface must be implemented.</li>
+        <li>Finally, the binding should be performed by calling the
+        <code>bind()</code> method.</li>
+      </ol>
+      <p>A short example of these steps can be seen below:</p>
+
+    <div class="source"><pre>
+Formatter f = new Formatter() {
+   public String format(Object o) {
+      return "Custom format";
+   }
+};
+</pre></div>
+  
+
+
+    <div class="source"><pre>
+// Thinlet sample
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("property", f);
+binder.bind();
+</pre></div>
+  
+
+
+    <div class="source"><pre>
+// Swing sample
+SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("property", f);
+binder.bind();
+</pre></div>
+  
+
+
+    <div class="source"><pre>
+// SWT sample
+SWTBinder binder = new SWTBinder(shell, form, this);
+binder.registerFormatter("property", f);
+binder.bind();
+</pre></div>
+  
+      <p>The value of <code>property</code> to be displayed on the screen
+      will be the <code>Custom format</code> constant, no matter what its
+      value on the form is.</p>
+      <p>It is also possible to reuse <code>java.text.Format</code> instances as
+      the basis of new formatters by using <code>FormatAdapter</code>. To 
+      display numbers in the format <code>1,234.00</code>, the formatter can be
+      generated in the following way:</p>
+
+    <div class="source"><pre>
+Formatter formatter = new FormatAdapter(new DecimalFormat("#,##0.00", true));
+</pre></div>
+  
+      <p>The second parameter indicates that <code>null</code> should be 
+      formatted as an empty<code>String</code>.</p>
+      <div class="subsection"><a name="Virtual_properties"></a><h3>Virtual properties</h3>
+        <p>Since release 2.2, it is possible to work with virtual properties,
+        i.e., properties that don't exist in the object being displayed. These
+        properties have their display value determined by a specific 
+        formatter.</p>
+        <p>If you're using Thinlet or SWT, the formatter must be registered
+        in the <code>ThinletBinder</code>/<code>SWTtBinder</code> instance. If 
+        you're using Swing, and the <code>TableCellRenderer</code> instance for 
+        the <code>TableColumn</code> has not been customized, the formatter must 
+        be registered in the <code>SwingBinder</code> instance.</p>
+        <p>The process for defining and displaying a virtual property is
+        basically the same of a regular property, except for the following
+        things:</p>
+        <ul>
+           <li>Only table cells and values displayed in comboboxes or lists can
+           be virtual properties.</li>
+           <li>Virtual properties can be defined in different ways, depending on 
+           which UI technology is used:
+             <ul>
+               <li>If you're using Thinlet, they can be defined for comboboxes 
+               and lists by adding to the <code>property</code> element in the 
+               xml definition a <code>virtual=true</code> token. Since table 
+               columns do not have a <code>property</code> attribute, the value 
+               of its attribute <code>name</code> must be prefixed with 
+               <code>virtual:</code>.</li>
+               <li>If you're using Swing or SWT, the widget's 
+               <code>name</code>/<code>data</code> must be prefixed with the
+               <code>AbstractBinder.VIRTUAL_PREFIX</code> constant or the 
+               <code>clientProperty SwingBinder.VIRTUAL</code>/<code>data 
+               SWTBinder.VIRTUAL</code> must be <code>Boolean.TRUE</code>.</li>
+             </ul>
+           </li>
+           <li>Virtual properties can be defined for comboboxes and lists by
+           adding to the <code>property</code> element in the xml definition a
+           <code>virtual=true</code> token. Since table columns do not have
+           a <code>property</code> attribute, the value of its attribute
+           <code>name</code> must be prefixed with <code>virtual:</code>
+           .</li>
+           <li>The <code>Formatter</code> instance will receive the whole bean
+           being displayed as a parameter to the <code>format(Object)</code>,
+           since the property being displayed does not actually exist in the
+           instance.</li>
+        </ul>
+        <p>An example of how to define and use a virtual property is shown
+        below, both for comboboxes and tables:</p>
+
+    <div class="source"><pre>
+
+&lt;panel gap="5"&gt;
+   &lt;combobox name="widget"
+             property="key=uniqueProperty;value=virtualValue;virtual=true" /&gt;
+&lt;/panel&gt;
+
+</pre></div>
+  
+
+    <div class="source"><pre>
+
+&lt;panel gap="5"&gt;
+   &lt;table name="widget"&gt;
+      &lt;header&gt;
+         &lt;column name="uniqueProperty" text="#" /&gt;
+         &lt;column name="virtual:virtualValue" text="Virtual" /&gt;
+      &lt;/header&gt;
+   &lt;/table&gt;
+&lt;/panel&gt;
+
+</pre></div>
+  
+        <p>The same UI using Swing:</p>
+
+    <div class="source"><pre>
+//..
+getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
+
+JComboBox widget = new JComboBox();
+widget.setName("widget");
+widget.putClientProperty(SwingBinder.KEY_PROPERTY, "uniqueProperty");
+widget.putClientProperty(SwingBinder.VALUE_PROPERTY, "virtualValue");
+widget.putClientProperty(SwingBinder.VIRTUAL, Boolean.TRUE);
+getContentPane().add(widget);
+//..
+</pre></div>
+  
+
+    <div class="source"><pre>
+//..
+getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
+
+JTable widget = SwingFactory.createTable(binder, "widget", 
+      new String[] {"uniqueProperty", AbstractBinder.VIRTUAL_PREFIX + "virtualValue"},
+      new String[] {"#", "Virtual"});
+
+JScrollPane scrollPane = new JScrollPane();
+scrollPane.setViewportView(widget);
+getContentPane().add(scrollPane);
+
+//..
+</pre></div>
+  
+        <p>The same UI using SWT:</p>
+
+    <div class="source"><pre>
+//..
+Shell shell = new Shell();
+
+Combo widget = new Combo(shell, SWT.NONE);
+widget.setData("widget");
+widget.setData(SWTBinder.KEY_PROPERTY, "uniqueProperty");
+widget.setData(SWTBinder.VALUE_PROPERTY, "virtualValue");
+widget.setData(SWTBinder.VIRTUAL, Boolean.TRUE);
+//..
+</pre></div>
+  
+
+    <div class="source"><pre>
+//..
+Shell shell = new Shell();
+
+Table widget = new Table(usersComposite, SWT.MULTI | SWT.FULL_SELECTION | 
+      SWT.VIRTUAL| SWT.BORDER);
+widget.setData("widget");
+widget.setHeaderVisible(true);
+
+TableColumn column1 = new TableColumn(widget, SWT.NONE);
+column1.setText("#");
+column1.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "uniqueProperty");
+column1.setWidth(50);
+
+TableColumn column2 = new TableColumn(widget, SWT.NONE);
+column2.setText("Virtual");
+column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, 
+      AbstractBinder.VIRTUAL_PREFIX + "virtualValue");
+column2.setWidth(200);
+//..
+</pre></div>
+  
+        <p>The formatter definition:</p>
+
+    <div class="source"><pre>
+Formatter virtual = new Formatter() {
+   public String format(Object o) {
+      return o == null ? "0" : String.valueOf(o.hashCode());
+   }
+}); 
+</pre></div>
+  
+        <p>At last, the code showing how to use the formatter on both APIs:</p>
+
+    <div class="source"><pre>
+ThinletBinder binder = prepareBinder(form);
+binder.registerFormatter("widget.virtualValue", virtual);
+binder.bind();
+</pre></div>
+  
+
+    <div class="source"><pre>
+SwingBinder binder = new SwingBinder(this, form);
+binder.registerFormatter("widget.virtualValue", virtual);
+binder.bind();
+</pre></div>
+  
+
+    <div class="source"><pre>
+SWTBinder binder = new SWTBinder(shell, form, this);
+binder.registerFormatter("widget.virtualValue", virtual);
+binder.bind();
+</pre></div>
+  
+        <p>It is important to notice that although the name of the column is
+        prefixed with <code>virtual:</code>, the way the property name is 
+        composed for registering the formatter is not affected.</p>
+      </div>
+   </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2007, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
