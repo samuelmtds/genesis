@@ -65,7 +65,7 @@
    </target>
 
    <target name="-do-master-init-paths">
-      <property name="genesis.version" value="3.0-RC1" />
+      <property name="genesis.version" value="3.0-dev" />
       <property name="genesis.home" value="../../genesis" />
       <property name="genesis.dist" location="${genesis.home}/dist" />
       <property name="annotation.properties" 
