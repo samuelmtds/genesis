@@ -1287,13 +1287,15 @@
       <property name="clean.build" value="true" />
    </target>
 
+   <target name="-do-additional-clean" />
+   
    <target name="-do-custom-clean">
       <!-- Override to implement custom clean tasks -->
    </target>
 
    <target name="clean" 
            depends="pre-clean,shared:clean,client:clean,weaving:clean,jar:clean,
-                    server-artifact:clean,-do-custom-clean" 
+                    server-artifact:clean,-do-additional-clean,-do-custom-clean" 
            description="Deletes build artifacts" />
 
    <target name="clean-build" depends="clean,all" 

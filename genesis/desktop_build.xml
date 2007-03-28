@@ -1737,7 +1737,9 @@
            depends="compile,weaving,jar,server-artifact,webstart,deploy" 
            description="Builds the whole project and webstart artifacts"/>
 
-   <target name="clean-webstart" depends="clean,webstart:clean,all.with.webstart"
-           description="Deletes build artifacts, including webstart's, before 
-                       building the project and webstart artifacts"/>
+   <target name="-do-additional-clean" depends="webstart:clean" />
+
+   <target name="clean-webstart" depends="clean,all.with.webstart"
+           description="Deletes build artifacts before building the project and 
+           webstart artifacts"/>
 </project>
