@@ -1096,6 +1096,7 @@
       <genesis:optional-fileset id="jar.server.shared.hibernate.dir" 
                          dir="${shared.hibernate.dir}">
          <patternset refid="classes.patternset" />
+         <exclude name="jboss-service.xml" />
          <exclude name="${hibernate.local.cfg.file}" />
       </genesis:optional-fileset>
       <genesis:optional-fileset id="jar.client.shared.sources.dir" 
