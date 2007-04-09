@@ -22,8 +22,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import net.java.dev.genesis.GenesisTestCase;
-import net.java.dev.genesis.resolvers.EmptyResolverRegistry;
-import net.java.dev.genesis.resolvers.StringEmptyResolver;
 
 public class EqualityComparatorRegistryTest extends GenesisTestCase {
    public void testGetDefaultEqualityComparatorForClass() {

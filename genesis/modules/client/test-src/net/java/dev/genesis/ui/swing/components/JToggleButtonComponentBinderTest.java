@@ -25,7 +25,6 @@ import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
-import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.MockSwingBinder;

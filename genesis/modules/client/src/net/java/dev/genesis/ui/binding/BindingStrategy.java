@@ -18,8 +18,6 @@
  */
 package net.java.dev.genesis.ui.binding;
 
-import javax.swing.text.JTextComponent;
-
 public interface BindingStrategy {
    public void addListener(Object widget);
    public void setValue(Object value);

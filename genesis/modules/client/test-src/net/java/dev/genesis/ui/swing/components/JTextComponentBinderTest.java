@@ -23,8 +23,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
-import javax.swing.FocusManager;
 
 import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;

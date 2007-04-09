@@ -25,7 +25,6 @@ import java.util.Map;
 import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
-import net.java.dev.genesis.script.ScriptFunctionsAdapter;
 import net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge;
 import net.java.dev.genesis.script.javaxscript.bridge.ScriptEngine;
 
