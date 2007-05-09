@@ -49,6 +49,12 @@ public class LocalCommandExecutionTest extends TestCase {
         assertEquals(FlushMode.COMMIT, command.flushMode);
     }
 
+    public void testNestedCommand() throws Exception {
+       NoopCommand command = new NoopCommand();
+       assertTrue("Sessions should be the same in nested command invocations", 
+             command.nested());
+    }
+
     public void testLocalQuery() {
         NoopQuery query = new NoopQuery();
         query.localMethod();
@@ -86,9 +92,18 @@ public class LocalCommandExecutionTest extends TestCase {
         /**
          * @Remotable
          */
-        public void remotable() {
+        public boolean nested() {
+           return getSession() == remotable();
+        }
+
+        /**
+         * @Remotable
+         */
+        public Session remotable() {
             value++;
             flushMode = getSession().getFlushMode();
+            
+            return getSession();
         }
 
         public void local() {

@@ -32,6 +32,7 @@ import org.codehaus.aspectwerkz.joinpoint.MethodSignature;
  */
 public class LocalCommandExecutionAspect extends CommandInvocationAspect {
    private final Map injectorsPerThread = new WeakHashMap();
+   private final Map processingThreads = new WeakHashMap();
    
    public LocalCommandExecutionAspect(final AspectContext ctx) throws Exception {
       super(ctx);
@@ -56,6 +57,19 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
 
       return injector;
    }
+
+   private boolean isReentrant() {
+      Thread currentThread = Thread.currentThread();
+      Boolean processing = (Boolean) processingThreads.get(currentThread);
+
+      if (Boolean.TRUE.equals(processing)) {
+         return true;
+      }
+
+      processingThreads.put(currentThread, Boolean.TRUE);
+
+      return false;
+   }
     
    /**
     * @Around("localCommandExecution")
@@ -65,7 +79,8 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
       final CommandResolver obj = (CommandResolver)joinPoint.getTarget();
       final boolean transactional = obj.isTransactional(methodSignature.getMethod());
 
-      if (!transactional && !obj.isRemotable(methodSignature.getMethod())) {
+      if ((!transactional && !obj.isRemotable(methodSignature.getMethod())) || 
+            isReentrant()) {
          return joinPoint.proceed();
       }
 
@@ -82,7 +97,11 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
 
          throw e;
       } finally {
-         injector.onFinally();
+         try {
+            injector.onFinally();
+         } finally {
+            processingThreads.remove(Thread.currentThread());
+         }
       }
    }
 }
