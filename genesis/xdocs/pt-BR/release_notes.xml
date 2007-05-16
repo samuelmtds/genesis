@@ -9,6 +9,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#3.0-RC2">3.0-RC2</a></li>
         <li><a href="#3.0-RC1">3.0-RC1</a></li>
         <li><a href="#3.0-EA5">3.0-EA5</a></li>
         <li><a href="#3.0-EA4">3.0-EA4</a></li>
@@ -21,6 +22,56 @@
         <li><a href="#0.2 (2.0)">0.2 (2.0)</a></li>
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
+    </section>
+    <section name="3.0-RC2">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7404&amp;expandFolder=7404">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
+        <ul>
+          <li>A invocação de métodos de commands a partir de outros commands não
+          funciona corretamente no modo local desktop
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=446">Issue
+          # 446</a>).</li>
+          <li>Ocorre um erro de deployment quando a aplicação é empacotada como 
+          sar
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=443">Issue
+          # 443</a>).</li>
+        </ul>
+        <p>Uma lista completa das alterações ocorridas entre a 3.0-RC1 e a 3.0-RC2
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC1&amp;target_milestone=3.0-RC2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.0-RC2/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+      <subsection name="Agradecimentos">
+        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
+          <ul>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniel Gomes</li>
+            <li>Daniela Gomes</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Elissandro Mendes</li>
+            <li>Gustavo Nalle</li>
+            <li>Homero Dâmico</li>
+            <li>Jorge Rangel</li>
+            <li>José Geraldo</li>
+            <li>Michel Graciano</li>
+            <li>Rodrigo Santos</li>
+          </ul>
+      </subsection>
     </section>
     <section name="3.0-RC1">
       <subsection name="Downloads">
