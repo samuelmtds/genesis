@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Widget lookup strategy - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 15 May 2007
+                <span class="separator">|</span> Doc for  3.0-RC2
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><strong><a href="../en/lookup_strategy.html">Widget lookup strategies</a></strong></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Widget_lookup_strategy"></a><h2>Widget lookup strategy</h2>
+       <p>One of the basic concepts of the binding implemented by genesis is 
+       determining which (if any) component represents a given property, 
+       <code>@Action</code> or <code>@DataProvider</code>. So, the UI will be 
+       composed of widgets identified by names that should be accessible somehow
+       to the binding classes. The way that binding classes will find these 
+       widgets is called <b>lookup strategy</b>.</p>
+       <p>genesis defines an interface called 
+       <code>net.java.dev.genesis.ui.binding.LookupStrategy</code> that declares 
+       the following methods:</p>
+       <ul>
+         <li><code>register(String name, Object widget)</code>: Associates a 
+         widget with the specified name.</li>
+         <li><code>lookup(Object root, String name)</code>: Looks up for a 
+         widget registered with the specified name within the <code>root</code> 
+         scope.</li>
+         <li><code>getName(Object widget)</code>: Returns the widget name.</li>
+       </ul>
+       <p>There is a basic and generic implementation that uses 
+       <code>java.util.Map</code> as its backing data structure. This 
+       implementation is 
+       <code>net.java.dev.genesis.ui.binding.MapLookupStrategy</code> and it can 
+       be used no matter what UI technology is used.</p>
+       <p>There are specific lookup strategies for each UI technology. Currently, 
+       genesis supports three UI technologies: Thinlet, Swing and SWT. Since 
+       Thinlet already has its own widget lookup strategy, genesis defines 
+       specific lookup strategies only for Swing and SWT. These implementations 
+       are detailed in the following sections.</p>
+       <div class="subsection"><a name="Swing"></a><h3>Swing</h3>
+         <p>genesis Swing support defines three classes that implements 
+         <code>LookupStrategy</code>. All implementations use the component name 
+         (<code>java.awt.Component.getName()</code>) to locate it:</p>
+         <ul>
+           <li><code>MapComponentLookupStrategy</code>: Uses the same logic 
+           defined by <code>MapLookupStrategy</code>. The only difference is 
+           that <code>getName(Object widget)</code> returns the component name 
+           (<code>component.getName()</code>) if the component has not been 
+           registered.</li>
+           <li><code>BreadthFirstComponentLookupStrategy</code>: Using the
+           <code>register</code> method is not necessary to register components, 
+           since the component name (<code>Component.getName()</code>) is 
+           already used by the lookup logic. The <code>lookup</code> method 
+           starts a breadth first search in all components that belongs to the
+           root component passed as a parameter to the <code>lookup</code> 
+           method.</li>
+           <li><code>DepthFirstComponentLookupStrategy</code>: It is similar to
+           <code>BreadthFirstComponentLookupStrategy</code>, except that it 
+           implements a depth first search algorithm.</li>
+         </ul>
+         <p>The default implementation used by genesis is 
+         <code>BreadthFirstComponentLookupStrategy</code>. To use a different 
+         implementation, just override the <code>createLookupStrategy()</code> 
+         method defined by the 
+         <code>net.java.dev.genesis.ui.swing.SwingBinder</code> class, or pass 
+         your implementation to the appropriate <code>SwingBinder</code> 
+         constructor.</p>
+       </div>
+       <div class="subsection"><a name="SWT"></a><h3>SWT</h3>
+         <p>genesis SWT support defines three classes that implements 
+         <code>LookupStrategy</code>, like it happens with Swing support. All 
+         implementations use the widget name
+         (<code>org.eclipse.swt.widgets.Widget.getData()</code>) to locate it:</p>
+         <ul>
+           <li><code>MapWidgetLookupStrategy</code>: Uses the same logic defined 
+           by <code>MapLookupStrategy</code>. The only difference is that the 
+           <code>getName(Object widget)</code> returns the widget name 
+           (<code>widget.getData()</code>) if the widget has not been 
+           registered.</li>
+           <li><code>BreadthFirstWidgetLookupStrategy</code>: Using the
+           <code>register</code> method is not necessary to register widgets,
+           since the widget name (<code>widget.getData()</code>) is already used 
+           by the lookup logic. The <code>lookup</code> method starts a breadth 
+           first search in all widgets that belongs to the root widget passed as 
+           parameter in <code>lookup</code> method.</li>
+           <li><code>DepthFirstWidgetLookupStrategy</code>: It is similar to
+           <code>BreadthFirstWidgetLookupStrategy</code>, except that it 
+           implements a depth first search algorithm.</li>
+         </ul>
+         <p>Notice that SWT does not define a method to name widgets. To name a 
+         widget, use the <code>Widget.setData("desiredName")</code> method.</p>
+         <p>The default implementation used by genesis is 
+         <code>BreadthFirstWidgetLookupStrategy</code>. To use a different 
+         implementation, just override the <code>createLookupStrategy()</code> 
+         method defined by the 
+         <code>net.java.dev.genesis.ui.swt.SWTBinder</code> class, or pass 
+         your implementation to the appropriate <code>SWTBinder</code> 
+         constructor.</p>
+       </div>
+     </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2007, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
