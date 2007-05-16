@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module: net.java.dev.genesis.plugins.netbeans.buildsupport.release3_0_EA_3_dev/1
-OpenIDE-Module-Implementation-Version: 3.0-EA3-dev
-OpenIDE-Module-Localizing-Bundle: net/java/dev/genesis/plugins/netbeans/buildsupport/release3_0_EA_3_dev/resources/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.0
-
