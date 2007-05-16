@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Importing the empty-project into Eclipse - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 15 May 2007
+                <span class="separator">|</span> Doc for  3.0-RC2
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Importing_empty-project_into_Eclipse"></a><h2>Importing empty-project into Eclipse</h2>
+
+        <p>
+        1. Right-click on the <b>Package Explorer</b> and choose <b>New Project</b>
+        </p>              
+        <img src="../eclipse/01.JPG" border="0" alt="Eclipse - Step 1"></img>
+
+        <p>
+        2. Choose <b>Java Project</b> and then <b>Next</b>
+        </p>
+        <img src="../eclipse/02.JPG" border="0" alt="Eclipse - Step 2"></img>
+
+        <p>
+        3. Give a name to your project and then choose <b>Create project from existing source</b>, 
+        where you should put the <code>empty-project</code> directory. Then click <b>Next</b>. 
+        </p>
+        <img src="../eclipse/03.JPG" border="0" alt="Eclipse - Step 3"></img>
+
+        <p>
+        4. In the <b>Source</b> tab, choose the directory <code>modules/shared/src</code> and add it as
+        a source directory (the + icon). Eclipse automaticaly recognize the folder 
+        <code>modules/client/src</code> as a source directory. Choose <b>Default
+        output folder</b> to some directory, like &lt;YOUR_PROJECT&gt;/bin.
+        </p>
+        <img src="../eclipse/04.JPG" border="0" alt="Eclipse - Step 4"></img>
+
+        <p>
+        5. In the <b>Libraries</b> tab, click in <b>Add External Jars</b>, and
+        choose the genesis jars and the jars that are on genesis lib dir.
+        </p>
+        <img src="../eclipse/05.JPG" border="0" alt="Eclipse - Step 5"></img>
+         
+        <p>
+        6. You don't need to choose all jars, you can add initially the ones
+        shown in the image. If later another one is needed, you can always
+        add it. If you're going to use Java 5, add
+        <code>genesis-annotation-jdk5-&lt;versão&gt;.jar</code> too.
+        </p>
+        <img src="../eclipse/06.JPG" border="0" alt="Eclipse - Step 6"></img>
+
+        <p>
+        7. Now copy the <copy>build.properties.sample</copy>,
+        by right-clicking on it and choose <b>Copy</b>. 
+        Then right click and choose <b>Paste</b>. Name the new file as 
+        <b>build.properties</b>
+        </p>
+        <img src="../eclipse/07.JPG" border="0" alt="Eclipse - Step 7"></img>
+        <br></br>
+        <img src="../eclipse/08.JPG" border="0" alt="Eclipse - Step 7"></img>
+
+        <p>
+        8. Right-click <b>build.properties</b> and choose 
+        <b>Open With - Properties File Editor</b>.
+        </p>
+        <img src="../eclipse/09.JPG" border="0" alt="Eclipse - Step 8"></img>
+        
+        <p>        
+        9. Configure the properties as needed by your environments:
+        <ul>
+        <li><b>jboss.home</b> - directory where JBoss is installed</li>
+        </ul>
+        </p>
+        <img src="../eclipse/10.JPG" border="0" alt="Eclipse - Step 9"></img>
+
+        <p>
+        10. You can now compile your project. Go to <b>Window - Show View - Ant</b>
+        </p>
+        <img src="../eclipse/11.JPG" border="0" alt="Eclipse - Step 10"></img>
+
+        <p>
+        11. Drag the <b>build.xml</b> to the ant view. Double click on the target 
+        <code>all</code> and your project will be compiled.
+        </p>
+        <img src="../eclipse/12.JPG" border="0" alt="Eclipse - Step 11"></img>
+
+      </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2007, Summa Tecnologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
