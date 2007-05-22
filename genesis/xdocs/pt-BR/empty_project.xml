@@ -40,7 +40,8 @@
       </ul>
       <p><b>Não é necessário utilizar a estrutura do projeto vazio se utilizar 
       apenas a funcionalidade de binding do genesis. Basta importar as 
-      bibliotecas do <code>genesis-client</code> e suas dependências como parte 
+      <a href="binding_jars.html">bibliotecas do 
+      <code>genesis-client</code> e suas dependências</a> como parte 
       de seu próprio projeto e criar um arquivo de recursos 
       <code>messages.properties</code> na raiz do jar configurado conforme a 
       <a href="configuring_messages.html">documentação</a>.</b></p>

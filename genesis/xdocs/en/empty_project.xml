@@ -35,11 +35,12 @@
         "http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
       </ul>
       <p><b>It is not necessary to use the empty-project structure if you are 
-      just planning to use genesis binding. Just import 
-      <code>genesis-client</code> jars and its dependencies as part of your 
-      project and create a resource file named <code>messages.properties</code> 
-      at the root of your jar file configured as described in the 
-      <a href="configuring_messages.html">documentation</a>.</b></p>
+      just planning to use genesis binding. Just import <a 
+      href="binding_jars.html"><code>genesis-client</code> jars and its 
+      dependencies</a> as part of your project and create a resource file named 
+      <code>messages.properties</code> at the root of your jar file configured 
+      as described in the <a 
+      href="configuring_messages.html">documentation</a>.</b></p>
     </section>
     <section name="Configuring a new project">
       <p>You can copy the whole <b>empty-project</b> structure to a development

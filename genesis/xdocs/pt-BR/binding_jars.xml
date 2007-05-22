@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Definindo os jars necessários para sua aplicação</title>
+    <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+  </properties>
+  <body>
+    <section name="Definindo os jars necessários para sua aplicação">
+      <p>É possível utilizar somente o binding do genesis sem usar sua estrutura 
+      de projeto que vem com a distribuição do framework. Contudo, os jars
+      necessários variam de acordo com as funcionalidades e a versão mínima do 
+      JRE que será utilizada. A tabela abaixo descreve os requisitos para cada
+      cenário:</p>
+      <table>
+         <tr>
+            <th>Funcionalidade</th>
+            <th>Java 1.4</th>
+            <th>Java 5</th>
+            <th>Java 6</th>
+            <th>Observação</th>
+         </tr>
+         <tr>
+            <td>Binding</td>
+            <td colspan="3">
+               backport175-&lt;versão&gt;.jar<br />
+               commons-beanutils-&lt;versão&gt;.jar<br />
+               commons-logging-&lt;versão&gt;.jar<br />
+               genesis-client-&lt;versão&gt;.jar<br />
+               genesis-shared-annotated-&lt;versão&gt;.jar<br />
+               reusable-components-&lt;versão&gt;.jar
+            </td>
+            <td />
+         </tr>
+         <tr>
+            <td>Suporte a anotações</td>
+            <td>genesis-annotation-jdk14-&lt;versão&gt;.jar</td>
+            <td colspan="2">genesis-annotation-jdk5-&lt;versão&gt;.jar</td>
+            <td />
+         </tr>
+         <tr>
+            <td>Binding Swing</td>
+            <td colspan="3">genesis-client-swing-&lt;versão&gt;.jar</td>
+            <td />
+         </tr>
+         <tr>
+            <td>Binding SWT</td>
+            <td colspan="3">genesis-client-swt-&lt;versão&gt;.jar</td>
+            <td />
+         </tr>
+         <tr>
+            <td>Binding Thinlet</td>
+            <td colspan="3">genesis-client-thinlet-&lt;versão&gt;.jar</td>
+            <td />
+         </tr>
+         <tr>
+            <td>JavaScript como linguagem de script</td>
+            <td colspan="2">
+               bsf-&lt;versão&gt;.jar<br />
+               js-&lt;versão&gt;.jar
+            </td>
+            <td>Nenhum jar é necessário</td>
+            <td>Essa é a linguagem de script padrão</td>
+         </tr>
+         <tr>
+            <td>BeanShell como linguagem de script</td>
+            <td colspan="3">
+               bsf-&lt;versão&gt;.jar<br />
+               bsh-&lt;versão&gt;.jar
+            </td>
+            <td />
+         </tr>
+         <tr>
+            <td>EL como linguagem de script</td>
+            <td colspan="3">
+               bsf-&lt;versão&gt;.jar<br />
+               commons-el-&lt;versão&gt;.jar<br />
+               jakarta-taglibs-standard-&lt;versão&gt;.jar<br />
+               jsp-api.jar
+            </td>
+            <td />
+         </tr>
+         <tr>
+            <td>JXPath como linguagem de script</td>
+            <td colspan="3">commons-jxpath-&lt;versão&gt;.jar</td>
+            <td />
+         </tr>
+         <tr>
+            <td>Validação</td>
+            <td colspan="3">
+               commons-digester-&lt;versão&gt;.jar<br />
+               commons-validator-&lt;versão&gt;.jar
+            </td>
+            <td />
+         </tr>
+         <tr>
+            <td>Validação baseada em expressões regulares</td>
+            <td colspan="3">
+               jakarta-oro-&lt;versão&gt;.jar
+            </td>
+            <td>Validador <code>email</code>, por exemplo</td>
+         </tr>
+      </table>
+    </section>
+  </body>
+</document>
