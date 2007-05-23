@@ -703,6 +703,8 @@
                location="${build.dir}/${jar.remote.name}" />
       <property name="jar.shared.location" 
                location="${build.dir}/${genesisBasedApplication.name}-shared.jar" />
+               
+      <property name="java.jvm" value="java" />
 
       <property name="jboss.provider.url" value="jnp://127.0.0.1" />
       <property name="jboss.factory.initial" 
@@ -958,12 +960,14 @@
          <attribute name="fork" default="true" />
          <attribute name="failonerror" default="true" />
          <attribute name="classpathref" />
+         <attribute name="jvm" default="${java.jvm}" />
          <element name="sysproperties" optional="true" />
          <element name="jvmargs" optional="true" />
          <element name="customize" optional="true" />
          <sequential>
             <java classname="${genesisBasedApplication.mainClass}" fork="@{fork}" 
-                  failonerror="@{failonerror}" classpathref="@{classpathref}">
+                  failonerror="@{failonerror}" classpathref="@{classpathref}"
+                  jvm="@{jvm}">
                <sysproperties />
                <jvmargs />
                <customize />

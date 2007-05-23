@@ -44,6 +44,7 @@
          <isset property="supports.java.annotation" />
       </condition>
       <property name="java.target.level" value="${java.source.level}" />
+      <property name="javac.fork" value="false" />
 
       <condition property="hibernate2.needed">
          <istrue value="${use.hibernate2}" />
@@ -185,6 +186,30 @@
                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml"
                classname="net.java.dev.genesis.anttasks.ant.types.OptionalFileSet"
                classpathref="anttasks.path" />
+   </target>
+
+   <target name="javac-macrodef">
+      <macrodef name="javac"
+                uri="https://genesis.dev.java.net/nonav/ns/master_build.xml">
+         <attribute name="classesdir" />
+         <attribute name="classpathref" />
+         <attribute name="sourcesdir" />
+         <attribute name="fork" default="${javac.fork}" />
+         <attribute name="executable" default="${javac.executable}" />
+
+         <sequential>
+            <mkdir dir="@{classesdir}" />
+            <javac destdir="@{classesdir}"
+                  debug="${keep.debug.information}"
+                  source="${java.source.level}"
+                  target="${java.target.level}"
+                  classpathref="@{classpathref}"
+                  fork="@{fork}"
+                  executable="@{executable}">
+               <src path="@{sourcesdir}" />
+            </javac>
+         </sequential>
+      </macrodef>
    </target>
 
    <target name="define-aw-macros" depends="init-paths">
@@ -451,15 +476,10 @@
                     shared:define-standard-classpath"/>
 
    <target name="shared:javac" if="shared.compile" 
-           depends="shared:clean,shared:define-classpath">
-      <mkdir dir="${shared.classes.dir}" />
-      <javac destdir="${shared.classes.dir}"
-            debug="${keep.debug.information}"
-            source="${java.source.level}"
-            target="${java.target.level}"
-            classpathref="shared.javac.classpath">
-         <src path="${shared.sources.dir}" />
-      </javac>
+           depends="shared:clean,shared:define-classpath,javac-macrodef">
+      <genesis:javac classesdir="${shared.classes.dir}"
+                     sourcesdir="${shared.sources.dir}"
+                     classpathref="shared.javac.classpath" />
    </target>
 
    <target name="shared:check-annotations-needed" depends="shared:init">
@@ -748,15 +768,10 @@
                     client:define-standard-classpath"/>
 
    <target name="client:javac" if="client.compile" 
-           depends="client:clean,client:define-classpath">
-      <mkdir dir="${client.classes.dir}" />
-      <javac destdir="${client.classes.dir}"
-            debug="${keep.debug.information}"
-            source="${java.source.level}"
-            target="${java.target.level}"
-            classpathref="client.javac.classpath">
-         <src path="${client.sources.dir}" />
-      </javac>
+           depends="client:clean,client:define-classpath,javac-macrodef">
+      <genesis:javac classesdir="${client.classes.dir}"
+                     sourcesdir="${client.sources.dir}"
+                     classpathref="client.javac.classpath" />
    </target>
 
    <target name="client:compile" depends="client:javac" />
