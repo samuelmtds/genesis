@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -167,6 +167,38 @@ public class StartupHelperTest extends GenesisTestCase {
       //testing the map collections
       assertEquals(3, startupHelper.getConverters().size());
       assertEquals(3, startupHelper.getFormatters().size());
+   }
+
+   public void testRemoveConverter() {
+      startupHelper = new StartupHelper();
+
+      BooleanConverter booleanConverter = new BooleanConverter();
+      startupHelper.addConverter(BooleanConverter.class, booleanConverter);
+
+      assertSame(booleanConverter, startupHelper.getConverter(
+            BooleanConverter.class));
+
+      int size = startupHelper.getConverters().size();
+
+      assertSame(booleanConverter, startupHelper.removeConverter(
+            BooleanConverter.class));
+      assertEquals(size - 1, startupHelper.getConverters().size());
+   }
+
+   public void testRemoveFormatter() {
+      startupHelper = new StartupHelper();
+
+      BooleanFormatter booleanFormatter = new BooleanFormatter();
+      startupHelper.addFormatter(BooleanFormatter.class, booleanFormatter);
+
+      assertSame(booleanFormatter, startupHelper.getFormatter(
+            BooleanFormatter.class));
+
+      int size = startupHelper.getFormatters().size();
+
+      assertSame(booleanFormatter, startupHelper.removeFormatter(
+            BooleanFormatter.class));
+      assertEquals(size - 1, startupHelper.getFormatters().size());
    }
 }
 
