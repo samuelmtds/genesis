@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,10 +46,5 @@ public class MockRecursiveComponentLookupStrategy extends
    protected boolean isAlreadyBound(Object object) {
       put("isAlreadyBound(Object)", object);
       return false;
-   }
-
-   protected String getRealName(Object object) {
-      put("getRealName(Object)", object);
-      return ((Component)object).getName();
    }
 }

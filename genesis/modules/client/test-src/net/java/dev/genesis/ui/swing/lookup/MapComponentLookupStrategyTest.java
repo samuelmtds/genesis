@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,11 +35,7 @@ public class MapComponentLookupStrategyTest extends GenesisTestCase {
    }
 
    protected void setUp() {
-      strategy = new MapComponentLookupStrategy() {
-         protected String getRealName(Object object) {
-            return ((Component)object).getName();
-         }
-      };
+      strategy = new MapComponentLookupStrategy();
       panel = new JPanel();
       anotherPanel = new JPanel();
    }
@@ -70,5 +66,8 @@ public class MapComponentLookupStrategyTest extends GenesisTestCase {
       assertSame(anotherPanel, strategy.lookup(null, "someName"));
       assertEquals("someName", strategy.getName(anotherPanel));
       assertNull(strategy.getName(panel));
+
+      assertNull(strategy.getName(new Object()));
+      assertNull(strategy.getName(null));
    }
 }

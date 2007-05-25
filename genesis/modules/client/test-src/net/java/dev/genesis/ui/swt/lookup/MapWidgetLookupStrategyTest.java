@@ -34,11 +34,7 @@ public class MapWidgetLookupStrategyTest extends GenesisTestCase {
    }
 
    protected void setUp() {
-      strategy = new MapWidgetLookupStrategy() {
-         public String getRealName(Object object) {
-            return (String) ((Widget)object).getData();
-         }
-      };
+      strategy = new MapWidgetLookupStrategy();
       shell = new Shell();
       anotherShell = new Shell();
    }
@@ -69,5 +65,8 @@ public class MapWidgetLookupStrategyTest extends GenesisTestCase {
       assertSame(anotherShell, strategy.lookup(null, "someName"));
       assertEquals("someName", strategy.getName(anotherShell));
       assertNull(strategy.getName(shell));
+
+      assertNull(strategy.getName(new Object()));
+      assertNull(strategy.getName(null));
    }
 }

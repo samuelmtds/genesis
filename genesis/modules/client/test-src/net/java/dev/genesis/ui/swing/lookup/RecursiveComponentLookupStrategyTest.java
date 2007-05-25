@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -106,4 +106,14 @@ public class RecursiveComponentLookupStrategyTest extends GenesisTestCase {
       assertEquals("someName", strategy.getName(anotherPanel));
       assertEquals("someName", strategy.getName(panel));
    }
+
+   public void testNoComponents() {
+      assertNull(strategy.getRealName(null));
+      assertNull(strategy.getRealName(new Object()));
+      assertNull(strategy.lookup(null, null));
+      assertNull(strategy.lookup(null, ""));
+      assertNull(strategy.lookup(new Object(), null));
+      assertNull(strategy.lookup(new Object(), ""));
+   }
+
 }

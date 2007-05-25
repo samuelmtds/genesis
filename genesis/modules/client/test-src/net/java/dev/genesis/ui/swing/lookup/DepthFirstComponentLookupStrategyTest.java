@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,9 @@
  */
 package net.java.dev.genesis.ui.swing.lookup;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import net.java.dev.genesis.GenesisTestCase;
@@ -30,6 +33,9 @@ public class DepthFirstComponentLookupStrategyTest extends GenesisTestCase {
    private JPanel rootLevel2Position0;
    private JPanel panelLevel1Position1;
    private JPanel panelLevel2Position0;
+   private JMenuBar menuBar;
+   private JMenu menu;
+   private JMenuItem menuItem;
 
    public DepthFirstComponentLookupStrategyTest() {
       super("Depth First Component LookupStrategy Unit Test");
@@ -50,6 +56,16 @@ public class DepthFirstComponentLookupStrategyTest extends GenesisTestCase {
 
       rootLevel1Position1.add(panelLevel1Position1);
       rootLevel2Position0.add(panelLevel2Position0);
+
+      menuBar = new JMenuBar();
+
+      menu = new JMenu();
+      menu.setName("aMenu");
+      menuBar.add(menu);
+
+      menuItem = new JMenuItem();
+      menuItem.setName("aMenuItem");
+      menu.add(menuItem);
    }
 
    public void testSimpleLookup() {
@@ -64,12 +80,17 @@ public class DepthFirstComponentLookupStrategyTest extends GenesisTestCase {
       assertSame(panelLevel2Position0, strategy.lookup(root, "theName"));
    }
    
-   public void testBreadthFirstLookup() {
+   public void testDepthFirstLookup() {
       panelLevel1Position1.setName("someName");
       panelLevel2Position0.setName("someName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
 
       panelLevel2Position0.setName("changeName");
       assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+   }
+
+   public void testLookupForMenus() {
+      assertSame(menu, strategy.lookup(menuBar, menu.getName()));
+      assertSame(menuItem, strategy.lookup(menuBar, menuItem.getName()));
    }
 }

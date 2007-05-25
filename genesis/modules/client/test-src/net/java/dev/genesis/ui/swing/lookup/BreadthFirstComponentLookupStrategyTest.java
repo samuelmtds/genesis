@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,18 +18,25 @@
  */
 package net.java.dev.genesis.ui.swing.lookup;
 
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import net.java.dev.genesis.GenesisTestCase;
 
 public class BreadthFirstComponentLookupStrategyTest extends GenesisTestCase {
    private BreadthFirstComponentLookupStrategy strategy;
-   private JPanel root;
+   private JFrame root;
    private JPanel rootLevel1Position0;
    private JPanel rootLevel1Position1;
    private JPanel rootLevel2Position0;
    private JPanel panelLevel1Position1;
    private JPanel panelLevel2Position0;
+   private JMenuBar menuBar;
+   private JMenu menu;
+   private JMenuItem menuItem;
 
    public BreadthFirstComponentLookupStrategyTest() {
       super("Breadth First Component LookupStrategy Unit Test");
@@ -39,17 +46,27 @@ public class BreadthFirstComponentLookupStrategyTest extends GenesisTestCase {
       strategy = new BreadthFirstComponentLookupStrategy();
       panelLevel1Position1 = new JPanel();
       panelLevel2Position0 = new JPanel();
-      root = new JPanel();
+      root = new JFrame();
       rootLevel1Position0 = new JPanel();
       rootLevel1Position1 = new JPanel();
       rootLevel2Position0 = new JPanel();
 
-      root.add(rootLevel1Position0);
-      root.add(rootLevel1Position1);
+      root.getContentPane().add(rootLevel1Position0);
+      root.getContentPane().add(rootLevel1Position1);
       rootLevel1Position0.add(rootLevel2Position0);
 
       rootLevel1Position1.add(panelLevel1Position1);
       rootLevel2Position0.add(panelLevel2Position0);
+
+      menuBar = new JMenuBar();
+
+      menu = new JMenu();
+      menu.setName("aMenu");
+      menuBar.add(menu);
+
+      menuItem = new JMenuItem();
+      menuItem.setName("aMenuItem");
+      menu.add(menuItem);
    }
 
    public void testSimpleLookup() {
@@ -71,5 +88,12 @@ public class BreadthFirstComponentLookupStrategyTest extends GenesisTestCase {
       
       panelLevel1Position1.setName("changeName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      assertNull(strategy.lookup(root, "unknownName"));
+   }
+
+   public void testLookupForMenus() {
+      assertSame(menu, strategy.lookup(menuBar, menu.getName()));
+      assertSame(menuItem, strategy.lookup(menuBar, menuItem.getName()));
    }
 }
