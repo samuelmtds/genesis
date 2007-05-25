@@ -18,6 +18,8 @@
  */
 package net.java.dev.genesis.helpers;
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.mockobjects.MockScriptFactory;
+import net.java.dev.genesis.script.ScriptRegistry;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
@@ -82,6 +84,36 @@ public class CriteriaPropertyHelperTest extends GenesisTestCase {
       }
    }
 
+   public static class MockFormNoMetadata {
+      private String property1;
+      private String property2;
+      private String formProperty;
+
+      public String getProperty1() {
+         return property1;
+      }
+
+      public void setProperty1(String property1) {
+         this.property1 = property1;
+      }
+
+      public String getProperty2() {
+         return property2;
+      }
+
+      public void setProperty2(String property2) {
+         this.property2 = property2;
+      }
+
+      public String getFormProperty() {
+         return formProperty;
+      }
+
+      public void setFormProperty(String formProperty) {
+         this.formProperty = formProperty;
+      }
+   }
+
    public void testFillCriteria() throws Exception {
       MockHibernateCriteria criteria = new MockHibernateCriteria();
       MockForm form = new MockForm();
@@ -114,6 +146,44 @@ public class CriteriaPropertyHelperTest extends GenesisTestCase {
       assertEquals(1, criteria.getPropertiesMap().size());
       assertSame(value, criteria.getPropertiesMap().get("property2"));
 
+      // Fields that don't exist in both classes shouldn't be copied
+      form.setProperty2(null);
+      form.setFormProperty(value);
+      criteria.setCriteriaProperty(value);
+      CriteriaPropertyHelper.fillCriteria(criteria, form);
+      assertTrue(criteria.getPropertiesMap().isEmpty());
+   }
+   
+   public void testFillCriteriaNoMetadata() throws Exception {
+      MockHibernateCriteria criteria = new MockHibernateCriteria();
+      MockFormNoMetadata form = new MockFormNoMetadata();
+
+      ScriptRegistry.getInstance().setScriptFactoryName(MockScriptFactory.class.getName());
+
+      // Simple test with "incomplete" metadata
+      CriteriaPropertyHelper.fillCriteria(criteria, form);
+      assertTrue(criteria.getPropertiesMap().isEmpty());
+      
+      // Tests for correct behaviour when a field is empty
+      String value = new String();
+      form.setProperty1(value);
+      CriteriaPropertyHelper.fillCriteria(criteria, form);
+      assertEquals(0, criteria.getPropertiesMap().size());
+      
+      // Tests for correct behaviour when a field is populated
+      value = "value";
+      form.setProperty1(value);
+      CriteriaPropertyHelper.fillCriteria(criteria, form);
+      assertEquals(1, criteria.getPropertiesMap().size());
+      assertSame(value, criteria.getPropertiesMap().get("property1"));
+      
+      // Tests for correct behaviour when a field with no FieldMetadata is filled
+      form.setProperty1(null);
+      form.setProperty2(value);
+      CriteriaPropertyHelper.fillCriteria(criteria, form);
+      assertEquals(1, criteria.getPropertiesMap().size());
+      assertSame(value, criteria.getPropertiesMap().get("property2"));
+      
       // Fields that don't exist in both classes shouldn't be copied
       form.setProperty2(null);
       form.setFormProperty(value);

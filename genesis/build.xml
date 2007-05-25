@@ -653,6 +653,7 @@
             <path location="${genesis.module.client}/${build.dest}" />
             <path location="${genesis.module.shared}/${build.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
+            <path location="${genesis.module.annotation}/${build.dest}" />
             <fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
             <fileset dir="${swt.specific.dir}" includes="*.jar" />
          </classpath>
