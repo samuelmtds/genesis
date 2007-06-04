@@ -719,7 +719,7 @@
 			</fileset>
 			<report format="frames" todir="${genesis.build.dir}/${test.reportsDirectory}" />
 		</junitreport>
-        <echo>JUnit hmtl reports is located at ${genesis.module.tests}/${test.reportsDirectory}</echo>
+        <echo>JUnit hmtl reports is located at ${genesis.build.dir}/${test.reportsDirectory}</echo>
 	</target>
 
 	<target name="genesis:clean" description="Clean generated files">
