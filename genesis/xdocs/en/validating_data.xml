@@ -9,83 +9,33 @@
     <section name="Validating data">
       <p>Data validation is critical for system integrity, especially when data
       is entered by users, as is the case for UI applications. Support for
-      validation in genesis is implemented by using one of Jakarta project's
+      validation in genesis is implemented by using one of Jakarta project
       components, <a href=
       "http://jakarta.apache.org/commons/validator/">commons-validator</a>.
       Several other open-source frameworks use commons-validator as a foundation
       for their own validation components, including Struts, so it is likely you 
-      are already used to this API. Otherwise, we recommend reading the docs 
-      from their project site.</p>
-      <p>Annotation <code>@ValidateBefore</code> can be used in actions that are
-      only supposed to be executed when validation succeeds. If a validation 
-      error occurs, a <code>net.java.dev.genesis.ui.ValidationException</code> 
-      will be thrown - an exception that is <a 
-      href="handling_errors.html">handled by default</a> by genesis by 
-      displaying error information in an user-friendly way.</p>
-      <p>Several default validators are implemented by 
+      are already familiar with this API.</p>
+      <p>The basic steps for implementing validation for your forms are:</p>
+      <ol>
+        <li>Configuring validators</li>
+        <li>Configuring validator rules</li>
+        <li>Configuring which actions require validation</li>
+      </ol>
+      <p>Although it is possible to perform these tasks programatically, this
+      section will cover how to do them in a <b>declarative</b> way.</p>
+      <p>A validator is basically a static method that receives as arguments 
+      the bean being validated and some Commons Validator classes that represent
+      the environment configuration. Several default validators are implemented by 
       <code>BasicValidator</code>, which is contained in the
       <code>net.java.dev.genesis.ui</code> package. Most of these validators are
       similar to the ones provided with Struts, so it is easier for those 
-      familiar with this framework to understand them. They are:</p>
-      <ul>
-        <li><code><b>byte</b>, <b>short</b>, <b>int</b>, <b>long</b>,
-        <b>float</b> and <b>double</b></code>: check if data can be converted to
-        one of these types without any overflow.</li>
-        <li><code><b>bigDecimal</b></code>: checks if data can be converted to
-        <code>java.math.BigDecimal</code> using the default <a href=
-        "http://jakarta.apache.org/commons/beanutils/">BeanUtils</a> converter
-        registered for this class. genesis provides a custom implementation of 
-        this converter, <code>BigDecimalConverter</code> in
-        <code>net.java.dev.genesis.commons.beanutils.converters</code>, since
-        implementations that ship with BeanUtils do not work as expected for the
-        pt-BR Locale.</li>
-        <li><code><b>date</b></code>: implements date validation. The
-        variable <code>pattern</code> can be used to set a valid data pattern to
-        be used for the process. This pattern should follow the 
-        <code>java.text.DateFormat</code> pattern specification.</li>
-        <li><code><b>email</b></code>: only accepts content that can be
-        considered a syntatically valid email.</li>
-        <li><code><b>required</b></code>: asserts the field is not empty.</li>
-        <li><code><b>requiredif</b></code>: compatible with the version that
-        comes with Struts, it implements a somewhat weak validation scheme. Its 
-        use is not recommended and it is provided just as a way to make it 
-        easier for Struts users to use genesis validation. Use the <a 
-        href="#jxpath">jxpath</a> validator instead.</li>
-        <li><code><b>mask</b></code>: implements validation based on a regular
-        expression. It requires the definition of a <code>mask</code>
-        variable containg the regular expression.</li>
-        <li><code><b>minlength</b> and <b>maxlength</b></code>: guarantee that
-        informed data has at least and at most, respectively, the number of 
-        characters defined by the <code>minlength</code> or 
-        <code>maxlength</code> variables.</li>
-        <li><code><b>min</b></code>: checks if the number is greater or equal to 
-        the value defined by the <code>min</code> variable.</li>
-        <li><code><b>max</b></code>: checks if the number is lesser or equal to 
-        the value defined by the <code>max</code> variable.</li>
-        <li><code><b>longRange</b>, <b>doubleRange</b> and <b>bigDecimalRange</b
-        ></code>: check if the number is part of an expected interval, defined 
-        by variables <code>min</code> and <code>max</code>.</li>
-        <li><a name="script"><code><b>script</b></code></a>: it considers data 
-        as valid if evaluating the script expression 
-        defined by the variable named <code>script</code> returns a value 
-        different from <code>java.lang.Boolean.FALSE</code>.</li>
-      </ul>
-      <p>As it is true for Struts validators, all the validators provided with 
-      genesis except for <code>script</code> are only triggered if the field is 
-      not empty. This means that <b>even if you configure a validator properly, 
-      it will be invoked only when the user inputs something into the field</b>. 
-      If you would like your validator to always be run, <code>required</code> 
-      should also be configured for the field.</p>
-      <p>Validators receive the input in its "raw" String form. It's
-      important to keep that in mind when coding script expressions or using a
-      custom validator.</p>
-      <p>The class that integrates commons-validator with genesis,
-      <code>net.java.dev.genesis.ui.ValidationUtils</code>, expects two
-      configuration files to be available in the classpath:
-      <code>validation-rules.xml</code> and <code>validation.xml</code>. These
-      files must be comply with the commons-validator 1.1 DTD. A default
-      configuration for <code>validation-rules.xml</code> is provided with
-      genesis-client jar as shown below:</p>
+      familiar with this framework to understand them.</p>
+      <p>If you are using genesis <a href="empty_project.html">empty 
+      project</a>, these validators are already configured in 
+      <code>modules/client/src/validator-rules.xml</code>. If you are using the
+      binding itself in a regular IDE project, you need to create a file with 
+      such a name and it must be available at the root of your application 
+      classpathin runtime. Its content should be:</p>
 <source>
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -134,6 +84,7 @@
                 method="validateRequired" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.required"/>
+        <!-- requiredif validator is deprecated. Use script validator instead -->
         <validator name="requiredif" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateRequiredIf" 
@@ -204,232 +155,524 @@
 </form-validation>
 ]]>
 </source>
-      <p>Usually, the most practical way to configure form validation is to use
-      <a href="http://xdoclet.sourceforge.net/">XDoclet</a>. An example of how to 
-      configure validation for a form from the useradmin sample is the 
-      <code>InsertUpdateForm</code> class, from package 
-      <code>net.java.dev.genesis.samples.useradmin.ui</code>, partially shown 
-      below:</p>
+      <p>When there is a default message for a validator, it is referred by the 
+      <code>msg</code> property. These properties must be declared in the 
+      messages files. This is the case for the empty project; if you are not 
+      using it, you just need to follow the instructions in the <a 
+      href="configuring_messages.html">Configuring messages</a> section.</p>
+      <p>In runtime, validation rules for each form are parsed from a xml file
+      named <code>validation.xml</code>, that must be available from your
+      application classpath root. The easiest way to configure this file is to 
+      generate it using <a href="http://xdoclet.sourceforge.net/">XDoclet</a>, 
+      a tool that generates code from tags contained in your regular Java code. 
+      This will be the approach covered by this document.</p>
+      <p>If you are using the empty project, it is already configured to 
+      generate this file. If not, you will need to add the target below to your
+      <code>build.xml</code> file and call it as appropriate:</p>
+<source>
+<![CDATA[
+<target name="generate-validation">
+   <path id="xdoclet.path">
+      <fileset dir="${xdoclet.dist}" includes="*.jar" />
+   </path>
+
+   <taskdef name="genesisdoclet" 
+            classname="xdoclet.modules.genesis.GenesisDocletTask" 
+            classpathref="xdoclet.path" />
+
+   <genesisdoclet destdir="${client.validation.dir}" 
+                  verbose="true">
+      <fileset dir="${client.sources.dir}" includes="**/*.java" />
+      <genesisvalidationxml xmlencoding="ISO-8859-1" />
+   </genesisdoclet>
+</target>
+]]>
+</source>
+      <p>The properties referenced by the target should configured as 
+      described:</p>
+      <ul>
+        <li><code>xdoclet.dist</code>: genesis distribution dir that contains 
+        the framework's XDoclet modules' jars</li>
+        <li><code>client.validation.dir</code>: dir where 
+        <code>validation.xml</code> should be generated</li>
+        <li><code>client.sources.dir</code>: dir that contains view source 
+        files</li>
+      </ul>
+      <p>The first step to declare that a form contains validation rules it to 
+      use the <code>@genesis.form</code> tag in the class, as shown below:</p>
 <source>
 /**
  * @genesis.form
  */
 @Form
-public class InsertUpdateForm {
+public class ValidationExampleForm {
+}   
+</source>
+      <p>Notice that <code>@genesis.form</code> and <code>@Form</code> <b>are 
+      not related</b> and have different purposes. Besides that, 
+      <code>@genesis.form</code> is always a Javadoc tag, even when Java 5 is 
+      used.</p>
+      <p>The next step is to configure which validators should be applied to 
+      each property, its parameters and error messages. To do so, 
+      <code>@genesis.validator</code>, <code>@genesis.validator-args</code> and
+      <code>@genesis.validator-var</code> should be used <b>in property 
+      setters</b>. The example shown below makes it easier to understand how 
+      they interact:</p>
+<source>
    /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.birthday"
-    *
-    * @genesis.validator type="date"
-    * @genesis.validator-var name="pattern" value="MM/dd/yyyy"
-    */
-   public void setBirthday(Date birthday) {
-      this.birthday = birthday;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.country"
-    */
-   public void setCountry(Country country) {
-      this.country = country;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.email"
-    *
-    * @genesis.validator type="email"
-    * @genesis.validator-args arg0resource="User.email"
-    */
-   public void setEmail(String email) {
-      this.email = email;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.role"
-    */
-   public void setRole(Role role) {
-      this.role = role;
-      setRoleCode(role == null ? null : role.getCode());
-   }
-
-   /**
-    * @genesis.validator type="required"
     * @genesis.validator-args arg0resource="User.login"
+    *
+    * @genesis.validator type="required"
     *
     * @genesis.validator type="minlength" arg1value="${var:minlength}"
     * @genesis.validator-var name="minlength" value="4"
     */
-   public void setLogin(String login) {
-      this.login = login;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.name"
-    */
-   public void setName(String name) {
-      this.name = name;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.password"
-    *
-    * @genesis.validator type="minlength" arg1value="${var:minlength}"
-    * @genesis.validator-var name="minlength" value="6"
-    *
-    * @genesis.validator type="maxlength" arg1value="${var:maxlength}"
-    * @genesis.validator-var name="maxlength" value="8"
-    */
-   public void setPassword(String password) {
-      this.password = password;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.address"
-    */
-   public void setAddress(String address) {
-      this.address = address;
-   }
-
-   /**
-    * @genesis.validator type="required"
-    * @genesis.validator-args arg0resource="User.state"
-    */
-   public void setState(State state) {
-      this.state = state;
-   }
-
-   @Action
-   @ValidateBefore
-   public void save() throws Exception {
-      final User user = new User();
-      PropertyUtils.copyProperties(user, this);
-      if (getId() == null) {
-         new UserCreateCommand().createUser(user);
-      } else {
-         new UserUpdateCommand().updateUser(user);
-      }
-   }
-
-   // ...
-}
+    public void setLogin(String login) {
+       // method content
+    }
 </source>
-      <p>Before invoking <code>save()</code>, validation is executed based on
-      the rules defined by the generated file and eventual errors will prevent
-      the method from being executed. For those not used to XDoclet, here is a 
-      transcription from the <code>validation.xml</code> file generated during 
-      build execution:</p>
+      <p>To begin with, let's analyze the <code>@genesis.validator 
+      type="required"</code> tag. This tag indicates the <code>required</code> 
+      validator should be applied to the annotated property, using its default
+      message. If we look at how <code>required</code> is defined in 
+      <code>validation-rules.xml</code>:</p>
 <source>
 <![CDATA[
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE form-validation PUBLIC
-   '-//Apache Software Foundation//DTD Commons Validator Rules Configuration
-   1.1//EN'
-   'http://jakarta.apache.org/commons/dtds/validator_1_1.dtd'>
-<form-validation>
-  <!--
-    Define global validation config in validation-global.xml
-  -->
-  <formset>
-      <form name="net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm">
-              <field property="birthday"
-                     depends="required,date">
-                  <arg position="0"
-                       key="User.birthday"
-                  />
-                  <var>
-                    <var-name>pattern</var-name>
-                    <var-value>MM/dd/yyyy</var-value>
-                  </var>
-              </field>
-              <field property="country"
-                     depends="required">
-                  <arg position="0"
-                       key="User.country"
-                  />
-              </field>
-              <field property="email"
-                     depends="required,email">
-                  <arg position="0"
-                       key="User.email"
-                  />
-              </field>
-              <field property="role"
-                     depends="required">
-                  <arg position="0"
-                       key="User.role"
-                  />
-              </field>
-              <field property="login"
-                     depends="required,minlength">
-                  <arg position="0"
-                       key="User.login"
-                  />
-                  <arg position="1"
-                       name="minlength"
-                       key="${var:minlength}"
-                       resource="false"
-                  />
-                  <var>
-                    <var-name>minlength</var-name>
-                    <var-value>4</var-value>
-                  </var>
-              </field>
-              <field property="name"
-                     depends="required">
-                  <arg position="0"
-                       key="User.name"
-                  />
-              </field>
-              <field property="password"
-                     depends="required,minlength,maxlength">
-                  <arg position="0"
-                       key="User.password"
-                  />
-                  <arg position="1"
-                       name="minlength"
-                       key="${var:minlength}"
-                       resource="false"
-                  />
-                  <arg position="1"
-                       name="maxlength"
-                       key="${var:maxlength}"
-                       resource="false"
-                  />
-                  <var>
-                    <var-name>minlength</var-name>
-                    <var-value>6</var-value>
-                  </var>
-                  <var>
-                    <var-name>maxlength</var-name>
-                    <var-value>8</var-value>
-                  </var>
-              </field>
-              <field property="address"
-                     depends="required">
-                  <arg position="0"
-                       key="User.address"
-                  />
-              </field>
-              <field property="state"
-                     depends="required">
-                  <arg position="0"
-                       key="User.state"
-                  />
-              </field>
-      </form>
-  </formset>
-</form-validation>
+<validator name="required" 
+       classname="net.java.dev.genesis.ui.BasicValidator" 
+       method="validateRequired" 
+       methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+       msg="errors.required"/>
 ]]>
 </source>
-      <p>A resource file is used to configure messages, as described in <a 
-      href="configuring_messages.html">Configuring messages</a>.
-      </p>
+      <p>we will see its message is defined by the <code>errors.required</code>
+      property, that may be defined in the messages file as:</p>
+<source>
+errors.required=The {0} field is required.
+</source>
+      <p>The <code>{0}</code> constant will be replaced by the validator's 
+      zero argument, if it is configured . That is why the
+      <code>@genesis.validator-args arg0resource="User.login"</code> is used: 
+      it indicates that for very validation message, the argument number zero
+      will be the value of <code>User.login</code> in the messages file. If this
+      property is configured as:</p>
+<source>
+User.login=login
+</source>
+      <p>the generated validation message will be:</p>
+<source>
+The login field is required.
+</source>
+      <p>So it is possible to understand validators have default messages that 
+      are parametrized based on the property being validated and that constant 
+      values must be declared - and they must be configured on the messages 
+      file - in order to have the desired output.</p>
+      <p>Now, let's examine the <code>@genesis.validator type="minlength" 
+      arg1value="${var:minlength}"</code> tag. It means the 
+      <code>minlength</code> validator will be applied to the property and that
+      its message argument number 1 should be the value of the 
+      <code>minlength</code> variable. Variables are used to parametrize 
+      validators and can be declared using <code>@genesis.validator-var</code>. 
+      In this case, <code>@genesis.validator-var name="minlength" 
+      value="4"</code> tells the validator not to allow input whose length is 
+      lesser than 4.</p>
+      <p>Assuming  <code>errors.minlength</code> is configured as:</p>
+<source>
+errors.minlength=The {0} field can not be less than {1} characters.
+</source>
+      <p>the message generated when the field is invalid will be :</p>
+<source>
+The login field can not be less than 4 characters.
+</source>
+      <p>The table below shows which validators come with genesis, their 
+      purpose, variables, the meaning of each message argument and sample 
+      code:</p>
+      <table>
+         <tr>
+            <th>Validator</th>
+            <th>Purpose</th>
+            <th>Variables</th>
+            <th>Message arguments</th>
+            <th>Usage sample</th>
+         </tr>
+         <tr>
+            <td><code>bigDecimal</code></td>
+            <td>Checks if the input can be converted to
+            <code>java.math.BigDecimal</code> using the default <a href=
+            "http://jakarta.apache.org/commons/beanutils/">BeanUtils</a> 
+            converter registered for this class. genesis provides a custom 
+            implementation of this converter, <code>BigDecimalConverter</code> 
+            in <code>net.java.dev.genesis.commons.beanutils.converters</code>, 
+            since implementations that ship with BeanUtils do not work as 
+            expected for the pt-BR Locale. </td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.bigDecimalField"
+ *
+ * @genesis.validator type="bigDecimal"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>bigDecimalRange</code></td>
+            <td>Checks if the input is a <code>BigDecimal</code> contained in 
+            the specified interval</td>
+            <td>
+               <code>min</code>: Minimum value<br />
+               <code>max</code>: Maximum value<br />
+            </td>
+            <td>
+               0 - Property name<br />
+               1 - Minimum value<br />
+               2 - Maximum value
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.bigDecimalField"
+ *
+ * @genesis.validator type="bigDecimalRange" arg1value="${var:min}" 
+ *                    arg2value="${var:max}"
+ * @genesis.validator-var name="min" value="0"
+ * @genesis.validator-var name="max" value="1.5"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>byte</code></td>
+            <td>Checks if the input can be converted to a byte without any 
+            overflow</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.byteField"
+ *
+ * @genesis.validator type="byte"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>date</code></td>
+            <td>Checks if the input can be converted to a valid date</td>
+            <td><code>pattern</code>: Pattern the input must match. This pattern
+            is compatible with those specified for 
+            <code>java.text.DateFormat</code></td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.dateField"
+ *
+ * @genesis.validator type="date"
+ * @genesis.validator-var name="pattern" value="dd/MM/yyyy"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>double</code></td>
+            <td>Checks if the input can be converted to a double without any 
+            overflow</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.doubleField"
+ *
+ * @genesis.validator type="double"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>doubleRange</code></td>
+            <td>Checks if the input is a double contained in the specified 
+            interval</td>
+            <td>
+               <code>min</code>: Minimum value<br />
+               <code>max</code>: Maximum value<br />
+            </td>
+            <td>
+               0 - Property name<br />
+               1 - Minimum value<br />
+               2 - Maximum value
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.doubleField"
+ *
+ * @genesis.validator type="doubleRange" arg1value="${var:min}" 
+ *                    arg2value="${var:max}"
+ * @genesis.validator-var name="min" value="0"
+ * @genesis.validator-var name="max" value="1.5"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>email</code></td>
+            <td>Checks if the input is a syntatically valid email</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.emailField"
+ *
+ * @genesis.validator type="email"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>float</code></td>
+            <td>Checks if the input can be converted to a float without any 
+            overflow</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.floatField"
+ *
+ * @genesis.validator type="float"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>int</code></td>
+            <td>Checks if the input can be converted to a int without any 
+            overflow</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.intField"
+ *
+ * @genesis.validator type="int"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>long</code></td>
+            <td>Checks if the input can be converted to a long without any 
+            overflow</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.longField"
+ *
+ * @genesis.validator type="long"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>longRange</code></td>
+            <td>Checks if the input is a long contained in the specified 
+            interval</td>
+            <td>
+               <code>min</code>: Minimum value<br />
+               <code>max</code>: Maximum value<br />
+            </td>
+            <td>
+               0 - Property name<br />
+               1 - Minimum value<br />
+               2 - Maximum value
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.longField"
+ *
+ * @genesis.validator type="longRange" arg1value="${var:min}" 
+ *                    arg2value="${var:max}"
+ * @genesis.validator-var name="min" value="0"
+ * @genesis.validator-var name="max" value="100"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>mask</code></td>
+            <td>Checks if the input matches a regular expression</td>
+            <td><code>mask</code>: Regular expression</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.maskConstrainedField"
+ *
+ * @genesis.validator type="mask"
+ * @genesis.validator-var name="pattern" value="^\d{3}\.\d{3}$"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>max</code></td>
+            <td>Checks if the input is lesser than or equal to a maximum 
+            value</td>
+            <td><code>max</code>: Maximum value</td>
+            <td>
+               0 - Property name<br/>
+               1 - Maximum value
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.maxValueField"
+ *
+ * @genesis.validator type="max" arg1value="${var:max}"
+ * @genesis.validator-var name="max" value="100"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>maxlength</code></td>
+            <td>Checks if the input length is lesser than or equal to a maximum 
+            value</td>
+            <td><code>maxlength</code>: Maximum length</td>
+            <td>
+               0 - Property name<br/>
+               1 - Maximum length
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.maxLengthField"
+ *
+ * @genesis.validator type="maxlength" arg1value="${var:maxlength}"
+ * @genesis.validator-var name="maxlength" value="20"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>min</code></td>
+            <td>Checks if the input is greater than or equal to a minimum 
+            value</td>
+            <td><code>min</code>: Minimum value</td>
+            <td>
+               0 - Property name<br/>
+               1 - Minimum value
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.minValueField"
+ *
+ * @genesis.validator type="min" arg1value="${var:min}"
+ * @genesis.validator-var name="min" value="100"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>minlength</code></td>
+            <td>Checks if the input legnth is greater than or equal to a minimum 
+            value</td>
+            <td><code>minlength</code>: Minimum length</td>
+            <td>
+               0 - Property name<br/>
+               1 - Minimum length
+            </td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.minLengthField"
+ *
+ * @genesis.validator type="minlength" arg1value="${var:minlength}"
+ * @genesis.validator-var name="minlength" value="20"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>required</code></td>
+            <td>Checks if the input is not empty</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.requiredField"
+ *
+ * @genesis.validator type="required"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>script</code></td>
+            <td>Considers the input valid if evaluating a script expression does
+            not return <code>java.lang.Boolean.FALSE</code></td>
+            <td><code>script</code>: Expression to be evaluated</td>
+            <td>There is no standard message for this validator. The message 
+            must be defined using <code>msgkey</code>, and its value must be 
+            configured in the messages file</td>
+            <td>
+<source>
+/**
+ * @genesis.validator type="script" msgkey="Person.requiredSpouse"
+ * @genesis.validator-var name="script" 
+ *                        value="!form.married or g.isNotEmpty('form:spouse')"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>short</code></td>
+            <td>Checks if the input can be converted to a short without any 
+            overflow</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.shortField"
+ *
+ * @genesis.validator type="short"
+ */
+</source>
+            </td>
+         </tr>
+      </table>
+      <p>Similarly to validators, all validators bundled with genesis except 
+      for <code>script</code> are only triggered if the field is not empty. This 
+      means that <b>even if you configure a validator properly, it will be 
+      invoked only when the user inputs something into the field</b>. If you 
+      would like your validator to always be run, <code>required</code> should 
+      also be configured for the field.</p>
+      <p>Finally, in order to require the form to be valid before an action is 
+      perfomed, you should annotate it with <code>@ValidateBefore</code>:</p>
+<source>
+@Action
+@ValidateBefore
+public void save() {
+   // business logic
+}
+</source>      
+      <p>If a validation error occurs, a 
+      <code>net.java.dev.genesis.ui.ValidationException</code> will be thrown - 
+      an exception that is <a href="handling_errors.html">handled by default</a> 
+      by genesis by displaying error information in an user-friendly way.</p>
     </section>
   </body>
 </document>

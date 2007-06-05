@@ -302,22 +302,6 @@ O campo login precisa ter pelo menos 4 caracteres.
             <th>Exemplo de uso</th>
          </tr>
          <tr>
-            <td><code>byte</code></td>
-            <td>Verifica se o dado pode ser convertido para um byte sem estouro
-            de faixa</td>
-            <td>Nenhuma</td>
-            <td>0 - Nome da propriedade</td>
-            <td>
-<source>
-/**
- * @genesis.validator-args arg0resource="Entidade.campoByte"
- *
- * @genesis.validator type="byte"
- */
-</source>
-            </td>
-         </tr>
-         <tr>
             <td><code>bigDecimal</code></td>
             <td>Verifica se o dado pode ser convertido para 
             <code>java.math.BigDecimal</code> utilizando o conversor padrão do 
@@ -361,6 +345,22 @@ O campo login precisa ter pelo menos 4 caracteres.
  *                    arg2value="${var:max}"
  * @genesis.validator-var name="min" value="0"
  * @genesis.validator-var name="max" value="1.5"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>byte</code></td>
+            <td>Verifica se o dado pode ser convertido para um byte sem estouro
+            de faixa</td>
+            <td>Nenhuma</td>
+            <td>0 - Nome da propriedade</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entidade.campoByte"
+ *
+ * @genesis.validator type="byte"
  */
 </source>
             </td>
