@@ -44,6 +44,7 @@
                 method="validateRequired" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.required"/>
+        <!-- requiredif validator is deprecated. Use script validator instead -->
         <validator name="requiredif" 
                 classname="net.java.dev.genesis.ui.BasicValidator" 
                 method="validateRequiredIf" 

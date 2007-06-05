@@ -135,6 +135,9 @@ public class BasicValidator {
             value);
    }
    
+   /**
+    * @deprecated use validateScript(Object,Field) instead
+    */
    public static boolean validateRequiredIf(Object bean, Field field,
          Validator validator) {
       final Object form = validator.getParameterValue(Validator.BEAN_PARAM);
