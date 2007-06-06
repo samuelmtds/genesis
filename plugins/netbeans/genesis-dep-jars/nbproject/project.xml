@@ -14,8 +14,8 @@
                 <binary-origin>../../../genesis/lib/commons/commons-jxpath-1.2.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/genesis-deps/commons/reusable-components-20040406.jar</runtime-relative-path>
-                <binary-origin>../../../genesis/lib/commons/reusable-components-20040406.jar</binary-origin>
+                <runtime-relative-path>ext/genesis-deps/commons/reusable-components-20060810.jar</runtime-relative-path>
+                <binary-origin>../../../genesis/lib/commons/reusable-components-20060810.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/genesis-deps/aspectwerkz/aspectwerkz-2.0.1.jar</runtime-relative-path>
@@ -42,8 +42,8 @@
                 <binary-origin>../../../genesis/lib/aspectwerkz/trove-1.0.2.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/genesis-deps/backport175/backport175-1.0.1.jar</runtime-relative-path>
-                <binary-origin>../../../genesis/lib/backport175/backport175-1.0.1.jar</binary-origin>
+                <runtime-relative-path>ext/genesis-deps/backport175/backport175-1.1.RC1-snapshot.jar</runtime-relative-path>
+                <binary-origin>../../../genesis/lib/backport175/backport175-1.1.RC1-snapshot.jar</binary-origin>
             </class-path-extension>
             <module-dependencies>
                 <dependency>
