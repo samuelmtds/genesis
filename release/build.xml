@@ -3,6 +3,8 @@
 
    <target name="init" unless="TSTAMP">
       <tstamp/>
+      <property file="${user.home}/.java.net" />
+      <property file="build.properties" />
       <property file="genesis.properties" />
       <property file="../genesis/build.properties" />
       <property file="../genesis/project.properties" />
@@ -14,9 +16,38 @@
       <property name="xdocs.dir" location="${genesis.home}/xdocs" />
       <property name="index.en.xml" location="${xdocs.dir}/en/index.xml" />
       <property name="index.pt-BR.xml" location="${xdocs.dir}/pt-BR/index.xml" />
+      <property name="download.en.xml"
+                location="${xdocs.dir}/en/download.xml" />
+      <property name="download.pt-BR.xml"
+                location="${xdocs.dir}/pt-BR/download.xml" />
+      <property name="release.en.xml"
+                location="${xdocs.dir}/en/release_notes.xml" />
+      <property name="release.pt-BR.xml"
+                location="${xdocs.dir}/pt-BR/release_notes.xml" />
       <property name="root.dir" location="../" />
       <property name="www.dir" location="${root.dir}/www" />
       <property name="site.dir" location="../genesis/${genesis.build.dir}/docs" />
+      <property name="site.basename" value="https://genesis.dev.java.net/nonav/${genesis.version}/maven-site" />
+      <property name="site.basename.en" value="${site.basename}/en" />
+      <property name="site.basename.pt-BR" value="${site.basename}/pt-BR" />
+      <property name="regex.links" value="&lt;a href=&quot;(.+)&quot;" />
+      <property name="regex.replace.links.en"
+         		 value="&lt;a href=&quot;${site.basename.en}/\1&quot;" />
+      <property name="regex.replace.links.pt-BR"
+               		 value="&lt;a href=&quot;${site.basename.pt-BR}/\1&quot;" />
+      <property name="regex.announcement"
+      			 value="&lt;!--\s+begin announcement\s+--&gt;\s*(.+)\s*&lt;!--\s+end announcement\s+--&gt;" />
+
+      <property name="announce.subject.en" value="genesis ${genesis.version} released" />
+      <property name="announce.subject.pt-BR" value="genesis ${genesis.version} lançado" />
+      <property name="mail.port" value="25" />
+      <property name="mail.ssl" value="true" />
+      <property name="mail.from.name" value="${mail.from.address}" />
+      <property name="mail.announce.address" value="announce@genesis.dev.java.net" />
+      <property name="mail.to.address.en" value="users@genesis.dev.java.net" />
+      <property name="mail.to.address.pt-BR" value="usuarios@genesis.dev.java.net" />
+      <property name="mail.replyto.address.en" value="${mail.to.address.en}" />
+      <property name="mail.replyto.address.pt-BR" value="${mail.to.address.pt-BR}" />
 
       <path id="path">
          <fileset dir="lib" />
@@ -73,14 +104,6 @@ You have forgotten to create a new version folder on java.net. It must be named 
    <target name="step1:init" depends="init">
       <property environment="env" />
       <property name="maven.home" value="${env.MAVEN_HOME}" />
-      <property name="download.en.xml"
-                location="${xdocs.dir}/en/download.xml" />
-      <property name="download.pt-BR.xml"
-                location="${xdocs.dir}/pt-BR/download.xml" />
-      <property name="release.en.xml"
-                location="${xdocs.dir}/en/release_notes.xml" />
-      <property name="release.pt-BR.xml"
-                location="${xdocs.dir}/pt-BR/release_notes.xml" />
 
       <condition property="executableSuffix" value="">
          <not>
@@ -368,7 +391,7 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
       </exec>
    </target>
 
-   <target name="step3:init" depends="init">
+   <target name="javanettasks:init" depends="init">
       <taskdef resource="org/kohsuke/javanettasks.properties"
                classpathref="path" />
    </target>
@@ -391,7 +414,7 @@ The link must be ${download.url}&amp;amp;filter=genesis-all
    </target>
 
    <target name="step3"
-           depends="step3:init"
+           depends="javanettasks:init"
            description="Uploads distribution files">
       <antcall target="-do-upload">
          <param name="dist.type" value="dist" />
@@ -633,7 +656,258 @@ D/${genesis.version}////
       <cvstag dir="${www.dir}" />
    </target>
 
+   <target name="step7" depends="init,javanettasks:init" description="Announcements">
+      <available classname="javax.mail.Address" property="mail.jar.available" />
+      
+      <fail unless="mail.jar.available">
+Fail!
+mail.jar not found in Ant classpath (ANT_HOME/lib)
+      </fail>
+      <echo>OK: mail.jar found</echo>
+
+      <available classname="javax.activation.MimeType" property="activation.jar.available" />
+
+      <fail unless="activation.jar.available">
+Fail!
+activation.jar not found in Ant classpath (ANT_HOME/lib)
+      </fail>
+      <echo>OK: activation.jar found</echo>
+
+      <fail unless="mail.from.address">
+Fail!
+You have forgotten to set up 'mail.from.address' property in build.properties
+      </fail>
+      <echo>OK: mail.from.address = ${mail.from.address}</echo>
+
+      <fail unless="mail.host">
+Fail!
+You have forgotten to set up 'mail.host' property in build.properties
+      </fail>
+      <echo>OK: mail.host = ${mail.host}</echo>
+      
+      <fail unless="mail.user">
+Fail!
+You have forgotten to set up 'mail.user' property in build.properties
+      </fail>
+      <echo>OK: mail.user = ${mail.user}</echo>
+      
+      <fail unless="mail.password">
+Fail!
+You have forgotten to set up 'mail.password' property in build.properties
+      </fail>
+      <echo>OK: mail.password = ******</echo>
+      
+		<stringutil string="${genesis.version}" property="genesis.version.anchor">
+		   <!-- Replace . with _ -->
+		   <replace regex="\." replacement="_" />
+		</stringutil>
+
+      <loadfile property="release.en.xml.raw" srcfile="${release.en.xml}">
+         <filterchain>
+      	   <replaceregex pattern="${regex.links}" replace="${regex.replace.links.en}"/>
+         </filterchain>
+      </loadfile>
+      <grep in="${release.en.xml.raw}" regex="${regex.announcement}"
+            dotall="true" group="1" property="changes.and.features.html.en" />
+
+      <fail unless="changes.and.features.html.en">
+Fail!
+Announcement text not found at ${release.en.xml}
+      </fail>
+      <echo>OK: Announcement found at ${release.en.xml}</echo>
+
+      <loadfile property="release.pt-BR.xml.raw" srcfile="${release.pt-BR.xml}">
+         <filterchain>
+      	   <replaceregex pattern="${regex.links}" replace="${regex.replace.links.pt-BR}"/>
+         </filterchain>
+      </loadfile>
+      <grep in="${release.pt-BR.xml.raw}" regex="${regex.announcement}"
+            dotall="true" group="1" property="changes.and.features.html.pt-BR" />
+
+      <fail unless="changes.and.features.html.en">
+Fail!
+Announcement text not found at ${release.pt-BR.xml}
+      </fail>
+      <echo>OK: Announcement found at ${release.pt-BR.xml}</echo>
+
+      <javaNetNews projectName="${java.net.project}">
+         <headline>${announce.subject.en}</headline>
+         <body>
+<![CDATA[
+<p>We are pleased to announce a new genesis release, ${genesis.version}.</p>
+${changes.and.features.html.en}
+<p>Please take a look at the <a href="${site.basename.en}/release_notes.html#${genesis.version.anchor}">release notes</a> for a list of bugs fixed in this release, as well as a new features list linked to their respective documentation. Distribution files may be found at <a href="${site.basename.en}/download.html">${site.basename.en}/download.html</a>. We strongly advise you to upgrade to this release.</p>
+<p>Thanks for your attention, time and support.</p>
+<p>
+Regards,</br> 
+The genesis team</br> 
+<a href="${site.basename}/team-list.html">${site.basename}/team-list.html</a>
+</p>
+]]>
+         </body>
+      </javaNetNews>
+		<stringutil string="${changes.and.features.html.en}" property="changes.and.features.plaintext.en">
+		   <!-- Remove spaces at the end of the line -->
+		   <replace regex="\s+(\r\n)" replacement="$1" />
+		   
+		   <!-- Remove 'p' tags -->
+		   <replace regex="&lt;p&gt;(.+)&lt;/p&gt;" replacement="$1" />
+		   
+		   <!-- Remove 'ul' tags -->
+		   <replace regex="&lt;ul&gt;" replacement="" />
+		   
+		   <!-- Remove 'ul' tags -->
+		   <replace regex="&lt;/ul&gt;(\r\n)?" replacement="" />
+		   
+		   <!-- Replace 'li' tag with * -->
+		   <replace regex="&lt;li&gt;(.*)\r\n\s*" replacement="    * $1 " />
+		   
+		   <!-- Remove 'li' tag -->
+		   <replace regex="&lt;/li&gt;" replacement="" />
+		   
+		   <!-- Remove 'a' tags * -->
+		   <replace regex="&lt;a href=&quot;(.+)&quot;&gt;" replacement="" />
+		   
+		   <!-- Remove 'a' tags * -->
+		   <replace regex="&lt;/a&gt;" replacement="" />
+		</stringutil>
+		<stringutil string="${changes.and.features.html.pt-BR}" property="changes.and.features.plaintext.pt-BR">
+		   <!-- Remove spaces at the end of the line -->
+		   <replace regex="\s+(\r\n)" replacement="$1" />
+		   
+		   <!-- Remove 'p' tags -->
+		   <replace regex="&lt;p&gt;(.+)&lt;/p&gt;" replacement="$1" />
+		   
+		   <!-- Remove 'ul' tags -->
+		   <replace regex="&lt;ul&gt;" replacement="" />
+		   
+		   <!-- Remove 'ul' tags -->
+		   <replace regex="&lt;/ul&gt;(\r\n)?" replacement="" />
+		   
+		   <!-- Replace 'li' tag with * -->
+		   <replace regex="&lt;li&gt;(.*)\r\n\s*" replacement="    * $1 " />
+		   
+		   <!-- Remove 'li' tag -->
+		   <replace regex="&lt;/li&gt;" replacement="" />
+		   
+		   <!-- Remove 'a' tags * -->
+		   <replace regex="&lt;a href=&quot;(.+)&quot;&gt;" replacement="" />
+		   
+		   <!-- Remove 'a' tags * -->
+		   <replace regex="&lt;/a&gt;" replacement="" />
+		</stringutil>
+      <mail mailhost="${mail.host}"
+         	mailport="${mail.port}"
+         	user="${mail.user}"
+         	password="${mail.password}"
+         	ssl="${mail.ssl}"
+            subject="${announce.subject.en}"
+         	failonerror="true">
+	      <from address="${mail.from.address}" name="${mail.from.name}" />
+         <to address="${mail.to.address.en}" />
+         <to address="${mail.announce.address}"/>
+         <replyto address="${mail.replyto.address.en}" />
+         <message>
+<![CDATA[
+We are pleased to announce a new genesis release, ${genesis.version}.
+
+${changes.and.features.plaintext.en}
+Please take a look at the release notes (
+${site.basename.en}/release_notes.html#${genesis.version.anchor}
+) for a list of bugs fixed in this release, as well as a new features
+list linked to their respective documentation. Distribution files may
+be found at ${site.basename.en}/download.html.
+We strongly advise you to upgrade to this release.
+
+Thanks for your attention, time and support.
+
+Regards,
+The genesis team
+${site.basename}/team-list.html
+]]>
+         </message>
+      </mail>
+      <mail mailhost="${mail.host}"
+         	mailport="${mail.port}"
+         	user="${mail.user}"
+         	password="${mail.password}"
+         	ssl="${mail.ssl}"
+            subject="${announce.subject.pt-BR}"
+            failonerror="true">
+	      <from address="${mail.from.address}" name="${mail.from.name}" />
+         <to address="${mail.to.address.pt-BR}" />
+         <replyto address="${mail.replyto.address.pt-BR}" />
+         <message>
+<![CDATA[
+É com prazer que anunciamos uma nova release do genesis, ${genesis.version}.
+
+${changes.and.features.plaintext.pt-BR}
+Por favor, consulte as notas de versão (
+${site.basename.pt-BR}/release_notes.html#${genesis.version.anchor}
+) para obter a lista de bugs corrigidos nesta versão, bem como uma
+lista de novas funcionalidades com links para a documentação delas. Os
+arquivos de distribuição podem ser obtidos em
+${site.basename.pt-BR}/download.html.
+Recomendamos o upgrade para esta versão.
+
+Obrigado pela sua atenção, seu tempo e seu apoio.
+
+[]s
+The genesis team
+${site.basename}/team-list.html
+]]>
+         </message>
+      </mail>
+   </target>
+
+   <target name="step8" depends="init" description="Update home page">
+      <loadfile property="homepage.body" srcfile="homepage.html">
+         <filterchain>
+           <expandproperties/>
+         </filterchain>
+      </loadfile>
+
+      <fail unless="homepage.body">
+Fail!
+No homepage.html found
+      </fail>
+      <echo>OK: homepage.html found</echo>
+
+      <!-- TODO: Create a javanettask to do the following task -->
+      <echo>Logging in java.net...</echo>
+      <post to="https://www.dev.java.net/servlets/TLogin"
+            verbose="yes"
+            failonerror="true"
+            property="login.page"
+            followredirects="false">
+         <prop name="loginID" value="${userName}" />
+         <prop name="password" value="${password}" />
+         <prop name="Login" value="Login" />
+      </post>
+      <echo>${login.page}</echo>
+
+      <echo>Updating genesis home page...</echo>
+      <post to="https://genesis.dev.java.net/servlets/ProjectEdit"
+            verbose="yes"
+            failonerror="true"
+            property="home.page"
+            followredirects="false">
+         <prop name="parent" value="1074" />
+         <prop name="shortDescription" value="genesis" />
+         <prop name="status" value="" />
+         <prop name="license" value="8" />
+         <prop name="Button" value="Submit changes" />
+         <prop name="longDescription" value="${homepage.body}" />
+      </post>
+
+      <fail unless="home.page">
+Fail!
+It was not possible to update genesis home page
+      </fail>
+      <echo>${home.page}</echo>
+   </target>
+
    <target name="all"
-           depends="step1,step2,step3,step4,step5,step6"
+           depends="step1,step2,step3,step4,step5,step6,step7,step8"
            description="Release genesis" />
 </project>

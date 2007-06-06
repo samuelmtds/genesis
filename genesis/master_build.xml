@@ -334,6 +334,7 @@
       <property name="hibernate.user.transaction.name"
                 value="UserTransaction" />
       <property name="hibernate.show.sql" value="true" />
+      <property name="hibernate.use_outer_join" value="true" />
       <property name="hibernate.version" value="2.1.8" />
       <property name="hibernate.major.version" value="2.0" />
       <property name="hibernate.xmlencoding" value="ISO-8859-1" />
@@ -585,6 +586,7 @@
                           validateXML="${hibernate.validate.xml}" 
                           mergedir="${shared.hibernate.merge.dir}" />
                <genesishibernatecfg dialect="${hibernate.dialect}"
+                             useOuterJoin="${hibernate.use_outer_join}"
                              localTransactionManagerFactory="${hibernate.local.transaction.factory_class}"
                              remoteTransactionManagerFactory="${hibernate.remote.transaction.factory_class}"
                              transactionManagerLookup="${hibernate.transaction.manager_lookup_class}"
@@ -634,6 +636,7 @@
                   <jbossservice jndiName="${hibernate.session.factory.jndi.name}"
                                 serviceName="${hibernate.jboss.service.name}"
                                 dialect="${hibernate.dialect}"
+                                useOuterJoin="${hibernate.use_outer_join}"
                                 dataSource="${jboss.datasource.jndi.name}"
                                 transactionManagerStrategy="${hibernate.transaction.manager_lookup_class}"
                                 transactionStrategy="${hibernate.remote.transaction.factory_class}"

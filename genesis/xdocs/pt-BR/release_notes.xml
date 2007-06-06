@@ -29,6 +29,7 @@
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7404&amp;expandFolder=7404">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
+        <!-- begin announcement -->
         <p>Os seguintes bugs foram corrigidos nessa versão:</p>
         <ul>
           <li>A invocação de métodos de commands a partir de outros commands não
@@ -42,6 +43,7 @@
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=443">Issue
           # 443</a>).</li>
         </ul>
+        <!-- end announcement -->
         <p>Uma lista completa das alterações ocorridas entre a 3.0-RC1 e a 3.0-RC2
         pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC1&amp;target_milestone=3.0-RC2">aqui</a>.</p>
