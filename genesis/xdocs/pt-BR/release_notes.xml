@@ -9,13 +9,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
-        <li><a href="#3.0-RC2">3.0-RC2</a></li>
-        <li><a href="#3.0-RC1">3.0-RC1</a></li>
-        <li><a href="#3.0-EA5">3.0-EA5</a></li>
-        <li><a href="#3.0-EA4">3.0-EA4</a></li>
-        <li><a href="#3.0-EA3">3.0-EA3</a></li>
-        <li><a href="#3.0-EA2">3.0-EA2</a></li>
-        <li><a href="#3.0-EA1">3.0-EA1</a></li>
+        <li><a href="#3.0">3.0</a></li>
         <li><a href="#2.3">2.3</a></li>
         <li><a href="#2.2">2.2</a></li>
         <li><a href="#2.1">2.1</a></li>
@@ -23,212 +17,33 @@
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
-    <section name="3.0-RC2">
+    <section name="3.0">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7404&amp;expandFolder=7404">aqui</a>.</p>
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7588&amp;expandFolder=7588">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
         <!-- begin announcement -->
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li>A invocação de métodos de commands a partir de outros commands não
-          funciona corretamente no modo local desktop
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=446">Issue
-          # 446</a>).</li>
-          <li>Ocorre um erro de deployment quando a aplicação é empacotada como 
-          sar
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=443">Issue
-          # 443</a>).</li>
-        </ul>
-        <!-- end announcement -->
-        <p>Uma lista completa das alterações ocorridas entre a 3.0-RC1 e a 3.0-RC2
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC1&amp;target_milestone=3.0-RC2">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-RC2/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC2&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniel Gomes</li>
-            <li>Daniela Gomes</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Elissandro Mendes</li>
-            <li>Gustavo Nalle</li>
-            <li>Homero Dâmico</li>
-            <li>Jorge Rangel</li>
-            <li>José Geraldo</li>
-            <li>Michel Graciano</li>
-            <li>Rodrigo Santos</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="3.0-RC1">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7096&amp;expandFolder=7096">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
         <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
         <ul>
+          <li>Adicionado <a href="binding.html">suporte a Swing e SWT</a>.</li>
           <li>Foi adicionado <a href="binding_strategy.html">suporte a 
           estratégias de binding</a>.</li>
           <li>O <a href="binding_toggle_buttons.html">binding de botões de rádio 
           e caixas de seleção</a> foi revisto e documentado</li>
-        </ul>
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li>A validação possui falhas críticas para o Swing e o SWT
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=399">Issue
-          # 399</a>).</li>
-          <li><code>genesis.equals(any,any)</code> falha com o Java SE 6
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=419">Issue
-          # 419</a>).</li>
-          <li>O binding de caixas de seleção e botões de rádio não funciona para
-          Thinlet e SWT
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=425">Issue
-          # 425</a> e <a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=433">issue
-          # 433</a>).</li>
-          <li>Uma <code>StackOverflow</code> é lançada se 
-          <code>indexField</code> for usado com um <code>@DataProvider</code>
-          ligado a um <code>JTable</code>
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=426">Issue
-          # 426</a>).</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA5 e a 3.0-RC1
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA5&amp;target_milestone=3.0-RC1">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-RC1/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-RC1&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniel Gomes</li>
-            <li>Daniela Gomes</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Elissandro Mendes</li>
-            <li>Gustavo Nalle</li>
-            <li>Homero Dâmico</li>
-            <li>Jorge Rangel</li>
-            <li>José Geraldo</li>
-            <li>Michel Graciano</li>
-            <li>Rodrigo Santos</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="3.0-EA5">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=6559&amp;expandFolder=6559">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
+          <li>Suporte a <code>enum</code>s e anotações do Java 5.</li>
+          <li>É possível utilizar o binding em projetos sem o uso de 
+          AOP, apenas <a href="binding_jars.html">acrescentando os jars corretos
+          ao classpath</a>.</li>
           <li>Foram melhoradas as mensagens de erro para anotações incorretas,
           propriedades inexistentes e arquivos não disponíveis.</li>
-          <li>O exemplo UserAdmin teve melhorias funcionais para quando o grupo
-          está associado com usuários e quando o SWT não está configrado 
-          corretamente.</li>
-        </ul>
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li><code>all.with.webstart</code> falha se o diretório do SWT não 
-          existir
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=376">Issue
-          # 376</a>).</li>
-          <li><code>webstart-jnlp-local</code> falha se <code>jdbc.driver</code>
-          for sobrescrita
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=387">Issue
-          # 387</a>).</li>
-          <li><code>NullPointerException</code> aleatória é lançada ao ler as 
-          anotações
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=389">Issue
-          # 389</a>).</li>
-          <li>Instâncias de <code>JMenu/JMenuItem</code> não podem ser 
-          localizadas por <code>LookupStrategy</code>
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=394">Issue
-          # 394</a>).</li>
-          <li>A validação falha para o campo <code>state</code> com Swing no
-          UserAdmin
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=401">Issue
-          # 401</a>).</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA4 e a 3.0-EA5
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA4&amp;target_milestone=3.0-EA5">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-EA5/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA5&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniel Gomes</li>
-            <li>Daniela Gomes</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Elissandro Mendes</li>
-            <li>Gustavo Nalle</li>
-            <li>Jorge Rangel</li>
-            <li>José Geraldo</li>
-            <li>Rafael Busetti</li>
-            <li>Rafael Kempfer</li>
-            <li>Rodrigo Santos</li>
-            <li>Yuri Teixeira</li>
-            <li>Waldemar Roberti</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="3.0-EA4">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5887&amp;expandFolder=5887">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li>Adicionado <a href="binding.html">suporte a SWT</a>.</li>
-          <li>É possível utilizar genesis-client em projetos sem o uso de AOP</li>
+          <li><a href="generic_scripting.html">Suporte genérico a linguagens de
+          script</a>: expandindo o suporte JXPath, o framework suporta
+          diretamente  BeanShell, JavaScript e EL, e ainda provê um mecanismo
+          para suporte de outras linguagens</li>
+          <li>A linguagem padrão de scripts agora é Javascript.</li>
+          <li>Upgrade para o AspectWerkz 2.0.</li>
+          <li>Revisão completa da documentação.</li>
         </ul>
         <p>Os seguintes bugs foram corrigidos nessa versão:</p>
         <ul>
@@ -237,22 +52,27 @@
           (<a
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=331">Issue
           # 331</a>).</li>
-          <li>Propriedades virtuais não funcionam com <code>JComboBox</code> e 
-          <code>JList</code> quando se usam <code>Enum</code>s
+          <li>A invocação de métodos de commands a partir de outros commands não
+          funciona corretamente no modo local desktop
           (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=357">Issue
-          # 357</a>).</li>
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=446">Issue
+          # 446</a>).</li>
+          <li>O binding de caixas de seleção e botões de rádio não funciona para
+          Thinlet
+          (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=425">Issue
+          # 425</a>).</li>
         </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA3 e a 3.0-EA4
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;target_milestone=3.0-EA4">aqui</a>.</p>
+        <!-- end announcement -->
+        <p>Para obter a lista detalhada de mudanças nas versões intermediárias
+        do 3.0 (EAs e RCs), clique <a href="release_notes_3_x.html">aqui</a>.</p>
         <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-EA4/maven-site/pt-BR/">aqui</a>.</p>
+        href="https://genesis.dev.java.net/nonav/3.0/maven-site/pt-BR/">aqui</a>.</p>
       </subsection>
       <subsection name="Problemas conhecidos">
         <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
         versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA4&amp;issue_type=DEFECT">aqui</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0&amp;issue_type=DEFECT">aqui</a>
         </p>
       </subsection>
       <subsection name="Agradecimentos">
@@ -260,176 +80,26 @@
           <ul>
             <li>Bruno Souza</li>
             <li>Claudio Miranda</li>
+            <li>Daniel Gomes</li>
             <li>Daniela Gomes</li>
             <li>Edgar Silva</li>
             <li>Eduardo Ito</li>
             <li>Einar Saukas</li>
+            <li>Elissandro Mendes</li>
             <li>Gustavo Nalle</li>
+            <li>Michel Graciano</li>
+            <li>Jorge Rangel</li>
             <li>José Geraldo</li>
-          </ul>
-      </subsection>
-    </section>
-    <section name="3.0-EA3">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=5774&amp;expandFolder=5774">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li>Adicionado <a href="binding.html">suporte a Swing</a>.</li>
-          <li>Suporte a <code>enum</code>s do Java 5.</li>
-          <li>A linguagem padrão de scripts agora é Javascript.</li>
-        </ul>
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li>Correções de diversos problemas no build do empty-project
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=316">Issue
-          # 316</a>,
-          <a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=322">Issue
-          # 322</a>,
-          <a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=323">Issue
-          # 323</a>,
-          <a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=326">Issue
-          # 326</a>,
-          <a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=339">Issue
-          # 339</a>, 
-          <a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=352">Issue
-          # 352</a>)</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA2 e a 3.0-EA3
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA2&amp;target_milestone=3.0-EA3">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-EA3/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA3&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniela Gomes</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-          </ul>
-        <p>Agradecemos e damos boas-vindas ao novo commiter, Raphael Winckler de 
-        Bettio.</p>
-      </subsection>
-    </section>
-    <section name="3.0-EA2">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=4588&amp;expandFolder=4588&amp;folderID=1756">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li>Novo parâmetro usado em ViewMetadataFactoryAspect chamado 
-          <a href="aspects.html#Referência de configuração">skipSystemClasses</a></li>
-          <li>Upgrade para o commons-validator 1.2.0.</li>
-        </ul>
-        <p>Os seguintes bugs foram corrigidos nessa versão:</p>
-        <ul>
-          <li>Problema ao ler anotações do Java 5
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=242">Issue
-          # 242</a>)</li>
-          <li>LocalCommandExecutionAspect não funciona corretamente, devido a alterações
-          no AspectWerkz 2.0
-          (<a
-          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=256">Issue
-          # 256</a>)</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 3.0-EA1 e a 3.0-EA2
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;target_milestone=3.0-EA2">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-EA2/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA2&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniela Gomes</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
+            <li>Rafael Busetti</li>
+            <li>Rafael Kempfer</li>
+            <li>Rodrigo Santos</li>
+            <li>Yuri Teixeira</li>
+            <li>Waldemar Roberti</li>
           </ul>
         <p>Agradecemos especialmente a Alexandre Vasseur, Alexandru Popescu e
         Jonas Boner pelo suporte e modificações feitas para que completássemos
-        a migração para o <a href="http://aspectwerkz.codehaus.org">AspectWerkz</a>
-        2.</p>
-      </subsection>
-    </section>
-    <section name="3.0-EA1">
-      <subsection name="Downloads">
-        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
-        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2932&amp;expandFolder=2932&amp;folderID=0">aqui</a>.</p>
-      </subsection>
-      <subsection name="Funcionalidades e mudanças">
-        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
-        <ul>
-          <li><a href="generic_scripting.html">Suporte genérico a linguagens de
-          script</a>: expandindo o suporte JXPath, o framework suporta
-          diretamente  BeanShell, JavaScript e EL, e ainda provê um mecanismo
-          para suporte de outras linguagens</li>
-          <li>Upgrade para o AspectWerkz 2.0. Os <a
-          href="aspects.html">aspectos</a> do genesis sofreram pequenas
-          alterações do ponto de vista do usuário e o arquivo
-          <code>aop.xml</code> precisa ser atualizado</li>
-        </ul>
-        <p>Uma lista completa das alterações ocorridas entre a 2.1 e a 3.0-EA1
-        pode ser obtida <a
-        href="https://genesis.dev.java.net/issues/buglist.cgi?version=2.1&amp;target_milestone=3.0-EA1">aqui</a>.</p>
-        <p>A documentação completa para esta versão pode ser encontrada <a
-        href="https://genesis.dev.java.net/nonav/3.0-EA1/maven-site/pt-BR/">aqui</a>.</p>
-      </subsection>
-      <subsection name="Problemas conhecidos">
-        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
-        versão no issuezilla do projeto <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.0-EA1&amp;issue_type=DEFECT">aqui</a>
-        </p>
-      </subsection>
-      <subsection name="Agradecimentos">
-        <p>As seguintes pessoas colaboraram para o lançamento desta versão:</p>
-          <ul>
-            <li>Bruno Souza</li>
-            <li>Claudio Miranda</li>
-            <li>Daniela Gomes</li>
-            <li>Edgar Silva</li>
-            <li>Eduardo Ito</li>
-            <li>Einar Saukas</li>
-            <li>Gustavo Nalle</li>
-            <li>José Geraldo</li>
-          </ul>
-        <p>Agradecemos especialmente a Alexandre Vasseur, Alexandru Popescu e
-        Jonas Boner pelo suporte e modificações feitas para que completássemos
-        a migração para o <a href="http://aspectwerkz.codehaus.org">AspectWerkz</a>
-        2.</p>
+        a migração para o <a 
+        href="http://aspectwerkz.codehaus.org">AspectWerkz</a> 2.</p>
       </subsection>
     </section>
     <section name="2.3">
