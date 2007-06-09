@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Customizing widget binding - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 June 2007
+                <span class="separator">|</span> Doc for  3.0
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><strong><a href="../en/widget_binder.html">Customizing widget binding</a></strong></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Customizing_widget_binding"></a><h2>Customizing widget binding</h2>
+       <p>Binding in genesis is implemented using a delegation model: it is 
+       possible to define based on the widget class or even in a specific case
+       how a specific widget should be bound to a property, <code>@Action</code> 
+       or <code>@DataProvider</code>.</p>
+       <p>genesis has default binding implementations for each widget type. Each 
+       widget binder defines how the values and events of a specific widget will
+       affect the form, and how the values and actions of the form will be 
+       handled by the widget.</p>
+       <p>genesis defines some interfaces that are runtime representations of 
+       the fields and actions of the UI that are bound to the form. These 
+       interfaces are:</p>
+       <ul>
+         <li><b><code>BoundAction</code></b>: Represents an UI action that is 
+         bound to a form method.</li>
+         <li><b><code>BoundField</code></b>: Represents an UI field that is 
+         bound to a form field.</li>
+         <li><b><code>BoundDataProvider</code></b>: Represent an UI field that 
+         lists data and is bound to a form method (data provider) and 
+         optionally, to a form field that stores the user selection..</li>
+       </ul>
+       <p>Each widget has its own binder that is responsible for the creation of 
+       <code>BoundAction</code>s, <code>BoundField</code>s and/or 
+       <code>BoundDataProvider</code>s as required. It is possible to set custom 
+       binders for a specific widget type, or for a specific widget.</p>
+       <p>genesis provides specific binders for Swing components and SWT 
+       widgets. They will be covered in the next sections.</p>
+       <div class="subsection"><a name="Swing"></a><h3>Swing</h3>
+         <p>Each component binder should implement the
+         <code>net.java.dev.genesis.ui.binding.WidgetBinder</code> interface.
+         This interface defines methods for creating <code>BoundAction</code>,
+         <code>BoundField</code> and <code>BoundDataProvider</code> instances. 
+         The abstract class called
+         <code>net.java.dev.genesis.ui.swing.components.AbstractComponentBinder</code>
+         provides a basic implementation with the common logic shared by all 
+         binders (visibility control, enabling/disabling widgets, widget 
+         group).</p>
+         <p>As an sample, examine the commented source code of the default 
+         binder used by components that inherit from 
+         <code>javax.swing.AbstractButton</code> (<code>JButton</code>, 
+         <code>JMenuItem</code>, etc):</p>
+
+    <div class="source"><pre>
+// We recommend extending the <b>AbstractComponentBinder</b> class
+public class AbstractButtonComponentBinder extends AbstractComponentBinder {
+   // The button represents a form action, therefore this method is the only one
+   // that needs to be implemented. This method takes the binder, the component 
+   // - the button itself - and the ActionMetadata that represents the action to 
+   // be executed. A <b>BoundAction</b> that represents the connection between 
+   // the button and the form must be returned
+   public BoundAction bind(SwingBinder binder, Component component,
+         ActionMetadata actionMetadata) {
+      return new AbstractButtonComponentBoundAction(binder,
+            (AbstractButton)component, actionMetadata);
+   }
+
+   // Inner class that implements <b>BoundAction</b> and extends
+   // AbstractComponentBinder.AbstractBoundMember (that has common logic shared
+   // by all binders)
+   public class AbstractButtonComponentBoundAction extends AbstractBoundMember
+         implements BoundAction {
+      private final AbstractButton component;
+      private final ActionMetadata actionMetadata;
+      private final ActionListener listener;
+
+      public AbstractButtonComponentBoundAction(SwingBinder binder,
+            AbstractButton component, ActionMetadata actionMetadata) {
+         super(binder, component);
+         this.component = component;
+         this.actionMetadata = actionMetadata;
+    
+         // The <b>ActionListener</b> is added to the button. To use a custom 
+         // listener, just override the <b>createActionListener()</b> method.
+         this.component.addActionListener(listener = createActionListener());
+      }
+
+      protected ActionMetadata getActionMetadata() {
+         return actionMetadata;
+      }
+
+      protected AbstractButton getComponent() {
+         return component;
+      }
+
+      protected ActionListener getListener() {
+         return listener;
+      }
+
+      // <b>ActionListener</b> instantiation.
+      protected ActionListener createActionListener() {
+         return new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+
+               // Using the <b>invokeFormAction</b> method, the form action is 
+               // invoked.
+               getBinder().invokeFormAction(getActionMetadata());
+            }
+         };
+      }
+
+      // unbind method. All listeners added to the button
+      // must be removed
+      public void unbind() {
+         if (listener != null) {
+            component.removeActionListener(listener);
+         }
+      }
+   }
+}
+</pre></div>
+  
+         <p>To register a new binder for a specific component type, use the 
+         <code>register(Class, WidgetBinder)</code> method defined by
+         <code>net.java.dev.genesis.ui.swing.ComponentBinderRegistry</code>, at 
+         your application startup, as shown below:</p>
+
+    <div class="source"><pre>
+public class MyApplication {
+  public static void main(String[] args) {
+    // StartupHelper initialization 
+    // ...
+
+    ComponentBinderRegistry.getInstance().register(JTable.class, 
+          new MyTableBinder());
+  }
+}
+</pre></div>
+  
+         <p>To register a new binder for a specific component, use the
+         <code>registerWidgetBinder(String, WidgetBinder)</code> method defined 
+         by <code>net.java.dev.genesis.ui.binding.AbstractBinder</code>,
+         as shown below:</p>
+
+    <div class="source"><pre>
+@ViewHandler
+public class SwingView extends JDialog {
+   private SwingBinder binder;
+   // ...
+
+   public SwingView() {
+      binder = new SwingBinder(this, new Form());
+   }
+
+   public initComponents() {
+      JTable table = // Table creation
+      table.setName("usersTable");
+
+      binder.registerWidgetBinder("usersTable", new MyTableBinder());
+      binder.bind();
+   }
+}
+</pre></div>
+  
+       </div>
+       <div class="subsection"><a name="SWT"></a><h3>SWT</h3>
+         <p>As it is true for Swing, each widget binder should implement the 
+         <code>net.java.dev.genesis.ui.binding.WidgetBinder</code> interface.
+         This interface defines methods for creating <code>BoundAction</code>s,
+         <code>BoundField</code>s and <code>BoundDataProvider</code>s.
+         The abstract class
+         <code>net.java.dev.genesis.ui.swt.widgets.AbstractWidgetBinder</code>
+         provides a basic implementation with common logic shared by all 
+         binders (visibility control, enabling/disabling widgets, widget 
+         group).</p>
+         <p>As an sample, examine the commented source code of the default 
+         binder used by widgets whose type is 
+         <code>org.eclipse.swt.widgets.Text</code>:</p>
+
+    <div class="source"><pre>
+// We recommend extending the <b>AbstractComponentBinder</b> class
+public class TextWidgetBinder extends AbstractWidgetBinder {
+   // Whether trim must be used to retrieve the widget text
+   private final boolean trim;
+
+   public TextWidgetBinder() {
+	   this(true);
+   }
+
+   public TextWidgetBinder(boolean trim) {
+	   this.trim = trim;
+   }
+   
+   protected boolean isTrim() {
+	   return trim;
+   }
+
+   // This widget represents a form field, therefore this method is the only one
+   // that needs to be implemented. This method takes the binder, the widget 
+   // - the text widget itself - and the FieldMetadata that represents the form 
+   // field. A <b>BoundField</b> that represents the connection between the 
+   // widget and the form field must be returned
+   public BoundField bind(SWTBinder binder, Widget widget,
+         FieldMetadata fieldMetadata) {
+      return new TextWidgetBoundField(binder, (Text) widget,
+            fieldMetadata);
+   }
+
+   // Inner class that implements <b>BoundAction</b> and extends
+   // AbstractWidgetBinder.AbstractBoundMember (that has common logic shared
+   // by all binders)
+   public class TextWidgetBoundField extends AbstractBoundMember
+         implements BoundField {
+      private final Text widget;
+      private final FieldMetadata fieldMetadata;
+      private final FocusListener listener;
+
+      public TextWidgetBoundField(SWTBinder binder,
+         Text widget, FieldMetadata fieldMetadata) {
+         super(binder, widget);
+         this.widget = widget;
+         this.fieldMetadata = fieldMetadata;
+
+         // The <b>FocusListener</b> is added to the widget. To use a custom 
+         // listener, just override the <b>createFocusListener()</b> method
+         this.widget.addFocusListener(listener = createFocusListener());
+      }
+
+      protected Text getWidget() {
+         return widget;
+      }
+
+      protected FieldMetadata getFieldMetadata() {
+         return fieldMetadata;
+      }
+
+      protected FocusListener getListener() {
+         return listener;
+      }
+
+      // <b>FocusListener</b> instantiation
+      protected FocusListener createFocusListener() {
+         return new FocusAdapter() {
+            public void focusLost(FocusEvent event) {
+
+               // Using the <b>populateForm</b> method, the form field will be 
+               // populated with the widget value
+               getBinder().populateForm(getFieldMetadata(), getValue());
+            }
+         };
+      }
+
+      // Returns the widget value
+      protected Object getValue() {
+         return isTrim() ? widget.getText().trim() : widget.getText();
+      }
+
+      public void setValue(Object value) throws Exception {
+         widget.setText(getBinder().getFormatter(fieldMetadata).format(value));
+      }
+
+      // unbind method. All listeners added to the widget
+      // must be removed
+      public void unbind() {
+         if (listener != null) {
+            widget.removeFocusListener(listener);
+         }
+      }
+   }
+}
+</pre></div>
+  
+         <p>To register a new binder for a specific widget type, use the 
+         <code>register(Class, WidgetBinder)</code> method defined by
+         <code>net.java.dev.genesis.ui.swt.WidgetBinderRegistry</code>, at your 
+         application startup, as shown below:</p>
+
+    <div class="source"><pre>
+public class MyApplication {
+  public static void main(String[] args) {
+    // StartupHelper initialization
+    // ...
+
+    WidgetBinderRegistry.getInstance().register(Combo.class, 
+          new MyComboBinder());
+  }
+}
+</pre></div>
+  
+         <p>To register a new binder for a specific widget, use the
+         <code>registerWidgetBinder(String, WidgetBinder)</code> method defined
+         by <code>net.java.dev.genesis.ui.binding.AbstractBinder</code>,
+         as shown below:</p>
+
+    <div class="source"><pre>
+@ViewHandler
+public class SWTView {
+   private Shell shell;
+   private SwingBinder binder;
+   // ...
+
+   public SwingView() {
+      shell = new Shell();
+      binder = new SwingBinder(shell, new Form(), this);
+   }
+
+   public initComponents() {
+      Combo combo = // Combo creation
+      combo.setData("usersCombo");
+
+      binder.registerWidgetBinder("usersCombo", new MyComboBinder());
+      binder.bind();
+   }
+}
+</pre></div>
+  
+       </div>
+     </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2007, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>

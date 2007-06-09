@@ -1,0 +1,821 @@
+<html>
+<head>
+<title>unit tests coverage</title>
+<link rel ="stylesheet" type="text/css" href="../../../../../../../style.css" title="Style">
+</head>
+<body>
+<span class="title">Coverage report</span>
+<p>
+  <table cellspacing="0" cellpadding="0" class="report">
+  <tr class="report">
+    <th class="report">&nbsp;</th>
+    <th class="report">%line</th>
+    <th class="report">%branch</th>
+  </tr>
+  <tr class="report">
+    <td class="reportText"><span class="text">net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge</span></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">27%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="27"></td><td class="percentUnCovered" width="73.0"></td></tr></table></td></tr></table></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">100%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="100"></td><td class="percentUnCovered" width="0.0"></td></tr></table></td></tr></table></td>
+  </tr>
+  </table>
+  <p>
+  <table cellspacing="0" cellpadding="0" class="src">
+    <tr>
+      <td class="numLine">&nbsp;1</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">/*</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;2</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * The Genesis Project</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;3</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;4</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;5</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This library is free software; you can redistribute it and/or</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;6</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;7</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * License as published by the Free Software Foundation; either</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;8</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * version 2.1 of the License, or (at your option) any later version.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;9</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;10</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This library is distributed in the hope that it will be useful,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;11</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;12</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;13</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Lesser General Public License for more details.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;14</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;15</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * You should have received a copy of the GNU Lesser General Public</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;16</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * License along with this library; if not, write to the Free Software</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;17</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;18</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;19</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">package</span> net.java.dev.genesis.script.javaxscript.bridge;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;20</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;21</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.InvocationHandler;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;22</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;23</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.Method;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;24</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.Proxy;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;25</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.HashSet;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;26</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Set;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;27</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;28</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<span class="keyword">public</span> <span class="keyword">class</span> JavaxScriptBridge {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;29</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> JavaxScriptBridge instance = <span class="keyword">new</span> JavaxScriptBridge();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;30</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;31</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Class scriptEngineManagerClass;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;32</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Class scriptContextClass;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;33</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Class compiledScriptClass;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;34</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Class compilableClass;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;35</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Method originalEvalMethod;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;36</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">int</span> engineScope;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;37</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Set methods = <span class="keyword">new</span> HashSet(2);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;38</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;39</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> JavaxScriptBridge() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;40</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;41</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;         scriptContextClass = Class.forName(<span class="string">"javax.script.ScriptContext"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;42</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         compiledScriptClass = Class.forName(<span class="string">"javax.script.CompiledScript"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;43</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         compilableClass = Class.forName(<span class="string">"javax.script.Compilable"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;44</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         originalEvalMethod = compiledScriptClass.getDeclaredMethod(<span class="string">"eval"</span>,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;45</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               <span class="keyword">new</span> Class[] { scriptContextClass });</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;46</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         engineScope = scriptContextClass.getField(<span class="string">"ENGINE_SCOPE"</span>).getInt(<span class="keyword">null</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;47</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;48</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         methods.add(<span class="string">"getEngineByName"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;49</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         methods.add(<span class="string">"getContext"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;50</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;51</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         scriptEngineManagerClass = Class</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;52</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               .forName(<span class="string">"javax.script.ScriptEngineManager"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;53</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;      } <span class="keyword">catch</span> (Exception e) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;54</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="comment">// not JDK 6 or later</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;55</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;56</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;57</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;58</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> JavaxScriptBridge getInstance() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;59</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> instance;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;60</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;61</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;62</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">boolean</span> supportsJavaxScript() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;63</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> scriptEngineManagerClass != <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;64</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;65</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;66</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class getScriptEngineManagerClass() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;67</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> scriptEngineManagerClass;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;68</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;69</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;70</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">int</span> getEngineScope() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;71</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> engineScope;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;72</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;73</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;74</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object eval(Object realCompiledScript, Object realCtx)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;75</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;76</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> originalEvalMethod.invoke(realCompiledScript,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;77</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">new</span> Object[] { realCtx });</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;78</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;79</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;80</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> ScriptEngineManager createScriptEngineManager() {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;81</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      Object targetInstance = newInstance(scriptEngineManagerClass);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;82</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      ProxyInvocationHandler handler = <span class="keyword">new</span> ProxyInvocationHandler(</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;83</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            targetInstance);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;84</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;85</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> (ScriptEngineManager) createProxy(ScriptEngineManager.<span class="keyword">class</span>,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;86</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            handler);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;87</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;88</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;89</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Object createProxy(Class desiredClass, InvocationHandler handler) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;90</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> createProxy(<span class="keyword">new</span> Class[] { desiredClass }, handler);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;91</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;92</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;93</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Object createProxy(Class[] desiredClasses,</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;94</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         InvocationHandler handler) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;95</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      <span class="keyword">return</span> Proxy.newProxyInstance(Thread.currentThread()</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;96</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            .getContextClassLoader(), desiredClasses, handler);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;97</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;98</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;99</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Object newInstance(Class clazz) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;100</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;101</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">return</span> clazz.newInstance();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;102</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">catch</span> (InstantiationException e) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;103</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage(), e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;104</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">catch</span> (IllegalAccessException e) {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;105</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage(), e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;106</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;107</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;108</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;109</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">class</span> ProxyInvocationHandler implements InvocationHandler {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;110</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">private</span> Object target;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;111</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">private</span> <span class="keyword">boolean</span> isScriptContext;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;112</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">private</span> <span class="keyword">boolean</span> isCompilable;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;113</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;114</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">public</span> ProxyInvocationHandler(Object target) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;115</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">this</span>.target = target;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;116</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         isScriptContext = scriptContextClass.isAssignableFrom(target</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;117</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               .getClass());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;118</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         isCompilable = compilableClass.isAssignableFrom(target.getClass());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;119</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;120</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;121</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">protected</span> <span class="keyword">boolean</span> needsProxy(String methodName) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;122</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> methods.contains(methodName);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;123</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;124</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;125</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">public</span> Object invoke(Object proxy, Method method, Object[] args)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;126</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws Throwable {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;127</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">final</span> String methodName = method.getName();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;128</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (isScriptContext &#38;&#38; methodName.equals(<span class="string">"getRealContext"</span>)) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;129</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> target;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;130</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;131</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;132</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (methodName.equals(<span class="string">"compile"</span>) &#38;&#38; !isCompilable) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;133</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;134</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;135</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;136</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">final</span> Method originalMethod = target.getClass().getMethod(</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;137</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               method.getName(), method.getParameterTypes());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;138</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;139</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         Object result;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;140</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;141</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">try</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;142</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            result = originalMethod.invoke(target, args);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;143</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         } <span class="keyword">catch</span> (InvocationTargetException ite) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;144</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> ite.getTargetException();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;145</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;146</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;147</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (result == <span class="keyword">null</span>) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;148</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;149</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;150</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;151</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (!needsProxy(methodName)) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;152</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> result;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;153</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;154</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;155</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> createProxy(<span class="keyword">new</span> Class[] { method.getReturnType() },</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;156</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               <span class="keyword">new</span> ProxyInvocationHandler(result));</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;157</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;158</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;159</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;}</pre></td>
+    </tr>
+  </table>
+<p><table cellpadding="0" cellspacing="0" class="report">  <tr class="report">    <td class="reportText"><span class="text">    This report is generated by <a href="http://www.jcoverage.com">jcoverage</a>, <a href="http://maven.apache.org">Maven</a> and <a href="http://maven.apache.org/reference/plugins/jcoverage/">Maven JCoverage Plugin</a>.    </span></td>  </tr></table>
+</body>
+</html>
