@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Release Notes - Releases 2.x/0.2.x - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 June 2007
+                <span class="separator">|</span> Doc for  3.0
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Downloads_and_release_notes__2_x_0_2_x_"></a><h2>Downloads and release notes (2.x/0.2.x)</h2>
+      <ul>
+        <li><a href="#0_2__2_0_">0.2 (2.0)</a></li>
+        <li><a href="#0_2-RC2">0.2-RC2</a></li>
+        <li><a href="#0_2-RC1">0.2-RC1</a></li>
+        <li><a href="#0_2-beta2">0.2-beta2</a></li>
+        <li><a href="#0_2-beta1">0.2-beta1</a></li>
+      </ul>
+    </div><div class="section"><a name="0_2__2_0_"></a><h2>0.2 (2.0)</h2>
+      <div class="subsection"><a name="Downloads"></a><h3>Downloads</h3>
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2698&amp;expandFolder=2698&amp;folderID=0" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Features_and_changes"></a><h3>Features and changes</h3>
+        <p>This release contains very few enhancements to samples and
+        documentation.</p>
+        <p>The full change log for 0.2 can be found  <a href="https://genesis.dev.java.net/issues/buglist.cgi?target_milestone=0.2" class="externalLink" title="External Link">here</a>.</p>
+        <p>The full documentation for this release can be found <a href="https://genesis.dev.java.net/nonav/0.2/maven-site/en/" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Known_issues"></a><h3>Known issues</h3>
+        <p>A complete list of known issues can be checked <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2&amp;issue_type=DEFECT" class="externalLink" title="External Link">aqui</a>
+        </p>
+      </div>
+      <div class="subsection"><a name="Acknowledgments"></a><h3>Acknowledgments</h3>
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Cláudio Rocha</li>
+            <li>Daniela Gomes</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+          </ul>
+      </div>
+    </div><div class="section"><a name="0_2-RC2"></a><h2>0.2-RC2</h2>
+      <div class="subsection"><a name="Downloads"></a><h3>Downloads</h3>
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2654&amp;expandFolder=2654&amp;folderID=1756" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Features_and_changes"></a><h3>Features and changes</h3>
+        <p>This release contains very few enhancements to <a href="#0_2-RC1">0.2-RC1</a>:</p>
+        <ul>
+          <li>It is possible to put more than one <code>@AfterAction</code>
+          and/or <code>@BeforeAction</code> annotation in a method</li>
+          <li>The useradmin sample has been updated in order to demonstrate
+          genesis 0.2-RC1 features</li>
+          <li><code>empty-project</code>'s <code>build.xml</code> now supports
+          <a href="empty_project.html#Configuring_a_new_project">new properties</a>
+          for defining database access configuration</li>
+        </ul>
+        <p>The following bugs have been fixed in this release:</p>
+        <ul>
+          <li>The <code>objectField</code> property value is set to
+          <code>null</code> instead of an empty collection
+          when the property type is <code>Collection</code> and the
+          <code>@DataProvider</code> method is bound to a table
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=173" class="externalLink" title="External Link">Issue
+          # 173</a>)</li>
+          <li>The <code>indexField</code> property first value is ignored
+          at binding time and if an <code>objectField</code> whose type is an
+          array or a <code>Collection</code> is used together with it, a
+          <code>-1</code> value in the <code>indexField</code> causes an
+          <code>ArrayIndexOutOfBoundsException</code> to be thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=181" class="externalLink" title="External Link">Issue
+          # 181</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-RC1 and 0.2-RC2 can be found <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;target_milestone=0.2-RC2" class="externalLink" title="External Link">here</a>.</p>
+        <p>The full documentation for this release can be found <a href="https://genesis.dev.java.net/nonav/0.2-RC2/maven-site/en/" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Known_issues"></a><h3>Known issues</h3>
+        <p>A complete list of known issues can be checked <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC2&amp;issue_type=DEFECT" class="externalLink" title="External Link">here</a>
+        </p>
+      </div>
+      <div class="subsection"><a name="Acknowledgments"></a><h3>Acknowledgments</h3>
+        <p>Special thanks to Bruno Borges for finding the bug that has been
+        fixed in this release and for proposing the enhancement regarding
+        multiple <code>@[After|Before]Action</code> annotations in a
+        method.</p>
+      </div>
+    </div><div class="section"><a name="0_2-RC1"></a><h2>0.2-RC1</h2>
+      <div class="subsection"><a name="Downloads"></a><h3>Downloads</h3>
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2644&amp;expandFolder=2644&amp;folderID=0" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Features_and_changes"></a><h3>Features and changes</h3>
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li><code>@Criteria</code> annotation with
+          <a href="quick_reference.html#@Criteria">order-by</a>.</li>
+          <li>Support
+          <a href="conditions.html#Widget_groups">enabledWidgetGroup and visibleWidgetGroup</a>
+          which allows the user to define differents groups for enabling and
+          visibity rules.</li>
+          <li>Allow users to specify a label for
+          <a href="populating_with_dataproviders.html">blank</a>
+          elements in comboboxes/lists.</li>
+          <li>Improved <code>@DataProvider</code> syntax to support explicit
+          <a href="populating_with_dataproviders.html">widget name</a>
+          definition. This feature also allows <code>@DataProvider</code> to be
+          used with read-only widgets.</li>
+          <li>Implement support for <code>@DataProvider</code>
+          <a href="populating_with_dataproviders.html">indexField</a>
+          update detection.</li>
+          <li><a href="quick_reference.html#@ClearOn"><code>@ClearOn</code></a>
+          annotation works with <code>@DataProvider</code>.</li>
+          <li>Support for
+          <a href="populating_with_dataproviders.html">list</a>
+          usage with <code>@DataProvider</code>.</li>
+          <li>It is possible to invoke actions within a form using the new classes
+          <a href="actions.html#Invoking_form_actions_directly"><code>ActionInvoker</code> and <code>BaseForm</code></a>
+          </li>
+          <li>It is now possible to <a href="formatting.html">override the formatter instance</a>
+          to be used with a certain field</li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Validation should be performed on the values being displayed,
+          not the values assigned to the form instance
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=134" class="externalLink" title="External Link">Issue
+          # 134</a>)</li>
+          <li>If a user types invalid data for an int field, for instance,
+          a <code>NullPointerException</code> is thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=135" class="externalLink" title="External Link">Issue
+          # 135</a>)</li>
+          <li>If <code>blank=true</code> is specified for a combo that is
+          populated using a <code>@DataProvider</code>, selecting an element
+          always highlight the wrong element or throws an <code>Exception</code>
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=138" class="externalLink" title="External Link">Issue
+          # 138</a>)</li>
+          <li><code>empty-project</code> build file has a target named
+          <code>genesis.app:run</code> that does not work since it refers to a
+          path that cannot be found (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=156" class="externalLink" title="External Link">Issue
+          # 156</a>)</li>
+          <li>Using checkboxes without a group causes genesis to update its text
+          (and not its state). If the user tries to click on the checkbox,
+          a <code>NullPointerException</code> is thrown
+          (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=165" class="externalLink" title="External Link">Issue
+          # 165</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-beta2 and 0.2-RC1 can be found <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;target_milestone=0.2-RC1" class="externalLink" title="External Link">here</a>.</p>
+        <p>The full documentation for this release can be found <a href="https://genesis.dev.java.net/nonav/0.2-RC1/maven-site/en/" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Known_issues"></a><h3>Known issues</h3>
+        <p>A complete list of known issues can be checked <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-RC1&amp;issue_type=DEFECT" class="externalLink" title="External Link">here</a>
+        </p>
+      </div>
+      <div class="subsection"><a name="Acknowledgements"></a><h3>Acknowledgements</h3>
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Liaw Mike</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>We would like to acknowledge Bruno Borges, Cláudio Rocha and Marcelo
+        Módolo for their ideas, feedback, comments and/or tests.</p>
+      </div>
+    </div><div class="section"><a name="0_2-beta2"></a><h2>0.2-beta2</h2>
+      <div class="subsection"><a name="Downloads"></a><h3>Downloads</h3>
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2562&amp;expandFolder=2562&amp;folderID=2562" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Features_and_changes"></a><h3>Features and changes</h3>
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>New helper class to make it easier to initialize the application,
+          <a href="startup.html">StartupHelper</a>
+          </li>
+          <li>A new attribute in <code>@DataProvider</code>, is now supported,
+          <a href="populating_with_dataproviders.html"><code>callOnInit</code></a>
+          </li>
+          <li>Support for defining <a href="conditions.html#Widget_groups">widget groups</a>
+          to be used with <code>@EnabledWhen</code> /
+          <code>@VisibleWhen</code> annotations</li>
+          <li>New helper classes for paging and dynamic searches, <a href="paging_and_dynamic_search.html#Working_with_dynamic_searches"><code>BaseSearchForm</code>
+          and <code>BaseCriteriaSearchForm</code></a></li>
+          <li>Simplified binding usage with <a href="actions.html#Invoking_form_actions_directly"><code>invokeFormAction(..)</code></a>,
+          <a href="actions.html#Programatically_Screen_Update"><code>refreshView(..)</code> and
+          <code>refreshViewFromForm(Object)</code></a></li>
+          <li><a href="aspects.html#Local_EJB_execution">Local EJB execution</a></li>
+          <li>Several new configuration parameters and improvements in
+          <a href="aspects.html">aspects</a></li>
+        </ul>
+        <p>The following bugs have been fixed on this release:</p>
+        <ul>
+          <li>Form state is not reset when an exception occurs (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=55" class="externalLink" title="External Link">Issue #
+          55</a>)</li>
+          <li><code>CommandResolver.isRemotable(Method)</code> is not always
+          invoked (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=74" class="externalLink" title="External Link">Issue #
+          74</a>)</li>
+          <li><code>@DataProvider</code> does not work properly with combos (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=81" class="externalLink" title="External Link">Issue #
+          81</a>)</li>
+          <li><code>@ClearOn</code> does not work properly with
+          <code>@Condition</code> (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=88" class="externalLink" title="External Link">Issue #
+          88</a>)</li>
+          <li>Unit tests cannot be executed because task
+          <code>&lt;webdoclet&gt;</code> is undefined (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=91" class="externalLink" title="External Link">Issue #
+          91</a>)</li>
+          <li>A <code>ClassCastException</code> may occur when
+          <code>@DataProvider</code> is used (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=93" class="externalLink" title="External Link">Issue #
+          93</a>)</li>
+          <li><code>@EnabledWhen</code>/<code>@VisibleWhen</code> do not work
+          with not bound properties (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=110" class="externalLink" title="External Link">Issue
+          # 110</a>)</li>
+          <li><code>@Action</code> and <code>@DataProvider</code> in inherited
+          methods are ignored (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=115" class="externalLink" title="External Link">Issue
+          # 115</a>)</li>
+          <li>JDK 1.4.2 bug in
+          <code>PropertyDescriptor.getReadMethod()</code> affects
+          <code>FieldMetadata</code> instance configuration (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=116" class="externalLink" title="External Link">Issue
+          # 116</a>)</li>
+          <li>Annotation parsing for <code>ThinletMetadata</code> ignores
+          inherited methods (<a href="https://genesis.dev.java.net/issues/show_bug.cgi?id=122" class="externalLink" title="External Link">Issue
+          # 122</a>)</li>
+        </ul>
+        <p>The full change log between 0.2-beta1 and 0.2-beta2 can be found <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;target_milestone=0.2-beta2" class="externalLink" title="External Link">here</a>.</p>
+        <p>The full documentation for this release can be found <a href="https://genesis.dev.java.net/nonav/0.2-beta2/maven-site/en/" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Known_issues"></a><h3>Known issues</h3>
+        <p>A complete list of known issues can be checked <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta2&amp;issue_type=DEFECT" class="externalLink" title="External Link">here</a>
+        </p>
+      </div>
+      <div class="subsection"><a name="Acknowledgements"></a><h3>Acknowledgements</h3>
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Paulo Pacheco</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+          </ul>
+        <p>Liaw Mike is now part of the official project team and works on
+        documentation.</p>
+      </div>
+    </div><div class="section"><a name="0_2-beta1"></a><h2>0.2-beta1</h2>
+      <div class="subsection"><a name="Downloads"></a><h3>Downloads</h3>
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=2342&amp;expandFolder=2342&amp;folderID=1756" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Features_and_changes"></a><h3>Features and changes</h3>
+        <p>Many changes and features are part of this release. Some of the most
+        noteworthy are:</p>
+        <ul>
+          <li>Remote and transactional methods are now defined using
+          annotations, replacing the old marker interfaces + method naming
+          convention</li>
+          <li>@Criteria implementation</li>
+          <li>Local execution mode</li>
+          <li>Brand new redesigned UI model, much more expressive and powerful
+          </li>
+        </ul>
+        <p>The full documentation for this release can be found <a href="https://genesis.dev.java.net/nonav/0.2-beta1/maven-site/en/" class="externalLink" title="External Link">here</a>.</p>
+      </div>
+      <div class="subsection"><a name="Known_issues"></a><h3>Known issues</h3>
+        <p>A complete list of known issues can be checked <a href="https://genesis.dev.java.net/issues/buglist.cgi?version=0.2-beta1&amp;issue_type=DEFECT" class="externalLink" title="External Link">here
+        </a></p>
+      </div>
+      <div class="subsection"><a name="Acknowledgements"></a><h3>Acknowledgements</h3>
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alexandre Vasseur</li>
+            <li>Bruno Borges</li>
+            <li>Bruno Rossetto</li>
+            <li>Bruno Souza</li>
+            <li>Claudio Miranda</li>
+            <li>Clebert Suconic</li>
+            <li>Daniel Amadei</li>
+            <li>Daniela Gomes</li>
+            <li>Danielle Albuquerque</li>
+            <li>Edgar Silva</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>Handerson Gomes</li>
+            <li>Jonas Boner</li>
+            <li>José Geraldo</li>
+            <li>Liaw Mike</li>
+            <li>Marcos Caldeira</li>
+            <li>Pablo Madril</li>
+            <li>Paulo Pacheco</li>
+            <li>Pedro Barelli</li>
+            <li>Richard Nill</li>
+            <li>Roberto Arnaldo</li>
+            <li>Valéria Fernandes</li>
+            <li>Vivian Fiales</li>
+          </ul>
+      </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2007, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
