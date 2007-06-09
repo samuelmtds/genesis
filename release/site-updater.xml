@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="site-updater" default="compile" basedir=".">
    <target name="init">
-      <property name="latest.release" value="3.0-RC2" />
+      <property name="latest.release" value="3.0" />
       <property name="src.dir" value="src" />
       <property name="classes.dir" value="classes" />
    </target>
