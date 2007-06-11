@@ -167,7 +167,7 @@ getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
 
 JLabel currentDateLabel = currentDateLabel = new JLabel();
 currentDateLabel.setName("currentDateLabel");
-currentDateLabel.setText("Current Date:");
+currentDateLabel.setText("Current date:");
 getContentPane().add(currentDateLabel);
 
 JTextField currentDate = new javax.swing.JTextField();
@@ -184,10 +184,10 @@ getContentPane().add(currentDate);
 shell = new Shell(SWT.TITLE | SWT.CLOSE);
 
 Label currentDateLabel = new Label(shell, SWT.NONE);
-currentDateLabel.setText("Data Corrente:");
+currentDateLabel.setText("Current Date:");
 
 Text currentDate = new Text(shell, SWT.BORDER);
-currentDate.setData("dataCorrente");
+currentDate.setData("currentDate");
 currentDate.setData(SWTBinder.WIDGET_GROUP_PROPERTY, "currentDateLabel");
 //..
 ]]>
@@ -206,7 +206,7 @@ getContentPane().setLayout(new GridLayout(1, 2, 10, 0));
 
 JLabel currentDateLabel = currentDateLabel = new JLabel();
 currentDateLabel.setName("currentDateLabel");
-currentDateLabel.setText("Data Corrente:");
+currentDateLabel.setText("Current date:");
 getContentPane().add(currentDateLabel);
 
 JTextField currentDate = new javax.swing.JTextField();
@@ -221,7 +221,7 @@ getContentPane().add(currentDate);
 shell = new Shell(SWT.TITLE | SWT.CLOSE);
 
 Label currentDateLabel = new Label(shell, SWT.NONE);
-currentDateLabel.setText("Data Corrente:");
+currentDateLabel.setText("Current date:");
 
 Text currentDate = new Text(shell, SWT.BORDER);
 currentDate.setData("currentDate");
