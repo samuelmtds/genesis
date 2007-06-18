@@ -39,8 +39,8 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.util.GenesisUtils;
-import org.apache.commons.beanutils.Converter;
 
+import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -319,7 +319,9 @@ public class DefaultFormController implements FormController {
       return changed;
    }
 
-   protected void fireValuesChanged(Map updatedValues) throws Exception {
+   protected void fireValuesChanged(Map originalUpdatedValues) throws Exception {
+      Map updatedValues = new HashMap(originalUpdatedValues);
+
       for (final Iterator i = listeners.iterator(); i.hasNext(); ) {
          ((FormControllerListener)i.next()).valuesChanged(updatedValues);
       }
