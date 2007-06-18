@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.controller;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -151,5 +152,48 @@ public class DefaultFormControllerTest extends GenesisTestCase {
 
       assertEquals("@BeforeAction was not called for @DataProvider", 
             Boolean.TRUE, called[0]);
+   }
+
+   public void testValuesChangedIsReentrant() throws Exception {
+      controller.setup();
+
+      controller.addFormControllerListener(new FormControllerListener() {
+         private boolean firstTime = true;
+
+         public void enabledConditionsChanged(Map updatedEnabledConditions) {
+         }
+
+         public void visibleConditionsChanged(Map updatedVisibleConditions) {
+         }
+
+         public boolean beforeInvokingMethod(MethodMetadata methodMetadata) throws Exception {
+            return true;
+         }
+
+         public void afterInvokingMethod(MethodMetadata methodMetadata) throws Exception {
+         }
+
+         public void dataProvidedListChanged(DataProviderMetadata metadata, List items) throws Exception {
+         }
+
+         public void dataProvidedIndexesChanged(DataProviderMetadata metadata, int[] selectedIndexes) {
+         }
+
+         public void valuesChanged(Map updatedValues) throws Exception {
+            for (Iterator i = updatedValues.entrySet().iterator(); i.hasNext();) {
+               Map.Entry e = (Map.Entry) i.next();
+
+               if (firstTime && "stringField".equals(e.getKey())) {
+                  firstTime = false;
+                  controller.updateChangedMap(Collections.singletonMap(
+                        e.getKey(), e.getValue()), false, Collections.emptyMap());
+               }
+            }
+         }
+      });
+
+      form.setStringField("abc");
+      form.setObjectField(new Object());
+      controller.update();
    }
 }
