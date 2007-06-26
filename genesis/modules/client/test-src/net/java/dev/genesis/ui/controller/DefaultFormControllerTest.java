@@ -186,7 +186,7 @@ public class DefaultFormControllerTest extends GenesisTestCase {
                if (firstTime && "stringField".equals(e.getKey())) {
                   firstTime = false;
                   controller.updateChangedMap(Collections.singletonMap(
-                        e.getKey(), e.getValue()), false, Collections.emptyMap());
+                        e.getKey(), e.getValue()), false, new HashMap());
                }
             }
          }
