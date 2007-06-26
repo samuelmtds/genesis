@@ -80,10 +80,10 @@ public class BasicValidator {
       
       BigDecimal inputValue = normalize(ConvertUtils.convert(value,
             BigDecimal.class));
-      BigDecimal min = validateMin ? normalize(ConvertUtils.convert(
-            field.getVarValue("min"), BigDecimal.class)) : null;
-      BigDecimal max = validateMax ? normalize(ConvertUtils.convert(
-            field.getVarValue("max"), BigDecimal.class)) : null;
+      BigDecimal min = validateMin ? new BigDecimal(field.getVarValue("min")) : 
+            null;
+      BigDecimal max = validateMax ? new BigDecimal(field.getVarValue("max")) : 
+            null;
 
       return (!validateMin || min.compareTo(inputValue) <= 0) && 
             (!validateMax || max.compareTo(inputValue) >= 0);
