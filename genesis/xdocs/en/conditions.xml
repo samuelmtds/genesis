@@ -184,7 +184,7 @@ getContentPane().add(currentDate);
 shell = new Shell(SWT.TITLE | SWT.CLOSE);
 
 Label currentDateLabel = new Label(shell, SWT.NONE);
-currentDateLabel.setText("Current Date:");
+currentDateLabel.setText("Current date:");
 
 Text currentDate = new Text(shell, SWT.BORDER);
 currentDate.setData("currentDate");
