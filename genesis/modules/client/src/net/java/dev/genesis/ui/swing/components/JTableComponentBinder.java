@@ -19,6 +19,8 @@
 package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -37,16 +39,43 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
 
-
 public class JTableComponentBinder extends AbstractComponentBinder {
+   private static volatile boolean initialized = false;
+   private static Method convertRowIndexToModel;
+   private static Method convertRowIndexToView;
+
+   protected static boolean needsConversion() {
+      if (initialized) {
+         return convertRowIndexToModel != null;
+      }
+
+      try {
+         convertRowIndexToModel = JTable.class.getMethod(
+               "convertRowIndexToModel", new Class[] {int.class});
+         convertRowIndexToView = JTable.class.getMethod(
+               "convertRowIndexToView", new Class[] {int.class});
+      } catch (SecurityException se) {
+         IllegalStateException ise = new IllegalStateException(
+               "Could not load convertRowIndexTo* methods");
+         ise.initCause(se);
+         throw ise;
+      } catch (NoSuchMethodException nsme) {
+         // Expected
+      } finally {
+         initialized = true;
+      }
+
+      return convertRowIndexToModel != null;
+   }
+
    public BoundDataProvider bind(SwingBinder binder, Component component,
-      DataProviderMetadata dataProviderMetadata) {
+         DataProviderMetadata dataProviderMetadata) {
       return new JTableComponentBoundDataProvider(binder, (JTable) component,
          dataProviderMetadata);
    }
 
    public class JTableComponentBoundDataProvider extends AbstractBoundMember
-      implements BoundDataProvider {
+         implements BoundDataProvider {
       private final JTable component;
       private final DataProviderMetadata dataProviderMetadata;
       private final ListSelectionListener listener;
@@ -108,10 +137,31 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       protected int[] getIndexes() {
-         return component.getSelectedRows();
+         int[] indexes = component.getSelectedRows();
+
+         if (!needsConversion()) {
+            return indexes;
+         }
+
+         try {
+            for (int i = 0; i < indexes.length; i++) {
+               indexes[i] = ((Integer)convertRowIndexToModel.invoke(component, 
+                     new Object[] {new Integer(indexes[i])})).intValue();
+            }
+         } catch (IllegalArgumentException iae) {
+            throw new RuntimeException(iae);
+         } catch (InvocationTargetException ite) {
+            throw new RuntimeException(ite.getCause());
+         } catch (IllegalAccessException iae) {
+            throw new RuntimeException(iae);
+         }
+
+         return indexes;
       }
 
       public void updateIndexes(int[] indexes) {
+         getViewIndexes(indexes);
+
          if (Arrays.equals(getIndexes(), indexes)) {
             return;
          }
@@ -123,6 +173,10 @@ public class JTableComponentBinder extends AbstractComponentBinder {
             sm.clearSelection();
    
             for (int i = 0; i < indexes.length; i++) {
+               if (indexes[i] == -1) {
+                  continue;
+               }
+
                sm.addSelectionInterval(indexes[i], indexes[i]);
             }
          } finally {
@@ -130,15 +184,35 @@ public class JTableComponentBinder extends AbstractComponentBinder {
          }
       }
 
+      protected void getViewIndexes(final int[] indexes) {
+         if (!needsConversion()) {
+            return;
+         }
+
+         try {
+            for (int i = 0; i < indexes.length; i++) {
+               indexes[i] = ((Integer)convertRowIndexToView.invoke(component, 
+                     new Object[] {new Integer(indexes[i])})).intValue();
+            }
+         } catch (IllegalArgumentException iae) {
+            throw new RuntimeException(iae);
+         } catch (InvocationTargetException ite) {
+            throw new RuntimeException(ite.getCause());
+         } catch (IllegalAccessException iae) {
+            throw new RuntimeException(iae);
+         }
+      }
+
       public void updateList(List data) throws Exception {
          int[] selected = dataProviderMetadata.isResetSelection() ? new int[0]
-               : component.getSelectedRows();
+               : getIndexes();
 
          createTableModelAdapter().setData(data);
          setSelectedIndexes(data.size(), selected);
       }
 
       protected void setSelectedIndexes(int listSize, int[] indexes) {
+         getViewIndexes(indexes);
          deactivateSelectionListener();
          
          try {
