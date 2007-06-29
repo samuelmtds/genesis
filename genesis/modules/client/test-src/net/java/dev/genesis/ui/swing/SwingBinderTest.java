@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,11 @@
  */
 package net.java.dev.genesis.ui.swing;
 
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
 import net.java.dev.genesis.GenesisTestCase;
 
 public class SwingBinderTest extends GenesisTestCase {
@@ -25,7 +30,27 @@ public class SwingBinderTest extends GenesisTestCase {
       super("Swing Binder Unit Test");
    }
    
-   public void test() {
+   public void testDefaultButtonListener() {
+      JFrame frame = new JFrame();
+      JButton defaultButton = new JButton();
+      final ActionListener[] listeners = new ActionListener[1];
       
+      SwingBinder binder = new SwingBinder(frame, new Object()) {
+         protected ActionListener createDefautButtonListener() {
+            listeners[0] = super.createDefautButtonListener();
+
+            return listeners[0];
+         }
+      };
+      frame.getRootPane().setDefaultButton(defaultButton);
+
+      binder.bind();
+      int length = defaultButton.getActionListeners().length;
+      
+      assertEquals(listeners.length, length);
+
+      defaultButton.removeActionListener(listeners[0]);
+
+      assertEquals(length - 1, defaultButton.getActionListeners().length);
    }
 }
