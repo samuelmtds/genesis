@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -62,7 +62,8 @@ public class SwingBinder extends AbstractBinder {
    public static final String BINDER_KEY = "genesis:SwingBinder";
 
    private final ComponentBinderRegistry factory = ComponentBinderRegistry.getInstance();
-   private final ActionListener defaultButtonListener;
+   private ActionListener defaultButtonListener;
+   private final boolean bindDefaultButton;
    private final WindowListener windowListener;
    private final FormControllerListener listener;
 
@@ -145,8 +146,7 @@ public class SwingBinder extends AbstractBinder {
       LookupStrategy lookupStrategy, Object form, Object handler, boolean bindDefaultButton) {
       super(component, form, handler, lookupStrategy);
       this.listener = createFormControllerListener();
-      this.defaultButtonListener = bindDefaultButton && hasDefaultButton() ? createDefautButtonListener()
-            : null;
+      this.bindDefaultButton = bindDefaultButton;
       this.windowListener = isWindow() ? createWindowListener() : null;
    }
 
@@ -318,14 +318,14 @@ public class SwingBinder extends AbstractBinder {
    }
 
    protected void bindDefaultButton() {
-      if (defaultButtonListener == null) {
+      if (!bindDefaultButton || !hasDefaultButton()) {
          return;
       }
 
       final JButton defaultButton = ((RootPaneContainer) getRoot())
             .getRootPane().getDefaultButton();
 
-      defaultButton.addActionListener(defaultButtonListener);
+      defaultButton.addActionListener(this.defaultButtonListener =  createDefautButtonListener());
    }
 
    protected boolean hasDefaultButton() {
