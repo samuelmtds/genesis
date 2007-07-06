@@ -1303,6 +1303,7 @@
                 value="${webstart.protocol}://${webstart.server}:${webstart.port}/${webstart.context}" />
       <property name="webstart.jnlp.codebase"
                 value="${webstart.jnlp.homepage}/${webstart.jars.dir.name}" />
+      <property name="webstart.jnlp.spec" value="1.0+" />
       <property name="webstart.jnlp.title" 
                 value="${genesisBasedApplication.prettyName}" />
       <property name="webstart.jnlp.vendor" 
@@ -1314,6 +1315,10 @@
       <property name="webstart.jnlp.icon" value="icon.gif" />
       <property name="webstart.jnlp.offline-allowed" value="false" />
       <property name="webstart.local.jnlp.offline-allowed" value="true" />
+      <property name="webstart.jnlp.shortcut.online" value="true" />
+      <property name="webstart.jnlp.shortcut.desktop" value="true" />
+      <property name="webstart.jnlp.shortcut.menu" value="true" />
+      <property name="webstart.jnlp.shortcut.submenu" value="" />
 
       <property name="webstart.jnlp.j2se.version" value="1.4+" />
       <property name="webstart.jnlp.j2se.initial.heap.size" value="32M" />
@@ -1486,7 +1491,7 @@
             <taskdef name="jnlp"
                      classname="net.java.dev.genesis.anttasks.jnlp.JNLPTask"
                      classpathref="anttasks.path" />
-            <jnlp codebase="${webstart.jnlp.codebase}" tofile="@{tofile}">
+            <jnlp codebase="${webstart.jnlp.codebase}" spec="${webstart.jnlp.spec}" tofile="@{tofile}">
                <information offlineAllowed="@{offline-allowed}">
                   <title>${webstart.jnlp.title}</title>
                   <vendor>${webstart.jnlp.vendor}</vendor>
@@ -1494,6 +1499,11 @@
                   <description kind="tooltip">${webstart.jnlp.tooltip}</description>
                   <homepage href="${webstart.jnlp.homepage}" />
                   <icon href="${webstart.jnlp.icon}" />
+                  <shortcut online="${webstart.jnlp.shortcut.online}"
+   								 desktop="${webstart.jnlp.shortcut.desktop}"
+									 menu="${webstart.jnlp.shortcut.menu}"
+   								 submenu="${webstart.jnlp.shortcut.submenu}">
+                  </shortcut>
                   <customize-information />
                </information>
                <customize-security />

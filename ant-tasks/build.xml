@@ -46,6 +46,7 @@
 
           <!-- To avoid IllegalAccessError in runtime -->
           <rule pattern="net.java.dev.genesis.anttasks.jnlp.OrangeJNLPTask" result="com.orangevolt.tools.ant.OrangeJNLPTask"/>
+          <rule pattern="net.java.dev.genesis.anttasks.jnlp.OrangeJNLPTask**" result="com.orangevolt.tools.ant.OrangeJNLPTask@1"/>
       </jarjar>
    </target>
 

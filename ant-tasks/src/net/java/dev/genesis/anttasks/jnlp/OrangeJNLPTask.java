@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,6 +40,10 @@ public class OrangeJNLPTask extends com.orangevolt.tools.ant.JNLPTask {
       return res;
    }
 
+   protected boolean supportsJnlp15Spec() {
+      return !"1.0+".equals(spec);
+   }
+
    public void setEncoding(String encoding) {
       this.encoding = encoding;
    }
@@ -65,7 +69,7 @@ public class OrangeJNLPTask extends com.orangevolt.tools.ant.JNLPTask {
    }
 
    public Information createInformation() {
-      Information information = new Information();
+      Information information = new ExtendedInformation();
       informations.add(information);
 
       return information;
@@ -172,5 +176,52 @@ public class OrangeJNLPTask extends com.orangevolt.tools.ant.JNLPTask {
       xDesc.toString(sb, depth + 1);
 
       sb.append("</jnlp>").append(NEW_LINE);
+   }
+
+   public class ExtendedInformation extends Information {
+      public Shortcut createShortcut() {
+         Shortcut shortcut = new ExtendedShortcut();
+         setShortcut(shortcut);
+
+         return shortcut;
+      }
+      
+      public class ExtendedShortcut extends Shortcut {
+         private boolean desktop;
+         private boolean menu;
+         private String submenu;
+         
+         public void setDesktop(String value) {
+            this.desktop = "true".equals(value);
+         }
+
+         public void setMenu(String value) {
+            this.menu = "true".equals(value);
+         }
+
+         public void setSubmenu(String value) {
+            this.submenu = value;
+         }
+
+         public void toString(StringBuffer sb, int depth) {
+            if (!supportsJnlp15Spec()) {
+               return;
+            }
+
+            if (desktop) {
+               createDesktop();
+            }
+
+            if (menu) {
+               Menu m = createMenu();
+
+               if (submenu != null && submenu.trim().length() > 0){
+                  m.setSubmenu(submenu);
+               }
+            }
+
+            super.toString(sb, depth);
+         }
+      }   
    }
 }
