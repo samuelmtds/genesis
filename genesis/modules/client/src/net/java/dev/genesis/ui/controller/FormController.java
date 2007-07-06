@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import net.java.dev.genesis.script.ScriptContext;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
@@ -58,4 +59,5 @@ public interface FormController {
    public void update() throws Exception;
    public FormState getFormState() throws Exception;
    public void reset(FormState state) throws Exception;
+   public ScriptContext getScriptContext();
 }

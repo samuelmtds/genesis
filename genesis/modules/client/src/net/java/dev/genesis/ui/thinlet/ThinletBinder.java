@@ -29,7 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.script.ScriptExpression;
+import net.java.dev.genesis.script.ScriptRegistry;
 import net.java.dev.genesis.text.Formatter;
+import net.java.dev.genesis.text.ScriptFormatterAdapter;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
@@ -495,6 +498,13 @@ public class ThinletBinder implements FormControllerListener {
 
    public Formatter registerFormatter(String key, Formatter formatter) {
       return (Formatter)formatters.put(key, formatter);
+   }
+
+   public Formatter registerFormatter(String key, String scriptExpression) {
+      final ScriptExpression expr = ScriptRegistry.getInstance().getScript().compile(scriptExpression);
+      final Formatter formatter = new ScriptFormatterAdapter(expr, controller);
+
+      return registerFormatter(key, formatter);
    }
 
    public Converter registerConverter(String key, Converter converter) {

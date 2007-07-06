@@ -26,8 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.reflection.MethodEntry;
+import net.java.dev.genesis.script.ScriptExpression;
+import net.java.dev.genesis.script.ScriptRegistry;
 import net.java.dev.genesis.text.Formatter;
 import net.java.dev.genesis.text.FormatterRegistry;
+import net.java.dev.genesis.text.ScriptFormatterAdapter;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
@@ -692,6 +695,13 @@ public abstract class AbstractBinder implements FormControllerListener {
    public Formatter registerFormatter(String componentName,
          Formatter formatter) {
          return (Formatter) formatters.put(componentName, formatter);
+   }
+
+   public Formatter registerFormatter(String componentName, String scriptExpression) {
+      final ScriptExpression expr = ScriptRegistry.getInstance().getScript().compile(scriptExpression);
+      final Formatter formatter = new ScriptFormatterAdapter(expr, controller);
+
+      return registerFormatter(componentName, formatter);
    }
 
    public Converter registerConverter(String componentName,
