@@ -1281,6 +1281,12 @@
             <include name="deploy/ejb-deployer.xml" />
             <include name="deploy/ear-deployer.xml" />
             <include name="deploy/jbossjca-service.xml" />
+
+            <!-- JBoss 4.2.x specific files  -->
+            <include name="deploy/jboss-web.deployer/**" />
+            <include name="deploy/ejb3.deployer/**" />
+            <include name="deploy/jboss-aop-jdk50.deployer/**" />
+            <include name="deploy/ejb3-interceptors-aop.xml" />
          </fileset>
       </copy>
       <copy file="${jdbc.driver}" todir="${jboss.app}/lib" />
