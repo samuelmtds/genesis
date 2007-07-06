@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,12 +30,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.text.MaskFormatter;
 
 import net.java.dev.genesis.samples.useradmin.databeans.User;
 import net.java.dev.genesis.samples.useradmin.ui.InsertUpdateForm;
@@ -64,7 +66,7 @@ public class InsertUpdateView extends JDialog {
    private JLabel emailLabel;
    private JTextField emailTextField;
    private JLabel birthdayLabel;
-   private JTextField birthdayTextField;
+   private JFormattedTextField birthdayTextField;
    private JLabel addressLabel;
    private JTextField addressTextField;
    private JLabel countryLabel;
@@ -92,7 +94,7 @@ public class InsertUpdateView extends JDialog {
       binder.bind();
    }
 
-   private void initialize() {
+   private void initialize() throws Exception {
       JPanel panel = new JPanel();
       panel.setBorder(BorderFactory.createEtchedBorder());
       panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
@@ -171,7 +173,8 @@ public class InsertUpdateView extends JDialog {
       c.gridy = 5;
       panel.add(birthdayLabel, c);
 
-      birthdayTextField = new JTextField();
+      MaskFormatter mask = new MaskFormatter("##/##/####");
+      birthdayTextField = new JFormattedTextField(mask);
       birthdayTextField.setName("birthday");
       c.gridx = 1;
       c.gridy = 5;
