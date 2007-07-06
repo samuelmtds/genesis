@@ -30,7 +30,6 @@ import javax.swing.JComboBox;
 import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
@@ -219,8 +218,7 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
             return value.toString();
          }
 
-         throw new PropertyMisconfigurationException("Property 'key' "
-               + "must be configured for the component named " + getName());
+         return String.valueOf(System.identityHashCode(value));
       }
 
       protected void deactivateListeners() {

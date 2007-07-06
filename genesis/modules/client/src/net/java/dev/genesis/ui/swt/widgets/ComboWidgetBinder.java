@@ -24,7 +24,6 @@ import java.util.List;
 import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
-import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
@@ -224,8 +223,7 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
             return value.toString();
          }
 
-         throw new PropertyMisconfigurationException("Property 'key' "
-               + "must be configured for the widget named " + getName());
+         return String.valueOf(System.identityHashCode(value));
       }
 
       public void unbind() {
