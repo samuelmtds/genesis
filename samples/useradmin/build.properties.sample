@@ -2,7 +2,7 @@
 
 #################################################################################
 ## Use these properties for running the sample in LOCAL or REMOTE MODE          
-jboss.home=/opt/jboss-3.2.7
+jboss.home=/opt/jboss-4.2.0.GA
 
 
 #################################################################################
@@ -14,7 +14,7 @@ jboss.home=/opt/jboss-3.2.7
 #################################################################################
 ## Use these properties for running the sample in REMOTE MODE ONLY              
 #local.mode=false
-#jboss.home=/opt/jboss-3.2.7
+#jboss.home=/opt/jboss-4.2.0.GA
 
 
 #################################################################################

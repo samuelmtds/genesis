@@ -4,38 +4,25 @@
    <import file="desktop_build.xml" />
    
    <target name="-pre-init">
+      <!-- Load developer specific properties -->
       <property file="build.properties" />
 
-      <property name="local.mode" value="true" />
-      <!-- If you're using Java 5 and needs to compile
-           javadoc annotations, uncomment the following line -->
-      <!--
-      <property name="force.annotation" value="true" />
-      -->
-
-      <!-- Script jars not used by default. If you want to use one of them, 
-           comment the specific line and change aop.xml to refer to it -->
-      <property name="use.beanshell" value="false" />
-      <property name="use.el" value="false" />
-      <property name="use.jxpath" value="false" />
-
-      <!-- Uncomment a line if you don't use the UI technology it refers to and
-           want the build process to ignore its jars -->
-      <!--
-      <property name="use.thinlet" value="false" />
-      <property name="use.swing" value="false" />
-      <property name="use.swt" value="false" />
-      -->
+      <!-- Load project specific properties -->
+      <property file="project.properties" />
    </target>
 
 <!--
      If you need additional jars to compile/run the shared module,
-     add them to the modules/shared/lib folder
+     add them to the ./modules/shared/lib folder
 
      If you need additional jars to compile/run the client module,
-     add them to the modules/client/lib folder
+     add them to the ./modules/client/lib folder
 
      If you need additional jars to compile/run both the shared and client module,
-     add them to the lib folder
+     add them to the ./lib folder
+     
+     Jars located in ./modules/shared/lib/ext, ./modules/client/lib/ext and ./lib/ext
+     folders are used to compile/run the application, but they're not bundled
+     and/or distributed with the application.
 -->
 </project>

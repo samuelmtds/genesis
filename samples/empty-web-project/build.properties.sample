@@ -1,12 +1,9 @@
-## Build properties sample ##
+## Developer specific properties sample ##
 
 #################################################################################
 ## The following property must be defined in build.properties with an           #
 ## appropriate value for the local environment                                  #
-jboss.home=/opt/jboss-3.2.7
-genesisBasedApplication.name=empty-web-project
-genesisBasedApplication.prettyName=Empty Web Project
-#################################################################################
+jboss.home=/opt/jboss-4.2.0.GA
 
 
 #################################################################################
@@ -14,11 +11,4 @@ genesisBasedApplication.prettyName=Empty Web Project
 ## need to be defined in build.properties if their values are different in your #
 ## local setup                                                                  #
 #genesis.home=../../genesis
-#jboss.datasource.jndi.name=java:/DefaultDS
-#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
-#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
-#hibernate.version=2.1.8
-#hibernate.show.sql=true
-#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
-#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
-#################################################################################
+

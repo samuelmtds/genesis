@@ -4,17 +4,25 @@
    <import file="web_build.xml" />
    
    <target name="-pre-init">
+      <!-- Load developer specific properties -->
       <property file="build.properties" />
+
+      <!-- Load project specific properties -->
+      <property file="project.properties" />
    </target>
 
 <!--
      If you need additional jars to compile/run the shared module,
-     add them to the modules/shared/lib folder
+     add them to the ./modules/shared/lib folder
 
      If you need additional jars to compile/run the client module,
-     add them to the modules/web/lib folder
+     add them to the ./modules/web/lib folder
 
      If you need additional jars to compile/run both the shared and client module,
-     add them to the lib folder
+     add them to the ./lib folder
+
+     Jars located in ./modules/shared/lib/ext, ./modules/client/lib/ext and ./lib/ext
+     folders are used to compile/run the application, but they're not bundled
+     and/or distributed with the application.
 -->
 </project>

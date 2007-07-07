@@ -259,7 +259,7 @@ public class User implements Serializable {
        <p>Para executar o exemplo em modo local é necessário:</p>
        <ul>
           <li><a href="http://ant.apache.org/">Ant</a>; utilize de 
-          preferência a última versão (que no momento é Ant 1.6.5)</li>
+          preferência a última versão (que no momento é Ant 1.7.0)</li>
        </ul>
        <p>Siga os passos abaixo:</p>
        <ul>
@@ -300,9 +300,9 @@ c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
       <p>Para executar o exemplo em modo remoto é necessário:</p>
        <ul>
           <li><a href="http://ant.apache.org/">Ant</a>; utilize de 
-          preferência a última versão (que no momento é Ant 1.6.5)</li>
+          preferência a última versão (que no momento é Ant 1.7.0)</li>
           <li>Servidor de aplicações <a href="http://www.jboss.org/">JBoss</a>,
-          utilize de preferência as últimas versões das séries 3.2.x ou 4.0.x</li>
+          utilize de preferência as últimas versões das séries 3.2.x, 4.0.x ou 4.2.x</li>
        </ul>
       <p>Para rodar o exemplo em modo remoto, siga os seguintes passos:</p>
       <ul>
@@ -319,7 +319,7 @@ c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
 local.mode=false
    
 # Indicamos aqui onde está instalado o servidor JBoss
-jboss.home=/opt/jboss-3.2.7
+jboss.home=/opt/jboss-4.2.0.GA
 </source>
         <li>Na linha de comando, execute o script ant com o seguinte comando:
 <source>

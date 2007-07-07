@@ -33,10 +33,10 @@
         <li>Distribuição do genesis juntamente com as suas bibliotecas de
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
-        alguma das versões 3.2.x. ou 4.0.x</li>
+        alguma das versões 3.2.x., 4.0.x ou 4.2.x</li>
         <li>Para compilar e instalar a aplicação recomendamos <a href=
         "http://ant.apache.org/">Apache Ant</a>. Prefira sempre a última
-        versão disponível (no momento, Ant 1.6.5)</li>
+        versão disponível (no momento, Ant 1.7.0)</li>
       </ul>
       <p><b>Não é necessário utilizar a estrutura do projeto vazio se utilizar 
       apenas a funcionalidade de binding do genesis. Basta importar as 
@@ -54,7 +54,7 @@
       projeto é copiar o arquivo <code>build.properties.sample</code> para outro 
       arquivo com nome <code>build.properties</code>. O arquivo 
       <code>build.properties</code> define certas propriedades que são 
-      específicas do projeto ou do desenvolvedor. O conteúdo inicial do arquivo 
+      específicas do desenvolvedor. O conteúdo inicial do arquivo 
       <code>build.properties.sample</code> segue abaixo:</p>
 <source>
 ## Build properties sample ##
@@ -69,7 +69,7 @@ genesisBasedApplication.prettyName=Empty Project
 
 #################################################################################
 ## Use these properties for running the sample in LOCAL or REMOTE MODE          
-jboss.home=/opt/jboss-3.2.7
+jboss.home=/opt/jboss-4.2.0.GA
 
 
 #################################################################################
@@ -81,7 +81,7 @@ jboss.home=/opt/jboss-3.2.7
 #################################################################################
 ## Use these properties for running the sample in REMOTE MODE ONLY              
 #local.mode=false
-#jboss.home=/opt/jboss-3.2.7
+#jboss.home=/opt/jboss-4.2.0.GA
 
 
 #################################################################################
@@ -118,12 +118,101 @@ jboss.home=/opt/jboss-3.2.7
 #hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
 #hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
 </source>
-      <p>Existem quatro propriedades principais no arquivo:</p>
+      <p>Existe uma propriedade principal no arquivo:</p>
       <ul>
         <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
         servidor JBoss. Só é necessário definir essa propriedade se sua aplicação
         será executada dentro do servidor de aplicação JBoss. Para rodar em modo
         local apenas, essa propriedade é descartada.</li>
+      </ul>
+      <p>Existem outras propriedades que não são obrigatórias pois já possuem um
+      valor padrão, porém elas podem ser redefinidas. Segue abaixo uma
+      delas:</p>
+      <ul>
+        <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
+        do genesis. Geralmente o diretório será algo do tipo
+        <code><b>&lt;ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
+      </ul>
+      <p>O arquivo <code>project.properties</code> define certas propriedades que são 
+      específicas do projeto. O conteúdo inicial do arquivo <code>project.properties</code>
+      segue abaixo:</p>
+<source>
+## Project specific properties ##
+
+#################################################################################
+## The following property must be defined in project.properties with an appropriate
+## value for your environment
+genesisBasedApplication.name=empty-project
+genesisBasedApplication.mainClass=net.java.dev.genesis.emptyproject.MyGenesisApp
+genesisBasedApplication.prettyName=Empty Project
+local.mode=true
+
+
+#################################################################################
+## If your project uses Java 5 or later and needs to compile
+## javadoc annotations, uncomment the following line
+#force.annotation=true
+
+
+#################################################################################
+## Script jars not used by default. If you want to use one of them, 
+## comment the specific line and change aop.xml to refer to it. Java 6 or later
+## doesn't need javascript jars.
+use.beanshell=false
+use.el=false
+use.jxpath=false
+#use.javascript=false
+
+
+#################################################################################
+## Uncomment a line if you don't use the UI technology it refers to and
+## want the build process to ignore its jars
+#use.thinlet=false
+#use.swing=false
+#use.swt=false
+
+
+#################################################################################
+## Use these properties for running the sample in LOCAL MODE ONLY               
+#remote.mode=false
+#jdbc.driver=target/hsqldb.jar
+
+
+#################################################################################
+## If you want to turn off validation generation, uncomment the following 
+## property:
+#validation.generate.files=false
+
+
+#################################################################################
+##	If you want to turn off hibernate files generation, such as hibernate.cfg.xml,
+## jboss-service.xml, and *.hbm.xml, uncomment the following property:
+#hibernate.generate.files=false
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  
+## need to be defined in build.properties if their values are different in your 
+## local setup                                                                  
+#jboss.provider.url=jnp://localhost
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#webstart.server=localhost
+#webstart.port=8080
+#build.dir=dist/useradmin.war/application
+#jdbc.driver=dist/useradmin.war/application/hsqldb.jar
+#jdbc.connection.url=jdbc:hsqldb:genesis/useradmin
+#jdbc.driver.class=org.hsqldb.jdbcDriver
+#jdbc.username=sa
+#jdbc.password=
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.8
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+</source>
+      <p>Existem três propriedades principais no arquivo:</p>
+      <ul>
         <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
         para seu projeto, de preferência sem espaços.</li>
         <li><code><b>genesisBasedApplication.mainClass</b></code>: Define o nome
@@ -136,9 +225,6 @@ jboss.home=/opt/jboss-3.2.7
       valor padrão, porém elas podem ser redefinidas. Segue abaixo algumas
       delas:</p>
       <ul>
-        <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
-        do genesis. Geralmente o diretório será algo do tipo
-        <code><b>&lt;ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -151,8 +237,8 @@ jboss.home=/opt/jboss-3.2.7
       <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
       de um novo projeto utilizando o genesis.</p>
       <ul>
-        <li>Possuímos o JBoss 3.2.7 instalado no diretório
-        <code>C:\servidores\jboss-3.2.7</code></li>
+        <li>Possuímos o JBoss 4.2.0 instalado no diretório
+        <code>C:\servidores\jboss-4.2.0.GA</code></li>
         <li>Instalamos a distribuição do genesis no diretório
         <code>C:\projetos</code>, onde que criará o diretório
         <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
@@ -162,12 +248,14 @@ jboss.home=/opt/jboss-3.2.7
       </ul>
       <p>O nosso <code><b>build.properties</b></code> poderá ser:</p>
 <source>
-jboss.home=c:/servidores/jboss-3.2.7
+jboss.home=c:/servidores/jboss-4.2.0.GA
+genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
+</source>
+      <p>E o nosso <code><b>project.properties</b></code> poderá ser:</p>
+<source>
 genesisBasedApplication.name=helloworld
 genesisBasedApplication.mainClass=exemplo.HelloWorld
 genesisBasedApplication.prettyName=Hello World
-
-genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
 </source>
     </section>
     <section name="Desenvolvendo com o genesis">
@@ -283,16 +371,29 @@ ant run:remote
        <subsection name="Aplicação Local usando MySQL e JGoodies">
 <p>Arquivo <b>build.properties</b></p>
 <source>
+### Indique a pasta onde se encontra a distribuição do genesis
+genesis.home=D:/opensource/genesis-3.0/genesis
+</source>
+<p>Arquivo <b>project.properties</b></p>
+<source>
+## IMPORTANTE: Adicione os jars do JGoodies no diretório modules/client/lib
 ### Configurações gerais
 genesisBasedApplication.name=minhaaplicacao
 genesisBasedApplication.mainClass=meupacote.MinhaClassePrincipal
 genesisBasedApplication.prettyName=Minha Aplicação
 local.mode=true
 remote.mode=false
-  
-### Indique a pasta onde se encontra a distribuição do genesis
-genesis.home=D:/opensource/genesis-3.0/genesis
 
+## Thinlet e SWT não são necessários ao seu projeto
+use.thinlet=false
+use.swt=false
+
+## Se estiver usando Javascript como linguagem de script,
+## Beanshell, JXPath e EL não são necessários ao seu projeto
+use.beanshell=false
+use.el=false
+use.jxpath=false
+  
 ### Indique o local onde o jar do driver do MySQL se encontra
 jdbc.driver=lib/mysql/mysqlconnector.jar
   
@@ -302,30 +403,6 @@ jdbc.driver.class=com.mysql.jdbc.Driver
 jdbc.username=meuusuario
 jdbc.password=minhasenha
 hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
-</source>
-<p>Arquivo <b>build.xml</b></p>
-<source>
-<![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-  <import file="desktop_build.xml" />
-
-  <target name="-pre-init">
-    <property file="build.properties" />
-    
-    <!-- IMPORTANTE: Adicione os jars do JGoodies no diretório modules/client/lib -->
-
-    <!-- Thinlet e SWT não são necessários ao seu projeto: -->
-    <property name="use.thinlet" value="false" />
-    <property name="use.swt" value="false" />
-
-    <!-- Se estiver usando Javascript como linguagem de script,
-         Beanshell e EL não são necessários ao seu projeto: -->
-    <property name="use.beanshell" value="false" />
-    <property name="use.el" value="false" />
-  </target>
-</project>
-]]>
 </source>
       <p>Para executar seu projeto:
 <source>
@@ -337,26 +414,11 @@ ant run:local
        <subsection name="Aplicação Remota usando MySQL e JFreeReport">
 <p>Arquivo <b>build.properties</b></p>
 <source>
-### Configurações gerais
-genesisBasedApplication.name=minhaaplicacao
-genesisBasedApplication.mainClass=meupacote.MinhaClassePrincipal
-genesisBasedApplication.prettyName=Minha Aplicação
-local.mode=false
-remote.mode=true
-  
 ### Indique a pasta onde se encontra a distribuição do genesis
 genesis.home=D:/opensource/genesis-3.0/genesis
   
 ### Indique a pasta de instalação do JBoss
-jboss.home=D:/servers/jboss-4.0.4.GA
-
-### Indique o local onde o jar do driver do MySQL se encontra
-jdbc.driver=lib/mysql/mysqlconnector.jar
-  
-## Configurações de seu Banco de Dados
-jboss.datasource.jndi.name=java:/MySqlDS
-jboss.datasource.config.xml=conf/mysql-ds.xml
-hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+jboss.home=D:/servers/jboss-4.2.0.GA
 </source>
 <p>Arquivo <b>conf/mysql-ds.xml</b></p>
 <source>
@@ -393,37 +455,42 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
 </datasources>
 ]]>
 </source>
-<p>Arquivo <b>build.xml</b></p>
+<p>Arquivo <b>project.properties</b></p>
 <source>
-<![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-  <import file="desktop_build.xml" />
+## IMPORTANTE: Adicione os jars do JFreeReport no diretório modules/client/lib
 
-  <target name="-pre-init">
-    <property file="build.properties" />
+## Se estiver usando Javascript como linguagem de script,
+## Beanshell, JXPath e EL não são necessários ao seu projeto
+use.beanshell=false
+use.el=false
+use.jxpath=false
 
-    <!-- IMPORTANTE: Adicione os jars do JFreeReport no diretório modules/client/lib -->
-
-    <!-- Se estiver usando Javascript como linguagem de script,
-         Beanshell e EL não são necessários ao seu projeto: -->
-    <property name="use.beanshell" value="false" />
-    <property name="use.el" value="false" />
-  </target>
-</project>
-]]>
+### Configurações gerais
+genesisBasedApplication.name=minhaaplicacao
+genesisBasedApplication.mainClass=meupacote.MinhaClassePrincipal
+genesisBasedApplication.prettyName=Minha Aplicação
+local.mode=false
+remote.mode=true
+  
+### Indique o local onde o jar do driver do MySQL se encontra
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## Configurações de seu Banco de Dados
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 </source>
       <p>Para executar seu projeto:
 <source>
 ant all
-D:\servers\jboss-4.0.4.GA\bin\run -c minhaaplicacao
+D:\servers\jboss-4.2.0.GA\bin\run -c minhaaplicacao
 ant run:remote
 </source>
       </p>
       <p>Para executar seu projeto via Java Web Start:
 <source>
 ant all.with.webstart
-D:\servers\jboss-4.0.4.GA\bin\run -c minhaaplicacao
+D:\servers\jboss-4.2.0.GA\bin\run -c minhaaplicacao
 Entre no endereço <a href="http://localhost:8080/minhaaplicacao">http://localhost:8080/minhaaplicacao</a>
 </source>
       </p>
@@ -431,6 +498,53 @@ Entre no endereço <a href="http://localhost:8080/minhaaplicacao">http://localhos
        <subsection name="Aplicação Local e Remota usando MySQL, JGoodies e Joda">
 <p>Arquivo <b>build.properties</b></p>
 <source>
+### Indique a pasta onde se encontra a distribuição do genesis
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### Indique a pasta de instalação do JBoss
+jboss.home=D:/servers/jboss-4.2.0.GA
+</source>
+<p>Arquivo <b>conf/mysql-ds.xml</b></p>
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>MySqlDS</jndi-name>
+    <connection-url>jdbc:mysql://localhost:3306/meudatabase</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>meuusuario</user-name>
+    <password>minhasenha</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
+    <!-- should only be used on drivers after 3.22.1 with "ping" support
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+    -->
+    <!-- sql to call when connection is created
+    <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+]]>
+</source>
+<p>Arquivo <b>project.properties</b></p>
+<source>
+##  IMPORTANTE: Adicione os jars do JGoodies no diretório modules/client/lib
+##  IMPORTANTE: Adicione os jars do Joda no diretório lib
+##  (Supondo que este é necessário tanto ao módulo shared quanto client)
+
 ### Configurações gerais
 genesisBasedApplication.name=minhaaplicacao
 genesisBasedApplication.mainClass=meupacote.MinhaClassePrincipal
@@ -438,11 +552,15 @@ genesisBasedApplication.prettyName=Minha Aplicação
 local.mode=true
 remote.mode=true
   
-### Indique a pasta onde se encontra a distribuição do genesis
-genesis.home=D:/opensource/genesis-3.0/genesis
-  
-### Indique a pasta de instalação do JBoss
-jboss.home=D:/servers/jboss-4.0.4.GA
+## Thinlet e SWT não são necessários ao seu projeto
+use.thinlet=false
+use.swt=false
+
+##  Se estiver usando Javascript como linguagem de script,
+##  Beanshell, JXPath e EL não são necessários ao seu projeto
+use.beanshell=false
+use.el=false
+use.jxpath=false
 
 ### Indique o local onde o jar do driver do MySQL se encontra
 jdbc.driver=lib/mysql/mysqlconnector.jar
@@ -456,68 +574,6 @@ jboss.datasource.jndi.name=java:/MySqlDS
 jboss.datasource.config.xml=conf/mysql-ds.xml
 hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 </source>
-<p>Arquivo <b>conf/mysql-ds.xml</b></p>
-<source>
-<![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--  Datasource config for MySQL using 3.0.9 available from:
-http://www.mysql.com/downloads/api-jdbc-stable.html
--->
-
-<datasources>
-  <local-tx-datasource>
-    <jndi-name>MySqlDS</jndi-name>
-    <connection-url>jdbc:mysql://localhost:3306/meudatabase</connection-url>
-    <driver-class>com.mysql.jdbc.Driver</driver-class>
-    <user-name>meuusuario</user-name>
-    <password>minhasenha</password>
-    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter</exception-sorter-class-name>
-    <!-- should only be used on drivers after 3.22.1 with "ping" support
-    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
-    -->
-    <!-- sql to call when connection is created
-    <new-connection-sql>some arbitrary sql</new-connection-sql>
-      -->
-    <!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
-    <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
-      -->
-
-    <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
-    <metadata>
-       <type-mapping>mySQL</type-mapping>
-    </metadata>
-  </local-tx-datasource>
-</datasources>
-]]>
-</source>
-<p>Arquivo <b>build.xml</b></p>
-<source>
-<![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-  <import file="desktop_build.xml" />
-
-  <target name="-pre-init">
-    <property file="build.properties" />
-
-    <!-- IMPORTANTE: Adicione os jars do JGoodies no diretório modules/client/lib -->
-    <!-- IMPORTANTE: Adicione os jars do Joda no diretório lib
-        (Supondo que este é necessário tanto ao módulo shared quanto client) -->
-
-    <!-- Thinlet e SWT não são necessários ao seu projeto: -->
-    <property name="use.thinlet" value="false" />
-    <property name="use.swt" value="false" />
-
-    <!-- Se estiver usando Javascript como linguagem de script,
-         Beanshell e EL não são necessários ao seu projeto: -->
-    <property name="use.beanshell" value="false" />
-    <property name="use.el" value="false" />
-  </target>
-
-</project>
-]]>
-</source>
       <p>Para executar seu projeto em modo local:
 <source>
 ant all
@@ -527,14 +583,14 @@ ant run:local
       <p>Para executar seu projeto em modo remoto:
 <source>
 ant all
-D:\servers\jboss-4.0.4.GA\bin\run -c minhaaplicacao
+D:\servers\jboss-4.2.0.GA\bin\run -c minhaaplicacao
 ant run:remote
 </source>
       </p>
       <p>Para executar seu projeto via Java Web Start:
 <source>
 ant all.with.webstart
-D:\servers\jboss-4.0.4.GA\bin\run -c minhaaplicacao
+D:\servers\jboss-4.2.0.GA\bin\run -c minhaaplicacao
 Entre no endereço <a href="http://localhost:8080/minhaaplicacao">http://localhost:8080/minhaaplicacao</a>
 </source>
       </p>

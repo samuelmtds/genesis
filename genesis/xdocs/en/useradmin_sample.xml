@@ -254,7 +254,7 @@ public class User implements Serializable {
        <p>To run this sample in local mode, you will need:</p>
        <ul>
           <li>The <a href="http://ant.apache.org/">Ant</a> tool, prefer the latest
-            version (currently Ant 1.6.5)</li>
+            version (currently Ant 1.7.0)</li>
        </ul>
        
        <p>Follow the steps:</p>
@@ -294,9 +294,9 @@ c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
       <p>To run this sample in remote mode, you will need:</p>
        <ul>
           <li>The <a href="http://ant.apache.org/">Ant</a> tool, prefer the latest
-            version (currently Ant 1.6.5)</li>
+            version (currently Ant 1.7.0)</li>
           <li>The <a href="http://www.jboss.org/">JBoss</a> Application Server,
-          prefer the latest version of the series 3.2.x or 4.0.x</li>
+          prefer the latest version of the series 3.2.x, 4.0.x or 4.2.x</li>
        </ul>
       <p>To run this sample in remote mode, follow the steps:</p>
       <ul>
@@ -311,7 +311,7 @@ c:\genesis\samples\useradmin\target>java -jar useradmin-local-weaved.jar
 local.mode=false
    
 # Here we define the JBoss Home directory
-jboss.home=/opt/jboss-3.2.7
+jboss.home=/opt/jboss-4.2.0.GA
 </source>
         <li>In the command line, run the ant script:
 <source>

@@ -30,9 +30,9 @@
         <li>Distribuição do genesis juntamente com as suas bibliotecas de
         dependências.</li>
         <li>Servidor <a href="http://www.jboss.org/">JBoss</a>. Recomendamos
-        alguma das versões 3.2.x ou 4.x</li>
+        alguma das versões 3.2.x, 4.x ou 4.2.x</li>
         <li>Para compilar e instalar a aplicação, recomendamos 
-        <a href="http://ant.apache.org/">Apache Ant</a> 1.6.5.</li>
+        <a href="http://ant.apache.org/">Apache Ant</a> 1.7.0.</li>
       </ul>
     </section>
     <section name="Configurando um novo projeto">
@@ -41,16 +41,46 @@
       configurar um novo projeto é copiar o arquivo
       <code>build.properties.sample</code> para outro arquivo com nome <code>
       build.properties</code>. O arquivo <code>build.properties</code> define
-      certas propriedades que são específicas do projeto ou do desenvolvedor. O
+      certas propriedades que são específicas do desenvolvedor. O
       conteúdo inicial do arquivo <code>build.properties.sample</code> segue
       abaixo:</p>
 <source>
-## Build properties sample ##
+## Developer specific properties sample ##
 
 #################################################################################
 ## The following property must be defined in build.properties with an           #
 ## appropriate value for the local environment                                  #
-jboss.home=/opt/jboss-3.2.7
+jboss.home=/opt/jboss-4.2.0.GA
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  #
+## need to be defined in build.properties if their values are different in your #
+## local setup                                                                  #
+#genesis.home=../../genesis
+</source>
+      <p>Pelo menos uma propriedade necessita ser definida:</p>
+      <ul>
+        <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
+        servidor JBoss 3.2.x, 4.0.x ou 4.2.x</li>
+      </ul>
+      <p>Existem outras propriedades que não são obrigatórias pois já possuem um
+      valor padrão, porém elas podem ser redefinidas. Segue abaixo uma
+      delas:</p>
+      <ul>
+        <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
+        do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
+        ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
+      </ul>
+      <p>O arquivo <code>project.properties</code> define
+      certas propriedades que são específicas do projeto. O
+      conteúdo inicial do arquivo <code>project.properties</code> segue abaixo:</p>
+<source>
+## Project specific properties ##
+
+#################################################################################
+## The following property must be defined in build.properties with an           #
+## appropriate value for the local environment                                  #
 genesisBasedApplication.name=empty-web-project
 genesisBasedApplication.prettyName=Empty Web Project
 #################################################################################
@@ -60,7 +90,6 @@ genesisBasedApplication.prettyName=Empty Web Project
 ## These properties already have a default value defined in build.xml and only  #
 ## need to be defined in build.properties if their values are different in your #
 ## local setup                                                                  #
-#genesis.home=../../genesis
 #jboss.datasource.jndi.name=java:/DefaultDS
 #jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
 #hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
@@ -70,10 +99,8 @@ genesisBasedApplication.prettyName=Empty Web Project
 #hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
 #################################################################################
 </source>
-      <p>Pelo menos três propriedades necessitam ser definidas:</p>
+      <p>Pelo menos duas propriedades necessitam ser definidas:</p>
       <ul>
-        <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
-        servidor JBoss 3.2.x ou 4.0.x</li>
         <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
         para seu projeto, de preferência sem espaços.</li>
         <li><code><b>genesisBasedApplication.prettyName</b></code>: Define um
@@ -83,9 +110,6 @@ genesisBasedApplication.prettyName=Empty Web Project
       valor padrão, porém elas podem ser redefinidas. Segue abaixo algumas
       delas:</p>
       <ul>
-        <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
-        do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
-        ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
         <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
         do pool de conexões do JBoss. Você pode fornecer outro arquivo
         que contenha as configurações personalizadas de seu próprio banco de dados.</li>
@@ -98,8 +122,8 @@ genesisBasedApplication.prettyName=Empty Web Project
       <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
       de um novo projeto utilizando o genesis.</p>
       <ul>
-        <li>Possuímos o JBoss 4.0.4.GA instalado no diretório
-        <code>C:\servidores\jboss-4.0.4.GA</code></li>
+        <li>Possuímos o JBoss 4.2.0.GA instalado no diretório
+        <code>C:\servidores\jboss-4.2.0.GA</code></li>
         <li>Instalamos a distribuição do genesis no diretório
         <code>C:\projetos</code>, onde que criará o diretório
         <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
@@ -108,11 +132,13 @@ genesisBasedApplication.prettyName=Empty Web Project
       </ul>
       <p>O nosso <code><b>build.properties</b></code> poderá ser:</p>
 <source>
-jboss.home=c:/servidores/jboss-4.0.4.GA
+jboss.home=c:/servidores/jboss-4.2.0.GA
+genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
+</source>
+      <p>E o nosso <code><b>project.properties</b></code> poderá ser:</p>
+<source>
 genesisBasedApplication.name=helloworld
 genesisBasedApplication.prettyName=Hello World
-
-genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
 </source>
     </section>
     <section name="Desenvolvendo com o genesis">
@@ -171,15 +197,7 @@ http://localhost:8080/&lt;genesisBasedApplication.name&gt;
 genesis.home=D:/opensource/genesis-3.0/genesis
   
 ### Indique a pasta de instalação do JBoss
-jboss.home=D:/servers/jboss-4.0.4.GA
-
-### Indique o local onde o jar do driver do MySQL se encontra
-jdbc.driver=lib/mysql/mysqlconnector.jar
-  
-## Configurações de seu Banco de Dados
-jboss.datasource.jndi.name=java:/MySqlDS
-jboss.datasource.config.xml=conf/mysql-ds.xml
-hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+jboss.home=D:/servers/jboss-4.2.0.GA
 </source>
 <p>Arquivo <b>conf/mysql-ds.xml</b></p>
 <source>
@@ -217,30 +235,25 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
 </datasources>
 ]]>
 </source>
-<p>Arquivo <b>build.xml</b></p>
+<p>Arquivo <b>project.properties</b></p>
 <source>
-<![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="meuprojeto" default="all" basedir="." xmlns:genesis="https://genesis.dev.java.net/nonav/ns/master_build.xml">
-  <import file="web_build.xml" />
+genesisBasedApplication.name=minhaaplicacao
+genesisBasedApplication.prettyName=Minha Aplicação
 
-  <target name="-pre-init">
-    <property file="build.properties" />
+### Indique o local onde o jar do driver do MySQL se encontra
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## Configurações de seu Banco de Dados
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
 
-    <property name="genesisBasedApplication.name" value="minhaaplicacao" />
-    <property name="genesisBasedApplication.prettyName" value="Minha Aplicação" />
-
-    <!-- Não é necessário nenhuma outra configuração, basta colocar as 
-         bibliotecas do struts no diretório modules/web/lib -->
-
-    <!-- Bibliotecas necessárias ao módulo shared, colocar no diretório 
-         modules/shared/lib -->
-
-    <!-- Bibliotecas necessárias tanto ao módulo shared quanto web colocar 
-         no diretório lib -->
-  </target>
-</project>
-]]>
+## Não é necessário nenhuma outra configuração, basta colocar as 
+## bibliotecas do struts no diretório modules/web/lib
+## Bibliotecas necessárias ao módulo shared, colocar no diretório 
+## modules/shared/lib
+## Bibliotecas necessárias tanto ao módulo shared quanto web colocar 
+## no diretório lib
 </source>
        </subsection>
     </section>
