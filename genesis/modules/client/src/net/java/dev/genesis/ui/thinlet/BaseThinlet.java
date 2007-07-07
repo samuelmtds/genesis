@@ -42,7 +42,6 @@ import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.binding.DispatcherExceptionHandler;
 import net.java.dev.genesis.ui.binding.ExceptionHandler;
-import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -877,8 +876,7 @@ public abstract class BaseThinlet extends Thinlet implements
          return o.toString();
       }
 
-      throw new PropertyMisconfigurationException("Property 'key' "
-            + "must be configured for the widget named " + componentName);
+      return String.valueOf(System.identityHashCode(o));
    }
 
    protected WidgetFactory getWidgetFactory(Map widgetFactories, 

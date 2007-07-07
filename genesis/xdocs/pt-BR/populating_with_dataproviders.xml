@@ -157,15 +157,15 @@ public class ExemploDataProviderForm {
           comboboxes:</p>
           <ul>
             <li><b>key</b>: nome da propriedade, cujo valor é único por 
-            instância, do bean que será utilizado para popular o componente. É 
-            requerida, com exceção das enums (<code>java.lang.Enum</code> ou 
-            <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
-            enums, se essa propriedade não for definida, o valor do 
-            <code>toString()</code> da enum é utilizado.</li>
-            <li><b>value</b>: nome da propriedade utilizada para exibir o bean. 
-            É requerida quando o bean não for uma enum (
-            <code>java.lang.Enum</code> ou 
+            instância, do bean que será utilizado para popular o componente.
+            Se essa propriedade não for definida, o valor retornado por
+            <code>System.identityHashCode(Object)</code> é utilizado nos casos
+            de objetos java comuns, e o valor retornado por <code>toString()</code>
+            é utilizado nos casos das enums (<code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>value</b>: nome da propriedade utilizada para exibir o bean. 
+            Se essa propriedade não for definida, o formatador registrado ou o
+            formatador padrão é utilizado.</li>
             <li><b>blank</b>: inclui uma linha em branco como primeira opção da
             combobox. Não é requerida e tem como valor padrão 
             <code>false</code>.</li>
@@ -247,15 +247,14 @@ private JComboBox estadoComboBox;
           <ul>
             <li><b>SwingBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
             é único por instância, do bean que será utilizado para popular o 
-            componente. É requerida, com exceção das enums (
-            <code>java.lang.Enum</code> ou 
-            <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
-            enums, se essa propriedade não for definida, o valor do 
-            <code>toString()</code> da enum é utilizado.</li>
-            <li><b>SwingBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
-            para exibir o bean. É requerida quando o bean não for uma enum (
-            <code>java.lang.Enum</code> ou 
+            componente. Se essa propriedade não for definida, o valor retornado por
+            <code>System.identityHashCode(Object)</code> é utilizado nos casos
+            de objetos java comuns, e o valor retornado por <code>toString()</code>
+            é utilizado nos casos das enums (<code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>SwingBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
+            para exibir o bean. Se essa propriedade não for definida, o formatador
+            registrado ou o formatador padrão é utilizado.</li>
             <li><b>SwingBinder.BLANK_PROPERTY</b>: inclui uma linha em branco 
             como primeira opção da combobox. Não é requerida e tem como valor 
             padrão <code>false</code>.</li>
@@ -409,15 +408,14 @@ private Combo estadoComboBox;
           <ul>
             <li><b>SWTBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
             é único por instância, do bean que será utilizado para popular o 
-            componente. É requerida, com exceção das enums 
-            (<code>java.lang.Enum</code> ou 
-            <code>net.java.dev.reusablecomponents.lang.Enum</code>). No caso das 
-            enums, se essa propriedade não for definida, o valor do 
-            <code>toString()</code> da enum é utilizado.</li>
-            <li><b>SWTBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
-            para exibir o bean. É requerida quando o bean não for uma enum 
-            (<code>java.lang.Enum</code> ou 
+            componente. Se essa propriedade não for definida, o valor retornado por
+            <code>System.identityHashCode(Object)</code> é utilizado nos casos
+            de objetos java comuns, e o valor retornado por <code>toString()</code>
+            é utilizado nos casos das enums (<code>java.lang.Enum</code> ou 
             <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            <li><b>SWTBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
+            para exibir o bean. Se essa propriedade não for definida, o formatador
+            registrado ou o formatador padrão é utilizado.</li>
             <li><b>SWTBinder.BLANK_PROPERTY</b>: inclui uma linha em branco 
             como primeira opção da combobox. Não é requerida e tem como valor 
             padrão <code>false</code>.</li>
