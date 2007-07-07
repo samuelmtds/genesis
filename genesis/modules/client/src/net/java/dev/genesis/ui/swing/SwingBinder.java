@@ -32,6 +32,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
 import javax.swing.JButton;
@@ -352,6 +353,30 @@ public class SwingBinder extends AbstractBinder {
 
    protected FormControllerListener getFormControllerListener() {
       return listener;
+   }
+
+   public ButtonGroup registerButtonGroup(String name,
+         AbstractButton[] buttons, Object[] selectionValues) {
+      return registerButtonGroup(name, new ButtonGroup(), buttons,
+            selectionValues);
+   }
+
+   public ButtonGroup registerButtonGroup(String name, ButtonGroup group,
+         AbstractButton[] buttons, Object[] selectionValues) {
+      if (buttons.length != selectionValues.length) {
+         throw new IllegalArgumentException(
+               "Cannot bind ButtonGroup with name '"
+                     + name
+                     + "', button array and selectionValues array must have the same length.");
+      }
+
+      for (int i = 0; i < buttons.length; i++) {
+         buttons[i].putClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE,
+            selectionValues[i]);
+         group.add(buttons[i]);
+      }
+
+      return registerButtonGroup(name, group);
    }
 
    protected FormControllerListener createFormControllerListener() {

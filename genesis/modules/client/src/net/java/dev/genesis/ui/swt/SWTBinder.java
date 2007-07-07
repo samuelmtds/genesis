@@ -25,6 +25,7 @@ import net.java.dev.genesis.ui.binding.LookupStrategy;
 import net.java.dev.genesis.ui.binding.WidgetBinder;
 import net.java.dev.genesis.ui.swt.lookup.BreadthFirstWidgetLookupStrategy;
 
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
@@ -90,5 +91,21 @@ public class SWTBinder extends AbstractBinder {
 
    protected WidgetBinder getDefaultWidgetBinderFor(Object widget) {
       return factory.get(widget.getClass(), true);
+   }
+
+   public Composite registerButtonGroup(String name, Composite group,
+         Button[] buttons, Object[] selectionValues) {
+      if (buttons.length != selectionValues.length) {
+         throw new IllegalArgumentException(
+               "Cannot bind button group with name '"
+                     + name
+                     + "', button array and selectionValues array must have the same length.");
+      }
+
+      for (int i = 0; i < buttons.length; i++) {
+         buttons[i].setData(BUTTON_GROUP_SELECTION_VALUE, selectionValues[i]);
+      }
+
+      return registerButtonGroup(name, group);
    }
 }
