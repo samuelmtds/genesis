@@ -176,6 +176,16 @@
               <comment>Unit test dependency</comment>
             </properties>
         </dependency>
+        <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+            <version>1.6R5</version>
+            <type>jar</type>
+            <url>http://www.mozilla.org/rhino/</url>
+            <properties>
+              <comment>Unit test dependency for Java 1.4</comment>
+            </properties>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
