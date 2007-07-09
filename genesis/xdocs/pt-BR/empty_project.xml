@@ -6,9 +6,10 @@
     <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
   </properties>
   <body>
-    <section name="Configurando seu projeto no Eclipse">
-      <p>Aprenda a configurar o seu projeto no Eclipse <a 
-      href="ide_eclipse_empty_project.html">aqui</a></p>
+    <section name="Configurando seu projeto na IDE">
+      <p>Aprenda a configurar o seu projeto no <a 
+      href="ide_eclipse_empty_project.html">Eclipse</a> ou no <a 
+      href="ide_netbeans_empty_project.html">NetBeans</a>.</p>
     </section>
     <section name="Como começar?">
       <p>O genesis foi criado com o intuito de sempre facilitar e agilizar o
