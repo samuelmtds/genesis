@@ -10,7 +10,7 @@
             <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
                     width="800" height="620" 
                     codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0">
-               <param name="movie" value="empty_project_netbeans.swf" />
+               <param name="movie" value="ide_netbeans_empty_project.swf" />
                <param name="play" value="true" />
                <param name="loop" value="false" />
                <param name="quality" value="low" />
