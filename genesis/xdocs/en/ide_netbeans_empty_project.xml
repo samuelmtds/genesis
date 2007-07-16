@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+   <properties>
+      <title>Importing the empty project into NetBeans</title>
+      <author email="mister__m@dev.java.net">Michael Nascimento Santos</author>
+   </properties>
+   <body>
+      <section name="Importing the empty project into NetBeans">
+         <center>
+            <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
+                    width="800" height="620" 
+                    codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0">
+               <param name="movie" value="ide_netbeans_empty_project.swf" />
+               <param name="play" value="true" />
+               <param name="loop" value="false" />
+               <param name="quality" value="low" />
+               <embed src="ide_netbeans_empty_project.swf" width="800" 
+                      height="620" quality="low" loop="false" 
+                      type="application/x-shockwave-flash" 
+                      pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?p1_prod_version=shockwaveflash">
+               </embed>
+            </object>
+         </center>
+      </section>
+   </body>
+</document>

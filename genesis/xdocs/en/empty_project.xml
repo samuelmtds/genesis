@@ -7,7 +7,9 @@
   </properties>
   <body>
     <section name="Configuring your project on Eclipse">
-       <p>Learn how to configure your project on Eclipse <a href="ide_eclipse_empty_project.html">here</a></p>
+       <p>Learn how to configure your project in <a 
+       href="ide_eclipse_empty_project.html">Eclipse</a> or in <a 
+      href="ide_netbeans_empty_project.html">NetBeans</a>.</p>
     </section>
     <section name="How to start?">
       <p>genesis was conceived having as a goal to make development easier and
