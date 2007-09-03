@@ -7,6 +7,18 @@
     <import file="nbproject/build-impl.xml"/>
 
     <target name="netbeans-extra">
+       <copy todir="${cluster}/modules/ext/genesis">
+          <fileset dir="../../../genesis/dist">
+             <include name="genesis-aspect-annotated*.jar" />
+             <include name="genesis-shared-annotated*.jar" />
+             <include name="genesis-client*.jar" />
+             <include name="genesis-annotation-jdk5*.jar" />
+             
+             <exclude name="genesis-client-thinlet*.jar" />
+             <exclude name="genesis-client-swt*.jar" />
+          </fileset>
+       </copy>
+       
        <copy todir="${cluster}/modules/ext/genesis-deps">
           <fileset dir="../../../genesis/lib">
              <include name="aspectwerkz/aspectwerkz-2*.jar" />

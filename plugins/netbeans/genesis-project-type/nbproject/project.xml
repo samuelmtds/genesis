@@ -5,26 +5,6 @@
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/2">
             <code-name-base>net.java.dev.genesis.plugins.netbeans.projecttype</code-name-base>
             <suite-component/>
-            <class-path-extension>
-                <runtime-relative-path>ext/genesis/genesis-project-type-ui.jar</runtime-relative-path>
-                <binary-origin>../genesis-project-type-ui/target/genesis-project-type-ui.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/genesis/genesis-annotation-jdk14-3.0-EA3-dev.jar</runtime-relative-path>
-                <binary-origin>../../genesis/dist/genesis-annotation-jdk14-3.0-EA3-dev.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/genesis/genesis-aspect-annotated-3.0-EA3-dev.jar</runtime-relative-path>
-                <binary-origin>../../genesis/dist/genesis-aspect-annotated-3.0-EA3-dev.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/genesis/genesis-client-3.0-EA3-dev.jar</runtime-relative-path>
-                <binary-origin>../../genesis/dist/genesis-client-3.0-EA3-dev.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/genesis/genesis-shared-annotated-3.0-EA3-dev.jar</runtime-relative-path>
-                <binary-origin>../../genesis/dist/genesis-shared-annotated-3.0-EA3-dev.jar</binary-origin>
-            </class-path-extension>
             <module-dependencies>
                 <dependency>
                     <code-name-base>net.java.dev.genesis.plugin.netbeans.depjars</code-name-base>
@@ -215,7 +195,8 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages/>
+            <public-packages>
+            </public-packages>
         </data>
     </configuration>
 </project>

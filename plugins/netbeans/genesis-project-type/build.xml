@@ -8,9 +8,6 @@
 
     <target name="netbeans-extra">
        <copy todir="${cluster}/modules/ext/genesis">
-          <fileset dir="../genesis-project-type-ui/target">
-             <include name="genesis-project-type-ui.jar" />
-          </fileset>
           <fileset dir="../../../genesis/dist">
              <include name="genesis-annotation-jdk14-*.jar" />
              <include name="genesis-aspect-annotated-*.jar" />
