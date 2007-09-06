@@ -56,6 +56,18 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
     private Dialog dialog;
     
     private static final String GENERAL = "General"; // NOI18N
+    private static final String SOURCES = "Sources"; // NOI18N
+    private static final String LIBRARIES = "Libraries"; // NOI18N
+    private static final String SERVICES = "Services"; // NOI18N
+    private static final String BUILD = "Build"; // NOI18N
+    private static final String RUN = "Run"; // NOI18N
+    
+    private static final String SERVER = "Server"; // NOI18N
+    private static final String UI = "UI"; // NOI18N
+    private static final String SCRIPTING = "Scripting"; // NOI18N
+    private static final String PERSISTENCE = "Persistence"; // NOI18N
+    private static final String VALIDATION = "Validation"; // NOI18N
+    private static final String WEBSTART = "Web Start"; // NOI18N
     
     public GenesisCustomizerProvider(final GenesisProject project) {
         this.project = project;
@@ -107,18 +119,76 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
     private void init( GenesisProjectPropertiesController controller ) throws Exception {
         ResourceBundle bundle = NbBundle.getBundle( GenesisCustomizerProvider.class );
         
+        //General
         ProjectCustomizer.Category general = ProjectCustomizer.Category.create(
                 GENERAL,
-                bundle.getString( "LBL_General" ),
+                bundle.getString( "LBL_General" ), // NOI18N
                 null,
                 null );
+        //Sources
+        ProjectCustomizer.Category sources = ProjectCustomizer.Category.create(
+                SOURCES,
+                bundle.getString( "LBL_Sources" ), // NOI18N
+                null,
+                null );
+        //Libraries
+        ProjectCustomizer.Category libraries = ProjectCustomizer.Category.create(
+                LIBRARIES,
+                bundle.getString( "LBL_Libraries" ), // NOI18N
+                null,
+                null );
+        //Services
+        ProjectCustomizer.Category ui = ProjectCustomizer.Category.create(
+                UI,
+                bundle.getString( "LBL_UI" ), // NOI18N
+                null,
+                null );
+        ProjectCustomizer.Category scripting = ProjectCustomizer.Category.create(
+                SCRIPTING,
+                bundle.getString( "LBL_Scripting" ), // NOI18N
+                null,
+                null );
+        ProjectCustomizer.Category persistence = ProjectCustomizer.Category.create(
+                PERSISTENCE,
+                bundle.getString( "LBL_Persistence" ), // NOI18N
+                null,
+                null );
+        ProjectCustomizer.Category validation = ProjectCustomizer.Category.create(
+                VALIDATION,
+                bundle.getString( "LBL_Validation" ), // NOI18N
+                null,
+                null );
+        ProjectCustomizer.Category services = ProjectCustomizer.Category.create(
+                SERVICES,
+                bundle.getString( "LBL_Services" ), // NOI18N
+                null,
+                new ProjectCustomizer.Category[] { ui, scripting, validation, persistence } );
+        //Build
+        ProjectCustomizer.Category build = ProjectCustomizer.Category.create(
+                BUILD,
+                bundle.getString( "LBL_Build" ), // NOI18N
+                null,
+                null );
+        //Run
+        ProjectCustomizer.Category webstart = ProjectCustomizer.Category.create(
+                WEBSTART,
+                bundle.getString( "LBL_WebStart" ), // NOI18N
+                null,
+                null );
+        ProjectCustomizer.Category run = ProjectCustomizer.Category.create(
+                RUN,
+                bundle.getString( "LBL_Run" ), // NOI18N
+                null,
+                new ProjectCustomizer.Category[] { webstart } );
+        
         
         categories = new ProjectCustomizer.Category[] {
-            general
+            general, sources, libraries, services, build, run
         };
         
         Map<Category, GenesisView> panels = new HashMap<Category, GenesisView>();
         panels.put( general, new CustomizerGeneral( this.project ) );
+        panels.put( run, new CustomizerRun( this.project ) );
         
         panelProvider = new PanelProvider( panels );
         controller.addAll( panels.values() );

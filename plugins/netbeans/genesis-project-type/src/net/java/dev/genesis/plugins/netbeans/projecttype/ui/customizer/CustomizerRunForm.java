@@ -27,16 +27,10 @@ import org.openide.windows.WindowManager;
  * @author Michel Graciano
  */
 @Form
-public class CustomizerGeneralForm extends GenesisProjectProperties {
+public class CustomizerRunForm extends GenesisProjectProperties {
     
     /** Creates a new instance of CustomizerGeneralView */
-    public CustomizerGeneralForm( GenesisProject project ) throws Exception {
+    public CustomizerRunForm( GenesisProject project ) throws Exception {
         super( project );
-    }
-    
-    public String getProjectFolder() {
-        FileObject projectFolder = this.project.getProjectDirectory();
-        File pf = FileUtil.toFile( projectFolder );
-        return pf == null ? "" : pf.getPath(); // NOI18N
     }
 }

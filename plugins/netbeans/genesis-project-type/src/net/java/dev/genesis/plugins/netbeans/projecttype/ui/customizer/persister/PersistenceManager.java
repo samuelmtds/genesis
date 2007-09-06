@@ -19,7 +19,6 @@ import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider.GenesisView;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisProjectProperties;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.annotation.Property;
-import net.java.dev.genesis.ui.ActionInvoker;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -59,9 +58,30 @@ public class PersistenceManager {
             if ( method != null &&
                     method.isAnnotationPresent( Property.class ) ){
                 String propertyName = method.getAnnotation( Property.class ).value();
-                PropertyUtils.setProperty( properties, pd.getName(), this.projectProperties.getProperty( propertyName ) );
+                PropertyUtils.setProperty( properties,
+                        pd.getName(),
+                        this.resolveValue( propertyName,
+                        PropertyUtils.getPropertyType( properties, pd.getName() ) ) );
             }
         }
+    }
+    
+    /**
+     * Resolve values from properties to a Java valid value, i.e. boolean values.
+     * 
+     * @return 
+     * @param propertyType 
+     * @param propertyName 
+     * @throws java.lang.Exception 
+     */
+    private Object resolveValue( String propertyName, Class propertyType ) throws Exception {
+        Object value = this.project.getEvaluator().evaluate( "${" + propertyName + "}" );
+        if ( Boolean.class.equals( propertyType ) ||
+                boolean.class.equals( propertyType ) ){
+            value = "true".equals( value ) ? true : false;
+        }
+        
+        return value;
     }
     
     /**
@@ -82,6 +102,8 @@ public class PersistenceManager {
     }
     
     private void storeProperties( Collection< GenesisView > views ) throws Exception {
+        EditableProperties originalProjectProperties = projectProperties.cloneProperties();
+        
         // Synchronize all the panels with the properties
         for ( GenesisView view : views ){
             GenesisProjectProperties properties = view.getForm();
@@ -92,8 +114,15 @@ public class PersistenceManager {
                 if ( method != null &&
                         method.isAnnotationPresent( Property.class ) ){
                     String propertyName = method.getAnnotation( Property.class ).value();
-                    String propertyValue = (String) PropertyUtils.getProperty( properties, pd.getName() );
-                    projectProperties.setProperty( propertyName, propertyValue );
+                    Object propertyValue = PropertyUtils.getProperty( properties, pd.getName() );
+                    propertyValue = propertyValue != null ? propertyValue : "";
+                    
+                    String original = originalProjectProperties.getProperty( propertyName );
+                    original = original != null ? original : "";
+                    //Just changed values should be updated
+                    if ( !original.equals( propertyValue.toString() ) ){
+                        projectProperties.setProperty( propertyName, propertyValue.toString() );
+                    }
                 }
             }
         }

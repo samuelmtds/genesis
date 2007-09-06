@@ -34,7 +34,6 @@ import net.java.dev.genesis.plugins.netbeans.projecttype.classpath.ClassPathProv
 import net.java.dev.genesis.plugins.netbeans.projecttype.queries.GenesisSharabilityQueryImplementation;
 import net.java.dev.genesis.plugins.netbeans.projecttype.queries.SourceLevelQueryImpl;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.GenesisBuildSupportMissingDialog;
-import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.CustomizerGeneral;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.GenesisCustomizerProvider;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.project.GenesisLogicalViewProvider;
 

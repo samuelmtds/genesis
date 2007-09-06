@@ -68,5 +68,93 @@ public class GenesisProjectProperties {
     public void setPrettyName(String prettyName) {
         this.prettyName = prettyName;
     }
+
+    /**
+     * Mantém o valor da propriedade genesisHomePath.
+     */
+    private String genesisHomePath;
+
+    /**
+     * "Getter" para a propriedade genesisHomePath.
+     * @return Valor para a propriedade genesisHomePath.
+     */
+    @Property("genesis.home")
+    public String getGenesisHomePath() {
+        return this.genesisHomePath;
+    }
+
+    /**
+     * "Setter" para a propriedade genesisHomePath.
+     * @param genesisHomePath Novo valor para a propriedade genesisHomePath.
+     */
+    public void setGenesisHomePath(String genesisHomePath) {
+        this.genesisHomePath = genesisHomePath;
+    }
+
+    /**
+     * Mantém o valor da propriedade mainClass.
+     */
+    private String mainClass;
+
+    /**
+     * "Getter" para a propriedade mainClass.
+     * @return Valor para a propriedade mainClass.
+     */
+    @Property("genesisBasedApplication.mainClass")
+    public String getMainClass() {
+        return this.mainClass;
+    }
+
+    /**
+     * "Setter" para a propriedade mainClass.
+     * @param mainClass Novo valor para a propriedade mainClass.
+     */
+    public void setMainClass(String mainClass) {
+        this.mainClass = mainClass;
+    }
+
+    /**
+     * Mantém o valor da propriedade localMode.
+     */
+    private boolean localMode;
+
+    /**
+     * "Getter" para a propriedade localMode.
+     * @return Valor para a propriedade localMode.
+     */
+    @Property("local.mode")
+    public boolean isLocalMode() {
+        return this.localMode;
+    }
+
+    /**
+     * "Setter" para a propriedade localMode.
+     * @param localMode Novo valor para a propriedade localMode.
+     */
+    public void setLocalMode(boolean localMode) {
+        this.localMode = localMode;
+    }
+
+    /**
+     * Mantém o valor da propriedade remoteMode.
+     */
+    private boolean remoteMode;
+
+    /**
+     * "Getter" para a propriedade remoteMode.
+     * @return Valor para a propriedade remoteMode.
+     */
+    @Property("remote.mode")
+    public boolean isRemoteMode() {
+        return this.remoteMode;
+    }
+
+    /**
+     * "Setter" para a propriedade remoteMode.
+     * @param remoteMode Novo valor para a propriedade remoteMode.
+     */
+    public void setRemoteMode(boolean remoteMode) {
+        this.remoteMode = remoteMode;
+    }
     
 }
