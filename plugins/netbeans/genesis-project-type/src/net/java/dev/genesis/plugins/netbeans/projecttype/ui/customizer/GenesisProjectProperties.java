@@ -73,28 +73,6 @@ public class GenesisProjectProperties {
     }
 
     /**
-     * Mantém o valor da propriedade genesisHomePath.
-     */
-    private String genesisHomePath;
-
-    /**
-     * "Getter" para a propriedade genesisHomePath.
-     * @return Valor para a propriedade genesisHomePath.
-     */
-    @Property("genesis.home")
-    public String getGenesisHomePath() {
-        return this.genesisHomePath;
-    }
-
-    /**
-     * "Setter" para a propriedade genesisHomePath.
-     * @param genesisHomePath Novo valor para a propriedade genesisHomePath.
-     */
-    public void setGenesisHomePath(String genesisHomePath) {
-        this.genesisHomePath = genesisHomePath;
-    }
-
-    /**
      * Mantém o valor da propriedade mainClass.
      */
     private String mainClass;
