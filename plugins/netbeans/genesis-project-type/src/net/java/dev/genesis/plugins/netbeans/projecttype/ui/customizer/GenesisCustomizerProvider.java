@@ -44,6 +44,7 @@ import org.netbeans.spi.project.ui.CustomizerProvider;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer.Category;
 import org.openide.ErrorManager;
+import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
 
 public class GenesisCustomizerProvider implements CustomizerProvider {
@@ -162,7 +163,7 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
                 SERVICES,
                 bundle.getString( "LBL_Services" ), // NOI18N
                 null,
-                new ProjectCustomizer.Category[] { ui, scripting, validation, persistence } );
+                new ProjectCustomizer.Category[] { /*ui, scripting,*/ validation, persistence } );
         //Build
         ProjectCustomizer.Category build = ProjectCustomizer.Category.create(
                 BUILD,
@@ -183,12 +184,16 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
         
         
         categories = new ProjectCustomizer.Category[] {
-            general, sources, libraries, services, build, run
+            general, /*sources, libraries,*/ services, build, run
         };
         
         Map<Category, GenesisView> panels = new HashMap<Category, GenesisView>();
         panels.put( general, new CustomizerGeneral( this.project ) );
+        panels.put( validation, new CustomizerValidation( this.project ) );
+        panels.put( persistence, new CustomizerPersistence( this.project ) );
+        panels.put( build, new CustomizerBuild( this.project ) );
         panels.put( run, new CustomizerRun( this.project ) );
+        panels.put( webstart, new CustomizerWebStart( this.project ) );
         
         panelProvider = new PanelProvider( panels );
         controller.addAll( panels.values() );
@@ -324,8 +329,12 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
         }
     }
     
-    public abstract static class GenesisView extends JPanel {
+    public abstract static class GenesisView extends JPanel implements HelpCtx.Provider {
         public abstract GenesisProjectProperties getForm();
+        
+        public HelpCtx getHelpCtx() {
+            return new HelpCtx( this.getClass() );
+        }
     }
     
     static interface SubCategoryProvider {

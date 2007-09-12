@@ -21,20 +21,19 @@ package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 import net.java.dev.genesis.annotation.ViewHandler;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import net.java.dev.genesis.ui.swing.SwingBinder;
-import org.openide.util.NbBundle;
 
 /**
  *
  * @author  Michel Graciano
  */
 @ViewHandler
-public class CustomizerGeneral extends GenesisCustomizerProvider.GenesisView {
+public class CustomizerBuild extends GenesisCustomizerProvider.GenesisView {
     
     /** Creates a new instance of GeneralCustomizer */
-    public CustomizerGeneral( GenesisProject project ) throws Exception {
+    public CustomizerBuild( GenesisProject project ) throws Exception {
         this.initComponents();
         
-        this.form = new CustomizerGeneralForm( project );
+        this.form = new GenesisProjectProperties( project );
         this.binder = new SwingBinder( this, this.form );
         this.binder.bind();
     }
@@ -46,62 +45,44 @@ public class CustomizerGeneral extends GenesisCustomizerProvider.GenesisView {
      */
     // <editor-fold defaultstate="collapsed" desc=" Código Gerado ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jLabel1 = new javax.swing.JLabel();
-        txtProjectFolder = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
 
-        jLabel1.setLabelFor(txtProjectFolder);
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, NbBundle.getMessage(CustomizerGeneral.class, "LBL_Project_Folder"));
+        jLabel2.setLabelFor(jTextField2);
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getBundle(CustomizerBuild.class).getString("LBL_Build_Dir"));
 
-        txtProjectFolder.setEditable(false);
-        txtProjectFolder.setText("jTextField1");
-        txtProjectFolder.setName("projectFolder");
-
-        jLabel2.setLabelFor(jTextField1);
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, NbBundle.getMessage(CustomizerGeneral.class, "LBL_Display_Name"));
-
-        jTextField1.setText("jTextField1");
-        jTextField1.setName("prettyName");
+        jTextField2.setColumns(15);
+        jTextField2.setText("build.dir");
+        jTextField2.setName("buildDir");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel1)
-                    .add(jLabel2))
-                .add(15, 15, 15)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                    .add(txtProjectFolder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)))
+                .add(jLabel2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jTextField2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(txtProjectFolder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
-                    .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(256, Short.MAX_VALUE))
+                    .add(jTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(158, 158, 158))
         );
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Declaração de variáveis - não modifique//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField txtProjectFolder;
+    private javax.swing.JTextField jTextField2;
     // Fim da declaração de variáveis//GEN-END:variables
     
     private SwingBinder binder;
     
-    private CustomizerGeneralForm form;
+    private GenesisProjectProperties form;
     
     public GenesisProjectProperties getForm() {
         return this.form;

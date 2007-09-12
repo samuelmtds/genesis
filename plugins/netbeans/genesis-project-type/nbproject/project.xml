@@ -195,8 +195,7 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages>
-            </public-packages>
+            <public-packages/>
         </data>
     </configuration>
 </project>

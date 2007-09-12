@@ -1,12 +1,21 @@
 /*
- * PersisterManager.java
+ * The Genesis Project
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  *
- * Created on 28 de Agosto de 2007, 11:55
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.persister;
 
 import java.beans.BeanInfo;
@@ -79,6 +88,10 @@ public class PersistenceManager {
         if ( Boolean.class.equals( propertyType ) ||
                 boolean.class.equals( propertyType ) ){
             value = "true".equals( value ) ? true : false;
+        } else if ( value != null &&
+                ( Long.class.equals( propertyType ) ||
+                long.class.equals( propertyType ) ) ){
+            value = new Long( value.toString() );
         }
         
         return value;

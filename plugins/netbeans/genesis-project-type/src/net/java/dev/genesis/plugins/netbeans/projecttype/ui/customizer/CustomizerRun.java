@@ -1,15 +1,26 @@
 /*
- * GeneralCustomizer.java
+ * The Genesis Project
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  *
- * Created on 24 de Agosto de 2007, 23:06
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 
 import net.java.dev.genesis.annotation.ViewHandler;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import net.java.dev.genesis.ui.swing.SwingBinder;
-import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
 
 /**
@@ -17,13 +28,13 @@ import org.openide.util.NbBundle;
  * @author  Michel Graciano
  */
 @ViewHandler
-public class CustomizerRun extends GenesisCustomizerProvider.GenesisView implements HelpCtx.Provider {
+public class CustomizerRun extends GenesisCustomizerProvider.GenesisView {
     
     /** Creates a new instance of GeneralCustomizer */
     public CustomizerRun( GenesisProject project ) throws Exception {
         this.initComponents();
         
-        this.form = new CustomizerRunForm( project );
+        this.form = new GenesisProjectProperties( project );
         this.binder = new SwingBinder( this, this.form );
         this.binder.bind();
     }
@@ -108,11 +119,7 @@ public class CustomizerRun extends GenesisCustomizerProvider.GenesisView impleme
     
     private SwingBinder binder;
     
-    private CustomizerRunForm form;
-    
-    public HelpCtx getHelpCtx() {
-        return new HelpCtx( CustomizerGeneral.class );
-    }
+    private GenesisProjectProperties form;
     
     public GenesisProjectProperties getForm() {
         return this.form;
