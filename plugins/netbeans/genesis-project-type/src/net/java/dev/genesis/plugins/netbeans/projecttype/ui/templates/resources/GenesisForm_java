@@ -1,0 +1,20 @@
+/*
+ * __NAME__.java
+ *
+ * Created on __DATE__, __TIME__
+ */
+ 
+package __NAME_OF_PACKAGE__;           
+
+import net.java.dev.genesis.annotation.Form;
+/** 
+ *
+ * @author __USER__
+ * @version 
+ */
+@Form
+public class __NAME__Form {
+
+    public __NAME__Form() {
+    }
+}

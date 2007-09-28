@@ -4,6 +4,8 @@
     <folder name="Templates">
         <folder name="Project">
             <folder name="genesis">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="net.java.dev.genesis.plugins.netbeans.projecttype.ui.wizard.Bundle"/>
+                
                 <file name="EmptyDesktopProject.zip" url="EmptyDesktopProject.zip">
                     <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/resources/project_icon.gif"/>
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="net.java.dev.genesis.plugins.netbeans.projecttype.ui.wizard.Bundle"/>
@@ -13,5 +15,28 @@
                 </file>
             </folder>
         </folder>
+        <folder name="genesis">
+            <attr name="SystemFileSystem.localizingBundle" stringvalue="net.java.dev.genesis.plugins.netbeans.projecttype.ui.templates.wizard.form.Bundle"/>
+            <folder name="form">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="net.java.dev.genesis.plugins.netbeans.projecttype.ui.templates.wizard.form.Bundle"/>
+                
+                <file name="SwingFormView.java" url="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/templates/resources/GenesisJFrameView_java">
+                    <attr name="SystemFileSystem.localizingBundle" stringvalue="net.java.dev.genesis.plugins.netbeans.projecttype.ui.templates.wizard.form.Bundle"/>
+                    <attr name="instantiatingIterator" methodvalue="net.java.dev.genesis.plugins.netbeans.projecttype.ui.templates.wizard.form.GenesisFormWizardIterator.create" />
+                    <attr name="template" boolvalue="true"/>
+                    <attr name="templateWizardURL" urlvalue="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/templates/wizard/form/swingFormView.html"/>
+                </file>
+                
+                <file name="SwingFormView.form" url="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/templates/resources/GenesisJFrameView_form">
+                    <attr name="template" boolvalue="true"/>
+                </file>
+            </folder>
+        </folder>
+    </folder>
+    
+    <folder name="net-java-dev-genesis-plugins-netbeans-projecttype-templates">
+        <file name="GenesisForm.java" url="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/templates/resources/GenesisForm_java"/>
+        <file name="GenesisJFrameView.java" url="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/templates/resources/GenesisJFrameView_java"/>
+        <file name="GenesisJFrameView.form" url="nbresloc:/net/java/dev/genesis/plugins/netbeans/projecttype/ui/templates/resources/GenesisJFrameView_form"/>
     </folder>
 </filesystem>
