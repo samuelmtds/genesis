@@ -151,6 +151,9 @@
             <include name="${{genesis-annotation.jar}}" />
             <include name="genesis-shared-${{genesis.version}}.jar" />
             <include name="genesis-client-${{genesis.version}}.jar" />
+            <include name="genesis-client-swing-${{genesis.version}}.jar" />
+            <include name="genesis-client-swt-${{genesis.version}}.jar" />
+            <include name="genesis-client-thinlet-${{genesis.version}}.jar" />
          </fileset>
          <fileset dir="${{commons.dist}}">
             <include name="commons-beanutils*.jar" />
@@ -645,6 +648,9 @@
             <include name="${{genesis-annotation.jar}}" />
             <include name="genesis-aspect-annotated-*.jar" />
             <include name="genesis-client-*.jar" />
+            <include name="genesis-client-swing-${{genesis.version}}.jar" />
+            <include name="genesis-client-swt-${{genesis.version}}.jar" />
+            <include name="genesis-client-thinlet-${{genesis.version}}.jar" />
          </fileset>
          <fileset dir="${{aspectwerkz.dist}}">
             <include name="aspectwerkz-*.jar" />
@@ -665,6 +671,16 @@
             <include name="commons-validator-*.jar" />
             <include name="jakarta-oro-*.jar" />
             <include name="reusable-components-*.jar" />
+         </fileset>
+         <fileset dir="${{script.dist}}">
+            <include name="commons-jxpath-*.jar" if="jxpath.needed" />
+            <include name="bsf-*.jar" />
+            <include name="bsh-*.jar" />
+            <include name="js-*.jar" />
+            <include name="commons-el-*.jar" />
+            <include name="jakarta-taglibs-standard-*.jar" />
+            <include name="jsp-api.jar" />
+            <include name="rhino-1.5-R3.jar" />
          </fileset>
       </path>
 
@@ -1237,6 +1253,9 @@
                <fileset dir="${{genesis.dist}}">
                   <include name="genesis-annotation-jdk14-${{genesis.version}}.jar"/>
                   <include name="genesis-client-${{genesis.version}}.jar"/>
+                  <include name="genesis-client-swing-${{genesis.version}}.jar" />
+                  <include name="genesis-client-swt-${{genesis.version}}.jar" />
+                  <include name="genesis-client-thinlet-${{genesis.version}}.jar" />
                   <include name="genesis-aspect-annotated-${{genesis.version}}.jar" />
                </fileset>
                <fileset dir="${{commons.dist}}">

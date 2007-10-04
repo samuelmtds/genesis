@@ -77,6 +77,7 @@
       <property name="xdoclet.dist" location="${{genesis.home}}/../xdoclet/dist" />
       <property name="anttasks.dist" location="${{genesis.home}}/../ant-tasks/dist" />
       <property name="backport175.dist" location="${{genesis.home}}/lib/backport175" />
+      <property name="script.dist" location="${{genesis.home}}/lib/script" />
 
       <property name="jboss.app" 
                 location="${{jboss.home}}/server/${{genesisBasedApplication.serverName}}" />
