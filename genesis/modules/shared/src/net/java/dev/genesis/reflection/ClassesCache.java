@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,34 +18,39 @@
  */
 package net.java.dev.genesis.reflection;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public final class ClassesCache {
-
    private static Map cache = new HashMap();
 
    static {
-      cache.put(Byte.TYPE.getName(), Byte.TYPE);
-      cache.put(Character.TYPE.getName(), Character.TYPE);
-      cache.put(Short.TYPE.getName(), Short.TYPE);
-      cache.put(Integer.TYPE.getName(), Integer.TYPE);
-      cache.put(Long.TYPE.getName(), Long.TYPE);
-      cache.put(Float.TYPE.getName(), Float.TYPE);
-      cache.put(Double.TYPE.getName(), Double.TYPE);
-      cache.put(Boolean.TYPE.getName(), Boolean.TYPE);
-      cache.put(Void.TYPE.getName(), Void.TYPE);
+      put(Byte.TYPE.getName(), Byte.TYPE);
+      put(Character.TYPE.getName(), Character.TYPE);
+      put(Short.TYPE.getName(), Short.TYPE);
+      put(Integer.TYPE.getName(), Integer.TYPE);
+      put(Long.TYPE.getName(), Long.TYPE);
+      put(Float.TYPE.getName(), Float.TYPE);
+      put(Double.TYPE.getName(), Double.TYPE);
+      put(Boolean.TYPE.getName(), Boolean.TYPE);
+      put(Void.TYPE.getName(), Void.TYPE);
    }
 
    public static Class getClass(String className) throws ClassNotFoundException {
-      Class clazz = (Class) cache.get(className);
+      WeakReference r = (WeakReference)cache.get(className);
+      Class clazz = null;
 
-      if (clazz == null) {
+      if (r == null || (clazz = (Class)r.get()) == null) {
          clazz = Class.forName(className);
-         cache.put(className, clazz);
+         put(className, clazz);
       }
 
       return clazz;
    }
 
+   private static void put(String className, Class clazz) {
+      cache.put(className, new WeakReference(clazz));
+   }
 }
