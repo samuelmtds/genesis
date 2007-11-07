@@ -245,7 +245,7 @@
    </target>
 
    <target name="client:annotations" if="client.annotationc.tasks.needed"
-           depends="client:check-annotations-needed,define-aw-macros">
+           depends="client:check-annotations-needed,define-aw-macros,define-call-task">
       <genesis:call target="-do-client-annotations" />
    </target>
 
