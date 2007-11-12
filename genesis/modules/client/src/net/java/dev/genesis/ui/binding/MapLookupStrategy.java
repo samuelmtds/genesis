@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,15 @@ public class MapLookupStrategy implements LookupStrategy {
    }
 
    public Object register(String name, Object object) {
+      return register(name, object, false);
+   }
+
+   protected Object register(String name, Object object, boolean onlyIfMissing) {
       if (identityMap.containsKey(object)) {
+         if (onlyIfMissing) {
+            return null;
+         }
+
          throw new IllegalArgumentException("Component " + object +
             " is already bound");
       }
@@ -51,7 +59,7 @@ public class MapLookupStrategy implements LookupStrategy {
          return;
       }
 
-      register(name, object);
+      register(name, object, true);
    }
 
    public String getName(Object object) {
