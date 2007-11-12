@@ -93,4 +93,9 @@ public class DepthFirstComponentLookupStrategyTest extends GenesisTestCase {
       assertSame(menu, strategy.lookup(menuBar, menu.getName()));
       assertSame(menuItem, strategy.lookup(menuBar, menuItem.getName()));
    }
+   
+   public void testRegisteredAlias() {
+      strategy.register("menuAlias", menu);
+      assertSame(menuItem, strategy.lookup(menuBar, menuItem.getName()));
+   }
 }

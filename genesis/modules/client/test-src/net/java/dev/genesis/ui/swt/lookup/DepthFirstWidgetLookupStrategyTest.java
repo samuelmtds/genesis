@@ -69,4 +69,13 @@ public class DepthFirstWidgetLookupStrategyTest extends GenesisTestCase {
       panelLevel2Position0.setData("changeName");
       assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
    }
+
+   public void testRegisteredAlias() {
+      panelLevel2Position0.setData("anotherName");
+      panelLevel1Position1.setData("aName");
+
+      strategy.register("alias", panelLevel2Position0);
+      assertSame(panelLevel1Position1, strategy.lookup(root, 
+            (String) panelLevel1Position1.getData()));
+   }
 }

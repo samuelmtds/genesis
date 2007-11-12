@@ -69,4 +69,13 @@ public class BreadthFirstWidgetLookupStrategyTest extends GenesisTestCase {
       panelLevel1Position1.setData("changeName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
    }
+
+   public void testRegisteredAlias() {
+      panelLevel1Position1.setData("aName");
+      panelLevel2Position0.setData("anotherName");
+
+      strategy.register("alias", panelLevel1Position1);
+      assertSame(panelLevel2Position0, strategy.lookup(root, 
+            (String) panelLevel2Position0.getData()));
+   }
 }
