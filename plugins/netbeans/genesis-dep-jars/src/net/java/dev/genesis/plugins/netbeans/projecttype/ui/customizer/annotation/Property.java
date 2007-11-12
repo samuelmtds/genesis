@@ -30,5 +30,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Property {
-    public String value();
+   public String value();
 }
