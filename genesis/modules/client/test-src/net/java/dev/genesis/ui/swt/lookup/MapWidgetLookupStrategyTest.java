@@ -22,7 +22,6 @@ import net.java.dev.genesis.GenesisTestCase;
 import net.java.dev.genesis.ui.binding.MapLookupStrategy;
 
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Widget;
 
 public class MapWidgetLookupStrategyTest extends GenesisTestCase {
    private MapLookupStrategy strategy;

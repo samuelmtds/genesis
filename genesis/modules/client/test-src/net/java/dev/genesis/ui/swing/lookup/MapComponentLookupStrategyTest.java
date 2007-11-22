@@ -18,7 +18,6 @@
  */
 package net.java.dev.genesis.ui.swing.lookup;
 
-import java.awt.Component;
 
 import javax.swing.JPanel;
 
