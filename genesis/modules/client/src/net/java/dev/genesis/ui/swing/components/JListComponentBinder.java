@@ -177,16 +177,27 @@ public class JListComponentBinder extends AbstractComponentBinder {
       }
 
       public String getValue() throws Exception {
-         if (dataProviderMetadata.getObjectField() == null
-               || component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
+         if (dataProviderMetadata.getObjectField() == null) {
             return null;
          }
 
-         if (isBlank(component) && component.getSelectedIndex() == 0) {
+         int[] indexes = component.getSelectedIndices();
+         boolean isBlank = isBlank(component);
+
+         if (isBlank && indexes.length == 1 && indexes[0] == 0) {
             return null;
          }
+         
+         int i = 0;
+         for (; i < indexes.length; i++) {
+            if (indexes[i] == 0) {
+               continue;
+            }
+         }
 
-         return getKey(component.getSelectedValue());
+         // This method is not useful for dataproviders,
+         // so return the key of the first selected value;
+         return getKey(component.getSelectedValues()[i]);
       }
 
       public void setValue(Object value) throws Exception {
@@ -194,25 +205,111 @@ public class JListComponentBinder extends AbstractComponentBinder {
             return;
          }
 
-         if (component.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
-            log.warn("Cannot update " + getBinder().getName(component)
-                  + " component because it's not a single selection list.");
+         if (value == null) {
+            deactivateListeners();
+
+            try {
+               setSelectedIndexes(isBlank(component), new int[0]);
+            } finally {
+               reactivateListeners();
+            }
+
             return;
          }
 
-         int index = getIndexFor(value);
+         boolean multi = isListOrArray(value);
+         boolean singleSelection = component.getSelectionMode() == 
+               ListSelectionModel.SINGLE_SELECTION;
+
+         if (multi && singleSelection) {
+            log.warn("Cannot update " + getBinder().getName(component) + 
+                  " component with multiple values because it's a single " +
+                  "selection list.");
+            return;
+         }
+         
+         if (singleSelection) {
+            int index = getIndexFor(value);
+            
+            deactivateListeners();
+
+            try {
+               setSelectedIndexes(isBlank(component), index < 0 ? new int[0] : 
+                  new int[] {index});
+            } finally {
+               reactivateListeners();
+            }
+
+            return;
+         }
 
          deactivateListeners();
 
          try {
-            if (index < 0) {
-               component.clearSelection();
-            } else {
-               component.setSelectedIndex(index);   
-            }
+            setSelectedIndexes(isBlank(component), getIndexes(value));
          } finally {
             reactivateListeners();
          }
+      }
+
+      
+      protected int[] getIndexes(Object value) throws Exception {
+         if (value.getClass().isArray()) {
+            int remove = 0;
+            Object[] array = (Object[]) value;
+            int[] indexes = new int[array.length];
+            for (int i = 0; i < array.length; i++) {
+               int index = getIndexFor(array[i]);
+               
+               if (index < 0) {
+                  remove++;
+                  continue;
+               }
+               
+               indexes[i - remove] = index;
+            }
+            
+            if (remove > 0) {
+               final int[] aux = indexes;
+               indexes = new int[aux.length - remove];
+               System.arraycopy(aux, 0, indexes, 0, indexes.length);
+            }
+            
+            return indexes;
+         }
+         
+         if (List.class.isAssignableFrom(value.getClass())) {
+            int remove = 0;
+            List list = (List) value;
+            int[] indexes = new int[list.size()];
+            int i = 0;
+            for (Iterator iterator = list.iterator(); iterator.hasNext(); i++) {
+               int index = getIndexFor(iterator.next());
+               
+               if (index < 0) {
+                  remove++;
+                  continue;
+               }
+               
+               indexes[i - remove] = index;
+            }
+
+            if (remove > 0) {
+               final int[] aux = indexes;
+               indexes = new int[aux.length - remove];
+               System.arraycopy(aux, 0, indexes, 0, indexes.length);
+            }
+
+            return indexes;
+         }
+
+         // never happens
+         throw new IllegalArgumentException("Argument is not an array or a " +
+               "java.util.List");
+      }
+
+      protected boolean isListOrArray(Object object) {
+         return object.getClass().isArray() || List.class.isAssignableFrom(object.getClass()); 
       }
 
       protected int getIndexFor(Object value) throws Exception {

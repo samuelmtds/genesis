@@ -33,7 +33,6 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.MockSWTBinder;
 import net.java.dev.genesis.ui.swt.SWTBinder;
-import net.java.dev.genesis.ui.swt.widgets.ListWidgetBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;
@@ -81,7 +80,24 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       widgetBinder = binder.getWidgetBinder(list);
       dataMeta.setResetSelection(true);
    }
-   
+
+   protected void createSingleList() throws Exception {
+      list = new List(root = new Shell(), SWT.SINGLE);
+      list.setData(SWTBinder.KEY_PROPERTY, "key");
+      list.setData(SWTBinder.VALUE_PROPERTY, "value");
+      String[] values = new String[beans.length];
+
+      for (int i = 0; i < beans.length; i++) {
+         values[i] = beans[i].getValue();
+         setKey(i, getKey(beans[i]));
+      }
+
+      list.setItems(values);
+      
+      widgetBinder = binder.getWidgetBinder(list);
+      dataMeta.setResetSelection(true);
+   }
+
    protected void setKey(int index, String key) throws Exception {
       list.setData(SWTBinder.KEY_PROPERTY + '-' + index, key);
    }
@@ -99,6 +115,16 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       }
 
       return String.valueOf(System.identityHashCode(value));
+   }
+
+   protected String[] getValues(Widget widget, Object[] values) throws Exception {
+      String[] array = new String[values.length];
+      
+      for (int i = 0; i < values.length; i++) {
+         array[i] = getValue(widget, values[i]);
+      }
+      
+      return array;
    }
 
    protected String getValue(Widget widget, Object value) throws Exception {
@@ -379,6 +405,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSetValue() throws Exception {
+      createSingleList();
       list.setData(SWTBinder.KEY_PROPERTY, "key");
 
       assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
@@ -402,6 +429,7 @@ public class ListWidgetBinderTest extends GenesisTestCase {
    }
 
    public void testSetValueWithBlank() throws Exception {
+      createSingleList();
       list.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
       list.setData(SWTBinder.KEY_PROPERTY, "key");
 
@@ -424,7 +452,54 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       boundField.setValue(value);
       assertEquals(-1, list.getSelectionIndex());
    }
-   
+
+   public void testSetValueMultiSelection() throws Exception {
+      list.setData(SWTBinder.KEY_PROPERTY, "key");
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder,
+            list, dataMeta));
+
+      Object[] values = new Object[] { beans[2], beans[4] };
+      boundField.setValue(values);
+      assertTrue(Arrays.equals(getValues(list, values), list.getSelection()));
+      assertTrue(Arrays.equals(new int[] {2,4}, list.getSelectionIndices()));
+
+      values = new Object[] { beans[0] };
+      boundField.setValue(values);
+      assertTrue(Arrays.equals(getValues(list, values), list.getSelection()));
+      assertTrue(Arrays.equals(new int[] {0}, list.getSelectionIndices()));
+
+      values = new Object[] {new MockBean("none", "None")};
+      boundField.setValue(values);
+      assertEquals(-1, list.getSelectionIndex());
+   }
+
+   public void testSetValueMultiSelectionWithBlank() throws Exception {
+      list.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.setData(SWTBinder.KEY_PROPERTY, "key");
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder,
+            list, dataMeta));
+
+      Object[] values = new Object[] { beans[2], beans[4] };
+      boundField.setValue(values);
+      assertTrue(Arrays.equals(getValues(list, values), list.getSelection()));
+      assertTrue(Arrays.equals(new int[] {2,4}, list.getSelectionIndices()));
+
+      values = new Object[] { beans[1] };
+      boundField.setValue(values);
+      assertTrue(Arrays.equals(getValues(list, values), list.getSelection()));
+      assertTrue(Arrays.equals(new int[] {1}, list.getSelectionIndices()));
+
+      values = new Object[] {new MockBean("none", "None")};
+      boundField.setValue(values);
+      assertEquals(-1, list.getSelectionIndex());
+   }
+
    private void simulateSelect(int index) {
       simulateSelect(new int[] {index});
    }

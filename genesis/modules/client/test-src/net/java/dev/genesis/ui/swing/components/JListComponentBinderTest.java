@@ -379,4 +379,61 @@ public class JListComponentBinderTest extends GenesisTestCase {
       assertNull(list.getSelectedValue());
       assertEquals(-1, list.getSelectedIndex());
    }
+
+   public void testSetValueMultiSelection() throws Exception {
+      list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+      list.putClientProperty(SwingBinder.KEY_PROPERTY, "key");
+
+      assertNull(componentBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(componentBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            list, dataMeta));
+
+      DefaultListModel model = (DefaultListModel) list.getModel();
+
+      Object[] values = new Object[] { model.getElementAt(2),
+            model.getElementAt(4) };
+      boundField.setValue(values);
+      assertTrue(Arrays.equals(values, list.getSelectedValues()));
+      assertTrue(Arrays.equals(new int[] { 2, 4 }, list.getSelectedIndices()));
+
+      values = new Object[] { model.getElementAt(0) };
+      boundField.setValue(values);
+      assertEquals(values[0], list.getSelectedValue());
+      assertEquals(0, list.getSelectedIndex());
+
+      values = new Object[] { new MockBean("none", "None") };
+      boundField.setValue(values);
+      assertNull(list.getSelectedValue());
+      assertEquals(-1, list.getSelectedIndex());
+   }
+
+   public void testSetValueMultiSelectionWithBlank() throws Exception {
+      list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+      list.putClientProperty(SwingBinder.BLANK_PROPERTY, Boolean.TRUE);
+      list.putClientProperty(SwingBinder.KEY_PROPERTY, "key");
+
+      assertNull(componentBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(componentBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            list, dataMeta));
+
+      DefaultListModel model = (DefaultListModel) list.getModel();
+
+      Object[] values = new Object[] { model.getElementAt(2),
+            model.getElementAt(4) };
+      boundField.setValue(values);
+      assertTrue(Arrays.equals(values, list.getSelectedValues()));
+      assertTrue(Arrays.equals(new int[] { 2, 4 }, list.getSelectedIndices()));
+
+      values = new Object[] { model.getElementAt(1) };
+      boundField.setValue(values);
+      assertEquals(values[0], list.getSelectedValue());
+      assertEquals(1, list.getSelectedIndex());
+
+      values = new Object[] { new MockBean("none", "None") };
+      boundField.setValue(values);
+      assertNull(list.getSelectedValue());
+      assertEquals(-1, list.getSelectedIndex());
+   }
 }

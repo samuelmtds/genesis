@@ -111,29 +111,120 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
       }
 
       public String getValue() throws Exception {
-         if (dataProviderMetadata.getObjectField() == null
-               || (widget.getStyle() & SWT.SINGLE) != 0) {
+         if (dataProviderMetadata.getObjectField() == null) {
             return null;
          }
 
-         if (isBlank(widget) && widget.getSelectionIndex() == 0) {
+         int[] indexes = widget.getSelectionIndices();
+         boolean isBlank = isBlank(widget);
+
+         if (isBlank && indexes.length == 1 && indexes[0] == 0) {
             return null;
          }
          
-         return getKey(widget.getSelectionIndex());
+         int i = 0;
+         for (; i < indexes.length; i++) {
+            if (indexes[i] == 0) {
+               continue;
+            }
+         }
+
+         // This method is not useful for dataproviders,
+         // so return the key of the first selected value;
+         return getKey(i);
       }
 
       public void setValue(Object value) throws Exception {
          if (dataProviderMetadata.getObjectField() == null) {
             return;
          }
-
-         if ((widget.getStyle() & SWT.SINGLE) != 0) {
-            log.warn("Cannot update " + getBinder().getName(widget)
-                  + " widget because it's not a single selection list.");
+         
+         if (value == null) {
+            widget.deselectAll();
             return;
          }
 
+         boolean multi = isListOrArray(value);
+         boolean singleSelection = (widget.getStyle() & SWT.SINGLE) != 0;
+         if (multi && singleSelection) {
+            log.warn("Cannot update " + getBinder().getName(widget)
+                  + " widget with multiple values because it's a single " +
+                  "selection list.");
+            return;
+         }
+         
+         if (singleSelection) {
+            widget.deselectAll();
+            widget.select(getIndexFor(value));
+            return;
+         }
+
+         widget.deselectAll();
+         widget.select(getIndexes(value));
+      }
+
+      protected int[] getIndexes(Object value) throws Exception {
+         if (value.getClass().isArray()) {
+            int remove = 0;
+            Object[] array = (Object[]) value;
+            int[] indexes = new int[array.length];
+
+            for (int i = 0; i < array.length; i++) {
+               int index = getIndexFor(array[i]);
+               
+               if (index < 0) {
+                  remove++;
+                  continue;
+               }
+               
+               indexes[i - remove] = index;
+            }
+            
+            if (remove > 0) {
+               final int[] aux = indexes;
+               indexes = new int[aux.length - remove];
+               System.arraycopy(aux, 0, indexes, 0, indexes.length);
+            }
+            
+            return indexes;
+         }
+         
+         if (List.class.isAssignableFrom(value.getClass())) {
+            int remove = 0;
+            List list = (List) value;
+            int[] indexes = new int[list.size()];
+            int i = 0;
+
+            for (Iterator iterator = list.iterator(); iterator.hasNext(); i++) {
+               int index = getIndexFor(iterator.next());
+               
+               if (index < 0) {
+                  remove++;
+                  continue;
+               }
+               
+               indexes[i - remove] = index;
+            }
+
+            if (remove > 0) {
+               final int[] aux = indexes;
+               indexes = new int[aux.length - remove];
+               System.arraycopy(aux, 0, indexes, 0, indexes.length);
+            }
+
+            return indexes;
+         }
+
+         // never happens
+         throw new IllegalArgumentException("Argument is not an array or a " +
+               "java.util.List");
+      }
+
+      protected boolean isListOrArray(Object object) {
+         return object.getClass().isArray() || List.class.isAssignableFrom(object.getClass()); 
+      }
+ 
+      protected int getIndexFor(Object value) throws Exception {
          boolean isBlank = isBlank(widget);
 
          int found = -1;
@@ -154,11 +245,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
             found++;
          }
 
-         if (found < 0) {
-            widget.deselectAll();
-         } else {
-            widget.select(found);
-         }
+         return found;
       }
 
       public void unbind() {
