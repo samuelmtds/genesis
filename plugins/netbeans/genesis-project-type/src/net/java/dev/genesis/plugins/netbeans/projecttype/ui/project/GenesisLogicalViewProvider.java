@@ -358,12 +358,12 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
       }
 
       private synchronized void reload() {
-         nodes.clear();
          createNodes();
          refresh();
       }
 
       private void createNodes() {
+         nodes.clear();
          String clientSourcesDir = Utils.getClientSourcesDir(project);
 
          if (clientSourcesDir != null) {
