@@ -19,6 +19,10 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import net.java.dev.genesis.annotation.DataProvider;
 
 import net.java.dev.genesis.annotation.Form;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
@@ -26,21 +30,49 @@ import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 
-/**
- *
- * @author Michel Graciano
- */
 @Form
 public class CustomizerGeneralForm extends GenesisProjectProperties {
-    
-    /** Creates a new instance of CustomizerGeneralView */
-    public CustomizerGeneralForm( GenesisProject project ) throws Exception {
-        super( project );
-    }
-    
-    public String getProjectFolder() {
-        FileObject projectFolder = this.project.getProjectDirectory();
-        File pf = FileUtil.toFile( projectFolder );
-        return pf == null ? "" : pf.getPath(); // NOI18N
-    }
+   
+   public enum JseVersion {
+      JAVA_16("1.6"), JAVA_15("1.5"), JAVA_14("1.4");
+      
+      private String version;
+      JseVersion(String version) {
+         this.version = version;
+      }
+      
+      public String getVersion() {
+         return version;
+      }
+   };
+   
+   public CustomizerGeneralForm(GenesisProject project) throws Exception {
+      super( project );
+   }
+   
+   public String getProjectFolder() {
+      FileObject projectFolder = this.project.getProjectDirectory();
+      File pf = FileUtil.toFile( projectFolder );
+      return pf == null ? "" : pf.getPath(); // NOI18N
+   }
+   
+   @DataProvider(widgetName="jseAvailableVersions", objectField="jseEnumVersion")
+   public List<JseVersion> jseAvailableVersions() {
+      return Arrays.asList(JseVersion.JAVA_16,
+              JseVersion.JAVA_15,
+              JseVersion.JAVA_14);
+   }
+   
+   public void setJseEnumVersion(JseVersion version) {
+      setJseVersion(version.getVersion());
+   }
+   
+   public JseVersion getJseEnumVersion() {
+      try {
+         return getJseVersion() ==  null ? JseVersion.JAVA_16 :
+            JseVersion.valueOf("JAVA_" + getJseVersion().replaceAll("\\D", ""));
+      } catch (IllegalArgumentException ex) {
+         return null;
+      }
+   }
 }

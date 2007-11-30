@@ -18,7 +18,6 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 
-
 import net.java.dev.genesis.annotation.EnabledWhen;
 import net.java.dev.genesis.annotation.Form;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
@@ -31,6 +30,7 @@ public class GenesisProjectProperties {
    
    private String name;
    private String prettyName;
+   private String jseVersion;
    private String mainClass;
    private boolean localMode;
    private boolean remoteMode;
@@ -219,6 +219,15 @@ public class GenesisProjectProperties {
    
    public void setBuildDir(String buildDir) {
       this.buildDir = buildDir;
+   }
+
+   @Property("webstart.jnlp.j2se.version")
+   public String getJseVersion() {
+      return jseVersion;
+   }
+
+   public void setJseVersion(String jseVersion) {
+      this.jseVersion = jseVersion;
    }
    
 }
