@@ -84,7 +84,9 @@ public class PersistenceManager {
      * @throws java.lang.Exception 
      */
     private Object resolveValue( String propertyName, Class propertyType ) throws Exception {
-        Object value = this.project.getEvaluator().evaluate( "${" + propertyName + "}" );
+        final String antPropertyName = "${" + propertyName + "}";
+        final String antPropertyValue = this.project.getEvaluator().evaluate(antPropertyName);
+        Object value = antPropertyName.equals(antPropertyValue) ? null : antPropertyValue;
         if ( Boolean.class.equals( propertyType ) ||
                 boolean.class.equals( propertyType ) ){
             value = "true".equals( value ) ? true : false;
