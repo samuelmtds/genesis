@@ -29,7 +29,9 @@
              <include name="aspectwerkz/trove-*.jar" />
              <include name="backport175/backport175-*.jar" />
              <include name="commons/commons-beanutils-*.jar" />
+             <include name="commons/commons-digester-*.jar" />
              <include name="commons/commons-jxpath-*.jar" />
+             <include name="commons/commons-validator-*.jar" />
              <include name="commons/reusable-components-*.jar" />
           </fileset>
        </copy>
