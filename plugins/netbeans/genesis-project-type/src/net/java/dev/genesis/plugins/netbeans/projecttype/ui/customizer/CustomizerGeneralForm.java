@@ -20,8 +20,8 @@ package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
+
 import net.java.dev.genesis.annotation.DataProvider;
 
 import net.java.dev.genesis.annotation.Form;
@@ -33,19 +33,6 @@ import org.openide.filesystems.FileUtil;
 @Form
 public class CustomizerGeneralForm extends GenesisProjectProperties {
    
-   public enum JseVersion {
-      JAVA_16("1.6"), JAVA_15("1.5"), JAVA_14("1.4");
-      
-      private String version;
-      JseVersion(String version) {
-         this.version = version;
-      }
-      
-      public String getVersion() {
-         return version;
-      }
-   };
-   
    public CustomizerGeneralForm(GenesisProject project) throws Exception {
       super( project );
    }
@@ -56,23 +43,15 @@ public class CustomizerGeneralForm extends GenesisProjectProperties {
       return pf == null ? "" : pf.getPath(); // NOI18N
    }
    
-   @DataProvider(widgetName="jseAvailableVersions", objectField="jseEnumVersion")
-   public List<JseVersion> jseAvailableVersions() {
-      return Arrays.asList(JseVersion.JAVA_16,
-              JseVersion.JAVA_15,
-              JseVersion.JAVA_14);
+   @DataProvider(widgetName="jseAvailableVersions", objectField="jseVersion",
+   indexField="jseVersionIndex")
+   public List<String> jseAvailableVersions() {
+      return Arrays.asList("1.6", "1.5", "1.4");
    }
    
-   public void setJseEnumVersion(JseVersion version) {
-      setJseVersion(version.getVersion());
-   }
+   public void setJseVersionIndex(int index) {}
    
-   public JseVersion getJseEnumVersion() {
-      try {
-         return getJseVersion() ==  null ? JseVersion.JAVA_16 :
-            JseVersion.valueOf("JAVA_" + getJseVersion().replaceAll("\\D", ""));
-      } catch (IllegalArgumentException ex) {
-         return null;
-      }
+   public int getJseVersionIndex() {
+      return jseAvailableVersions().indexOf(getJseVersion());
    }
 }
