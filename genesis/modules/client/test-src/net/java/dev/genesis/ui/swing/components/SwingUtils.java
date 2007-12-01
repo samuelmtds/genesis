@@ -40,6 +40,19 @@ public class SwingUtils {
       return component;
    }
 
+   public static JComboBox newStringCombo() {
+      JComboBox combo = new JComboBox();
+      DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
+
+      model.addElement("one");
+      model.addElement("two");
+      model.addElement("three");
+      model.addElement("four");
+      model.addElement("five");
+
+      return combo;
+   }
+   
    public static JComboBox newCombo() {
       JComboBox combo = new JComboBox();
       DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();

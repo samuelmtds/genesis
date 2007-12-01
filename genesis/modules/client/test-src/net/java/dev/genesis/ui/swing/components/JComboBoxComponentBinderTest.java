@@ -275,6 +275,35 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       boundField.setValue(value);
       assertNull(combo.getSelectedItem());
       assertEquals(-1, combo.getSelectedIndex());
+      
+      //String tests
+      JComboBox combo = SwingUtils.newStringCombo();
+      MockSwingBinder binder = new MockSwingBinder(new JPanel(), form = new MockForm());
+      DataProviderMetadata dataMeta = (DataProviderMetadata) form.getFormMetadata()
+            .getDataProviderMetadatas().get(
+                  new MethodEntry(form.getMethod("someDataProvider")));
+      WidgetBinder componentBinder = binder.getWidgetBinder(combo);
+      dataMeta.setResetSelection(true);
+      
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            combo, dataMeta));
+      
+      model = (DefaultComboBoxModel) combo.getModel();
+      
+      value = model.getElementAt(3);
+      boundField.setValue(value);
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(3, combo.getSelectedIndex());
+      
+      value = model.getElementAt(0);
+      boundField.setValue(value);
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(0, combo.getSelectedIndex());
+
+      value = "none";
+      boundField.setValue(value);
+      assertNull(combo.getSelectedItem());
+      assertEquals(-1, combo.getSelectedIndex());
    }
 
    public void testSetValueWithBlank() throws Exception {
