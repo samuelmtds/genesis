@@ -99,7 +99,7 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="jseAvailableVersions">
       <Properties>
-        <Property name="name" type="java.lang.String" value="jseAvailableVersions"/>
+        <Property name="name" type="java.lang.String" value="jseVersion"/>
       </Properties>
     </Component>
   </SubComponents>

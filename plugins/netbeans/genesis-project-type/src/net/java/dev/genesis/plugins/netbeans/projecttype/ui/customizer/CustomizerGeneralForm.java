@@ -43,15 +43,8 @@ public class CustomizerGeneralForm extends GenesisProjectProperties {
       return pf == null ? "" : pf.getPath(); // NOI18N
    }
    
-   @DataProvider(widgetName="jseAvailableVersions", objectField="jseVersion",
-   indexField="jseVersionIndex")
+   @DataProvider(objectField="jseVersion")
    public List<String> jseAvailableVersions() {
       return Arrays.asList("1.6", "1.5", "1.4");
-   }
-   
-   public void setJseVersionIndex(int index) {}
-   
-   public int getJseVersionIndex() {
-      return jseAvailableVersions().indexOf(getJseVersion());
    }
 }

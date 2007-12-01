@@ -64,7 +64,7 @@ public class CustomizerGeneral extends GenesisCustomizerProvider.GenesisView {
 
       org.openide.awt.Mnemonics.setLocalizedText(jLabel3, "Source Level");
 
-      jseAvailableVersions.setName("jseAvailableVersions");
+      jseAvailableVersions.setName("jseVersion");
 
       org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
       this.setLayout(layout);
