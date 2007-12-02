@@ -21,7 +21,10 @@ package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 import net.java.dev.genesis.annotation.EnabledWhen;
 import net.java.dev.genesis.annotation.Form;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
+import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
+import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
 import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.annotation.Property;
+import net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer.annotation.XmlProperty;
 
 @Form
 public class GenesisProjectProperties {
@@ -220,12 +223,13 @@ public class GenesisProjectProperties {
    public void setBuildDir(String buildDir) {
       this.buildDir = buildDir;
    }
-
+   
    @Property("webstart.jnlp.j2se.version")
+   @XmlProperty(value=Utils.SOURCE_LEVEL, namespace=GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE)
    public String getJseVersion() {
       return jseVersion;
    }
-
+   
    public void setJseVersion(String jseVersion) {
       this.jseVersion = jseVersion;
    }
