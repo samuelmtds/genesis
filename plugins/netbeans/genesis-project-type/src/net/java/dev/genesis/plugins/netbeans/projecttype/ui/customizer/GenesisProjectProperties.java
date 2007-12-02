@@ -223,7 +223,7 @@ public class GenesisProjectProperties {
 
    @Property("webstart.jnlp.j2se.version")
    public String getJseVersion() {
-      return jseVersion != null ? jseVersion.intern() : null;
+      return jseVersion;
    }
 
    public void setJseVersion(String jseVersion) {
