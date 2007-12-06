@@ -18,22 +18,35 @@
  */
 package net.java.dev.genesis.ui;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 import net.java.dev.genesis.GenesisTestCase;
 
 public class UIUtilsTest extends GenesisTestCase {
-   public void testMessagesLoadingWithMultipleClassLoaders()
-         throws ClassNotFoundException, NoSuchMethodException,
-         IllegalAccessException, IllegalArgumentException,
+   public void testMessagesLoadingWithMultipleClassLoaders() 
+         throws ClassNotFoundException, NoSuchMethodException, 
+         IllegalAccessException, IllegalArgumentException, 
          InvocationTargetException {
-      URLClassLoader cl = new URLClassLoader(new URL[] {
+      ClassLoader cl = createClassLoader();
+      ResourceBundle bundle = loadBundle(cl);
+      
+      cl = createClassLoader();
+      Thread.currentThread().setContextClassLoader(cl);
+
+      try {
+         loadBundle(cl);
+         fail("Shouldn't find messages.properties");
+      } catch (InvocationTargetException ite) {
+         assert(ite.getCause() instanceof RuntimeException);
+      }
+   }
+   
+   private ClassLoader createClassLoader() {
+      return new URLClassLoader(new URL[] {
             UIUtils.class.getProtectionDomain().getCodeSource().getLocation()}) {
          public InputStream getResourceAsStream(String name) {
             return name.endsWith("messages.properties") ? null : 
@@ -60,12 +73,17 @@ public class UIUtilsTest extends GenesisTestCase {
          }
 
       };
-      
+   }
+
+   public ResourceBundle loadBundle(ClassLoader cl) 
+         throws ClassNotFoundException, NoSuchMethodException, 
+         IllegalAccessException, IllegalArgumentException, 
+         InvocationTargetException {
       Class clazz = cl.loadClass(UIUtils.class.getName());
       Method getInstance = clazz.getMethod("getInstance", EMPTY_CLASS_ARRAY);
       Object singleton = getInstance.invoke(null, EMPTY_OBJECT_ARRAY);
       Method getBundle = clazz.getMethod("getBundle", EMPTY_CLASS_ARRAY);
-      ResourceBundle bundle = (ResourceBundle) getBundle.invoke(singleton, 
-            EMPTY_OBJECT_ARRAY);
+
+      return (ResourceBundle) getBundle.invoke(singleton, EMPTY_OBJECT_ARRAY);
    }
 }
