@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -58,9 +59,11 @@ public class UIUtils {
    public ResourceBundle getBundle() {
       if (bundle == null) {
          try {
-            bundle = ResourceBundle.getBundle("messages");
+            bundle = ResourceBundle.getBundle("messages", Locale.getDefault(), 
+                  Thread.currentThread().getContextClassLoader());
          } catch (MissingResourceException e) {
-            throw new RuntimeException("The 'messages.properties' file was not found in classpath.");
+            throw new RuntimeException("The 'messages.properties' file was " +
+                  "not found in classpath.");
          }
       }
 
