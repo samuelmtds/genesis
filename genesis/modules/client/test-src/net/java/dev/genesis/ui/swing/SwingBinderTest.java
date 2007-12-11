@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import net.java.dev.genesis.GenesisTestCase;
 
@@ -30,9 +31,45 @@ public class SwingBinderTest extends GenesisTestCase {
       super("Swing Binder Unit Test");
    }
    
-   public void testDefaultButtonListener() {
+   public void testBindAndUnbindDefaultButtonNPE() {
+      SwingBinder binder = new SwingBinder(new JPanel(), new Object());
+      try {
+         binder.bind();
+         binder.unbindDefaultButton();
+         binder.bindDefaultButton(null);
+         binder.unbindDefaultButton(null);
+         binder.bindDefaultButton();
+         binder.unbind();
+         
       JFrame frame = new JFrame();
-      JButton defaultButton = new JButton();
+         final JButton defaultButton = new JButton();
+         binder = new SwingBinder(frame, new Object());
+         binder.bind();
+         
+         frame.getRootPane().setDefaultButton(defaultButton);
+         frame.getRootPane().setDefaultButton(null);
+      } catch(NullPointerException ex) {
+         fail("NullPointerException should not be thrown for null default button.");
+      }
+   }
+   
+   public void testBindDefaultButton() {
+      JFrame frame = new JFrame();
+      final JButton defaultButton = new JButton();
+      
+      SwingBinder binder = new SwingBinder(frame, new Object());
+      frame.getRootPane().setDefaultButton(defaultButton);
+      
+      binder.bind();
+      assertSame(defaultButton, binder.getDefaultButton());
+      
+      frame.getRootPane().setDefaultButton(new JButton());
+      assertNotSame(defaultButton, binder.getDefaultButton());
+   }
+   
+   public void testIfDefaultButtonCreatesListener() {
+      JFrame frame = new JFrame();
+      final JButton defaultButton = new JButton();
       final ActionListener[] listeners = new ActionListener[1];
       
       SwingBinder binder = new SwingBinder(frame, new Object()) {
@@ -49,8 +86,68 @@ public class SwingBinderTest extends GenesisTestCase {
       
       assertEquals(listeners.length, length);
 
-      defaultButton.removeActionListener(listeners[0]);
-
+      binder.unbindDefaultButton();
       assertEquals(length - 1, defaultButton.getActionListeners().length);
+
+      binder.bindDefaultButton();
+      assertEquals(listeners.length, length);
+      
+      final JButton newDefaultButton = new JButton();
+      frame.getRootPane().setDefaultButton(newDefaultButton);
+      assertEquals(length - 1, defaultButton.getActionListeners().length);
+      assertEquals(length, newDefaultButton.getActionListeners().length);
+      
+      binder.unbindDefaultButton();
+      assertEquals(length - 1, newDefaultButton.getActionListeners().length);
+      
+      binder.bindDefaultButton();
+      assertEquals(length - 1, defaultButton.getActionListeners().length);
+      assertEquals(length, newDefaultButton.getActionListeners().length);
+      
+      frame.getRootPane().setDefaultButton(null);
+      assertEquals(length - 1, newDefaultButton.getActionListeners().length);
+   }
+   
+   public void testDefaultButtonNPE() {
+      SwingBinder binder = new SwingBinder(new JPanel(), new Object());
+      try {
+         binder.bind();
+      } catch (NullPointerException ex) {
+         fail("NullPointerException should not be thrown for null RootPane.");
+}
+   }
+   
+   public void testDefaultButton() {
+      SwingBinder binder = new SwingBinder(new JPanel(), new Object());
+      binder.bind();
+      assertNull(binder.getDefaultButton());
+      
+      JFrame frame = new JFrame();
+      JButton defaultButton = new JButton();
+      
+      binder = new SwingBinder(frame, new Object());
+      binder.bind();
+      assertNull(binder.getDefaultButton());
+      
+      frame.getRootPane().setDefaultButton(defaultButton);
+      binder.bindDefaultButton();
+      assertNotNull(binder.getDefaultButton());
+      assertSame(defaultButton, binder.getDefaultButton());
+   }
+   
+   public void testHasDefaultButton() {
+      SwingBinder binder = new SwingBinder(new JPanel(), new Object());
+      assertFalse(binder.hasDefaultButton());
+      
+      JFrame frame = new JFrame();
+      JButton defaultButton = new JButton();
+      
+      binder = new SwingBinder(frame, new Object());
+      binder.bind();
+      assertFalse(binder.hasDefaultButton());
+      
+      frame.getRootPane().setDefaultButton(defaultButton);
+      binder.bindDefaultButton();
+      assertTrue(binder.hasDefaultButton());
    }
 }

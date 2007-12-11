@@ -27,6 +27,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -36,7 +38,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.RootPaneContainer;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 
 import net.java.dev.genesis.ui.binding.AbstractBinder;
 import net.java.dev.genesis.ui.binding.ExceptionHandler;
@@ -252,6 +255,7 @@ public class SwingBinder extends AbstractBinder {
    public void bind() {
       super.bind();
 
+      configureListenerForRootPaneDefaultButton();
       bindDefaultButton();
       bindWindowListener();
    }
@@ -303,42 +307,67 @@ public class SwingBinder extends AbstractBinder {
       ((Window) getRoot()).addWindowListener(windowListener);
    }
 
-
    protected void unbindDefaultButton() {
-      if (defaultButtonListener == null) {
+      unbindDefaultButton(getDefaultButton());
+   }
+   
+   protected void unbindDefaultButton(final JButton defaultButton) {
+      if (defaultButtonListener == null || defaultButton == null) {
          return;
       }
 
-      final JButton defaultButton = ((RootPaneContainer) getRoot())
-            .getRootPane().getDefaultButton();
-
-      if (defaultButton != null) {
          defaultButton.removeActionListener(defaultButtonListener);
       }
-   }
 
    protected void bindDefaultButton() {
-      if (!bindDefaultButton || !hasDefaultButton()) {
+      bindDefaultButton(getDefaultButton());
+   }
+   
+   protected void bindDefaultButton(final JButton defaultButton) {
+      if (!bindDefaultButton || defaultButton == null) {
          return;
       }
 
-      final JButton defaultButton = ((RootPaneContainer) getRoot())
-            .getRootPane().getDefaultButton();
-
-      defaultButton.addActionListener(this.defaultButtonListener =  createDefautButtonListener());
+      if (this.defaultButtonListener == null){
+         this.defaultButtonListener = createDefautButtonListener();
+   }
+      defaultButton.addActionListener(this.defaultButtonListener);
    }
 
    protected boolean hasDefaultButton() {
-      return getRoot() instanceof RootPaneContainer
-            && ((RootPaneContainer) getRoot()).getRootPane().getDefaultButton() != null;
+      return getDefaultButton() != null;
    }
 
+   protected JButton getDefaultButton() {
+      final JRootPane root = getRootPane();
+      return root == null ? null : root.getDefaultButton();
+   }
+   
+   private JRootPane getRootPane() {
+      return SwingUtilities.getRootPane((Component)getRoot());
+   }
+   
+   private void configureListenerForRootPaneDefaultButton() {
+      if (bindDefaultButton && getRootPane() != null){
+         getRootPane().addPropertyChangeListener("defaultButton", new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+               unbindDefaultButton((JButton)evt.getOldValue());
+               bindDefaultButton((JButton)evt.getNewValue());
+            }
+         });
+      }
+   }
+   
    protected ActionListener createDefautButtonListener() {
       return new ActionListener() {
          public void actionPerformed(ActionEvent event) {
             Component defaultButton = (Component)event.getSource();
             Component c = FocusManager.getCurrentManager().getFocusOwner();
 
+            if (c == defaultButton){
+               return;
+            }
+            
             if (c != null) {
                c.dispatchEvent(new FocusEvent(defaultButton, 
                      FocusEvent.FOCUS_LOST));
