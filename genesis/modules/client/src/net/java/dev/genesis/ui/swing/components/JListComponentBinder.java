@@ -29,7 +29,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -377,20 +376,8 @@ public class JListComponentBinder extends AbstractComponentBinder {
       }
 
       protected String getKey(Object value) throws Exception {
-         String keyPropertyName = (String) component
-               .getClientProperty(SwingBinder.KEY_PROPERTY);
-
-         if (keyPropertyName != null) {
-            Object o =
-               (value == null) ? null
-               : getProperty(value, keyPropertyName);
-
-            return getBinder().format(getName(), keyPropertyName, o);
-         } else if (EnumHelper.getInstance().isEnum(value)) {
-            return value.toString();
-         }
-
-         return String.valueOf(System.identityHashCode(value));
+         return ComponentBinderHelper.getKey(getBinder(), component, getName(), 
+               value);
       }
 
       protected void deactivateListeners() {

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,16 +19,14 @@
 package net.java.dev.genesis.ui.swing.renderers;
 
 import java.awt.Component;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.components.ComponentBinderHelper;
 
 public class KeyValueListCellRenderer extends DefaultListCellRenderer {
    private final JComponent component;
@@ -43,45 +41,12 @@ public class KeyValueListCellRenderer extends DefaultListCellRenderer {
 
    protected String format(Object value) {
       final SwingBinder binder = getBinder();
+
       if (binder == null) {
          return FormatterRegistry.getInstance().format(value);
       }
 
-      String valueProperty = (String) component
-            .getClientProperty(SwingBinder.VALUE_PROPERTY);
-
-      if (value == null) {
-         String blankLabel = (String) component
-               .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
-         return (blankLabel == null) ? "" : blankLabel;
-      } else if (value instanceof String) {
-         return (String) value;
-      } else if (valueProperty == null) {
-         return binder.format(binder.getName(component), null, value,
-               getBinder().isVirtual(component));
-      }
-
-      boolean isVirtual = binder.isVirtual(component, valueProperty); 
-
-      return binder.format(binder.getName(component), valueProperty,
-            isVirtual ? value : getValue(value, valueProperty), isVirtual);
-   }
-
-   protected Object getValue(Object bean, String propertyName) {
-      try {
-         return PropertyUtils.getProperty(bean, propertyName);
-      } catch (IllegalAccessException e) {
-         throw new RuntimeException(e);
-      } catch (InvocationTargetException e) {
-         throw new RuntimeException(e);
-      } catch (NoSuchMethodException e) {
-         IllegalArgumentException iae = new IllegalArgumentException(
-               "The component named '" + getBinder().getName(component) + 
-               "' expected "  + bean.getClass().getName() + " to have a " +
-               "property named '" + propertyName + "' (at bean " + bean + ")");
-         iae.initCause(e);
-         throw iae;
-      }
+      return ComponentBinderHelper.format(binder, component, value);
    }
 
    public Component getListCellRendererComponent(JList list, Object value,

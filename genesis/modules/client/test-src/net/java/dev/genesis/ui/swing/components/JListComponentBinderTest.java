@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -347,6 +347,66 @@ public class JListComponentBinderTest extends GenesisTestCase {
       assertEquals(0, list.getSelectedIndex());
 
       value = new MockBean("none", "None");
+      boundField.setValue(value);
+      assertNull(list.getSelectedValue());
+      assertEquals(-1, list.getSelectedIndex());
+   }
+
+   public void testSetValueWithoutKey() throws Exception {
+      list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+      assertNull(componentBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(componentBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            list, dataMeta));
+
+      DefaultListModel model = (DefaultListModel) list.getModel();
+
+      Object value = new String(((MockBean)model.getElementAt(3)).getKey());
+      boundField.setValue(value);
+      assertEquals(value, ((MockBean)list.getSelectedValue()).getKey());
+      assertEquals(3, list.getSelectedIndex());
+
+      value = new String(((MockBean)model.getElementAt(0)).getKey());
+      boundField.setValue(value);
+      assertEquals(value, ((MockBean)list.getSelectedValue()).getKey());
+      assertEquals(0, list.getSelectedIndex());
+
+      value = new String("none");
+      boundField.setValue(value);
+      assertNull(list.getSelectedValue());
+      assertEquals(-1, list.getSelectedIndex());
+   }
+
+   public void testSetValueUsingString() throws Exception {
+      JList list = SwingUtils.newStringList();
+      MockSwingBinder binder = new MockSwingBinder(new JPanel(), form = new MockForm());
+      DataProviderMetadata dataMeta = (DataProviderMetadata) form.getFormMetadata()
+            .getDataProviderMetadatas().get(
+                  new MethodEntry(form.getMethod("someDataProvider")));
+      WidgetBinder componentBinder = binder.getWidgetBinder(list);
+      dataMeta.setResetSelection(true);
+
+      list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+      assertNull(componentBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(componentBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            list, dataMeta));
+
+      DefaultListModel model = (DefaultListModel) list.getModel();
+
+      Object value = model.getElementAt(3);
+      boundField.setValue(value);
+      assertEquals(value, list.getSelectedValue());
+      assertEquals(3, list.getSelectedIndex());
+
+      value = new String(model.getElementAt(0).toString());
+      boundField.setValue(value);
+      assertEquals(value, list.getSelectedValue());
+      assertEquals(0, list.getSelectedIndex());
+
+      value = new String("none");
       boundField.setValue(value);
       assertNull(list.getSelectedValue());
       assertEquals(-1, list.getSelectedIndex());

@@ -41,7 +41,7 @@ public class SwingBinderTest extends GenesisTestCase {
          binder.bindDefaultButton();
          binder.unbind();
          
-      JFrame frame = new JFrame();
+         JFrame frame = new JFrame();
          final JButton defaultButton = new JButton();
          binder = new SwingBinder(frame, new Object());
          binder.bind();
@@ -79,6 +79,7 @@ public class SwingBinderTest extends GenesisTestCase {
             return listeners[0];
          }
       };
+
       frame.getRootPane().setDefaultButton(defaultButton);
 
       binder.bind();
@@ -110,11 +111,12 @@ public class SwingBinderTest extends GenesisTestCase {
    
    public void testDefaultButtonNPE() {
       SwingBinder binder = new SwingBinder(new JPanel(), new Object());
+
       try {
          binder.bind();
       } catch (NullPointerException ex) {
          fail("NullPointerException should not be thrown for null RootPane.");
-}
+      }
    }
    
    public void testDefaultButton() {

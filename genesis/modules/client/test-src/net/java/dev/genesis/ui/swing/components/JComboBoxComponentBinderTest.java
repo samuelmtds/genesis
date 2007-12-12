@@ -275,8 +275,32 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       boundField.setValue(value);
       assertNull(combo.getSelectedItem());
       assertEquals(-1, combo.getSelectedIndex());
-      
-      //String tests
+   }
+
+   public void testSetValueWithoutKey() throws Exception {
+      assertNull(componentBinder.bind(binder, combo, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            combo, dataMeta));
+
+      DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
+
+      Object value = ((MockBean)model.getElementAt(3)).getKey();
+      boundField.setValue(value);
+      assertEquals(value, ((MockBean)combo.getSelectedItem()).getKey());
+      assertEquals(3, combo.getSelectedIndex());
+
+      value = ((MockBean)model.getElementAt(0)).getKey();
+      boundField.setValue(value);
+      assertEquals(value, ((MockBean)combo.getSelectedItem()).getKey());
+      assertEquals(0, combo.getSelectedIndex());
+
+      value = "none";
+      boundField.setValue(value);
+      assertNull(combo.getSelectedItem());
+      assertEquals(-1, combo.getSelectedIndex());
+   }
+
+   public void testSetValueUsingString() throws Exception {
       JComboBox combo = SwingUtils.newStringCombo();
       MockSwingBinder binder = new MockSwingBinder(new JPanel(), form = new MockForm());
       DataProviderMetadata dataMeta = (DataProviderMetadata) form.getFormMetadata()
@@ -284,19 +308,29 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
                   new MethodEntry(form.getMethod("someDataProvider")));
       WidgetBinder componentBinder = binder.getWidgetBinder(combo);
       dataMeta.setResetSelection(true);
-      
+
       assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
             combo, dataMeta));
-      
-      model = (DefaultComboBoxModel) combo.getModel();
-      
-      value = model.getElementAt(3);
-      boundField.setValue(value);
+
+      DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
+
+      Object value = model.getElementAt(3);
+      boundField.setValue(new String(value.toString()));
       assertEquals(value, combo.getSelectedItem());
       assertEquals(3, combo.getSelectedIndex());
-      
+
       value = model.getElementAt(0);
       boundField.setValue(value);
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(0, combo.getSelectedIndex());
+
+      value = model.getElementAt(3);
+      boundField.setValue(new String(value.toString()));
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(3, combo.getSelectedIndex());
+
+      value = model.getElementAt(0);
+      boundField.setValue(new String(value.toString()));
       assertEquals(value, combo.getSelectedItem());
       assertEquals(0, combo.getSelectedIndex());
 
@@ -327,6 +361,52 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
       assertEquals(1, combo.getSelectedIndex());
 
       value = new MockBean("none", "None");
+      boundField.setValue(value);
+      assertNull(combo.getSelectedItem());
+      assertEquals(-1, combo.getSelectedIndex());
+   }
+
+   public void testSetValueWithBlankUsingString() throws Exception {
+      JComboBox combo = SwingUtils.newStringCombo();
+      combo.putClientProperty(SwingBinder.BLANK_PROPERTY, Boolean.TRUE);
+      MockSwingBinder binder = new MockSwingBinder(new JPanel(), form = new MockForm());
+      DataProviderMetadata dataMeta = (DataProviderMetadata) form.getFormMetadata()
+            .getDataProviderMetadatas().get(
+                  new MethodEntry(form.getMethod("someDataProvider")));
+      WidgetBinder componentBinder = binder.getWidgetBinder(combo);
+      dataMeta.setResetSelection(true);
+
+      assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
+            combo, dataMeta));
+
+      DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
+
+      Object value = model.getElementAt(3);
+      boundField.setValue(new String(value.toString()));
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(3, combo.getSelectedIndex());
+
+      value = model.getElementAt(1);
+      boundField.setValue(value);
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(1, combo.getSelectedIndex());
+
+      value = model.getElementAt(3);
+      boundField.setValue(new String(value.toString()));
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(3, combo.getSelectedIndex());
+
+      value = model.getElementAt(1);
+      boundField.setValue(new String(value.toString()));
+      assertEquals(value, combo.getSelectedItem());
+      assertEquals(1, combo.getSelectedIndex());
+
+      value = "none";
+      boundField.setValue(value);
+      assertNull(combo.getSelectedItem());
+      assertEquals(-1, combo.getSelectedIndex());
+
+      value = model.getElementAt(0);
       boundField.setValue(value);
       assertNull(combo.getSelectedItem());
       assertEquals(-1, combo.getSelectedIndex());

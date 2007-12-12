@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -64,6 +64,19 @@ public class SwingUtils {
       model.addElement(new MockBean("five", "Five"));
 
       return combo;
+   }
+
+   public static JList newStringList() {
+      JList list = new JList(new DefaultListModel());
+      DefaultListModel model = (DefaultListModel) list.getModel();
+
+      model.addElement("one");
+      model.addElement("two");
+      model.addElement("three");
+      model.addElement("four");
+      model.addElement("five");
+
+      return list;
    }
 
    public static JList newList() {
