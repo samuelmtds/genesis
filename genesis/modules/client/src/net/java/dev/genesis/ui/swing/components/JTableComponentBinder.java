@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,6 @@ package net.java.dev.genesis.ui.swing.components;
 
 import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -37,41 +36,15 @@ import javax.swing.table.TableColumn;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swing.components.table.JTableIndexResolver;
+import net.java.dev.genesis.ui.swing.components.table.JTableIndexResolverRegistry;
 import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
 
 public class JTableComponentBinder extends AbstractComponentBinder {
-   private static volatile boolean initialized = false;
-   private static Method convertRowIndexToModel;
-   private static Method convertRowIndexToView;
-
-   protected static boolean needsConversion() {
-      if (initialized) {
-         return convertRowIndexToModel != null;
-      }
-
-      try {
-         convertRowIndexToModel = JTable.class.getMethod(
-               "convertRowIndexToModel", new Class[] {int.class});
-         convertRowIndexToView = JTable.class.getMethod(
-               "convertRowIndexToView", new Class[] {int.class});
-      } catch (SecurityException se) {
-         IllegalStateException ise = new IllegalStateException(
-               "Could not load convertRowIndexTo* methods");
-         ise.initCause(se);
-         throw ise;
-      } catch (NoSuchMethodException nsme) {
-         // Expected
-      } finally {
-         initialized = true;
-      }
-
-      return convertRowIndexToModel != null;
-   }
-
    public BoundDataProvider bind(SwingBinder binder, Component component,
          DataProviderMetadata dataProviderMetadata) {
-      return new JTableComponentBoundDataProvider(binder, (JTable) component,
-         dataProviderMetadata);
+      return new JTableComponentBoundDataProvider(binder, (JTable)component,
+            dataProviderMetadata);
    }
 
    public class JTableComponentBoundDataProvider extends AbstractBoundMember
@@ -80,12 +53,17 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       private final DataProviderMetadata dataProviderMetadata;
       private final ListSelectionListener listener;
       private final TableCellRenderer renderer;
+      private JTableIndexResolver indexResolver;
 
       public JTableComponentBoundDataProvider(SwingBinder binder,
             JTable component, DataProviderMetadata dataProviderMetadata) {
          super(binder, component);
          this.component = component;
          this.dataProviderMetadata = dataProviderMetadata;
+         //TODO E se não houver um indexResolver????? Logar e não fazer binding
+         indexResolver =
+               JTableIndexResolverRegistry.getInstance().get(component.getClass(),
+               true);
 
          this.component.getSelectionModel().addListSelectionListener(
                listener = createListSelectionListener());
@@ -115,7 +93,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
          Enumeration en = component.getColumnModel().getColumns();
 
          while (en.hasMoreElements()) {
-            TableColumn column = (TableColumn) en.nextElement();
+            TableColumn column = (TableColumn)en.nextElement();
 
             if (column.getCellRenderer() == null) {
                column.setCellRenderer(renderer);
@@ -139,14 +117,14 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       protected int[] getIndexes() {
          int[] indexes = component.getSelectedRows();
 
-         if (!needsConversion()) {
+         if (!indexResolver.needsConversion()) {
             return indexes;
          }
 
          try {
             for (int i = 0; i < indexes.length; i++) {
-               indexes[i] = ((Integer)convertRowIndexToModel.invoke(component, 
-                     new Object[] {new Integer(indexes[i])})).intValue();
+               indexes[i] = indexResolver.convertRowIndexToModel(component,
+                     indexes[i]);
             }
          } catch (IllegalArgumentException iae) {
             throw new RuntimeException(iae);
@@ -160,7 +138,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       public void updateIndexes(int[] indexes) {
-         getViewIndexes(indexes);
+         fillViewIndexes(indexes);
 
          if (Arrays.equals(getIndexes(), indexes)) {
             return;
@@ -171,7 +149,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
          try {
             ListSelectionModel sm = component.getSelectionModel();
             sm.clearSelection();
-   
+
             for (int i = 0; i < indexes.length; i++) {
                if (indexes[i] == -1) {
                   continue;
@@ -184,15 +162,15 @@ public class JTableComponentBinder extends AbstractComponentBinder {
          }
       }
 
-      protected void getViewIndexes(final int[] indexes) {
-         if (!needsConversion()) {
+      protected void fillViewIndexes(final int[] indexes) {
+         if (!indexResolver.needsConversion()) {
             return;
          }
 
          try {
             for (int i = 0; i < indexes.length; i++) {
-               indexes[i] = ((Integer)convertRowIndexToView.invoke(component, 
-                     new Object[] {new Integer(indexes[i])})).intValue();
+               indexes[i] = indexResolver.convertRowIndexToView(component,
+                     indexes[i]);
             }
          } catch (IllegalArgumentException iae) {
             throw new RuntimeException(iae);
@@ -212,16 +190,16 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       protected void setSelectedIndexes(int listSize, int[] indexes) {
-         getViewIndexes(indexes);
+         fillViewIndexes(indexes);
          deactivateSelectionListener();
-         
+
          try {
             component.clearSelection();
             for (int i = 0; i < indexes.length; i++) {
                if (indexes[i] >= listSize) {
                   continue;
                }
-   
+
                component.getSelectionModel().addSelectionInterval(indexes[i],
                      indexes[i]);
             }
@@ -245,8 +223,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       protected TableModelAdapter createTableModelAdapter() {
          return new TableModelAdapter() {
             public void setData(List data) throws Exception {
-               DefaultTableModel model = (DefaultTableModel) component
-                     .getModel();
+               DefaultTableModel model = (DefaultTableModel)component.getModel();
 
                int dataSize = data.size();
                if (model.getRowCount() != data.size()) {
@@ -280,7 +257,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
       protected String getIdentifier(TableColumn column) {
          String identifier = null;
-         String[] names = (String[]) component.getClientProperty(
+         String[] names = (String[])component.getClientProperty(
                SwingBinder.COLUMN_NAMES);
 
          if (names != null && names.length > column.getModelIndex()) {
@@ -291,12 +268,12 @@ public class JTableComponentBinder extends AbstractComponentBinder {
             }
          }
 
-         identifier = (String) column.getIdentifier();
+         identifier = (String)column.getIdentifier();
          if (identifier == null) {
-            throw new IllegalArgumentException("Column number "
-                  + column.getModelIndex() + " from Table "
-                  + getBinder().getName(getComponent())
-                  + " does not have an identifier");
+            throw new IllegalArgumentException("Column number " +
+                  column.getModelIndex() + " from Table " +
+                  getBinder().getName(getComponent()) +
+                  " does not have an identifier");
          }
 
          return identifier;
@@ -311,7 +288,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
             Enumeration en = component.getColumnModel().getColumns();
 
             while (en.hasMoreElements()) {
-               TableColumn column = (TableColumn) en.nextElement();
+               TableColumn column = (TableColumn)en.nextElement();
 
                if (column.getCellRenderer() == renderer) {
                   column.setCellRenderer(null);
