@@ -43,20 +43,20 @@ public class JTableIndexResolverRegistry {
       registry.deregister(clazz);
    }
 
-   public DefaultJTableIndexResolver register(Class clazz,
-         DefaultJTableIndexResolver binder) {
-      return (DefaultJTableIndexResolver)registry.register(clazz, binder);
+   public JTableIndexResolver register(Class clazz,
+         JTableIndexResolver binder) {
+      return (JTableIndexResolver)registry.register(clazz, binder);
    }
 
-   public DefaultJTableIndexResolver get(Class clazz) {
-      return (DefaultJTableIndexResolver)registry.get(clazz);
+   public JTableIndexResolver get(Class clazz) {
+      return (JTableIndexResolver)registry.get(clazz);
    }
 
-   public DefaultJTableIndexResolver get(Class clazz, boolean superClass) {
-      return (DefaultJTableIndexResolver)registry.get(clazz, superClass);
+   public JTableIndexResolver get(Class clazz, boolean superClass) {
+      return (JTableIndexResolver)registry.get(clazz, superClass);
    }
 
-   public DefaultJTableIndexResolver get(Object o) {
-      return (DefaultJTableIndexResolver)registry.get(o);
+   public JTableIndexResolver get(Object o) {
+      return (JTableIndexResolver)registry.get(o);
    }
 }

@@ -22,13 +22,11 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JComponent;
 
 public interface JTableIndexResolver {
-
    int convertRowIndexToModel(JComponent component, int index) throws IllegalAccessException,
          IllegalArgumentException, InvocationTargetException;
 
    int convertRowIndexToView(JComponent component, int index) throws IllegalAccessException,
          IllegalArgumentException, InvocationTargetException;
 
-   boolean needsConversion();
-
+   public boolean needsConversion(JComponent component);
 }

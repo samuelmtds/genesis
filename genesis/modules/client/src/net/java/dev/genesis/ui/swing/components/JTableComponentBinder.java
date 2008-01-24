@@ -39,12 +39,25 @@ import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.components.table.JTableIndexResolver;
 import net.java.dev.genesis.ui.swing.components.table.JTableIndexResolverRegistry;
 import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class JTableComponentBinder extends AbstractComponentBinder {
+   private static Log log = LogFactory.getLog(JTableComponentBinder.class);
+
    public BoundDataProvider bind(SwingBinder binder, Component component,
          DataProviderMetadata dataProviderMetadata) {
+      JTableIndexResolver indexResolver = JTableIndexResolverRegistry.getInstance().
+            get(component.getClass(), true);
+      if (indexResolver == null) {
+         log.error("Could not find a suitable JTableIndexResolver implementation for " +
+               component.getClass() + ", component " + binder.getName(component) +
+               ".");
+         return null;
+      }
+
       return new JTableComponentBoundDataProvider(binder, (JTable)component,
-            dataProviderMetadata);
+            dataProviderMetadata, indexResolver);
    }
 
    public class JTableComponentBoundDataProvider extends AbstractBoundMember
@@ -56,15 +69,12 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       private JTableIndexResolver indexResolver;
 
       public JTableComponentBoundDataProvider(SwingBinder binder,
-            JTable component, DataProviderMetadata dataProviderMetadata) {
+            JTable component, DataProviderMetadata dataProviderMetadata,
+            JTableIndexResolver indexResolver) {
          super(binder, component);
          this.component = component;
          this.dataProviderMetadata = dataProviderMetadata;
-         //TODO E se não houver um indexResolver????? Logar e não fazer binding
-         indexResolver =
-               JTableIndexResolverRegistry.getInstance().get(component.getClass(),
-               true);
-
+         this.indexResolver = indexResolver;
          this.component.getSelectionModel().addListSelectionListener(
                listener = createListSelectionListener());
 
@@ -117,7 +127,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       protected int[] getIndexes() {
          int[] indexes = component.getSelectedRows();
 
-         if (!indexResolver.needsConversion()) {
+         if (!indexResolver.needsConversion(component)) {
             return indexes;
          }
 
@@ -163,7 +173,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
       }
 
       protected void fillViewIndexes(final int[] indexes) {
-         if (!indexResolver.needsConversion()) {
+         if (!indexResolver.needsConversion(component)) {
             return;
          }
 
