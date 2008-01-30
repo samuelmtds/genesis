@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 OpenIDE-Module: net.java.dev.genesis.plugins.netbeans.projecttype/0
 OpenIDE-Module-Implementation-Version: 3.0-EA3-dev
-OpenIDE-Module-Install: net/java/dev/genesis/plugins/netbeans/projecttype/Installer.class
 OpenIDE-Module-Layer: net/java/dev/genesis/plugins/netbeans/projecttype/resources/mf-layer.xml
 OpenIDE-Module-Localizing-Bundle: net/java/dev/genesis/plugins/netbeans/projecttype/resources/Bundle.properties
 OpenIDE-Module-Specification-Version: 2.99

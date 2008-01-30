@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,10 +19,6 @@
 package net.java.dev.genesis.plugins.netbeans.projecttype.ui.customizer;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import net.java.dev.genesis.annotation.DataProvider;
 
 import net.java.dev.genesis.annotation.Form;
 import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
@@ -30,21 +26,21 @@ import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProject;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 
+/**
+ *
+ * @author Michel Graciano
+ */
 @Form
 public class CustomizerGeneralForm extends GenesisProjectProperties {
-   
-   public CustomizerGeneralForm(GenesisProject project) throws Exception {
-      super( project );
-   }
-   
-   public String getProjectFolder() {
-      FileObject projectFolder = this.project.getProjectDirectory();
-      File pf = FileUtil.toFile( projectFolder );
-      return pf == null ? "" : pf.getPath(); // NOI18N
-   }
-   
-   @DataProvider(objectField="jseVersion")
-   public List<String> jseAvailableVersions() {
-      return Arrays.asList("1.6", "1.5", "1.4");
-   }
+    
+    /** Creates a new instance of CustomizerGeneralView */
+    public CustomizerGeneralForm( GenesisProject project ) throws Exception {
+        super( project );
+    }
+    
+    public String getProjectFolder() {
+        FileObject projectFolder = this.project.getProjectDirectory();
+        File pf = FileUtil.toFile( projectFolder );
+        return pf == null ? "" : pf.getPath(); // NOI18N
+    }
 }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ *
+ * @author Michel Graciano
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Property {

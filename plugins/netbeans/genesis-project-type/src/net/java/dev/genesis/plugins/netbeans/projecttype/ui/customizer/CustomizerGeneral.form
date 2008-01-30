@@ -3,7 +3,6 @@
 <Form version="1.3" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="true"/>
-    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
@@ -17,18 +16,11 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jseAvailableVersions" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                      <Component id="jTextField1" pref="290" max="32767" attributes="0"/>
-                      <Component id="txtProjectFolder" alignment="0" pref="290" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jTextField1" pref="290" max="32767" attributes="0"/>
+                  <Component id="txtProjectFolder" alignment="0" pref="290" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -45,12 +37,7 @@
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jseAvailableVersions" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="226" max="32767" attributes="0"/>
+              <EmptySpace pref="256" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -90,16 +77,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="jTextField1"/>
         <Property name="name" type="java.lang.String" value="prettyName"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Source Level"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="jseAvailableVersions">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="jseVersion"/>
       </Properties>
     </Component>
   </SubComponents>

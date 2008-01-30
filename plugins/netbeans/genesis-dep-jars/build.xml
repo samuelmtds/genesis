@@ -9,13 +9,13 @@
     <target name="release">
        <copy todir="${cluster}/modules/ext/genesis">
           <fileset dir="../../../genesis/dist">
-             <exclude name="genesis-client-thinlet*.jar" />
-             <exclude name="genesis-client-swt*.jar" />
-             
              <include name="genesis-aspect-annotated*.jar" />
              <include name="genesis-shared-annotated*.jar" />
              <include name="genesis-client*.jar" />
              <include name="genesis-annotation-jdk5*.jar" />
+             
+             <exclude name="genesis-client-thinlet*.jar" />
+             <exclude name="genesis-client-swt*.jar" />
           </fileset>
        </copy>
        
@@ -29,9 +29,7 @@
              <include name="aspectwerkz/trove-*.jar" />
              <include name="backport175/backport175-*.jar" />
              <include name="commons/commons-beanutils-*.jar" />
-             <include name="commons/commons-digester-*.jar" />
              <include name="commons/commons-jxpath-*.jar" />
-             <include name="commons/commons-validator-*.jar" />
              <include name="commons/reusable-components-*.jar" />
           </fileset>
        </copy>
