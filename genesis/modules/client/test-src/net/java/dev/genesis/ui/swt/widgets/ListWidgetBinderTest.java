@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -449,6 +449,56 @@ public class ListWidgetBinderTest extends GenesisTestCase {
       assertEquals(1, list.getSelectionIndex());
 
       value = new MockBean("none", "None");
+      boundField.setValue(value);
+      assertEquals(-1, list.getSelectionIndex());
+   }
+
+   public void testSetValueWithoutKey() throws Exception {
+      createSingleList();
+      list.setData(SWTBinder.KEY_PROPERTY, null);
+
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder,
+            list, dataMeta));
+
+      Object value = new String(beans[3].getKey());
+      boundField.setValue(value);
+      assertEquals(3, list.getSelectionIndex());
+      assertEquals(beans[3].getValue(), list.getSelection()[0]);
+
+      value = new String(beans[0].getKey());
+      boundField.setValue(value);
+      assertEquals(0, list.getSelectionIndex());
+      assertEquals(beans[0].getValue(), list.getSelection()[0]);
+
+      value = "none";
+      boundField.setValue(value);
+      assertEquals(-1, list.getSelectionIndex());
+   }
+
+   public void testSetValueUsingString() throws Exception {
+      createSingleList();
+      list.setData(SWTBinder.KEY_PROPERTY, null);
+      String[] values = new String[] {"one", "two", "three", "four", "five"};
+      list.setItems(values);
+      
+      assertNull(widgetBinder.bind(binder, list, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, list, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder,
+            list, dataMeta));
+
+      Object value = new String(values[3]);
+      boundField.setValue(value);
+      assertEquals(3, list.getSelectionIndex());
+      assertEquals(value, list.getSelection()[0]);
+
+      value = new String(values[0]);
+      boundField.setValue(value);
+      assertEquals(0, list.getSelectionIndex());
+      assertEquals(value, list.getSelection()[0]);
+
+      value = "none";
       boundField.setValue(value);
       assertEquals(-1, list.getSelectionIndex());
    }

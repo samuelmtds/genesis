@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -303,11 +303,7 @@ public class JComboBoxComponentBinderTest extends GenesisTestCase {
    public void testSetValueUsingString() throws Exception {
       JComboBox combo = SwingUtils.newStringCombo();
       MockSwingBinder binder = new MockSwingBinder(new JPanel(), form = new MockForm());
-      DataProviderMetadata dataMeta = (DataProviderMetadata) form.getFormMetadata()
-            .getDataProviderMetadatas().get(
-                  new MethodEntry(form.getMethod("someDataProvider")));
       WidgetBinder componentBinder = binder.getWidgetBinder(combo);
-      dataMeta.setResetSelection(true);
 
       assertNotNull(boundField = (BoundField) componentBinder.bind(binder,
             combo, dataMeta));

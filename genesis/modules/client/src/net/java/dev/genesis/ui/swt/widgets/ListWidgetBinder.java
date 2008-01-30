@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,8 +21,6 @@ package net.java.dev.genesis.ui.swt.widgets;
 import java.util.Iterator;
 import java.util.List;
 
-
-import net.java.dev.genesis.helpers.EnumHelper;
 import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -285,39 +283,12 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
       }
 
       protected String getValue(Widget widget, Object value) throws Exception {
-         String valueProperty = (String) widget
-               .getData(SWTBinder.VALUE_PROPERTY);
-
-         if (value == null) {
-            String blankLabel = (String) widget
-                  .getData(SWTBinder.BLANK_LABEL_PROPERTY);
-            return (blankLabel == null) ? "" : blankLabel;
-         } else if (value instanceof String) {
-            return (String) value;
-         } else if (valueProperty == null) {
-            return getBinder().format(getName(), null, value, getBinder().isVirtual(widget));
-         }
-
-         boolean isVirtual = getBinder().isVirtual(widget, valueProperty);
-
-         return getBinder().format(getName(), valueProperty, isVirtual ?
-               value : getProperty(value, valueProperty), isVirtual);
+         return WidgetBinderHelper.format(getBinder(), widget, value);
       }
 
       protected String getKey(Object value) throws Exception {
-         String keyPropertyName = (String) widget
-               .getData(SWTBinder.KEY_PROPERTY);
-
-         if (keyPropertyName != null) {
-            Object o = (value == null) ? null : getProperty(
-                  value, keyPropertyName);
-
-            return getBinder().format(getName(), keyPropertyName, o);
-         } else if (EnumHelper.getInstance().isEnum(value)) {
-            return value.toString();
-         }
-
-         return String.valueOf(System.identityHashCode(value));
+         return WidgetBinderHelper.getKey(getBinder(), widget, getName(),
+               value);
       }
    }
 }

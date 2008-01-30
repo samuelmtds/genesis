@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2007-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,43 +16,39 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui.swing.components;
+package net.java.dev.genesis.ui.swt.widgets;
 
-import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
-import javax.swing.JComponent;
-import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.swt.widgets.Widget;
 
-public class ComponentBinderHelper {
-   private ComponentBinderHelper() {
+public class WidgetBinderHelper {
+   private WidgetBinderHelper() {
    }
 
-   public static String format(final SwingBinder binder, JComponent component, 
-         Object value) {
-      String valueProperty = (String) component
-            .getClientProperty(SwingBinder.VALUE_PROPERTY);
+   public static String format(SWTBinder binder, Widget widget, Object value) {
+      String valueProperty = (String)widget.getData(SWTBinder.VALUE_PROPERTY);
 
       if (value == null) {
-         String blankLabel = (String) component
-               .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
+         String blankLabel = (String) widget.getData(SWTBinder.BLANK_LABEL_PROPERTY);
          return (blankLabel == null) ? "" : blankLabel;
       } else if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
-         return binder.format(binder.getName(component), null, value, 
-               binder.isVirtual(component));
+         return binder.format(binder.getName(widget), null, value, 
+               binder.isVirtual(widget));
       }
 
-      boolean isVirtual = binder.isVirtual(component, valueProperty);
+      boolean isVirtual = binder.isVirtual(widget, valueProperty);
 
-      return binder.format(binder.getName(component), valueProperty, 
-            isVirtual ? value : getValue(binder, component, value, 
+      return binder.format(binder.getName(widget), valueProperty, 
+            isVirtual ? value : getValue(binder, widget, value, 
             valueProperty), isVirtual);
    }
 
-   private static Object getValue(SwingBinder binder, Component component, 
-         Object bean, String propertyName) {
+   private static Object getValue(SWTBinder binder, Widget widget, Object bean,
+         String propertyName) {
       try {
          return PropertyUtils.getProperty(bean, propertyName);
       } catch (IllegalAccessException e) {
@@ -61,26 +57,25 @@ public class ComponentBinderHelper {
          throw new RuntimeException(e);
       } catch (NoSuchMethodException e) {
          IllegalArgumentException iae = new IllegalArgumentException(
-               "The component named '" + binder.getName(component) + 
-               "' was expected "  + bean.getClass().getName() + " to have a " +
+               "The widget named '" + binder.getName(widget) +
+               "' was expected " + bean.getClass().getName() + " to have a " +
                "property named '" + propertyName + "' (at bean " + bean + ")");
          iae.initCause(e);
          throw iae;
       }
    }
 
-   public static String getKey(SwingBinder binder, JComponent component, 
-         String name, Object value) throws Exception {
-      String keyPropertyName = (String) component.getClientProperty(
-            SwingBinder.KEY_PROPERTY);
+   public static String getKey(SWTBinder binder, Widget widget, String name,
+         Object value) {
+      String keyPropertyName = (String)widget.getData(SWTBinder.KEY_PROPERTY);
 
       if (keyPropertyName != null) {
-         Object o = (value == null) ? null : getValue(binder, component, value, 
+         Object o = (value == null) ? null : getValue(binder, widget, value,
                keyPropertyName);
 
          return binder.format(name, keyPropertyName, o);
       }
 
-      return format(binder, component, value);
+      return format(binder, widget, value);
    }
 }

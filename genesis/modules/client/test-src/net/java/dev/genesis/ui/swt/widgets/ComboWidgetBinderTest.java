@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -340,9 +340,57 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       assertEquals(-1, combo.getSelectionIndex());
    }
 
+   public void testSetValueWithoutKey() throws Exception {
+      combo.setData(SWTBinder.KEY_PROPERTY, null);
+      assertNull(widgetBinder.bind(binder, combo, (ActionMetadata)null));
+      assertNull(widgetBinder.bind(binder, combo, (FieldMetadata)null));
+      assertNotNull(boundField = (BoundField)widgetBinder.bind(binder, combo,
+            dataMeta));
+
+      String value = beans[3].getKey();
+      boundField.setValue(value);
+      assertEquals(3, combo.getSelectionIndex());
+      assertEquals(beans[3].getValue(),
+            combo.getItem(combo.getSelectionIndex()));
+
+      value = beans[0].getKey();
+      boundField.setValue(value);
+      assertEquals(0, combo.getSelectionIndex());
+      assertEquals(beans[0].getValue(),
+            combo.getItem(combo.getSelectionIndex()));
+
+      value = "none";
+      boundField.setValue(value);
+      assertEquals(-1, combo.getSelectionIndex());
+   }
+
+   public void testSetValueUsingString() throws Exception {
+      combo.setData(SWTBinder.KEY_PROPERTY, null);
+      String[] values = new String[] {"one", "two", "three", "four", "five"};
+      combo.setItems(values);
+
+      assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder, combo,
+            dataMeta));
+
+      String value = new String(values[3]);
+      boundField.setValue(value);
+      assertEquals(3, combo.getSelectionIndex());
+      assertEquals(value, combo.getItem(combo.getSelectionIndex()));
+
+      value = new String(values[0]);
+      boundField.setValue(value);
+      assertEquals(0, combo.getSelectionIndex());
+      assertEquals(value, combo.getItem(combo.getSelectionIndex()));
+
+      value = "none";
+      boundField.setValue(value);
+      assertEquals(-1, combo.getSelectionIndex());
+   }
+
    public void testSetValueWithBlank() throws Exception {
       combo.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
-      combo.setData(SWTBinder.KEY_PROPERTY, "key");
 
       assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
       assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));
@@ -365,7 +413,33 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
       boundField.setValue(value);
       assertEquals(-1, combo.getSelectionIndex());
    }
-   
+
+   public void testSetValueWithBlankUsingString() throws Exception {
+      combo.setData(SWTBinder.BLANK_PROPERTY, Boolean.TRUE);
+      combo.setData(SWTBinder.KEY_PROPERTY, null);
+      String[] values = new String[] {"one", "two", "three", "four", "five"};
+      combo.setItems(values);
+
+      assertNull(widgetBinder.bind(binder, combo, (ActionMetadata) null));
+      assertNull(widgetBinder.bind(binder, combo, (FieldMetadata) null));
+      assertNotNull(boundField = (BoundField) widgetBinder.bind(binder, combo,
+            dataMeta));
+
+      String value = new String(values[3]);
+      boundField.setValue(value);
+      assertEquals(3, combo.getSelectionIndex());
+      assertEquals(value, combo.getItem(combo.getSelectionIndex()));
+
+      value = new String(values[1]);
+      boundField.setValue(value);
+      assertEquals(1, combo.getSelectionIndex());
+      assertEquals(value, combo.getItem(combo.getSelectionIndex()));
+
+      value = "none";
+      boundField.setValue(value);
+      assertEquals(-1, combo.getSelectionIndex());
+   }
+
    private void simulateSelect(int index) {
       if (index < 0) {
          combo.deselectAll();
