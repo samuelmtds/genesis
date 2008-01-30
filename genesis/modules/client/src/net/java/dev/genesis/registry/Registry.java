@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,11 @@
  */
 package net.java.dev.genesis.registry;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class Registry {
-   private final Map registry = new HashMap();
+   private final Map registry = new WeakHashMap();
 
    public Object register(Class clazz, Object o) {
       return registry.put(clazz, o);
