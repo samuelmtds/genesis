@@ -25,7 +25,6 @@
       <fileset dir="${genesis.aspectwerkz.dist}">
          <include name="aspectwerkz*.jar"/>
          <exclude name="aspectwerkz-extensions-*.jar" />
-         <include name="ant*.jar"/>
          <exclude name="asm*.jar"/>
          <include name="concurrent*.jar"/>
          <include name="dom4j*.jar"/>
@@ -69,7 +68,11 @@
    </path>
 
 	<path id="hibernate.path">
-		<fileset dir="${genesis.hibernate.dist}" includes="*.jar" />
+		<fileset dir="${genesis.hibernate.dist}">
+         <include name="*.jar" />
+         <exclude name="ant*.jar" />
+         <exclude name="junit*.jar" />
+      </fileset>
 	</path>
 
 	<path id="shared.dependency.classpath">
