@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,6 @@
  */
 package net.java.dev.genesis.ui.thinlet;
 
-import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 import thinlet.Thinlet;
 
 public class ThinletUtils {
