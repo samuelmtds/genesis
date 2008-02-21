@@ -269,6 +269,27 @@ binder.bind();
         prefixed with <code>virtual:</code>, the way the property name is 
         composed for registering the formatter is not affected.</p>
       </subsection>
+      <subsection name="Using script expressions to perform formatting">
+        <p>Since release 3.1, a new <code>Formatter</code> implementation 
+        allows data to be formatted using a script expression - 
+        <code>net.java.dev.genesis.text.ScriptFormatter</code>.</p>
+        <p>An example of how to create a new instance of this class is shown 
+        below. Supposing there is a class that exposes two properties named 
+        <code>key</code> and <code>value</code> and the script language is
+        JavaScript, the following code snippet:</p>
+<source>
+Formatter f = new ScriptFormatter(form, "o.key + ' - ' + o.value");
+</source>
+        <p>allows an instance such as <code>[key=1, value="Value"]</code> to be
+        formatted as <code>1 - Value</code>.</p>
+        <p><code>o</code> is the default variable name, but it can be replaced
+        if necessary by specifying it as the third parameter in the overloaded 
+        constructor.</p>
+        <p>It is important to keep in mind that <b><code>ScriptFormatter</code>
+        constructors must be invoked after the binder is created</b>, since some
+        objects used internally by genesis must be initialized for it to 
+        work.</p>
+      </subsection>
    </section>
   </body>
 </document>
