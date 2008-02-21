@@ -65,7 +65,7 @@ public class DefaultJTableIndexResolver implements JTableIndexResolver {
       }
    }
 
-   private static class JTableIndexResolverInfoInfoRegistry {
+   private static class JTableIndexResolverInfoRegistry {
       private final Registry registry = new Registry();
 
       public void deregister() {
@@ -93,9 +93,9 @@ public class DefaultJTableIndexResolver implements JTableIndexResolver {
          return (JTableIndexResolverInfo)registry.get(o);
       }
    }
-   private Map resolverInfoMap = new WeakHashMap();
-   private final JTableIndexResolverInfoInfoRegistry resolverInfoRegistry =
-         new JTableIndexResolverInfoInfoRegistry();
+   private final Map resolverInfoMap = new WeakHashMap();
+   private final JTableIndexResolverInfoRegistry resolverInfoRegistry =
+         new JTableIndexResolverInfoRegistry();
 
    protected JTableIndexResolverInfo initialize(final Class clazz) {
       JTableIndexResolverInfo info = resolverInfoMap.get(clazz) != null ? (JTableIndexResolverInfo)resolverInfoMap.get(clazz)
@@ -124,7 +124,7 @@ public class DefaultJTableIndexResolver implements JTableIndexResolver {
 
    public int convertRowIndexToView(JComponent component, int index) throws IllegalAccessException,
          IllegalArgumentException, InvocationTargetException {
-      return initialize(component.getClass()).convertRowIndexToModel(component,
+      return initialize(component.getClass()).convertRowIndexToView(component,
             index);
    }
 }
