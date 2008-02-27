@@ -159,7 +159,7 @@ public class ExemploDataProviderForm {
             <li><b>key</b>: nome da propriedade, cujo valor é único por 
             instância, do bean que será utilizado para popular o componente.
             Se essa propriedade não for definida, o valor retornado pelo 
-            formatador será usado chave.</li>
+            formatador será usado como chave.</li>
             <li><b>value</b>: nome da propriedade utilizada para exibir o bean. 
             Se essa propriedade não for definida, o formatador registrado ou o
             formatador padrão é utilizado.</li>
@@ -245,7 +245,7 @@ private JComboBox estadoComboBox;
             <li><b>SwingBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
             é único por instância, do bean que será utilizado para popular o 
             componente. Se essa propriedade não for definida, o valor retornado 
-            pelo formatador será usado chave.</li>
+            pelo formatador será usado como chave.</li>
             <li><b>SwingBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
             para exibir o bean. Se essa propriedade não for definida, o formatador
             registrado ou o formatador padrão é utilizado.</li>
@@ -403,7 +403,7 @@ private Combo estadoComboBox;
             <li><b>SWTBinder.KEY_PROPERTY</b>: nome da propriedade, cujo valor 
             é único por instância, do bean que será utilizado para popular o 
             componente. Se essa propriedade não for definida, o valor retornado 
-            pelo formatador será usado chave.</li>
+            pelo formatador será usado como chave.</li>
             <li><b>SWTBinder.VALUE_PROPERTY</b>: nome da propriedade utilizada 
             para exibir o bean. Se essa propriedade não for definida, o formatador
             registrado ou o formatador padrão é utilizado.</li>
