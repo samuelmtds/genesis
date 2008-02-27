@@ -8,6 +8,7 @@
   <body>
     <section name="Downloads and release notes">
       <ul>
+        <li><a href="#3.1-RC1">3.1-RC1</a></li>
         <li><a href="#3.0">3.0</a></li>
         <li><a href="#2.3">2.3</a></li>
         <li><a href="#2.2">2.2</a></li>
@@ -16,13 +17,82 @@
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
+    <section name="3.1-RC1">
+      <subsection name="Downloads">
+        <p>All distribution files for this release can be found
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=8815&amp;expandFolder=8815">here</a>.</p>
+      </subsection>
+      <subsection name="Features and changes">
+        <!-- begin announcement -->
+        <p>Some of the most noteworthy new features and changes are:</p>
+        <ul>
+          <li>Added <a 
+          href="formatting.html#Using_script_expressions_to_perform_formatting">support 
+          for formatting using script expressions</a>.</li>
+          <li>In most cases, properties are no longer needed to use 
+          <code>@DataProvider</code>.</li>
+          <li>JBoss 4.2 support.</li>
+          <li>Support for <code>project.properties</code>, a file that contains
+          shared project properties.</li>
+        </ul>
+        <p>Some of the bugs fixed on this release are:</p>
+        <ul>
+          <li><code>@DataProvider</code> does not work for <code>JTable</code>s 
+          that use Java 6 sorting (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=448">Issue
+          # 448</a>).</li>
+          <li>A <code>ConcurrentModificationException</code> is thrown if more
+          than one component uses as you type binding (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=457">Issue
+          # 457</a>).</li>
+          <li><code>@DataProvider</code> does not work with multiple selection 
+          lists (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=466">Issue
+          # 466</a>).</li>
+        </ul>
+        <!-- end announcement -->
+        <p>The full change log between 3.0 and 3.1-RC1 can be found <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0&amp;target_milestone=3.1">here</a>.</p>
+        <p>The full documentation for this release can be found <a
+        href="https://genesis.dev.java.net/nonav/3.1-RC1/maven-site/en/">here</a>.</p>
+      </subsection>
+      <subsection name="Known issues">
+        <p>A complete list of known issues can be checked <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.1&amp;issue_type=DEFECT">here</a>
+        </p>
+      </subsection>
+      <subsection name="Acknowledgements">
+        <p>The following individuals contributed to this release:</p>
+          <ul>
+            <li>Alisson Alves</li>
+            <li>Bruno Souza</li>
+            <li>Claudete Tamashiro</li>
+            <li>Claudio Miranda</li>
+            <li>Daniel Gomes</li>
+            <li>Daniel Gonçalves</li>
+            <li>Daniela Gomes</li>
+            <li>Dimas de Oliveira</li>
+            <li>Eduardo Ito</li>
+            <li>Einar Saukas</li>
+            <li>Gustavo Nalle</li>
+            <li>José Geraldo</li>
+            <li>Marcelo Emanoel</li>
+            <li>Maxwell Xandeco</li>
+            <li>Rafael Gianesini</li>
+            <li>Rafael Gomes</li>
+            <li>Rodrigo Oliveira</li>
+            <li>Rodrigo Santos</li>
+            <li>Rômulo Augusto</li>
+            <li>Yuri Pereira</li>
+          </ul>
+      </subsection>
+    </section>
     <section name="3.0">
       <subsection name="Downloads">
         <p>All distribution files for this release can be found
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=7588&amp;expandFolder=7588">here</a>.</p>
       </subsection>
       <subsection name="Features and changes">
-        <!-- begin announcement -->
         <p>Some of the most noteworthy new features and changes are:</p>
         <ul>
           <li>Added <a href="binding.html">SWT and Swing support</a>.</li>
@@ -62,7 +132,6 @@
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=425">Issue
           # 425</a>).</li>
         </ul>
-        <!-- end announcement -->
         <p>To see a detailed list of changes in intermediate 3.0 releases
         (EAs and RCs), click <a href="release_notes_3_x.html">here</a>.</p>
         <p>The full documentation for this release can be found <a
@@ -79,6 +148,7 @@
             <li>Bruno Souza</li>
             <li>Claudio Miranda</li>
             <li>Daniel Gomes</li>
+            <li>Daniel Gonçalves</li>
             <li>Daniela Gomes</li>
             <li>Edgar Silva</li>
             <li>Eduardo Ito</li>
