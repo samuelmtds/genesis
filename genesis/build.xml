@@ -71,7 +71,6 @@
 		<fileset dir="${genesis.hibernate.dist}">
          <include name="*.jar" />
          <exclude name="ant*.jar" />
-         <exclude name="junit*.jar" />
       </fileset>
 	</path>
 
@@ -657,7 +656,10 @@
             <path location="${genesis.module.shared}/${build.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
             <path location="${genesis.module.annotation}/${build.dest}" />
-            <fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
+            <fileset dir="${genesis.hibernate.dist}">
+               <include name="hibernate*.jar" />
+               <include name="junit*.jar" />
+            </fileset>
             <fileset dir="${swt.specific.dir}" includes="*.jar" />
          </classpath>
          <batchtest todir="${genesis.module.client}/${test.reportsDirectory}">
