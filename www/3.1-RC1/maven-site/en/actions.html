@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Implementing mixed actions - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 27 February 2008
+                <span class="separator">|</span> Doc for  3.1-RC1
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><strong><a href="../en/actions.html">Implementing mixed actions</a></strong></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Implementing_actions_in_forms_and_views"></a><h2>Implementing actions in forms and views</h2>
+      <p>Although genesis makes it possible to bind form actions to widgets,
+      nothing prevents you from taking advantage of Thinlet's built-in feature 
+      by invoking methods by configuring them in the UI xml definition or using 
+      listeners when working with Swing or SWT. As a consequence, a recurring question 
+      is when to use <code>@Action</code> and when to use "native" resources 
+      directly in the view's code. Some basic principles might be helpful in 
+      order to decide which approach to use.</p>
+      <p>If an action changes the form or isn't bound to the graphical API, it
+      should be implemented on the form class using <code>@Action</code>. If in
+      response to a certain event a new window or dialog should be displayed, or
+      some API-specific task should be performed, this code should be 
+      implemented in the view class and invoked in an API specific way. However, 
+      there are some situations that are more confusing or when it's necessary 
+      to manipulate both the form and the view. These cases are considered 
+      below.</p>
+      <div class="subsection"><a name="Using_@BeforeAction"></a><h3>Using @BeforeAction</h3>
+        <p>Let's consider the following example: a use case about deleting some
+        information must be implemented. But before deleting it, the user is
+        supposed to confirm the operation. This confirmation could be
+        implemented by displaying an <code>OptionDialog</code> (Thinlet), a
+        <code>JOptionPane</code> (Swing) or a <code>MessageBox</code> (SWT)
+        to the user and proceeding with it only if s/he agreed to delete it. 
+        However, deleting some information is not a graphical API specific 
+        operation and, therefore, should be implemented in the form class. How 
+        can it be implemented the right way?</p>
+        <p>In order to execute a UI-related method before invoking a form
+        method - and even not calling the form method at all -, the
+        <code>@BeforeAction</code> annotation should be used. This annotation 
+        should be placed in the view method that should be executed before the 
+        form method and the view method can either return a <code>boolean</code> 
+        or <code>void</code>. If the view method returns <code>false</code>, the 
+        form method will not be invoked.</p>
+        <p>If the view method name is equal to the form method name, it's not
+        necessary to specify any additional parameters for the annotation. 
+        However, sometimes a view method name might not match the form method 
+        name. When this happens, the name of form method that may be executed 
+        after the view method is invoked is defined as an annotation argument. 
+        A full example is shown below. First, the Thinlet view:</p>
+
+    <div class="source"><pre>
+public class BeforeActionViewThinletExample extends BaseThinlet {
+   public BeforeActionViewThinletExample() {
+      // initialization logic
+      bind(new BeforeActionFormExample());
+   }
+
+   @BeforeAction("delete")
+   public boolean confirmDeletion() {
+      return OptionDialog.displayYesNo(this, "Deleting record...",
+            "Do you really want to delete this record?") == Option.YES;
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>The equivalent code using Swing would be:</p>
+
+    <div class="source"><pre>
+@ViewHandler
+public class BeforeActionViewSwingExample extends JFrame {
+   public BeforeActionViewSwingExample() {
+      // initialization logic
+      new SwingBinder(this, new BeforeActionFormExample()).bind();
+   }
+
+   @BeforeAction("delete")
+   public boolean confirmDeletion() {
+      return JOptionPane.showConfirmDialog(this, "Do you really want to " + 
+            "delete this record?", "Deleting record...", 
+            JOptionPane.YES_NO_OPTION) ==  JOptionPane.YES_OPTION;
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>The equivalent code using SWT would be:</p>
+
+    <div class="source"><pre>
+@ViewHandler
+public class BeforeActionViewSWTExample {
+   private Shell shell;
+
+   public BeforeActionViewSWTExample() {
+      // initialization logic
+      shell = new Shell(SWT.TITLE | SWT.CLOSE);
+      new SWTBinder(shell, new BeforeActionFormExample(), this).bind();
+   }
+
+   @BeforeAction("delete")
+   public boolean confirmDeletion() {
+      MessageBox box = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES
+            | SWT.NO);
+      box.setText("Deleting record...");
+      box.setMessage("Do you really want to delete this record?");
+
+      return box.open() == SWT.YES;
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>Now, the form:</p>
+
+    <div class="source"><pre>
+@Form
+public class BeforeActionFormExample {
+
+   @Action
+   public void delete() {
+      // here goes business logic for this operation.
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>When the button whose <code>name</code> is <code>"delete"</code> is
+        pressed, genesis invokes <code>confirmDeletion()</code> in
+        <code>BeforeActionViewThinletExample</code>,
+        <code>BeforeActionViewSwingExample</code> and/or
+        <code>BeforeActionViewSWTExample</code> since they are annotated with
+        <code>@BeforeAction("delete")</code>. If the view method was named
+        <code>delete</code>, it wouldn't be necessary to specify the method
+        name as an annotation parameter.</p>
+        <p>Since <code>confirmDeletion()</code> returns a <code>boolean</code>,
+        the form method will be invoked only when the return value is
+        <code>true</code>. For this specific example, this only happens when the
+        user chooses "Yes" in the choice dialog. When the user accepts it, 
+        <code>delete()</code> is invoked by genesis and event handling for this
+        button finishes.</p>
+        <p>Notice that the annotation <code>@ViewHandler</code> is used for
+        <code>BeforeActionViewSwingExample</code> and 
+        <code>BeforeActionViewSWTExample</code>. It is necessary for all 
+        classes responsible for handling API-specific events, except for those
+        that inherit from <code>BaseThinlet</code>. This rule can be put in 
+        simple terms like that: if Swing or SWT are being used, the annotation 
+        must be placed in the graphical component class or in the handler object 
+        used in the <code>SwingBinder</code> or <code>SWTBinder</code> 
+        constructor; if Thinlet is being used, this annotation is only required 
+        if the event handler object is a POJO.</p>
+      </div>
+      <div class="subsection"><a name="Using_@AfterAction"></a><h3>Using @AfterAction</h3>
+        <p>After executing a form method it might be necessary to use
+        API-specific graphical resources, such as closing the currently
+        displayed window. In order to make it possible genesis supports the
+        <code>@AfterAction</code> annotation, that should be put in the view 
+        method that is supposed to be invoked. Its syntax is very similar to
+        <code>@BeforeAction</code>'s syntax, except that a method annotated with
+        it should always return <code>void</code>. An usage example is shown 
+        below. First, there is the Thinlet view:</p>
+
+    <div class="source"><pre>
+public class AfterActionViewThinletExample extends BaseDialogThinlet {
+   public AfterActionViewThinletExample() {
+      // initialization logic
+      bind(new AfterActionFormExample());
+   }
+
+   @AfterAction("save")
+   public void closeWindow() {
+      getDialog().dispose();
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>The equivalent view using Swing:</p> 
+
+    <div class="source"><pre>
+@ViewHandler
+public class AfterActionViewSwingExample extends JDialog {
+   public AfterActionViewSwingExample() {
+      // initialization logic
+      new SwingBinder(this, new AfterActionFormExample()).bind();
+   }
+
+   @AfterAction("save")
+   public void closeWindow() {
+      dispose();
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>The equivalent view using SWT:</p> 
+
+    <div class="source"><pre>
+@ViewHandler
+public class AfterActionViewSWTExample extends JDialog {
+   private Shell shell;
+
+   public AfterActionViewSwingExample() {
+      // initialization logic
+      shell = new Shell(parent, SWT.DIALOG_TRIM);
+      new SWTBinder(shell, new AfterActionFormExample(), this).bind();
+   }
+
+   @AfterAction("save")
+   public void closeWindow() {
+      shell.dispose();
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>And the form:</p> 
+
+    <div class="source"><pre>
+@Form
+public class AfterActionFormExample {
+   @Action
+   public void save() {
+      // here goes business logic for this operation.
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>In the example above, when the button whose <code>name</code> is
+        <code>"save"</code> is pressed, the method named <code>save()</code> is
+        invoked on the form instance. After its execution, the view method named
+        <code>closeWindow()</code>, which is annotated with
+        <code>@AfterAction("save")</code>, is executed. Following the same rules
+        for <code>@BeforeAction</code>, if the view method name was also named
+        <code>save()</code>, it wouldn't be necessary to use it as an argument 
+        to the annotation.</p>
+      </div>
+      <div class="subsection"><a name="Programatically_updating_the_interface"></a><h3>Programatically updating the interface</h3>
+        <p>Sometimes form values may be updated by an external source or
+        directly by the view - to coordinate the interaction of multiple forms, 
+        for example. However, since these changes are not managed by genesis, 
+        both the framework internal value cache as the displayed data will be 
+        out of synch, causing several anomalies. genesis provides APIs to work
+        around this problem.</p>
+        <p>The class <code>ActionInvoker</code> has methods that can be used 
+        no matter what UI technology you're using. The static method
+        <code>refresh(form)</code> updates all user interfaces bound to the form
+        with the latest data snapshot.</p>
+        <p>For Thinlet-specific use, <code>BaseThinlet</code> declare the 
+        following methods: <code>refreshView()</code>, 
+        <code>refreshView(Object)</code> and 
+        <code>refreshViewFromForm(Object)</code>.</p>
+        <p>The first method, <code>refreshView()</code>, should be used when
+        just one form instance is bound to a view.
+        <code>refreshView(Object)</code> takes as its parameter the widget to
+        which one or several forms are bound and process any changes to their
+        values. <code>refreshViewFromForm(Object)</code> updates the widget
+        bound to the form instance informed as its parameter. An example of how
+        to use the first method is shown below:</p>
+
+    <div class="source"><pre>
+public class RefreshViewThinletExample extends BaseThinlet {
+   private RefreshViewFormExample form;
+
+   public RefreshViewThinletExample() {
+      // initialization logic
+      bind(form = new RefreshViewFormExample());
+   }
+
+   public void selectRelatedEntity() {
+      // display a helper view for selecting the entity and returns
+      Entity entity = new EntityLookupView().getEntity();
+
+      if (entity != null) {
+         form.setEntity(entity);
+
+         /* All invocations below are equivalent when only one form
+            is bound to the view. Only one of them is necessary */
+         ActionInvoker.refresh(form);
+         refreshView();
+         refreshView(getDesktop());
+         refreshViewFromForm(form);
+      }
+   }
+
+   // ...
+}
+</pre></div>
+  
+        <p>About Swing, we have the method
+        <code>refresh()</code> declared in <code>AbstractBinder</code>.</p>
+
+    <div class="source"><pre>
+public class RefreshViewSwingExample extends JFrame {
+   private RefreshViewFormExample form;
+   private SwingBinder binder;
+
+   public RefreshViewSwingExample() {
+      // initialization logic
+      binder = new SwingBinder(this, form = new RefreshViewFormExample());
+      binder.bind();
+   }
+
+   public void selectRelatedEntity() {
+      // display a helper view for selecting the entity and returns
+      Entity entity = new EntityLookupView().getEntity();
+
+      if (entity != null) {
+         form.setEntity(entity);
+
+         /* All invocations below are equivalent.
+            Only one of them is necessary */
+         ActionInvoker.refresh(form);
+         binder.refresh();
+      }
+   }
+
+   // ...
+}
+</pre></div>
+  
+
+    <div class="source"><pre>
+public class RefreshViewSWTExample {
+   private Shell shell;
+   private RefreshViewFormExample form;
+   private SWTBinder binder;
+
+   public RefreshViewSwingExample() {
+      // initialization logic
+      shell = new Shell(SWT.TITLE | SWT.CLOSE);
+      binder = new SWTBinder(shell, form = new RefreshViewFormExample(), this);
+      binder.bind();
+   }
+
+   public void selectRelatedEntity() {
+      // display a helper view for selecting the entity and returns
+      Entity entity = new EntityLookupView().getEntity();
+
+      if (entity != null) {
+         form.setEntity(entity);
+
+         /* All invocations below are equivalent.
+            Only one of them is necessary */
+         ActionInvoker.refresh(form);
+         binder.refresh();
+      }
+   }
+
+   // ...
+}
+</pre></div>
+  
+
+
+    <div class="source"><pre>
+@Form
+public class RefreshViewFormExample {
+   private Entity entity;
+   // ...
+
+   public Entity getEntity() {
+      return entity;
+   }
+
+   public void setEntity(Entity entity) {
+      this.entity = entity;
+   }
+
+   // ...
+}
+</pre></div>
+  
+      </div>
+      <div class="subsection"><a name="Invoking_form_actions_directly"></a><h3>Invoking form actions directly</h3>
+        <p>In some situations it may be necessary to invoke one or more form
+        methods inside a view method under certain specific conditions and
+        using <code>@BeforeAction</code> and <code>@AfterAction</code> does not
+        solve the problem. Although calling a form method directly is possible, 
+        genesis will not be notified about it, what could lead to a stale UI, 
+        for example, and other unintended consequences.</p>
+        <p>In order to invoke a form method while keeping form and view in 
+        synch, you should use 
+        <code>ActionInvoker.invoke(form, actionName)</code>. The second 
+        parameter is the name of the form action that should be invoked. For 
+        Thinlet, you could also use <code>invokeFormAction(String)</code> or
+        <code>invokeFormAction(Object,String)</code>, declared in 
+        <code>BaseThinlet</code>. For Swing or SWT, another option is to use the 
+        <code>invokeAction(String)</code> method declared in 
+        <code>AbstractBinder</code>. Actions also include 
+        <code>@DataProvider</code>, which will be explained later. An example
+        of the generic API usage is shown below:</p>
+
+    <div class="source"><pre>
+public class InvokeFormActionViewExample extends JFrame {
+   private InvokeFormActionFormExample form;
+   private SwingBinder binder;
+
+   public InvokeFormActionViewExample() {
+      // initialization logic
+      binder = new SwingBinder(this, form = new InvokeFormActionFormExample());
+      binder.bind();
+   }
+
+   public void selectFinancialIndex() throws Exception {
+      BigDecimal index = //... index is acquire from another window instance.
+      form.setIndex(index);
+      ActionInvoker.invoke(form, "recalculateTotals");
+      // Or, the equivalent way:
+      // binder.invokeAction("recalculateTotals");
+   }
+
+   // ...
+}
+</pre></div>
+  
+
+    <div class="source"><pre>
+@Form
+public class InvokeFormActionFormExample {
+   private BigDecimal index;
+   // ...
+
+   public BigDecimal getIndex() {
+      return index;
+   }
+
+   public void setIndex(BigDecimal index) {
+      this.index = index;
+   }
+
+   @Action
+   public void recalculateTotals() {
+      // recalculate logic
+   }
+}
+</pre></div>
+  
+      </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2008, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
