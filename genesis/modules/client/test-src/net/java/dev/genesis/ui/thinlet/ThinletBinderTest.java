@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.mockobjects.MockBean;
 import net.java.dev.genesis.mockobjects.MockForm;
 import net.java.dev.genesis.mockobjects.MockViewHandler;
 import net.java.dev.genesis.ui.binding.PropertyMisconfigurationException;
@@ -1123,5 +1124,170 @@ public class ThinletBinderTest extends GenesisTestCase {
       assertTrue("textarea must be invisible.", !thinlet.isVisible(textarea));
       assertTrue("combobox must be invisible.", !thinlet.isVisible(combobox));
       assertTrue("passwordfield must be visible.", thinlet.isVisible(passwordfield));
+   }
+
+   public void testDataProviderWithoutKey() throws Exception {
+      final Map populateMap = new IdentityHashMap();
+      final List someItems = Arrays.asList(new MockBean[] {new MockBean("one", 
+            "One"), new MockBean("two", "Two"), new MockBean("three", "Three"),
+            new MockBean("four", "Four"), new MockBean("five", "Five")});
+      
+      final String methodName = "someMethod";
+      final DataProviderMetadata meta = new MethodMetadata(getMethod(
+            methodName), false, true).getDataProviderMetadata();
+      
+      // Combo and list
+      final Object combobox = ThinletUtils.newCombobox();
+      final Object list = ThinletUtils.newList();
+
+      thinlet = new BaseThinlet() {
+         protected void populateFromCollection(Object component, Collection c,
+               String keyProperty, String valueProperty, boolean virtual, 
+               boolean blank, String blankLabel, Map formatters, Map widgetFactories)
+               throws IllegalAccessException, InvocationTargetException,
+               NoSuchMethodException {
+            populateMap.put(component, c);
+            super.populateFromCollection(component, c, keyProperty,
+                  valueProperty, virtual, blank, blankLabel, formatters,
+                  widgetFactories);
+         }
+      };
+      
+      thinlet.add(thinlet.getDesktop(), combobox);
+      thinlet.add(thinlet.getDesktop(), list);
+
+      // Combo
+      binder = new ThinletBinder(thinlet, thinlet.getDesktop(), form);
+      thinlet.setName(combobox, "objectField");
+      binder.bind();
+      meta.setWidgetName("objectField");
+      binder.dataProvidedListChanged(meta, someItems);
+      // Assert thinlet.populated was called with correct values
+      assertSame(someItems, populateMap.get(combobox));
+
+      // Assert selection is working as expected
+      Object value = new String(((MockBean)someItems.get(3)).getKey());
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(3, thinlet.getSelectedIndex(combobox));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(combobox)));
+
+      value = new String(((MockBean)someItems.get(0)).getKey());
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(0, thinlet.getSelectedIndex(combobox));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(combobox)));
+
+      value = new String("none");
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(-1, thinlet.getSelectedIndex(combobox));
+      assertNull(thinlet.getSelectedItem(combobox));
+
+      thinlet.setName(combobox, "combobox");
+
+      // List
+      binder = new ThinletBinder(thinlet, thinlet.getDesktop(), form);
+      thinlet.setName(list, "objectField");
+      binder.bind();
+      meta.setWidgetName("objectField");
+      binder.dataProvidedListChanged(meta, someItems);
+      // Assert thinlet.populated was called with correct values
+      assertSame(someItems, populateMap.get(list));
+
+      // Assert selection is working as expected
+      value = new String(((MockBean)someItems.get(3)).getKey());
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(3, thinlet.getSelectedIndex(list));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(list)));
+
+      value = new String(((MockBean)someItems.get(0)).getKey());
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(0, thinlet.getSelectedIndex(list));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(list)));
+
+      value = new String("none");
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(-1, thinlet.getSelectedIndex(list));
+      assertNull(thinlet.getSelectedItem(list));
+   }
+
+   public void testDataProviderUsingString() throws Exception {
+      final Map populateMap = new IdentityHashMap();
+      final List someItems = Arrays.asList(new String[] {"one", "two", "three", 
+            "four", "five"});
+      
+      final String methodName = "someMethod";
+      final DataProviderMetadata meta = new MethodMetadata(getMethod(
+            methodName), false, true).getDataProviderMetadata();
+      
+      // Combo and list
+      final Object combobox = ThinletUtils.newCombobox();
+      final Object list = ThinletUtils.newList();
+
+      thinlet = new BaseThinlet() {
+         protected void populateFromCollection(Object component, Collection c,
+               String keyProperty, String valueProperty, boolean virtual, 
+               boolean blank, String blankLabel, Map formatters, Map widgetFactories)
+               throws IllegalAccessException, InvocationTargetException,
+               NoSuchMethodException {
+            populateMap.put(component, c);
+            super.populateFromCollection(component, c, keyProperty,
+                  valueProperty, virtual, blank, blankLabel, formatters,
+                  widgetFactories);
+         }
+      };
+      
+      thinlet.add(thinlet.getDesktop(), combobox);
+      thinlet.add(thinlet.getDesktop(), list);
+
+      // Combo
+      binder = new ThinletBinder(thinlet, thinlet.getDesktop(), form);
+      thinlet.setName(combobox, "objectField");
+      binder.bind();
+      meta.setWidgetName("objectField");
+      binder.dataProvidedListChanged(meta, someItems);
+      // Assert thinlet.populated was called with correct values
+      assertSame(someItems, populateMap.get(combobox));
+
+      // Assert selection is working as expected
+      Object value = someItems.get(3);
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(3, thinlet.getSelectedIndex(combobox));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(combobox)));
+
+      value = new String((String)someItems.get(0));
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(0, thinlet.getSelectedIndex(combobox));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(combobox)));
+
+      value = new String("none");
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(-1, thinlet.getSelectedIndex(combobox));
+      assertNull(thinlet.getSelectedItem(combobox));
+
+      thinlet.setName(combobox, "combobox");
+
+      // List
+      binder = new ThinletBinder(thinlet, thinlet.getDesktop(), form);
+      thinlet.setName(list, "objectField");
+      binder.bind();
+      meta.setWidgetName("objectField");
+      binder.dataProvidedListChanged(meta, someItems);
+      // Assert thinlet.populated was called with correct values
+      assertSame(someItems, populateMap.get(list));
+
+      // Assert selection is working as expected
+      value = someItems.get(3);
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(3, thinlet.getSelectedIndex(list));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(list)));
+
+      value = new String((String)someItems.get(0));
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(0, thinlet.getSelectedIndex(list));
+      assertEquals(value, thinlet.getText(thinlet.getSelectedItem(list)));
+
+      value = new String("none");
+      binder.valuesChanged(Collections.singletonMap("objectField", value));
+      assertEquals(-1, thinlet.getSelectedIndex(list));
+      assertNull(thinlet.getSelectedItem(list));
    }
 }

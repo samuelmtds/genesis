@@ -1,9 +1,0 @@
-# Sample build.properties
-# It's recommended to put
-# mail.password property in <USER_HOME>/.java.net file #
-mail.from.address=username@dev.java.net
-mail.from.name=User
-mail.host=smtp.gmail.com
-mail.port=465
-mail.user=user@gmail.com
-mail.ssl=true

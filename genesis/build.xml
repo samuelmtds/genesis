@@ -25,7 +25,6 @@
       <fileset dir="${genesis.aspectwerkz.dist}">
          <include name="aspectwerkz*.jar"/>
          <exclude name="aspectwerkz-extensions-*.jar" />
-         <include name="ant*.jar"/>
          <exclude name="asm*.jar"/>
          <include name="concurrent*.jar"/>
          <include name="dom4j*.jar"/>
@@ -69,7 +68,10 @@
    </path>
 
 	<path id="hibernate.path">
-		<fileset dir="${genesis.hibernate.dist}" includes="*.jar" />
+		<fileset dir="${genesis.hibernate.dist}">
+         <include name="*.jar" />
+         <exclude name="ant*.jar" />
+      </fileset>
 	</path>
 
 	<path id="shared.dependency.classpath">
@@ -654,7 +656,10 @@
             <path location="${genesis.module.shared}/${build.dest}" />
             <path location="${genesis.module.client}/${test.dest}" />
             <path location="${genesis.module.annotation}/${build.dest}" />
-            <fileset dir="${genesis.hibernate.dist}" includes="hibernate*.jar" />
+            <fileset dir="${genesis.hibernate.dist}">
+               <include name="hibernate*.jar" />
+               <include name="junit*.jar" />
+            </fileset>
             <fileset dir="${swt.specific.dir}" includes="*.jar" />
          </classpath>
          <batchtest todir="${genesis.module.client}/${test.reportsDirectory}">
