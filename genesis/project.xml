@@ -216,6 +216,15 @@
          </roles>
       </developer>
       <developer>
+         <name>Michel Graciano</name>
+         <id>hmichel</id>
+         <email>mgraciano@summa-tech.com</email>
+         <organization>Summa Technologies do Brasil Ltda.</organization>
+         <roles>
+            <role>Developer</role>
+         </roles>
+      </developer>
+      <developer>
          <name>Pablo Jorge Madril</name>
          <id>pmadril</id>
          <email>pmadril@summa-tech.com</email>
