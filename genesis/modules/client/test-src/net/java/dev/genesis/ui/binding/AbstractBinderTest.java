@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.binding;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -180,7 +181,9 @@ public class AbstractBinderTest extends GenesisTestCase {
 
       final MockBoundField bound = (MockBoundField) binder
             .getBoundField("stringField");
-      final Map map = Collections.singletonMap("stringField", "someValue");
+      final Map map = new LinkedHashMap();
+      map.put("unknownField", "unknownValue");
+      map.put("stringField", "someValue");
 
       binder.valuesChanged(map);
 
@@ -194,15 +197,17 @@ public class AbstractBinderTest extends GenesisTestCase {
 
       final MockBoundMember bound = (MockBoundMember) binder
             .getBoundMember("stringField");
-      final Map map = Collections.singletonMap("stringField", Boolean.FALSE);
+      final Map map = new LinkedHashMap();
+      map.put("unknownField", "unknownValue");
+      map.put("stringField", Boolean.FALSE);
 
       binder.enabledConditionsChanged(map);
-      assertEquals(bound.get("setEnabled(boolean)"), Boolean.FALSE);
+      assertEquals(Boolean.FALSE, bound.get("setEnabled(boolean)"));
 
       bound.clear();
 
       binder.visibleConditionsChanged(map);
-      assertEquals(bound.get("setVisible(boolean)"), Boolean.FALSE);
+      assertEquals(Boolean.FALSE, bound.get("setVisible(boolean)"));
    }
 
    public void testUnbind() throws Exception {
