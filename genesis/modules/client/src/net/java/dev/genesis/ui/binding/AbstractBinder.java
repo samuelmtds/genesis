@@ -492,7 +492,7 @@ public abstract class AbstractBinder implements FormControllerListener {
          BoundMember member = getBoundMember(entry.getKey().toString());
 
          if (member == null) {
-            return;
+            continue;
          }
 
          if (log.isDebugEnabled()) {
