@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Configuring messages - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 April 2008
+                <span class="separator">|</span> Doc for  3.1-RC2
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><a href="../en/annotations.html">Using annotations</a></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><strong><a href="../en/configuring_messages.html">Configuring messages</a></strong></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Configuring_messages"></a><h2>Configuring messages</h2>
+      <p>Messages can be externalized by configuring them in a
+      <code>java.util.ResourceBundle</code>. A <code>ResourceBundle</code>
+      allows one to keep a name/value property dictionary - similar to a
+      <code>Properties</code> instance -, supporting multiple
+      <code>java.util.Locale</code> instances. Putting it into a few words, it 
+      is possible to configure different messages depending on the language 
+      being used.</p>
+      <p>genesis uses a <code>ResourceBundle</code> named <code>messages</code>,
+      thus it is required that a <code>messages.properties</code> file is
+      available on classpath. The <code>net.java.dev.genesis.ui.UIUtils</code>
+      class keeps this <code>ResourceBundle</code> instance in runtime.</p>
+      <p>In the resource file messages relative to the following things are
+      configured:
+      </p>
+      <ul>
+        <li>Validation</li>
+        <li>Display values for <code>Enum</code> constants (in a
+        <code>ClassName.CONSTANT=Display value</code> format)</li>
+        <li>Messages for the default views provided with genesis, such as the
+        one used for <code>OptionDialog</code></li>
+        <li>Any user-defined text that need to be externalized</li>
+      </ul>
+      <p>There is an example of how to configure a <code>ResourceBundle</code>
+      from the useradmin sample below:</p>
+
+    <div class="source"><pre>
+# 1. Validation-related configuration
+errors.byte=The {0} field is not a byte.
+errors.short=The {0} field is not a short.
+errors.int=The {0} field is not an integer.
+errors.long=The {0} field is not a long.
+errors.float=The {0} field is not a float.
+errors.double=The {0} field is not a double.
+errors.bigdecimal=The {0} field is not a big decimal.
+errors.required=The {0} field is required.
+errors.requiredif=The {0} field is required.
+errors.mask=The {0} field is not valid.
+errors.email=The {0} field is not a valid email.
+errors.date=The {0} field is not a valid date.
+errors.min={0} must be greater or equal to {1}.
+errors.max={0} must be lesser or equal to {1}.
+errors.minlength=The {0} field can not be less than {1} characters.
+errors.maxlength=The {0} field can not be greater than {1} characters.
+errors.longRange={0} is not in the range {1} through {2}.
+errors.doubleRange={0} is not in the range {1} through {2}.
+errors.bigDecimalRange={0} is not in the range {1} through {2}.
+errors.jxpath=The {0} field is not valid.
+validation.errors.title=Validation errors
+
+# 2. Messages for default thinlet views
+MessageDialog.close=Close
+Option.YES=Yes
+Option.NO=No
+Option.CANCEL=Cancel
+  
+# 3. Messages used in error handling
+ErrorReporterDialog.ok=OK
+ErrorReporterDialog.stackTrace=Stack Trace:
+
+# 4. Used defined configurations
+ChooseView.title=Choose
+ChooseView.choose=Choose an option
+ChooseView.thinlet=Thinlet
+ChooseView.swing=Swing
+ChooseView.swt=SWT
+ChooseView.exit=Exit
+
+InsertRoleView.title=Insert Role
+InsertView.title=Insert User
+UpdateView.title=Update User
+RoleListView.title=Role List
+UserListView.title=Users Administration
+UserListView.deleteConfirmationTitle=Confirm Delete
+UserListView.deleteConfirmation=Are you sure you want to delete selected users ?
+
+button.ok=Ok
+button.add=Add
+button.remove=Remove
+button.cancel=Cancel
+button.save=Save
+button.search=Search
+button.reset=Reset
+button.newUser=New User
+button.updateUser=Update User
+button.removeUser=Remove User
+
+User.name=Name
+User.login=Login
+User.password=Password
+User.email=e-mail
+User.birthday=Birthday
+User.address=Address
+User.country=Country
+User.state=State
+User.role=Role
+
+Role.label=Label
+Role.code=Code
+
+Country.BR=Brazil
+Country.US=United States
+Country.OTHER=Other
+
+State.DF=Distrito Federal
+State.SP=São Paulo
+State.RJ=Rio de Janeiro
+State.AL=Alaska
+State.FL=Flórida
+State.NY=New York
+State.OTHER=Other
+</pre></div>
+  
+      <p>For more information on how to work with resource files, see the
+      Javadoc for class <code>java.util.ResourceBundle</code>.</p>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2008, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>

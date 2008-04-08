@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Using annotations - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro"></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 April 2008
+                <span class="separator">|</span> Doc for  3.1-RC2
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../en/index.html">Overview</a></li><li class="none"><a href="../en/download.html">Downloads</a></li><li class="none"><a href="../en/release_notes.html">Release notes</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="expanded"><a href="../en/documentation_intro.html">User manual</a><ul><li class="none"><a href="../en/documentation_intro.html">Introduction</a></li><li class="none"><strong><a href="../en/annotations.html">Using annotations</a></strong></li><li class="none"><a href="../en/startup.html">Configuring genesis at startup</a></li><li class="expanded"><a href="../en/remoting.html">Basic features</a><ul><li class="none"><a href="../en/remoting.html">Transparent remoting</a></li><li class="none"><a href="../en/transactions.html">Transaction support</a></li><li class="none"><a href="../en/hibernate_integration.html">Hibernate integration</a></li><li class="none"><a href="../en/binding.html">Binding</a></li><li class="none"><a href="../en/actions.html">Implementing mixed actions</a></li></ul></li><li class="expanded"><a href="../en/thinlet_binding.html">Thinlet-specific features</a><ul><li class="none"><a href="../en/thinlet_binding.html">Thinlet Binding</a></li><li class="none"><a href="../en/customizing_widgets_creation.html">Customizing widget creation</a></li></ul></li><li class="expanded"><a href="../en/configuring_swt.html">SWT-specific features</a><ul><li class="none"><a href="../en/configuring_swt.html">Configuring SWT libraries</a></li></ul></li><li class="expanded"><a href="../en/conditions.html">Additional features</a><ul><li class="none"><a href="../en/conditions.html">Working with conditions</a></li><li class="none"><a href="../en/populating_with_dataproviders.html">Populating comboboxes, lists and tables</a></li><li class="none"><a href="../en/binding_toggle_buttons.html">Binding radiobuttons and checkboxes</a></li><li class="none"><a href="../en/binding_strategy.html">Configuring binding strategies</a></li><li class="none"><a href="../en/formatting.html">Formatting data</a></li><li class="none"><a href="../en/handling_errors.html">Handling errors</a></li><li class="none"><a href="../en/validating_data.html">Validating data</a></li><li class="none"><a href="../en/configuring_messages.html">Configuring messages</a></li><li class="none"><a href="../en/paging_and_dynamic_search.html">Paging and dynamic queries</a></li></ul></li><li class="none"><a href="../en/quick_reference.html">Annotation quick reference guide</a></li></ul></li><li class="expanded"><a href="../en/empty_project.html">Developing with genesis</a><ul><li class="none"><a href="../en/empty_project.html">For desktops</a></li><li class="none"><a href="../en/empty_web_project.html">For web</a></li></ul></li><li class="none"><a href="../en/useradmin_sample.html">Using the UserAdmin sample</a></li><li class="expanded"><a href="../en/advanced_introduction.html">Advanced guide</a><ul><li class="none"><a href="../en/xdoclet_extensions.html">XDoclet extensions</a></li><li class="none"><a href="../en/aspects.html">genesis aspects</a></li><li class="none"><a href="../en/generic_scripting.html">Generic scripting support</a></li><li class="none"><a href="../en/lookup_strategy.html">Widget lookup strategies</a></li><li class="none"><a href="../en/widget_binder.html">Customizing widget binding</a></li></ul></li><li class="none"><a href="../en/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Using_annotations"></a><h2>Using annotations</h2>
+      <p>Most genesis features are available by using <b>annotations</b> or 
+      metadata. Annotations have been part of the Java language since Java 5, 
+      but genesis also supports using them in Java 1.4, with a very similar 
+      syntax.</p>
+      <p>For example, consider the example below using Java 5 and Java 1.4:</p>
+
+    <div class="source"><pre>
+import net.java.dev.genesis.annotation.Form;
+
+@Form
+public class Java5ClassAnnotationExample {
+   // ...
+}
+</pre></div>
+  
+
+    <div class="source"><pre>
+/**
+ * @Form
+ */
+public class Java14ClassAnnotationExample {
+   // ...
+}
+</pre></div>
+  
+      <p>Both declarations of the <code>@Form</code> annotation will have the 
+      same effect on both environments. Notice that in the second case, known as
+      Javadoc-style annotation, it's not necessary to use the 
+      <code>import</code> instruction.</p>
+      <p>Javadoc annotations allow a more loosely-typed syntax, as shown 
+      below:</p>
+
+    <div class="source"><pre>
+import net.java.dev.genesis.annotation.EnabledWhen;
+import net.java.dev.genesis.annotation.Form;
+
+@Form
+public class Java5MethodAnnotationExample {
+   @EnabledWhen("condition")
+   public String getProperty() {
+      // ...
+   }
+
+   // ...
+}
+</pre></div>
+  
+
+    <div class="source"><pre>
+/**
+ * @Form
+ */
+public class Java14MethodAnnotationExample {
+   /**
+    * @EnabledWhen condition
+    */
+   public String getProperty() {
+      // ...
+   }
+
+   // ...
+}
+</pre></div>
+  
+      <p>No configuration is required to use the Javadoc syntax with Java 1.4. 
+      It's possible, but not recommended, to use the Javadoc syntax with Java 5. 
+      That may be necessary if you're using some analysis or code processing 
+      tool that doesn't support Java 5 annotations. To do that, just uncomment 
+      the following section of <a href="empty_project.html">empty-project</a>'s 
+      <code>build.xml</code>:
+      </p>
+
+    <div class="source"><pre>
+
+      &lt;property name="force.annotation" value="true" /&gt;
+
+</pre></div>
+  
+      <p>Our documentation we will use Java 5 syntax by default and only details
+      specific to the Javadoc syntax will be explained as needed.</p>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2008, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>

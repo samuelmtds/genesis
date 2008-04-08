@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Aspectos do genesis - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 April 2008
+                <span class="separator">|</span> Doc for  3.1-RC2
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><a href="../pt-BR/transactions.html">Suporte a transações</a></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/configuring_swt.html">Funcionalidades específicas para SWT</a><ul><li class="none"><a href="../pt-BR/configuring_swt.html">Configurando as bibliotecas do SWT</a></li></ul></li><li class="expanded"><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a><ul><li class="none"><a href="../pt-BR/conditions.html">Trabalhando com condições</a></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/binding_toggle_buttons.html">Binding de botões de rádio e caixas de seleção</a></li><li class="none"><a href="../pt-BR/binding_strategy.html">Mudando a estratégia de binding</a></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><a href="../pt-BR/handling_errors.html">Tratando erros</a></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Para web</a></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></li><li class="none"><strong><a href="../pt-BR/aspects.html">Aspectos do genesis</a></strong></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li><li class="none"><a href="../pt-BR/lookup_strategy.html">Estratégias de pesquisa de componentes gráficos</a></li><li class="none"><a href="../pt-BR/widget_binder.html">Customizando o binding de componentes gráficos</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Aspectos_do_genesis"></a><h2>Aspectos do genesis</h2>
+      <p>Uma parte significativa das funcionalidades do genesis é implementada
+      via aspectos. Através da AOP é possível estender de forma significativa
+      tais funcionalidades sem que o código de negócio e de interface gráfica
+      tenha de ser reescrito. Esta seção da documentação tem como objetivo
+      descrever os aspectos para que usuários mais avançados possam entender e
+      customizar seu funcionamento. É necessário conhecer bem AOP, AspectWerkz,
+      EJB e Thinlet para total compreensão.</p>
+      <ul>
+        <li><a href="#Determinando_métodos_remotos_e_transacionais">Determinando
+        métodos remotos e transacionais</a></li>
+        <li><a href="#Executando_métodos_remotos_e_transacionais">Executando
+        métodos remotos e transacionais</a></li>
+        <li><a href="#Executando_pesquisas_dinâmicas">Executando pesquisas
+        dinâmicas</a></li>
+        <li><a href="#Limitando_o_tempo_de_execução_de_um_método">Limitando o
+        tempo de execução de um método</a></li>
+        <li>
+        <a href="#Trocando_o_cursor_do_mouse_durante_o_tratamento_de_eventos">
+        Trocando o cursor do mouse durante o tratamento de eventos</a></li>
+        <li><a href="#Instanciando_os_metadados">Instanciando os metadados</a>
+        </li>
+        <li><a href="#Instanciando_o_controlador_do_form">Instanciando o
+        controlador do form</a></li>
+        <li><a href="#Referência_de_configuração">Referência de configuração</a>
+        </li>
+      </ul>
+    </div><div class="section"><a name="Determinando_métodos_remotos_e_transacionais"></a><h2>Determinando métodos remotos e transacionais</h2>
+      <p>A interface <code>CommandResolver</code>, definida no pacote
+      <code>net.java.dev.genesis.aspect</code>, é utilizada para determinar se
+      um método é remoto ou transacional. Abaixo, vemos a parte relevante da
+      definição desta interface:</p>
+
+    <div class="source"><pre>
+public interface CommandResolver {
+   public boolean isRemotable(Method m);
+   public boolean isTransactional(Method m);
+}
+</pre></div>
+  
+      <p>O aspecto <code>CommandInvocationAspect</code>, do mesmo pacote, provê
+      uma implementação dessa interface como classe interna,
+      <code>CommandResolverImpl</code>, que baseia-se na presença das anotações
+      <code>@Remotable</code> e <code>@Transactional</code> - ou no fato das
+      classes que contém os métodos implementarem <code>Query</code> e
+      <code>Transaction</code>, interfaces legadas do genesis 0.1 que não devem
+      ser mais utilizadas - para determinar se um método é remoto ou
+      transacional.</p>
+      <p>Caso o parâmetro de nome <code>useFastMode</code> do mixin for
+      definido como <code>true</code> - esse é o valor padrão deste parâmetro -,
+      qualquer método será considerado no mínimo remoto, visto que na
+      configuração padrão do arquivo aop.xml somente métodos remotos e
+      transacionais são selecionados pelo pointcut de execução. Essa
+      implementação é introduzida nas classes selecionadas
+      pelo pointcut de nome <code>commandResolverIntroduction</code>.</p>
+      <p>Caso seja necessário determinar se um método é remoto ou transacional
+      de outra forma - utilizando-se uma definição xml externa ao invés de
+      anotações, por exemplo -, basta prover uma nova implementação de
+      <code>CommandResolver</code> com o critério desejado e introduzi-la nas
+      classes de negócio.</p>
+    </div><div class="section"><a name="Executando_métodos_remotos_e_transacionais"></a><h2>Executando métodos remotos e transacionais</h2>
+      <p>Os métodos remotos e transacionais têm sua execução interceptada por
+      aspectos, de modo que as instâncias possam ser transferidas (ou não, como
+      veremos) para o servidor e que um contexto transacional apropriado possa
+      ser utilizado. Além disso, é feita também a injeção de dependências antes
+      da execução.</p>
+      <p>Dois componentes são utilizados para isso: um aspecto e uma
+      implementação de
+      <code>net.java.dev.genesis.command.TransactionalInjector</code>. A
+      interface <code>TransactionalInjector</code> é definida como:</p>
+
+    <div class="source"><pre>
+public interface TransactionalInjector {
+   public void init(Object context);
+   public void beforeInvocation(Object target, boolean transactional)
+                                                          throws Exception;
+   public void afterInvocation() throws Exception;
+   public void onException(Exception e);
+   public void onFinally() throws Exception;
+}
+</pre></div>
+  
+      <p>A implementação da interface é utilizada pelos aspectos de forma bem
+      definida, como segue:</p>
+      <ol>
+        <li>Logo após a instanciação, o método <code>init(Object)</code> é
+        chamado passando-se um objeto de contexto, específico por modo de
+        execução - local, em EJB etc. - que permite a instância recém-criada ler
+        configurações do usuário.</li>
+        <li>O método <code>beforeInvocation(Object,boolean)</code> é invocado
+        antes de cada execução de um método remoto e transacional, passando-se o
+        objeto no qual o método será chamado e o estado transacional da chamada.
+        É neste momento que eventuais dependências deverão ser injetadas e que a
+        transação deverá ser iniciada se necessário.</li>
+        <li><code>afterInvocation()</code> só é chamado quando a execução do
+        método transcorre normalmente, i.e., sem que seja lançada uma exceção. É
+        o momento em que a transação deve ser comitada.</li>
+        <li>Chama-se <code>onException(Exception)</code> caso seja lançada uma
+        exceção em <code>beforeInvocation(Object,boolean)</code> ou durante a
+        execução do método remoto/transacional. É o momento para fazer rollback
+        da transação.</li>
+        <li>O método <code>onFinally()</code> sempre é chamado e deve liberar
+        quaisquer recursos alocados durante a execução.</li>
+      </ol>
+      <p>Cada instância de <code>TransactionalInjector</code> será utilizada por
+      somente uma Thread.</p>
+      <p>Utilizando-se aspectos e implementações específicas de
+      <code>TransactionalInjector</code> é possível customizar totalmente a
+      forma como as transações são executadas e fazer qualquer tipo de injeção
+      de dependências nos componentes de negócio. Três poderosos modos de
+      execução são providos juntamente com o genesis e explicados abaixo.</p>
+      <div class="subsection"><a name="Execução_local"></a><h3>Execução local</h3>
+        <p>A execução local é feita pelo aspecto
+        <code>LocalCommandExecutionAspect</code>. Basicamente, este aspecto
+        delega a maior parte das responsabilidades para a implementação de <code>TransactionalInjector</code>, como mostra o texto de código a seguir:
+        </p>
+
+    <div class="source"><pre>
+try {
+   injector.beforeInvocation(obj, transactional);
+   final Object ret = joinPoint.proceed();
+   injector.afterInvocation();
+
+   return ret;
+} catch (final Exception e) {
+   injector.onException(e);
+
+   throw e;
+} finally{
+   injector.onFinally();
+}
+</pre></div>
+  
+        <p>O pointcut <code>localCommandExecution</code> é utilizado para
+        definir a execução de quais métodos deve ser interceptada pelo advice
+        <code>commandExecution(JoinPoint)</code>. A implementação de
+        <code>TransactionalInjector</code> pode ser configurada com o parâmetro
+        do aspecto de nome <code>transactionalInjector</code>. O objeto de
+        contexto passado para o método <code>init(Object)</code> da
+        implementação será a instância de <code>AspectContext</code>
+        recebida.</p>
+        <p>A classe <code>HibernateTransactionalInjector</code>, que, assim como
+        o aspecto, está definida em <code>net.java.dev.genesis.aspect</code> é
+        uma implementação de <code>TransactionalInjector</code> apropriada para
+        este cenário. Ela introduz uma sessão do Hibernate nas classes que
+        implementam
+        <code>net.java.dev.genesis.command.hibernate.HibernateCommand</code> e
+        controla a transação utilizando os recursos da própria sessão. Se o 
+        parâmetro <code>preLoadSessionFactory</code> não for <code>false</code>,
+        a <code>SessionFactory</code> do Hibernate será instanciada na primeira
+        chamada de método <code>@Remotable</code> ou <code>@Transactional</code>,
+        o que normalmente ocorre na inicialização.</p>
+      </div>
+      <div class="subsection"><a name="Execução_em_EJB_com_chamada_remota"></a><h3>Execução em EJB com chamada remota</h3>
+        <p>Outra possibilidade de execução provida diretamente com o genesis é
+        por se executar a chamada dentro de um Stateless Session Bean,
+        utilizando-se transações gerenciadas pelo container (CMT, container
+        managed transactions). O aspecto <code>EJBCommandExecutionAspect</code>
+        faz isto pro invocar os métodos
+        <code>executeTransaction(Object,String,String[],Object[])</code> e
+        <code>executeQuery(Object,String,String[],Object[])</code> no EJB cuja
+        interface remota é
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code>. Os parâmetros
+        passados para ambos os métodos são, respectivamente, a instância em que
+        o método será executado, o nome do método, os nomes das classes da
+        assinatura do método e os valores passados para a invocação.</p>
+        <p>O advice <code>commandExecution(JoinPoint)</code> é que fará a
+        chamada remota ao Session Bean. O pointcut de nome
+        <code>ejbCommandExecution</code> é utilizado para selecionar a execução
+        de quais métodos deverá ser realizada desta forma. O parâmetro do
+        aspecto de nome <code>jndiName</code> contém o endereço JNDI da home do
+        EJB, enquanto que o parâmetro booleano <code>retryOnNoSuchObject</code>
+        indica se a execução deverá ser feita novamente, somente mais uma vez,
+        ao receber uma <code>java.rmi.NoSuchObjectException</code> (que ocorre
+        quando o servidor de aplicações é reiniciado).</p>
+        <p>Visto que a execução do método ocorre dentro do Session Bean, é no
+        servidor que estará a implementação de <code>TransactionalInjector</code>, que pode ser especificada pela env-entry de mesmo nome,
+        <code>TransactionalInjector</code>. Para o método <code>init(Object)
+        </code>, o objeto de contexto passado é a instância de <code>
+        SessionContext</code> do Session Bean.</p>
+        <p>A implementação <code>
+        net.java.dev.genesis.ejb.hibernate.EJBHibernateTransactionalInjector
+        </code> contida no genesis é própria para uso nesta configuração. No seu
+        método <code>init(Object)</code> localiza-se a implementação da
+        <code>SessionFactory</code> do Hibernate no endereço JNDI especificado
+        como valor para a env-entry <code>HibernateFactoryAddress</code>. O
+        mecanismo de transação utilizado é JTA, já que os métodos expostos do
+        EJB são todos CMT. O rollback será realizado, quando necessário, por uma
+        chamada a <code>setRollbackOnly()</code> na instância de
+        <code>SessionContext</code>.</p>
+      </div>
+      <div class="subsection"><a name="Execução_em_EJB_com_chamada_local"></a><h3>Execução em EJB com chamada local</h3>
+        <p>A execução com um Stateless Session Bean usando CMT poderá ser melhor
+        em determinados ambientes, como no caso de uma aplicação web, se for
+        utilizada uma interface local. O aspecto
+        <code>LocalEJBCommandExecutionAspect</code> invoca
+        <code>net.java.dev.genesis.ejb.CommandExecutor</code> por sua interface
+        local, e seu funcionamento é basicamente o mesmo do aspecto descrito
+        anteriormente, <code>EJBCommandExecutionAspect</code>, exceto pelos
+        seguintes detalhes:</p>
+        <ul>
+          <li>O nome do pointcut de execução é
+          <code>localEjbCommandExecution</code></li>
+          <li>Apenas o parâmetro <code>jndiName</code> é significativo, já que
+          não existe comunicação remota com o servidor</li>
+        </ul>
+      </div>
+    </div><div class="section"><a name="Executando_pesquisas_dinâmicas"></a><h2>Executando pesquisas dinâmicas</h2>
+      <p>As pesquisas dinâmicas, ou seja, classes que recebem injeção de uma
+      instância de <code>Criteria</code> e possuem os setters correspondentes
+      aos critérios de pesquisa não-vazios invocados antes da pesquisa
+      propriamente dita, são executados através do aspecto
+      <code>net.java.dev.genesis.aspect.CriteriaCommandExecutionAspect</code>.
+      </p>
+      <p>Toda classe interceptada por este aspecto precisa implementar
+      <code>net.java.dev.genesis.command.hibernate.CriteriaResolver</code>,
+      abaixo transcrita:</p>
+
+    <div class="source"><pre>
+public interface CriteriaResolver {
+   public Map getPropertiesMap();
+   public void setPropertiesMap(final Map propertiesMap);
+}
+</pre></div>
+  
+      <p>O método <code>setPropertiesMap(Map)</code> será chamado na parte
+      cliente passando somente os dados que deverão ser utilizados para
+      pesquisa. Normalmente este método será chamado indiretamente pelo cliente
+      através do método utilitário
+      <code>fillCriteria(HibernateCriteria,Object)</code> da classe
+      <code>net.java.dev.genesis.helpers.CriteriaPropertyHelper</code>.</p>
+      <p>O pointcut de nome <code>criteriaResolverIntroduction</code> define que
+      classes deverão receber como introdução a implementação da interface de
+      nome <code>CriteriaResolverImpl</code>, que é uma classe estática interna
+      do aspecto. Esta implementação utiliza uma variável membro do tipo
+      <code>java.util.Map</code> para guardar e expor a informação.</p>
+      <p>O pointcut de nome <code>criteriaCommandExecution</code> define os
+      métodos que serão interceptados pelo advice
+      <code>commandExecution(JoinPoint)</code>. Este método lê através do método
+      <code>getPropertiesMap()</code> de <code>CriteriaResolver</code> quais as
+      propriedades utilizadas no método de pesquisa e faz uso desta informação,
+      assim como também a assinatura e os parâmetros da chamada do método para
+      instanciar
+      <code>net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor</code>. Na nova instância será chamado o método <code>execute()</code>, que
+      possui uma anotação <code>@Remotable</code> e será interceptado para <a href="#Execução_em_EJB_com_chamada_remota">execução remota</a>. Este
+      método inicializa o <code>Criteria</code> (quando o nome da classe mapeada
+      é informado), injeta-o na instância, invoca os setters dos critérios de
+      pesquisa e chama o método de pesquisa.</p>
+    </div><div class="section"><a name="Limitando_o_tempo_de_execução_de_um_método"></a><h2>Limitando o tempo de execução de um método</h2>
+      <p>O aspecto <code>TimeoutAspect</code> permite controlar o tempo limite
+      para execução de um método; caso este seja ultrapassado, uma
+      <code>net.java.dev.genesis.exception.TimeoutException</code> será lançada.
+      </p>
+      <p>O tempo limite é configurado pelo parâmetro do aspecto de nome
+      <code>timeout</code>. O pointcut de nome <code>timeout</code> seleciona os
+      métodos cuja execução será interceptada pelo advice
+      <code>timeoutAdvice(JoinPoint)</code>. O advice executa o método
+      interceptado numa outra thread e aguarda seu término por
+      <code>timeout</code> segundos. Qualquer exceção que seria normalmente
+      lançada pelo método interceptado é repassada para quem o chamou.</p>
+      <p>O parâmetro <code>keepThreadInstance</code> define a reutilização
+      ou não da thread que faz o controle de tempo de execução
+      de um método. Caso seja atribuído o valor <code>true</code> para
+      esse parâmetro, o aspecto irá criar e manter uma única thread
+      de modo que subsequentes execuções de métodos definidos
+      pelo pointcut <code>timeout</code>
+      reutilizem essa mesma thread. Desse modo, a perfomance
+      da aplicação final será maior.</p>
+      <p>Porém, no caso da aplicação utilizar diversas threads,
+      esse parâmetro irá permitir que diversas threads filhas
+      fiquem em memória ocupando recursos - assim, neste caso o ideal é que
+      seja atribuído o valor <code>false</code> para este parâmetro.</p>
+    </div><div class="section"><a name="Trocando_o_cursor_do_mouse_durante_o_tratamento_de_eventos"></a><h2>Trocando o cursor do mouse durante o tratamento de eventos</h2>
+      <p>Com o intuito de que o usuário perceba que uma operação longa está
+      sendo executada, o <code>WaitCursorAspect</code> permite trocar o cursor
+      do mouse para o cursor de espera durante um método de tratamento de evento
+      da interface gráfica.</p>
+      <p>O pointcut <code>waitCursorExecution</code> especifica quais métodos
+      implementam o tratamento de eventos e devem ser interceptados pelo advice
+      de mesmo nome - <code>waitCursorExecution(JoinPoint)</code>. Este advice
+      salva o cursor atual, troca-o para o cursor de espera e restaura o cursor
+      original quando o tratamento de eventos termina. Espera-se que os métodos
+      interceptados pertençam a uma instância de
+      <code>java.awt.Component</code>, onde estão definidos métodos para obter e
+      definir o cursor em uso.</p>
+    </div><div class="section"><a name="Instanciando_os_metadados"></a><h2>Instanciando os metadados</h2>
+      <p>Todo o binding de uma form com a view baseia-se em metadados das duas
+      partes. Este modelo de metadados encontra-se no pacote
+      <code>net.java.dev.genesis.ui.metadata</code> tanto para o form quanto
+      para a view. Neste pacote, existem interfaces -
+      <code>FormMetadataFactory</code> e <code>ViewMetadataFactory</code> -,
+      que devem ser implementadas pelas classes responsáveis por retornar estes
+      metadados. Abaixo, segue uma transcrição dos trechos relevantes de ambas:</p>
+
+    <div class="source"><pre>
+public interface FormMetadataFactory {
+    public FormMetadata getFormMetadata(Class formClass);
+}
+</pre></div>
+  
+
+    <div class="source"><pre>
+public interface ViewMetadataFactory {
+   public ViewMetadata getViewMetadata(Class formClass);
+}
+</pre></div>
+  
+      <p>Os aspectos <code>FormMetadataFactoryAspect</code> e
+      <code>ViewMetadataFactoryAspect</code> definem implementações destas
+      interfaces com bases em anotações. As implementações chamam-se
+      <code>AspectFormMetadataFactory</code> e
+      <code>AspectViewMetadataFactory</code> e são classes estáticas internas
+      de seus respectivos aspectos. As classes que precisam receber tais
+      introduções são selecionadas pelos pointcuts de nome
+      <code>formMetadataFactoryIntroduction</code> e
+      <code>viewMetadataFactoryIntroduction</code>. Para sobrescrever a forma
+      com que os metadados são criados - usando-se xml, por exemplo - basta
+      introduzir uma implementação diferente dessas interfaces nos forms e nas
+      views.</p>
+      <p>A classe <code>ThinletMetadataFactory</code> e suas classes
+      relacionadas foram substituídas a partir da versão 2.1 pela família de
+      classes <code>ViewMetadataFactory</code> e serão removidas em versões
+      futuras do genesis.</p>
+    </div><div class="section"><a name="Instanciando_o_controlador_do_form"></a><h2>Instanciando o controlador do form</h2>
+      <p>O processo de atualização do estado interno do form e propagação de
+      eventos é feito através de uma implementação de
+      <code>net.java.dev.genesis.ui.controller.FormController</code>. A
+      implementação de <code>FormController</code> utilizada é obtida através
+      da interface
+      <code>net.java.dev.genesis.ui.controller.FormControllerFactory</code>.
+      Abaixo, temos a definição desta última interface:</p>
+
+    <div class="source"><pre>
+public interface FormControllerFactory {
+   public FormController getFormController(Object form);
+}
+</pre></div>
+  
+      <p>O aspecto <code>FormControllerFactoryAspect</code> define uma
+      implementação desta interface como classe estática interna,
+      <code>AspectFormControllerFactory</code>, que retorna sempre uma
+      instância de
+      <code>net.java.dev.genesis.ui.controller.DefaultFormController</code>.
+      As classes que precisam receber uma implementação de
+      <code>FormControllerFactory</code> como introdução são selecionadas
+      pelo pointcut de nome <code>formControllerFactoryIntroduction</code>.</p>
+    </div><div class="section"><a name="Referência_de_configuração"></a><h2>Referência de configuração</h2>
+      <p>Abaixo encontram-se algumas tabelas úteis para o desenvolvedor
+      avançado, além de uma configuração padrão suficiente para a maioria dos
+      casos.</p>
+      <div class="subsection"><a name="Parâmetros"></a><h3>Parâmetros</h3>
+        <table class="bodyTable">
+          <tr class="b">
+            <th>Aspecto / Mixin</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Obrigatório</th>
+            <th>Valor padrão</th>
+          </tr>
+          <tr class="a">
+            <td>CommandInvocationAspect$CommandResolverImpl</td>
+            <td>useFastMode</td>
+            <td>boolean</td>
+            <td>Define se o processo que determina se um método é remoto ou não
+            será realmente executado ou se todo método interceptado será
+            considerado no mínimo remoto</td>
+            <td>Não</td>
+            <td><code>true</code></td>
+          </tr>
+          <tr class="b">
+            <td>CriteriaCommandExecutionAspect</td>
+            <td>preventStackOverflow</td>
+            <td>boolean</td>
+            <td>Faz checagens para garantir que o aspecto não seja chamado
+            recursivamente. Deve ser <code>true</code> para os modos de
+            execução locais</td>
+            <td>Não</td>
+            <td><code>false</code></td>
+          </tr>
+          <tr class="a">
+            <td rowspan="2">EJBCommandExecutionAspect</td>
+            <td>jndiName</td>
+            <td>String</td>
+            <td>Endereço JNDI em que se pode obter uma instância da classe
+            <code>net.java.dev.genesis.ejb.CommandExecutorHome</code></td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr class="b">
+            <td>retryOnNoSuchObject</td>
+            <td>boolean</td>
+            <td>Indica se o método deve ser executado novamente se uma
+            <code>java.rmi.NoSuchObjectException</code> ocorrer</td>
+            <td>Não</td>
+            <td><code>true</code></td>
+          </tr>
+          <tr class="a">
+            <td rowspan="4">FormMetadataFactoryAspect$AspectFormMetadataFactory</td>
+            <td>maximumEvaluationTimes</td>
+            <td>int</td>
+            <td>Número máximo de vezes que as condições do form serão avaliadas
+            enquanto mudarem</td>
+            <td>Não</td>
+            <td><code>1</code></td>
+          </tr>
+          <tr class="b">
+            <td>resetOnDataProviderChange</td>
+            <td>boolean</td>
+            <td>Indica se a instância de <code>FormController</code> deverá
+            realizar o reset condicional dos índices do
+            <code>@DataProvider</code> cada vez que o método for chamado</td>
+            <td>Não</td>
+            <td><code>true</code></td>
+          </tr>
+          <tr class="a">
+            <td>scriptFactory</td>
+            <td>Nome qualificado completo/apelido de classe</td>
+            <td>Nome de uma classe que implemente
+            <code>net.java.dev.genesis.script.ScriptFactory</code></td>
+            <td>Não</td>
+            <td><code>jxpath</code></td>
+          </tr>
+          <tr class="b">
+            <td>scriptFactoryProperties</td>
+            <td>String no formato chave1=valor1[,chave2=valor2,...,chaveN=valorN]</td>
+            <td>Propriedades a serem passadas para a instância de
+            <code>net.java.dev.genesis.script.ScriptFactory</code></td>
+            <td>Não</td>
+            <td>Não possui</td>
+          </tr>
+          <tr class="a">
+            <td rowspan="2">LocalCommandExecutionAspect</td>
+            <td>transactionalInjector</td>
+            <td>Nome qualificado completo de classe</td>
+            <td>Nome de uma classe que implemente
+            <code>net.java.dev.genesis.command.TransactionalInjector</code></td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr class="b">
+            <td>preLoadSessionFactory</td>
+            <td>boolean</td>
+            <td>Indica se a <code>SessionFactory</code> será carregada na 
+            primeira chamada remota ou transacional (relevante quando o aspecto
+            é usado com a implementação 
+            <code>net.java.dev.genesis.aspect.HibernateTransactionalInjector</code></td>
+            <td><b>Não</b></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr class="a">
+            <td>LocalEJBCommandExecutionAspect</td>
+            <td>jndiName</td>
+            <td>String</td>
+            <td>Endereço JNDI em que se pode obter uma instância da classe
+            <code>net.java.dev.genesis.ejb.CommandExecutorLocalHome</code></td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr class="b">
+            <td rowspan="2">TimeoutAspect</td>
+            <td>timeout</td>
+            <td>long</td>
+            <td>Número máximo de milisegundos em que o método pode ser executado
+            </td>
+            <td><b>Sim</b></td>
+            <td>Não possui</td>
+          </tr>
+          <tr class="a">
+            <td>keepThreadInstance</td>
+            <td>boolean</td>
+            <td>Indica se a thread de controle de timeout deve ser
+            mantida e reutilizada entre as execuções dos métodos
+            interceptados</td>
+            <td>Não</td>
+            <td><code>false</code></td>
+          </tr>
+          <tr class="b">
+            <td>ViewMetadataFactoryAspect$AspectViewMetadataFactory</td>
+            <td>skipSystemClasses</td>
+            <td>boolean</td>
+            <td>Indica se a classe deve ignorar métodos herdados de classes de sistema
+            ao gerar os metatados.
+            </td>
+            <td><b>Não</b></td>
+            <td>true</td>
+          </tr>
+        </table>
+      </div>
+      <div class="subsection"><a name="Pointcuts_nomeados"></a><h3>Pointcuts nomeados</h3>
+        <p>Os pointcuts nomeados só estarão disponíveis quando o jar anotado for
+        utilizado e, nessas condições, atribuir-lhes um valor será obrigatório
+        caso o aspecto que os define for utilizado.</p>
+        <table class="bodyTable">
+          <tr class="a">
+            <th>Aspecto/Mixin</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+          </tr>
+          <tr class="b">
+            <td>CommandInvocationAspect</td>
+            <td>commandResolverIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.aspect.CommandResolver</code> com a
+            implementação
+            <code>CommandInvocationAspect$CommandResolverImpl</code></td>
+          </tr>
+          <tr class="a">
+            <td rowspan="2">CriteriaCommandExecutionAspect</td>
+            <td>criteriaCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos de pesquisa dinâmica</td>
+          </tr>
+          <tr class="b">
+            <td>criteriaResolverIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.command.hibernate.CriteriaResolver</code>
+            com a implementação
+            <code>CriteriaCommandExecutionAspect$CriteriaResolverImpl</code></td>
+          </tr>
+          <tr class="a">
+            <td>EJBCommandExecutionAspect</td>
+            <td>ejbCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos remotos e transacionais e
+            transfere a instância sobre a qual o método foi invocado para o
+            servidor</td>
+          </tr>
+          <tr class="b">
+            <td>FormControllerFactoryAspect</td>
+            <td>formControllerFactoryIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.ui.controller.FormControllerFactory</code>
+            com a implementação
+            <code>FormControllerFactoryAspect$AspectFormControllerFactory</code></td>
+          </tr>
+          <tr class="a">
+            <td>FormMetadataFactoryAspect</td>
+            <td>formMetadataFactoryIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>net.java.dev.genesis.ui.metadata.FormMetadataFactory</code>
+            com a implementação
+            <code>FormMetadataFactoryAspect$AspectFormMetadataFactory</code></td>
+          </tr>
+          <tr class="b">
+            <td>LocalCommandExecutionAspect</td>
+            <td>localCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos remotos e transacionais e
+            executa-os localmente</td>
+          </tr>
+          <tr class="a">
+            <td>LocalEJBCommandExecutionAspect</td>
+            <td>localEjbCommandExecution</td>
+            <td>Método</td>
+            <td>Intercepta a execução de métodos remotos e transacionais e
+            transfere a instância sobre a qual o método foi invocado para um
+            EJB usando a interface local do mesmo</td>
+          </tr>
+          <tr class="b">
+            <td>TimeoutAspect</td>
+            <td>timeout</td>
+            <td>Método</td>
+            <td>Intercepta a execução de um método de modo que este execute em
+            um tempo limite ou seja lançada uma exceção</td>
+          </tr>
+          <tr class="a">
+            <td>ViewMetadataFactoryAspect</td>
+            <td>viewMetadataFactoryIntroduction</td>
+            <td>Classe</td>
+            <td>Introduz a interface
+            <code>
+            net.java.dev.genesis.ui.metadata.ViewMetadataFactory
+            </code>
+            com a implementação
+            <code>ViewMetadataFactoryAspect$AspectViewMetadataFactory
+            </code></td>
+          </tr>
+          <tr class="b">
+            <td>WaitCursorAspect</td>
+            <td>waitCursorExecution</td>
+            <td>Método</td>
+            <td>Muda o cursor do mouse para o cursor de espera enquanto a
+            execução do método interceptado não for finalizada</td>
+          </tr>
+        </table>
+      </div>
+      <div class="subsection"><a name="Configuração_exemplo_de_aop_xml"></a><h3>Configuração exemplo de aop.xml</h3>
+        <p>A configuração remota do exemplo useradmin é mostrada abaixo. Pode ser
+        necessário ajustá-la de acordo com as necessidades do projeto, mas
+        acreditamos que essa configuração será suficiente na maior parte dos
+        casos.</p>
+
+    <div class="source"><pre>
+
+&lt;!DOCTYPE aspectwerkz PUBLIC
+      "-//AspectWerkz//DTD 2.0//EN"
+      "http://aspectwerkz.codehaus.org/dtd/aspectwerkz_2_0.dtd"&gt;
+&lt;aspectwerkz&gt;
+   &lt;system id="useradmin" base-package="net.java.dev.genesis.aspect"&gt;
+      &lt;!-- helpers pointcuts --&gt;
+      &lt;pointcut name="executeCommand"
+         expression="execution(@net.java.dev.genesis.annotation.Remotable * ...*(..)) 
+                  OR execution(@net.java.dev.genesis.annotation.Transactional * ...*(..))" /&gt;
+      &lt;pointcut name="form" expression="within(@net.java.dev.genesis.annotation.Form ..)" /&gt;
+
+      &lt;!-- genesis pointcuts --&gt;
+      &lt;pointcut name="formMetadataFactoryIntroduction" expression="form" /&gt;
+      &lt;pointcut name="formControllerFactoryIntroduction" expression="form" /&gt;
+      &lt;pointcut name="thinletMetadataFactoryIntroduction" expression="within(net.java.dev.genesis.ui.thinlet.BaseThinlet+)" /&gt;
+      &lt;pointcut name="viewMetadataFactoryIntroduction" expression="thinletMetadataFactoryIntroduction OR within(@net.java.dev.genesis.annotation.ViewHandler ..)" /&gt;
+      &lt;pointcut name="criteriaResolverIntroduction" expression="within(net.java.dev.genesis.command.hibernate.HibernateCriteria+)" /&gt;
+      &lt;pointcut name="commandResolverIntroduction"
+         expression="hasmethod(@net.java.dev.genesis.annotation.Remotable * ...*(..)) 
+                  OR hasmethod(@net.java.dev.genesis.annotation.Transactional * ...*(..))" /&gt;
+      &lt;pointcut name="timeout" expression="executeCommand" /&gt;
+      &lt;pointcut name="ejbCommandExecution" expression="executeCommand" /&gt;
+      &lt;pointcut name="criteriaCommandExecution" expression="execution(@net.java.dev.genesis.annotation.Criteria * net.java.dev.genesis.command.hibernate.HibernateCriteria+.*(..))" /&gt;
+      &lt;pointcut name="waitCursorExecution" expression="execution(* thinlet.Thinlet.invokeImpl(..))" /&gt;
+
+      &lt;!-- genesis aspects --&gt;
+      &lt;mixin class="CommandInvocationAspect$CommandResolverImpl" /&gt;
+      &lt;mixin class="FormControllerFactoryAspect$AspectFormControllerFactory" /&gt;
+      &lt;mixin class="CriteriaCommandExecutionAspect$CriteriaResolverImpl" /&gt;
+      &lt;mixin class="ViewMetadataFactoryAspect$AspectViewMetadataFactory" /&gt;
+      &lt;mixin class="FormMetadataFactoryAspect$AspectFormMetadataFactory"&gt;      
+          &lt;param name="scriptFactory" value="javascript" /&gt;
+      &lt;/mixin&gt;
+
+      &lt;aspect class="TimeoutAspect"&gt;
+         &lt;param name="timeout" value="60000" /&gt;
+         &lt;param name="keepThreadInstance" value="true" /&gt;
+      &lt;/aspect&gt;
+      &lt;aspect class="EJBCommandExecutionAspect"&gt;
+         &lt;param name="jndiName" value="ejb/CommandExecutor"/&gt;
+      &lt;/aspect&gt;
+      &lt;aspect class="CriteriaCommandExecutionAspect"/&gt;
+      &lt;aspect class="WaitCursorAspect"/&gt;
+   &lt;/system&gt;
+&lt;/aspectwerkz&gt;
+
+</pre></div>
+  
+      </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2008, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
