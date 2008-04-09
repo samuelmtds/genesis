@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -876,7 +877,8 @@ public abstract class BaseThinlet extends Thinlet implements
          return o.toString();
       }
 
-      return String.valueOf(System.identityHashCode(o));
+      return getPropertyValue(Collections.singletonMap(componentName, o), 
+            componentName, false, formatters);
    }
 
    protected WidgetFactory getWidgetFactory(Map widgetFactories, 

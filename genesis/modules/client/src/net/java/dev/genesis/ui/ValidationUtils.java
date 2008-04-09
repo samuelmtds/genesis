@@ -89,6 +89,11 @@ public final class ValidationUtils {
    }
 
    public Map getMessages(ValidatorResults results, String formName) {
+      return getMessages(resources, results, formName);
+   }
+
+   public Map getMessages(ValidatorResources resources, ValidatorResults results, 
+         String formName) {
       final Map messages = new HashMap();
       final Form form = resources.getForm(Locale.getDefault(), formName);
 
@@ -173,8 +178,12 @@ public final class ValidationUtils {
 
    public ValidatorResults validate(Object form, String formName) 
          throws ValidatorException {
-      final Validator validator = new Validator(ValidationUtils.getInstance()
-            .getResources(), formName);
+      return validate(form, formName, getResources());
+   }
+      
+   public ValidatorResults validate(Object form, String formName, 
+         ValidatorResources resources) throws ValidatorException {
+      final Validator validator = new Validator(resources, formName);
       validator.setOnlyReturnErrors(true);
       validator.setUseContextClassLoader(true);
 

@@ -3,7 +3,7 @@
    <artifactId>genesis</artifactId>
    <name>SOL Genesis</name>
    <groupId>net.java.dev.genesis</groupId>
-   <currentVersion>3.1-dev</currentVersion>
+   <currentVersion>3.1-RC2</currentVersion>
    <organization>
       <name>Summa Technologies do Brasil Ltda.</name>
       <url>http://www.summa-tech.com/</url>
@@ -25,6 +25,16 @@
       <url>http://fisheye5.cenqua.com/browse/genesis/</url>
    </repository>
    <versions>
+      <version>
+         <id>3.1-RC2</id>
+         <name>3.1-RC2</name>
+         <tag>GENESIS_3_1_RC_2</tag>
+      </version>
+      <version>
+         <id>3.1-RC1</id>
+         <name>3.1-RC1</name>
+         <tag>GENESIS_3_1_RC_1</tag>
+      </version>
       <version>
          <id>3.0</id>
          <name>3.0</name>
@@ -208,6 +218,16 @@
             <role>Developer</role>
             <role>Documentation</role>
             <role>Founder</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Michel Graciano</name>
+         <id>hmichel</id>
+         <email>mgraciano@summa-tech.com</email>
+         <organization>Summa Technologies do Brasil Ltda.</organization>
+         <roles>
+            <role>Developer</role>
+            <role>Documentation</role>
          </roles>
       </developer>
       <developer>

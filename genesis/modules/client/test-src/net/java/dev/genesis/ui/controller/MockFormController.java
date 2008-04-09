@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,7 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 public class MockFormController implements FormController {
+   public static final String SCRIPT_CONTEXT = "this.scriptContext";
    private Map map = new HashMap();
    private Map exceptions = new HashMap();
    
@@ -180,6 +181,6 @@ public class MockFormController implements FormController {
    }
 
    public ScriptContext getScriptContext() {
-      return (ScriptContext)map.get("this.scriptContext");
+      return (ScriptContext)map.get(SCRIPT_CONTEXT);
    }
 }
