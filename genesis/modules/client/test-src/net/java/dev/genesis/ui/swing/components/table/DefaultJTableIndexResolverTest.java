@@ -47,14 +47,14 @@ public class DefaultJTableIndexResolverTest extends GenesisTestCase {
       try {
          assertEquals(0, defaultIndexResolver.convertRowIndexToView(
                unsortableTable, 0));
-         fail("Must be not possible convert a index when needsConversion is false");
+         fail("Shouldn't be possible to convert a index when needsConversion is false");
       } catch (NullPointerException npe) {
       }
 
       try {
          assertEquals(0, defaultIndexResolver.convertRowIndexToModel(
                unsortableTable, 0));
-         fail("Must be not possible convert a index when needsConversion is false");
+         fail("Shouldn't be possible to convert a index when needsConversion is false");
       } catch (NullPointerException npe) {
       }
 
