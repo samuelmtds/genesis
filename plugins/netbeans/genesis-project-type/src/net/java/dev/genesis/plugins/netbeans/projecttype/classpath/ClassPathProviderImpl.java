@@ -370,8 +370,8 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          Object[] filesPerRoot = paths[i];
          final String[] filePrefixes = (String[])filesPerRoot[1];
          
-         File rootDir = new File(project.getEvaluator().evaluate(
-               "${genesis.home}/" + filesPerRoot[0]));
+         File rootDir = Utils.resolveFile(project,
+               "${genesis.home}/" + filesPerRoot[0]);
          File[] filteredFiles = rootDir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                for (int j = 0; j < filePrefixes.length; j++) {
