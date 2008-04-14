@@ -18,9 +18,7 @@
  */
 package net.java.dev.genesis.plugins.netbeans.buildsupport.release3_0_EA_3_dev;
 
-import java.io.IOException;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.AbstractGenesisBuildSupport;
-import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisBuildSupport;
 import net.java.dev.genesis.plugins.netbeans.buildsupport.spi.GenesisVersion;
 
 public final class Genesis30EA3DevBuildSupport extends AbstractGenesisBuildSupport {
