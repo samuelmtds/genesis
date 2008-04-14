@@ -321,7 +321,7 @@ public class GenesisProject implements Project {
         }
         
         try {
-            ProjectManager.getDefault().mutex().writeAccess(
+            ProjectManager.mutex().writeAccess(
                     new Mutex.ExceptionAction() {
                 public Object run() throws IOException {
                     EditableProperties properties = helper.getProperties(
@@ -349,7 +349,7 @@ public class GenesisProject implements Project {
                             version).getVersion();
                     
                     if (newVersion != null) {
-                        ProjectManager.getDefault().mutex().writeAccess(
+                        ProjectManager.mutex().writeAccess(
                                 new Mutex.ExceptionAction() {
                             public Object run() throws Exception {
                                 Element root = GenesisProject.this.getHelper()
