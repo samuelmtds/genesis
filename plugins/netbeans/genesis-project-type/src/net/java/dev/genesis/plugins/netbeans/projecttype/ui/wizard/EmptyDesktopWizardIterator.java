@@ -70,10 +70,9 @@ public class EmptyDesktopWizardIterator implements WizardDescriptor.Instantiatin
     public Set/*<FileObject>*/ instantiate() throws IOException {
         Set resultSet = new LinkedHashSet();
         File dirF = FileUtil.normalizeFile((File) wiz.getProperty("projdir"));
-        dirF.mkdirs();
+        FileObject dir = FileUtil.createFolder(dirF);
         
         FileObject template = Templates.getTemplate(wiz);
-        FileObject dir = FileUtil.toFileObject(dirF);
         unZipFile(template.getInputStream(), dir);
         
         // Always open top dir as a project:
