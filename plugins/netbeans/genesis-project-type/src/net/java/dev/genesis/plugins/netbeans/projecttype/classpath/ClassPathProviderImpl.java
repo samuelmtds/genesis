@@ -52,6 +52,7 @@ import org.netbeans.api.project.ant.AntArtifactQuery;
 import org.netbeans.spi.java.classpath.ClassPathFactory;
 import org.netbeans.spi.java.classpath.ClassPathImplementation;
 import org.netbeans.spi.java.classpath.ClassPathProvider;
+import org.netbeans.spi.java.classpath.PathResourceImplementation;
 import org.netbeans.spi.java.classpath.support.ClassPathSupport;
 import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
@@ -92,11 +93,12 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    private static abstract class MutableClassPathImplementation 
          implements ClassPathImplementation {
       private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-      private List paths;
+      private List<PathResourceImplementation> paths;
 
-      public List getResources() {
+      @Override
+      public List<PathResourceImplementation> getResources() {
          if (paths == null) {
-            paths = new ArrayList();
+            paths = new ArrayList<PathResourceImplementation>();
 
             Collection urls = getURLs();
 
@@ -127,9 +129,9 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       protected abstract Collection getURLs();
    }
 
-   private final Map classpaths = new HashMap();
-   private final Map registeredPaths = new HashMap();
-   private final Collection implementations = new ArrayList();
+   private final Map<String, Map<FileObject, ClassPath>> classpaths = new HashMap<String, Map<FileObject, ClassPath>>();
+   private final Map<String, Collection<ClassPath>> registeredPaths = new HashMap<String, Collection<ClassPath>>();
+   private final Collection<MutableClassPathImplementation> implementations = new ArrayList<MutableClassPathImplementation>();
    private final GenesisProject project;
    
    private ClassPath bootClassPath;
@@ -139,16 +141,16 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    }
 
    public synchronized void register() {
-      Sources sources = (Sources)project.getLookup().lookup(Sources.class);
+      Sources sources = project.getLookup().lookup(Sources.class);
 
       sources.addChangeListener(new ChangeListener() {
          public void stateChanged(ChangeEvent e) {
             synchronized (ClassPathProviderImpl.this) {
                classpaths.clear();
 
-               Collection impls = new ArrayList(implementations);
-               for (Iterator i = impls.iterator(); i.hasNext();) {
-                  ((MutableClassPathImplementation)i.next()).reload();
+               Collection<MutableClassPathImplementation> impls = new ArrayList<MutableClassPathImplementation>(implementations);
+               for (MutableClassPathImplementation impl : impls) {
+                  impl.reload();
                }
             }
          }
@@ -163,10 +165,10 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          for (int j = 0; j < classPathTypes.length; j++) {
             ClassPath cp = findClassPath(root, classPathTypes[j]);
 
-            Collection paths = (Collection)registeredPaths.get(classPathTypes[j]);
+            Collection<ClassPath> paths = registeredPaths.get(classPathTypes[j]);
 
             if (paths == null) {
-               registeredPaths.put(classPathTypes[j], paths = new HashSet());
+               registeredPaths.put(classPathTypes[j], paths = new HashSet<ClassPath>());
             }
 
             paths.add(cp);
@@ -174,27 +176,27 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       }
 
       for (int i = 0; i < classPathTypes.length; i++) {
-         Collection paths = (Collection)registeredPaths.get(classPathTypes[i]);
+         Collection<ClassPath> paths = registeredPaths.get(classPathTypes[i]);
 
          if (paths == null) {
             continue;
          }
 
-         GlobalPathRegistry.getDefault().register(classPathTypes[i], 
-               (ClassPath[])paths.toArray(new ClassPath[paths.size()]));
+         GlobalPathRegistry.getDefault().register(classPathTypes[i],
+               paths.toArray(new ClassPath[paths.size()]));
       }
    }
 
    public synchronized void unregister() {
       for (int i = 0; i < classPathTypes.length; i++) {
-         Collection paths = (Collection)registeredPaths.get(classPathTypes[i]);
+         Collection<ClassPath> paths = registeredPaths.get(classPathTypes[i]);
 
          if (paths == null) {
             continue;
          }
 
-         GlobalPathRegistry.getDefault().unregister(classPathTypes[i], 
-               (ClassPath[])paths.toArray(new ClassPath[paths.size()]));
+         GlobalPathRegistry.getDefault().unregister(classPathTypes[i],
+               paths.toArray(new ClassPath[paths.size()]));
       }
    }
 
@@ -250,11 +252,10 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          }
       }
 
-      Collection entries = platform.getBootstrapLibraries().entries();
-      Collection urls = new ArrayList(entries.size());
+      Collection<ClassPath.Entry> entries = platform.getBootstrapLibraries().entries();
+      Collection<URL> urls = new ArrayList<URL>(entries.size());
 
-      for (Iterator i = entries.iterator(); i.hasNext();) {
-         ClassPath.Entry entry = (ClassPath.Entry)i.next();
+      for (ClassPath.Entry entry : entries) {
          urls.add(entry.getURL());
       }
 
@@ -262,24 +263,22 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    }
 
    private ClassPath getClassPath(FileObject fo, final String type) {
-      Map classpathsPerType = (Map)classpaths.get(type);
+      Map<FileObject, ClassPath> classpathsPerType = classpaths.get(type);
 
       if (classpathsPerType == null) {
-         classpathsPerType = new WeakHashMap();
+         classpathsPerType = new WeakHashMap<FileObject, ClassPath>();
          classpaths.put(type, classpathsPerType);
       }
 
-      for (final Iterator i = classpathsPerType.entrySet().iterator();
-            i.hasNext(); ) {
-         Map.Entry entry = (Map.Entry)i.next();
-         FileObject root = (FileObject)entry.getKey();
+      for (Map.Entry<FileObject, ClassPath> entry : classpathsPerType.entrySet()) {
+         FileObject root = entry.getKey();
 
          if (root == fo || FileUtil.isParentOf(root, fo)) {
-            return (ClassPath)entry.getValue();
+            return entry.getValue();
          }
       }
 
-      final GenesisSources sources = (GenesisSources)project.getLookup().lookup(
+      final GenesisSources sources = project.getLookup().lookup(
             GenesisSources.class);
       SourceGroup[] groups = sources.getSourceGroups(
             JavaProjectConstants.SOURCES_TYPE_JAVA);
@@ -321,7 +320,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
    
    private Collection createSourceClassPath(FileObject root,
          GenesisSources sources){
-      Collection files = new ArrayList();
+      Collection<File> files = new ArrayList<File>();
       files.add(FileUtil.toFile(root));
       
       if (sources.getClientSourcesRoot() == root) {
@@ -356,15 +355,15 @@ public class ClassPathProviderImpl implements ClassPathProvider {
          }
       }
 
-      Collection files = new ArrayList();
+      Collection<File> files = new ArrayList<File>();
       addClassPath(files, findCompilationPathsRootNode(findSourceGroupFor(root)));
 
       return toURLs(files);
    }
 
-   private Collection createCompileClassPath(String name, FileObject root,
+   private Collection<URL> createCompileClassPath(String name, FileObject root,
          GenesisSources sources, Object[][] paths) {
-      Collection files = new ArrayList();
+      Collection<File> files = new ArrayList<File>();
       
       for (int i = 0; i < paths.length; i++) {
          Object[] filesPerRoot = paths[i];
@@ -394,9 +393,9 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       return toURLs(files);
    }
    
-   private Collection createExecuteClassPath(FileObject root,
+   private Collection<URL> createExecuteClassPath(FileObject root,
          GenesisSources sources) {
-      Collection files = new ArrayList();
+      Collection<File> files = new ArrayList<File>();
       
       ClassPath cp = findClassPath(root, ClassPath.COMPILE);
 
@@ -531,7 +530,7 @@ public class ClassPathProviderImpl implements ClassPathProvider {
             "path");
    }
    
-   private void addClassPath(Collection files, NodeList nl) {
+   private void addClassPath(Collection<File> files, NodeList nl) {
       if (nl == null) {
          return;
       }
@@ -547,12 +546,10 @@ public class ClassPathProviderImpl implements ClassPathProvider {
       }
    }
 
-   private Collection toURLs(Collection files) {
-      Collection urls = new ArrayList(files.size());
+   private Collection<URL> toURLs(Collection<File> files) {
+      Collection<URL> urls = new ArrayList<URL>(files.size());
 
-      for (Iterator i = files.iterator(); i.hasNext();) {
-         File file = (File) i.next();
-
+      for (File file : files) {
          if (file == null) {
             continue;
          }

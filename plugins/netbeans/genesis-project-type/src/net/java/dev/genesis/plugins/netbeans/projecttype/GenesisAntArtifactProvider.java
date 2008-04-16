@@ -78,10 +78,12 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
          return clean;
       }
 
+      @Override
       public String getID() {
          return id;
       }
 
+      @Override
       public URI[] getArtifactLocations() {
          if (uris == null) {
             uris = new URI[1];
@@ -135,7 +137,7 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
    }
 
    private AntArtifact[] createArtifacts() {
-      Collection artifacts = new ArrayList();
+      Collection<AntArtifact> artifacts = new ArrayList<AntArtifact>();
       GenesisProjectKind kind = Utils.getKind(project);
 
       if (kind == GenesisProjectKind.DESKTOP) {
@@ -154,10 +156,10 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
          addRemoteJar(artifacts, eval, needsJar, buildDir, mode);
       }
 
-      return (AntArtifact[])artifacts.toArray(new AntArtifact[artifacts.size()]);
+      return artifacts.toArray(new AntArtifact[artifacts.size()]);
    }
 
-   private void addSharedJar(final Collection artifacts, 
+   private void addSharedJar(final Collection<AntArtifact> artifacts, 
          final PropertyEvaluator eval, final boolean needsJar, 
          final String buildDir) {
       String jarSharedNeededValue = eval.getProperty("jar.shared.needed");
@@ -184,7 +186,7 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
             "build-jar", "clean-jar"));
    }
 
-   private void addLocalJar(final Collection artifacts, 
+   private void addLocalJar(final Collection<AntArtifact> artifacts, 
          final PropertyEvaluator eval, final boolean needsJar, 
          final String buildDir, final GenesisProjectExecutionMode mode) {
       String jarLocalNeededValue = eval.getProperty("jar.local.needed");
@@ -218,7 +220,7 @@ public class GenesisAntArtifactProvider implements AntArtifactProvider {
             "build-jar", "clean-jar"));
    }
 
-   private void addRemoteJar(final Collection artifacts, 
+   private void addRemoteJar(final Collection<AntArtifact> artifacts, 
          final PropertyEvaluator eval, final boolean needsJar, 
          final String buildDir, final GenesisProjectExecutionMode mode) {
       String jarRemoteNeededValue = eval.getProperty("jar.remote.needed");

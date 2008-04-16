@@ -134,8 +134,8 @@ public class GenesisProject implements Project {
                 ErrorManager.getDefault().notify(e);
             }
             
-            ClassPathProviderImpl cp = (ClassPathProviderImpl)getLookup().lookup(
-                    ClassPathProviderImpl.class);
+            ClassPathProviderImpl cp = getLookup().
+               lookup(ClassPathProviderImpl.class);
             cp.register();
         }
         
@@ -146,8 +146,8 @@ public class GenesisProject implements Project {
                 ErrorManager.getDefault().notify(ioe);
             }
             
-            ClassPathProviderImpl cp = (ClassPathProviderImpl)getLookup().lookup(
-                    ClassPathProviderImpl.class);
+            ClassPathProviderImpl cp = getLookup().
+               lookup(ClassPathProviderImpl.class);
             cp.unregister();
         }
     }
@@ -322,8 +322,8 @@ public class GenesisProject implements Project {
         
         try {
             ProjectManager.mutex().writeAccess(
-                    new Mutex.ExceptionAction() {
-                public Object run() throws IOException {
+                    new Mutex.ExceptionAction<Void>() {
+                public Void run() throws IOException {
                     EditableProperties properties = helper.getProperties(
                             AntProjectHelper.PROJECT_PROPERTIES_PATH);
                     properties.setProperty("genesis.home", reference);
@@ -350,8 +350,8 @@ public class GenesisProject implements Project {
                     
                     if (newVersion != null) {
                         ProjectManager.mutex().writeAccess(
-                                new Mutex.ExceptionAction() {
-                            public Object run() throws Exception {
+                                new Mutex.ExceptionAction<Void>() {
+                            public Void run() throws Exception {
                                 Element root = GenesisProject.this.getHelper()
                                 .getPrimaryConfigurationData(true);
                                 Node node = Utils.getVersionNode(root);

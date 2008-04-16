@@ -60,18 +60,17 @@ import org.openide.filesystems.FileStatusEvent;
 import org.openide.filesystems.FileStatusListener;
 import org.openide.filesystems.FileSystem;
 import org.openide.filesystems.FileUtil;
-import org.openide.filesystems.Repository;
 import org.openide.loaders.ChangeableDataFilter;
 import org.openide.loaders.DataFilter;
 import org.openide.loaders.DataFolder;
 import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectNotFoundException;
-import org.openide.loaders.FolderLookup;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 import org.openide.util.Lookup;
+import org.openide.util.Lookup.Result;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.lookup.Lookups;
@@ -122,11 +121,12 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          setName(ProjectUtils.getInformation(project).getDisplayName());
       }
 
+      @Override
       public Action[] getActions(boolean b) {
          ResourceBundle bundle = NbBundle.getBundle(
                GenesisLogicalViewProvider.class);
          
-         List actions = new ArrayList();
+         List<Action> actions = new ArrayList<Action>();
          
          actions.add(CommonProjectActions.newFileAction());
          actions.add(null);
@@ -140,7 +140,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                ActionProvider.COMMAND_CLEAN, bundle.getString(
                "LBL_CleanAction_Name"), null));
 
-         Collection antActions = getAntActions();
+         Collection<Action> antActions = getAntActions();
 
          if (!antActions.isEmpty()) {
             actions.add(null);
@@ -158,46 +158,39 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          actions.add(null);
          actions.add(SystemAction.get(FindAction.class));
          
-         try {
-            FileObject fo = Repository.getDefault().getDefaultFileSystem()
-                  .findResource("Projects/Actions");
+         Lookup lookup = Lookups.forPath("Projects/Actions");
+         Lookup.Template<Object> query = new Lookup.Template<Object>(Object.class);
+         Result<Object> result = lookup.lookup(query);
 
-            if (fo != null) {
-               DataObject dobj = DataObject.find(fo);
-               FolderLookup actionRegistry = new FolderLookup((DataFolder)dobj);
-               Lookup.Template query = new Lookup.Template(Object.class);
-               Lookup lookup = actionRegistry.getLookup();
-               Iterator it = lookup.lookup(query).allInstances().iterator();
+         if (!result.allItems().isEmpty()) {
+            Iterator it = result.allInstances().iterator();
 
-               if (it.hasNext()) {
+            if (it.hasNext()) {
+               actions.add(null);
+            }
+
+            while (it.hasNext()) {
+               Object next = it.next();
+
+               if (next instanceof Action) {
+                  actions.add((Action)next);
+               } else if (next instanceof JSeparator) {
                   actions.add(null);
                }
-
-               while (it.hasNext()) {
-                  Object next = it.next();
-
-                  if (next instanceof Action) {
-                     actions.add(next);
-                  } else if (next instanceof JSeparator) {
-                     actions.add(null);
-                  }
-               }
             }
-         } catch (DataObjectNotFoundException ex) {
-            ErrorManager.getDefault().notify(ex);
          }
-         
+
          actions.add(null);
          actions.add(SystemAction.get(ToolsAction.class));
          actions.add(null);
 
          actions.add(CommonProjectActions.customizeProjectAction());
          
-         return (Action[])actions.toArray(new Action[actions.size()]);
+         return actions.toArray(new Action[actions.size()]);
       }
 
-      private List getAntActions() {
-         final List actions = new ArrayList();
+      private List<Action> getAntActions() {
+         final List<Action> actions = new ArrayList<Action>();
          Element data = project.getHelper().getPrimaryConfigurationData(true);
          NodeList nl = data.getElementsByTagNameNS(
                GenesisProjectType.PROJECT_CONFIGURATION_NAMESPACE, "view");
@@ -234,21 +227,21 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                continue;
             }
 
-            Collection targets = new ArrayList(targetNodes.getLength());
+            Collection<String> targets = new ArrayList<String>(targetNodes.getLength());
 
             for (int j = 0; j < targetNodes.getLength(); j++) {
                targets.add(targetNodes.item(j).getChildNodes().item(0)
                   .getNodeValue());
             }
 
-            actions.add(new CustomAntAction(project, label, 
-                  (String[])targets.toArray(new String[targets.size()])));
+            actions.add(new CustomAntAction(project, label,
+                  targets.toArray(new String[targets.size()])));
          }
 
          return actions;
       }
 
-      private void addRunActions(final List actions, final ResourceBundle bundle) {
+      private void addRunActions(final List<Action> actions, final ResourceBundle bundle) {
          GenesisProjectExecutionMode executionMode = 
                Utils.getExecutionMode(project);
 
@@ -266,7 +259,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          }
       }
 
-      private void addWebstartActions(List actions, ResourceBundle bundle) {
+      private void addWebstartActions(List<Action> actions, ResourceBundle bundle) {
          if (!Utils.usesWebstart(project)) {
             return;
          }
@@ -280,10 +273,12 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
                   Utils.CLEAN_WEBSTART_TARGET}));
       }
 
+      @Override
       public Image getOpenedIcon(int type) {
          return getAnnotatedIcon(super.getOpenedIcon(type), type);
       }
 
+      @Override
       public Image getIcon(int type) {
          return getAnnotatedIcon(super.getIcon(type), type);
       }
@@ -317,6 +312,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          Utils.invokeAction(project, targets);
       }
 
+      @Override
       public Object getValue(String key) {
          if (Action.NAME.equals(key)) {
             return displayName;
@@ -325,13 +321,14 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          return super.getValue(key);
       }
 
+      @Override
       public boolean isEnabled() {
          return Utils.getBuildFile(project, false) != null;
       }
    }
 
    private class GenesisLogicalProviderChildren extends Children.Array {
-      private final Collection nodes = new ArrayList();
+      private final Collection<Node> nodes = new ArrayList<Node>();
 
       public GenesisLogicalProviderChildren() {
          project.getHelper().addAntProjectListener(new AntProjectListener() {
@@ -352,7 +349,8 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          });
       }
 
-      protected synchronized Collection initCollection() {
+      @Override
+      protected synchronized Collection<Node> initCollection() {
          createNodes();
          return nodes;
       }
@@ -479,6 +477,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
          this.displayName = displayName;
       }
 
+      @Override
       public String getDisplayName() {
          return displayName;
       }
@@ -486,7 +485,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
     
    private static final class VisibilityQueryDataFilter 
          implements ChangeListener, ChangeableDataFilter {
-      private final Collection listeners = new ArrayList();
+      private final Collection<ChangeListener> listeners = new ArrayList<ChangeListener>();
       
       public VisibilityQueryDataFilter() {
          VisibilityQuery.getDefault().addChangeListener(this);
@@ -528,7 +527,7 @@ public class GenesisLogicalViewProvider implements LogicalViewProvider {
    }
 
    public Node findPath(Node root, Object target) {
-     Project project = (Project)root.getLookup().lookup(Project.class);
+     Project project = root.getLookup().lookup(Project.class);
 
      if (project == null) {
          return null;

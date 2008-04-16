@@ -18,7 +18,6 @@
  */
 package net.java.dev.genesis.plugins.netbeans.projecttype.queries;
 
-import net.java.dev.genesis.plugins.netbeans.projecttype.GenesisProjectType;
 import net.java.dev.genesis.plugins.netbeans.projecttype.Utils;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.java.queries.SourceLevelQueryImplementation;
@@ -48,9 +47,9 @@ public class SourceLevelQueryImpl implements SourceLevelQueryImplementation {
 
    public synchronized String getSourceLevel(FileObject fo) {
       if (sourceLevel == null) {
-         sourceLevel = (String)ProjectManager.mutex().readAccess(
-               new Mutex.Action() {
-                  public Object run() {
+         sourceLevel = ProjectManager.mutex().readAccess(
+               new Mutex.Action<String>() {
+                  public String run() {
                      return Utils.getSourceLevel(helper);
                   }
                });

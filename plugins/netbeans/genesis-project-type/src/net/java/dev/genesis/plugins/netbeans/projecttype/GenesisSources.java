@@ -33,14 +33,13 @@ import org.openide.filesystems.FileObject;
 import org.openide.util.Mutex;
 import org.openide.util.NbBundle;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class GenesisSources implements Sources, AntProjectListener {
    public static final String SOURCES_TYPE_FOLDER = "genesis:folder";
 
    private final GenesisProject project;
-   private final Collection listeners = new ArrayList();
+   private final Collection<ChangeListener> listeners = new ArrayList<ChangeListener>();
    private Sources sources;
    private FileObject clientSourcesRoot;
    private FileObject sharedSourcesRoot;
@@ -120,8 +119,8 @@ public class GenesisSources implements Sources, AntProjectListener {
    }
 
    public SourceGroup[] getSourceGroups(final String type) {
-      return (SourceGroup[])ProjectManager.mutex().readAccess(new Mutex.Action() {
-         public Object run() {
+      return ProjectManager.mutex().readAccess(new Mutex.Action<SourceGroup[]>() {
+         public SourceGroup[] run() {
             synchronized (GenesisSources.this) {
                if (sources == null) {
                   sources = buildSources();
@@ -157,8 +156,7 @@ public class GenesisSources implements Sources, AntProjectListener {
             return;
          }
 
-         listeners = (ChangeListener[])this.listeners.toArray(
-               new ChangeListener[this.listeners.size()]);
+         listeners = this.listeners.toArray(new ChangeListener[this.listeners.size()]);
       }
 
       ChangeEvent event = new ChangeEvent(this);

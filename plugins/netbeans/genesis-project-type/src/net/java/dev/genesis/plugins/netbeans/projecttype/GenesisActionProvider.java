@@ -20,26 +20,17 @@ package net.java.dev.genesis.plugins.netbeans.projecttype;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.spi.project.ActionProvider;
-import org.netbeans.spi.project.support.ant.GeneratedFilesHelper;
-import org.openide.DialogDisplayer;
-import org.openide.ErrorManager;
-import org.openide.NotifyDescriptor;
-import org.openide.filesystems.FileObject;
 import org.openide.util.Lookup;
-import org.openide.util.NbBundle;
 
 public class GenesisActionProvider implements ActionProvider {
    private final GenesisProject project;
    private final String[] supportedActions = new String[] {COMMAND_BUILD, 
          COMMAND_CLEAN, COMMAND_REBUILD, COMMAND_RUN};
-   private final Map targetNamesByActionString = new HashMap();
+   private final Map<String, String[]> targetNamesByActionString = new HashMap<String, String[]>();
 
    public GenesisActionProvider(final GenesisProject project) {
       this.project = project;
@@ -77,7 +68,7 @@ public class GenesisActionProvider implements ActionProvider {
 
    public void invokeAction(String key, Lookup lookup) 
          throws IllegalArgumentException {
-      Utils.invokeAction(project, (String[])targetNamesByActionString.get(key));
+      Utils.invokeAction(project, targetNamesByActionString.get(key));
    }
 
    public boolean isActionEnabled(String key, Lookup lookup) 

@@ -134,9 +134,9 @@ public class PersistenceManager {
     */
    public final void save( final Collection< GenesisView > views ) throws Exception {
       // Store properties
-      ProjectManager.getDefault().mutex().writeAccess(
-              new Mutex.ExceptionAction() {
-         public Object run() throws Exception {
+      ProjectManager.mutex().writeAccess(
+              new Mutex.ExceptionAction<Void>() {
+         public Void run() throws Exception {
             storeProperties(views);
             ProjectManager.getDefault().saveProject(project);
             return null;

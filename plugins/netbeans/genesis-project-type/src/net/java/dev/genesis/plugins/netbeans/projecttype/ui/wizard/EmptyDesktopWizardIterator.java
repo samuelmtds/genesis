@@ -67,8 +67,8 @@ public class EmptyDesktopWizardIterator implements WizardDescriptor.Instantiatin
         };
     }
     
-    public Set/*<FileObject>*/ instantiate() throws IOException {
-        Set resultSet = new LinkedHashSet();
+    public Set<FileObject> instantiate() throws IOException {
+        Set<FileObject> resultSet = new LinkedHashSet<FileObject>();
         File dirF = FileUtil.normalizeFile((File) wiz.getProperty("projdir"));
         FileObject dir = FileUtil.createFolder(dirF);
         

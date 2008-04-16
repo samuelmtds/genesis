@@ -128,63 +128,54 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
       ProjectCustomizer.Category general = ProjectCustomizer.Category.create(
               GENERAL,
               bundle.getString( "LBL_General" ), // NOI18N
-              null,
               null );
       //Sources
       ProjectCustomizer.Category sources = ProjectCustomizer.Category.create(
               SOURCES,
               bundle.getString( "LBL_Sources" ), // NOI18N
-              null,
               null );
       //Libraries
       ProjectCustomizer.Category libraries = ProjectCustomizer.Category.create(
               LIBRARIES,
               bundle.getString( "LBL_Libraries" ), // NOI18N
-              null,
               null );
       //Services
       ProjectCustomizer.Category ui = ProjectCustomizer.Category.create(
               UI,
               bundle.getString( "LBL_UI" ), // NOI18N
-              null,
               null );
       ProjectCustomizer.Category scripting = ProjectCustomizer.Category.create(
               SCRIPTING,
               bundle.getString( "LBL_Scripting" ), // NOI18N
-              null,
               null );
       ProjectCustomizer.Category persistence = ProjectCustomizer.Category.create(
               PERSISTENCE,
               bundle.getString( "LBL_Persistence" ), // NOI18N
-              null,
               null );
       ProjectCustomizer.Category validation = ProjectCustomizer.Category.create(
               VALIDATION,
               bundle.getString( "LBL_Validation" ), // NOI18N
-              null,
               null );
       ProjectCustomizer.Category services = ProjectCustomizer.Category.create(
               SERVICES,
               bundle.getString( "LBL_Services" ), // NOI18N
               null,
-              new ProjectCustomizer.Category[] { /*ui, scripting,*/ validation, persistence } );
+              /*ui, scripting,*/ validation, persistence );
       //Build
       ProjectCustomizer.Category build = ProjectCustomizer.Category.create(
               BUILD,
               bundle.getString( "LBL_Build" ), // NOI18N
-              null,
               null );
       //Run
       ProjectCustomizer.Category webstart = ProjectCustomizer.Category.create(
               WEBSTART,
               bundle.getString( "LBL_WebStart" ), // NOI18N
-              null,
               null );
       ProjectCustomizer.Category run = ProjectCustomizer.Category.create(
               RUN,
               bundle.getString( "LBL_Run" ), // NOI18N
               null,
-              new ProjectCustomizer.Category[] { webstart } );
+              webstart );
       
       
       categories = new ProjectCustomizer.Category[] {
@@ -243,10 +234,12 @@ public class GenesisCustomizerProvider implements CustomizerProvider {
       }
       
       // Listening to window events ------------------------------------------
+      @Override
       public void windowClosed( WindowEvent e) {
          dialog = null;
       }
       
+      @Override
       public void windowClosing(WindowEvent e) {
          //Dispose the dialog otherwsie the {@link WindowAdapter#windowClosed}
          //may not be called

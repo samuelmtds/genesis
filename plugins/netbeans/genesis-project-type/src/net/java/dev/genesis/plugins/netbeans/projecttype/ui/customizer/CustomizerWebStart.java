@@ -90,12 +90,12 @@ public class CustomizerWebStart extends GenesisCustomizerProvider.GenesisView {
     }// </editor-fold>//GEN-END:initComponents
     
     
-    // Declaração de variáveis - não modifique//GEN-BEGIN:variables
+    // Declaracao de variaveis - nao modifique//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField6;
-    // Fim da declaração de variáveis//GEN-END:variables
+    // Fim da declaracao de variaveis//GEN-END:variables
     
     private GenesisProjectProperties form;
     
