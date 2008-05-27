@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Estrutura de um projeto vazio para web - genesis</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Allan Jones Batista de Castro
+    "></meta><meta name="email" content="allanjones@dev.java.net"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 27 May 2008
+                <span class="separator">|</span> Doc for  3.1
+                </div><div class="xright">
+        
+        <a href="../index.html">genesis</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><a href="../pt-BR/transactions.html">Suporte a transações</a></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/configuring_swt.html">Funcionalidades específicas para SWT</a><ul><li class="none"><a href="../pt-BR/configuring_swt.html">Configurando as bibliotecas do SWT</a></li></ul></li><li class="expanded"><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a><ul><li class="none"><a href="../pt-BR/conditions.html">Trabalhando com condições</a></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/binding_toggle_buttons.html">Binding de botões de rádio e caixas de seleção</a></li><li class="none"><a href="../pt-BR/binding_strategy.html">Mudando a estratégia de binding</a></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><a href="../pt-BR/handling_errors.html">Tratando erros</a></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><strong><a href="../pt-BR/empty_web_project.html">Para web</a></strong></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></li><li class="none"><a href="../pt-BR/aspects.html">Aspectos do genesis</a></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li><li class="none"><a href="../pt-BR/lookup_strategy.html">Estratégias de pesquisa de componentes gráficos</a></li><li class="none"><a href="../pt-BR/widget_binder.html">Customizando o binding de componentes gráficos</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Como_começar_"></a><h2>Como começar?</h2>
+      <p>O genesis foi criado com o intuito de sempre facilitar e agilizar o
+      processo de desenvolvimento. Para que você possa utilizá-lo da forma mais
+      rápida e fácil, disponibilizamos uma estrutura inteira de um projeto
+      vazio, assim você só precisa codificar suas classes. Todo processo de
+      compilação e instalação já estão configurados nesse projeto vazio.</p>
+      <p>É de extrema importância que você já tenha lido a documentação do
+      genesis e compreenda seus conceitos e funcionalidades. Antes de começar a
+      codificar, leia o <a href="documentation_intro.html">Manual do 
+      Usuário</a>.</p>
+      <p>À estrutura de um projeto vazio chamamos de <code>empty-web-project</code>
+      e este está presente na distribuição empty-web-project ou na distribuição 
+      completa do genesis. A estrutura se encontra no diretório
+      <code><b>&lt;DISTRIBUICAO_DO_GENESIS&gt;/samples/empty-web-project/</b></code>.</p>
+      <p>Veja exemplos de configuração para diferentes cenários <a href="#Cenários">aqui</a>.</p>
+    </div><div class="section"><a name="O_que_é_necessário_"></a><h2>O que é necessário?</h2>
+      <p>Além do genesis, é necessário ter instalado:</p>
+      <ul>
+        <li>Distribuição do genesis juntamente com as suas bibliotecas de
+        dependências.</li>
+        <li>Servidor <a href="http://www.jboss.org/" class="externalLink" title="External Link">JBoss</a>. Recomendamos
+        alguma das versões 3.2.x, 4.x ou 4.2.x</li>
+        <li>Para compilar e instalar a aplicação, recomendamos 
+        <a href="http://ant.apache.org/" class="externalLink" title="External Link">Apache Ant</a> 1.7.0.</li>
+      </ul>
+    </div><div class="section"><a name="Configurando_um_novo_projeto"></a><h2>Configurando um novo projeto</h2>
+      <p>Você pode copiar toda estrutura do <b>empty-web-project</b> para um
+      diretório de desenvolvimento de sua escolha. O primeiro passo para
+      configurar um novo projeto é copiar o arquivo
+      <code>build.properties.sample</code> para outro arquivo com nome <code>
+      build.properties</code>. O arquivo <code>build.properties</code> define
+      certas propriedades que são específicas do desenvolvedor. O
+      conteúdo inicial do arquivo <code>build.properties.sample</code> segue
+      abaixo:</p>
+
+    <div class="source"><pre>
+## Developer specific properties sample ##
+
+#################################################################################
+## The following property must be defined in build.properties with an           #
+## appropriate value for the local environment                                  #
+jboss.home=/opt/jboss-4.2.0.GA
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  #
+## need to be defined in build.properties if their values are different in your #
+## local setup                                                                  #
+#genesis.home=../../genesis
+</pre></div>
+  
+      <p>Pelo menos uma propriedade necessita ser definida:</p>
+      <ul>
+        <li><code><b>jboss.home</b></code>: Indica o diretório de instalação do
+        servidor JBoss 3.2.x, 4.0.x ou 4.2.x</li>
+      </ul>
+      <p>Existem outras propriedades que não são obrigatórias pois já possuem um
+      valor padrão, porém elas podem ser redefinidas. Segue abaixo uma
+      delas:</p>
+      <ul>
+        <li><code><b>genesis.home</b></code>: Indica o diretório de instalação
+        do genesis. Geralmente o diretório será algo do tipo <code><b>&lt;
+        ALGUM_DIRETÓRIO&gt;/genesis-&lt;versão&gt;/genesis</b></code></li>
+      </ul>
+      <p>O arquivo <code>project.properties</code> define
+      certas propriedades que são específicas do projeto. O
+      conteúdo inicial do arquivo <code>project.properties</code> segue abaixo:</p>
+
+    <div class="source"><pre>
+## Project specific properties ##
+
+#################################################################################
+## The following property must be defined in build.properties with an           #
+## appropriate value for the local environment                                  #
+genesisBasedApplication.name=empty-web-project
+genesisBasedApplication.prettyName=Empty Web Project
+#################################################################################
+
+
+#################################################################################
+## These properties already have a default value defined in build.xml and only  #
+## need to be defined in build.properties if their values are different in your #
+## local setup                                                                  #
+#jboss.datasource.jndi.name=java:/DefaultDS
+#jboss.datasource.config.xml=${jboss.home}/server/default/deploy/hsqldb-ds.xml
+#hibernate.dialect=net.sf.hibernate.dialect.HSQLDialect
+#hibernate.version=2.1.8
+#hibernate.show.sql=true
+#hibernate.session.factory.jndi.name=jboss:/hibernate/SessionFactory
+#hibernate.jboss.service.name=HibernateFactory,name=HibernateFactory
+#################################################################################
+</pre></div>
+  
+      <p>Pelo menos duas propriedades necessitam ser definidas:</p>
+      <ul>
+        <li><code><b>genesisBasedApplication.name</b></code>: Escolha um nome
+        para seu projeto, de preferência sem espaços.</li>
+        <li><code><b>genesisBasedApplication.prettyName</b></code>: Define um
+        nome descritivo para o projeto. Esse nome pode conter espaços.</li>
+      </ul>
+      <p>Existem outras propriedades que não são obrigatórias pois já possuem um
+      valor padrão, porém elas podem ser redefinidas. Segue abaixo algumas
+      delas:</p>
+      <ul>
+        <li><code><b>jboss.datasource.config.xml</b></code>: Indica o arquivo de configuração
+        do pool de conexões do JBoss. Você pode fornecer outro arquivo
+        que contenha as configurações personalizadas de seu próprio banco de dados.</li>
+        <li><code><b>hibernate.dialect</b></code>: Indica o dialeto que o Hibernate
+        deve utilizar para gerar os comandos SQL para o banco. Se você for utilizar outro banco
+        que não for o HSQLDB você deve fornecer o dialeto correto. Para informações sobre qual
+        dialeto você deve utilizar, consulte a documentação do
+        <a href="http://www.hibernate.org/" class="externalLink" title="External Link">Hibernate</a>.</li>
+      </ul>
+      <p>Para facilitar o entendimento, vamos imaginar um cenário para criação
+      de um novo projeto utilizando o genesis.</p>
+      <ul>
+        <li>Possuímos o JBoss 4.2.0.GA instalado no diretório
+        <code>C:\servidores\jboss-4.2.0.GA</code></li>
+        <li>Instalamos a distribuição do genesis no diretório
+        <code>C:\projetos</code>, onde que criará o diretório
+        <code>C:\projetos\genesis-&lt;versão&gt;</code>.</li>
+        <li>O projeto se chamará <b>helloworld</b> e seu nome descritivo será <b>
+        Hello World</b>.</li>
+      </ul>
+      <p>O nosso <code><b>build.properties</b></code> poderá ser:</p>
+
+    <div class="source"><pre>
+jboss.home=c:/servidores/jboss-4.2.0.GA
+genesis.home=c:/projetos/genesis-&lt;versão&gt;/genesis
+</pre></div>
+  
+      <p>E o nosso <code><b>project.properties</b></code> poderá ser:</p>
+
+    <div class="source"><pre>
+genesisBasedApplication.name=helloworld
+genesisBasedApplication.prettyName=Hello World
+</pre></div>
+  
+    </div><div class="section"><a name="Desenvolvendo_com_o_genesis"></a><h2>Desenvolvendo com o genesis</h2>
+      <p>Existem dois diretórios de fontes no projeto:</p>
+      <ul>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/src</b>: Diretório
+        que contém todos os arquivos fontes que dizem respeito a parte web
+        da sua aplicação (servlets, context listeners, e outras classes ligadas a parte
+        visual da aplicação).</li>
+        <li><b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/shared/src</b>: Diretório
+        que contém os arquivos fontes que são comuns tanto a parte web da
+        aplicação quanto ao container ejb da aplicação. Geralmente são
+        colocados nesse diretório de fontes as classes que representam a lógica
+        de negócio e possuem os métodos remotos/transacionais da aplicação
+        (<b>Commands</b>). Juntamente com os Commands, temos aquilo que chamamos
+        de <b>Databeans</b>, ou seja, os objetos que são mapeados do Hibernate,
+        pois estes objetos são passados desde a camada de visualização até a
+        camada de persistência.</li>
+      </ul>
+      <p>No diretório web da aplicação, encontramos ainda o diretório
+      <b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/content</b> onde deve ser colocado
+      os arquivos html, jsp, javascript, imagens, xml de configuração e outros
+      arquivos que geralmente ficam empacotados em um war.</p>
+      <p>Outro diretório é <b>&lt;DIRETÓRIO_DO_PROJETO&gt;/modules/web/lib</b>
+      onde deve ser colocado as bibliotecas utilizadas na parte web da aplicação,
+      como por exemplo struts.jar (se você estiver usando Struts).</p>
+    </div><div class="section"><a name="Compilando_e_instalando_sua_aplicação"></a><h2>Compilando e instalando sua aplicação</h2>
+      <p>O projeto pode ser compilado e instalado no JBoss utilizando a
+      ferramenta <a href="http://ant.apache.org/" class="externalLink" title="External Link">Ant</a>.</p>
+      <p>Para compilar e instalar a sua aplicação temos as seguintes tarefas
+      básicas do Ant:</p>
+      <ul>
+        <li><b>all</b>: Compila sua aplicação, gera os pacotes jar, sar e war além
+        de fazer o deploy da sua aplicação</li>
+        <li><b>clean</b>: Apaga todos os arquivos gerados numa compilação.</li>
+        <li><b>clean-build</b>: Equivalente a chamar as tarefas <code>clean</code> e 
+        <code>all</code> em seqüência</li>
+      </ul>
+      <p>A maneira rápida de colocar seu projeto para rodar:
+
+    <div class="source"><pre>
+ant all
+&lt;DIRETÓRIO_DO_JBOSS&gt;/bin/run -c &lt;genesisBasedApplication.name&gt;
+
+Depois, basta acessar a sua aplicação web no endereço correspondente, por exemplo:
+http://localhost:8080/&lt;genesisBasedApplication.name&gt;
+</pre></div>
+  
+      </p>
+    </div><div class="section"><a name="Cenários"></a><h2>Cenários</h2>
+       <p>Abaixo temos exemplos de configuração do genesis para alguns cenários</p>
+       <div class="subsection"><a name="Aplicação_WEB_usando_MySQL_e_Struts"></a><h3>Aplicação WEB usando MySQL e Struts</h3>
+<p>Arquivo <b>build.properties</b></p>
+
+    <div class="source"><pre>
+### Indique a pasta onde se encontra a distribuição do genesis
+genesis.home=D:/opensource/genesis-3.0/genesis
+  
+### Indique a pasta de instalação do JBoss
+jboss.home=D:/servers/jboss-4.2.0.GA
+</pre></div>
+  
+<p>Arquivo <b>conf/mysql-ds.xml</b></p>
+
+    <div class="source"><pre>
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!-- $Id: empty_web_project.html,v 1.1.1.1 2008-05-27 21:29:19 sol Exp $ --&gt;
+&lt;!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+--&gt;
+
+&lt;datasources&gt;
+  &lt;local-tx-datasource&gt;
+    &lt;jndi-name&gt;MySqlDS&lt;/jndi-name&gt;
+    &lt;connection-url&gt;jdbc:mysql://localhost:3306/meudatabase&lt;/connection-url&gt;
+    &lt;driver-class&gt;com.mysql.jdbc.Driver&lt;/driver-class&gt;
+    &lt;user-name&gt;meuusuario&lt;/user-name&gt;
+    &lt;password&gt;minhasenha&lt;/password&gt;
+    &lt;exception-sorter-class-name&gt;org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter&lt;/exception-sorter-class-name&gt;
+    &lt;!-- should only be used on drivers after 3.22.1 with "ping" support
+    &lt;valid-connection-checker-class-name&gt;org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker&lt;/valid-connection-checker-class-name&gt;
+    --&gt;
+    &lt;!-- sql to call when connection is created
+    &lt;new-connection-sql&gt;some arbitrary sql&lt;/new-connection-sql&gt;
+      --&gt;
+    &lt;!-- sql to call on an existing pooled connection when it is obtained from pool - MySQLValidConnectionChecker is preferred for newer drivers
+    &lt;check-valid-connection-sql&gt;some arbitrary sql&lt;/check-valid-connection-sql&gt;
+      --&gt;
+
+    &lt;!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) --&gt;
+    &lt;metadata&gt;
+       &lt;type-mapping&gt;mySQL&lt;/type-mapping&gt;
+    &lt;/metadata&gt;
+  &lt;/local-tx-datasource&gt;
+&lt;/datasources&gt;
+
+</pre></div>
+  
+<p>Arquivo <b>project.properties</b></p>
+
+    <div class="source"><pre>
+genesisBasedApplication.name=minhaaplicacao
+genesisBasedApplication.prettyName=Minha Aplicação
+
+### Indique o local onde o jar do driver do MySQL se encontra
+jdbc.driver=lib/mysql/mysqlconnector.jar
+  
+## Configurações de seu Banco de Dados
+jboss.datasource.jndi.name=java:/MySqlDS
+jboss.datasource.config.xml=conf/mysql-ds.xml
+hibernate.dialect=net.sf.hibernate.dialect.MySQLDialect
+
+## Não é necessário nenhuma outra configuração, basta colocar as 
+## bibliotecas do struts no diretório modules/web/lib
+## Bibliotecas necessárias ao módulo shared, colocar no diretório 
+## modules/shared/lib
+## Bibliotecas necessárias tanto ao módulo shared quanto web colocar 
+## no diretório lib
+</pre></div>
+  
+       </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2008, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
