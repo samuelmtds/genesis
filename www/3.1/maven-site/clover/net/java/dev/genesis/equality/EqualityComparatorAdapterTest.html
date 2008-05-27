@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SOL Genesis - 3.1-dev</title>
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../style.css" TITLE="Style">
+</head>
+<body>
+<TABLE cellspacing="0" cellpadding="2"><TBODY>
+    <!-- C:\ projetos\ genesis\ genesis\ modules\ client\ test-src\ net\ java\ dev\ genesis\ equality\ EqualityComparatorAdapterTest.java -->
+  <TR>
+    <TD colspan="6" class="reportHeader">
+    <TABLE width="100%"><TR>
+    <TD valign="top" class="titleText">Clover coverage report -   SOL Genesis - 3.1-dev <DIV class="timestamp"><b>Coverage timestamp:</b>&nbsp;Fri Jul 6 2007 14:22:32 GMT-03:00</DIV>
+            <DIV class="navBar"><a href="../../../../../pkgs-summary.html"><b>Overview</b></a>&nbsp;&nbsp;&nbsp;<a href="pkg-summary.html"><b>Package</b></a>&nbsp;&nbsp;&nbsp;<font class="navBarCurrent">File</font></DIV>
+    
+<DIV class="navBarLink">
+&nbsp;&nbsp;&nbsp;
+    <A HREF="../../../../../index.html" TARGET="_top">FRAMES</A>&nbsp;&nbsp;
+<A HREF="EqualityComparatorAdapterTest.html" TARGET="_top">NO FRAMES</A>&nbsp;&nbsp;
+    </DIV>
+
+</TD>
+         <td class="headerStats" valign="top" width="40%" align="right">
+        <table align="right">
+         <tr>
+           <td nowrap><b>file stats:</b></td>
+           <td align="right"><b>LOC:</b></td>
+           <td align="right">66</td>
+           <td width="10%">&nbsp;</td>
+           <td align="right"><b>Methods:</b></td>
+           <td align="right">2</td>
+         </tr>
+         <tr>
+           <td></td>
+           <td align="right"><b>NCLOC:</b></td>
+           <td align="right">37</td>
+           <td width="10%">&nbsp;</td>
+           <td align="right"><b>Classes:</b></td>
+           <td align="right">1</td>
+         </tr>
+      </table>
+     </td>
+    </TR></TABLE>
+   </TD>
+  </TR>
+
+<TR><TD class="hbreak" colspan="6">&nbsp;</TD></TR>
+  <TR>
+    <TD class="graphHeaderLeft"><b>&nbsp;Source file</b></TD>
+    <TD class="graphHeader">Conditionals</TD>
+    <TD class="graphHeader">Statements</TD>
+    <TD class="graphHeader">Methods</TD>
+    <TD class="graphHeader" align="left" colspan="2"><B>TOTAL</B></TD>
+  </TR>   
+  <TR>
+    <TD class="graphItem">
+        	   EqualityComparatorAdapterTest.java
+	    </TD>
+   
+    <TD class="graphPercent" align="center">100%</TD>
+    <TD class="graphPercent" align="center">95.7%</TD>
+    <TD class="graphPercent" align="center">100%</TD>
+    <TD class="graphBarLeft" align="center"><B>96.8%</B></TD>
+    <TD class="graphBar">
+            <TABLE class="barGraph" cellspacing="0">
+        <TBODY>
+          <TR>
+	               <TD class="covered"><img alt="coverage" src="../../../../../img/trans.gif"
+                   width="193" height="12"></TD>
+            <TD class="uncovered"><img alt="coverage" src="../../../../../img/trans.gif"
+                   width="7" height="12"></TD>
+	   	  </TR>
+	</TBODY>
+      </TABLE>
+          </TD>
+  </TR> 
+</TBODY></TABLE><TABLE cellspacing="0" cellpadding="0" class="srcView"><TBODY>
+<TR><TD align="right" class="lineCount">
+&nbsp;1</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment">/*</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;2</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * The Genesis Project</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;3</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * Copyright (C) 2007  Summa Technologies do Brasil Ltda.</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;4</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * </span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;5</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * This library is free software; you can redistribute it and/or</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;6</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;7</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * License as published by the Free Software Foundation; either</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;8</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * version 2.1 of the License, or (at your option) any later version.</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;9</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * </span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;10</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * This library is distributed in the hope that it will be useful,</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;11</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;12</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;13</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * Lesser General Public License for more details.</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;14</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * </span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;15</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * You should have received a copy of the GNU Lesser General Public</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;16</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * License along with this library; if not, write to the Free Software</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;17</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;18</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="comment"> */</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;19</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="keyword">package</span> net.java.dev.genesis.equality;</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;20</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;21</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="keyword">import</span> java.util.Comparator;</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;22</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="keyword">import</span> net.java.dev.genesis.GenesisTestCase;</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;23</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+<A name="EqualityComparatorAdapterTest">&nbsp;24</A></TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"><span class="keyword">public</span> <span class="keyword">class</span> EqualityComparatorAdapterTest <span class="keyword">extends</span> GenesisTestCase {</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;25</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 25: method entered 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 25: method entered 1 time.">   <span class="keyword">public</span> <span class="keyword">void</span> testComparator() {</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;26</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 26: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 26: statement executed 1 time.">      Comparator adaptee = <span class="keyword">new</span> Comparator() {</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;27</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 27: method entered 13 times.">&nbsp;13</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 27: method entered 13 times.">         <span class="keyword">public</span> <span class="keyword">int</span> compare(Object o1, Object o2) {</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;28</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 28: statement executed 13 times.">&nbsp;13</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 28: statement executed 13 times.">            Comparable c1 = (Comparable)o1;</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;29</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 29: statement executed 13 times.">&nbsp;13</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 29: statement executed 13 times.">            Comparable c2 = (Comparable)o2;</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;30</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;31</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 31: statement executed 13 times.">&nbsp;13</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 31: statement executed 13 times.">            <span class="keyword">return</span> c1 != <span class="keyword">null</span> ? (c2 == <span class="keyword">null</span> ? -1 : -c1.compareTo(c2)) : </A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;32</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 32: expression evaluated to true 1 time, false 1 time.">&nbsp;2</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 32: expression evaluated to true 1 time, false 1 time.">               (c2 == <span class="keyword">null</span> ? 0 : 1);</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;33</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">         }</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;34</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">      };</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;35</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">      </SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;36</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 36: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 36: statement executed 1 time.">      EqualityComparatorAdapter comparator = <span class="keyword">new</span> EqualityComparatorAdapter(</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;37</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">            adaptee);</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;38</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;39</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 39: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 39: statement executed 1 time.">      String s1 = <span class="string">"a"</span>;</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;40</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 40: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 40: statement executed 1 time.">      String s2 = <span class="string">"b"</span>;</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;41</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 41: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 41: statement executed 1 time.">      Integer i1 = <span class="keyword">new</span> Integer(1);</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;42</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 42: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 42: statement executed 1 time.">      Integer i2 = <span class="keyword">new</span> Integer(2);</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;43</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;44</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 44: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 44: statement executed 1 time.">      assertTrue(comparator.equals(<span class="keyword">null</span>, <span class="keyword">null</span>));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;45</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 45: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 45: statement executed 1 time.">      assertFalse(comparator.equals(<span class="keyword">null</span>, s1));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;46</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 46: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 46: statement executed 1 time.">      assertFalse(comparator.equals(s1, <span class="keyword">null</span>));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;47</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;48</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 48: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 48: statement executed 1 time.">      assertTrue(comparator.equals(s1, s1));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;49</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 49: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 49: statement executed 1 time.">      assertTrue(comparator.equals(s1, <span class="keyword">new</span> String(<span class="string">"a"</span>)));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;50</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 50: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 50: statement executed 1 time.">      assertFalse(comparator.equals(s1, s2));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;51</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;52</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 52: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 52: statement executed 1 time.">      assertTrue(comparator.equals(i1, i1));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;53</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 53: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 53: statement executed 1 time.">      assertTrue(comparator.equals(i1, <span class="keyword">new</span> Integer(1)));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;54</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 54: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 54: statement executed 1 time.">      assertFalse(comparator.equals(i1, i2));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;55</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">      </SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;56</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 56: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 56: statement executed 1 time.">      <span class="keyword">try</span> {</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;57</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 57: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 57: statement executed 1 time.">         assertFalse(comparator.equals(s1, i1));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;58</TD>
+<TD align="right" class="coverageCountHilight">
+<A title="Line 58: statement not executed.">&nbsp;0</A>
+</TD><TD class="srcCell"><SPAN class="srcLineHilight"><A title="Line 58: statement not executed.">         fail(<span class="string">"A ClassCastException should be thrown"</span>);</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;59</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">      } <span class="keyword">catch</span> (ClassCastException cce) {</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;60</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">         <span class="comment">// expected</span></SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;61</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">      }</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;62</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine"></SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;63</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 63: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 63: statement executed 1 time.">      assertEquals(-i2.compareTo(i1), adaptee.compare(i2, i1));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCountHilight">
+&nbsp;64</TD>
+<TD align="right" class="lineCountHilight">
+<A title="Line 64: statement executed 1 time.">&nbsp;1</A>
+</TD><TD class="srcCell"><SPAN class="srcLine"><A title="Line 64: statement executed 1 time.">      assertEquals(comparator.compare(i2, i1), adaptee.compare(i2, i1));</A>
+</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;65</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">   }</SPAN></TD></TR><TR><TD align="right" class="lineCount">
+&nbsp;66</TD>
+<TD align="right" class="coverageCount">
+&nbsp;&nbsp;
+</TD><TD class="srcCell"><SPAN class="srcLine">}</SPAN></TD></TR></TBODY></TABLE>
+<TABLE width="100%"><TR><TD class="hbreak" colspan="6">&nbsp;</TD></TR>
+<TR><TD class="footer" colspan="6">
+<table>
+<tr>
+ <td><a target="_new" href="http://www.cenqua.com/clover?dCa"><img alt="Clover" src="../../../../../img/logo.gif" border="0"></a></td><td nowrap><i>Report generated by </i><a target="_new" href="http://www.cenqua.com/clover?dCa">Clover Code Coverage v1.3.9</a><i><BR>Fri Jul 6 2007 14:22:48 GMT-03:00</i>.</td>
+<td>&nbsp;</td><td style="BORDER-LEFT: #9c9c9c 1px solid;">&nbsp;</td><td>Open Source License registered to the genesis Project. This license of Clover is provided to support the development of genesis only. </td>
+</tr>
+</table>
+</td>
+</tr></TABLE>
