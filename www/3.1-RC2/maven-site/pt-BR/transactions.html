@@ -1,70 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Suporte a transações - genesis</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 April 2008
-                <span class="separator">|</span> Doc for  3.1-RC2
-                </div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><strong><a href="../pt-BR/transactions.html">Suporte a transações</a></strong></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/configuring_swt.html">Funcionalidades específicas para SWT</a><ul><li class="none"><a href="../pt-BR/configuring_swt.html">Configurando as bibliotecas do SWT</a></li></ul></li><li class="expanded"><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a><ul><li class="none"><a href="../pt-BR/conditions.html">Trabalhando com condições</a></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/binding_toggle_buttons.html">Binding de botões de rádio e caixas de seleção</a></li><li class="none"><a href="../pt-BR/binding_strategy.html">Mudando a estratégia de binding</a></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><a href="../pt-BR/handling_errors.html">Tratando erros</a></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Para web</a></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></li><li class="none"><a href="../pt-BR/aspects.html">Aspectos do genesis</a></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li><li class="none"><a href="../pt-BR/lookup_strategy.html">Estratégias de pesquisa de componentes gráficos</a></li><li class="none"><a href="../pt-BR/widget_binder.html">Customizando o binding de componentes gráficos</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Suporte_a_transações"></a><h2>Suporte a transações</h2>
-      <p>Para executar um método dentro de uma transação, basta usar a anotação
-      <code>@Transactional</code> de forma similar ao uso de <code>@Remotable
-      </code>, como abaixo:</p>
-      
-    <div class="source"><pre>
-@Transactional
-public void metodoTransacional() {
-   // codigo do metodo
+<html>
+<head>
+<title>Redirecting to ../../../3.1/maven-site/pt-BR/transactions.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.1/maven-site/pt-BR/transactions.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.1/maven-site/pt-BR/transactions.html';
 }
-</pre></div>
-  
-      <p>O uso de <code>@Transactional</code> automaticamente implica em tornar
-      um método <code>@Remotable</code>, de modo que o uso de apenas uma dessas
-      anotações por método é necessário. Além de manter as características de
-      remotabilidade transparente, <code>@Transactional</code> faz com que o
-      método seja executado dentro de uma transação JTA. Quaisquer recursos
-      transacionais que sejam acessados durante sua execução e tenham suporte a
-      JTA serão automaticamente incluídos na transação. O contexto transacional
-      se propagará automaticamente para qualquer outro componente ou método que
-      for invocado durante a execução do método <code>@Transactional</code>, sem
-      que nenhuma programação adicional tenha de ser feita para isso.</p>
-      <p>Se a execução do método transcorrer normalmente, a transação será
-      automaticamente comitada ao final. Caso seja lançada qualquer exceção
-      haverá rollback automático das alterações e a exceção será propagada
-      diretamente ao código cliente.</p>
-    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2008, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
