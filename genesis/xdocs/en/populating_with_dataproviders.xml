@@ -154,11 +154,8 @@ public class DataProviderFormExample {
           <ul>
             <li><b>key</b>: name of the property of the bean that will be used 
             for populating the component, whose value is unique per instance.
-            If that property isn't defined, the value returned
-            by <code>System.identityHashCode(Object)</code> is used for common java
-            objects, or the value returned by <code>toString()</code> is used for
-            enums (<code>java.lang.Enum</code> or 
-            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            If it isn't defined, the <code>String</code> produced by the 
+            formatter will be used instead.</li>
             <li><b>value</b>: name of the property used for displaying the bean. 
             If that property isn't defined, the registered formatter or the default
             formatter is used.</li>
@@ -237,11 +234,8 @@ private JComboBox stateComboBox;
           <ul>
             <li><b>SwingBinder.KEY_PROPERTY</b>: name of the property of the 
             bean that will be used for populating the component, whose value is 
-            unique per instance. If that property isn't defined, the value returned
-            by <code>System.identityHashCode(Object)</code> is used for common java
-            objects, or the value returned by <code>toString()</code> is used for
-            enums (<code>java.lang.Enum</code> or 
-            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            unique per instance. If it isn't defined, the  <code>String</code> 
+            produced by the formatter will be used instead.</li>
             <li><b>SwingBinder.VALUE_PROPERTY</b>: name of the property used for displaying the bean. 
             If that property isn't defined, the registered formatter or the default
             formatter is used.</li>
@@ -392,11 +386,8 @@ private Combo stateComboBox;
           <ul>
             <li><b>SWTBinder.KEY_PROPERTY</b>: name of the property of the 
             bean that will be used for populating the component, whose value is 
-            unique per instance. If that property isn't defined, the value returned
-            by <code>System.identityHashCode(Object)</code> is used for common java
-            objects, or the value returned by <code>toString()</code> is used for
-            enums (<code>java.lang.Enum</code> or 
-            <code>net.java.dev.reusablecomponents.lang.Enum</code>).</li>
+            unique per instance. If it isn't defined, the <code>String</code> 
+            produced by the formatter will be used instead.</li>
             <li><b>SWTBinder.VALUE_PROPERTY</b>: name of the property used for 
             displaying the bean. If that property isn't defined, the registered
             formatter or the default formatter is used.</li>
