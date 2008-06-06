@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,8 +29,12 @@ import net.java.dev.genesis.script.ScriptExpression;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class FieldMetadata extends MemberMetadata {
+   private static final Log log = LogFactory.getLog(FieldMetadata.class);
+
    private final String fieldName;
    private final Class fieldClass;
    private final boolean writeable;
@@ -137,11 +141,17 @@ public class FieldMetadata extends MemberMetadata {
       if (emptyResolver == null) {
          emptyResolver = EmptyResolverRegistry.getInstance()
                .getDefaultEmptyResolverFor(getFieldClass());
+         emptyValue = DefaultValueRegistry.getInstance().get(getFieldClass(),
+               true);
       }
       if (converter == null) {
          converter = ConvertUtils.lookup(getFieldClass());
-         emptyValue = DefaultValueRegistry.getInstance().get(getFieldClass(),
-               true);
+         
+         if (converter == null) {
+            log.warn("Field " + fieldName + " in " + fieldClass.getName() + 
+                  " does not have an associated converter; perhaps " +
+                  "new StartupHelper().initialize() hasn't been invoked?");
+         }
       }
       if (cloner == null) {
          cloner = ClonerRegistry.getInstance().getDefaultClonerFor(
