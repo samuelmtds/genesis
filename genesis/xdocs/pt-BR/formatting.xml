@@ -267,6 +267,28 @@ binder.bind();
         <code>virtual:</code>, isso não afeta a formação do nome da propriedade
         na hora de registrar o formatador.</p>
       </subsection>
+      <subsection name="Utilizando expressões de script para formatação">
+        <p>A partir da versão 3.1, uma nova implementação de 
+        <code>Formatter</code> permite formatar os dados utilizando uma 
+        expressão de script - 
+        <code>net.java.dev.genesis.text.ScriptFormatter</code>.</p>
+        <p>Um exemplo de criação de uma nova instância dessa classe encontra-se 
+        abaixo. Supondo que exista uma classe com as propriedades 
+        <code>codigo</code> e <code>descricao</code> e que a linguagem de script
+        seja JavaScript, o seguinte trecho de código:</p>
+<source>
+Formatter f = new ScriptFormatter(form, "o.codigo + ' - ' + o.descricao");
+</source>
+        <p>permite formatar uma instância com valores <code>[codigo=1, 
+        descricao="Valor"]</code> como <code>1 - Valor</code>.</p>
+        <p>O nome de variável <code>o</code> é usado por padrão, mas é possível
+        substituí-lo por outro se necessário utilizando o terceiro parâmetro da 
+        outra versão do construtor.</p>
+        <p>É importante ter em mente que <b>o construtor de 
+        <code>ScriptFormatter</code> só pode ser chamado após a criação do 
+        binder</b>, pois é necessário que certos objetos de uso interno do 
+        genesis já tenham sido inicializados.</p>
+      </subsection>
     </section>
   </body>
 </document>
