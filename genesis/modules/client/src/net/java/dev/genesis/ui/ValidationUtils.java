@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -112,8 +112,8 @@ public final class ValidationUtils {
          field = form.getField(property);
          result = results.getValidatorResult(property);
 
-         for (final Iterator actionNames = result.getActionMap().keySet()
-                                       .iterator(); actionNames.hasNext(); ) {
+         for (final Iterator actionNames = result.getActions();  
+               actionNames.hasNext(); ) {
             actionName = actionNames.next().toString();
 
             if (result.isValid(actionName)) {
