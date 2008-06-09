@@ -104,5 +104,10 @@
                 method="validateJXPath" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.jxpath"/>			
+        <validator name="url" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateUrl" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.url"/>			
     </global>
 </form-validation>

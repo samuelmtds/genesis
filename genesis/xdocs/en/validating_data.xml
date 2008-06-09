@@ -151,6 +151,11 @@
                 method="validateScript" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.script"/>
+        <validator name="url" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateUrl" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.url"/>			
     </global>
 </form-validation>
 ]]>
@@ -649,6 +654,21 @@ The login field can not be less than 4 characters.
  * @genesis.validator-args arg0resource="Entity.shortField"
  *
  * @genesis.validator type="short"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>url</code></td>
+            <td>Checks if the input represents a valid URL</td>
+            <td>None</td>
+            <td>0 - Property name</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entity.urlField"
+ *
+ * @genesis.validator type="url"
  */
 </source>
             </td>

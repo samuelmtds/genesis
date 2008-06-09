@@ -620,4 +620,44 @@ public class ValidatorTest extends TestCase {
       map.put(field2, "10");
       valueTest(map, methodName, field, action, true);
    }
+
+   public void testUrl() throws Exception {
+      final Field field = form.getField("url");
+      final String methodName = "validateUrl";
+      final String action = "url";
+      final Map map = new HashMap();
+
+      map.put(field.getProperty(), "");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "          ");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "https://genesis.dev.java.net/");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "https://genesis.dev.java.net");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "http://genesis.dev.java.net");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "http://genesis.dev.java.net/nonav/");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "http://genesis.dev.java.net/non_existent_page.html");
+      valueTest(map, methodName, field, action, true);
+
+      map.put(field.getProperty(), "genesis.dev.java.net");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "xpto://genesis.dev.java.net/");
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), new Object());
+      valueTest(map, methodName, field, action, false);
+
+      map.put(field.getProperty(), "invalid");
+      valueTest(map, methodName, field, action, false);
+   }
 }

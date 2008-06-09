@@ -278,4 +278,11 @@ public class BasicValidator {
 
       return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("script")));
    }
+
+   public static boolean validateUrl(Object bean, Field field) {
+      String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
+
+      return GenericValidator.isBlankOrNull(value) || GenericValidator.isUrl(
+            value);
+   }
 }

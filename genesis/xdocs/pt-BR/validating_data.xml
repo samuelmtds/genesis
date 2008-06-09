@@ -152,6 +152,11 @@
                 method="validateScript" 
                 methodParams="java.lang.Object,org.apache.commons.validator.Field" 
                 msg="errors.script"/>
+        <validator name="url" 
+                classname="net.java.dev.genesis.ui.BasicValidator" 
+                method="validateUrl" 
+                methodParams="java.lang.Object,org.apache.commons.validator.Field" 
+                msg="errors.url"/>			
     </global>
 </form-validation>
 ]]>
@@ -652,6 +657,21 @@ O campo login precisa ter pelo menos 4 caracteres.
  * @genesis.validator-args arg0resource="Entidade.campoShort"
  *
  * @genesis.validator type="short"
+ */
+</source>
+            </td>
+         </tr>
+         <tr>
+            <td><code>url</code></td>
+            <td>Verifica representa uma URL válida</td>
+            <td>Nenhuma</td>
+            <td>0 - Nome da propriedade</td>
+            <td>
+<source>
+/**
+ * @genesis.validator-args arg0resource="Entidade.campoUrl"
+ *
+ * @genesis.validator type="url"
  */
 </source>
             </td>

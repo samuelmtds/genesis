@@ -48,6 +48,7 @@ public class ValueBean implements Serializable {
    private BigDecimal max;
    private String jxpath;
    private Integer jxpathDependency;
+   private String url;
 
    public Object getRequired() {
       return required;
@@ -318,5 +319,17 @@ public class ValueBean implements Serializable {
 
    public void setJxpathDependency(Integer jxpathDependency) {
       this.jxpathDependency = jxpathDependency;
+   }
+
+   public String getUrl() {
+      return url;
+   }
+
+   /**
+    * @genesis.validator type="url"
+    * @genesis.validator-args arg0resource="validatorTest.url"
+    */
+   public void setUrl(String url) {
+      this.url = url;
    }
 }
