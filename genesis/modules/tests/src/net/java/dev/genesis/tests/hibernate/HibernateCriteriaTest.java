@@ -73,6 +73,15 @@ public class HibernateCriteriaTest extends TestCase {
       assertNotSame(map, ((CriteriaResolver)c2).getPropertiesMap());
    }
 
+   public void testCriteriaCallWithoutPropertiesMap() throws Exception {
+      try {
+         new CriteriaTester().find();
+         fail();
+      } catch (IllegalArgumentException iae) {
+         // expected
+      }
+   }
+
    public static class CriteriaTester extends AbstractHibernateCriteria {
 
       public void setCode(String code) {

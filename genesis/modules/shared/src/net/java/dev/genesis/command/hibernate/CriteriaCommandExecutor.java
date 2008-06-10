@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
    private final String[] orderBy;
    private final boolean[] isAsc;
 
-   private Map propertiesMap;
+   private final Map propertiesMap;
 
    public CriteriaCommandExecutor(Object realCommand, String methodName,
          String[] classNames, Object[] args, String persisterClassName,
@@ -50,6 +50,14 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
       this.persisterClassName = persisterClassName;
       this.orderBy = orderBy;
       this.isAsc = isAsc;
+      
+      if (propertiesMap == null) {
+         throw new IllegalArgumentException("A null propertiesMap was found " +
+               "while trying to build a CriteriaCommandExecutor; perhaps you " +
+               "forgot to call CriteriaPropertyHelper.fillCriteria(command, " +
+               "form)?"); 
+      }
+
       this.propertiesMap = propertiesMap;
    }
 
