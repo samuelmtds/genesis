@@ -70,7 +70,7 @@ public class ComponentBinderHelper {
    }
 
    public static String getKey(SwingBinder binder, JComponent component, 
-         String name, Object value) throws Exception {
+         final String name, final Object value) throws Exception {
       String keyPropertyName = (String) component.getClientProperty(
             SwingBinder.KEY_PROPERTY);
 
@@ -78,9 +78,20 @@ public class ComponentBinderHelper {
          Object o = (value == null) ? null : getValue(binder, component, value, 
                keyPropertyName);
 
-         return binder.format(name, keyPropertyName, o);
+         return check(binder.format(name, keyPropertyName, o), binder, name, 
+               value);
       }
 
-      return format(binder, component, value);
+      return check(format(binder, component, value), binder, name, value);
+   }
+   
+   private static String check(String formattedKey, SwingBinder binder, 
+         String name, Object value) {
+      if (formattedKey == null) {
+         throw new IllegalStateException("Key produced for " + name + " in " + 
+               binder.getForm() + " using value " + value + " was null");
+      }
+      
+      return formattedKey;
    }
 }
