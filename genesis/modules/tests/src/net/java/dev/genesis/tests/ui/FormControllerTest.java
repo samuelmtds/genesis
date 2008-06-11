@@ -394,7 +394,7 @@ public class FormControllerTest extends TestCase {
        }
 
        /**
-        * @CallWhen true()
+        * @CallWhen true
         * @DataProvider widgetName=anotherWidget callOnInit=false
         */
        public List conditional() {

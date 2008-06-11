@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -286,6 +286,7 @@ public class DefaultFormController implements FormController {
       for (int times = 0; changed && times < getMaximumEvaluationTimes(); 
             times++) {
          changed = doEvaluate(firstCall);
+         firstCall = false;
       }
    }
 
