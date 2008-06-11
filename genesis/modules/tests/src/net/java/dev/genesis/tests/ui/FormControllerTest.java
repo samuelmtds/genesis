@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.tests.ui;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -168,6 +169,17 @@ public class FormControllerTest extends TestCase {
       assertEquals(form.getProvidedList(), reference);
    }
 
+   public void testMultipleEvaluationsForm() throws Exception {
+      MultipleEvaluationsForm form = new MultipleEvaluationsForm();
+      final FormController controller = new DefaultFormControllerFactory()
+            .getFormController(form);
+      controller.setMaximumEvaluationTimes(2);
+      controller.setup();
+      
+      assertEquals(1, form.getCallOnInitCount());
+      assertEquals(1, form.getConditionalCount());
+   }
+
    /**
     * @Form
     */
@@ -191,8 +203,6 @@ public class FormControllerTest extends TestCase {
       private Float fieldFloatWrapper;
       private String fieldString;
       private BigDecimal fieldBigDecimal;
-
-      // TODO: java.util e java.sql Date, Time e Timestamp ??
 
       public BigDecimal getFieldBigDecimal() {
          return fieldBigDecimal;
@@ -360,5 +370,40 @@ public class FormControllerTest extends TestCase {
       public List getProvidedList() {
          return providedList;
       }
+   }
+   
+   public static class MultipleEvaluationsForm {
+       private int callOnInitCount;
+       private int conditionalCount;
+
+       // Makes form unstable and requires multiple evaluations
+       public double getRandom() {
+           return Math.random();
+       }
+
+       /**
+        * @DataProvider widgetName=someWidget
+        */
+       public List callOnInit() {
+           callOnInitCount++;
+           return Collections.EMPTY_LIST;
+       }
+       
+       public int getCallOnInitCount() {
+          return callOnInitCount;
+       }
+
+       /**
+        * @CallWhen true()
+        * @DataProvider widgetName=anotherWidget callOnInit=false
+        */
+       public List conditional() {
+           conditionalCount++;
+           return Collections.EMPTY_LIST;
+       }
+       
+       public int getConditionalCount() {
+          return conditionalCount;
+       }
    }
 }
