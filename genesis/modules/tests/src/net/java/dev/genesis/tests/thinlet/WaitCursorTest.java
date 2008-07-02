@@ -27,10 +27,7 @@ import java.io.IOException;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.thinlet.BaseThinlet;
 
-
-
 public class WaitCursorTest extends TestCase {
-
    public void test() throws Exception {
 
       SomeThinlet thinlet = new SomeThinlet();
@@ -48,12 +45,12 @@ public class WaitCursorTest extends TestCase {
       }
       assertNotNull(thinlet.cursor);
       assertEquals(thinlet.cursor.getType(), Cursor.WAIT_CURSOR);
-      
+
+      robot.keyRelease(KeyEvent.VK_SPACE);
       thinlet.getFrame().dispose();
    }
 
    public static class SomeThinlet extends BaseThinlet {
-
       private boolean clicked;
       private Cursor cursor = null;
 
@@ -72,7 +69,5 @@ public class WaitCursorTest extends TestCase {
          cursor = getCursor();
          clicked = true;
       }
-
    }
-
 }
