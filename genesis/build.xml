@@ -640,6 +640,11 @@
              srcdir="${genesis.module.client}/${test.src.dir}">
          <filename name="messages.java" />
       </javac>
+      <copy todir="${genesis.module.client}/${test.dest}" overwrite="true">
+         <fileset dir="${genesis.module.client}/${test.src.dir}">
+            <include name="**/*.properties"/>
+         </fileset>
+      </copy>
    </target>
 
    <target name="unittest:test">
