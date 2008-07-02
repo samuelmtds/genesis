@@ -38,9 +38,9 @@ public class Bundle {
       return getMessage(clazz, key, new Object[] {param1, param2});
    }
 
-   public static String getMessage(Class clazz, String key, Object[] arr)
+   public static String getMessage(Class clazz, String key, Object[] params)
          throws MissingResourceException {
-      return java.text.MessageFormat.format(getMessage(clazz, key), arr);
+      return java.text.MessageFormat.format(getMessage(clazz, key), params);
    }
 
    public static ResourceBundle getBundle(Class clazz) throws
