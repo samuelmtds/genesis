@@ -16,23 +16,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package net.java.dev.genesis.ui;
+package net.java.dev.genesis.tests.util;
 
+import net.java.dev.genesis.util.Bundle;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.tests.TestCase;
 
-public class BundleTest extends GenesisTestCase {
-   public BundleTest(String testName) {
-      super(testName);
-   }
-
-   protected void setUp() throws Exception {
-   }
-
-   protected void tearDown() throws Exception {
-   }
-
+public class BundleTest extends TestCase {
    public void testGetMessage() {
       final Locale defaultLocale = Locale.getDefault();
       Locale.setDefault(Locale.ENGLISH);
