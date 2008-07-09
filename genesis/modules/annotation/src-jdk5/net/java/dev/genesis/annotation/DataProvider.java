@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,9 +26,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataProvider {
-   public String objectField() default "";
-   public String indexField() default "";
-   public String widgetName() default "";
+   public String objectField() default ""; // NOI18N
+   public String indexField() default ""; // NOI18N
+   public String widgetName() default ""; // NOI18N
    public boolean callOnInit() default true;
    public boolean resetSelection() default true;
 }
