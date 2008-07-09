@@ -184,6 +184,7 @@
 			<src path="${genesis.module.shared}/${src.dir}" />
 		</javac>
 		<antcall target="shared:annotation" />
+		<antcall target="shared:resources" />
 	</target>
 
 	<target name="shared:annotation">
@@ -194,6 +195,19 @@
             properties="${genesis.module.aspect}/${src.dir}/annotation.properties" />
       <copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="false">
          <fileset dir="${genesis.module.shared}/${build.dest}" />
+      </copy>
+	</target>
+   
+   <target name="shared:resources">
+      <copy todir="${genesis.module.shared}/${genesis.annotation.dest}" overwrite="true">
+         <fileset dir="${genesis.module.shared}/${src.dir}">
+            <include name="**/Bundle*.properties" />
+         </fileset>
+      </copy>
+      <copy todir="${genesis.module.shared}/${build.dest}" overwrite="true">
+         <fileset dir="${genesis.module.shared}/${src.dir}">
+            <include name="**/Bundle*.properties" />
+         </fileset>
       </copy>
 	</target>
 

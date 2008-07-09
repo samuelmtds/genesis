@@ -46,7 +46,7 @@ public abstract class AbstractHibernateCommand implements HibernateCommand {
 
    protected void appendClause(StringBuffer where, String condition) {
       if (where.length() != 0) {
-         where.append(" and ");
+         where.append(" and "); // NOI18N
       }
 
       where.append(condition);
@@ -58,23 +58,23 @@ public abstract class AbstractHibernateCommand implements HibernateCommand {
 
       StringBuffer hql = new StringBuffer(select);
 
-      hql.append(" from ");
+      hql.append(" from "); // NOI18N
 
       Map.Entry e;
 
       for (Iterator i = tables.entrySet().iterator(); i.hasNext();) {
          e = (Map.Entry) i.next();
-         hql.append(e.getValue()).append(' ').append(e.getKey()).append(',');
+         hql.append(e.getValue()).append(' ').append(e.getKey()).append(','); // NOI18N
       }
 
       hql.setLength(hql.length() - 1);
 
       if (where != null && where.length() != 0) {
-         hql.append(" where ").append(where);
+         hql.append(" where ").append(where); // NOI18N
       }
 
       if (orderBy != null && orderBy.trim().length() > 0) {
-         hql.append(" order by ").append(orderBy);
+         hql.append(" order by ").append(orderBy); // NOI18N
       }
 
       Query q = getSession().createQuery(hql.toString());

@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.ReflectionInvoker;
+import net.java.dev.genesis.util.Bundle;
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.expression.Order;
@@ -50,12 +51,10 @@ public class CriteriaCommandExecutor extends AbstractHibernateCommand {
       this.persisterClassName = persisterClassName;
       this.orderBy = orderBy;
       this.isAsc = isAsc;
-      
+
       if (propertiesMap == null) {
-         throw new IllegalArgumentException("A null propertiesMap was found " +
-               "while trying to build a CriteriaCommandExecutor; perhaps you " +
-               "forgot to call CriteriaPropertyHelper.fillCriteria(command, " +
-               "form)?"); 
+         throw new IllegalArgumentException(Bundle.getMessage(
+               CriteriaCommandExecutor.class, "NULL_PROPERTY_MAP_CRITERIA")); // NOI18N
       }
 
       this.propertiesMap = propertiesMap;

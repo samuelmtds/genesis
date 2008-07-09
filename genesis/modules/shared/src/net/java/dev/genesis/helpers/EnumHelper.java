@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import net.java.dev.genesis.reflection.ReflectionInvoker;
+import net.java.dev.genesis.util.Bundle;
 
 
 public final class EnumHelper {
@@ -32,7 +33,7 @@ public final class EnumHelper {
 
    private EnumHelper() {
       try {
-         enumClass = Class.forName("java.lang.Enum");
+         enumClass = Class.forName("java.lang.Enum"); // NOI18N
       } catch (Exception e) {
          // not JDK 5 or later
       }
@@ -65,7 +66,7 @@ public final class EnumHelper {
    }
    
    public boolean isJava5Enum(Class clazz) {
-      return supportsEnum() && Boolean.TRUE.equals(invoke(clazz, "isEnum"));
+      return supportsEnum() && Boolean.TRUE.equals(invoke(clazz, "isEnum")); // NOI18N
    }
    
    public boolean isReusableComponentEnum(Object object) {
@@ -84,17 +85,18 @@ public final class EnumHelper {
       if (isReusableComponentEnum(clazz)) {
          return net.java.dev.reusablecomponents.lang.Enum.getInstances(clazz);
       } else if (isJava5Enum(clazz)) {
-         return Arrays.asList((Object[])invoke(clazz, "getEnumConstants"));
+         return Arrays.asList((Object[])invoke(clazz, "getEnumConstants")); // NOI18N
       }
 
-      throw new IllegalArgumentException(clazz.getName() + " is not an enum");
+      throw new IllegalArgumentException(Bundle.getMessage(EnumHelper.class,
+            "X_IS_NOT_AN_ENUM", clazz.getName())); // NOI18N
    }
    
    public Object valueOf(Class clazz, String name) {
       if (isReusableComponentEnum(clazz)) {
          return net.java.dev.reusablecomponents.lang.Enum.get(clazz, name);
       } else if (isJava5Enum(clazz)) {
-         Object[] enums = (Object[]) invoke(clazz, "getEnumConstants");
+         Object[] enums = (Object[]) invoke(clazz, "getEnumConstants"); // NOI18N
          for (int i = 0; i < enums.length; i++) {
             String enumName = getName(enums[i]);
             
@@ -106,17 +108,19 @@ public final class EnumHelper {
          return null;
       }
 
-      throw new IllegalArgumentException(clazz.getName() + " is not an enum");
+      throw new IllegalArgumentException(Bundle.getMessage(EnumHelper.class,
+            "X_IS_NOT_AN_ENUM", clazz.getName())); // NOI18N
    }
    
    public Class getDeclaringClass(Object object) {
       if (isReusableComponentEnum(object)) {
          return ((net.java.dev.reusablecomponents.lang.Enum)object).getBaseClass();
       } else if (isJava5Enum(object)) {
-         return (Class) invoke(object, "getDeclaringClass");
+         return (Class) invoke(object, "getDeclaringClass"); // NOI18N
       }
 
-      throw new IllegalArgumentException(object + " is not an enum");
+      throw new IllegalArgumentException(Bundle.getMessage(EnumHelper.class,
+            "X_IS_NOT_AN_ENUM", object)); // NOI18N
    }
    
    public String getName(Object object) {
@@ -126,6 +130,7 @@ public final class EnumHelper {
          return object.toString();
       }
 
-      throw new IllegalArgumentException(object + " is not an enum");
+      throw new IllegalArgumentException(Bundle.getMessage(EnumHelper.class,
+            "X_IS_NOT_AN_ENUM", object)); // NOI18N
    }
 }
