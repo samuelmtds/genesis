@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -53,7 +53,7 @@ public class CommandExecutorEJB implements SessionBean {
       try {
          final InitialContext ctx = new InitialContext();
          final String className = (String)ctx.lookup(
-               "java:comp/env/TransactionalInjector");
+               "java:comp/env/TransactionalInjector"); // NOI18N
          injector = (TransactionalInjector)Class.forName(className, true, 
                Thread.currentThread().getContextClassLoader()).newInstance();
       } catch (final NamingException ne) {

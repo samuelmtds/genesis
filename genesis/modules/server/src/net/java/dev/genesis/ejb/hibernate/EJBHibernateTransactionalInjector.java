@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ public class EJBHibernateTransactionalInjector implements TransactionalInjector 
          final InitialContext ctx = new InitialContext();
 
          sessionFactory = (SessionFactory) ctx.lookup((String) ctx
-               .lookup("java:comp/env/HibernateFactoryAddress"));
+               .lookup("java:comp/env/HibernateFactoryAddress")); // NOI18N
       } catch (NamingException ne) {
          throw new EJBException(ne);
       }

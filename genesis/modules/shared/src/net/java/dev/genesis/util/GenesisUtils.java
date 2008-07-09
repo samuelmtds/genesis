@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,8 +25,8 @@ import java.util.StringTokenizer;
 public final class GenesisUtils {
 
    public static Map normalizeMap(final Map map) {
-      map.remove("class");
-      map.remove("context");
+      map.remove("class"); // NOI18N
+      map.remove("context"); // NOI18N
       return map;
    }
 
@@ -38,7 +38,7 @@ public final class GenesisUtils {
     * @return
     */
    public static Map getAttributesMap(final String attributesLine) {
-      return getAttributesMap(attributesLine, " \t\n\r\f", "=");
+      return getAttributesMap(attributesLine, " \t\n\r\f", "="); // NOI18N
    }
    
    public static Map getAttributesMap(final String attributesLine, String pairsDelim, String keyValueDelim) {
@@ -58,10 +58,11 @@ public final class GenesisUtils {
    public static Map getAttributesMap(String[] values) {
       final Map attributesMap = new HashMap(values.length);
       for (int i = 0; i < values.length; i++) {
-         String[] value = values[i].split("\\s*=\\s*");
+         String[] value = values[i].split("\\s*=\\s*"); // NOI18N
         
          if (value.length != 2) {
-            throw new IllegalArgumentException("Invalid argument: " + values[i]);
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  GenesisUtils.class, "INVALID_ARGUMENT_X", values[i])); // NOI18N
          }
          attributesMap.put(value[0].trim(), value[1].trim());
       }

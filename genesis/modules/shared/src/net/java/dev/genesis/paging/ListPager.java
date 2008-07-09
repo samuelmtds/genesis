@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.paging;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.java.dev.genesis.util.Bundle;
 
 public class ListPager implements Pager {
    private final List list;
@@ -31,7 +32,8 @@ public class ListPager implements Pager {
 
    public ListPager(List list, boolean cloneList) {
       if (list == null) {
-         throw new IllegalArgumentException("list cannot be null");
+         throw new IllegalArgumentException(Bundle.getMessage(ListPager.class,
+               "LIST_CANNOT_BE_NULL")); // NOI18N
       }
 
       this.list = list;

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,11 @@ package net.java.dev.genesis.hibernate.type;
 
 public class SimNaoType extends net.sf.hibernate.type.CharBooleanType{
     protected String getTrueString() {
-        return "S";
+        return "S"; // NOI18N
     }
     
     protected String getFalseString() {
-        return "N";
+        return "N"; // NOI18N
     }
     
 }

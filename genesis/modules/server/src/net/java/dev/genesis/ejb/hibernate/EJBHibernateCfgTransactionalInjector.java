@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2007-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -100,7 +100,8 @@ final class HibernateHelper {
 
    public SessionFactory getSessionFactory() throws HibernateException {
       if (factory == null) {
-         factory = new Configuration().configure("/remote-hibernate.cfg.xml").buildSessionFactory();
+         factory = new Configuration().configure("/remote-hibernate.cfg.xml"). // NOI18N
+               buildSessionFactory();
       }
 
       return factory;

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -64,14 +64,14 @@ public class MethodEntry implements Serializable {
    public String toString() {
       StringBuffer buffer = new StringBuffer();
       buffer.append(methodName);
-      buffer.append("(");
+      buffer.append("("); // NOI18N
       for (int i = 0; i < argsClassesNames.length; i++) {
          if(i > 0){
-            buffer.append(",");
+            buffer.append(","); // NOI18N
          }
          buffer.append(argsClassesNames[i]);
       }
-      buffer.append(")");
+      buffer.append(")"); // NOI18N
       return buffer.toString();
    }
 }
