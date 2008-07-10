@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.commons.jxpath.ri.compiler;
 
 import net.java.dev.genesis.commons.jxpath.ri.axes.ChildContext;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.QName;
@@ -82,6 +83,7 @@ public class LocationPath extends
             return new SelfContext(context, nodeTest);
       }
       
-      throw new IllegalArgumentException(axis + " is not a valid value for axis");
+      throw new IllegalArgumentException(Bundle.getMessage(LocationPath.class,
+            "X_IS_NOT_A_VALID_VALUE_FOR_AXIS", Integer.toString(axis))); // NOI18N
    }
 }

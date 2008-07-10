@@ -32,8 +32,8 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Variables;
 
 public class JXPathScriptContext extends ScriptContext {
-   public static final String GENESIS_FUNCTIONS_NS = "g";
-   public static final String PRIMITIVE_FUNCTIONS_NS = "t";
+   public static final String GENESIS_FUNCTIONS_NS = "g"; // NOI18N
+   public static final String PRIMITIVE_FUNCTIONS_NS = "t"; // NOI18N
 
    private final JXPathContext ctx;
    private final Map unmodifiableMap;

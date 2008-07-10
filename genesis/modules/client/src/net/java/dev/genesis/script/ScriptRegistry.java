@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,10 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScriptRegistry {
-   public static final String JXPATH = "jxpath";
-   public static final String JAVASCRIPT = "javascript";
-   public static final String BEANSHELL = "beanshell";
-   public static final String EL = "el";
+   public static final String JXPATH = "jxpath"; // NOI18N
+   public static final String JAVASCRIPT = "javascript"; // NOI18N
+   public static final String BEANSHELL = "beanshell"; // NOI18N
+   public static final String EL = "el"; // NOI18N
 
    private static final ScriptRegistry instance = new ScriptRegistry();
 
@@ -44,15 +44,15 @@ public class ScriptRegistry {
 
    private ScriptRegistry() {
       registry.put(JXPATH,
-            "net.java.dev.genesis.script.jxpath.JXPathScriptFactory");
+            "net.java.dev.genesis.script.jxpath.JXPathScriptFactory"); // NOI18N
       registry.put(BEANSHELL,
-            "net.java.dev.genesis.script.bsf.BSFScriptFactory");
-      registry.put(EL, "net.java.dev.genesis.script.el.ELScriptFactory");
+            "net.java.dev.genesis.script.bsf.BSFScriptFactory"); // NOI18N
+      registry.put(EL, "net.java.dev.genesis.script.el.ELScriptFactory"); // NOI18N
       
       registry.put(JAVASCRIPT,
             ScriptUtils.supportsJavaxScript() ?
-                  "net.java.dev.genesis.script.javaxscript.JavaxScriptScriptFactory"
-                  : "net.java.dev.genesis.script.bsf.BSFScriptFactory");
+                  "net.java.dev.genesis.script.javaxscript.JavaxScriptScriptFactory" // NOI18N
+                  : "net.java.dev.genesis.script.bsf.BSFScriptFactory"); // NOI18N
    }
 
    public static ScriptRegistry getInstance() {
@@ -84,7 +84,7 @@ public class ScriptRegistry {
             properties = new HashMap();
          }
 
-         properties.put("lang", alias);
+         properties.put("lang", alias); // NOI18N
       }
 
       ScriptFactory factory = (ScriptFactory) newInstance(className);

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ public class FormatAdapter implements Formatter {
 
    public String format(final Object o) {
       if (nullAsBlank && o == null) {
-         return "";
+         return ""; // NOI18N
       }
 
       return format.format(o);

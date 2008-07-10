@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,9 +44,9 @@ public class StartupHelper {
    private static Log log = LogFactory.getLog(StartupHelper.class);
    private BeanUtilsBean beanUtilsBean = new BeanUtilsBean(
          new ConverterRegistry(), new PropertyUtilsBean());
-   private String jxpathContextFactoryKey = "org.apache.commons.jxpath.JXPathContextFactory";
+   private String jxpathContextFactoryKey = "org.apache.commons.jxpath.JXPathContextFactory"; // NOI18N
    private String jxpathContextFactoryClassName =
-         "net.java.dev.genesis.commons.jxpath.JXPathContextFactory";
+         "net.java.dev.genesis.commons.jxpath.JXPathContextFactory"; // NOI18N
    private final Map converters = new HashMap();
    private final Map formatters = new HashMap();
    private Locale locale;
@@ -55,7 +55,7 @@ public class StartupHelper {
    private boolean loadValidatorRules = true;
 
    public StartupHelper() {
-      this(Locale.getDefault(), "MM/dd/yyyy");
+      this(Locale.getDefault(), "MM/dd/yyyy"); // NOI18N
    }
 
    public StartupHelper(final Locale locale, final String dateFormat) {
@@ -92,7 +92,7 @@ public class StartupHelper {
    }
 
    protected void registerBeanUtilsBean() {
-      log.info("Setting BeanUtilsBean instance");
+      log.info("Setting BeanUtilsBean instance"); // NOI18N
       BeanUtilsBean.setInstance(getBeanUtilsBean());
    }
 
@@ -105,7 +105,7 @@ public class StartupHelper {
    }
 
    protected void registerJXPathContextFactory() {
-      log.info("Registering JXPathContextFactory class name");
+      log.info("Registering JXPathContextFactory class name"); // NOI18N
       System.setProperty(jxpathContextFactoryKey, jxpathContextFactoryClassName);
    }
 
@@ -126,7 +126,7 @@ public class StartupHelper {
    }
 
    protected void registerConverters() {
-      log.info("Registering converters");
+      log.info("Registering converters"); // NOI18N
 
       for (final Iterator i = converters.entrySet().iterator(); i.hasNext(); ) {
          Map.Entry entry = (Map.Entry)i.next();
@@ -153,7 +153,7 @@ public class StartupHelper {
    }
 
    protected void registerFormatters() {
-      log.info("Registering formatters");
+      log.info("Registering formatters"); // NOI18N
 
       for (final Iterator i = formatters.entrySet().iterator(); i.hasNext(); ) {
          Map.Entry entry = (Map.Entry)i.next();
@@ -176,14 +176,14 @@ public class StartupHelper {
          return;
       }
 
-      final Thread t = new Thread("NoopCommand-Daemon") {
+      final Thread t = new Thread("NoopCommand-Daemon") { // NOI18N
          {
             setDaemon(true);
          }
 
          public void run() {
             new NoopCommand().remotable();
-            log.info("Noop command executed");
+            log.info("Noop command executed"); // NOI18N
          }
       };
 
@@ -203,14 +203,14 @@ public class StartupHelper {
          return;
       }
 
-      final Thread t = new Thread("ValidatorRulesLoader-Daemon") {
+      final Thread t = new Thread("ValidatorRulesLoader-Daemon") { // NOI18N
          {
             setDaemon(true);
          }
 
          public void run() {
             ValidationUtils.getInstance();
-            log.info("Validation rules loaded");
+            log.info("Validation rules loaded"); // NOI18N
          }
       };
 
@@ -225,6 +225,6 @@ public class StartupHelper {
       runNoopCommand();
       loadValidatorRules();
 
-      log.info("Initialization started");
+      log.info("Initialization started"); // NOI18N
    }
 }

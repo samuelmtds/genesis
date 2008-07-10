@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,8 +31,8 @@ public class ScriptFunctions {
             scriptValue.getFieldName());
 
       if (log.isDebugEnabled()) {
-         log.debug("Property '" + scriptValue.getFieldName()
-               + (result ? "' changed" : "' didn't change"));
+         log.debug("Property '" + scriptValue.getFieldName() // NOI18N
+               + (result ? "' changed" : "' didn't change")); // NOI18N
       }
 
       return result;
@@ -57,39 +57,39 @@ public class ScriptFunctions {
 
       if (comp1 == comp2) {
          if (log.isDebugEnabled()) {
-            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
-                  + "' with same comparator " + comp1);
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2 // NOI18N
+                  + "' with same comparator " + comp1); // NOI18N
          }
          return comp1.equals(value1, value2);
       } else if (value1 == null) {
          if (log.isDebugEnabled()) {
-            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
-                  + "'");
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2 // NOI18N
+                  + "'"); // NOI18N
          }
          return value2 == null;
       } else if (value2 == null) {
          if (log.isDebugEnabled()) {
-            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
-                  + "'");
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2 // NOI18N
+                  + "'"); // NOI18N
          }
          return false;
       } else if (value1.getClass().equals(value2.getClass())
             || value1.getClass().isAssignableFrom(value2.getClass())) {
          if (log.isDebugEnabled()) {
-            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
-                  + "' with first comparator " + comp1);
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2 // NOI18N
+                  + "' with first comparator " + comp1); // NOI18N
          }
          return comp1.equals(value1, value2);
       } else if (value2.getClass().isAssignableFrom(value1.getClass())) {
          if (log.isDebugEnabled()) {
-            log.debug("Evaluation equals for '" + value1 + "' and '" + value2
-                  + "' with second comparator " + comp2);
+            log.debug("Evaluation equals for '" + value1 + "' and '" + value2 // NOI18N
+                  + "' with second comparator " + comp2); // NOI18N
          }
          return comp2.equals(value2, value1);
       }
       if (log.isDebugEnabled()) {
-         log.debug("'" + value1 + "' and '" + value2
-               + "' have different classes");
+         log.debug("'" + value1 + "' and '" + value2 // NOI18N
+               + "' have different classes"); // NOI18N
       }
       return false;
    }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,8 +26,8 @@ import net.java.dev.genesis.script.bsf.javascript.BSFJavaScriptEngine;
 
 public class BSFScriptFactory implements ScriptFactory {
    static {
-      BSFManager.registerScriptingEngine("javascript", BSFJavaScriptEngine.class.getName(), null);
-      BSFManager.registerScriptingEngine("beanshell", "bsh.util.BeanShellBSFEngine", null);
+      BSFManager.registerScriptingEngine("javascript", BSFJavaScriptEngine.class.getName(), null); // NOI18N
+      BSFManager.registerScriptingEngine("beanshell", "bsh.util.BeanShellBSFEngine", null); // NOI18N
    }
 
    private String lang;

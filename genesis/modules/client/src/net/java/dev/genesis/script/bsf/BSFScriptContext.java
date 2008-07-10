@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,15 +28,16 @@ import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.script.ScriptExpression;
 import net.java.dev.genesis.script.ScriptFunctionsAdapter;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.bsf.BSFDeclaredBean;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.bsf.util.ObjectRegistry;
 
 public class BSFScriptContext extends ScriptContext {
-   public static final String FORM_NS = "form";
-   public static final String GENESIS_FUNCTIONS_NS = "genesis";
-   public static final String PRIMITIVE_FUNCTIONS_NS = "types";
+   public static final String FORM_NS = "form"; // NOI18N
+   public static final String GENESIS_FUNCTIONS_NS = "genesis"; // NOI18N
+   public static final String PRIMITIVE_FUNCTIONS_NS = "types"; // NOI18N
 
    private final BSFManager manager = new BSFManager();
    private final Map contextMap = new HashMap();
@@ -111,8 +112,8 @@ public class BSFScriptContext extends ScriptContext {
          Object obj = registry.get(name);
 
          if (obj == null) {
-            throw new IllegalArgumentException("object '" + name
-                  + "' not in registry");
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  BSFScriptContext.class, "OBJECT_X_NOT_IN_REGISTRY", name)); // NOI18N
          }
 
          return obj;

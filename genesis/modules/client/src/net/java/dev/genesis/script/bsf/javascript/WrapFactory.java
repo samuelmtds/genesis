@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -149,14 +149,14 @@ public class WrapFactory extends org.mozilla.javascript.WrapFactory {
                buffer.append(',');
             }
 
-            buffer.append((args[i] == null) ? "null" : args[i].getClass()
+            buffer.append((args[i] == null) ? "null" : args[i].getClass() // NOI18N
                   .getName());
          }
 
          buffer.append(')');
 
          throw Context.reportRuntimeError(ScriptRuntime.getMessage1(
-               "msg.java.no_such_method", buffer.toString()));
+               "msg.java.no_such_method", buffer.toString())); // NOI18N
       }
    }
 

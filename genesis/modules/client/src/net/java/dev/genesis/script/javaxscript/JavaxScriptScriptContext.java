@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,8 +29,8 @@ import net.java.dev.genesis.script.javaxscript.bridge.JavaxScriptBridge;
 import net.java.dev.genesis.script.javaxscript.bridge.ScriptEngine;
 
 public class JavaxScriptScriptContext extends ScriptContext {
-   public static final String FORM_NS = "form";
-   public static final String GENESIS_FUNCTIONS_NS = "genesis";
+   public static final String FORM_NS = "form"; // NOI18N
+   public static final String GENESIS_FUNCTIONS_NS = "genesis"; // NOI18N
 
    private final ScriptEngine scriptEngine;
    private final Map unmodifiableMap;

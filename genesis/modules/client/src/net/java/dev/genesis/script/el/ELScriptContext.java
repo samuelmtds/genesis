@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,8 +39,8 @@ import net.java.dev.genesis.script.ScriptFunctionsAdapter;
 
 public class ELScriptContext extends ScriptContext implements VariableResolver,
       FunctionMapper {
-   public static final String FORM_NS = "form";
-   public static final String GENESIS_FUNCTIONS_NS = "g";
+   public static final String FORM_NS = "form"; // NOI18N
+   public static final String GENESIS_FUNCTIONS_NS = "g"; // NOI18N
 
    private final Map variables = new HashMap();
    private final Map unmodifiableMap = Collections.unmodifiableMap(variables);
@@ -50,8 +50,8 @@ public class ELScriptContext extends ScriptContext implements VariableResolver,
    protected ELScriptContext(Object root, ExpressionEvaluator evaluator) {
       variables.put(FORM_NS, root);
       this.evaluator = evaluator;
-      registerFunctions("", Functions.class);
-      registerFunctions("", PrimitiveFunctions.class);
+      registerFunctions("", Functions.class); // NOI18N
+      registerFunctions("", PrimitiveFunctions.class); // NOI18N
       registerFunctions(GENESIS_FUNCTIONS_NS, getFunctions());
    }
 

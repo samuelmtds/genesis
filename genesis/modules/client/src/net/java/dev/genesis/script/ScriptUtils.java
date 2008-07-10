@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,7 @@ import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class ScriptUtils {
@@ -54,14 +55,14 @@ public class ScriptUtils {
    public static Object getPropertyValue(String objKey, String propertyName) {
       final Object bean = getCurrentContext().lookup(objKey);
       if (bean == null) {
-         throw new IllegalArgumentException("Bean called '" + objKey
-               + "' not found");
+         throw new IllegalArgumentException(Bundle.getMessage(ScriptUtils.class,
+               "BEAN_CALLED_X_NOT_FOUND", objKey)); // NOI18N
       }
       try {
          return PropertyUtils.getProperty(bean, propertyName);
       } catch (Exception e) {
-         throw new IllegalArgumentException("Bean named " + objKey
-               + ": " + e.getMessage());
+         throw new IllegalArgumentException(Bundle.getMessage(ScriptUtils.class,
+               "BEAN_NAMED_X_Y", objKey, e.getMessage())); // NOI18N
       }
    }
 
@@ -69,15 +70,15 @@ public class ScriptUtils {
       if (obj instanceof String) {
          String s = obj.toString();
 
-         String[] values = s.split(":");
+         String[] values = s.split(":"); // NOI18N
 
          if (values.length == 1) {
             return new ScriptValue(null, obj);
          }
 
          if (values.length != 2) {
-            throw new IllegalArgumentException("Malformed expression '" + obj
-                  + "'");
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  ScriptUtils.class, "MALFORMED_EXPRESSION_X", obj)); // NOI18N
          }
 
          return new ScriptValue(values[1], getPropertyValue(values[0],

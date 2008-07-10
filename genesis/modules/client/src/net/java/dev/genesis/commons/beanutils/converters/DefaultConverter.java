@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.commons.beanutils.converters;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
 
@@ -55,7 +56,8 @@ public class DefaultConverter implements Converter {
       if (returnDefaultValue) {
          return defaultValue;
       }
-      throw new ConversionException(obj + " cannot be converted to "
-            + clazz.getName() + "; its type is " + obj.getClass().getName());
+      throw new ConversionException(Bundle.getMessage(DefaultConverter.class,
+               "X_CANNOT_BE_CONVERTED_TO_Y_ITS_TYPE_IS_Z", new Object[]{ // NOI18N
+            obj, clazz.getName(), obj.getClass().getName()}));
    }
 }

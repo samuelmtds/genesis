@@ -36,7 +36,7 @@ public class StringEqualityComparator extends DefaultEqualityComparator {
 
     private String normalize(Object o) {
         if(o == null){
-            return "";
+            return ""; // NOI18N
         }
 
         final String s = o.toString();

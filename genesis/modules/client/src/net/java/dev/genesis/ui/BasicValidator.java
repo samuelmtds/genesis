@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,9 +31,9 @@ import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.util.ValidatorUtils;
 
 public class BasicValidator {
-   public final static String FIELD_TEST_NULL = "NULL";
-   public final static String FIELD_TEST_NOTNULL = "NOTNULL";
-   public final static String FIELD_TEST_EQUAL = "EQUAL";
+   public final static String FIELD_TEST_NULL = "NULL"; // NOI18N
+   public final static String FIELD_TEST_NOTNULL = "NOTNULL"; // NOI18N
+   public final static String FIELD_TEST_EQUAL = "EQUAL"; // NOI18N
    
    public static boolean validateRequired(Object bean, Field field) {
       return !GenericValidator.isBlankOrNull(ValidatorUtils.getValueAsString(
@@ -80,9 +80,9 @@ public class BasicValidator {
       
       BigDecimal inputValue = normalize(ConvertUtils.convert(value,
             BigDecimal.class));
-      BigDecimal min = validateMin ? new BigDecimal(field.getVarValue("min")) : 
+      BigDecimal min = validateMin ? new BigDecimal(field.getVarValue("min")) : // NOI18N
             null;
-      BigDecimal max = validateMax ? new BigDecimal(field.getVarValue("max")) : 
+      BigDecimal max = validateMax ? new BigDecimal(field.getVarValue("max")) : // NOI18N
             null;
 
       return (!validateMin || min.compareTo(inputValue) <= 0) && 
@@ -150,35 +150,35 @@ public class BasicValidator {
          value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       }
       
-      String fieldJoin = "AND";
+      String fieldJoin = "AND"; // NOI18N
       
-      if (!GenericValidator.isBlankOrNull(field.getVarValue("fieldJoin"))) {
-         fieldJoin = field.getVarValue("fieldJoin");
+      if (!GenericValidator.isBlankOrNull(field.getVarValue("fieldJoin"))) { // NOI18N
+         fieldJoin = field.getVarValue("fieldJoin"); // NOI18N
       }
       
-      if (fieldJoin.equalsIgnoreCase("AND")) {
+      if (fieldJoin.equalsIgnoreCase("AND")) { // NOI18N
          required = true;
       }
       
       for (int i = 0 ; !GenericValidator.isBlankOrNull(field.getVarValue(
-            "field[" + i + "]")); i++) {
-         String dependProp = field.getVarValue("field[" + i + "]");
-         String dependTest = field.getVarValue("fieldTest[" + i + "]");
-         String dependTestValue = field.getVarValue("fieldValue[" + i + "]");
-         String dependIndexed = field.getVarValue("fieldIndexed[" + i + "]");
+            "field[" + i + "]")); i++) { // NOI18N
+         String dependProp = field.getVarValue("field[" + i + "]"); // NOI18N
+         String dependTest = field.getVarValue("fieldTest[" + i + "]"); // NOI18N
+         String dependTestValue = field.getVarValue("fieldValue[" + i + "]"); // NOI18N
+         String dependIndexed = field.getVarValue("fieldIndexed[" + i + "]"); // NOI18N
          
          if (dependIndexed == null) {
-            dependIndexed = "false";
+            dependIndexed = "false"; // NOI18N
          }
          
          String dependVal = null;
          boolean thisRequired = false;
          
-         if (field.isIndexed() && dependIndexed.equalsIgnoreCase("true")) {
+         if (field.isIndexed() && dependIndexed.equalsIgnoreCase("true")) { // NOI18N
             String key = field.getKey();
             
-            if ((key.indexOf("[") > -1) && (key.indexOf("]") > -1)) {
-               String ind = key.substring(0, key.indexOf(".") + 1);
+            if ((key.indexOf("[") > -1) && (key.indexOf("]") > -1)) { // NOI18N
+               String ind = key.substring(0, key.indexOf(".") + 1); // NOI18N
                dependProp = ind + dependProp;
             }
          }
@@ -198,7 +198,7 @@ public class BasicValidator {
             thisRequired =  dependTestValue.equalsIgnoreCase(dependVal);
          }
          
-         if (fieldJoin.equalsIgnoreCase("AND")) {
+         if (fieldJoin.equalsIgnoreCase("AND")) { // NOI18N
             required = required && thisRequired;
          } else {
             required = required || thisRequired;
@@ -220,28 +220,28 @@ public class BasicValidator {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
       return GenericValidator.isBlankOrNull(value) || GenericValidator
-            .matchRegexp(value, field.getVarValue("mask"));
+            .matchRegexp(value, field.getVarValue("mask")); // NOI18N
    }
    
    public static boolean validateDate(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
       return GenericValidator.isBlankOrNull(value) || GenericValidator.isDate(
-            value, field.getVarValue("pattern"), false);
+            value, field.getVarValue("pattern"), false); // NOI18N
    }
    
    public static boolean validateMaxLength(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
       return GenericValidator.isBlankOrNull(value) || GenericValidator
-            .maxLength(value, Integer.parseInt(field.getVarValue("maxlength")));
+            .maxLength(value, Integer.parseInt(field.getVarValue("maxlength"))); // NOI18N
    }
    
    public static boolean validateMinLength(Object bean, Field field) {
       String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
       
       return GenericValidator.isBlankOrNull(value) || GenericValidator
-            .minLength(value, Integer.parseInt(field.getVarValue("minlength")));
+            .minLength(value, Integer.parseInt(field.getVarValue("minlength"))); // NOI18N
    }
    
    public static boolean validateLongRange(Object bean, Field field) {
@@ -249,8 +249,8 @@ public class BasicValidator {
       
       return GenericValidator.isBlankOrNull(value) || 
             (GenericValidator.isLong(value) && GenericValidator.isInRange(
-            Long.parseLong(value), Long.parseLong(field.getVarValue("min")), 
-            Long.parseLong(field.getVarValue("max"))));
+            Long.parseLong(value), Long.parseLong(field.getVarValue("min")), // NOI18N
+            Long.parseLong(field.getVarValue("max")))); // NOI18N
    }
    
    public static boolean validateDoubleRange(Object bean, Field field) {
@@ -259,7 +259,7 @@ public class BasicValidator {
       return GenericValidator.isBlankOrNull(value) || 
             (GenericValidator.isDouble(value) && GenericValidator.isInRange(
             Double.parseDouble(value), Double.parseDouble(field.getVarValue(
-            "min")), Double.parseDouble(field.getVarValue("max"))));
+            "min")), Double.parseDouble(field.getVarValue("max")))); // NOI18N
    }
 
    /**
@@ -269,14 +269,14 @@ public class BasicValidator {
       Script script = ScriptRegistry.getInstance().getScript(ScriptRegistry.JXPATH);
       final ScriptContext ctx = script.newContext(bean);
 
-      return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("jxpath")));
+      return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("jxpath"))); // NOI18N
    }
 
    public static boolean validateScript(Object bean, Field field) {
       Script script = ScriptRegistry.getInstance().getScript();
       final ScriptContext ctx = script.newContext(bean);
 
-      return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("script")));
+      return !Boolean.FALSE.equals(ctx.eval(field.getVarValue("script"))); // NOI18N
    }
 
    public static boolean validateUrl(Object bean, Field field) {

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ public class BigDecimalConverter implements Converter {
          return converter.convert(clazz, obj);
       }
 
-      final StringTokenizer t = new StringTokenizer(s, ".");
+      final StringTokenizer t = new StringTokenizer(s, "."); // NOI18N
       final StringBuffer ret = new StringBuffer(s.length());
 
       while (t.hasMoreTokens()) {
@@ -49,8 +49,8 @@ public class BigDecimalConverter implements Converter {
       }
 
       int i;
-      if ((i = ret.indexOf(",")) != -1) {
-         ret.setCharAt(i,  '.');
+      if ((i = ret.indexOf(",")) != -1) { // NOI18N
+         ret.setCharAt(i,  '.'); // NOI18N
       }
 
       try {

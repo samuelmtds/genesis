@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package net.java.dev.genesis.commons.jxpath;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.jxpath.Variables;
 
 public class VariablesImpl implements Variables {
@@ -35,7 +36,8 @@ public class VariablesImpl implements Variables {
       if (vars.containsKey(varName)) {
          return vars.get(varName);
       }
-      throw new IllegalArgumentException("No such variable: '" + varName + "'");
+      throw new IllegalArgumentException(Bundle.getMessage(VariablesImpl.class,
+            "NO_SUCH_VARIABLE_X", varName)); // NOI18N
    }
 
    public void declareVariable(String varName, Object value) {

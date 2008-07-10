@@ -25,9 +25,10 @@ import net.java.dev.genesis.ui.controller.FormController;
 import net.java.dev.genesis.ui.controller.FormControllerRegistry;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataRegistry;
+import net.java.dev.genesis.util.Bundle;
 
 public class ScriptFormatter implements Formatter {
-   public static final String ALIAS = "o";
+   public static final String ALIAS = "o"; // NOI18N
 
    private final Object form;
    private final FormController controller;
@@ -45,18 +46,16 @@ public class ScriptFormatter implements Formatter {
             formClass);
 
       if (formMetadata == null) {
-         throw new IllegalArgumentException(formClass + " has no metadata " +
-               "registered; you probably need to instantiate a binder for it " +
-               "before calling this method");
+         throw new IllegalArgumentException(Bundle.getMessage(ScriptFormatter.class,
+               "X_HAS_NO_METADATA_REGISTERED", formClass)); // NOI18N
       }
 
       final FormController controller = FormControllerRegistry.getInstance().
             get(form);
 
       if (controller == null) {
-         throw new IllegalArgumentException(form + " has no controller " +
-               "registered; you probably need to instantiate a binder for it " +
-               "before calling this method");
+         throw new IllegalArgumentException(Bundle.getMessage(ScriptFormatter.class,
+               "X_HAS_NO_CONTROLLER_REGISTERED", form)); // NOI18N
       }
 
       this.form = form;
@@ -68,15 +67,15 @@ public class ScriptFormatter implements Formatter {
 
    public String format(Object o) {
       if (!controller.isSetup()) {
-         throw new IllegalStateException("Form controller has not been setup");
+         throw new IllegalStateException(Bundle.getMessage(ScriptFormatter.class,
+               "FORM_CONTROLLER_HAS_NOT_BEEN_SETUP")); // NOI18N
       }
 
       final ScriptContext scriptContext = controller.getScriptContext();
 
       if (scriptContext.getContextMap().containsKey(alias)) {
-         throw new IllegalStateException(alias + " is already present in the " +
-               "script context; try to use a different alias at the " +
-               "constructor");
+         throw new IllegalStateException(Bundle.getMessage(ScriptFormatter.class,
+               "X_IS_ALREADY_PRESENT_IN_THE_SCRIPT_CONTEXT", alias)); // NOI18N
       }
 
       scriptContext.declare(alias, o);

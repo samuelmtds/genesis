@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,18 +38,18 @@ public class JavaxScriptBridge {
 
    private JavaxScriptBridge() {
       try {
-         scriptContextClass = Class.forName("javax.script.ScriptContext");
-         compiledScriptClass = Class.forName("javax.script.CompiledScript");
-         compilableClass = Class.forName("javax.script.Compilable");
-         originalEvalMethod = compiledScriptClass.getDeclaredMethod("eval",
+         scriptContextClass = Class.forName("javax.script.ScriptContext"); // NOI18N
+         compiledScriptClass = Class.forName("javax.script.CompiledScript"); // NOI18N
+         compilableClass = Class.forName("javax.script.Compilable"); // NOI18N
+         originalEvalMethod = compiledScriptClass.getDeclaredMethod("eval", // NOI18N
                new Class[] { scriptContextClass });
-         engineScope = scriptContextClass.getField("ENGINE_SCOPE").getInt(null);
+         engineScope = scriptContextClass.getField("ENGINE_SCOPE").getInt(null); // NOI18N
 
-         methods.add("getEngineByName");
-         methods.add("getContext");
+         methods.add("getEngineByName"); // NOI18N
+         methods.add("getContext"); // NOI18N
 
          scriptEngineManagerClass = Class
-               .forName("javax.script.ScriptEngineManager");
+               .forName("javax.script.ScriptEngineManager"); // NOI18N
       } catch (Exception e) {
          // not JDK 6 or later
       }
@@ -125,11 +125,11 @@ public class JavaxScriptBridge {
       public Object invoke(Object proxy, Method method, Object[] args)
             throws Throwable {
          final String methodName = method.getName();
-         if (isScriptContext && methodName.equals("getRealContext")) {
+         if (isScriptContext && methodName.equals("getRealContext")) { // NOI18N
             return target;
          }
 
-         if (methodName.equals("compile") && !isCompilable) {
+         if (methodName.equals("compile") && !isCompilable) { // NOI18N
             return null;
          }
 

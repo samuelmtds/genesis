@@ -67,9 +67,9 @@ public final class ValidationUtils {
 
    private ValidatorResources initResources() throws IOException, SAXException {
       final InputStream rules = Thread.currentThread().getContextClassLoader()
-                                    .getResourceAsStream("validator-rules.xml");
+                                    .getResourceAsStream("validator-rules.xml"); // NOI18N
       final InputStream is = Thread.currentThread().getContextClassLoader()
-                                       .getResourceAsStream("validation.xml");
+                                       .getResourceAsStream("validation.xml"); // NOI18N
       
       try {
          return new ValidatorResources(new InputStream[] {rules, is});
@@ -207,7 +207,7 @@ public final class ValidationUtils {
       Map.Entry entry;
       for (Iterator i = ret.entrySet().iterator(); i.hasNext();) {
          entry = (Map.Entry) i.next();
-         if ("class".equals(entry.getKey())) {
+         if ("class".equals(entry.getKey())) { // NOI18N
             i.remove();
          }
          entry.setValue(FormatterRegistry.getInstance()

@@ -310,6 +310,11 @@
             <include name="**/*.class" />
          </fileset>
       </copy>
+      <copy todir="${genesis.module.client}/${build.dest}" overwrite="true">
+         <fileset dir="${genesis.module.client}/${src.dir}">
+            <include name="**/Bundle*.properties" />
+         </fileset>
+      </copy>
 	</target>
 
 	<target name="client:jar">

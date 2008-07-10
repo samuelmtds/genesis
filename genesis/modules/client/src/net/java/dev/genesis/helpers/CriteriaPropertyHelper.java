@@ -32,6 +32,7 @@ import net.java.dev.genesis.ui.metadata.DefaultFormMetadataFactory;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadataFactory;
+import net.java.dev.genesis.util.Bundle;
 import net.java.dev.genesis.util.GenesisUtils;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -89,7 +90,8 @@ public class CriteriaPropertyHelper {
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Storing properties " + propertiesMap + " for later execution");
+         log.debug(Bundle.getMessage(CriteriaPropertyHelper.class,
+               "STORING_PROPERTIES_X_FOR_LATER_EXECUTION", propertiesMap)); // NOI18N
       }
 
       critResolver.setPropertiesMap(propertiesMap);

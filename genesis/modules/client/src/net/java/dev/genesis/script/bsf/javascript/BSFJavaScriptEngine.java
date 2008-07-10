@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,6 +38,7 @@ import org.mozilla.javascript.Wrapper;
 
 import java.util.Iterator;
 import java.util.Vector;
+import net.java.dev.genesis.util.Bundle;
 
 public class BSFJavaScriptEngine extends BSFEngineImpl {
    private static WrapFactory wrapFactory =
@@ -55,8 +56,8 @@ public class BSFJavaScriptEngine extends BSFEngineImpl {
          Object fun = global.get(method, global);
 
          if (fun == Scriptable.NOT_FOUND) {
-            throw new JavaScriptException("function " + method + " not found.",
-               "", 0);
+            throw new JavaScriptException(Bundle.getMessage(
+                  BSFJavaScriptEngine.class, "FUNCTION_X_NOT_FOUND", method), "", 0); // NOI18N
          }
 
          cx.setGeneratingDebug(false);
@@ -68,7 +69,7 @@ public class BSFJavaScriptEngine extends BSFEngineImpl {
          Scriptable thisObj = ScriptRuntime.toObjectOrNull(cx, fun);
 
          if (thisObj == null) {
-            throw ScriptRuntime.undefCallError(thisObj, "function");
+            throw ScriptRuntime.undefCallError(thisObj, "function"); // NOI18N
          }
 
          theReturnValue = function.call(cx, null, thisObj, args);
@@ -148,9 +149,10 @@ public class BSFJavaScriptEngine extends BSFEngineImpl {
             t instanceof SecurityException) {
          message = t.getLocalizedMessage();
       } else if (t instanceof RuntimeException) {
-         message = "Internal Error: " + t.toString();
+         message = Bundle.getMessage(BSFJavaScriptEngine.class,
+               "INTERNAL_ERROR_X", t.toString()); // NOI18N
       } else if (t instanceof StackOverflowError) {
-         message = "Stack Overflow";
+         message = Bundle.getMessage(BSFJavaScriptEngine.class, "STACK_OVERFLOW"); // NOI18N
       }
 
       if (message == null) {
@@ -169,7 +171,8 @@ public class BSFJavaScriptEngine extends BSFEngineImpl {
          throw (Error) t;
       } else {
          throw new BSFException(BSFException.REASON_OTHER_ERROR,
-            "JavaScript Error: " + message, target);
+            Bundle.getMessage(BSFJavaScriptEngine.class, "JAVASCRIPT_ERROR_X", // NOI18N
+            message), target);
       }
    }
 
@@ -181,10 +184,10 @@ public class BSFJavaScriptEngine extends BSFEngineImpl {
          Context cx = Context.enter();
          cx.setWrapFactory(wrapFactory);
          global = new ImporterTopLevel(cx);
-         cx.evaluateString(global, "importPackage(java.lang)", null, 0, null);
+         cx.evaluateString(global, "importPackage(java.lang)", null, 0, null); // NOI18N
 
          Scriptable bsf = Context.toObject(new BSFFunctions(mgr, this), global);
-         global.put("bsf", global, bsf);
+         global.put("bsf", global, bsf); // NOI18N
 
          for (Iterator iter = declaredBeans.iterator(); iter.hasNext();) {
             BSFDeclaredBean bean = (BSFDeclaredBean) iter.next();

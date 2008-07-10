@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,8 +19,8 @@
 package net.java.dev.genesis.text;
 
 public class BooleanFormatter implements Formatter {
-   public static final String TRUE = "true";
-   public static final String FALSE = "false";
+   public static final String TRUE = "true"; // NOI18N
+   public static final String FALSE = "false"; // NOI18N
 
    private final String trueValue;
    private final String falseValue;

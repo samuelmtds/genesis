@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.commons.jxpath.ri.axes;
 
 import net.java.dev.genesis.commons.jxpath.GenesisNodeSet;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
@@ -34,7 +35,7 @@ public class ChildContext extends
          boolean startFromParentLocation, boolean reverse) {
       super(parentContext, nodeTest, startFromParentLocation, reverse);
       if (parentContext instanceof ChildContext) {
-         path = ((ChildContext) parentContext).getPath() + "/"
+         path = ((ChildContext) parentContext).getPath() + "/" // NOI18N
                + nodeTest.toString();
       } else {
          path = nodeTest.toString();
@@ -43,9 +44,8 @@ public class ChildContext extends
 
    public NodeSet getNodeSet() {
       if (position != 0) {
-         throw new JXPathException("Simultaneous operations: "
-               + "should not request pointer list while "
-               + "iterating over an EvalContext");
+         throw new JXPathException(Bundle.getMessage(ChildContext.class,
+               "SIMULTANEOUS_OPERATIONS_WARNING")); // NOI18N
       }
       GenesisNodeSet set = new GenesisNodeSet(getPath());
       while (nextSet()) {

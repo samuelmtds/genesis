@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 public class EnumFormatter implements Formatter {
    public String format(final Object o) {
       if (o == null) {
-         return "";
+         return ""; // NOI18N
       }
 
       String className = EnumHelper.getInstance().getDeclaringClass(o).getName();
@@ -39,7 +39,7 @@ public class EnumFormatter implements Formatter {
       try {
          return UIUtils.getInstance().getBundle().getString(key);
       } catch (MissingResourceException mre) {
-         LogFactory.getLog(getClass()).info("Not found: " + key);
+         LogFactory.getLog(getClass()).info("Not found: " + key); // NOI18N
          return EnumHelper.getInstance().getName(o);
       }
    }
