@@ -53,8 +53,7 @@
         a pesquisas dinâmicas</a>.</p>
       </subsection>
       <subsection name="Como utilizo SWT em diferentes Plataformas?">
-        <p>Leia as instruções leia as instruções 
-          <a href="configuring_swt.html">aqui</a></p>
+        <p>Leia as instruções <a href="configuring_swt.html">aqui</a></p>
       </subsection>
       <subsection name="Como posso usar genesis em aplicações J2ME?">
         <p>Recomenda-se utilizar um subconjunto das funcionalidades providas no
