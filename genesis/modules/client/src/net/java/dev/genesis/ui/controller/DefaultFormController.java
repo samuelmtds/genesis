@@ -38,6 +38,7 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
+import net.java.dev.genesis.util.Bundle;
 import net.java.dev.genesis.util.GenesisUtils;
 
 import org.apache.commons.beanutils.Converter;
@@ -128,7 +129,8 @@ public class DefaultFormController implements FormController {
 
    public void setup() throws Exception {
       if (setup) {
-         throw new IllegalStateException("setup() has already been called");
+         throw new IllegalStateException(Bundle.getMessage(DefaultFormController.class,
+               "SETUP_METHOD_ALREADY_CALLED")); // NOI18N
       }
 
       setup = true;
@@ -141,10 +143,10 @@ public class DefaultFormController implements FormController {
 
       setContext(ctx);
 
-      if (PropertyUtils.isWriteable(getForm(), "context")
+      if (PropertyUtils.isWriteable(getForm(), "context") // NOI18N
             && Map.class.isAssignableFrom(PropertyUtils.getPropertyType(getForm(),
-                  "context"))) {
-         PropertyUtils.setProperty(getForm(), "context", ctx.getContextMap());
+                  "context"))) { // NOI18N
+         PropertyUtils.setProperty(getForm(), "context", ctx.getContextMap()); // NOI18N
       }
 
       evaluate(true);
@@ -190,7 +192,7 @@ public class DefaultFormController implements FormController {
          updateChangedMap(properties, stringMap, converters);
 
          if (currentState.getChangedMap().isEmpty()) {
-            log.debug("Nothing changed.");
+            log.debug("Nothing changed."); // NOI18N
 
             return;
          }
@@ -223,7 +225,7 @@ public class DefaultFormController implements FormController {
       changedMap.putAll(GenesisUtils.normalizeMap(newData));
 
       if (log.isDebugEnabled()) {
-         log.debug("changedMap started as: " + changedMap);
+         log.debug("changedMap started as: " + changedMap); // NOI18N
       }
 
       for (final Iterator i = changedMap.entrySet().iterator(); i.hasNext();) {
@@ -244,9 +246,9 @@ public class DefaultFormController implements FormController {
             i.remove();
 
             if (log.isDebugEnabled()) {
-               log.debug(entry.getKey() + " removed from changedMap for being "
-                     + " equal to previousValue; is " + entry.getValue()
-                     + "; was:" + previousState.getValuesMap().get(entry
+               log.debug(entry.getKey() + " removed from changedMap for being " // NOI18N
+                     + " equal to previousValue; is " + entry.getValue() // NOI18N
+                     + "; was:" + previousState.getValuesMap().get(entry // NOI18N
                      .getKey()));
             }
 
@@ -254,9 +256,9 @@ public class DefaultFormController implements FormController {
          }
 
          if (log.isDebugEnabled()) {
-            log.debug("Field '" + entry.getKey() + "' changed to '"
-                  + entry.getValue() + "'; was " + (previousState == null ? 
-                  "undefined" : previousState.getValuesMap().get(entry
+            log.debug("Field '" + entry.getKey() + "' changed to '" // NOI18N
+                  + entry.getValue() + "'; was " + (previousState == null ? // NOI18N
+                  "undefined" : previousState.getValuesMap().get(entry // NOI18N
                   .getKey())));
          }
 
@@ -358,9 +360,9 @@ public class DefaultFormController implements FormController {
 
             if (isConditionSatisfied(fieldMetadata.getClearOnCondition())) {
                if (log.isDebugEnabled()) {
-                  log.debug("ClearOn Condition for field '" + entry.getKey()
-                        + "' satisfied. Setting '"
-                        + fieldMetadata.getEmptyValue() + "'");
+                  log.debug("ClearOn Condition for field '" + entry.getKey() // NOI18N
+                        + "' satisfied. Setting '" // NOI18N
+                        + fieldMetadata.getEmptyValue() + "'"); // NOI18N
                }
                changed = true;
                toCopy.put(entry.getKey(), fieldMetadata.getEmptyValue());
@@ -380,9 +382,9 @@ public class DefaultFormController implements FormController {
 
             if (isConditionSatisfied(dataProviderMeta.getClearOnCondition())) {
                if (log.isDebugEnabled()) {
-                  log.debug("ClearOn Condition for data provider '" + 
-                        entry.getKey() + "' satisfied. Clearing data " +
-                        "provider list.");
+                  log.debug("ClearOn Condition for data provider '" +  // NOI18N
+                        entry.getKey() + "' satisfied. Clearing data " + // NOI18N
+                        "provider list."); // NOI18N
                }
 
                changed = true;
@@ -396,7 +398,7 @@ public class DefaultFormController implements FormController {
 
       if (toCopy.isEmpty()) {
          if (log.isDebugEnabled()) {
-            log.debug("Nothing changed in ClearOn conditions.");
+            log.debug("Nothing changed in ClearOn conditions."); // NOI18N
          }
 
          return false;
@@ -426,8 +428,8 @@ public class DefaultFormController implements FormController {
       getScriptContext().declare(conditionName, conditionValue);
 
       if (log.isDebugEnabled()) {
-         log.debug("Named Condition '" + conditionName + "' evaluated as '" + 
-                 conditionValue + "'");
+         log.debug("Named Condition '" + conditionName + "' evaluated as '" + // NOI18N
+                 conditionValue + "'"); // NOI18N
       }
    }
 
@@ -479,10 +481,10 @@ public class DefaultFormController implements FormController {
       }
 
       if (log.isDebugEnabled()) {
-         log.debug((enabled ? "EnabledWhen" : "VisibleWhen")
-               + " Condition for member '" + memberMetadata.getName()
-               + "' evaluated as '"
-               + conditionMap.get(memberMetadata.getName()) + "'");
+         log.debug((enabled ? "EnabledWhen" : "VisibleWhen") // NOI18N
+               + " Condition for member '" + memberMetadata.getName() // NOI18N
+               + "' evaluated as '" // NOI18N
+               + conditionMap.get(memberMetadata.getName()) + "'"); // NOI18N
       }
    }
 
@@ -531,8 +533,8 @@ public class DefaultFormController implements FormController {
 
       if (indexes == null) {
          if (log.isDebugEnabled()) {
-            log.debug("Index field " + dataMeta.getIndexField().getFieldName()
-                  + " haven't been changed.");
+            log.debug("Index field " + dataMeta.getIndexField().getFieldName() // NOI18N
+                  + " haven't been changed."); // NOI18N
          }
 
          return false;
@@ -590,13 +592,12 @@ public class DefaultFormController implements FormController {
 
          if (dataProviderMeta != null) {
             if (ret == null) {
-               throw new IllegalStateException("DataProvider " + 
-                     methodMetadata.getName() + " in " + getForm() + " returned " +
-                     "null; it should return an empty " + 
+               throw new IllegalStateException(Bundle.getMessage(DefaultFormController.class,
+                     "DATAPROVIDER_X_IN_Y_RETURNED_NULL_AND_SHOULD_RETURN_Z", // NOI18N
+                     new Object[]{methodMetadata.getName(), getForm(),
                      ReflectionInvoker.getInstance().getMethod(getForm(), 
                      methodMetadata.getName(), methodMetadata.getMethodEntry()
-                     .getArgsClassesNames()).getReturnType().getName() + 
-                     " instead");
+                     .getArgsClassesNames()).getReturnType().getName()}));
             }
 
             items = (ret.getClass().isArray()) ? Arrays.asList((Object[]) ret) :
@@ -611,9 +612,9 @@ public class DefaultFormController implements FormController {
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("CallWhen Condition for method '" + 
-               methodMetadata.getName() + "' evaluated as '" + 
-               satisfied + "'");
+         log.debug("CallWhen Condition for method '" + // NOI18N
+               methodMetadata.getName() + "' evaluated as '" + // NOI18N
+               satisfied + "'"); // NOI18N
       }
 
       return satisfied;
@@ -690,7 +691,7 @@ public class DefaultFormController implements FormController {
 
    public void reset(FormState state) throws Exception {
       if (log.isDebugEnabled()) {
-         log.debug("Reseting form '" + getForm() + "'");
+         log.debug("Reseting form '" + getForm() + "'"); // NOI18N
       }
 
       currentState = state = createFormState(state);
@@ -755,11 +756,12 @@ public class DefaultFormController implements FormController {
 
    public void invokeAction(String name, Map stringProperties) throws Exception {
       if (name == null) {
-         throw new IllegalArgumentException("Cannot invoke null action");
+         throw new IllegalArgumentException(Bundle.getMessage(DefaultFormController.class,
+               "CANNOT_INVOKE_NULL_ACTION")); // NOI18N
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Invoking action: " + name);
+         log.debug("Invoking action: " + name); // NOI18N
       }
 
       final MethodEntry entry = new MethodEntry(name, new String[0]);
@@ -767,8 +769,8 @@ public class DefaultFormController implements FormController {
             .getMethodMetadata(entry);
 
       if (methodMetadata == null) {
-         throw new IllegalArgumentException("Couldn't find action named " + 
-               name);
+         throw new IllegalArgumentException(Bundle.getMessage(DefaultFormController.class,
+               "COULD_NOT_FIND_ACTION_NAMED_X", name)); // NOI18N
       }
 
       if (methodMetadata.getActionMetadata() != null && methodMetadata

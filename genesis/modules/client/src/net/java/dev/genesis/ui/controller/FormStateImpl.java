@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -71,11 +71,11 @@ public class FormStateImpl implements FormState {
 
    public String toString() {
       return getClass().getName() + 
-            ": [enabledMap: " + enabledMap + 
-            "; visibleMap: " + visibleMap +
-            "; changedMap: " + changedMap +
-            "; valuesMap: " + valuesMap +
-            "; dataProvidedMap: " + dataProvidedMap +
-            "; dataProvidedIndexesMap: " + dataProvidedIndexesMap + "]";
+            ": [enabledMap: " + enabledMap + // NOI18N
+            "; visibleMap: " + visibleMap + // NOI18N
+            "; changedMap: " + changedMap + // NOI18N
+            "; valuesMap: " + valuesMap + // NOI18N
+            "; dataProvidedMap: " + dataProvidedMap + // NOI18N
+            "; dataProvidedIndexesMap: " + dataProvidedIndexesMap + "]"; // NOI18N
    }
 }

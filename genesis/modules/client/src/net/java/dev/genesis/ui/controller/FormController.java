@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,8 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 
 public interface FormController {
-   public static final String FORM_METADATA_KEY = "genesis:formMetadata";
-   public static final String CURRENT_STATE_KEY = "genesis:currentState";
+   public static final String FORM_METADATA_KEY = "genesis:formMetadata"; // NOI18N
+   public static final String CURRENT_STATE_KEY = "genesis:currentState"; // NOI18N
 
    public void setForm(Object form);
    public void setFormMetadata(FormMetadata form);
