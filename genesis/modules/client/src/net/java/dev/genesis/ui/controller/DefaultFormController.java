@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,7 @@ public class DefaultFormController implements FormController {
 
    private FormState currentState;
    private FormState previousState;
+   private List previousStateStack = new LinkedList();
 
    private Collection listeners = new ArrayList();
 
@@ -104,6 +106,10 @@ public class DefaultFormController implements FormController {
 
    protected void setContext(ScriptContext ctx) {
       this.ctx = ctx;
+   }
+
+   private FormState getPreviousState() {
+      return previousState;
    }
 
    protected FormState createFormState() {
@@ -182,7 +188,7 @@ public class DefaultFormController implements FormController {
 
    protected void populate(Map properties, boolean stringMap, Map converters) 
          throws Exception {
-      final boolean createPreviousState = createPreviousState();
+      createPreviousState();
 
       try {
          if (properties == null) {
@@ -203,11 +209,11 @@ public class DefaultFormController implements FormController {
 
          evaluate(false);
       } catch (Exception e) {
-         resetPreviousState(createPreviousState);
+         resetPreviousState();
 
          throw e;
       } finally {
-         releasePreviousState(createPreviousState);
+         releasePreviousState();
       }
    }
 
@@ -239,8 +245,8 @@ public class DefaultFormController implements FormController {
          value = (stringMap) ? getConverter(fieldMeta, converters).convert(
                fieldMeta.getFieldClass(), entry.getValue()) : entry.getValue();
 
-         if (previousState != null && fieldMeta.getEqualityComparator().equals(
-               value, previousState.getValuesMap().get(entry.getKey()))
+         if (getPreviousState() != null && fieldMeta.getEqualityComparator().equals(
+               value, getPreviousState().getValuesMap().get(entry.getKey()))
                && fieldMeta.getEqualityComparator().equals(value,
                      currentState.getValuesMap().get(entry.getKey()))) {
             i.remove();
@@ -248,7 +254,7 @@ public class DefaultFormController implements FormController {
             if (log.isDebugEnabled()) {
                log.debug(entry.getKey() + " removed from changedMap for being " // NOI18N
                      + " equal to previousValue; is " + entry.getValue() // NOI18N
-                     + "; was:" + previousState.getValuesMap().get(entry // NOI18N
+                     + "; was:" + getPreviousState().getValuesMap().get(entry // NOI18N
                      .getKey()));
             }
 
@@ -257,8 +263,8 @@ public class DefaultFormController implements FormController {
 
          if (log.isDebugEnabled()) {
             log.debug("Field '" + entry.getKey() + "' changed to '" // NOI18N
-                  + entry.getValue() + "'; was " + (previousState == null ? // NOI18N
-                  "undefined" : previousState.getValuesMap().get(entry // NOI18N
+                  + entry.getValue() + "'; was " + (getPreviousState() == null ? // NOI18N
+                  "undefined" : getPreviousState().getValuesMap().get(entry // NOI18N
                   .getKey())));
          }
 
@@ -795,23 +801,23 @@ public class DefaultFormController implements FormController {
    protected void invokeActionWithReset(MethodMetadata metadata, 
          boolean firstCall, boolean conditionally) throws Exception {
 
-      final boolean createPreviousState = createPreviousState();
+      createPreviousState();
 
       try {
          invokeAction(metadata, firstCall, conditionally);
       } catch (Exception e) {
-         resetPreviousState(createPreviousState);
+         resetPreviousState();
 
          throw e;
       } finally {
-         releasePreviousState(createPreviousState);
+         releasePreviousState();
       }
    }
 
    public void updateSelection(DataProviderMetadata dataProviderMetadata, 
          int[] selected) throws Exception {
 
-      final boolean createPreviousState = createPreviousState();
+      createPreviousState();
 
       try {
          final List list = (List)currentState.getDataProvidedMap().get(
@@ -823,33 +829,30 @@ public class DefaultFormController implements FormController {
 
          update();
       } catch (Exception e) {
-         resetPreviousState(createPreviousState);
+         resetPreviousState();
 
          throw e;
       } finally {
-         releasePreviousState(createPreviousState);
+         releasePreviousState();
       }
    }
 
-   protected boolean createPreviousState() {
-      final boolean createPreviousState = previousState == null;
-
-      if (createPreviousState) {
-         previousState = createFormState(currentState);
-      }
-
-      return createPreviousState;
+   protected void createPreviousState() {
+      previousStateStack.add(getPreviousState());
+      previousState = createFormState(currentState);
    }
 
-   protected void resetPreviousState(boolean createPreviousState) throws Exception {
-      if (createPreviousState) {
-         reset(previousState);
-      }
+   protected void resetPreviousState() throws Exception {
+      reset(getPreviousState());
    }
 
-   protected void releasePreviousState(boolean createPreviousState) {
-      if (createPreviousState) {
-         previousState = null;
+   protected void releasePreviousState() {
+      if (!previousStateStack.isEmpty()) {
+         previousState = (FormState)previousStateStack.remove(
+               previousStateStack.size() - 1);
+      } else {
+         throw new IllegalStateException(Bundle.getMessage(
+               DefaultFormController.class, "ILLEGAL_PREVIOUS_STATE"));
       }
    }
 
