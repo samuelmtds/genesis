@@ -953,7 +953,7 @@
          <element name="additional-filesets" optional="true"/>
          <element name="customize" optional="true"/>
          <sequential>
-            <jar destfile="@{destfile}">
+            <jar destfile="@{destfile}" filesonly="true">
                <fileset dir="@{classesdir}">
                   <classesdir-selector />
                </fileset>
