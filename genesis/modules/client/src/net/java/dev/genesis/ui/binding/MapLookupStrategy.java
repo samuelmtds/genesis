@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package net.java.dev.genesis.ui.binding;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import net.java.dev.genesis.util.Bundle;
 
 
 public class MapLookupStrategy implements LookupStrategy {
@@ -41,8 +42,8 @@ public class MapLookupStrategy implements LookupStrategy {
             return null;
          }
 
-         throw new IllegalArgumentException("Component " + object +
-            " is already bound");
+         throw new IllegalArgumentException(Bundle.getMessage(MapLookupStrategy.class,
+               "COMPONENT_X_IS_ALREADY_BOUND", object)); // NOI18N
       }
 
       identityMap.put(object, name);

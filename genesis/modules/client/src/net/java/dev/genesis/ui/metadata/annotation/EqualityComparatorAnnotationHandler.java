@@ -33,7 +33,7 @@ public class EqualityComparatorAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "EqualityComparator");
+            "EqualityComparator"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -47,7 +47,7 @@ public class EqualityComparatorAnnotationHandler implements AnnotationHandler {
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notMethodAnnotation(formMetadata, 
-            methodMetadata, "EqualityComparator");
+            methodMetadata, "EqualityComparator"); // NOI18N
    }
 
    private EqualityComparator getEqualityComparator(

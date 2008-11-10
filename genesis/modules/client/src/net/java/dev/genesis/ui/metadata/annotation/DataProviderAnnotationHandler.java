@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,7 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
+import net.java.dev.genesis.util.Bundle;
 import net.java.dev.genesis.util.GenesisUtils;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -38,13 +39,13 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "DataProvider");
+            "DataProvider"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFieldAnnotation(formMetadata, 
-            fieldMetadata, "DataProvider", true);
+            fieldMetadata, "DataProvider", true); // NOI18N
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
@@ -60,15 +61,17 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
       final DataProviderMetadata dataProviderMetadata = methodMetadata
             .getDataProviderMetadata();
 
+      final String methodName =
+            AnnotationHandlerExceptionFactory.getMethodName(formMetadata,
+            methodMetadata);
+
       if (GenesisUtils.isBlank(widgetName)
             && GenesisUtils.isBlank(objectFieldName)
             && GenesisUtils.isBlank(indexFieldName)) {
-         StringBuffer errorMessage = new StringBuffer("At least one of " +
-               "widgetName, objectField or indexField must be specified for " +
-               "@DataProvider");
-         AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
-               methodMetadata, errorMessage);
-         throw new IllegalArgumentException(errorMessage.toString());
+         String errorMessage = Bundle.getMessage(getClass(),
+               "AT_LEAST_ONE_OF_OPTIONS_MUST_BE_SPECIFIED_FOR_DATAPROVIDER_X", // NOI18N
+               methodName);
+         throw new IllegalArgumentException(errorMessage);
       }
 
       dataProviderMetadata.setCallOnInit(callOnInit);
@@ -87,21 +90,9 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
       if (!GenesisUtils.isBlank(objectFieldName)) {
          PropertyDescriptor descriptor = (PropertyDescriptor) descriptorsPerPropertyName
                .get(objectFieldName);
-
          if (descriptor == null || descriptor.getReadMethod() == null ||
                descriptor.getWriteMethod() == null) {
-            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
-                  "objectField refers to '").append(objectFieldName).append(
-                  "', but ");
 
-            if (descriptor == null) {
-               errorMessage.append("such a public property does not exist");
-            } else {
-               errorMessage.append("it is not a read-write property");
-            }
-
-            errorMessage.append("; maybe creating public <type> get");
-            
             StringBuffer propertyName = new StringBuffer().append(Character
                   .toUpperCase(objectFieldName.charAt(0)));
 
@@ -109,12 +100,13 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
                propertyName.append(objectFieldName.substring(1));
             }
 
-            errorMessage.append(propertyName).append("() and public void set")
-                  .append(propertyName).append("(<type> var) will fix it");
-            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
-                  methodMetadata, errorMessage);
+            String key =
+                  descriptor == null ? "DATAPROVIDER_OBJECTFIELD_REFERS_TO_X_BUT_PUBLIC_PROPERTY_DOES_NOT_EXIST" : // NOI18N
+                  "DATAPROVIDER_OBJECTFIELD_REFERS_TO_X_BUT_IT_IS_NOT_A_READ_WRITE_PROPERTY"; // NOI18N
+            String errorMessage = Bundle.getMessage(getClass(), key,
+                  new Object[] {objectFieldName, propertyName, methodName});
 
-            throw new IllegalArgumentException(errorMessage.toString());
+            throw new IllegalArgumentException(errorMessage);
          }
 
          final Class fieldType = descriptor.getPropertyType();
@@ -122,15 +114,11 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          if (fieldType.isPrimitive()
                || (fieldType.isArray() && fieldType.getComponentType()
                      .isPrimitive())) {
-            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
-                  "objectField refers to '").append(objectFieldName).append(
-                  "', but it cannot be a primitive or an array of " +
-                  "primitives");
+            String errorMessage = Bundle.getMessage(getClass(),
+                  "DATAPROVIDER_OBJECTFIELD_REFERS_TO_X_BUT_IT_IS_NOT_A_PRIMITIVE_OR_ARRAY_OF_PRIMITIVES", // NOI18N
+                  objectFieldName, methodName);
 
-            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
-                  methodMetadata, errorMessage);
-
-            throw new IllegalArgumentException(errorMessage.toString());
+            throw new IllegalArgumentException(errorMessage);
          }
 
          dataProviderMetadata.setObjectField(new FieldEntry(descriptor
@@ -143,31 +131,19 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
 
          if (descriptor == null || descriptor.getReadMethod() == null ||
                descriptor.getWriteMethod() == null) {
-            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
-                  "indexField refers to '").append(indexFieldName).append(
-                  "', but ");
-
-            if (descriptor == null) {
-               errorMessage.append("such a public property does not exist");
-            } else {
-               errorMessage.append("it is not a read-write property");
-            }
-
-            errorMessage.append("; maybe creating public <type> get");
-
-            StringBuffer propertyName = new StringBuffer().append(Character
+            final StringBuffer propertyName = new StringBuffer().append(Character
                   .toUpperCase(indexFieldName.charAt(0)));
 
             if (indexFieldName.length() > 1) {
                propertyName.append(indexFieldName.substring(1));
             }
 
-            errorMessage.append(propertyName).append("() and public void set")
-                  .append(propertyName).append("(<type> var) will fix it");
-            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
-                  methodMetadata, errorMessage);
-
-            throw new IllegalArgumentException(errorMessage.toString());
+            String key =
+                  descriptor == null ? "DATAPROVIDER_INDEXFIELD_REFERS_TO_X_BUT_SUCH_PUBLIC_PROPERTY_DOES_NOT_EXIST" : // NOI18N
+                  "DATAPROVIDER_INDEXFIELD_REFERS_TO_X_BUT_IT_IS_NOT_A_READ_WRITE_PROPERTY"; // NOI18N
+            String errorMessage = Bundle.getMessage(getClass(), key,
+                  new Object[] {indexFieldName, propertyName, methodName});
+            throw new IllegalArgumentException(errorMessage);
          }
 
          final Class fieldType = descriptor.getPropertyType().isArray() ? descriptor
@@ -177,15 +153,10 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          if (!Collection.class.isAssignableFrom(descriptor.getPropertyType())
                && !Integer.TYPE.isAssignableFrom(fieldType)
                && !Integer.class.isAssignableFrom(fieldType)) {
-            StringBuffer errorMessage = new StringBuffer("@DataProvider " +
-                  "indexField refers to '").append(indexFieldName).append(
-                  "', but it is not an Integer, int, array of the previous " +
-                  "types nor a java.util.Collection");
-
-            AnnotationHandlerExceptionFactory.appendMethodName(formMetadata, 
-                  methodMetadata, errorMessage);
-
-            throw new IllegalArgumentException(errorMessage.toString());
+            String errorMessage = Bundle.getMessage(getClass(),
+                  "DATAPROVIDER_INDEXFIELD_REFERS_TO_X_BUT_IT_IS_NOT_AN_INTEGER_INT_ARRAY_COLLECTION", // NOI18N
+                  indexFieldName, methodName);
+            throw new IllegalArgumentException(errorMessage);
          }
 
          dataProviderMetadata.setIndexField(new FieldEntry(

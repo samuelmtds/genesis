@@ -26,13 +26,14 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 
+import net.java.dev.genesis.util.Bundle;
 import org.codehaus.backport175.reader.Annotation;
 
 public class VisibleWhenAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "VisibleWhen");
+            "VisibleWhen"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -44,7 +45,7 @@ public class VisibleWhenAnnotationHandler implements AnnotationHandler {
          final MethodMetadata methodMetadata, final Annotation annotation) {
       if (methodMetadata.getActionMetadata() == null) {
          AnnotationHandlerExceptionFactory.mustBePropertyOrAction(formMetadata, 
-               methodMetadata, "VisibleWhen");
+               methodMetadata, "VisibleWhen"); // NOI18N
       }
 
       processMemberAnnotation(formMetadata, methodMetadata
@@ -55,13 +56,14 @@ public class VisibleWhenAnnotationHandler implements AnnotationHandler {
          final MemberMetadata memberMetadata, final Annotation annotation) {
       VisibleWhen annon = (VisibleWhen) annotation;
       String[] values = annon.value();
+      final String memberName =
+            AnnotationHandlerExceptionFactory.getMemberName(formMetadata,
+            memberMetadata);
       if (values == null || values.length == 0) {
-         StringBuffer errorMessage = new StringBuffer("@VisibleWhen must " +
-               "define at least one script condition");
-         AnnotationHandlerExceptionFactory.appendMemberName(formMetadata, 
-               memberMetadata, errorMessage);
-
-         throw new IllegalArgumentException(errorMessage.toString());
+         throw new IllegalArgumentException(Bundle.getMessage(
+               getClass(),
+               "VISIBLEWHEN_MUST_DEFINE_AT_LEAST_ONE_SCRIPT_CONDITION_X", // NOI18N
+               memberName));
       }
 
       final Script script = formMetadata.getScript();
@@ -69,13 +71,10 @@ public class VisibleWhenAnnotationHandler implements AnnotationHandler {
       if (values.length == 1) {
          memberMetadata.setVisibleCondition(script.compile(values[0]));
       } else if (values.length % 2 != 0) {
-         StringBuffer errorMessage = new StringBuffer("@VisibleWhen must " +
-               "define at least one script condition or pairs of script " +
-               "conditions");
-         AnnotationHandlerExceptionFactory.appendMemberName(formMetadata, 
-               memberMetadata, errorMessage);
-
-         throw new IllegalArgumentException(errorMessage.toString());
+         throw new IllegalArgumentException(Bundle.getMessage(
+               getClass(),
+               "VISIBLEWHEN_MUST_DEFINE_AT_LEAST_ONE_SCRIPT_CONDITION_OR_PAIRS_OF_SCRIPT_CONDITIONS_X", // NOI18N
+               memberName));
       } else {
          for (int i = 0; i < values.length; i += 2) {
             if (!ScriptRegistry.getInstance().isCurrentScriptFactoryNameFor(

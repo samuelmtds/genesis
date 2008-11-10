@@ -50,7 +50,7 @@ public class BigDecimalConverter implements Converter {
 
       int i;
       if ((i = ret.indexOf(",")) != -1) { // NOI18N
-         ret.setCharAt(i,  '.'); // NOI18N
+         ret.setCharAt(i,  '.');
       }
 
       try {

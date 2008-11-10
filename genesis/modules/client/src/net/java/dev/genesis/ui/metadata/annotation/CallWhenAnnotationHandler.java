@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,13 +29,13 @@ public class CallWhenAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "CallWhen");
+            "CallWhen"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFieldAnnotation(formMetadata, 
-            fieldMetadata, "CallWhen", true);
+            fieldMetadata, "CallWhen", true); // NOI18N
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,

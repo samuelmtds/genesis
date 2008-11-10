@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,107 +22,103 @@ import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
+import net.java.dev.genesis.util.Bundle;
 
 class AnnotationHandlerExceptionFactory {
    private AnnotationHandlerExceptionFactory() {
    }
 
-   private static StringBuffer getAnnotationName(final String annotationName) {
-      return new StringBuffer("@").append(annotationName);
+   private static String getAnnotationName(final String annotationName) {
+      return "@" + annotationName; // NOI18N
    }
 
-   private static void appendFormClassName(final FormMetadata formMetadata, 
-         final StringBuffer errorMessage) {
-      errorMessage.append(" ( at ").append(formMetadata.getFormClass().getName())
-            .append(")");
+   public static String getMemberName(final FormMetadata formMetadata,
+         final MemberMetadata memberMetadata) {
+      return Bundle.getMessage(AnnotationHandlerExceptionFactory.class,
+            "AT_MEMBER_X_Y", formMetadata.  // NOI18N
+            getFormClass().getName(), memberMetadata.getName());
    }
 
-   public static void appendMemberName(final FormMetadata formMetadata, 
-         final MemberMetadata memberMetadata, final StringBuffer errorMessage) {
-      errorMessage.append(" ( at member ").append(formMetadata.getFormClass()
-            .getName()).append(":").append(memberMetadata.getName())
-            .append(")");
-   }
+   public static String getMethodName(final FormMetadata formMetadata,
+         final MethodMetadata methodMetadata) {
+      final String[] argsClassNames = methodMetadata.getMethodEntry().
+            getArgsClassesNames();
 
-   public static void appendMethodName(final FormMetadata formMetadata, 
-         final MethodMetadata methodMetadata, final StringBuffer errorMessage) {
-      errorMessage.append(" ( at ").append(formMetadata.getFormClass()
-            .getName()).append(".").append(methodMetadata.getName()).append("(");
-
-      final String[] argsClassNames = methodMetadata.getMethodEntry()
-            .getArgsClassesNames();
-
+      final StringBuffer classNames = new StringBuffer();
       for (int i = 0; i < argsClassNames.length; i++) {
          if (i > 0) {
-            errorMessage.append(", ");
+            classNames.append(", "); // NOI18N
          }
-         
-         errorMessage.append(argsClassNames[i]);
+
+         classNames.append(argsClassNames[i]);
       }
 
-      errorMessage.append(") )");
+      return Bundle.getMessage(AnnotationHandlerExceptionFactory.class,
+            "AT_X_Y_Z", new Object[] {formMetadata.getFormClass().getName(), // NOI18N
+               methodMetadata.getName(), classNames});
    }
 
    public static void notFormAnnotation(final FormMetadata formMetadata, 
          final String annotationName) {
-      StringBuffer errorMessage = getAnnotationName(annotationName);
-      errorMessage.append(" cannot be used as a form annotation");
-      appendFormClassName(formMetadata, errorMessage);
-
-      throw new IllegalArgumentException(errorMessage.toString());
+      throw new IllegalArgumentException(Bundle.getMessage(
+            AnnotationHandlerExceptionFactory.class,
+            "X_CANNOT_BE_USED_AS_A_FORM_ANNOTATION_AT_Y", // NOI18N
+            getAnnotationName(annotationName),
+            formMetadata.getFormClass().getName()));
    }
 
    public static void notFieldAnnotation(final FormMetadata formMetadata, 
-         final FieldMetadata fieldMetadata, final String annotationName, 
+         final FieldMetadata fieldMetadata, String annotationName, 
          final boolean methodIsValid) {
-      StringBuffer errorMessage = getAnnotationName(annotationName);
-      errorMessage.append(" cannot be used to annotate a property");
-      
-      if (methodIsValid) {
-         errorMessage.append("; maybe removing the get prefix from the " +
-               "method will fix it");
-      }
+      final String key = methodIsValid ? "X_CANNOT_BE_USED_TO_ANNOTATE_A_PROPERTY_FIX_SUGGESTION_Y" // NOI18N
+            : "X_CANNOT_BE_USED_TO_ANNOTATE_A_PROPERTY_Y"; // NOI18N
+      annotationName = getAnnotationName(annotationName);
+      final String memberName = getMemberName(formMetadata, fieldMetadata);
 
-      appendMemberName(formMetadata, fieldMetadata, errorMessage);
-
-      throw new IllegalArgumentException(errorMessage.toString());
+      throw new IllegalArgumentException(Bundle.getMessage(
+            AnnotationHandlerExceptionFactory.class, key, annotationName,
+            memberName));
    }
 
    public static void notMethodAnnotation(final FormMetadata formMetadata, 
-         final MethodMetadata methodMetadata, final String annotationName) {
-      StringBuffer errorMessage = getAnnotationName(annotationName);
-      errorMessage.append(" cannot be used to annotate a method");
-      appendMethodName(formMetadata, methodMetadata, errorMessage);
+         final MethodMetadata methodMetadata, String annotationName) {
+      annotationName = getAnnotationName(annotationName);
+      final String methodName = getMethodName(formMetadata, methodMetadata);
 
-      throw new IllegalArgumentException(errorMessage.toString());
+      throw new IllegalArgumentException(Bundle.getMessage(
+            AnnotationHandlerExceptionFactory.class,
+            "X_CANNOT_BE_USED_TO_ANNOTATE_A_METHOD_Y", annotationName, // NOI18N
+            methodName));
    }
 
 
-   public static void mustBeAction(final FormMetadata formMetadata, 
-         final MethodMetadata methodMetadata, final String annotationName) {
-      mustBeUsed(formMetadata, methodMetadata, annotationName, 
-            "with a method annotated with @Action");
+   public static void mustBeAction(final FormMetadata formMetadata,
+         final MethodMetadata methodMetadata, String annotationName) {
+      annotationName = getAnnotationName(annotationName);
+      final String methodName = getMethodName(formMetadata, methodMetadata);
+
+      throw new IllegalArgumentException(Bundle.getMessage(
+            AnnotationHandlerExceptionFactory.class,
+            "X_MUST_BE_ACTION_Y", annotationName, methodName)); // NOI18N
    }
 
    public static void mustBePropertyOrDataProvider(final FormMetadata formMetadata, 
-         final MethodMetadata methodMetadata, final String annotationName) {
-      mustBeUsed(formMetadata, methodMetadata, annotationName, 
-            "either with a getter or a method annotated with @DataProvider");
+         final MethodMetadata methodMetadata, String annotationName) {
+      annotationName = getAnnotationName(annotationName);
+      final String methodName = getMethodName(formMetadata, methodMetadata);
+
+      throw new IllegalArgumentException(Bundle.getMessage(
+            AnnotationHandlerExceptionFactory.class,
+            "X_MUST_BE_PROPERTY_OR_DATA_PROVIDER_Y", annotationName, methodName)); // NOI18N
    }
 
    public static void mustBePropertyOrAction(final FormMetadata formMetadata, 
-         final MethodMetadata methodMetadata, final String annotationName) {
-      mustBeUsed(formMetadata, methodMetadata, annotationName, 
-            "either with a getter or a method annotated with @Action");
-   }
+         final MethodMetadata methodMetadata, String annotationName) {
+      annotationName = getAnnotationName(annotationName);
+      final String methodName = getMethodName(formMetadata, methodMetadata);
 
-   private static void mustBeUsed(final FormMetadata formMetadata, 
-         final MethodMetadata methodMetadata, final String annotationName, 
-         final String what) throws IllegalArgumentException {
-      StringBuffer errorMessage = getAnnotationName(annotationName);
-      errorMessage.append(" must be used ").append(what);
-      appendMethodName(formMetadata, methodMetadata, errorMessage);
-
-      throw new IllegalArgumentException(errorMessage.toString());
+      throw new IllegalArgumentException(Bundle.getMessage(
+            AnnotationHandlerExceptionFactory.class,
+            "X_MUST_BE_PROPERTY_OR_ACTION_Y", annotationName, methodName)); // NOI18N
    }
 }

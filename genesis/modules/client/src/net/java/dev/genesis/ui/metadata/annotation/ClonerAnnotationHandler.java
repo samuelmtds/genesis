@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ public class ClonerAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "Cloner");
+            "Cloner"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -45,7 +45,7 @@ public class ClonerAnnotationHandler implements AnnotationHandler {
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notMethodAnnotation(formMetadata, 
-            methodMetadata, "Cloner");
+            methodMetadata, "Cloner"); // NOI18N
    }
 
    private Cloner getCloner(final FieldMetadata fieldMetadata,

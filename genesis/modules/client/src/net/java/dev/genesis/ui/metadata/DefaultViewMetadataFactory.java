@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import net.java.dev.genesis.annotation.AfterAction;
 import net.java.dev.genesis.annotation.BeforeAction;
 
+import net.java.dev.genesis.util.Bundle;
 import org.codehaus.backport175.reader.Annotation;
 import org.codehaus.backport175.reader.Annotations;
 
@@ -73,9 +74,9 @@ public class DefaultViewMetadataFactory implements ViewMetadataFactory {
       for (int i = 0; i < annotations.length; i++) {
          if (BeforeAction.class.equals(annotations[i].annotationType())) {
             if (method.getParameterTypes().length != 0) {
-               throw new IllegalArgumentException("@BeforeAction cannot "
-                     + "be used in a method with parameters: "
-                     + method.toString());
+               throw new IllegalArgumentException(Bundle.getMessage(
+                     DefaultViewMetadataFactory.class,
+                     "X_CANNOT_BE_USED_IN_METHOD_WITH_PARAMETERS_Y", "@BeforeAction", method.toString())); // NOI18N
             }
 
             BeforeAction annon = (BeforeAction) annotations[i];
@@ -92,9 +93,9 @@ public class DefaultViewMetadataFactory implements ViewMetadataFactory {
             }
          } else if (AfterAction.class.equals(annotations[i].annotationType())) {
             if (method.getParameterTypes().length != 0) {
-               throw new IllegalArgumentException("@AfterAction cannot "
-                     + "be used in a method with parameters: "
-                     + method.toString());
+               throw new IllegalArgumentException(Bundle.getMessage(
+                     DefaultViewMetadataFactory.class,
+                     "X_CANNOT_BE_USED_IN_METHOD_WITH_PARAMETERS_Y", "@AfterAction", method.toString())); // NOI18N
             }
 
             AfterAction annon = (AfterAction) annotations[i];

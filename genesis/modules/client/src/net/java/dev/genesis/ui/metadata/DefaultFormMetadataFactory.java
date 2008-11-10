@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import net.java.dev.genesis.script.ScriptRegistry;
 import net.java.dev.genesis.ui.metadata.annotation.AnnotationHandler;
 import net.java.dev.genesis.ui.metadata.annotation.AnnotationHandlerRegistry;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.codehaus.backport175.reader.Annotation;
 import org.codehaus.backport175.reader.Annotations;
@@ -77,7 +78,7 @@ public class DefaultFormMetadataFactory implements FormMetadataFactory {
          propDesc = propertyDescriptors[i];
 
          // Ignoring java.lang.Object.getClass()
-         if (propDesc.getName().equals("class")) {
+         if (propDesc.getName().equals("class")) { // NOI18N
             continue;
          }
 
@@ -126,9 +127,9 @@ public class DefaultFormMetadataFactory implements FormMetadataFactory {
          }
 
          if (formMetadata.getFieldMetadata(methods[i].getName()) != null) {
-            throw new IllegalArgumentException("An @Action/@DataProvider " +
-                  "cannot have the same name of a property: " + 
-                  methods[i].getName());
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  DefaultFormMetadataFactory.class, "AN_ACTION_OR_DATAPROVIDER_CANNOT_HAVE_THE_SAME_NAME_OF_A_PROPERTY", // NOI18N
+                  methods[i].getName()));
          }
 
          methodMetadata = new MethodMetadata(methods[i], isAction, isProvider);

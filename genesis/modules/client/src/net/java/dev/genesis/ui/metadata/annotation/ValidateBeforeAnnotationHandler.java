@@ -28,13 +28,13 @@ public class ValidateBeforeAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "ValidateBefore");
+            "ValidateBefore"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFieldAnnotation(formMetadata, 
-            fieldMetadata, "ValidateBefore", true);
+            fieldMetadata, "ValidateBefore", true); // NOI18N
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
@@ -42,7 +42,7 @@ public class ValidateBeforeAnnotationHandler implements AnnotationHandler {
 
       if (methodMetadata.getActionMetadata() == null) {
          AnnotationHandlerExceptionFactory.mustBeAction(formMetadata, 
-               methodMetadata, "ValidateBefore");
+               methodMetadata, "ValidateBefore"); // NOI18N
       }
 
       methodMetadata.getActionMetadata().setValidateBefore(annotation != null);

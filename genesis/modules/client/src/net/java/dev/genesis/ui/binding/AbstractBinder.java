@@ -54,70 +54,70 @@ public abstract class AbstractBinder implements FormControllerListener {
    /**
     * The key used to store whether or not the widget is bound
     */   
-   public static final String GENESIS_BOUND = "genesis:boundField";
+   public static final String GENESIS_BOUND = "genesis:boundField"; // NOI18N
 
    /**
     * The key used to store values for the widget group
     */   
-   public static final String WIDGET_GROUP_PROPERTY = "genesis:widgetGroup";
+   public static final String WIDGET_GROUP_PROPERTY = "genesis:widgetGroup"; // NOI18N
 
    /**
     * The key used to store values for the enabled group
     */
-   public static final String ENABLED_GROUP_PROPERTY = "genesis:enabledGroup";
+   public static final String ENABLED_GROUP_PROPERTY = "genesis:enabledGroup"; // NOI18N
 
    /**
     * The key used to store values for the visible group
     */
-   public static final String VISIBLE_GROUP_PROPERTY = "genesis:visibleGroup";
+   public static final String VISIBLE_GROUP_PROPERTY = "genesis:visibleGroup"; // NOI18N
 
    /**
     * The key used to store the property name used in a blank label
     */
-   public static final String BLANK_LABEL_PROPERTY = "genesis:blankLabel";
+   public static final String BLANK_LABEL_PROPERTY = "genesis:blankLabel"; // NOI18N
 
    /**
     * The key used to store whether or not the widget has blank label
     */
-   public static final String BLANK_PROPERTY = "genesis:blank";
+   public static final String BLANK_PROPERTY = "genesis:blank"; // NOI18N
 
    /**
     * The key used to store the property used as a key in a combo or list
     */
-   public static final String KEY_PROPERTY = "genesis:key";
+   public static final String KEY_PROPERTY = "genesis:key"; // NOI18N
 
    /**
     * The key used to store the value property in a combo or list
     */   
-   public static final String VALUE_PROPERTY = "genesis:value";
+   public static final String VALUE_PROPERTY = "genesis:value"; // NOI18N
 
    /**
     * The key used to store the column names of a table
     */
-   public static final String COLUMN_NAMES = "genesis:columnNames";
+   public static final String COLUMN_NAMES = "genesis:columnNames"; // NOI18N
 
    /**
     * The key used to store whether or not the widget is associated with
     * a virtual property
     */
-   public static final String VIRTUAL = "genesis:virtual";
+   public static final String VIRTUAL = "genesis:virtual"; // NOI18N
 
    /**
     * The prefix for virtual properties
     */
-   public static final String VIRTUAL_PREFIX = "virtual:";
+   public static final String VIRTUAL_PREFIX = "virtual:"; // NOI18N
 
    /**
     * The key used to store the value of the button in a button group
     */
    public static final String BUTTON_GROUP_SELECTION_VALUE = 
-         "genesis:buttonGroupSelectionValue";
+         "genesis:buttonGroupSelectionValue"; // NOI18N
 
    public static final String BINDING_STRATEGY_PROPERTY = 
-         "genesis:bindingStrategy";
+         "genesis:bindingStrategy"; // NOI18N
 
    public static final String BINDING_STRATEGY_AS_YOU_TYPE = 
-         "genesis:bindingStrategyAsYouType";
+         "genesis:bindingStrategyAsYouType"; // NOI18N
 
    private static String defaultBindingStrategy;
    private String bindingStrategy;
@@ -330,7 +330,7 @@ public abstract class AbstractBinder implements FormControllerListener {
          final Object group = lookupButtonGroup(name);
 
          if (group == null) {
-            log.warn(name + " could not be found while binding "
+            log.warn(name + " could not be found while binding " // NOI18N
                   + getForm().getClass());
 
             return null;
@@ -339,7 +339,7 @@ public abstract class AbstractBinder implements FormControllerListener {
          GroupBinder binder = getGroupBinder(group);
 
          if (binder == null) {
-            log.warn("No Binder registered for " + group.getClass());
+            log.warn("No Binder registered for " + group.getClass()); // NOI18N
 
             return null;
          }
@@ -350,7 +350,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       WidgetBinder binder = getWidgetBinder(widget);
 
       if (binder == null) {
-         log.warn("No Binder registered for " + widget.getClass());
+         log.warn("No Binder registered for " + widget.getClass()); // NOI18N
 
          return null;
       }
@@ -363,7 +363,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       final Object widget = lookup(name);
 
       if (widget == null) {
-         log.warn(name + " could not be found while binding "
+         log.warn(name + " could not be found while binding " // NOI18N
                + getForm().getClass());
 
          return null;
@@ -372,7 +372,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       WidgetBinder binder = getWidgetBinder(widget);
 
       if (binder == null) {
-         log.warn("No Binder registered for " + widget.getClass());
+         log.warn("No Binder registered for " + widget.getClass()); // NOI18N
 
          return null;
       }
@@ -385,7 +385,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       final Object widget = lookup(name);
 
       if (widget == null) {
-         log.warn(name + " could not be found while binding "
+         log.warn(name + " could not be found while binding " // NOI18N
                + getForm().getClass());
 
          return null;
@@ -394,7 +394,7 @@ public abstract class AbstractBinder implements FormControllerListener {
       WidgetBinder binder = getWidgetBinder(widget);
 
       if (binder == null) {
-         log.warn("No Binder registered for " + widget.getClass());
+         log.warn("No Binder registered for " + widget.getClass()); // NOI18N
 
          return null;
       }
@@ -432,14 +432,14 @@ public abstract class AbstractBinder implements FormControllerListener {
       final BoundDataProvider boundDataProvider = getBoundDataProvider(name);
 
       if (boundDataProvider == null) {
-         log.warn(name + " could not be found while populating using " +
+         log.warn(name + " could not be found while populating using " + // NOI18N
             form.getClass());
 
          return;
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Populating " + name + " with " + metadata.getName());
+         log.debug("Populating " + name + " with " + metadata.getName()); // NOI18N
       }
 
       boundDataProvider.updateList(items);
@@ -451,14 +451,14 @@ public abstract class AbstractBinder implements FormControllerListener {
       final BoundDataProvider boundDataProvider = getBoundDataProvider(name);
 
       if (boundDataProvider == null) {
-         log.warn(name + " could not be found while updating indexes using " +
+         log.warn(name + " could not be found while updating indexes using " + // NOI18N
             getForm().getClass());
 
          return;
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Updating indexes " + name + " with " + metadata.getName());
+         log.debug("Updating indexes " + name + " with " + metadata.getName()); // NOI18N
       }
 
       boundDataProvider.updateIndexes(selectedIndexes);
@@ -496,8 +496,8 @@ public abstract class AbstractBinder implements FormControllerListener {
          }
 
          if (log.isDebugEnabled()) {
-            log.debug("Changing " + entry.getKey() +
-               (enabled ? " enabled" : " visible") + " state to " +
+            log.debug("Changing " + entry.getKey() + // NOI18N
+               (enabled ? " enabled" : " visible") + " state to " + // NOI18N
                entry.getValue());
          }
 
@@ -602,7 +602,7 @@ public abstract class AbstractBinder implements FormControllerListener {
          String fieldName = (String) entry.getKey();
          Object value = entry.getValue();
 
-         if (value == null || "".equals(value)) {
+         if (value == null || "".equals(value)) { // NOI18N
             BoundField bound = (BoundField) boundFields.get(fieldName);
 
             if (bound == null) {
@@ -635,8 +635,8 @@ public abstract class AbstractBinder implements FormControllerListener {
       Formatter virtualFormatter = (Formatter) formatters.get(key);
 
       if (virtualFormatter == null) {
-         throw new IllegalArgumentException("There is no formatter "
-               + "registered for virtual property " + key);
+         throw new IllegalArgumentException("There is no formatter " // NOI18N
+               + "registered for virtual property " + key); // NOI18N
       }
 
       return virtualFormatter;

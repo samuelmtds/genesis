@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -155,31 +155,31 @@ public class FormMetadata {
    public String toString() {
       StringBuffer buffer = new StringBuffer();
       buffer.append(getClass().getName());
-      buffer.append(" = {\n");
+      buffer.append(" = {\n"); // NOI18N
 
       for (Iterator iter = namedConditions.entrySet().iterator(); iter
             .hasNext();) {
          Map.Entry element = (Map.Entry) iter.next();
-         buffer.append("\t");
+         buffer.append("\t"); // NOI18N
          buffer.append(element.getKey());
-         buffer.append("=");
+         buffer.append("="); // NOI18N
          buffer.append(element.getValue());
-         buffer.append("\n");
+         buffer.append("\n"); // NOI18N
       }
 
       for (Iterator iter = fieldMetadatas.values().iterator(); iter.hasNext();) {
-         buffer.append("\t");
+         buffer.append("\t"); // NOI18N
          buffer.append(iter.next());
-         buffer.append("\n");
+         buffer.append("\n"); // NOI18N
       }
       
       for (Iterator iter = methodMetadatas.values().iterator(); iter.hasNext();) {
-         buffer.append("\t");
+         buffer.append("\t"); // NOI18N
          buffer.append(iter.next());
-         buffer.append("\n");
+         buffer.append("\n"); // NOI18N
       }
 
-      buffer.append("}");
+      buffer.append("}"); // NOI18N
 
       return buffer.toString();
    }

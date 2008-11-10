@@ -148,9 +148,9 @@ public class FieldMetadata extends MemberMetadata {
          converter = ConvertUtils.lookup(getFieldClass());
          
          if (converter == null) {
-            log.warn("Field " + fieldName + " in " + fieldClass.getName() + 
-                  " does not have an associated converter; perhaps " +
-                  "new StartupHelper().initialize() hasn't been invoked?");
+            log.warn("Field " + fieldName + " in " + fieldClass.getName() + // NOI18N
+                  " does not have an associated converter; perhaps " + // NOI18N
+                  "new StartupHelper().initialize() hasn't been invoked?"); // NOI18N
          }
       }
       if (cloner == null) {
@@ -163,27 +163,27 @@ public class FieldMetadata extends MemberMetadata {
    public String toString() {
       StringBuffer buffer = new StringBuffer();
       buffer.append(getClass().getName());
-      buffer.append(".");
+      buffer.append("."); // NOI18N
       buffer.append(fieldName);
-      buffer.append(" = {\n\t\tenabledCondition = ");
+      buffer.append(" = {\n\t\tenabledCondition = "); // NOI18N
       buffer.append(getEnabledCondition());
-      buffer.append(" = {\n\t\tvisibleCondition = ");
+      buffer.append(" = {\n\t\tvisibleCondition = "); // NOI18N
       buffer.append(getVisibleCondition());
-      buffer.append("\n\t\tclearOnCondition = ");
+      buffer.append("\n\t\tclearOnCondition = "); // NOI18N
       buffer.append(clearOnCondition);
-      buffer.append("\n\t\tequalityComparator = ");
+      buffer.append("\n\t\tequalityComparator = "); // NOI18N
       buffer.append(equalityComparator);
-      buffer.append("\n\t\temptyResolver = ");
+      buffer.append("\n\t\temptyResolver = "); // NOI18N
       buffer.append(emptyResolver);
-      buffer.append("\n\t\tconverter = ");
+      buffer.append("\n\t\tconverter = "); // NOI18N
       buffer.append(converter);
-      buffer.append("\n\t\tcloner = ");
+      buffer.append("\n\t\tcloner = "); // NOI18N
       buffer.append(cloner);
-      buffer.append("\n\t\tfieldClass = ");
+      buffer.append("\n\t\tfieldClass = "); // NOI18N
       buffer.append(fieldClass);
-      buffer.append("\n\t\temptyValue = ");
+      buffer.append("\n\t\temptyValue = "); // NOI18N
       buffer.append(emptyValue);
-      buffer.append("\n\t}");
+      buffer.append("\n\t}"); // NOI18N
       return buffer.toString();
    }
 }

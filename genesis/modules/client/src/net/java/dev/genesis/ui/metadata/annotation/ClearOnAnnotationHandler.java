@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ public class ClearOnAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "ClearOn");
+            "ClearOn"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -43,7 +43,7 @@ public class ClearOnAnnotationHandler implements AnnotationHandler {
          final MethodMetadata methodMetadata, final Annotation annotation) {
       if (methodMetadata.getDataProviderMetadata() == null) {
          AnnotationHandlerExceptionFactory.mustBePropertyOrDataProvider(
-               formMetadata, methodMetadata, "ClearOn");
+               formMetadata, methodMetadata, "ClearOn"); // NOI18N
       }
 
       ClearOn annon = (ClearOn) annotation;

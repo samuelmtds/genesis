@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,7 @@ import net.java.dev.genesis.reflection.ClassesCache;
 import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.script.ScriptExpression;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class DataProviderMetadata {
@@ -50,9 +51,8 @@ public class DataProviderMetadata {
       if ((!method.getReturnType().isArray() || method.getReturnType()
             .getComponentType().isPrimitive())
             && !List.class.isAssignableFrom(method.getReturnType())) {
-         throw new IllegalArgumentException("Method '" + name + "' is a " +
-               "DataProvider and does not have an Object array or java.util.List as " +
-               "its return type");
+         throw new IllegalArgumentException(Bundle.getMessage(
+               DataProviderMetadata.class, "METHOD_X_IS_A_DATAPROVIDER", name)); // NOI18N
       }
    }
 

@@ -31,7 +31,7 @@ public class EnabledWhenAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata,
-            "EnabledWhen");
+            "EnabledWhen"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -44,7 +44,7 @@ public class EnabledWhenAnnotationHandler implements AnnotationHandler {
          final MethodMetadata methodMetadata, final Annotation annotation) {
       if (methodMetadata.getActionMetadata() == null) {
          AnnotationHandlerExceptionFactory.mustBePropertyOrAction(formMetadata,
-               methodMetadata, "EnabledWhen");
+               methodMetadata, "EnabledWhen"); // NOI18N
       }
 
       processMemberAnnotation(formMetadata.getScript(), methodMetadata

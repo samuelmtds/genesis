@@ -31,7 +31,7 @@ public class EmptyValueAnnotationHandler implements AnnotationHandler {
    public void processFormAnnotation(final FormMetadata formMetadata,
          final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notFormAnnotation(formMetadata, 
-            "EmptyValue");
+            "EmptyValue"); // NOI18N
    }
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
@@ -46,7 +46,7 @@ public class EmptyValueAnnotationHandler implements AnnotationHandler {
    public void processMethodAnnotation(final FormMetadata formMetadata,
          final MethodMetadata methodMetadata, final Annotation annotation) {
       AnnotationHandlerExceptionFactory.notMethodAnnotation(formMetadata, 
-            methodMetadata, "EmptyValue");
+            methodMetadata, "EmptyValue"); // NOI18N
    }
 
 }

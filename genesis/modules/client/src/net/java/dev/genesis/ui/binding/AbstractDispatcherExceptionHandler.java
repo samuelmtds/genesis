@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import net.java.dev.genesis.ui.UIException;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.ValidationException;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class AbstractDispatcherExceptionHandler implements
@@ -49,7 +50,7 @@ public abstract class AbstractDispatcherExceptionHandler implements
             return;
          }
       } catch (Throwable t) {
-         LogFactory.getLog(getClass()).error("Unknown exception", t);
+         LogFactory.getLog(getClass()).error("Unknown exception", t); // NOI18N
       }
 
       handleUnknownException(throwable);
@@ -71,7 +72,8 @@ public abstract class AbstractDispatcherExceptionHandler implements
    }
 
    public void handleUnknownException(Throwable t) {
-      handleException("Unexpected error occurred", t);
+      handleException(Bundle.getMessage(AbstractDispatcherExceptionHandler.class,
+            "UNEXPECTED_ERROR_OCCURRED"), t); // NOI18N
    }
 
    public void showValidationErrors(ValidationException ve) {
@@ -87,11 +89,11 @@ public abstract class AbstractDispatcherExceptionHandler implements
       }
 
       showWarningMessageDialog(UIUtils.getInstance().getBundle().getString(
-            "validation.errors.title"), displayMessage.toString());
+            "validation.errors.title"), displayMessage.toString()); // NOI18N
    }
 
    public String getErrorMessage() {
-      return "Error";
+      return Bundle.getMessage(AbstractDispatcherExceptionHandler.class, "ERROR"); // NOI18N
    }
 
    public void handleException(String message, Throwable throwable) {
