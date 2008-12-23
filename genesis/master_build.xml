@@ -196,13 +196,15 @@
          <attribute name="sourcesdir" />
          <attribute name="fork" default="${javac.fork}" />
          <attribute name="executable" default="${javac.executable}" />
+         <attribute name="sourcelevel" default="${java.source.level}" />
+         <attribute name="targetlevel" default="${java.target.level}" />
 
          <sequential>
             <mkdir dir="@{classesdir}" />
             <javac destdir="@{classesdir}"
                   debug="${keep.debug.information}"
-                  source="${java.source.level}"
-                  target="${java.target.level}"
+                  source="@{sourcelevel}"
+                  target="@{targetlevel}"
                   classpathref="@{classpathref}"
                   fork="@{fork}"
                   executable="@{executable}">
