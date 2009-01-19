@@ -40,9 +40,6 @@
             <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="property-ref">
             property-ref="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="property-ref"/>"
             </XDtMethod:ifHasMethodTag>
-           <XDtMethod:ifHasMethodTag tagName="hibernate.many-to-one" paramName="unique">
-            unique="<XDtMethod:methodTagValue tagName="hibernate.many-to-one" paramName="unique" values="true,false"/>"
-           </XDtMethod:ifHasMethodTag>
           </XDtConfig:ifConfigParamGreaterOrEquals>
           <XDtHibernate:setCurrentTag name="hibernate.many-to-one" mappingElement="many-to-one">
                <XDtMerge:merge file="xdoclet/modules/hibernate/resources/hibernate-column.xdt">
