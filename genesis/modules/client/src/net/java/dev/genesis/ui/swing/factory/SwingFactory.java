@@ -30,6 +30,7 @@ import javax.swing.table.TableModel;
 
 import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.renderers.KeyValueListCellRenderer;
+import net.java.dev.genesis.util.Bundle;
 
 public class SwingFactory {
    public static JComboBox createComboBox() {
@@ -158,18 +159,21 @@ public class SwingFactory {
          TableCellRenderer[] renderers) {
       if (columnIdentifiers.length != columnDisplayName.length) {
          throw new IllegalArgumentException(
-               "Column identifiers and Column names must have same length");
+               Bundle.getMessage(SwingFactory.class,
+               "COLUMN_IDENTIFIERS_AND_COLUMN_NAMES_MUST_HAVE_SAME_LENGTH")); // NOI18N
       }
 
       if (preferredWidth != null
             && preferredWidth.length != columnIdentifiers.length) {
          throw new IllegalArgumentException(
-               "Column identifier and Column preferred width must have same length");
+               Bundle.getMessage(SwingFactory.class,
+               "COLUMN_IDENTIFIER_AND_COLUMN_PREFERRED_WIDTH_MUST_HAVE_SAME_LENGTH")); // NOI18N
       }
 
       if (renderers != null && renderers.length != columnIdentifiers.length) {
          throw new IllegalArgumentException(
-               "Column identifier and TableCellRenderer must have same length");
+               Bundle.getMessage(SwingFactory.class,
+               "COLUMN_IDENTIFIER_AND_TABLECELLRENDERER_MUST_HAVE_SAME_LENGTH")); // NOI18N
       }
 
       TableColumnModel columnModel = new DefaultTableColumnModel();

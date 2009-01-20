@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Widget;
 
 
 public class SWTBinder extends AbstractBinder {
-   public static final String TABLE_COLUMN_IDENTIFIER = "genesis:tableColumnIdentifier";
+   public static final String TABLE_COLUMN_IDENTIFIER = "genesis:tableColumnIdentifier"; // NOI18N
 
    private final WidgetBinderRegistry factory =
       WidgetBinderRegistry.getInstance();
