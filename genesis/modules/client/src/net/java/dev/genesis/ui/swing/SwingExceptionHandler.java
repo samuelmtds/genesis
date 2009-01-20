@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import javax.swing.JTextArea;
 import net.java.dev.genesis.ui.UIUtils;
 import net.java.dev.genesis.ui.binding.AbstractDispatcherExceptionHandler;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.LogFactory;
 
 public class SwingExceptionHandler extends AbstractDispatcherExceptionHandler {
@@ -67,7 +68,7 @@ public class SwingExceptionHandler extends AbstractDispatcherExceptionHandler {
       messageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
       JLabel stackLabel = new JLabel(UIUtils.getInstance().getBundle()
-            .getString("ErrorReporterDialog.stackTrace"));
+            .getString("ErrorReporterDialog.stackTrace")); // NOI18N
       stackLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
       JTextArea stackTextArea = new JTextArea(getStackTrace(throwable));
@@ -99,11 +100,11 @@ public class SwingExceptionHandler extends AbstractDispatcherExceptionHandler {
             }
          });
       } catch (HeadlessException ex) {
-         LogFactory.getLog(getClass()).error("Unknown exception", ex);
+         LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),"UNKNOWN_EXCEPTION"), ex); // NOI18N
       } catch (InterruptedException ex) {
-         LogFactory.getLog(getClass()).error("Unknown exception", ex);
+         LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),"UNKNOWN_EXCEPTION"), ex); // NOI18N
       } catch (InvocationTargetException ex) {
-         LogFactory.getLog(getClass()).error("Unknown exception", ex);
+         LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),"UNKNOWN_EXCEPTION"), ex); // NOI18N
       }
    }
 }

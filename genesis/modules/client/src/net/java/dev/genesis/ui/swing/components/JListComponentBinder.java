@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,6 +34,7 @@ import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -102,17 +103,17 @@ public class JListComponentBinder extends AbstractComponentBinder {
       public void updateIndexes(int[] indexes) {
          if (component.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION
                && indexes.length > 1) {
-            StringBuffer sb = new StringBuffer('[');
+            StringBuffer sb = new StringBuffer('['); // NOI18N
             
             for (int i = 0; i < indexes.length; i++) {
-               sb.append(indexes[i]).append(", ");
+               sb.append(indexes[i]).append(", "); // NOI18N
             }
 
-            sb.append(']');
+            sb.append(']'); // NOI18N
 
-            throw new IllegalArgumentException("Component " + 
-                  getBinder().getName(component) + " is a single selection " +
-                  "list. It can't be updated with indexes " + sb.toString());
+            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+                  "COMPONENT_X_IS_A_SINGLE_SELECTION_LIST_IT_CANT_BE_UPDATED_WITH_INDEXES_Y", getBinder(). // NOI18N
+                  getName(component), sb.toString()));
          }
          
          if (Arrays.equals(getIndexes(), indexes)) {
@@ -221,9 +222,10 @@ public class JListComponentBinder extends AbstractComponentBinder {
                ListSelectionModel.SINGLE_SELECTION;
 
          if (multi && singleSelection) {
-            log.warn("Cannot update " + getBinder().getName(component) + 
-                  " component with multiple values because it's a single " +
-                  "selection list.");
+            log.warn(
+                  Bundle.getMessage(getClass(),
+                  "CANNOT_UPDATE_X_COMPONENT_WITH_MULTIPLE_VALUES_BECAUSE_ITS_A_SINGLE_SELECTION_LIST", getBinder(). // NOI18N
+                  getName(component)));
             return;
          }
          
@@ -303,8 +305,8 @@ public class JListComponentBinder extends AbstractComponentBinder {
          }
 
          // never happens
-         throw new IllegalArgumentException("Argument is not an array or a " +
-               "java.util.List");
+         throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+               "ARGUMENT_IS_NOT_AN_ARRAY_OR_A_JAVA_UTIL_LIST")); // NOI18N
       }
 
       protected boolean isListOrArray(Object object) {
@@ -351,7 +353,7 @@ public class JListComponentBinder extends AbstractComponentBinder {
          if (isBlank) {
             String blankLabel = (String) component
                   .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
-            values[i] = (blankLabel == null) ? "" : blankLabel;
+            values[i] = (blankLabel == null) ? "" : blankLabel; // NOI18N
             i++;
          }
 

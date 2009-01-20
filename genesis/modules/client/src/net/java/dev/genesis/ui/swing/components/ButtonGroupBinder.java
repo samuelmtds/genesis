@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ import net.java.dev.genesis.ui.binding.GroupBinder;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -122,13 +123,17 @@ public class ButtonGroupBinder implements GroupBinder {
          }
 
          if (value == null) {
-            log.warn("No selected value configured for button " + button + ". Use " +
-                  (useActionCommandAsSelectedValue ?
-                        "button.setActionCommand(\"someValue\")" :
-                        "button.putClientProperty(" +
-                        "SwingBinder.BUTTON_GROUP_SELECTION_VALUE, someValue) " +
-                        "or button.setName(someValue)" ) + " to define its " +
-                        "value.");
+            if (useActionCommandAsSelectedValue) {
+               log.warn(
+                     Bundle.getMessage(getClass(),
+                     "USE_BUTTON_SETACTIONCOMMAND_SOMEVALUE_TO_DEFINE_ITS_VALUE", // NOI18N
+                     button));
+            } else {
+               log.warn(
+                     Bundle.getMessage(getClass(),
+                     "USE_BUTTON_PUTCLIENTPROPERTY_SWINGBINDER_BUTTON_GROUP_SELECTION_VALUE_SOMEVALUE_OR_BUTTON_SETNAME_SOMEVALUE_TO_DEFINE_ITS_VALUE", // NOI18N
+                     button));
+            }
          }
 
          return value;

@@ -39,6 +39,7 @@ import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.components.table.JTableIndexResolver;
 import net.java.dev.genesis.ui.swing.components.table.JTableIndexResolverRegistry;
 import net.java.dev.genesis.ui.swing.renderers.FormatterTableCellRenderer;
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,12 +48,13 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
    public BoundDataProvider bind(SwingBinder binder, Component component,
          DataProviderMetadata dataProviderMetadata) {
-      JTableIndexResolver indexResolver = JTableIndexResolverRegistry.getInstance().
+      JTableIndexResolver indexResolver = JTableIndexResolverRegistry.
+            getInstance().
             get(component.getClass(), true);
       if (indexResolver == null) {
-         log.error("Could not find a suitable JTableIndexResolver implementation for " +
-               component.getClass() + ", component " + binder.getName(component) +
-               ".");
+         log.error(Bundle.getMessage(getClass(),
+               "COULD_NOT_FIND_SUITABLE_JTABLEINDEXRESOLVER_IMPL_FOR_X_COMPONENT_Y", // NOI18N
+               component.getClass(), binder.getName(component)));
          return null;
       }
 
@@ -280,10 +282,10 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
          identifier = (String)column.getIdentifier();
          if (identifier == null) {
-            throw new IllegalArgumentException("Column number " +
-                  column.getModelIndex() + " from Table " +
-                  getBinder().getName(getComponent()) +
-                  " does not have an identifier");
+            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+                  "COLUMN_NUMBER_X_FROM_TABLE_Y_DOES_NOT_HAVE_AN_IDENTIFIER", // NOI18N
+                  new Integer(column.getModelIndex()), getBinder().getName(
+                  getComponent())));
          }
 
          return identifier;

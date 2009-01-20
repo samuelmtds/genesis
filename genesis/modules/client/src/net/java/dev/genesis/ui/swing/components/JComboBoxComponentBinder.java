@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,7 @@ import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.util.Bundle;
 
 public class JComboBoxComponentBinder extends AbstractComponentBinder {
    public BoundDataProvider bind(SwingBinder binder, Component component,
@@ -86,7 +87,8 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
                          .getIndexesFromController(indexes, isBlank(component));
 
          if (indexes.length != 1) {
-            throw new IllegalArgumentException("Length of selected indexes must be one");
+            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+                  "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE")); // NOI18N
          }
 
          if (component.getSelectedIndex() == indexes[0]) {
@@ -177,7 +179,7 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          if (isBlank) {
             String blankLabel = (String) component
                   .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
-            values[i] = (blankLabel == null) ? "" : blankLabel;
+            values[i] = (blankLabel == null) ? "" : blankLabel; // NOI18N
             i++;
          }
 

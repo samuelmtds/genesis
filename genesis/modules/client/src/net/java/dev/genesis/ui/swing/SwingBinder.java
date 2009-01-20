@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -62,7 +62,7 @@ public class SwingBinder extends AbstractBinder {
    /**
     * The key used to store the binder in a component client property.
     */
-   public static final String BINDER_KEY = "genesis:SwingBinder";
+   public static final String BINDER_KEY = "genesis:SwingBinder"; // NOI18N
 
    private final ComponentBinderRegistry factory = ComponentBinderRegistry.getInstance();
    private ActionListener defaultButtonListener;
@@ -349,7 +349,7 @@ public class SwingBinder extends AbstractBinder {
    
    private void configureListenerForRootPaneDefaultButton() {
       if (bindDefaultButton && getRootPane() != null){
-         getRootPane().addPropertyChangeListener("defaultButton", new PropertyChangeListener() {
+         getRootPane().addPropertyChangeListener("defaultButton", new PropertyChangeListener() { // NOI18N
             public void propertyChange(PropertyChangeEvent evt) {
                unbindDefaultButton((JButton)evt.getOldValue());
                bindDefaultButton((JButton)evt.getNewValue());
@@ -432,13 +432,13 @@ public class SwingBinder extends AbstractBinder {
                }
 
                private boolean isEqualMethod(Method method) {
-                  return "equals".equals(method.getName())
+                  return "equals".equals(method.getName()) // NOI18N
                         && method.getParameterTypes().length == 1
                         && method.getParameterTypes()[0] == Object.class;
                }
 
                private boolean isHashCode(Method method) {
-                  return "hashCode".equals(method.getName())
+                  return "hashCode".equals(method.getName()) // NOI18N
                         && method.getParameterTypes().length == 0;
                }
             });

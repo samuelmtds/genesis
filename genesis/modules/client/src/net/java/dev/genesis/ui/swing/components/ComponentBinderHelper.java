@@ -22,6 +22,7 @@ import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.JComponent;
 import net.java.dev.genesis.ui.swing.SwingBinder;
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class ComponentBinderHelper {
@@ -36,7 +37,7 @@ public class ComponentBinderHelper {
       if (value == null) {
          String blankLabel = (String) component
                .getClientProperty(SwingBinder.BLANK_LABEL_PROPERTY);
-         return (blankLabel == null) ? "" : blankLabel;
+         return (blankLabel == null) ? "" : blankLabel; // NOI18N
       } else if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
@@ -61,9 +62,10 @@ public class ComponentBinderHelper {
          throw new RuntimeException(e);
       } catch (NoSuchMethodException e) {
          IllegalArgumentException iae = new IllegalArgumentException(
-               "The component named '" + binder.getName(component) + 
-               "' was expected "  + bean.getClass().getName() + " to have a " +
-               "property named '" + propertyName + "' (at bean " + bean + ")");
+               Bundle.getMessage(ComponentBinderHelper.class,
+               "THE_COMPONENT_NAMED_X_WAS_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_T", // NOI18N
+               new Object[] {binder.getName(component),
+                  bean.getClass().getName(), propertyName, bean}));
          iae.initCause(e);
          throw iae;
       }
@@ -88,8 +90,10 @@ public class ComponentBinderHelper {
    private static String check(String formattedKey, SwingBinder binder, 
          String name, Object value) {
       if (formattedKey == null) {
-         throw new IllegalStateException("Key produced for " + name + " in " + 
-               binder.getForm() + " using value " + value + " was null");
+         throw new IllegalStateException(Bundle.getMessage(
+               ComponentBinderHelper.class,
+               "KEY_PRODUCED_FOR_X_IN_Y_USING_VALUE_Z_WAS_NULL", new Object[] { // NOI18N
+                  name, binder.getForm(), value}));
       }
       
       return formattedKey;

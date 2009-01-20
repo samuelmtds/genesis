@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,6 +46,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.LogFactory;
 
@@ -89,7 +90,7 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
             continue;
          }
 
-         if ("action".equals(descriptors[i].getName())) {
+         if ("action".equals(descriptors[i].getName())) { // NOI18N
             selectedDescriptor = descriptors[i];
             break;
          }
@@ -178,7 +179,7 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
          if (instanceofString || group instanceof String[]) {
         	
             String[] componentNames = instanceofString ?
-            		((String) group).split("\\s*,\\s*") : (String[]) group;
+            		((String) group).split("\\s*,\\s*") : (String[]) group; // NOI18N
 
             for (int i = 0; i < componentNames.length; i++) {
                Component c = (Component) getBinder().lookup(componentNames[i]);
@@ -224,8 +225,8 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
                visibleWidgetGroupSet.add(jComponent);
             }
          } else {
-            throw new IllegalArgumentException("Group property must be a comma-separated string, " +
-                  "array of strings, a collection of components, an array of components or a JComponent");
+            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+                  "GROUP_PROPERTY_MUST_BE_A_COMMA_SEPARATED_STRING")); // NOI18N
          }
       }
 
@@ -245,10 +246,10 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
          } else if (booleanObject instanceof Boolean) {
             ret = ((Boolean) booleanObject).booleanValue();
          } else {
-            throw new PropertyMisconfigurationException("Property '" +
-               propertyName + "' " + "for the component named " +
-               getName() + " must " +
-               "either be left empty or contain a boolean value");
+            throw new PropertyMisconfigurationException(
+                  Bundle.getMessage(getClass(),
+                  "PROPERTY_X_FOR_THE_COMPONENT_NAMED_Y_MUST_EITHER_BE_LEFT_EMPTY_OR_CONTAIN_A_BOOLEAN_VALUE", // NOI18N
+                  propertyName, getName()));
          }
 
          return ret;
@@ -275,10 +276,11 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
          try {
             return PropertyUtils.getProperty(bean, propertyName);
          } catch (NoSuchMethodException e) {
-            IllegalArgumentException iae = new IllegalArgumentException(
-                  "The component named '" + getName() + "' expected "  + 
-                  bean.getClass().getName() + " to have a property named '" + 
-                  propertyName + "' (at bean " + bean + ")");
+            IllegalArgumentException iae =
+                  new IllegalArgumentException(
+                  Bundle.getMessage(getClass(),
+                  "THE_COMPONENT_NAMED_X_WAS_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_T", new Object[] {getName(), bean.getClass(). // NOI18N
+                     getName(), propertyName, bean}));
             iae.initCause(e);
             throw iae;
          }
@@ -347,11 +349,14 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
                descriptor.getRemoveListenerMethod().invoke(component, new Object[] {
                      listener});
             } catch (IllegalArgumentException ex) {
-               LogFactory.getLog(getClass()).error("Error removing listener", ex);
+               LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),
+                     "ERROR_REMOVING_LISTENER"), ex); // NOI18N
             } catch (IllegalAccessException ex) {
-               LogFactory.getLog(getClass()).error("Error removing listener", ex);
+               LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),
+                     "ERROR_REMOVING_LISTENER"), ex); // NOI18N
             } catch (InvocationTargetException ex) {
-               LogFactory.getLog(getClass()).error("Error removing listener", ex);
+               LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),
+                     "ERROR_REMOVING_LISTENER"), ex); // NOI18N
             }
          }
       }
