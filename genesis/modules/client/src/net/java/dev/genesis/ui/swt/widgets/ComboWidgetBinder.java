@@ -26,6 +26,7 @@ import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import net.java.dev.genesis.util.Bundle;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -86,7 +87,8 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
 
          if (indexes.length != 1) {
             throw new IllegalArgumentException(
-                  "Length of selected indexes must be one");
+                  Bundle.getMessage(getClass(),
+                  "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE")); // NOI18N
          }
 
          if (widget.getSelectionIndex() == indexes[0]) {
@@ -168,7 +170,7 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
          if (isBlank) {
             String blankLabel =
                   (String)widget.getData(SWTBinder.BLANK_LABEL_PROPERTY);
-            values[i] = (blankLabel == null) ? "" : blankLabel;
+            values[i] = (blankLabel == null) ? "" : blankLabel; // NOI18N
             i++;
          }
 

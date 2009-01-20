@@ -26,6 +26,7 @@ import net.java.dev.genesis.ui.binding.BoundField;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
@@ -145,9 +146,9 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          boolean multi = isListOrArray(value);
          boolean singleSelection = (widget.getStyle() & SWT.SINGLE) != 0;
          if (multi && singleSelection) {
-            log.warn("Cannot update " + getBinder().getName(widget)
-                  + " widget with multiple values because it's a single " +
-                  "selection list.");
+            log.warn("Cannot update " + getBinder().getName(widget) // NOI18N
+                  + " widget with multiple values because it's a single " + // NOI18N
+                  "selection list."); // NOI18N
             return;
          }
          
@@ -214,8 +215,8 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          }
 
          // never happens
-         throw new IllegalArgumentException("Argument is not an array or a " +
-               "java.util.List");
+         throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+               "ARGUMENT_IS_NOT_AN_ARRAY_OR_A_JAVA_UTIL_LIST")); // NOI18N
       }
 
       protected boolean isListOrArray(Object object) {
@@ -261,7 +262,7 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          if (isBlank) {
             String blankLabel = (String) widget
                   .getData(SWTBinder.BLANK_LABEL_PROPERTY);
-            values[i] = (blankLabel == null) ? "" : blankLabel;
+            values[i] = (blankLabel == null) ? "" : blankLabel; // NOI18N
             i++;
          }
 

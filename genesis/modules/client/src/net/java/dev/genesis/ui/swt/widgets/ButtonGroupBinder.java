@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -114,10 +114,10 @@ public class ButtonGroupBinder implements GroupBinder {
          }
 
          if (value == null) {
-            log.warn("No selected value configured for button " + button + 
-                  ". Use button.setData(" +
-                  "SWTBinder.BUTTON_GROUP_SELECTION_VALUE, someValue) or " +
-                  "button.setData(someValue) to define its value.");
+            log.warn("No selected value configured for button " + button +  // NOI18N
+                  ". Use button.setData(" + // NOI18N
+                  "SWTBinder.BUTTON_GROUP_SELECTION_VALUE, someValue) or " + // NOI18N
+                  "button.setData(someValue) to define its value."); // NOI18N
          }
 
          return value;

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import net.java.dev.genesis.ui.binding.BoundDataProvider;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import net.java.dev.genesis.util.Bundle;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -137,7 +138,8 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
             }
          }
 
-         throw new IllegalArgumentException("Cannot retrieve model index (" + index + ")");
+         throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+               "CANNOT_RETRIEVE_MODEL_INDEX_X", new Integer(index))); // NOI18N
       }
 
       protected String getIdentifier(int modelIndex) {
@@ -156,8 +158,9 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
          identifier = (String) widget.getColumn(modelIndex).getData(
                SWTBinder.TABLE_COLUMN_IDENTIFIER);
          if (identifier == null) {
-            throw new IllegalArgumentException("Column number " + modelIndex
-                  + " from Table " + getName() + " does not have an identifier");
+            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+                  "COLUMN_NUMBER_X_FROM_TABLE_Y_DOES_NOT_HAVE_AN_IDENTIFIER", // NOI18N
+                  new Integer(modelIndex), getName()));
          }
 
          return identifier;

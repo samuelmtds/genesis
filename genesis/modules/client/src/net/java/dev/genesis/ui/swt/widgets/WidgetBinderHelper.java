@@ -20,6 +20,7 @@ package net.java.dev.genesis.ui.swt.widgets;
 
 import java.lang.reflect.InvocationTargetException;
 import net.java.dev.genesis.ui.swt.SWTBinder;
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.widgets.Widget;
 
@@ -32,7 +33,7 @@ public class WidgetBinderHelper {
 
       if (value == null) {
          String blankLabel = (String) widget.getData(SWTBinder.BLANK_LABEL_PROPERTY);
-         return (blankLabel == null) ? "" : blankLabel;
+         return (blankLabel == null) ? "" : blankLabel; // NOI18N
       } else if (value instanceof String) {
          return (String) value;
       } else if (valueProperty == null) {
@@ -57,9 +58,10 @@ public class WidgetBinderHelper {
          throw new RuntimeException(e);
       } catch (NoSuchMethodException e) {
          IllegalArgumentException iae = new IllegalArgumentException(
-               "The widget named '" + binder.getName(widget) +
-               "' was expected " + bean.getClass().getName() + " to have a " +
-               "property named '" + propertyName + "' (at bean " + bean + ")");
+               Bundle.getMessage(WidgetBinderHelper.class,
+               "THE_WIDGET_NAMED_X_WAS_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_W", // NOI18N
+               new Object[] {binder.getName(widget), bean.getClass().getName(),
+                  propertyName, bean}));
          iae.initCause(e);
          throw iae;
       }

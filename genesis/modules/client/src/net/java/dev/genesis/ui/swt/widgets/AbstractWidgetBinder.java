@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,7 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.SWTBinder;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -129,7 +130,7 @@ public class AbstractWidgetBinder implements WidgetBinder {
          if (instanceofString || group instanceof String[]) {
         	
             String[] widgetNames = instanceofString ?
-            		((String) group).split("\\s*,\\s*") : (String[]) group;
+            		((String) group).split("\\s*,\\s*") : (String[]) group; // NOI18N
 
             for (int i = 0; i < widgetNames.length; i++) {
                Widget w = (Widget) binder.lookup(widgetNames[i]);
@@ -175,7 +176,9 @@ public class AbstractWidgetBinder implements WidgetBinder {
                visibleWidgetGroupSet.add(widget);
             }
          } else {
-            throw new IllegalArgumentException("Group property must be a comma-separated string, array of strings, a collection of widgets, an array of widgets or a Widget");
+            throw new IllegalArgumentException(
+                  Bundle.getMessage(getClass(),
+                  "GROUP_PROPERTY_MUST_BE_A_COMMA_SEPARATED_STRING_ARRAY_OF_STRINGS_A_COLLECTION_OF_WIDGETS_AN_ARRAY_OF_WIDGETS_OR_A_WIDGET")); // NOI18N
          }
       }
 
@@ -195,10 +198,10 @@ public class AbstractWidgetBinder implements WidgetBinder {
          } else if (booleanObject instanceof Boolean) {
             ret = ((Boolean) booleanObject).booleanValue();
          } else {
-            throw new PropertyMisconfigurationException("Property '" +
-               propertyName + "' " + "for the widget named " +
-               getName() + " must " +
-               "either be left empty or contain a boolean value");
+            throw new PropertyMisconfigurationException(
+                  Bundle.getMessage(getClass(),
+                  "PROPERTY_X_FOR_THE_WIDGET_NAMED_Y_MUST_EITHER_BE_LEFT_EMPTY_OR_CONTAIN_A_BOOLEAN_VALUE", // NOI18N
+                  propertyName, getName()));
          }
 
          return ret;
@@ -226,9 +229,10 @@ public class AbstractWidgetBinder implements WidgetBinder {
             return PropertyUtils.getProperty(bean, propertyName);
          } catch (NoSuchMethodException e) {
             IllegalArgumentException iae = new IllegalArgumentException(
-                  "The widget named '" + getName() + "' expected "  + 
-                  bean.getClass().getName() + " to have a property named '" + 
-                  propertyName + "' (at bean " + bean + ")");
+                  Bundle.getMessage(getClass(),
+                  "THE_WIDGET_NAMED_X_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_W", // NOI18N
+                  new Object[] {getName(), bean.getClass().getName(),
+                     propertyName, bean}));
             iae.initCause(e);
             throw iae;
          }
