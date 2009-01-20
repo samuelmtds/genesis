@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import javax.swing.JComponent;
 import net.java.dev.genesis.registry.Registry;
+import net.java.dev.genesis.util.Bundle;
 
 public class DefaultJTableIndexResolver implements JTableIndexResolver {
    protected static class JTableIndexResolverInfo {
@@ -33,12 +34,13 @@ public class DefaultJTableIndexResolver implements JTableIndexResolver {
       JTableIndexResolverInfo(final Class clazz) {
          try {
             convertRowIndexToModel = clazz.getMethod(
-                  "convertRowIndexToModel", new Class[] {int.class});
+                  "convertRowIndexToModel", new Class[] {int.class}); // NOI18N
             convertRowIndexToView = clazz.getMethod(
-                  "convertRowIndexToView", new Class[] {int.class});
+                  "convertRowIndexToView", new Class[] {int.class}); // NOI18N
          } catch (SecurityException se) {
             IllegalStateException ise = new IllegalStateException(
-                  "Could not load convertRowIndexTo* methods");
+                  Bundle.getMessage(getClass(),
+                  "COULD_NOT_LOAD_CONVERTROWINDEXTO_METHODS")); // NOI18N
             ise.initCause(se);
             throw ise;
          } catch (NoSuchMethodException nsme) {
