@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -138,8 +138,9 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
             }
          }
 
-         throw new IllegalArgumentException(Bundle.getMessage(getClass(),
-               "CANNOT_RETRIEVE_MODEL_INDEX_X", new Integer(index))); // NOI18N
+         throw new IllegalArgumentException(Bundle.getMessage(
+               TableWidgetBinder.class, "CANNOT_RETRIEVE_MODEL_INDEX_X",
+               new Integer(index))); // NOI18N
       }
 
       protected String getIdentifier(int modelIndex) {
@@ -158,7 +159,8 @@ public class TableWidgetBinder extends AbstractWidgetBinder {
          identifier = (String) widget.getColumn(modelIndex).getData(
                SWTBinder.TABLE_COLUMN_IDENTIFIER);
          if (identifier == null) {
-            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  TableWidgetBinder.class,
                   "COLUMN_NUMBER_X_FROM_TABLE_Y_DOES_NOT_HAVE_AN_IDENTIFIER", // NOI18N
                   new Integer(modelIndex), getName()));
          }

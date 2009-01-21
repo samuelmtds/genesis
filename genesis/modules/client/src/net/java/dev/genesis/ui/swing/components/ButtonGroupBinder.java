@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -125,12 +125,12 @@ public class ButtonGroupBinder implements GroupBinder {
          if (value == null) {
             if (useActionCommandAsSelectedValue) {
                log.warn(
-                     Bundle.getMessage(getClass(),
+                     Bundle.getMessage(ButtonGroupBinder.class,
                      "USE_BUTTON_SETACTIONCOMMAND_SOMEVALUE_TO_DEFINE_ITS_VALUE", // NOI18N
                      button));
             } else {
                log.warn(
-                     Bundle.getMessage(getClass(),
+                     Bundle.getMessage(ButtonGroupBinder.class,
                      "USE_BUTTON_PUTCLIENTPROPERTY_SWINGBINDER_BUTTON_GROUP_SELECTION_VALUE_SOMEVALUE_OR_BUTTON_SETNAME_SOMEVALUE_TO_DEFINE_ITS_VALUE", // NOI18N
                      button));
             }

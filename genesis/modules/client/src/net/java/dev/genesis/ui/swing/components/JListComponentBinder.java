@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -111,7 +111,8 @@ public class JListComponentBinder extends AbstractComponentBinder {
 
             sb.append(']'); // NOI18N
 
-            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  JListComponentBinder.class,
                   "COMPONENT_X_IS_A_SINGLE_SELECTION_LIST_IT_CANT_BE_UPDATED_WITH_INDEXES_Y", getBinder(). // NOI18N
                   getName(component), sb.toString()));
          }
@@ -223,7 +224,7 @@ public class JListComponentBinder extends AbstractComponentBinder {
 
          if (multi && singleSelection) {
             log.warn(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(JListComponentBinder.class,
                   "CANNOT_UPDATE_X_COMPONENT_WITH_MULTIPLE_VALUES_BECAUSE_ITS_A_SINGLE_SELECTION_LIST", getBinder(). // NOI18N
                   getName(component)));
             return;
@@ -305,7 +306,8 @@ public class JListComponentBinder extends AbstractComponentBinder {
          }
 
          // never happens
-         throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+         throw new IllegalArgumentException(Bundle.getMessage(
+               JListComponentBinder.class,
                "ARGUMENT_IS_NOT_AN_ARRAY_OR_A_JAVA_UTIL_LIST")); // NOI18N
       }
 

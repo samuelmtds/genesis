@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -100,11 +100,14 @@ public class SwingExceptionHandler extends AbstractDispatcherExceptionHandler {
             }
          });
       } catch (HeadlessException ex) {
-         LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),"UNKNOWN_EXCEPTION"), ex); // NOI18N
+         LogFactory.getLog(getClass()).error(Bundle.getMessage(
+               SwingExceptionHandler.class, "UNKNOWN_EXCEPTION"), ex); // NOI18N
       } catch (InterruptedException ex) {
-         LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),"UNKNOWN_EXCEPTION"), ex); // NOI18N
+         LogFactory.getLog(getClass()).error(Bundle.getMessage(
+               SwingExceptionHandler.class, "UNKNOWN_EXCEPTION"), ex); // NOI18N
       } catch (InvocationTargetException ex) {
-         LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),"UNKNOWN_EXCEPTION"), ex); // NOI18N
+         LogFactory.getLog(getClass()).error(Bundle.getMessage(
+               SwingExceptionHandler.class, "UNKNOWN_EXCEPTION"), ex); // NOI18N
       }
    }
 }

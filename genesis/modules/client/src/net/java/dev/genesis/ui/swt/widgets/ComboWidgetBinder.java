@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -87,7 +87,7 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
 
          if (indexes.length != 1) {
             throw new IllegalArgumentException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(ComboWidgetBinder.class,
                   "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE")); // NOI18N
          }
 

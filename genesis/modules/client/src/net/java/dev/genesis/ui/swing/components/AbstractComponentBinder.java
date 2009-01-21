@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -225,7 +225,8 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
                visibleWidgetGroupSet.add(jComponent);
             }
          } else {
-            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  AbstractComponentBinder.class,
                   "GROUP_PROPERTY_MUST_BE_A_COMMA_SEPARATED_STRING")); // NOI18N
          }
       }
@@ -247,7 +248,7 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
             ret = ((Boolean) booleanObject).booleanValue();
          } else {
             throw new PropertyMisconfigurationException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(AbstractComponentBinder.class,
                   "PROPERTY_X_FOR_THE_COMPONENT_NAMED_Y_MUST_EITHER_BE_LEFT_EMPTY_OR_CONTAIN_A_BOOLEAN_VALUE", // NOI18N
                   propertyName, getName()));
          }
@@ -278,7 +279,7 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
          } catch (NoSuchMethodException e) {
             IllegalArgumentException iae =
                   new IllegalArgumentException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(AbstractComponentBinder.class,
                   "THE_COMPONENT_NAMED_X_WAS_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_T", new Object[] {getName(), bean.getClass(). // NOI18N
                      getName(), propertyName, bean}));
             iae.initCause(e);
@@ -349,14 +350,17 @@ public abstract class AbstractComponentBinder implements WidgetBinder {
                descriptor.getRemoveListenerMethod().invoke(component, new Object[] {
                      listener});
             } catch (IllegalArgumentException ex) {
-               LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),
-                     "ERROR_REMOVING_LISTENER"), ex); // NOI18N
+               LogFactory.getLog(getClass()).error(Bundle.getMessage(
+                     AbstractComponentBinder.class, "ERROR_REMOVING_LISTENER"), // NOI18N
+                     ex);
             } catch (IllegalAccessException ex) {
-               LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),
-                     "ERROR_REMOVING_LISTENER"), ex); // NOI18N
+               LogFactory.getLog(getClass()).error(Bundle.getMessage(
+                     AbstractComponentBinder.class, "ERROR_REMOVING_LISTENER"), // NOI18N
+                     ex);
             } catch (InvocationTargetException ex) {
-               LogFactory.getLog(getClass()).error(Bundle.getMessage(getClass(),
-                     "ERROR_REMOVING_LISTENER"), ex); // NOI18N
+               LogFactory.getLog(getClass()).error(Bundle.getMessage(
+                     AbstractComponentBinder.class, "ERROR_REMOVING_LISTENER"), // NOI18N
+                     ex);
             }
          }
       }

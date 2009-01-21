@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -215,7 +215,8 @@ public class ListWidgetBinder extends AbstractWidgetBinder {
          }
 
          // never happens
-         throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+         throw new IllegalArgumentException(Bundle.getMessage(
+               ListWidgetBinder.class,
                "ARGUMENT_IS_NOT_AN_ARRAY_OR_A_JAVA_UTIL_LIST")); // NOI18N
       }
 

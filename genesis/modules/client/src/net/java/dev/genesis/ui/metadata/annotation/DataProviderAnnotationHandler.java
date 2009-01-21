@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -68,7 +68,8 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
       if (GenesisUtils.isBlank(widgetName)
             && GenesisUtils.isBlank(objectFieldName)
             && GenesisUtils.isBlank(indexFieldName)) {
-         String errorMessage = Bundle.getMessage(getClass(),
+         String errorMessage = Bundle.getMessage(
+               DataProviderAnnotationHandler.class,
                "AT_LEAST_ONE_OF_OPTIONS_MUST_BE_SPECIFIED_FOR_DATAPROVIDER_X", // NOI18N
                methodName);
          throw new IllegalArgumentException(errorMessage);
@@ -103,8 +104,9 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
             String key =
                   descriptor == null ? "DATAPROVIDER_OBJECTFIELD_REFERS_TO_X_BUT_PUBLIC_PROPERTY_DOES_NOT_EXIST" : // NOI18N
                   "DATAPROVIDER_OBJECTFIELD_REFERS_TO_X_BUT_IT_IS_NOT_A_READ_WRITE_PROPERTY"; // NOI18N
-            String errorMessage = Bundle.getMessage(getClass(), key,
-                  new Object[] {objectFieldName, propertyName, methodName});
+            String errorMessage = Bundle.getMessage(
+                  DataProviderAnnotationHandler.class, key, new Object[] {
+                     objectFieldName, propertyName, methodName});
 
             throw new IllegalArgumentException(errorMessage);
          }
@@ -114,7 +116,8 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          if (fieldType.isPrimitive()
                || (fieldType.isArray() && fieldType.getComponentType()
                      .isPrimitive())) {
-            String errorMessage = Bundle.getMessage(getClass(),
+            String errorMessage = Bundle.getMessage(
+                  DataProviderAnnotationHandler.class,
                   "DATAPROVIDER_OBJECTFIELD_REFERS_TO_X_BUT_IT_IS_NOT_A_PRIMITIVE_OR_ARRAY_OF_PRIMITIVES", // NOI18N
                   objectFieldName, methodName);
 
@@ -141,8 +144,9 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
             String key =
                   descriptor == null ? "DATAPROVIDER_INDEXFIELD_REFERS_TO_X_BUT_SUCH_PUBLIC_PROPERTY_DOES_NOT_EXIST" : // NOI18N
                   "DATAPROVIDER_INDEXFIELD_REFERS_TO_X_BUT_IT_IS_NOT_A_READ_WRITE_PROPERTY"; // NOI18N
-            String errorMessage = Bundle.getMessage(getClass(), key,
-                  new Object[] {indexFieldName, propertyName, methodName});
+            String errorMessage = Bundle.getMessage(
+                  DataProviderAnnotationHandler.class, key, new Object[] {
+                     indexFieldName, propertyName, methodName});
             throw new IllegalArgumentException(errorMessage);
          }
 
@@ -153,7 +157,8 @@ public class DataProviderAnnotationHandler implements AnnotationHandler {
          if (!Collection.class.isAssignableFrom(descriptor.getPropertyType())
                && !Integer.TYPE.isAssignableFrom(fieldType)
                && !Integer.class.isAssignableFrom(fieldType)) {
-            String errorMessage = Bundle.getMessage(getClass(),
+            String errorMessage = Bundle.getMessage(
+                  DataProviderAnnotationHandler.class,
                   "DATAPROVIDER_INDEXFIELD_REFERS_TO_X_BUT_IT_IS_NOT_AN_INTEGER_INT_ARRAY_COLLECTION", // NOI18N
                   indexFieldName, methodName);
             throw new IllegalArgumentException(errorMessage);

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -177,7 +177,7 @@ public class AbstractWidgetBinder implements WidgetBinder {
             }
          } else {
             throw new IllegalArgumentException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(AbstractWidgetBinder.class,
                   "GROUP_PROPERTY_MUST_BE_A_COMMA_SEPARATED_STRING_ARRAY_OF_STRINGS_A_COLLECTION_OF_WIDGETS_AN_ARRAY_OF_WIDGETS_OR_A_WIDGET")); // NOI18N
          }
       }
@@ -199,7 +199,7 @@ public class AbstractWidgetBinder implements WidgetBinder {
             ret = ((Boolean) booleanObject).booleanValue();
          } else {
             throw new PropertyMisconfigurationException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(AbstractWidgetBinder.class,
                   "PROPERTY_X_FOR_THE_WIDGET_NAMED_Y_MUST_EITHER_BE_LEFT_EMPTY_OR_CONTAIN_A_BOOLEAN_VALUE", // NOI18N
                   propertyName, getName()));
          }
@@ -229,7 +229,7 @@ public class AbstractWidgetBinder implements WidgetBinder {
             return PropertyUtils.getProperty(bean, propertyName);
          } catch (NoSuchMethodException e) {
             IllegalArgumentException iae = new IllegalArgumentException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(AbstractWidgetBinder.class,
                   "THE_WIDGET_NAMED_X_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_W", // NOI18N
                   new Object[] {getName(), bean.getClass().getName(),
                      propertyName, bean}));

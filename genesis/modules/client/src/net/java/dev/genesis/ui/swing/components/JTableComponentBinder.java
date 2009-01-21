@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ public class JTableComponentBinder extends AbstractComponentBinder {
             getInstance().
             get(component.getClass(), true);
       if (indexResolver == null) {
-         log.error(Bundle.getMessage(getClass(),
+         log.error(Bundle.getMessage(JTableComponentBinder.class,
                "COULD_NOT_FIND_SUITABLE_JTABLEINDEXRESOLVER_IMPL_FOR_X_COMPONENT_Y", // NOI18N
                component.getClass(), binder.getName(component)));
          return null;
@@ -282,7 +282,8 @@ public class JTableComponentBinder extends AbstractComponentBinder {
 
          identifier = (String)column.getIdentifier();
          if (identifier == null) {
-            throw new IllegalArgumentException(Bundle.getMessage(getClass(),
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  JTableComponentBinder.class,
                   "COLUMN_NUMBER_X_FROM_TABLE_Y_DOES_NOT_HAVE_AN_IDENTIFIER", // NOI18N
                   new Integer(column.getModelIndex()), getBinder().getName(
                   getComponent())));

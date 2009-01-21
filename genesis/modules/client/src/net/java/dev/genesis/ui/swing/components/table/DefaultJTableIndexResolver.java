@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2008-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ public class DefaultJTableIndexResolver implements JTableIndexResolver {
                   "convertRowIndexToView", new Class[] {int.class}); // NOI18N
          } catch (SecurityException se) {
             IllegalStateException ise = new IllegalStateException(
-                  Bundle.getMessage(getClass(),
+                  Bundle.getMessage(DefaultJTableIndexResolver.class,
                   "COULD_NOT_LOAD_CONVERTROWINDEXTO_METHODS")); // NOI18N
             ise.initCause(se);
             throw ise;
