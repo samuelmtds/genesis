@@ -43,6 +43,7 @@ import net.java.dev.genesis.ui.ValidationException;
 import net.java.dev.genesis.ui.ValidationUtils;
 import net.java.dev.genesis.ui.binding.DispatcherExceptionHandler;
 import net.java.dev.genesis.ui.binding.ExceptionHandler;
+import net.java.dev.genesis.util.Bundle;
 import net.java.dev.reusablecomponents.lang.Enum;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -54,59 +55,59 @@ import thinlet.Thinlet;
 
 public abstract class BaseThinlet extends Thinlet implements
       DispatcherExceptionHandler {
-   public static final String ACTION = "action";
-   public static final String ALIGNMENT = "alignment";
-   public static final String AS_YOU_TYPE = "asYouType";
-   public static final String BUTTON = "button";
-   public static final String CHECKBOX = "checkbox";
-   public static final String CELL = "cell";
-   public static final String CHOICE = "choice";
-   public static final String CLOSE = "close";
-   public static final String COLUMNS = "columns";
-   public static final String COMBOBOX = "combobox";
-   public static final String EDITABLE = "editable";
-   public static final String ENABLED = "enabled";
-   public static final String END = "end";
-   public static final String GROUP = "group";
-   public static final String HEADER = "header";
-   public static final String ITEM = "item";
-   public static final String LABEL = "label";
-   public static final String LIST = "list";
-   public static final String MESSAGE = "message";
-   public static final String MNEMONIC = "mnemonic";
-   public static final String NAME = "name";
-   public static final String PANEL = "panel";
-   public static final String PASSWORD_FIELD = "passwordfield";
-   public static final String PROGRESS_BAR = "progressbar";
-   public static final String RIGHT = "right";
-   public static final String ROW = "row";
-   public static final String ROWS = "rows";
-   public static final String SELECTED = "selected";
-   public static final String SELECTION = "selection";
-   public static final String SINGLE = "single";
-   public static final String SLIDER = "slider";
-   public static final String SPINBOX = "spinbox";
-   public static final String START = "start";
-   public static final String TABLE = "table";
-   public static final String TEXT = "text";
-   public static final String TEXTAREA = "textarea";
-   public static final String TEXTFIELD = "textfield";
-   public static final String TOGGLE_BUTTON = "togglebutton";
-   public static final String TOOLTIP = "tooltip";
-   public static final String VALUE = "value";
-   public static final String VISIBLE = "visible";
-   public static final String VIRTUAL = "virtual";
+   public static final String ACTION = "action"; // NOI18N
+   public static final String ALIGNMENT = "alignment"; // NOI18N
+   public static final String AS_YOU_TYPE = "asYouType"; // NOI18N
+   public static final String BUTTON = "button"; // NOI18N
+   public static final String CHECKBOX = "checkbox"; // NOI18N
+   public static final String CELL = "cell"; // NOI18N
+   public static final String CHOICE = "choice"; // NOI18N
+   public static final String CLOSE = "close"; // NOI18N
+   public static final String COLUMNS = "columns"; // NOI18N
+   public static final String COMBOBOX = "combobox"; // NOI18N
+   public static final String EDITABLE = "editable"; // NOI18N
+   public static final String ENABLED = "enabled"; // NOI18N
+   public static final String END = "end"; // NOI18N
+   public static final String GROUP = "group"; // NOI18N
+   public static final String HEADER = "header"; // NOI18N
+   public static final String ITEM = "item"; // NOI18N
+   public static final String LABEL = "label"; // NOI18N
+   public static final String LIST = "list"; // NOI18N
+   public static final String MESSAGE = "message"; // NOI18N
+   public static final String MNEMONIC = "mnemonic"; // NOI18N
+   public static final String NAME = "name"; // NOI18N
+   public static final String PANEL = "panel"; // NOI18N
+   public static final String PASSWORD_FIELD = "passwordfield"; // NOI18N
+   public static final String PROGRESS_BAR = "progressbar"; // NOI18N
+   public static final String RIGHT = "right"; // NOI18N
+   public static final String ROW = "row"; // NOI18N
+   public static final String ROWS = "rows"; // NOI18N
+   public static final String SELECTED = "selected"; // NOI18N
+   public static final String SELECTION = "selection"; // NOI18N
+   public static final String SINGLE = "single"; // NOI18N
+   public static final String SLIDER = "slider"; // NOI18N
+   public static final String SPINBOX = "spinbox"; // NOI18N
+   public static final String START = "start"; // NOI18N
+   public static final String TABLE = "table"; // NOI18N
+   public static final String TEXT = "text"; // NOI18N
+   public static final String TEXTAREA = "textarea"; // NOI18N
+   public static final String TEXTFIELD = "textfield"; // NOI18N
+   public static final String TOGGLE_BUTTON = "togglebutton"; // NOI18N
+   public static final String TOOLTIP = "tooltip"; // NOI18N
+   public static final String VALUE = "value"; // NOI18N
+   public static final String VISIBLE = "visible"; // NOI18N
+   public static final String VIRTUAL = "virtual"; // NOI18N
 
    // Workaround for a Thinlet bug that prevents garbage collection (# 243)
    private static Field timerField = null;
 
    static {
       try {
-         timerField = Thinlet.class.getDeclaredField("timer");
+         timerField = Thinlet.class.getDeclaredField("timer"); // NOI18N
          timerField.setAccessible(true);
       } catch (Exception e) {
-         LogFactory.getLog(BaseThinlet.class).error("Error obtaining Thread " +
-               "instance", e);
+         LogFactory.getLog(BaseThinlet.class).error("Error obtaining Thread " + // NOI18N
+               "instance", e); // NOI18N
       }
    }
 
@@ -521,10 +522,10 @@ public abstract class BaseThinlet extends Thinlet implements
 
             if (type.equals(COMBOBOX)) {
                setSelected(component, -1);
-               setText(component, "");
+               setText(component, ""); // NOI18N
             }
 
-            String keyPropertyName = (String)getProperty(component, "key");
+            String keyPropertyName = (String)getProperty(component, "key"); // NOI18N
 
             if (keyPropertyName != null) {
                Object o = properties.get(propertyName);
@@ -566,9 +567,10 @@ public abstract class BaseThinlet extends Thinlet implements
          return PropertyUtils.getProperty(bean, propertyName);
       } catch (NoSuchMethodException e) {
          IllegalArgumentException iae = new IllegalArgumentException(
-               "The widget named '" + getName() + "' expected "  + 
-               bean.getClass().getName() + " to have a property named '" + 
-               propertyName + "' (at bean " + bean + ")");
+               Bundle.getMessage(BaseThinlet.class,
+               "THE_WIDGET_NAMED_X_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_W", // NOI18N
+               new Object[] {componentName, bean.getClass().getName(), propertyName,
+                  bean}));
          iae.initCause(e);
          throw iae;
       }
@@ -752,7 +754,7 @@ public abstract class BaseThinlet extends Thinlet implements
       removeAll(component);
 
       if (blank) {
-         add(component, createItemOfType("", "", null, type));
+         add(component, createItemOfType("", "", null, type)); // NOI18N
       }
 
       for (final Iterator i = EnumHelper.getInstance().values(clazz).iterator(); i.hasNext(); ) {
@@ -843,7 +845,7 @@ public abstract class BaseThinlet extends Thinlet implements
       removeAll(component);
 
       if (blank) {
-         Object item = createItemOfType("", blankLabel == null ? ""
+         Object item = createItemOfType("", blankLabel == null ? "" // NOI18N
                : blankLabel, null, type, null);
          add(component, item);
       }
@@ -925,9 +927,11 @@ public abstract class BaseThinlet extends Thinlet implements
          String name = getName(columns[i]);
 
          if (name == null) {
-            throw new IllegalArgumentException("column (index " + i + "; " +
-                  "text: " + getText(columns[i]) +") in " + 
-                  "table " + componentName + " does not have a name");
+            throw new IllegalArgumentException(Bundle.getMessage(
+                  BaseThinlet.class,
+                  "COLUMN_INDEX_X_TEXT_Y_IN_TABLE_Z_DOES_NOT_HAVE_A_NAME", // NOI18N
+                  new Object[] {new Integer(i), getText(columns[i]),
+                     componentName}));
          }
 
          if (name.startsWith(virtualPrefix)) {
@@ -1004,9 +1008,9 @@ public abstract class BaseThinlet extends Thinlet implements
             '.' + propertyName);
 
       if (virtualFormatter == null) {
-         throw new IllegalArgumentException("There is no formatter " +
-               "registered for virtual property " + componentName + '.' + 
-               propertyName);
+         throw new IllegalArgumentException(Bundle.getMessage(BaseThinlet.class,
+               "THERE_IS_NO_FORMATTER_REGISTERED_FOR_VIRTUAL_PROPERTY_X_Y", // NOI18N
+               componentName, propertyName));
       }
 
       return virtualFormatter;
@@ -1076,14 +1080,15 @@ public abstract class BaseThinlet extends Thinlet implements
       final Map formPerClass = (Map)formPerClassPerComponent.get(getDesktop());
 
       if (formPerClass == null) {
-         throw new IllegalStateException("No form is currently bound to desktop");
+         throw new IllegalStateException(Bundle.getMessage(BaseThinlet.class,
+               "NO_FORM_IS_CURRENTLY_BOUND_TO_DESKTOP")); // NOI18N
       }
 
       final Collection forms = formPerClass.values();
 
       if (forms.size() > 1) {
-         throw new UnsupportedOperationException("More than one form is " +
-               "bound to desktop");
+         throw new UnsupportedOperationException(Bundle.getMessage(
+               BaseThinlet.class, "MORE_THAN_ONE_FORM_IS_BOUND_TO_DESKTOP")); // NOI18N
       }
 
       invokeFormAction(forms.iterator().next(), actionName);
@@ -1093,7 +1098,8 @@ public abstract class BaseThinlet extends Thinlet implements
       final ThinletBinder binder = (ThinletBinder)binderPerForm.get(form);
 
       if (binder == null) {
-         throw new IllegalArgumentException(form + " is not bound");
+         throw new IllegalArgumentException(Bundle.getMessage(BaseThinlet.class,
+               "X_IS_NOT_BOUND", form)); // NOI18N
       }
 
       binder.invokeAction(actionName);
@@ -1107,7 +1113,8 @@ public abstract class BaseThinlet extends Thinlet implements
       final Map formPerClass = (Map)formPerClassPerComponent.get(widget);
 
       if (formPerClass == null) {
-         throw new IllegalStateException("No form is currently bound to widget");
+         throw new IllegalStateException(Bundle.getMessage(BaseThinlet.class,
+               "NO_FORM_IS_CURRENTLY_BOUND_TO_WIDGET")); // NOI18N
       }
 
       for (final Iterator i = formPerClass.values().iterator(); i.hasNext(); ) {
@@ -1119,7 +1126,8 @@ public abstract class BaseThinlet extends Thinlet implements
       final ThinletBinder binder = (ThinletBinder)binderPerForm.get(form);
 
       if (binder == null) {
-         throw new IllegalArgumentException(form + " is not bound");
+         throw new IllegalArgumentException(Bundle.getMessage(BaseThinlet.class,
+               "X_IS_NOT_BOUND", form)); // NOI18N
       }
 
       binder.refresh();

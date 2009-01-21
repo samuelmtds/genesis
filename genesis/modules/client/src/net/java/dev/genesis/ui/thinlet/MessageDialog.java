@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ public class MessageDialog extends BaseDialogThinlet {
 
    public class MainScreenHandler extends ScreenHandler {
       protected MainScreenHandler() throws ScreenNotFoundException {
-         this("message.xml");
+         this("message.xml"); // NOI18N
       }
 
       protected MainScreenHandler(String xml) throws ScreenNotFoundException {
@@ -44,7 +44,7 @@ public class MessageDialog extends BaseDialogThinlet {
          int rows = 0;
          int columns = 0;
 
-         for (final StringTokenizer st = new StringTokenizer(message, "\n"); 
+         for (final StringTokenizer st = new StringTokenizer(message, "\n"); // NOI18N
                                                    st.hasMoreTokens(); rows++) {
             columns = Math.min(MAX_COLUMNS, Math.max(st.nextToken().length(), columns));
          }

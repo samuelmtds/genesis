@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,11 @@
  */
 package net.java.dev.genesis.ui.thinlet;
 
+import net.java.dev.genesis.util.Bundle;
+
 public class ScreenNotFoundException extends Exception {
    public ScreenNotFoundException(String fileName) {
-      super("Screen not found: " + fileName);
+      super(Bundle.getMessage(ScreenNotFoundException.class,
+            "SCREEN_NOT_FOUND_X", fileName));
    }
 }

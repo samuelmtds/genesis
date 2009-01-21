@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,10 +30,10 @@ public class ErrorReporterDialog extends BaseDialogThinlet {
    private final MainScreenHandler handler = new MainScreenHandler();
 
    public class MainScreenHandler extends ScreenHandler {
-      private static final String STACK_TRACE = "stackTrace";
+      private static final String STACK_TRACE = "stackTrace"; // NOI18N
 
       public MainScreenHandler() throws ScreenNotFoundException {
-         super("error_reporter.xml");
+         super("error_reporter.xml"); // NOI18N
       }
 
       public void show(String title, final String message, 

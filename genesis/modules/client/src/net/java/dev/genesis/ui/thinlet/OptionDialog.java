@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2008  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +23,9 @@ import net.java.dev.reusablecomponents.lang.Enum;
 
 public class OptionDialog extends MessageDialog {
    public static final class Option extends Enum {
-      public static final Option YES = new Option("Yes");
-      public static final Option NO = new Option("No");
-      public static final Option CANCEL = new Option("Cancel");
+      public static final Option YES = new Option("Yes"); // NOI18N
+      public static final Option NO = new Option("No"); // NOI18N
+      public static final Option CANCEL = new Option("Cancel"); // NOI18N
 
       private Option(String name) {
          super(name);
@@ -36,7 +36,7 @@ public class OptionDialog extends MessageDialog {
       private Option selected = Option.CANCEL;
 
       private OptionDialogScreenHandler() throws ScreenNotFoundException {
-         super("option.xml");
+         super("option.xml"); // NOI18N
       }
 
       public void loseFocus() {
@@ -58,7 +58,7 @@ public class OptionDialog extends MessageDialog {
       }
 
       public void setCancel(boolean cancel) {
-         setVisible(find(getScreen(), "cancel"), cancel);
+         setVisible(find(getScreen(), "cancel"), cancel); // NOI18N
 
          selected = (cancel) ? Option.CANCEL : Option.NO;
       }

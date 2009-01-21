@@ -46,6 +46,7 @@ import net.java.dev.genesis.ui.metadata.MethodMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadata;
 import net.java.dev.genesis.ui.metadata.ViewMetadataFactory;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -173,7 +174,7 @@ public class ThinletBinder implements FormControllerListener {
 
       if (components.isEmpty()) {
          if (log.isTraceEnabled()) {
-            log.trace(name + " could not be found while binding " + 
+            log.trace(name + " could not be found while binding " +  // NOI18N
                   form.getClass());
          }
 
@@ -185,8 +186,8 @@ public class ThinletBinder implements FormControllerListener {
 
       if (Arrays.binarySearch(supportedFieldWidgets, className) < 0) {
          if (fieldMetadata.isWriteable()) {
-            log.warn(name + " is not represented by an editable widget (" + 
-                  className + ")");
+            log.warn(name + " is not represented by an editable widget (" +  // NOI18N
+                  className + ")"); // NOI18N
          }
 
          return;
@@ -196,15 +197,15 @@ public class ThinletBinder implements FormControllerListener {
 
       if (!fieldMetadata.isWriteable()) {
          if (log.isDebugEnabled()) {
-            log.debug(name + " is a display only field, skipping...");
+            log.debug(name + " is a display only field, skipping..."); // NOI18N
          }
          
          return;
       }
 
       if (log.isTraceEnabled()) {
-         log.trace("Binding field " + name + " in " + 
-               form.getClass().getName() + " to " + className);
+         log.trace("Binding field " + name + " in " +  // NOI18N
+               form.getClass().getName() + " to " + className); // NOI18N
       }
 
       boundFieldNames.add(name);
@@ -217,25 +218,25 @@ public class ThinletBinder implements FormControllerListener {
    protected void bindComponent(String name, String className, Object component) {
       if (className.equals(BaseThinlet.CHECKBOX) ||
             className.equals(BaseThinlet.TOGGLE_BUTTON)) {
-         thinlet.setMethod(component, "action", "setValue(" + 
-               thinlet.getName(component) + "," + 
+         thinlet.setMethod(component, "action", "setValue(" +  // NOI18N
+               thinlet.getName(component) + "," +  // NOI18N
                thinlet.getName(component) + 
-               (thinlet.getGroup(component) == null ? ".name)" : ".group)"),
+               (thinlet.getGroup(component) == null ? ".name)" : ".group)"), // NOI18N
                root, this);
       } else if (Arrays.binarySearch(fieldsChangedByAction, className) > -1 ||
             (Arrays.binarySearch(supportedAsYouTypeFieldWidgets, className) > -1 &&
             BaseThinlet.AS_YOU_TYPE.equals(getBindingStrategy(component)))) {
-         thinlet.setMethod(component, "action", "setValue(" + name + "," +
-               name + ".name)", root, this);
+         thinlet.setMethod(component, "action", "setValue(" + name + "," + // NOI18N
+               name + ".name)", root, this); // NOI18N
       } else {
-         thinlet.setMethod(component, "focuslost", "setValue(" + name + 
-               "," + name + ".name)", root, this);
+         thinlet.setMethod(component, "focuslost", "setValue(" + name +  // NOI18N
+               "," + name + ".name)", root, this); // NOI18N
       }
    }
    
    protected String getBindingStrategy(Object component) {
       String bindingStrategy = (String)thinlet.getProperty(component, 
-            "bindingStrategy");
+            "bindingStrategy"); // NOI18N
 
       if (bindingStrategy != null) {
          return bindingStrategy;
@@ -289,36 +290,36 @@ public class ThinletBinder implements FormControllerListener {
       visibleWidgetGroupCollection.add(name);
 
       final String widgetGroup = (String)thinlet.getProperty(component,
-            "widgetGroup");
+            "widgetGroup"); // NOI18N
       final String enabledWidgetGroup = (String)thinlet.getProperty(component,
-            "enabledWidgetGroup");
+            "enabledWidgetGroup"); // NOI18N
       final String visibleWidgetGroup = (String)thinlet.getProperty(component,
-            "visibleWidgetGroup");
+            "visibleWidgetGroup"); // NOI18N
 
       if (widgetGroup != null) {
-         final List widgets = Arrays.asList(widgetGroup.split(","));
+         final List widgets = Arrays.asList(widgetGroup.split(",")); // NOI18N
          enabledWidgetGroupCollection.addAll(widgets);
          visibleWidgetGroupCollection.addAll(widgets);
 
          if (log.isDebugEnabled()) {
-            log.debug("Adding " + widgetGroup + " as a widget group for " +
-                  name + " in class " + form.getClass());
+            log.debug("Adding " + widgetGroup + " as a widget group for " + // NOI18N
+                  name + " in class " + form.getClass()); // NOI18N
          }
       }
       if (enabledWidgetGroup != null) {
-         enabledWidgetGroupCollection.addAll(Arrays.asList(enabledWidgetGroup.split(",")));
+         enabledWidgetGroupCollection.addAll(Arrays.asList(enabledWidgetGroup.split(","))); // NOI18N
 
          if (log.isDebugEnabled()) {
-            log.debug("Adding " + enabledWidgetGroup + " as a enabled widget group for " +
-                  name + " in class " + form.getClass());
+            log.debug("Adding " + enabledWidgetGroup + " as a enabled widget group for " + // NOI18N
+                  name + " in class " + form.getClass()); // NOI18N
          }
       }
       if (visibleWidgetGroup != null) {
-         visibleWidgetGroupCollection.addAll(Arrays.asList(visibleWidgetGroup.split(",")));
+         visibleWidgetGroupCollection.addAll(Arrays.asList(visibleWidgetGroup.split(","))); // NOI18N
 
          if (log.isDebugEnabled()) {
-            log.debug("Adding " + visibleWidgetGroup + " as a visible widget group for " +
-                  name + " in class " + form.getClass());
+            log.debug("Adding " + visibleWidgetGroup + " as a visible widget group for " + // NOI18N
+                  name + " in class " + form.getClass()); // NOI18N
          }
       }
 
@@ -369,14 +370,14 @@ public class ThinletBinder implements FormControllerListener {
       final Object component = thinlet.find(root, name);
 
       if (component == null) {
-         log.warn(name + " could not be found while binding " + form.getClass());
+         log.warn(name + " could not be found while binding " + form.getClass()); // NOI18N
          return;
       }
 
       final String className = Thinlet.getClass(component);
 
       if (!BaseThinlet.BUTTON.equals(className)) {
-         log.warn(name + " is not represented by a button; it is a " + 
+         log.warn(name + " is not represented by a button; it is a " +  // NOI18N
                className);
 
          return;
@@ -385,11 +386,11 @@ public class ThinletBinder implements FormControllerListener {
       createWidgetGroup(component, name);
       
       if (log.isTraceEnabled()) {
-         log.trace("Binding action " + name + " in " + form.getClass().getName());
+         log.trace("Binding action " + name + " in " + form.getClass().getName()); // NOI18N
       }
 
-      thinlet.setMethod(component, "action", "invokeAction(" + 
-            name + ".name)", root, this);
+      thinlet.setMethod(component, "action", "invokeAction(" +  // NOI18N
+            name + ".name)", root, this); // NOI18N
    }
 
    protected void bindDataProviders(final Collection dataProviders) {
@@ -403,7 +404,7 @@ public class ThinletBinder implements FormControllerListener {
       final Object component = thinlet.find(root, name);
 
       if (component == null) {
-         log.warn(name + " could not be found while binding data provider in " + 
+         log.warn(name + " could not be found while binding data provider in " +  // NOI18N
                form.getClass());
          return;
       }
@@ -413,19 +414,19 @@ public class ThinletBinder implements FormControllerListener {
       if (!(className.equals(BaseThinlet.TABLE) || 
             className.equals(BaseThinlet.COMBOBOX) ||
             className.equals(BaseThinlet.LIST))) {
-         log.warn(className + " is not a supported widget for binding a " +
-               "data provider");
+         log.warn(className + " is not a supported widget for binding a " + // NOI18N
+               "data provider"); // NOI18N
          return;
       }
 
       createWidgetGroup(component, name);
 
       if (log.isDebugEnabled()) {
-         log.debug("Binding an action method for " + name);
+         log.debug("Binding an action method for " + name); // NOI18N
       }
 
-      thinlet.setMethod(component, "action", "updateSelection(" + name
-            + ".name," + name + ")", root, this);
+      thinlet.setMethod(component, "action", "updateSelection(" + name // NOI18N
+            + ".name," + name + ")", root, this); // NOI18N
       dataProvided.put(name, dataProviderMetadata);
    }
 
@@ -528,13 +529,13 @@ public class ThinletBinder implements FormControllerListener {
       final Object component = thinlet.find(root, name);
 
       if (component == null) {
-         log.warn(name + " could not be found while populating using "
+         log.warn(name + " could not be found while populating using " // NOI18N
                + form.getClass());
          return;
       }
 
       if (log.isDebugEnabled()) {
-         log.debug("Populating " + name + " with " + metadata.getName());
+         log.debug("Populating " + name + " with " + metadata.getName()); // NOI18N
       }
 
       final String className = Thinlet.getClass(component);
@@ -545,18 +546,19 @@ public class ThinletBinder implements FormControllerListener {
       } else if (className.equals(BaseThinlet.COMBOBOX) || 
                className.equals(BaseThinlet.LIST)) {
          //TODO: This parsing shouldn't occur every time
-         final String key = (String) thinlet.getProperty(component, "key");
-         final String value = (String)thinlet.getProperty(component, "value");
+         final String key = (String) thinlet.getProperty(component, "key"); // NOI18N
+         final String value = (String)thinlet.getProperty(component, "value"); // NOI18N
          final boolean virtual = isVirtual(component, name);
          final boolean blank = isBlank(component, name);
          final String blankLabel = (String)thinlet.getProperty(component, 
-               "blankLabel");
+               "blankLabel"); // NOI18N
 
          thinlet.populateFromCollection(component, items, key, value, virtual,
                blank, blankLabel, formatters, widgetFactories);
       } else {
-         throw new UnsupportedOperationException(className + " is not "
-               + "supported for data providing");
+         throw new UnsupportedOperationException(Bundle.getMessage(
+               ThinletBinder.class, "X_IS_NOT_SUPPORTED_FOR_DATA_PROVIDING", // NOI18N
+               className));
       }
    }
 
@@ -570,7 +572,7 @@ public class ThinletBinder implements FormControllerListener {
    }
 
    private boolean isBlank(Object component, String name) {
-      return isBoolean(component, name, "blank");
+      return isBoolean(component, name, "blank"); // NOI18N
    }
 
    private boolean isVirtual(Object component, String name) {
@@ -589,9 +591,10 @@ public class ThinletBinder implements FormControllerListener {
       } else if (booleanObject instanceof Boolean) {
          ret = ((Boolean) booleanObject).booleanValue();
       } else {
-         throw new PropertyMisconfigurationException("Property '" + 
-               propertyName + "' " + "for the widget named " + name + " must " +
-               "either be left empty or contain a boolean value");
+         throw new PropertyMisconfigurationException(
+               Bundle.getMessage(ThinletBinder.class,
+               "PROPERTY_X_FOR_THE_WIDGET_NAMED_Y_MUST_EITHER_BE_LEFT_EMPTY_OR_CONTAIN_A_BOOLEAN_VALUE", // NOI18N
+               propertyName, name));
       }
 
       return ret;
@@ -615,9 +618,9 @@ public class ThinletBinder implements FormControllerListener {
 
          if (widgetGroup == null) {
             if (log.isTraceEnabled()) {
-               log.trace(entry.getKey() + (enabled ? " enabled" : " visible")
-                     + " state should be changed, "
-                     + "but could not be found in the view component for "
+               log.trace(entry.getKey() + (enabled ? " enabled" : " visible") // NOI18N
+                     + " state should be changed, " // NOI18N
+                     + "but could not be found in the view component for " // NOI18N
                      + form.getClass());
             }
 
@@ -625,8 +628,8 @@ public class ThinletBinder implements FormControllerListener {
          }
 
          if (log.isDebugEnabled()) {
-            log.debug("Changing " + entry.getKey()
-                  + (enabled ? " enabled" : " visible") + " state to "
+            log.debug("Changing " + entry.getKey() // NOI18N
+                  + (enabled ? " enabled" : " visible") + " state to " // NOI18N
                   + entry.getValue());
          }
 
@@ -635,9 +638,9 @@ public class ThinletBinder implements FormControllerListener {
 
             if (widget == null) {
                if (log.isTraceEnabled()) {
-                  log.trace(entry.getKey() + (enabled ? " enabled" : " visible")
-                        + " state should be changed, "
-                        + "but could not be found in the view component for "
+                  log.trace(entry.getKey() + (enabled ? " enabled" : " visible") // NOI18N
+                        + " state should be changed, " // NOI18N
+                        + "but could not be found in the view component for " // NOI18N
                         + form.getClass());
                }
 

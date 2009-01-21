@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,8 +35,8 @@ public class ThinletExceptionHandler extends AbstractDispatcherExceptionHandler 
       try {
          ErrorReporterDialog.show(thinlet, title, message, throwable);
       } catch (ScreenNotFoundException scnfe) {
-         log.error("The error screen file could not be found", scnfe);
-         log.error("Original error:", throwable);
+         log.error("The error screen file could not be found", scnfe); // NOI18N
+         log.error("Original error:", throwable); // NOI18N
       }
    }
 
