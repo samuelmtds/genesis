@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2008 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2008-2009 Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
  */
 package net.java.dev.genesis.util;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -25,7 +26,7 @@ import java.util.ResourceBundle;
 public class Bundle {
    public static String getMessage(Class clazz, String key) throws
          MissingResourceException {
-      return getBundle(clazz).getString(key);
+      return getMessage(clazz, key, null);
    }
 
    public static String getMessage(Class clazz, String key, Object param1)
@@ -40,7 +41,7 @@ public class Bundle {
 
    public static String getMessage(Class clazz, String key, Object[] params)
          throws MissingResourceException {
-      return java.text.MessageFormat.format(getMessage(clazz, key), params);
+      return MessageFormat.format(getBundleString(clazz, key), params);
    }
 
    public static ResourceBundle getBundle(Class clazz) throws
@@ -49,8 +50,13 @@ public class Bundle {
       return getBundle(name, Locale.getDefault(), clazz.getClassLoader());
    }
 
+   protected static String getBundleString(Class clazz, String key) throws
+         MissingResourceException {
+      return getBundle(clazz).getString(key);
+   }
+
    /** Finds package name for given class */
-   private static String findName(Class clazz) {
+   protected static String findName(Class clazz) {
       String pref = clazz.getName();
       int last = pref.lastIndexOf('.');
 
