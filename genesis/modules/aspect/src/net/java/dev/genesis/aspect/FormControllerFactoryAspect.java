@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,15 +29,15 @@ public class FormControllerFactoryAspect {
    public static class AspectFormControllerFactory extends DefaultFormControllerFactory {
       public AspectFormControllerFactory() {
          String timesAsString = (String) Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("maximumEvaluationTimes");
+               getClass().getClassLoader()).get("maximumEvaluationTimes"); // NOI18N
 
          if (timesAsString != null) {
             setMaximumEvaluationTimes(Integer.parseInt(timesAsString));
          }
 
-         setResetOnDataProviderChange(!"false".equals(Mixins.getParameters(
+         setResetOnDataProviderChange(!"false".equals(Mixins.getParameters( // NOI18N
                getClass(), getClass().getClassLoader()).get(
-               "resetOnDataProviderChange")));
+               "resetOnDataProviderChange"))); // NOI18N
       }
    }
 }

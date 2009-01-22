@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import net.java.dev.genesis.exception.TimeoutException;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.aspectwerkz.AspectContext;
@@ -58,7 +59,7 @@ public class TimeoutAspect {
       private final Collection references = new LinkedList();
 
       public WorkerThreadDisposer() {
-         super("WorkerThreadDisposer-Daemon");
+         super("WorkerThreadDisposer-Daemon"); // NOI18N
          setDaemon(true);
          setPriority(Thread.MIN_PRIORITY);
          start();
@@ -100,7 +101,8 @@ public class TimeoutAspect {
                   references.remove(pair);
                }
             } catch (InterruptedException ie) {
-               log.error("WorkerThreadDisposed interrupted", ie);
+               log.error(Bundle.getMessage(TimeoutAspect.class,
+                     "WORKERTHREADDISPOSED_INTERRUPTED"), ie); // NOI18N
                return;
             }
          }
@@ -118,7 +120,7 @@ public class TimeoutAspect {
       private boolean waiting;
 
       public WorkerThread(boolean keepThreadInstance) {
-         super("WorkerThread-" + Thread.currentThread().getName());
+         super("WorkerThread-" + Thread.currentThread().getName()); // NOI18N
          setDaemon(true);
          this.keepThreadInstance = keepThreadInstance;
       }
@@ -215,9 +217,9 @@ public class TimeoutAspect {
    private final ThreadLocal threadLocal = new ThreadLocal();
    
    public TimeoutAspect(final AspectContext ctx) {
-      this.timeout = Long.parseLong(ctx.getParameter("timeout"));
-      this.keepThreadInstance = "true".equals(
-            ctx.getParameter("keepThreadInstance"));
+      this.timeout = Long.parseLong(ctx.getParameter("timeout")); // NOI18N
+      this.keepThreadInstance = "true".equals( // NOI18N
+            ctx.getParameter("keepThreadInstance")); // NOI18N
    }
 
    private WorkerThread getWorkerThread() {
@@ -240,7 +242,8 @@ public class TimeoutAspect {
 
          if (keepThreadInstance) {
             if (log.isDebugEnabled()) {
-               log.debug("New thread created: " + thread);
+               log.debug(Bundle.getMessage(TimeoutAspect.class,
+                     "NEW_THREAD_CREATED_X", thread)); // NOI18N
             }
 
             WorkerThreadDisposer.getInstance().enqueue(Thread.currentThread(), 
@@ -248,7 +251,8 @@ public class TimeoutAspect {
          }
       } else {
          if (keepThreadInstance && log.isDebugEnabled()) {
-            log.debug("Reusing thread: " + thread);
+            log.debug(Bundle.getMessage(TimeoutAspect.class, "REUSING_THREAD_X", // NOI18N
+                  thread));
          }
       }
 
@@ -263,8 +267,8 @@ public class TimeoutAspect {
 
          setWorkerThread(null);
 
-         throw new TimeoutException("Execution took more than " + timeout + 
-               " ms");
+         throw new TimeoutException(Bundle.getMessage(TimeoutAspect.class,
+               "EXECUTION_TOOK_MORE_THAN_X_MS", new Long(timeout))); // NOI18N
       }
  
       final Throwable throwable = thread.getThrowable();

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,17 +36,17 @@ public class FormMetadataFactoryAspect {
          Map parameters = Mixins.getParameters(getClass(), getClass()
                .getClassLoader());
 
-         String scriptFactoryName = (String) parameters.get("scriptFactory");
+         String scriptFactoryName = (String) parameters.get("scriptFactory"); // NOI18N
          
          if (scriptFactoryName != null) {
             ScriptRegistry.getInstance().setScriptFactoryName(scriptFactoryName);
          }
 
-         String properties = (String) parameters.get("scriptFactoryProperties");
+         String properties = (String) parameters.get("scriptFactoryProperties"); // NOI18N
 
          if (properties != null) {
             ScriptRegistry.getInstance().setScriptFactoryProperties(
-                  GenesisUtils.getAttributesMap(properties, ",", "="));
+                  GenesisUtils.getAttributesMap(properties, ",", "=")); // NOI18N
          }
 
          ScriptRegistry.getInstance().initialize();

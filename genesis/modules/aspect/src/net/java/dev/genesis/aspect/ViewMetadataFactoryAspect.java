@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,8 +31,8 @@ public class ViewMetadataFactoryAspect {
          DefaultViewMetadataFactory {
 
       public AspectViewMetadataFactory() {
-         setSkipSystemClasses(!"false".equals(Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("skipSystemClasses")));
+         setSkipSystemClasses(!"false".equals(Mixins.getParameters(getClass(), // NOI18N
+               getClass().getClassLoader()).get("skipSystemClasses"))); // NOI18N
       }
    }
 }

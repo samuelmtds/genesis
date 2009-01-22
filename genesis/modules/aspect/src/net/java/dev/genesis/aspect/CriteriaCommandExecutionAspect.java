@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import net.java.dev.genesis.annotation.Criteria;
 import net.java.dev.genesis.command.hibernate.CriteriaCommandExecutor;
 import net.java.dev.genesis.command.hibernate.CriteriaResolver;
 
+import net.java.dev.genesis.util.Bundle;
 import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodRtti;
@@ -40,7 +41,7 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
 
    public CriteriaCommandExecutionAspect(final AspectContext ctx) {
       super(ctx);
-      preventStackOverflow = "true".equals(ctx.getParameter("preventStackOverflow"));
+      preventStackOverflow = "true".equals(ctx.getParameter("preventStackOverflow")); // NOI18N
    }
 
    /**
@@ -105,11 +106,12 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
          orderBy = new String[values.length];
          isAsc = new boolean[values.length];
          for (int i = 0; i < values.length; i++) {
-            String[] props = values[i].split("\\s+");
+            String[] props = values[i].split("\\s+"); // NOI18N
 
             if (props.length == 0 || props.length > 2) {
                throw new IllegalArgumentException(
-                     "Malformed Criteria annotation");
+                     Bundle.getMessage(CriteriaCommandExecutionAspect.class,
+                     "MALFORMED_CRITERIA_ANNOTATION")); // NOI18N
             }
             orderBy[i] = props[0];
 
@@ -118,14 +120,14 @@ public class CriteriaCommandExecutionAspect extends CommandInvocationAspect {
                continue;
             }
 
-            if (props[1].equalsIgnoreCase("asc")) {
+            if (props[1].equalsIgnoreCase("asc")) { // NOI18N
                isAsc[i] = true;
-            } else if (props[1].equalsIgnoreCase("desc")) {
+            } else if (props[1].equalsIgnoreCase("desc")) { // NOI18N
                isAsc[i] = false;
             } else {
                throw new IllegalArgumentException(
-                     "Malformed Criteria"
-                           + "annotation: order-by clause must be 'asc' or 'desc'");
+                     Bundle.getMessage(CriteriaCommandExecutionAspect.class,
+                     "MALFORMED_CRITERIA_ANNOTATION_ORDER_BY_CLAUSE_MUST_BE_ASC_OR_DESC")); // NOI18N
             }
 
          }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ package net.java.dev.genesis.aspect;
 
 import net.java.dev.genesis.command.TransactionalInjector;
 import net.java.dev.genesis.command.hibernate.HibernateCommand;
+import net.java.dev.genesis.util.Bundle;
 import net.sf.hibernate.FlushMode;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
@@ -39,15 +40,16 @@ public class HibernateTransactionalInjector implements TransactionalInjector {
    private Session session;
    
    public void init(Object context) {
-      if (!(context instanceof AspectContext) || "false".equals(
-            ((AspectContext)context).getParameter("preLoadSessionFactory"))) {
+      if (!(context instanceof AspectContext) || "false".equals( // NOI18N
+            ((AspectContext)context).getParameter("preLoadSessionFactory"))) { // NOI18N
          return;
       }
       
       try {
          HibernateHelper.getInstance().getSessionFactory();
       } catch (HibernateException he) {
-         log.error("Error preloading SessionFactory", he);
+         log.error(Bundle.getMessage(HibernateTransactionalInjector.class,
+               "ERROR_PRELOADING_SESSIONFACTORY"), he); // NOI18N
       }
    }
    

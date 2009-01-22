@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,8 +44,8 @@ public class CommandInvocationAspect {
       private final boolean useFastMode;
 
       public CommandResolverImpl() {
-         useFastMode = !"false".equals(Mixins.getParameters(getClass(),
-               getClass().getClassLoader()).get("useFastMode"));
+         useFastMode = !"false".equals(Mixins.getParameters(getClass(), // NOI18N
+               getClass().getClassLoader()).get("useFastMode")); // NOI18N
       }
 
       public boolean isRemotable(Method m) {

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import javax.rmi.PortableRemoteObject;
 import net.java.dev.genesis.ejb.CommandExecutor;
 import net.java.dev.genesis.ejb.CommandExecutorHome;
 
+import net.java.dev.genesis.util.Bundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.aspectwerkz.AspectContext;
@@ -47,15 +48,15 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
    public EJBCommandExecutionAspect(final AspectContext ctx) {
       super(ctx);
       if (!ctx.isPrototype()) {
-         retryOnNoSuchObject = !"false".equals(ctx
-               .getParameter("retryOnNoSuchObject"));
+         retryOnNoSuchObject = !"false".equals(ctx // NOI18N
+               .getParameter("retryOnNoSuchObject")); // NOI18N
       }
    }
 
    private CommandExecutorHome getHome() throws Exception {
       if (home == null) {
          home = (CommandExecutorHome)PortableRemoteObject.narrow(
-               new InitialContext().lookup(ctx.getParameter("jndiName")),
+               new InitialContext().lookup(ctx.getParameter("jndiName")), // NOI18N
                CommandExecutorHome.class);
       }
 
@@ -115,10 +116,12 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
                return jp.proceed();
             }
          } catch (final NoSuchObjectException nsoe) {
-            log.error("NoSuchObjectException occured", nsoe);
+            log.error(Bundle.getMessage(EJBCommandExecutionAspect.class,
+                  "NOSUCHOBJECTEXCEPTION_OCCURED"), nsoe); // NOI18N
 
             if (retry) {
-               log.info("Retrying on NoSuchObjectException...");
+               log.info(Bundle.getMessage(EJBCommandExecutionAspect.class,
+                     "RETRYING_ON_NOSUCHOBJECTEXCEPTION")); // NOI18N
                session = null;
                home = null;
                retry = false;
@@ -128,7 +131,8 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
 
             throw nsoe;
          } catch (final RemoteException re) {
-            log.error("RemoteException occured", re);
+            log.error(Bundle.getMessage(EJBCommandExecutionAspect.class,
+                  "REMOTEEXCEPTION_OCCURED"), re); // NOI18N
             cleanUp();
 
             throw re;
@@ -143,7 +147,8 @@ public class EJBCommandExecutionAspect extends CommandInvocationAspect {
          try {
             session.remove();
          } catch (Throwable t) {
-            log.error("An error ocurred while removing EJB instance", t);
+            log.error(Bundle.getMessage(EJBCommandExecutionAspect.class,
+                  "AN_ERROR_OCURRED_WHILE_REMOVING_EJB_INSTANCE"), t); // NOI18N
          }
 
          session = null;

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@ public class LocalCommandExecutionAspect extends CommandInvocationAspect {
 
       if (injector == null) {
          injector = (TransactionalInjector)Class.forName(
-               ctx.getParameter("transactionalInjector"), true,
+               ctx.getParameter("transactionalInjector"), true, // NOI18N
                currentThread.getContextClassLoader()).newInstance();
 
          if (!ctx.isPrototype()) {
