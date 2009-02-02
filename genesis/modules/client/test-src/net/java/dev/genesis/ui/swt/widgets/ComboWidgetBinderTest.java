@@ -186,6 +186,19 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
 
       boundDataProvider.updateIndexes(new int[] { -1 });
       assertEquals(-1, combo.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { 0 });
+      assertEquals(0, combo.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] {});
+      assertEquals(-1, combo.getSelectionIndex());
+
+      try {
+         boundDataProvider.updateIndexes(new int[] {1, 2});
+         fail("IllegalArgumentException should be thrown when length of array is greater than one");
+      } catch (IllegalArgumentException e) {
+         // expected
+      }
    }
 
    public void testUpdateIndexesWithBlank() {
@@ -208,6 +221,19 @@ public class ComboWidgetBinderTest extends GenesisTestCase {
 
       boundDataProvider.updateIndexes(new int[] { -1 });
       assertEquals(-1, combo.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] { 0 });
+      assertEquals(1, combo.getSelectionIndex());
+
+      boundDataProvider.updateIndexes(new int[] {});
+      assertEquals(-1, combo.getSelectionIndex());
+
+      try {
+         boundDataProvider.updateIndexes(new int[] {1, 2});
+         fail("IllegalArgumentException should be thrown when length of array is greater than one");
+      } catch (IllegalArgumentException e) {
+         // expected
+      }
    }
 
    public void testUpdateList() throws Exception {

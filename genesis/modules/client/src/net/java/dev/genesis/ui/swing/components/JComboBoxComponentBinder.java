@@ -86,10 +86,12 @@ public class JComboBoxComponentBinder extends AbstractComponentBinder {
          indexes = getBinder()
                          .getIndexesFromController(indexes, isBlank(component));
 
-         if (indexes.length != 1) {
+         if (indexes.length > 1) {
             throw new IllegalArgumentException(Bundle.getMessage(
                   JComboBoxComponentBinder.class,
-                  "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE")); // NOI18N
+                  "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE_OR_LESS")); // NOI18N
+         } else if (indexes.length == 0) {
+            indexes = new int[] { -1 };
          }
 
          if (component.getSelectedIndex() == indexes[0]) {

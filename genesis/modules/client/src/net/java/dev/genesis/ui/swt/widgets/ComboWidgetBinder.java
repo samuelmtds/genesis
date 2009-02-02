@@ -85,10 +85,12 @@ public class ComboWidgetBinder extends AbstractWidgetBinder {
          indexes = getBinder().getIndexesFromController(indexes,
                isBlank(widget));
 
-         if (indexes.length != 1) {
+         if (indexes.length > 1) {
             throw new IllegalArgumentException(
                   Bundle.getMessage(ComboWidgetBinder.class,
-                  "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE")); // NOI18N
+                  "LENGTH_OF_SELECTED_INDEXES_MUST_BE_ONE_OR_LESS")); // NOI18N
+         } else if (indexes.length == 0) {
+            indexes = new int[] {-1};
          }
 
          if (widget.getSelectionIndex() == indexes[0]) {
