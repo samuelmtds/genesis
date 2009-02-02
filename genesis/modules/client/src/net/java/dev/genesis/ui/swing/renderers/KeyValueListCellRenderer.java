@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,11 +27,16 @@ import javax.swing.JList;
 import net.java.dev.genesis.text.FormatterRegistry;
 import net.java.dev.genesis.ui.swing.SwingBinder;
 import net.java.dev.genesis.ui.swing.components.ComponentBinderHelper;
+import net.java.dev.genesis.util.Bundle;
 
 public class KeyValueListCellRenderer extends DefaultListCellRenderer {
    private final JComponent component;
 
    public KeyValueListCellRenderer(JComponent component) {
+      if (component == null) {
+         throw new IllegalArgumentException(Bundle.getMessage(
+               KeyValueListCellRenderer.class, "COMPONENT_MUST_NOT_BE_NULL")); // NOI18N
+      }
       this.component = component;
    }
 
@@ -43,10 +48,11 @@ public class KeyValueListCellRenderer extends DefaultListCellRenderer {
       final SwingBinder binder = getBinder();
 
       if (binder == null) {
-         return FormatterRegistry.getInstance().format(value);
+         value = FormatterRegistry.getInstance().format(value);
+      } else {
+         value = ComponentBinderHelper.format(binder, component, value);
       }
-
-      return ComponentBinderHelper.format(binder, component, value);
+      return (value == null || value.equals("") ? " " : value.toString());
    }
 
    public Component getListCellRendererComponent(JList list, Object value,
