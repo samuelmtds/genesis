@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2009  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,7 @@ import net.java.dev.genesis.equality.StringEqualityComparator;
 import net.java.dev.genesis.reflection.FieldEntry;
 import net.java.dev.genesis.resolvers.DefaultEmptyResolver;
 import net.java.dev.genesis.resolvers.StringEmptyResolver;
+import net.java.dev.genesis.script.ScriptException;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.metadata.ActionMetadata;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
@@ -294,6 +295,18 @@ public class FormMetadataFactoryTest extends TestCase {
       }
    }
 
+   public void testBrokenEnabledWhen() {
+      try {
+         getFormMetadata(new BrokenEnabledWhenForm());
+         fail("An IllegalArgumentException should be thrown when @EnabledWhen " +
+               "has no conditions");
+      } catch (ScriptException se) {
+         fail("An ScriptException should not be thrown");
+      } catch (IllegalArgumentException iae) {
+         //Expected
+      }
+   }
+
    /**
     * @Form
     */
@@ -530,5 +543,16 @@ public class FormMetadataFactoryTest extends TestCase {
          return null;
       }
    }
-  
+
+   /**
+    * @Form
+    */
+   public static class BrokenEnabledWhenForm {
+      /**
+       * @Action
+       * @EnabledWhen
+       */
+      public void action() {
+      }
+   }
 }

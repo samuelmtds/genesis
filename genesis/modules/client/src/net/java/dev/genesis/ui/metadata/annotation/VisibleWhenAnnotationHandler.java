@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -62,8 +62,8 @@ public class VisibleWhenAnnotationHandler implements AnnotationHandler {
       if (values == null || values.length == 0) {
          throw new IllegalArgumentException(Bundle.getMessage(
                getClass(),
-               "VISIBLEWHEN_MUST_DEFINE_AT_LEAST_ONE_SCRIPT_CONDITION_X", // NOI18N
-               memberName));
+               "X_MUST_DEFINE_AT_LEAST_ONE_SCRIPT_CONDITION_Y", // NOI18N
+               "VisibleWhen", memberName));
       }
 
       final Script script = formMetadata.getScript();

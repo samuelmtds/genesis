@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2008  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import net.java.dev.genesis.ui.metadata.FormMetadata;
 import net.java.dev.genesis.ui.metadata.MemberMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 
+import net.java.dev.genesis.util.Bundle;
 import org.codehaus.backport175.reader.Annotation;
 
 public class EnabledWhenAnnotationHandler implements AnnotationHandler {
@@ -36,8 +37,8 @@ public class EnabledWhenAnnotationHandler implements AnnotationHandler {
 
    public void processFieldAnnotation(final FormMetadata formMetadata,
          final FieldMetadata fieldMetadata, final Annotation annotation) {
-      processMemberAnnotation(formMetadata.getScript(), fieldMetadata,
-            annotation);
+      processMemberAnnotation( formMetadata,
+            fieldMetadata,annotation);
    }
 
    public void processMethodAnnotation(final FormMetadata formMetadata,
@@ -47,13 +48,24 @@ public class EnabledWhenAnnotationHandler implements AnnotationHandler {
                methodMetadata, "EnabledWhen"); // NOI18N
       }
 
-      processMemberAnnotation(formMetadata.getScript(), methodMetadata
-            .getActionMetadata(), annotation);
+      processMemberAnnotation(formMetadata,methodMetadata.getActionMetadata(), annotation);
    }
 
-   private void processMemberAnnotation(final Script script,
+   private void processMemberAnnotation(final FormMetadata formMetadata,
          final MemberMetadata memberMetadata, final Annotation annotation) {
-      EnabledWhen annon = (EnabledWhen) annotation;
-      memberMetadata.setEnabledCondition(script.compile(annon.value()));
+      EnabledWhen annon = (EnabledWhen)annotation;
+      final String value = annon.value();
+
+      if (value == null || value.trim().length() == 0) {
+         final String memberName = AnnotationHandlerExceptionFactory.
+               getMemberName(formMetadata, memberMetadata);
+
+         throw new IllegalArgumentException(Bundle.getMessage(
+               getClass(), "X_MUST_DEFINE_AT_LEAST_ONE_SCRIPT_CONDITION_Y", // NOI18N
+               "EnabledWhen", memberName));
+      }
+
+      final Script script = formMetadata.getScript();
+      memberMetadata.setEnabledCondition(script.compile(value));
    }
 }
