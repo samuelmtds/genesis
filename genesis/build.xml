@@ -823,4 +823,20 @@
               description="Run all unit tests and build html reports"
               depends="genesis:unittest:test,unittest:test-with-html-reports" />
 
+   <target name="genesis:update-pt-BR-source-files"
+           description="Update all pt_BR source files for translation">
+        <property name="genesis.module.i18n" value="${genesis.modules.dir}/i18n" />
+        <property name="i18n.src.dir" value="${genesis.module.i18n}/pt_BR/source" />
+        <delete dir="${i18n.src.dir}"/>
+        <mkdir dir="${i18n.src.dir}" />
+        <copy todir="${i18n.src.dir}">
+           <fileset dir="${genesis.modules.dir}">
+              <include name="**/Bundle.properties"/>
+              <exclude name="**/target/**"/>
+              <exclude name="tests/**"/>
+              <exclude name="i18n/**"/>
+           </fileset>
+        </copy>
+   </target>
+
 </project>

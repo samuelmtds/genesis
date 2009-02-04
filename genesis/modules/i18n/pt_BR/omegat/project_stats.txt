@@ -1,0 +1,52 @@
+Estatística do projeto
+
+Total:
+	Segmentos	102
+	Palavras	978
+	Caracteres (sem espaços)	5055
+	Caracteres (incluindo espaços)	5908
+A faltar:
+	Segmentos	1
+	Palavras	2
+	Caracteres (sem espaços)	13
+	Caracteres (incluindo espaços)	14
+Únicos:
+	Segmentos	95
+	Palavras	905
+	Caracteres (sem espaços)	4723
+	Caracteres (incluindo espaços)	5511
+Segmentos únicos restantes:
+	Segmentos	1
+	Palavras	2
+	Caracteres (sem espaços)	13
+	Caracteres (incluindo espaços)	14
+
+Estatística do arquivo individual:
+
+Nome do arquivo	Total de palavras	Palavras restantes para traduzir	Total de caracteres (sem espaços)	Caracteres restantes (sem espaços)	Total de caracteres (incluindo espaços)	Caracteres restantes (incluindo espaços)
+aspect/src/net/java/dev/genesis/aspect/Bundle.properties	46	0	344	0	378	0
+client/src/net/java/dev/genesis/commons/beanutils/converters/Bundle.properties	10	0	38	0	47	0
+client/src/net/java/dev/genesis/commons/jxpath/Bundle.properties	4	0	22	0	25	0
+client/src/net/java/dev/genesis/commons/jxpath/ri/axes/Bundle.properties	12	0	81	0	92	0
+client/src/net/java/dev/genesis/commons/jxpath/ri/compiler/Bundle.properties	8	0	26	0	33	0
+client/src/net/java/dev/genesis/helpers/Bundle.properties	11	0	51	0	60	0
+client/src/net/java/dev/genesis/script/Bundle.properties	12	0	67	0	76	0
+client/src/net/java/dev/genesis/script/bsf/Bundle.properties	5	0	26	0	30	0
+client/src/net/java/dev/genesis/script/bsf/javascript/Bundle.properties	12	2	69	13	77	14
+client/src/net/java/dev/genesis/text/Bundle.properties	59	0	288	0	343	0
+client/src/net/java/dev/genesis/ui/Bundle.properties	8	0	53	0	60	0
+client/src/net/java/dev/genesis/ui/binding/Bundle.properties	9	0	54	0	60	0
+client/src/net/java/dev/genesis/ui/controller/Bundle.properties	34	0	170	0	198	0
+client/src/net/java/dev/genesis/ui/metadata/Bundle.properties	40	0	188	0	224	0
+client/src/net/java/dev/genesis/ui/metadata/annotation/Bundle.properties	290	0	1399	0	1662	0
+client/src/net/java/dev/genesis/ui/swing/Bundle.properties	2	0	16	0	17	0
+client/src/net/java/dev/genesis/ui/swing/components/Bundle.properties	169	0	937	0	1084	0
+client/src/net/java/dev/genesis/ui/swing/components/table/Bundle.properties	5	0	37	0	41	0
+client/src/net/java/dev/genesis/ui/swing/factory/Bundle.properties	25	0	143	0	165	0
+client/src/net/java/dev/genesis/ui/swing/renderers/Bundle.properties	5	0	22	0	26	0
+client/src/net/java/dev/genesis/ui/swt/widgets/Bundle.properties	88	0	419	0	498	0
+client/src/net/java/dev/genesis/ui/thinlet/Bundle.properties	93	0	415	0	496	0
+shared/src/net/java/dev/genesis/command/hibernate/Bundle.properties	19	0	141	0	158	0
+shared/src/net/java/dev/genesis/helpers/Bundle.properties	5	0	14	0	18	0
+shared/src/net/java/dev/genesis/paging/Bundle.properties	4	0	16	0	19	0
+shared/src/net/java/dev/genesis/util/Bundle.properties	3	0	19	0	21	0

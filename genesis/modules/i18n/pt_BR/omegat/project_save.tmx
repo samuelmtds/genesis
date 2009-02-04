@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx SYSTEM "tmx11.dtd">
+<tmx version="1.1">
+  <header
+    creationtool="OmegaT"
+    creationtoolversion="1.8.1_1"
+    segtype="sentence"
+    o-tmf="OmegaT TMX"
+    adminlang="EN-US"
+    srclang="EN-US"
+    datatype="plaintext"
+  >
+  </header>
+  <body>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Malformed Criteria annotation</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Anotação Criteria mal formada</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Malformed Criteria annotation: order-by clause must be ''asc'' or ''desc''</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Anotação Criteria mal formada: cláusula order-by deve conter ''asc'' ou ''desc''</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>NoSuchObjectException occured</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Ocorreu uma NoSuchObjectException</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Retrying on NoSuchObjectException...</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Tentando novamente devido a NoSuchObjectException...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>RemoteException occured</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Ocorreu uma RemoteException</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>An error ocurred while removing EJB instance</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Ocorreu um erro durante remoção da instância do EJB</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Error preloading SessionFactory</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Erro durante pré-carregamento da SessionFactory</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>WorkerThreadDisposed interrupted</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>WorkerThreadDisposed interrompida</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>New thread created: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Nova thread criada: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Reusing thread: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Reutilizando thread: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Execution took more than {0,number} ms</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A execução levou mais que {0,number} ms</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Invalid argument: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Argumento inválido: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} is not an enum</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não é uma enum</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>list cannot be null</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A lista não pode ser nula</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A null propertiesMap was found while trying to build a CriteriaCommandExecutor; perhaps you forgot to call CriteriaPropertyHelper.fillCriteria(command, form)?</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Um propertiesMap nulo foi encontrado durante a tentativa de criar um CriteriaCommandExecutor; talvez você tenha esquecido de chamar CriteriaPropertyHelper.fillCriteria(command, form)?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} has no metadata registered; you probably need to instantiate a binder for it before calling this method</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Nenhum metadado registrado para {0}; você provavelmente precisa instanciar um binder para {0} antes de chamar o método</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} has no controller registered; you probably need to instantiate a binder for it before calling this method</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Nenhum controller registrado para {0}; você provavelmente precisa instanciar um binder para {0} antes de chamar o método</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Form controller has not been setup</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O método setup do controller do form não foi chamado</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} is already present in the script context; try to use a different alias at the constructor</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} já esta presente no contexto do script; tente utilizar um alias diferente no construtor</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Storing properties {0} for later execution</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Armazenando propriedades {0} para execução posterior</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Bean called ''{0}'' not found</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Bean chamado ''{0}'' não encontrado</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Bean named {0}: {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O bean chamado {0}: {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Malformed expression ''{0}''</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Expressão ''{0}'' mal formada</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>object ''{0}'' not in registry</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O objeto ''{0}'' não está no registro</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>function {0} not found.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Função {0} não encontrada.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Internal Error: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Erro interno: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>JavaScript Error: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Erro de JavaScript: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} cannot be converted to {1}; its type is {2}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não pode ser convertido para {1}; seu tipo é {2}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>No such variable: ''{0}''</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Variável ''{0}'' inexistente</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Simultaneous operations: should not request pointer list while iterating over an EvalContext</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Operações simultâneas: não é possível requisitar a lista de ponteiros enquanto iterando um EvalContext</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} is not a valid value for axis</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não é um valor válido para um axis</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The ''messages.properties'' file was not found in classpath.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O arquivo ''messages.properties'' não foi encontrado no classpath.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Unexpected error occurred</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Ocorreu um erro inesperado</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Error</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Erro</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Component {0} is already bound</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O binding para o componente gráfico {0} já foi realizado</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>setup() has already been called</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>setup() já foi chamado</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider {0} in {1} returned null; it should return an empty {2} instead</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O @DataProvider {0} em {1} retornou um valor nulo; um {2} vazio deve ser retornado no lugar deste</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Cannot invoke null action</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não é possível chamar uma ação nula</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Couldn''t find action named {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não foi possível encontrar uma ação chamada {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>There is already no previous state</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Estado anterior não disponível</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} is not supported for data providing</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>@DataProvider não suportado para {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Property ''{0}'' for the widget named {1} must either be left empty or contain a boolean value</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A propriedade ''{0}'' para o componente gráfico chamado {1} deve ser deixada em branco ou conter um valor booleano</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Screen not found: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Tela não encontrada: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The widget named ''{0}'' expected {1} to have a property named ''{2}'' (at bean {3})</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O componente gráfico chamado ''{0}'' espera que {1} tenha uma propriedade chamada ''{2}'' (no bean {3})</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>column (index {0,number}; text: {1}) in table {2} does not have a name</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A coluna (índice {0,number}; texto: {1}) na tabela {2} não tem um nome definido</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>There is no formatter registered for virtual property {0}.{1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não há um formatador registrado para a propriedade virtual {0}.{1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>No form is currently bound to desktop</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Nenhum binding entre form e o desktop foi realizado até o momento</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>More than one form is bound to desktop</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Mais de um form já realizou binding com o desktop</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} is not bound</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O binding não foi realizado para {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>No form is currently bound to widget</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Nenhum binding entre form e o componente gráfico foi realizado até o momento</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Group property must be a comma-separated string, array of strings, a collection of widgets, an array of widgets or a Widget</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Uma propriedade de grupo deve ser uma string separada por vírgula, um array de strings, uma coleção de componentes gráficos, um array de componentes gráficos ou um componente gráfico</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Length of selected indexes must be one of less</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A quantidade dos índices selecionados deve ser um ou menos</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Argument is not an array or a java.util.List</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O argumento não é um array nem uma java.util.List</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Cannot retrieve model index ({0,number})</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não pôde recuperar o índice do modelo ({0,number})</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Column number {0,number} from Table {1} does not have an identifier</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A coluna número {0,number} da tabela {1} não tem um identificador</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Method ''{0}'' is a @DataProvider and does not have an Object array or java.util.List as its return type</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O método ''{0}'' é um @DataProvider e não tem como retorno um array de Object ou java.util.List</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>An @Action/@DataProvider cannot have the same name of a property: {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Uma @Action/@DataProvider não pode ter o mesmo nome de uma propriedade: {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} cannot be used in a method with parameters: {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não pode ser utilizado em um método com parâmetros: {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>( at member {0}:{1} )</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>( no membro {0}:{1} )</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>( at {0}.{1}({2}) )</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>( em {0}.{1}({2}) )</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} cannot be used as a form annotation ( at {1} )</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não pode ser utilizada como uma anotação de um form ( em {1} )</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} cannot be used to annotate a property {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não pode ser utilizada para anotar uma propriedade {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} cannot be used to annotate a property; maybe removing the get prefix from the method will fix it {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não pode ser utilizada para anotar uma propriedade; talvez removendo o prefixo get do método resolverá o problema {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} cannot be used to annotate a method {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} não pode ser utilizada para anotar um método {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} must be used with a method annotated with @Action {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} deve ser utilizada com um método anotado com @Action {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} must be used either with a getter or a method annotated with @DataProvider {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} deve ser utilizado com um getter ou um método anotado com @DataProvider {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>{0} must be used either with a getter or a method annotated with @Action {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>{0} deve ser utilizado com um getter ou um método anotado com @Action {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>At least one of widgetName, objectField or indexField must be specified for @DataProvider {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Pelo menos widgetName, objectField ou indexField deve ser especificado para um @DataProvider {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider objectField refers to ''{0}'', but such a public property does not exist; maybe creating public &lt;type&gt; get{1}() and public void set{1}(&lt;type&gt; var) will fix it {2}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O objectField do @DataProvider refere-se a ''{0}'', mas tal propriedade pública não existe; talvez criando public &lt;type&gt; get{1}() e public void set{1}(&lt;type&gt; var) resolverá o problema {2}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider objectField refers to ''{0}'', but it is not a read-write property; maybe creating public &lt;type&gt; get{1}() and public void set{1}(&lt;type&gt; var) will fix it {2}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O objectField do @DataProvider refere-se a ''{0}'', mas esta não é uma propriedade de escrita-leitura; talvez criando public &lt;type&gt; get{1}() e public void set{1}(&lt;type&gt; var) resolverá o problema {2}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider objectField refers to ''{0}'', but it cannot be a primitive or an array of primitives {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O objectField do @DataProvider refere-se a ''{0}'', mas este não pode ser um primitivo ou um array de primitivos {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider indexField refers to ''{0}'', but such a public property does not exist; maybe creating public &lt;type&gt; get{1}() and public void set{1}(&lt;type&gt; var) will fix it {2}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O indexField do @DataProvider refere-se a ''{0}'', mas tal propriedade pública não existe; talvez criando public &lt;type&gt; get{1}() e public void set{1}(&lt;type&gt; var) resolverá o problema {2}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider indexField refers to ''{0}'', but it is not a read-write property; maybe creating public &lt;type&gt; get{1}() and public void set{1}(&lt;type&gt; var) will fix it {2}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O indexField do @DataProvider refere-se a ''{0}'', mas esta não é uma propriedade de escrita-leitura; talvez criando public &lt;type&gt; get{1}() e public void set{1}(&lt;type&gt; var) resolverá o problema {2}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@DataProvider indexField refers to ''{0}'', but it is not an Integer, int, array of the previous types nor a java.util.Collection {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O indexField do @DataProvider refere-se a ''{0}'', mas este não é um Integer, int, array dos tipos citados anteriormente nem mesmo uma java.util.Collection {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@VisibleWhen must define at least one script condition {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>@VisibleWhen deve definir pelo menos uma condição de script {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>@VisibleWhen must define at least one script condition or pairs of script conditions {0}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>@VisibleWhen deve definir pelo menos uma, ou pares de condições de script {0}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Unknown exception</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Exceção desconhecida</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Could not find a suitable JTableIndexResolver implementation for {0}, component {1}.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não foi possível encontrar uma implementação adequada de JTableIndexResolver para {0}, componente gráfico {1}.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Component {0} is a single selection list.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O componente gráfico {0} é uma lista de seleção simples</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>It can''t be updated with indexes {1}</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>e não pode ser atualizado com os índices {1}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Cannot update {0} component with multiple values because it''s a single selection list.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não é possível atualizar o componente gráfico {0} com múltiplos valores pois este é uma lista de seleção simples.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The component named ''{0}'' was expected {1} to have a property named ''{2}'' (at bean {3})</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>O componente gráfico chamado ''{0}'' espera que {1} tenha uma propriedade chamada ''{2}'' (no bean {3})</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Key produced for {0} in {1} using value {2} was null</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A chave produzida para {0} em {1} utilizando o valor {2} foi nula</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>No selected value configured for button {0}.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Nenhum valor de seleção configurado para o botão {0}.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Use button.setActionCommand(\&quot;someValue\&quot;) to define its value.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Utilize botao.setActionCommand(\&quot;algumValor\&quot;) para definir este valor.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Use button.putClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE, someValue) or button.setName(someValue) to define its value.</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Utilize botao.putClientProperty(SwingBinder.BUTTON_GROUP_SELECTION_VALUE, algumValor) ou botao.setName(algumValor) para definir este valor.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Group property must be a comma-separated string, array of strings, a collection of components, an array of components or a JComponent</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Uma propriedade de grupo deve ser uma string separada por vírgula, um array de strings, uma coleção de componentes gráficos, um array de componentes gráficos ou um componente gráfico</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Property ''{0}'' for the component named {1} must either be left empty or contain a boolean value</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>A propriedade ''{0}'' para o componente gráfico chamado {1} deve ser deixada em branco ou conter um valor booleano</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Error removing listener</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Erro removendo listener</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Could not load convertRowIndexTo* methods</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Não pôde carregar os métodos convertRowIndexTo*</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Column identifiers and names must have same length</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Identificadores e nomes de colunas devem conter a mesma quantidade de itens</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Column identifiers and preferred widths must have same length</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Identificadores e larguras pré-definidas de colunas devem conter a mesma quantidade de itens</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Column identifiers and renderers must have same length</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Identificadores e renderisadores de colunas devem conter a mesma quantidade de itens</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>component must not be null</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>componente não pode ser nulo</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Column identifiers and Column names must have same length</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Identificadores e nomes de colunas devem conter a mesma quantidade de itens</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Column identifier and Column preferred width must have same length</seg>
+      </tuv>
+      <tuv lang="PT-BR">
+        <seg>Identificadores e nomes de colunas devem conter a mesma quantidade de itens</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>
