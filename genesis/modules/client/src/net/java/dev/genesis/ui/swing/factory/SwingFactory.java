@@ -160,20 +160,20 @@ public class SwingFactory {
       if (columnIdentifiers.length != columnDisplayName.length) {
          throw new IllegalArgumentException(
                Bundle.getMessage(SwingFactory.class,
-               "COLUMN_IDENTIFIERS_AND_COLUMN_NAMES_MUST_HAVE_SAME_LENGTH")); // NOI18N
+               "COLUMN_IDENTIFIERS_AND_NAMES_MUST_HAVE_SAME_LENGTH")); // NOI18N
       }
 
       if (preferredWidth != null
             && preferredWidth.length != columnIdentifiers.length) {
          throw new IllegalArgumentException(
                Bundle.getMessage(SwingFactory.class,
-               "COLUMN_IDENTIFIER_AND_COLUMN_PREFERRED_WIDTH_MUST_HAVE_SAME_LENGTH")); // NOI18N
+               "COLUMN_IDENTIFIERS_AND_PREFERRED_WIDTHS_MUST_HAVE_SAME_LENGTH")); // NOI18N
       }
 
       if (renderers != null && renderers.length != columnIdentifiers.length) {
          throw new IllegalArgumentException(
                Bundle.getMessage(SwingFactory.class,
-               "COLUMN_IDENTIFIER_AND_TABLECELLRENDERER_MUST_HAVE_SAME_LENGTH")); // NOI18N
+               "COLUMN_IDENTIFIERS_AND_RENDERERS_MUST_HAVE_SAME_LENGTH")); // NOI18N
       }
 
       TableColumnModel columnModel = new DefaultTableColumnModel();

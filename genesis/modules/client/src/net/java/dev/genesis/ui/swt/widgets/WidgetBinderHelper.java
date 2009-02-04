@@ -59,7 +59,7 @@ public class WidgetBinderHelper {
       } catch (NoSuchMethodException e) {
          IllegalArgumentException iae = new IllegalArgumentException(
                Bundle.getMessage(WidgetBinderHelper.class,
-               "THE_WIDGET_NAMED_X_WAS_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_W", // NOI18N
+               "THE_WIDGET_NAMED_X_EXPECTED_Y_TO_HAVE_A_PROPERTY_NAMED_Z_AT_BEAN_W", // NOI18N
                new Object[] {binder.getName(widget), bean.getClass().getName(),
                   propertyName, bean}));
          iae.initCause(e);
