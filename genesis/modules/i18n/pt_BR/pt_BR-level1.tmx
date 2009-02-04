@@ -606,10 +606,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>@VisibleWhen must define at least one script condition {0}</seg>
+        <seg>@{0} must define at least one script condition {1}</seg>
       </tuv>
       <tuv lang="PT-BR">
-        <seg>@VisibleWhen deve definir pelo menos uma condição de script {0}</seg>
+        <seg>@{0} deve definir pelo menos uma condição de script {1}</seg>
       </tuv>
     </tu>
     <tu>
