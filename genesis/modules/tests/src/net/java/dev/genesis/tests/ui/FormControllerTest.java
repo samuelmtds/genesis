@@ -20,21 +20,29 @@ package net.java.dev.genesis.tests.ui;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import net.java.dev.genesis.tests.mockobjects.MockBean;
 import net.java.dev.genesis.tests.TestCase;
 import net.java.dev.genesis.ui.ActionInvoker;
 import net.java.dev.genesis.ui.controller.DefaultFormController;
 import net.java.dev.genesis.ui.controller.DefaultFormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormController;
+import net.java.dev.genesis.ui.controller.FormControllerFactory;
 import net.java.dev.genesis.ui.controller.FormControllerListener;
 import net.java.dev.genesis.ui.controller.FormState;
 import net.java.dev.genesis.ui.controller.FormStateImpl;
 import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.MethodMetadata;
 
+import net.java.dev.genesis.ui.swing.SwingBinder;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -123,6 +131,44 @@ public class FormControllerTest extends TestCase {
       controller.populate(someValues, null);
       controller.reset(state);
       assertDescribedMapEquals(describedMap, PropertyUtils.describe(someForm));
+
+      final JTextField foo1 = new JTextField();
+      final JTextField foo2 = new JTextField();
+      final JButton search = new JButton();
+      final JTable foos = new JTable();
+      final JPanel panel = new JPanel();
+
+      foo1.setName("foo1");
+      foo2.setName("foo2");
+      search.setName("search");
+      foos.setName("foos");
+
+      panel.add(foo1);
+      panel.add(foo2);
+      panel.add(search);
+      panel.add(foos);
+
+      final ResetTestForm resetForm = new ResetTestForm();
+      SwingBinder binder = new SwingBinder(panel, resetForm);
+      binder.bind();
+
+      FormController resetController = ((FormControllerFactory)resetForm).
+            getFormController(resetForm);
+      final FormState initialState = new FormStateImpl(resetController.
+            getFormState());
+
+      resetForm.setFoo1("1");
+      resetForm.setFoo2("2");
+      resetController.update();
+      resetController.invokeAction("search", null);
+      foos.getSelectionModel().setSelectionInterval(0, 0);
+
+      resetController.reset(initialState);
+
+      final FormState newState = new FormStateImpl(
+            resetController.getFormState());
+      assertDescribedMapEquals(initialState.getValuesMap(), newState.
+            getValuesMap());
    }
    
    public void testNonAnnotatedFormClass() throws Exception {
@@ -405,5 +451,46 @@ public class FormControllerTest extends TestCase {
        public int getConditionalCount() {
           return conditionalCount;
        }
+   }
+
+   /**
+    * @Form
+    */
+   public static class ResetTestForm {
+      private String foo1;
+      private String foo2;
+      private List foos = Collections.EMPTY_LIST;
+
+      public String getFoo1() {
+         return foo1;
+      }
+
+      public void setFoo1(String foo1) {
+         this.foo1 = foo1;
+      }
+
+      public String getFoo2() {
+         return foo2;
+      }
+
+      public void setFoo2(String foo2) {
+         this.foo2 = foo2;
+      }
+
+      /**
+       * @Action
+       */
+      public void search() throws Exception {
+         foos = Arrays.asList(new Object[] {new MockBean("1", "Foo 1"),
+                  new MockBean("2", "Foo 2"), new MockBean("3", "Foo 3")});
+         ActionInvoker.invoke(this, "foos");
+      }
+
+      /**
+       * @DataProvider widgetName=foos
+       */
+      public List foos() {
+         return foos;
+      }
    }
 }
