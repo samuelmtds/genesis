@@ -700,7 +700,8 @@ public class DefaultFormController implements FormController {
          log.debug("Reseting form '" + getForm() + "'"); // NOI18N
       }
 
-      currentState = state = createFormState(state);
+      state = createFormState(state);
+      currentState = createFormState(state);
       getScriptContext().declare(CURRENT_STATE_KEY, currentState);
 
       fireEnabledConditionChanged(state.getEnabledMap());
@@ -750,10 +751,11 @@ public class DefaultFormController implements FormController {
       }
 
       PropertyUtils.copyProperties(getForm(), currentValues);
-      state.getChangedMap().clear();
-      state.getChangedMap().putAll(currentValues);
+      currentState.getChangedMap().clear();
+      currentState.getChangedMap().putAll(currentValues);
+      currentState.getValuesMap().putAll(currentValues);
 
-      fireValuesChanged(state.getValuesMap());
+      fireValuesChanged(currentState.getValuesMap());
    }
 
    public FormState getFormState() throws Exception {
