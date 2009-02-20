@@ -159,6 +159,7 @@ public class FormControllerTest extends TestCase {
 
       resetForm.setFoo1("1");
       resetForm.setFoo2("2");
+      resetForm.setData((MockBean)resetForm.datas().get(1));
       resetController.update();
       resetController.invokeAction("search", null);
       foos.getSelectionModel().setSelectionInterval(0, 0);
@@ -459,6 +460,10 @@ public class FormControllerTest extends TestCase {
    public static class ResetTestForm {
       private String foo1;
       private String foo2;
+      private MockBean data;
+      private List datas = Arrays.asList(new Object[] {
+               new MockBean("1", "Data 1"), new MockBean("2", "Data 2"),
+               new MockBean("3", "Data 3")});
       private List foos = Collections.EMPTY_LIST;
 
       public String getFoo1() {
@@ -477,6 +482,14 @@ public class FormControllerTest extends TestCase {
          this.foo2 = foo2;
       }
 
+      public MockBean getData() {
+         return data;
+      }
+
+      public void setData(MockBean data) {
+         this.data = data;
+      }
+
       /**
        * @Action
        */
@@ -491,6 +504,13 @@ public class FormControllerTest extends TestCase {
        */
       public List foos() {
          return foos;
+      }
+
+      /**
+       * @DataProvider widgetName=datas, objectField=data
+       */
+      public List datas() {
+         return datas;
       }
    }
 }
