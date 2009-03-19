@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -135,20 +134,17 @@ public class FormControllerTest extends TestCase {
 
       final JTextField foo1 = new JTextField();
       final JTextField foo2 = new JTextField();
-      final JComboBox datas = new JComboBox();
       final JButton search = new JButton();
       final JTable foos = new JTable();
       final JPanel panel = new JPanel();
 
       foo1.setName("foo1");
       foo2.setName("foo2");
-      datas.setName("datas");
       search.setName("search");
       foos.setName("foos");
 
       panel.add(foo1);
       panel.add(foo2);
-      panel.add(datas);
       panel.add(search);
       panel.add(foos);
 
@@ -163,7 +159,6 @@ public class FormControllerTest extends TestCase {
 
       resetForm.setFoo1("1");
       resetForm.setFoo2("2");
-      datas.setSelectedIndex(0);
       resetController.update();
       resetController.invokeAction("search", null);
       foos.getSelectionModel().setSelectionInterval(0, 0);
@@ -464,10 +459,6 @@ public class FormControllerTest extends TestCase {
    public static class ResetTestForm {
       private String foo1;
       private String foo2;
-      private MockBean data;
-      private List datas = Arrays.asList(new Object[] {
-               new MockBean("1", "Data 1"), new MockBean("2", "Data 2"),
-               new MockBean("3", "Data 3")});
       private List foos = Collections.EMPTY_LIST;
 
       public String getFoo1() {
@@ -486,14 +477,6 @@ public class FormControllerTest extends TestCase {
          this.foo2 = foo2;
       }
 
-      public MockBean getData() {
-         return data;
-      }
-
-      public void setData(MockBean data) {
-         this.data = data;
-      }
-
       /**
        * @Action
        */
@@ -508,13 +491,6 @@ public class FormControllerTest extends TestCase {
        */
       public List foos() {
          return foos;
-      }
-
-      /**
-       * @DataProvider widgetName=datas objectField=data
-       */
-      public List datas() {
-         return datas;
       }
    }
 }
