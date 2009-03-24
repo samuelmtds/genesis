@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -147,8 +147,8 @@ public class JTableComponentBinderTest extends GenesisTestCase {
       assertEquals(0, table.getSelectedRows().length);
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
-         for (int j = 0; j < 2; j++) {
-            assertEquals(table.getModel().getValueAt(i, j), PropertyUtils
+         for (int j = 0; j < 3; j++) {
+            assertEquals(table.getModel().getValueAt(i, j), j == 2 ? null : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
@@ -159,8 +159,8 @@ public class JTableComponentBinderTest extends GenesisTestCase {
       assertEquals(0, table.getSelectedRows().length);
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
-         for (int j = 0; j < 2; j++) {
-            assertEquals(table.getModel().getValueAt(i, j), PropertyUtils
+         for (int j = 0; j < 3; j++) {
+            assertEquals(table.getModel().getValueAt(i, j), j == 2 ? null : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
@@ -172,20 +172,20 @@ public class JTableComponentBinderTest extends GenesisTestCase {
       assertTrue(Arrays.equals(new int[] {0, 1, 2}, table.getSelectedRows()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
-         for (int j = 0; j < 2; j++) {
-            assertEquals(table.getModel().getValueAt(i, j), PropertyUtils
+         for (int j = 0; j < 3; j++) {
+            assertEquals(table.getModel().getValueAt(i, j), j == 2 ? null : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
 
-      newList = new Object[] { new MockBean("other", "Other") };
+      newList = new Object[] { new MockBean("other", "Other", (MockBean)newList[0]) };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = table.getModel().getRowCount();
       assertTrue(Arrays.equals(new int[] {0}, table.getSelectedRows()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
-         for (int j = 0; j < 2; j++) {
-            assertEquals(table.getModel().getValueAt(i, j), PropertyUtils
+         for (int j = 0; j < 3; j++) {
+            assertEquals(table.getModel().getValueAt(i, j), j == 2 ? "newOne" : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
