@@ -180,7 +180,7 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 3; j++) {
-            assertEquals(table.getItems()[i].getText(j), j == 2 ? null : PropertyUtils
+            assertEquals(table.getItems()[i].getText(j), j == 2 ? "" : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
@@ -191,8 +191,8 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       assertEquals(0, table.getSelectionIndices().length);
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
-         for (int j = 0; j < 2; j++) {
-            assertEquals(table.getItems()[i].getText(j), PropertyUtils
+         for (int j = 0; j < 3; j++) {
+            assertEquals(table.getItems()[i].getText(j), j == 2 ? "" : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
@@ -205,19 +205,19 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 2; j++) {
-            assertEquals(table.getItems()[i].getText(j), PropertyUtils
+            assertEquals(table.getItems()[i].getText(j), j == 2 ? "" : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
 
-      newList = new Object[] { new MockBean("other", "Other") };
+      newList = new Object[] { new MockBean("other", "Other", (MockBean)newList[0]) };
       boundDataProvider.updateList(Arrays.asList(newList));
       count = table.getItemCount();
       assertTrue(Arrays.equals(new int[] {0}, table.getSelectionIndices()));
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
          for (int j = 0; j < 2; j++) {
-            assertEquals(table.getItems()[i].getText(j), PropertyUtils
+            assertEquals(table.getItems()[i].getText(j), j == 2 ? "newOne" : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }

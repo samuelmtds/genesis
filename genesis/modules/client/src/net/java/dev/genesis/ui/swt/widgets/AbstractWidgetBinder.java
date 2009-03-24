@@ -226,6 +226,17 @@ public class AbstractWidgetBinder implements WidgetBinder {
       protected Object getProperty(Object bean, String propertyName)
             throws IllegalAccessException, InvocationTargetException {
          try {
+            int indexOfDot = 0;
+
+            while ((indexOfDot = propertyName.indexOf('.', indexOfDot)) != -1) {
+               if (PropertyUtils.getProperty(bean, propertyName.substring(0,
+                     indexOfDot)) == null) {
+                  return null;
+               }
+
+               indexOfDot += 1;
+            }
+
             return PropertyUtils.getProperty(bean, propertyName);
          } catch (NoSuchMethodException e) {
             IllegalArgumentException iae = new IllegalArgumentException(
