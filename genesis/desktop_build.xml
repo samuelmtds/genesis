@@ -719,7 +719,7 @@
       <path id="run.standard.classpath">
          <path refid="backport175.path" />
          <fileset dir="${genesis.dist}">
-            <include name="genesis-annotation-jdk14-${genesis.version}.jar" />
+            <include name="${genesis-annotation.jar}" />
             <include name="genesis-aspect-annotated-*.jar" />
             <include name="genesis-client-${genesis.version}.jar" />
             <include name="genesis-client-swing-${genesis.version}.jar" if="swing.needed" />
