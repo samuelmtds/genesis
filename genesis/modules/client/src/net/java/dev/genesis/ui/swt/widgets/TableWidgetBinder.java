@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Widget;
 
 public class TableWidgetBinder extends AbstractWidgetBinder {
    public BoundDataProvider bind(SWTBinder binder, Widget widget,
-      DataProviderMetadata dataProviderMetadata) {
+         DataProviderMetadata dataProviderMetadata) {
       return new TableWidgetBoundDataProvider(binder, (Table) widget,
          dataProviderMetadata);
    }

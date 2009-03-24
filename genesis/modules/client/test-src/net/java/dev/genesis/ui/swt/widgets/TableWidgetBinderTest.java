@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,6 @@ import net.java.dev.genesis.ui.metadata.DataProviderMetadata;
 import net.java.dev.genesis.ui.metadata.FieldMetadata;
 import net.java.dev.genesis.ui.swt.MockSWTBinder;
 import net.java.dev.genesis.ui.swt.SWTBinder;
-import net.java.dev.genesis.ui.swt.widgets.TableWidgetBinder;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.swt.SWT;
@@ -84,6 +83,8 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       column1.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "key");
       TableColumn column2 = new TableColumn(table, SWT.NONE);
       column2.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "value");
+      TableColumn column3 = new TableColumn(table, SWT.NONE);
+      column3.setData(SWTBinder.TABLE_COLUMN_IDENTIFIER, "bean.key");
       
       binder = new MockSWTBinder(root, form = new MockForm(), new Object());
       dataMeta = (DataProviderMetadata) form.getFormMetadata()
@@ -178,8 +179,8 @@ public class TableWidgetBinderTest extends GenesisTestCase {
       assertEquals(0, table.getSelectionIndices().length);
       assertEquals(count, newList.length);
       for (int i = 0; i < newList.length; i++) {
-         for (int j = 0; j < 2; j++) {
-            assertEquals(table.getItems()[i].getText(j), PropertyUtils
+         for (int j = 0; j < 3; j++) {
+            assertEquals(table.getItems()[i].getText(j), j == 2 ? null : PropertyUtils
                   .getProperty(newList[i], j == 0 ? "key" : "value"));
          }
       }
