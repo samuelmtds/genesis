@@ -93,7 +93,7 @@ public class SwingUtils {
    }
 
    public static JTable newTable() {
-      return SwingFactory.createTable(new String[] { "key", "value" },
-            new String[] { "key", "value" });
+      return SwingFactory.createTable(new String[] { "key", "value", "bean.key" },
+            new String[] { "key", "value", "bean.key" });
    }
 }

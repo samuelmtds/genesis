@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007 Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2009 Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,10 +23,16 @@ import java.io.Serializable;
 public class MockBean implements Serializable {
    private String key;
    private String value;
+   private MockBean bean;
 
    public MockBean(String key, String value) {
+      this(key, value, null);
+   }
+
+   public MockBean(String key, String value, MockBean bean) {
       this.key = key;
       this.value = value;
+      this.bean = bean;
    }
 
    public String getKey() {
@@ -43,6 +49,14 @@ public class MockBean implements Serializable {
 
    public void setValue(String value) {
       this.value = value;
+   }
+
+   public MockBean getBean() {
+      return bean;
+   }
+
+   public void setBean(MockBean bean) {
+      this.bean = bean;
    }
 
    public String toString() {
