@@ -55,11 +55,11 @@
         <p>The full change log between 3.1 and 3.2-RC1 can be found <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.1&amp;target_milestone=3.2">here</a>.</p>
         <p>The full documentation for this release can be found <a
-        href="https://genesis.dev.java.net/nonav/3.2/maven-site/en/">here</a>.</p>
+        href="https://genesis.dev.java.net/nonav/3.2-RC1/maven-site/en/">here</a>.</p>
       </subsection>
       <subsection name="Known issues">
         <p>A complete list of known issues can be checked <a href=
-        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.2&amp;issue_type=DEFECT">here</a>
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.2-RC1&amp;issue_type=DEFECT">here</a>
         </p>
       </subsection>
     </section>
