@@ -9,6 +9,7 @@
   <body>
     <section name="Downloads e notas de versão">
       <ul>
+        <li><a href="#3.2-RC1">3.2-RC1</a></li>
         <li><a href="#3.1">3.1</a></li>
         <li><a href="#3.0">3.0</a></li>
         <li><a href="#2.3">2.3</a></li>
@@ -18,13 +19,61 @@
         <li><a href="#0.1 (1.0)">0.1 (1.0)</a></li>
       </ul>
     </section>
+    <section name="3.2-RC1">
+      <subsection name="Downloads">
+        <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
+        <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=11152&amp;expandFolder=11152">aqui</a>.</p>
+      </subsection>
+      <subsection name="Funcionalidades e mudanças">
+        <!-- begin announcement -->
+        <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
+        <ul>
+          <li>Adicionado um <a href="validating_data.html">validador de URL</a>.</li>
+          <li>As mensagens de erro foram internacionalizadas e localizadas para
+          o português do Brasil (pt-BR).</li>
+        </ul>
+        <p>Alguns dos bugs corrigidos nessa versão foram:</p>
+        <ul>
+          <li>Uma <code>IllegalArgumentException</code> é lançada quando um
+          <code>JComboBox</code>/<code>Combo</code> é utilizado com
+          <code>indexField</code> primitivo (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=503">Issue
+          # 503</a>).</li>
+          <li>Uma <code>NestedNullException</code> é lançada quando algum
+          elemento de uma propriedade aninhada é nulo (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=511">Issue
+          # 511</a> e <a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=512">#
+          512</a>).</li>
+          <li>Os jars da aplicação são regerados desnecessariamente utilizando o
+          Ant 1.7.1 (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=498">Issue
+          # 498</a>).</li>
+          <li>A renderização da linha em branco no <code>JComboBox</code> está
+          errada (<a
+          href="https://genesis.dev.java.net/issues/show_bug.cgi?id=504">Issue
+          # 504</a>).</li>
+        </ul>
+        <!-- end announcement -->
+        <p>Uma lista completa das alterações ocorridas entre a 3.1 e a 3.2-RC1
+        pode ser obtida <a
+        href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.1&amp;target_milestone=3.2">aqui</a>.</p>
+        <p>A documentação completa para esta versão pode ser encontrada <a
+        href="https://genesis.dev.java.net/nonav/3.2-RC1/maven-site/pt-BR/">aqui</a>.</p>
+      </subsection>
+      <subsection name="Problemas conhecidos">
+        <p>Pode-se verificar a lista de todos os problemas conhecidos nesta
+        versão no issuezilla do projeto <a href=
+        "https://genesis.dev.java.net/issues/buglist.cgi?version=3.2&amp;issue_type=DEFECT">aqui</a>
+        </p>
+      </subsection>
+    </section>
     <section name="3.1">
       <subsection name="Downloads">
         <p>Todos os arquivos de distribuição para esta versão podem ser obtidos
         <a href="https://genesis.dev.java.net/servlets/ProjectDocumentList?folderID=9282&amp;expandFolder=9282">aqui</a>.</p>
       </subsection>
       <subsection name="Funcionalidades e mudanças">
-        <!-- begin announcement -->
         <p>Algumas das novas funcionalidades e mudanças mais notáveis são:</p>
         <ul>
           <li>Adicionado <a 
@@ -55,7 +104,6 @@
           href="https://genesis.dev.java.net/issues/show_bug.cgi?id=486">Issue
           # 486</a>).</li>
         </ul>
-        <!-- end announcement -->
         <p>Uma lista completa das alterações ocorridas entre a 3.0 e a 3.1
         pode ser obtida <a
         href="https://genesis.dev.java.net/issues/buglist.cgi?version=3.0&amp;version=3.1-RC1&amp;target_milestone=3.1-RC1&amp;target_milestone=3.1-RC2&amp;target_milestone=3.1">aqui</a>.</p>
