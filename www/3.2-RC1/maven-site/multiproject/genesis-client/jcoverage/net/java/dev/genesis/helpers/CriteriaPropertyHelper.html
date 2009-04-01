@@ -1,0 +1,521 @@
+<html>
+<head>
+<title>unit tests coverage</title>
+<link rel ="stylesheet" type="text/css" href="../../../../../style.css" title="Style">
+</head>
+<body>
+<span class="title">Coverage report</span>
+<p>
+  <table cellspacing="0" cellpadding="0" class="report">
+  <tr class="report">
+    <th class="report">&nbsp;</th>
+    <th class="report">%line</th>
+    <th class="report">%branch</th>
+  </tr>
+  <tr class="report">
+    <td class="reportText"><span class="text">net.java.dev.genesis.helpers.CriteriaPropertyHelper</span></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">92%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="92"></td><td class="percentUnCovered" width="8.0"></td></tr></table></td></tr></table></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">100%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="100"></td><td class="percentUnCovered" width="0.0"></td></tr></table></td></tr></table></td>
+  </tr>
+  </table>
+  <p>
+  <table cellspacing="0" cellpadding="0" class="src">
+    <tr>
+      <td class="numLine">&nbsp;1</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">/*</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;2</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * The Genesis Project</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;3</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Copyright (C) 2004-2006  Summa Technologies do Brasil Ltda.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;4</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;5</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This library is free software; you can redistribute it and/or</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;6</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;7</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * License as published by the Free Software Foundation; either</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;8</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * version 2.1 of the License, or (at your option) any later version.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;9</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;10</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This library is distributed in the hope that it will be useful,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;11</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;12</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;13</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Lesser General Public License for more details.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;14</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;15</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * You should have received a copy of the GNU Lesser General Public</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;16</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * License along with this library; if not, write to the Free Software</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;17</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;18</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;19</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">package</span> net.java.dev.genesis.helpers;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;20</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;21</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.beans.PropertyDescriptor;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;22</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.ArrayList;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;23</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Collection;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;24</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Iterator;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;25</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Map;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;26</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;27</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.command.hibernate.CriteriaResolver;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;28</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.command.hibernate.HibernateCriteria;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;29</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.resolvers.EmptyResolver;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;30</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.resolvers.EmptyResolverRegistry;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;31</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.ui.metadata.DefaultFormMetadataFactory;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;32</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.ui.metadata.FieldMetadata;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;33</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.ui.metadata.FormMetadata;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;34</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.ui.metadata.FormMetadataFactory;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;35</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.util.Bundle;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;36</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> net.java.dev.genesis.util.GenesisUtils;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;37</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;38</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtils;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;39</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.logging.Log;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;40</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.logging.LogFactory;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;41</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;42</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">class</span> CriteriaPropertyHelper {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;43</td>
+      <td class="nbHitsCovered">&nbsp;3</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Log log = LogFactory.getLog(CriteriaPropertyHelper.<span class="keyword">class</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;44</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;45</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   <span class="keyword">private</span> CriteriaPropertyHelper() {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;46</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;   }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;47</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;48</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> fillCriteria(HibernateCriteria hibCriteria, Object form)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;49</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;50</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">final</span> CriteriaResolver critResolver = (CriteriaResolver) hibCriteria;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;51</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;52</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">final</span> FormMetadata formMeta;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;53</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span> (form instanceof FormMetadataFactory) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;54</td>
+      <td class="nbHitsCovered">&nbsp;5</td>
+      <td class="src"><pre class="src">&nbsp;         formMeta = ((FormMetadataFactory)form).getFormMetadata(form.getClass());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;55</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      } <span class="keyword">else</span> {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;56</td>
+      <td class="nbHitsCovered">&nbsp;5</td>
+      <td class="src"><pre class="src">&nbsp;         formMeta = <span class="keyword">new</span> DefaultFormMetadataFactory().getFormMetadata(form.getClass());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;57</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;58</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;59</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">final</span> Map propertiesMap = PropertyUtils.describe(form);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;60</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      GenesisUtils.normalizeMap(propertiesMap);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;61</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;62</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">final</span> PropertyDescriptor[] descriptors = PropertyUtils</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;63</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            .getPropertyDescriptors(hibCriteria);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;64</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">final</span> Collection criteriaPropertyNames = <span class="keyword">new</span> ArrayList(descriptors.length);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;65</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;66</td>
+      <td class="nbHitsCovered">&nbsp;70</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &#60; descriptors.length; i++) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;67</td>
+      <td class="nbHitsCovered">&nbsp;60</td>
+      <td class="src"><pre class="src">&nbsp;         criteriaPropertyNames.add(descriptors[i].getName());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;68</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;69</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;70</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      Map.Entry entry;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;71</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      FieldMetadata fieldMeta;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;72</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      Object value;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;73</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      EmptyResolver emptyResolver;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;74</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;75</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      propertiesMap.keySet().retainAll(criteriaPropertyNames);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;76</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;77</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span> (Iterator iter = propertiesMap.entrySet().iterator(); iter.hasNext();) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;78</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;         entry = (Map.Entry) iter.next();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;79</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;         fieldMeta = formMeta.getFieldMetadata(entry.getKey().toString());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;80</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;         value = entry.getValue();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;81</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;82</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;         emptyResolver = (fieldMeta == <span class="keyword">null</span>) ? EmptyResolverRegistry</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;83</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               .getInstance().getDefaultEmptyResolverFor((value == <span class="keyword">null</span> ?</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;84</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               Object.<span class="keyword">class</span> : value.getClass())) : fieldMeta.getEmptyResolver();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;85</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;86</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span> (emptyResolver.isEmpty(value)) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;87</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;            iter.remove();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;88</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">continue</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;89</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;         }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;90</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;91</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;92</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span> (log.isDebugEnabled()) {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;93</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;         log.debug(Bundle.getMessage(CriteriaPropertyHelper.<span class="keyword">class</span>,</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;94</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;               <span class="string">"STORING_PROPERTIES_X_FOR_LATER_EXECUTION"</span>, propertiesMap)); <span class="comment">// NOI18N</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;95</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;      }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;96</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;97</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;      critResolver.setPropertiesMap(propertiesMap);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;98</td>
+      <td class="nbHitsCovered">&nbsp;10</td>
+      <td class="src"><pre class="src">&nbsp;   }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;99</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;}</pre></td>
+    </tr>
+  </table>
+<p><table cellpadding="0" cellspacing="0" class="report">  <tr class="report">    <td class="reportText"><span class="text">    This report is generated by <a href="http://www.jcoverage.com">jcoverage</a>, <a href="http://maven.apache.org">Maven</a> and <a href="http://maven.apache.org/reference/plugins/jcoverage/">Maven JCoverage Plugin</a>.    </span></td>  </tr></table>
+</body>
+</html>
