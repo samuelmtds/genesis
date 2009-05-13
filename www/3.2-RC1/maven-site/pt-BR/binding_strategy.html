@@ -1,103 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Mudando a estratégia de binding - genesis</title><style type="text/css" media="all">
-          @import url("../style/maven-base.css");
-          
-          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Michael Nascimento Santos"></meta><meta name="email" content="mister__m@dev.java.net"></meta></head><body class="composite"><div id="banner"><a href="https://genesis.dev.java.net/" id="projectLogo"><img alt="SOL Genesis" src="../genesis.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 01 April 2009
-                <span class="separator">|</span> Doc for  3.2-RC1
-                </div><div class="xright">
-        
-        <a href="../index.html">genesis</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-aspect/index.html">genesis-aspect</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-client/index.html">genesis-client</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-server/index.html">genesis-server</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../multiproject/genesis-shared/index.html">genesis-shared</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="../tags/genesis-tags.html">genesis-xdoclet</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menugenesis"><h5>genesis</h5><ul><li class="none"><a href="../pt-BR/index.html">Visão geral</a></li><li class="none"><a href="../pt-BR/download.html">Downloads</a></li><li class="none"><a href="../pt-BR/release_notes.html">Notas de versão</a></li></ul></div><div id="menuDocumentação"><h5>Documentação</h5><ul><li class="expanded"><a href="../pt-BR/documentation_intro.html">Manual do usuário</a><ul><li class="none"><a href="../pt-BR/documentation_intro.html">Introdução</a></li><li class="none"><a href="../pt-BR/annotations.html">Usando anotações</a></li><li class="none"><a href="../pt-BR/startup.html">Inicializando o genesis</a></li><li class="expanded"><a href="../pt-BR/remoting.html">Funcionalidades básicas</a><ul><li class="none"><a href="../pt-BR/remoting.html">Remotabilidade transparente</a></li><li class="none"><a href="../pt-BR/transactions.html">Suporte a transações</a></li><li class="none"><a href="../pt-BR/hibernate_integration.html">Integração com o Hibernate</a></li><li class="none"><a href="../pt-BR/binding.html">Binding</a></li><li class="none"><a href="../pt-BR/actions.html">Implementando ações mistas</a></li></ul></li><li class="expanded"><a href="../pt-BR/thinlet_binding.html">Funcionalidades específicas para Thinlet</a><ul><li class="none"><a href="../pt-BR/thinlet_binding.html">Binding Thinlet</a></li><li class="none"><a href="../pt-BR/customizing_widgets_creation.html">Customizando a criação de componentes</a></li></ul></li><li class="expanded"><a href="../pt-BR/configuring_swt.html">Funcionalidades específicas para SWT</a><ul><li class="none"><a href="../pt-BR/configuring_swt.html">Configurando as bibliotecas do SWT</a></li></ul></li><li class="expanded"><a href="../pt-BR/conditions.html">Funcionalidades adicionais</a><ul><li class="none"><a href="../pt-BR/conditions.html">Trabalhando com condições</a></li><li class="none"><a href="../pt-BR/populating_with_dataproviders.html">Populando combos, listas e tabelas</a></li><li class="none"><a href="../pt-BR/binding_toggle_buttons.html">Binding de botões de rádio e caixas de seleção</a></li><li class="none"><strong><a href="../pt-BR/binding_strategy.html">Mudando a estratégia de binding</a></strong></li><li class="none"><a href="../pt-BR/formatting.html">Formatando os dados</a></li><li class="none"><a href="../pt-BR/handling_errors.html">Tratando erros</a></li><li class="none"><a href="../pt-BR/validating_data.html">Validando os dados</a></li><li class="none"><a href="../pt-BR/configuring_messages.html">Configurando as mensagens</a></li><li class="none"><a href="../pt-BR/paging_and_dynamic_search.html">Paginação e pesquisas dinâmicas</a></li></ul></li><li class="none"><a href="../pt-BR/quick_reference.html">Guia de referência rápida de anotações</a></li></ul></li><li class="expanded"><a href="../pt-BR/empty_project.html">Desenvolvendo com o genesis</a><ul><li class="none"><a href="../pt-BR/empty_project.html">Para desktops</a></li><li class="none"><a href="../pt-BR/empty_web_project.html">Para web</a></li></ul></li><li class="none"><a href="../pt-BR/useradmin_sample.html">Usando o exemplo UserAdmin</a></li><li class="expanded"><a href="../pt-BR/advanced_introduction.html">Guia avançado</a><ul><li class="none"><a href="../pt-BR/xdoclet_extensions.html">Extensões do XDoclet</a></li><li class="none"><a href="../pt-BR/aspects.html">Aspectos do genesis</a></li><li class="none"><a href="../pt-BR/generic_scripting.html">Suporte a linguagens de script</a></li><li class="none"><a href="../pt-BR/lookup_strategy.html">Estratégias de pesquisa de componentes gráficos</a></li><li class="none"><a href="../pt-BR/widget_binder.html">Customizando o binding de componentes gráficos</a></li></ul></li><li class="none"><a href="../pt-BR/faq.html">FAQ</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/GenesisRoadmap" class="externalLink" title="External Link">Roadmap</a></li><li class="none"><a href="http://wiki.java.net/bin/view/Projects/Genesis" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menujava_net"><h5>java.net</h5><ul><li class="none"><a href="https://genesis.dev.java.net" class="externalLink" title="External Link">genesis.dev.java.net</a></li><li class="none"><a href="http://java.net" class="externalLink" title="External Link"><img title="java.net member" style="border: 1px" src="../java_dot_net_member.bmp" alt="java.net member"></img></a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Mudando_a_estratégia_de_binding"></a><h2>Mudando a estratégia de binding</h2>
-      <p>Para todos os componentes gráficos que permitem edição de texto, o 
-      genesis sincroniza as alterações feitas pelo usuário com o form quando o
-      componente perde o foco. Essa é a melhor estratégia para a maior parte das
-      aplicações, visto que diversos passos são executados a cada sincronização
-      e certas funcionalidades implementadas pelo desenvolvedor podem gerar 
-      um custo ainda maior de processamento, como verificar se determinado 
-      código representa uma entidade válida, por exemplo.</p>
-      <p>Contudo, há alguns cenários em que é útil sincronizar o estado quando
-      ocorrem outros eventos, como a cada vez que uma tecla é digitada. Ao fazer 
-      um wizard para uma IDE, por exemplo, pode ser útil verificar se o dado 
-      digitado é um caminho válido ou se pode ser usado como nome de classe. 
-      Para casos assim, o genesis provê um mecanismo de estratégias de bindings,
-      que permite configurar quando deve ser feita esta sincronia.</p>
-      <p>Para configurar um campo texto para que a sincronia ocorra à medida que
-      cada tecla é digitada, basta seguir um procedimento simples que possui
-      pequenas variações por tecnologia de interface gráfica. Primeiro, 
-      com Swing:</p>
-
-    <div class="source"><pre>
-JTextField textField;
-// ...
-textField.putClientProperty(AbstractBinder.BINDING_STRATEGY_PROPERTY,
-      AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
-</pre></div>
-  
-      <p>Usando SWT:</p>
-
-    <div class="source"><pre>
-Text textField;
-// ...
-textField.setData(AbstractBinder.BINDING_STRATEGY_PROPERTY,
-      AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE);
-</pre></div>
-  
-      <p>Por fim, no xml da view com Thinlet:</p>
-
-    <div class="source"><pre>
-
-&lt;textfield name="textField" property="bindingStrategy=asYouType" /&gt;
-
-</pre></div>
-  
-      <p>Conforme observado acima, basta definir uma propriedade por componente
-      gráfico que determina a estratégia de binding. Apenas o nome e o valor 
-      dessa propriedade, bem como a forma de atribuí-los, varia por tecnologia 
-      de interface gráfica, seguindo o mesmo padrão utilizado pelo framework 
-      para outras propriedades.</p>
-      <p>É possível também mudar a estratégia padrão usada para esses 
-      componentes, tanto por binder como globalmente. Para isso, tanto 
-      <code>ThinletBinder</code> como <code>AbstractBinder</code> (superclasse 
-      de <code>SwingBinder</code> e <code>SWTBinder</code>) definem os métodos
-      <code>setBindingStrategy(String)</code> e 
-      <code>setDefaultBindingStrategy(String)</code> que permitem, 
-      respectivamente, mudar a estratégia por binder ou globalmente. A 
-      <code>String</code> informada deve ser a mesma usada na configuração por 
-      componentes, ou seja, <code>BaseThinlet.AS_YOU_TYPE</code> para Thinlet e
-      <code>AbstractBinder.BINDING_STRATEGY_AS_YOU_TYPE</code> para Swing e 
-      SWT.</p>
-    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2004-2009, Summa Technologies do Brasil Ltda.</div><div class="clear"><hr></hr></div></div></body></html>
+<html>
+<head>
+<title>Redirecting to ../../../3.2/maven-site/pt-BR/binding_strategy.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="refresh" content="0;URL=../../../3.2/maven-site/pt-BR/binding_strategy.html">
+</head>
+<body onLoad="javascript:fwd();">
+<script language="JavaScript">
+<!--
+function fwd() {
+document.location.href='../../../3.2/maven-site/pt-BR/binding_strategy.html';
+}
+// -->
+</script>
+<center>Redirecting to docs for the latest release; click <a href="javascript:fwd();">here</a></font> if it doesn't work</center>
+</body>
+</html>
