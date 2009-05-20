@@ -238,7 +238,7 @@
                <classpath>
                   <path location="@{classpath}" />
                   <fileset dir="${genesis.dist}" 
-                           includes="genesis-annotation-jdk14-${genesis.version}.jar" />
+                           includes="${genesis-annotation.jar}" />
                   <additional-classpath />
                   <customize-classpath />
                </classpath>

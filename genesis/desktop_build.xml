@@ -1414,7 +1414,7 @@
                   <include name="odmg-*.jar" if="hibernate2.needed" />
                </fileset>
                <fileset dir="${genesis.dist}">
-                  <include name="genesis-annotation-jdk14-${genesis.version}.jar"/>
+                  <include name="${genesis-annotation.jar}"/>
                   <include name="genesis-client-${genesis.version}.jar" />
                   <include name="genesis-client-swing-${genesis.version}.jar" if="swing.needed" />
                   <include name="genesis-client-swt-${genesis.version}.jar" if="swt.needed" />
