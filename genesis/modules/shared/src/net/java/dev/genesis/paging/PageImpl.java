@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2004  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2004-2010  Summa Technologies do Brasil Ltda.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,13 @@
  */
 package net.java.dev.genesis.paging;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PageImpl implements Page {
+   private static final Page EMPTY_PAGE = new PageImpl(Collections.emptyList(),
+         0, 0, true);
+
    private final List results;
    private final int resultsPerPage;
    private final int pageNumber;
@@ -54,4 +58,7 @@ public class PageImpl implements Page {
       return last;
    }
 
+   public static Page empty() {
+      return EMPTY_PAGE;
+   }
 }
