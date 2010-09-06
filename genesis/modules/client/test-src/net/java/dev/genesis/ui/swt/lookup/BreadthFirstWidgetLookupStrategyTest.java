@@ -19,6 +19,7 @@
 package net.java.dev.genesis.ui.swt.lookup;
 
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -77,5 +78,31 @@ public class BreadthFirstWidgetLookupStrategyTest extends GenesisTestCase {
       strategy.register("alias", panelLevel1Position1);
       assertSame(panelLevel2Position0, strategy.lookup(root, 
             (String) panelLevel2Position0.getData()));
+   }
+   
+   public void testSkipLookupInBoundComponent() {
+      panelLevel1Position1.setData("someName");
+      panelLevel2Position0.setData("someName");
+      panelLevel1Position1.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      strategy.setSkipLookupInBoundComponent(false);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      strategy.setSkipLookupInBoundComponent(true);
+      panelLevel2Position0.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      rootLevel2Position0.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertNull(strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.setData(SWTBinder.GENESIS_BOUND, null);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.setData(SWTBinder.GENESIS_BOUND, Boolean.FALSE);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
    }
 }

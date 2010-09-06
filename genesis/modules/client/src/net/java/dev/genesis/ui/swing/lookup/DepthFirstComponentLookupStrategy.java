@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2010  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,6 +45,10 @@ public class DepthFirstComponentLookupStrategy
             }
 
             registerMap(components[i].getName(), components[i]);
+
+            if (doSkip(components[i])) {
+               continue;
+            }
 
             Component c = depthFirstLookup(components[i], name);
 

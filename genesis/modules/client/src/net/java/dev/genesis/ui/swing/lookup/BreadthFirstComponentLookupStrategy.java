@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2005  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2005-2010  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,12 +45,16 @@ public class BreadthFirstComponentLookupStrategy
 
          while (!queue.isEmpty()) {
             Component first = (Component) queue.remove(0);
-
+            
             if (name.equals(first.getName())) {
                return first;
             }
 
             registerMap(first.getName(), first);
+
+            if (doSkip(first)) {
+               continue;
+            }
 
             Component c = breadthFirstLookup(first, name, queue);
 

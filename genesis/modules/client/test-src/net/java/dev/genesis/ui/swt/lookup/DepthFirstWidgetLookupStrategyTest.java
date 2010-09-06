@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2010  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package net.java.dev.genesis.ui.swt.lookup;
 
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.ui.swt.SWTBinder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -61,7 +62,7 @@ public class DepthFirstWidgetLookupStrategyTest extends GenesisTestCase {
       assertSame(panelLevel2Position0, strategy.lookup(root, "theName"));
    }
    
-   public void testBreadthFirstLookup() {
+   public void testDepthFirstLookup() {
       panelLevel1Position1.setData("someName");
       panelLevel2Position0.setData("someName");
       assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
@@ -77,5 +78,31 @@ public class DepthFirstWidgetLookupStrategyTest extends GenesisTestCase {
       strategy.register("alias", panelLevel2Position0);
       assertSame(panelLevel1Position1, strategy.lookup(root, 
             (String) panelLevel1Position1.getData()));
+   }
+   
+   public void testSkipLookupInBoundComponent() {
+      panelLevel1Position1.setData("someName");
+      panelLevel2Position0.setData("someName");
+      panelLevel2Position0.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      rootLevel2Position0.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      strategy.setSkipLookupInBoundComponent(false);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      strategy.setSkipLookupInBoundComponent(true);
+      panelLevel1Position1.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.setData(SWTBinder.GENESIS_BOUND, Boolean.TRUE);
+      assertNull(strategy.lookup(root, "someName"));
+
+      rootLevel2Position0.setData(SWTBinder.GENESIS_BOUND, null);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      rootLevel2Position0.setData(SWTBinder.GENESIS_BOUND, Boolean.FALSE);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
    }
 }

@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006-2007  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2010  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import net.java.dev.genesis.GenesisTestCase;
+import net.java.dev.genesis.ui.swing.SwingBinder;
 
 public class BreadthFirstComponentLookupStrategyTest extends GenesisTestCase {
    private BreadthFirstComponentLookupStrategy strategy;
@@ -100,5 +101,36 @@ public class BreadthFirstComponentLookupStrategyTest extends GenesisTestCase {
    public void testRegisteredAlias() {
       strategy.register("menuAlias", menu);
       assertSame(menuItem, strategy.lookup(menuBar, menuItem.getName()));
+   }
+
+   public void testSkipLookupInBoundComponent() {
+      panelLevel1Position1.setName("someName");
+      panelLevel2Position0.setName("someName");
+      panelLevel1Position1.putClientProperty(SwingBinder.GENESIS_BOUND, Boolean.
+            TRUE);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.putClientProperty(SwingBinder.GENESIS_BOUND, Boolean.
+            TRUE);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+
+      strategy.setSkipLookupInBoundComponent(false);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      strategy.setSkipLookupInBoundComponent(true);
+      panelLevel2Position0.putClientProperty(SwingBinder.GENESIS_BOUND, Boolean.
+            TRUE);
+      assertSame(panelLevel2Position0, strategy.lookup(root, "someName"));
+      
+      rootLevel2Position0.putClientProperty(SwingBinder.GENESIS_BOUND, Boolean.
+            TRUE);
+      assertNull(strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.putClientProperty(SwingBinder.GENESIS_BOUND, null);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
+
+      rootLevel1Position1.putClientProperty(SwingBinder.GENESIS_BOUND, Boolean.
+            FALSE);
+      assertSame(panelLevel1Position1, strategy.lookup(root, "someName"));
    }
 }

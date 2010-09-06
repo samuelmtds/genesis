@@ -1,6 +1,6 @@
 /*
  * The Genesis Project
- * Copyright (C) 2006  Summa Technologies do Brasil Ltda.
+ * Copyright (C) 2006-2010  Summa Technologies do Brasil Ltda.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -51,6 +51,10 @@ public class BreadthFirstWidgetLookupStrategy
             }
 
             registerMap((String) first.getData(), first);
+            
+            if (doSkip(first)) {
+               continue;
+            }
 
             Widget w = breadthFirstLookup(first, name, queue);
 
