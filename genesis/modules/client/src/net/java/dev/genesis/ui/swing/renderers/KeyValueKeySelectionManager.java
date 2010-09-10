@@ -80,8 +80,6 @@ public class KeyValueKeySelectionManager implements KeySelectionManager {
          prefix += key;
       }
 
-      System.out.println("prefix: " + prefix + "; start: " + start + 
-            "; elapsedTime: " + (currentTime - lastTime) + "; delay: " + delay);
       lastTime = currentTime;
 
       for (int i = Math.max(start, 0); i < size; i++) {
