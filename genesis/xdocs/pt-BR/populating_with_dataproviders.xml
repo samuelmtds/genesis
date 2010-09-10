@@ -223,6 +223,7 @@ private JComboBox estadoComboBox;
      estadoComboBox.putClientProperty(SwingBinder.KEY_PROPERTY, "sigla");
      estadoComboBox.putClientProperty(SwingBinder.VALUE_PROPERTY, "descricao");
      estadoComboBox.setRenderer(new KeyValueListCellRenderer(estadoComboBox));
+     estadoComboBox.setKeySelectionManager(new KeyValueKeySelectionManager(estadoComboBox));
   }
 ]]>
 </source>
@@ -261,6 +262,14 @@ private JComboBox estadoComboBox;
           a propriedade de nome <code>estado</code> do form conterá a instância 
           de <code>Estado</code> correspondente à opção da combo escolhida pelo 
           usuário.</p>
+          <p>Atribuir uma instância de 
+          <code>net.java.dev.genesis.ui.swing.renderers.KeyValueKeySelectionManager</code>
+          ao <code>keySelectionManager</code> permitirá aos usuários selecionar
+          um item do combo com base nos primeiros caracteres do seu texto de 
+          exibição (por padrão, este comportamento provavelmente não funcionaria
+          corretamente já que o componente usa o valor retornado pelo
+          <code>toString()</code> para determinar qual item deve ser 
+          selecionado).</p>
           <p>Para facilitar a construção do widget, pode-se utilizar métodos 
           estáticos da classe 
           <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code>. O 

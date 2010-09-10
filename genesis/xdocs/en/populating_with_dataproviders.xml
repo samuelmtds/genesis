@@ -215,6 +215,7 @@ private JComboBox stateComboBox;
      stateComboBox.putClientProperty(SwingBinder.KEY_PROPERTY, "acronym");
      stateComboBox.putClientProperty(SwingBinder.VALUE_PROPERTY, "description");
      stateComboBox.setRenderer(new KeyValueListCellRenderer(stateComboBox));
+     stateComboBox.setKeySelectionManager(new KeyValueKeySelectionManager(stateComboBox));
   }
 ]]>
 </source>
@@ -251,6 +252,12 @@ private JComboBox stateComboBox;
           <code>state</code> property will hold the selected <code>State</code> 
           instance that corresponds to the combobox option chosen by the 
           user.</p>
+          <p>Setting the <code>keySelectionManager</code> to an instance of 
+          <code>net.java.dev.genesis.ui.swing.renderers.KeyValueKeySelectionManager</code>
+          will allow users to select a combo box item based on the first 
+          characters of its display value (by default, this behaviour would 
+          probably become broken since the component uses the value returned for
+          <code>toString()</code> to decide which item should be selected).</p>
           <p>To make it easier to build the widget, the static methods exposed
           by <code>net.java.dev.genesis.ui.swing.factory.SwingFactory</code> may
           be used. The equivalent code for building and configuring the 
